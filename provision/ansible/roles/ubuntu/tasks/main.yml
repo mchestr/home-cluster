@@ -1,0 +1,20 @@
+---
+- include: locale.yml
+  tags:
+    - locale
+
+- include: packages.yml
+  tags:
+    - packages
+
+- include: network.yml
+  tags:
+    - network
+
+- include: filesystem.yml
+  tags:
+    - filesystem
+
+- include: user.yml
+  tags:
+    - user
