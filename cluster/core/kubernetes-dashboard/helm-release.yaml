@@ -30,11 +30,9 @@ spec:
         hajimari.io/icon: "view-dashboard"
       hosts:
         - dashboard.${CLUSTER_DOMAIN}
-        - dashboard.home.${CLUSTER_DOMAIN}
       tls:
         - hosts:
             - dashboard.${CLUSTER_DOMAIN}
-            - dashboard.home.${CLUSTER_DOMAIN}
     # protocolHttp: true
     extraArgs:
       - --enable-skip-login
