@@ -36,6 +36,7 @@ spec:
         hajimari.io/icon: "video-input-antenna"
         kubernetes.io/ingress.class: "traefik"
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
       hosts:
         - host: "echo-server.${SECRET_DOMAIN}"
           paths:
