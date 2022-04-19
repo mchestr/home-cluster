@@ -22,7 +22,7 @@ spec:
   values:
     ingress:
       enabled: true
-      host: "longhorn.${CLUSTER_DOIMAIN}"
+      host: "longhorn.${CLUSTER_DOMAIN}"
       tls: true
       tlsSecret: longhorn-tls
       annotations:
