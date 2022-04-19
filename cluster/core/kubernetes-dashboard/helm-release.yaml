@@ -26,7 +26,7 @@ spec:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-production
         kubernetes.io/ingress.class: traefik
-        hajimari.io/enable: true
+        hajimari.io/enable: "true"
         hajimari.io/icon: view-dashboard
         traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
