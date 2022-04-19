@@ -12,7 +12,7 @@ spec:
       version: 5.4.1
       sourceRef:
         kind: HelmRepository
-        name: kubernetes-dashboard
+        name: kubernetes-dashboard-charts
         namespace: flux-system
       interval: 5m
   values:

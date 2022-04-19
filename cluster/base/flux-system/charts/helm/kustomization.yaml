@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
   - authentik-charts.yaml
   - bitnami-charts.yaml
+  - csi-driver-nfs-charts.yaml
   - deliveryhero-charts.yaml
   - descheduler-charts.yaml
   - ealenn-charts.yaml
@@ -14,7 +15,7 @@ resources:
   - jetstack-charts.yaml
   - k8s-at-home-charts.yaml
   - k8s-gateway-charts.yaml
-  - kubernetes-dashboard.yaml
+  - kubernetes-dashboard-charts.yaml
   - longhorn-charts.yaml
   - metallb-charts.yaml
   - metrics-server-charts.yaml

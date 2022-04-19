@@ -1,0 +1,25 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: csi-driver-nfs
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: csi-driver-nfs
+      sourceRef:
+        kind: HelmRepository
+        name: csi-driver-nfs-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    version: v3.1.0
+    feature:
+      enableFSGroupPolicy: true
