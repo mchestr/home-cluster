@@ -32,6 +32,7 @@ spec:
         matchNames:
           - default
           - networking
+          - kubernetes-dashboard
       name: "you"
       customApps:
         - name: Some External Cluster Service
