@@ -26,6 +26,8 @@ spec:
       annotations:
         kubernetes.io/ingress.class: traefik
         traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
+        hajimari.io/enable: "true"
+        hajimari.io/icon: "view-dashboard"
       hosts:
         - dashboard.${CLUSTER_DOMAIN}
         - dashboard.home.${CLUSTER_DOMAIN}
