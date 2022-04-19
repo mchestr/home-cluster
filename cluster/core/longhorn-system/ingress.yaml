@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: longhorn-ingress
+  name: longhorn
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
     kubernetes.io/ingress.class: traefik
