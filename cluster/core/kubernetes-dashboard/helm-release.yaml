@@ -1,0 +1,42 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: kubernetes-dashboard
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://kubernetes.github.io/dashboard
+      chart: kubernetes-dashboard
+      version: 5.4.1
+      sourceRef:
+        kind: HelmRepository
+        name: kubernetes-dashboard
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      name: kubernetesui/dashboard
+      tag: v2.3.0
+      pullPolicy: IfNotPresent
+
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: traefik
+        traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
+      hosts:
+        - dashboard.${CLUSTER_DOMAIN}
+        - dashboard.home.${CLUSTER_DOMAIN}
+      tls:
+        - hosts:
+            - dashboard.${CLUSTER_DOMAIN}
+            - dashboard.home.${CLUSTER_DOMAIN}
+    # protocolHttp: true
+    extraArgs:
+      - --enable-skip-login
+      - --disable-settings-authorizer
+      - --enable-insecure-login
+    metricsScraper:
+      enabled: true
