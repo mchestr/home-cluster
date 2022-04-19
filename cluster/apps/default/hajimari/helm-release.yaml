@@ -33,11 +33,9 @@ spec:
           - default
           - networking
           - kubernetes-dashboard
+          - longhorn-system
       name: "you"
-      customApps:
-        - name: Some External Cluster Service
-          url: http://192.168.1.100:5000
-          icon: test-tube
+      customApps: []
       groups:
         - name: Communicate
           links:
