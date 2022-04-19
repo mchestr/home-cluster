@@ -1,0 +1,43 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: traefik-forward-auth
+  namespace: kube-system
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: traefik-forward-auth
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    env:
+      TZ: "${TZ}"
+      LOG_LEVEL: "info"
+      DOMAIN: "${CLUSTER_DOMAIN}"
+      COOKIE_DOMAIN: "${CLUSTER_DOMAIN}"
+      AUTH_HOST: "auth.${CLUSTER_DOMAIN}"
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: traefik
+          traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
+        hosts:
+          - host: "auth.${CLUSTER_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+  valuesFrom:
+    - kind: Secret
+      name: traefik-forward-auth-secrets
