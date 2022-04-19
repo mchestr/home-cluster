@@ -20,6 +20,9 @@ spec:
     remediation:
       retries: 3
   values:
+    persistence:
+      defaultClass: false
+      defaultClassReplicaCount: 2
     ingress:
       enabled: true
       host: "longhorn.${CLUSTER_DOMAIN}"
