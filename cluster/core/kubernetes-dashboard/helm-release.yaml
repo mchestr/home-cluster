@@ -24,10 +24,12 @@ spec:
     ingress:
       enabled: true
       annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-production
         kubernetes.io/ingress.class: traefik
+        hajimari.io/enable: true
+        hajimari.io/icon: view-dashboard
         traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
-        hajimari.io/enable: "true"
-        hajimari.io/icon: "view-dashboard"
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
       hosts:
         - dashboard.${CLUSTER_DOMAIN}
       tls:
