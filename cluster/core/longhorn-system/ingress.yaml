@@ -10,6 +10,10 @@ metadata:
     traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
 spec:
+  tls:
+    - hosts:
+        - longhorn.${CLUSTER_DOMAIN}
+      secretName: "longhorn-tls"
   rules:
     - host: "longhorn.${CLUSTER_DOMAIN}"
       http:

@@ -35,6 +35,7 @@ spec:
       tls:
         - hosts:
             - dashboard.${CLUSTER_DOMAIN}
+          secretName: "kubernetes-dashboard-tls"
     # protocolHttp: true
     extraArgs:
       - --enable-skip-login
