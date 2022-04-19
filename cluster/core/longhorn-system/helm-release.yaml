@@ -19,4 +19,16 @@ spec:
   upgrade:
     remediation:
       retries: 3
-  values: {}
+  values:
+    ingress:
+      enabled: true
+      host: "longhorn.${CLUSTER_DOIMAIN}"
+      tls: true
+      tlsSecret: longhorn-tls
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-production
+        kubernetes.io/ingress.class: traefik
+        hajimari.io/enable: "true"
+        hajimari.io/icon: server
+        traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
