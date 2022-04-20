@@ -4,5 +4,6 @@ kind: Kustomization
 resources:
   - default
   - kube-system
+  - media
   - networking
   - system-upgrade
