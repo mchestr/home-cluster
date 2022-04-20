@@ -41,7 +41,7 @@ spec:
     txtPrefix: "k8s."
     txtOwnerId: "default"
     domainFilters:
-      - "${SECRET_DOMAIN}"
+      - "${CLUSTER_DOMAIN}"
     resources:
       requests:
         memory: 100Mi
