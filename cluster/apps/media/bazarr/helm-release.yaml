@@ -29,20 +29,20 @@ spec:
     ingress:
       enabled: true
       annotations:
-        cert-manager.io/cluster-issuer: "letsencrypt-production"
+        cert-manager.io/cluster-issuer: letsencrypt-production
         hajimari.io/enable: "true"
-        hajimari.io/icon: "subtitles"
-        kubernetes.io/ingress.class: "traefik"
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        hajimari.io/icon: subtitles
+        kubernetes.io/ingress.class: traefik
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
         traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
       hosts:
-        - host: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+        - host: "bazarr.${CLUSTER_DOMAIN}"
           paths:
             - "/"
       tls:
-        - secretName: "{{ .Release.Name }}-tls"
+        - secretName: "bazarr-tls"
           hosts:
-            - "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+            - "bazarr.${CLUSTER_DOMAIN}"
     persistence:
       config:
         enabled: true
