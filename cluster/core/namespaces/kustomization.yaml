@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
   - cert-manager.yaml
   - csi-driver-nfs.yaml
-  - home.yaml
   - kubernetes-dashboard.yaml
   - longhorn-system.yaml
   - media.yaml
