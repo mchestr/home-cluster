@@ -25,7 +25,7 @@ spec:
   values:
     image:
       repository: ghcr.io/k8s-at-home/bazarr
-      tag: "v1.0.3"
+      tag: v1.0.3
     ingress:
       enabled: true
       annotations:
@@ -36,20 +36,21 @@ spec:
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
       hosts:
-        - host: "bazarr.${CLUSTER_DOMAIN}"
+        - host: bazarr.${CLUSTER_DOMAIN}
           paths:
-            - "/"
+            - path: /
+              pathType: Prefix
       tls:
-        - secretName: "bazarr-tls"
+        - secretName: bazarr-tls
           hosts:
-            - "bazarr.${CLUSTER_DOMAIN}"
+            - bazarr.${CLUSTER_DOMAIN}
     persistence:
       config:
         enabled: true
         storageClass: longhorn
-        accessMode: ReadWriteMany
+        accessMode: ReadWriteOnce
       media:
         enabled: true
         existing-claim: media-pv-claim
     podSecurityContext:
-      fsGroup: "${FS_GROUP}"
+      fsGroup: ${FS_GROUP}
