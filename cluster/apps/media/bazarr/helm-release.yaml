@@ -51,6 +51,6 @@ spec:
         accessMode: ReadWriteOnce
       media:
         enabled: true
-        existing-claim: media-pv-claim
+        existingClaim: media-pv-claim
     podSecurityContext:
       fsGroup: ${FS_GROUP}
