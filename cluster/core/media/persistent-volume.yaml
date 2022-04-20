@@ -19,5 +19,5 @@ spec:
     readOnly: false
     volumeHandle: media-pv-id
     volumeAttributes:
-      server: "${NAS_IP}"
+      server: ${NAS_ADDR}
       share: /volume1/shared/media
