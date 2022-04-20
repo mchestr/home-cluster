@@ -1,0 +1,55 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: lidarr
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      version: 14.0.1
+      chart: lidarr
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    image:
+      repository: ghcr.io/k8s-at-home/lidarr
+      tag: "v1.0.0.2551"
+    ingress:
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: "letsencrypt-production"
+        hajimari.io/enable: "true"
+        hajimari.io/icon: "playlist-music"
+        kubernetes.io/ingress.class: "traefik"
+        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
+      hosts:
+        - host: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+          paths:
+            - "/"
+      tls:
+        - secretName: "{{ .Release.Name }}-tls"
+          hosts:
+            - "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+    persistence:
+      config:
+        enabled: true
+        storageClass: longhorn
+        accessMode: ReadWriteMany
+      media:
+        enabled: true
+        existing-claim: media-pv-claim
+    podSecurityContext:
+      fsGroup: "${FS_GROUP}"
