@@ -48,7 +48,6 @@ spec:
       config:
         enabled: true
         storageClass: longhorn
-        accessMode: ReadWriteOnce
       media:
         enabled: true
         existingClaim: media-pv-claim
