@@ -24,7 +24,7 @@ spec:
       retries: 3
   values:
     image:
-      repository: ghcr.io/k8s-at-home/overseerr
+      repository: ghcr.io/sct/overseerr
       tag: 1.29.1
     ingress:
       main:
