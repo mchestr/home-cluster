@@ -25,7 +25,7 @@ spec:
   values:
     image:
       repository: ghcr.io/k8s-at-home/readarr
-      tag: "v0.1.0.715"
+      tag: "v0.1.1.1312"
     ingress:
       enabled: true
       annotations:
