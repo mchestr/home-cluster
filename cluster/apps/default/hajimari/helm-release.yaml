@@ -35,6 +35,7 @@ spec:
           - kubernetes-dashboard
           - longhorn-system
           - media
+          - home
       name: "you"
       customApps: []
       groups:
