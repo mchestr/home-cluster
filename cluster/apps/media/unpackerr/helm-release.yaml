@@ -1,0 +1,37 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: tautulli
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      version: 11.2.0
+      chart: tautulli
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    image:
+      repository: ghcr.io/k8s-at-home/unpackerr
+      tag: v2.7.7
+    persistence:
+      media:
+        enabled: true
+        existingClaim: media-pv-claim
+    podSecurityContext:
+      fsGroup: ${FS_GROUP}
+  valuesFrom:
+    - kind: Secret
+      name: unpackerr-secrets
