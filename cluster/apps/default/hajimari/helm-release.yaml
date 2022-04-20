@@ -34,6 +34,7 @@ spec:
           - networking
           - kubernetes-dashboard
           - longhorn-system
+          - media
       name: "you"
       customApps: []
       groups:
