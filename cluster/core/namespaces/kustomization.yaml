@@ -6,6 +6,7 @@ resources:
   - csi-driver-nfs.yaml
   - kubernetes-dashboard.yaml
   - longhorn-system.yaml
+  - media.yaml
   - metallb-system.yaml
   - networking.yaml
   - system-upgrade.yaml
