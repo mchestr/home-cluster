@@ -27,23 +27,24 @@ spec:
       repository: ghcr.io/k8s-at-home/bazarr
       tag: v1.0.3
     ingress:
-      enabled: true
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-production
-        hajimari.io/enable: "true"
-        hajimari.io/icon: subtitles
-        kubernetes.io/ingress.class: traefik
-        traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
-      hosts:
-        - host: bazarr.${CLUSTER_DOMAIN}
-          paths:
-            - path: /
-              pathType: Prefix
-      tls:
-        - secretName: bazarr-tls
-          hosts:
-            - bazarr.${CLUSTER_DOMAIN}
+      main:
+        enabled: true
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          hajimari.io/enable: "true"
+          hajimari.io/icon: subtitles
+          kubernetes.io/ingress.class: traefik
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
+        hosts:
+          - host: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - secretName: "{{ .Release.Name }}-tls"
+            hosts:
+              - "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
     persistence:
       config:
         enabled: true
