@@ -8,6 +8,6 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 1Gi  # Doesn't matter with NFS
+      storage: 1Gi
   volumeName: media-pv
   storageClassName: nfs-csi
