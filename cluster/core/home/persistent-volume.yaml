@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: paperless-pv
+  name: paperless-media-pv
 spec:
   capacity:
     storage: 10Gi
@@ -17,7 +17,30 @@ spec:
   csi:
     driver: nfs.csi.k8s.io
     readOnly: false
-    volumeHandle: paperless-pv-id
+    volumeHandle: paperless-media-pv-id
     volumeAttributes:
       server: ${NAS_ADDR}
-      share: /volume1/shared/paperless
+      share: /volume1/shared/paperless/media
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: paperless-data-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-csi
+  mountOptions:
+    - nconnect=8  # only supported on linux kernel version >= 5.3
+    - hard
+    - nfsvers=4.1
+  csi:
+    driver: nfs.csi.k8s.io
+    readOnly: false
+    volumeHandle: paperless-data-pv-id
+    volumeAttributes:
+      server: ${NAS_ADDR}
+      share: /volume1/shared/paperless/data
