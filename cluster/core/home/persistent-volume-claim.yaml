@@ -9,7 +9,7 @@ spec:
   resources:
     requests:
       storage: 1Gi
-  volumeName: paperless-pv
+  volumeName: paperless-data-pv
   storageClassName: nfs-csi
 ---
 kind: PersistentVolumeClaim
@@ -22,5 +22,5 @@ spec:
   resources:
     requests:
       storage: 1Gi
-  volumeName: paperless-pv
+  volumeName: paperless-media-pv
   storageClassName: nfs-csi
