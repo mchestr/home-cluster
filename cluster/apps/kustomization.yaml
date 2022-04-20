@@ -6,4 +6,5 @@ resources:
   - kube-system
   - media
   - networking
+  - home
   - system-upgrade
