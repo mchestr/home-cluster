@@ -25,31 +25,32 @@ spec:
   values:
     image:
       repository: ghcr.io/k8s-at-home/sonarr
-      tag: "v3.0.7.1477"
+      tag: v3.0.7.1477
     ingress:
-      enabled: true
-      annotations:
-        cert-manager.io/cluster-issuer: "letsencrypt-production"
-        hajimari.io/enable: "true"
-        hajimari.io/icon: "television-classic"
-        kubernetes.io/ingress.class: "traefik"
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
-      hosts:
-        - host: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
-          paths:
-            - "/"
-      tls:
-        - secretName: "{{ .Release.Name }}-tls"
-          hosts:
-            - "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+      main:
+        enabled: true
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          hajimari.io/enable: "true"
+          hajimari.io/icon: television-classic
+          kubernetes.io/ingress.class: traefik
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
+        hosts:
+          - host: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - secretName: "{{ .Release.Name }}-tls"
+            hosts:
+              - "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
     persistence:
       config:
         enabled: true
         storageClass: longhorn
-        accessMode: ReadWriteMany
       media:
         enabled: true
-        existing-claim: media-pv-claim
+        existingClaim: media-pv-claim
     podSecurityContext:
-      fsGroup: "${FS_GROUP}"
+      fsGroup: ${FS_GROUP}

@@ -25,32 +25,34 @@ spec:
   values:
     image:
       repository: ghcr.io/k8s-at-home/overseerr
-      tag: "1.29.1"
+      tag: 1.29.1
     ingress:
-      enabled: true
-      annotations:
-        cert-manager.io/cluster-issuer: "letsencrypt-production"
-        external-dns.alpha.kubernetes.io/target: "ipv4.${CLUSTER_DOMAIN}"
-        external-dns/is-public: "true"
-        hajimari.io/enable: "true"
-        hajimari.io/icon: "store-search"
-        kubernetes.io/ingress.class: "traefik"
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-      hosts:
-        - host: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
-          paths:
-            - "/"
-      tls:
-        - secretName: "{{ .Release.Name }}-tls"
-          hosts:
-            - "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+      main:
+        enabled: true
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          external-dns.alpha.kubernetes.io/target: ipv4.${CLUSTER_DOMAIN}
+          external-dns/is-public: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: store-search
+          kubernetes.io/ingress.class: traefik
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
+        hosts:
+          - host: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - secretName: "{{ .Release.Name }}-tls"
+            hosts:
+              - "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
     persistence:
       config:
         enabled: true
         storageClass: longhorn
-        accessMode: ReadWriteMany
       media:
         enabled: true
-        existing-claim: media-pv-claim
+        existingClaim: media-pv-claim
     podSecurityContext:
-      fsGroup: "${FS_GROUP}"
+      fsGroup: ${FS_GROUP}
