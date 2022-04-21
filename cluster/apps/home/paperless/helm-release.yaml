@@ -90,10 +90,12 @@ spec:
         ports:
           http:
             enabled: true
+            primary: false
             port: 3000
       tika:
         primary: false
         ports:
           http:
             enabled: true
+            primary: false
             port: 9998
