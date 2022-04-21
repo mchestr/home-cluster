@@ -59,6 +59,7 @@ spec:
           - secretName: "{{ .Release.Name }}-tls"
             hosts:
               - "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+
     persistence:
       data:
         enabled: true
@@ -83,3 +84,16 @@ spec:
       enabled: true
       auth:
         enabled: false
+    service:
+      gotenburg:
+        primary: false
+        ports:
+          http:
+            enabled: true
+            port: 3000
+      tika:
+        primary: false
+        ports:
+          http:
+            enabled: true
+            port: 9998
