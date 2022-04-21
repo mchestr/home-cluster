@@ -88,16 +88,18 @@ spec:
       gotenburg:
         enabled: true
         primary: false
+        nameOverride: gotenburg
         ports:
-          http:
+          gotenburg:
             enabled: true
             primary: false
             port: 3000
       tika:
-        primary: false
         enabled: true
+        primary: false
+        nameOverride: tika
         ports:
-          http:
+          tika:
             enabled: true
             primary: false
             port: 9998
