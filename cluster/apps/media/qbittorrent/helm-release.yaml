@@ -49,7 +49,6 @@ spec:
       config:
         enabled: true
         storageClass: longhorn
-        size: 8Gi
       media:
         enabled: true
         existingClaim: media-pv-claim
