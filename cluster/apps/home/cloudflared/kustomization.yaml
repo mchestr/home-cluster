@@ -4,6 +4,5 @@ commonLabels:
   app: cloudflared
 
 resources:
-  - services.yaml
-  - namespace.yaml
   - deployment.yaml
+  - secret.sops.yaml
