@@ -24,3 +24,16 @@ spec:
       storage: 1Gi
   volumeName: paperless-media-pv
   storageClassName: nfs-csi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: code-appdaemon-pv-claim
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: code-appdaemon-pv
+  storageClassName: nfs-csi
