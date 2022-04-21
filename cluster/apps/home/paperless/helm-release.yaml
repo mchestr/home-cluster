@@ -37,8 +37,8 @@ spec:
       PAPERLESS_OCR_LANGUAGE: eng
       PAPERLESS_PORT: 8000
       PAPERLESS_TIKA_ENABLED: 1
-      PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://gotenberg:3000
-      PAPERLESS_TIKA_ENDPOINT: http://tika:9998
+      PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://paperless-gotenberg:3000
+      PAPERLESS_TIKA_ENDPOINT: http://paperless-tika:9998
       PAPERLESS_TIME_ZONE: ${TZ}
     ingress:
       main:
