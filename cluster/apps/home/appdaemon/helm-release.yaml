@@ -82,14 +82,14 @@ spec:
             traefik.ingress.kubernetes.io/router.entrypoints: websecure
             traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
           hosts:
-            - host: "{{ .Release.Name }}-vsc.${CLUSTER_DOMAIN}"
+            - host: "{{ .Release.Name }}-code.${CLUSTER_DOMAIN}"
               paths:
                 - path: /
                   pathType: Prefix
           tls:
-            - secretName: "{{ .Release.Name }}-vsc-tls"
+            - secretName: "{{ .Release.Name }}-code-tls"
               hosts:
-                - "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+                - "{{ .Release.Name }}-code.${CLUSTER_DOMAIN}"
         volumeMounts:
           - name: config
             mountPath: /config
