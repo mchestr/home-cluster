@@ -21,7 +21,7 @@ spec:
       retries: 3
   upgrade:
     remediation:
-      retries: 5
+      retries: 3
   values:
     image:
       repository: ghcr.io/k8s-at-home/qbittorrent
