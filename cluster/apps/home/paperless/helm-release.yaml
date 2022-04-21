@@ -88,7 +88,6 @@ spec:
       gotenburg:
         enabled: true
         primary: false
-        nameOverride: gotenburg
         ports:
           gotenburg:
             enabled: true
@@ -97,7 +96,6 @@ spec:
       tika:
         enabled: true
         primary: false
-        nameOverride: tika
         ports:
           tika:
             enabled: true
