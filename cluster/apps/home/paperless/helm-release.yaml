@@ -86,6 +86,7 @@ spec:
         enabled: false
     service:
       gotenburg:
+        enabled: true
         primary: false
         ports:
           http:
@@ -94,6 +95,7 @@ spec:
             port: 3000
       tika:
         primary: false
+        enabled: true
         ports:
           http:
             enabled: true
