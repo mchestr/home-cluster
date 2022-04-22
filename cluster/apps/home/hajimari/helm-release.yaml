@@ -54,10 +54,6 @@ spec:
               url: "https://github.com/k8s-at-home/awesome-home-kubernetes"
             - name: Charts
               url: "https://github.com/k8s-at-home/charts/tree/master/charts"
-            - name: Template
-              url: "https://github.com/k8s-at-home/template-cluster-k3s"
-            - name: Libray Charts
-              url: "https://github.com/k8s-at-home/library-charts"
     ingress:
       main:
         enabled: true
