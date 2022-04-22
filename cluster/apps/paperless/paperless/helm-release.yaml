@@ -82,6 +82,12 @@ spec:
         imagePullPolicy: Always
     redis:
       enabled: true
+      global:
+        storageClass: longhorn
+      image:
+        repository: bitnami/redis
+        tag: 6.2.6-debian-10-r169
+      architecture: "standalone"
       auth:
         enabled: false
     service:
