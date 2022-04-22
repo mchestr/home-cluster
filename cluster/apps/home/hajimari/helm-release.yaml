@@ -42,10 +42,22 @@ spec:
       groups:
         - name: Dev
           links:
-            - name: GitHub Repo
+            - name: Cluster Repo
               url: "https://github.com/mchestr/cluster-k3s"
-            - name: k8s-at-home Charts
+            - name: Cluster Renovate
+              url: "https://github.com/mchestr/cluster-k3s/issues/1"
+            - name: GitHub
+              url: "https://github.com/mchestr"
+        - name: k8s@Home
+          links:
+            - name: Awesome Home Kubernetes
+              url: "https://github.com/k8s-at-home/awesome-home-kubernetes"
+            - name: Charts
               url: "https://github.com/k8s-at-home/charts/tree/master/charts"
+            - name: Template
+              url: "https://github.com/k8s-at-home/template-cluster-k3s"
+            - name: Libray Charts
+              url: "https://github.com/k8s-at-home/library-charts"
     ingress:
       main:
         enabled: true
