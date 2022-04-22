@@ -11,3 +11,4 @@ resources:
   - longhorn-system
   - media
   - metallb-system
+  - paperless
