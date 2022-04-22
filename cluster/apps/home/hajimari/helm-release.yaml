@@ -40,14 +40,12 @@ spec:
       name: "you"
       customApps: []
       groups:
-        - name: Dev
+        - name: Cluster
           links:
-            - name: Cluster Repo
-              url: "https://github.com/mchestr/cluster-k3s"
-            - name: Cluster Renovate
+            - name: Renovate
               url: "https://github.com/mchestr/cluster-k3s/issues/1"
-            - name: GitHub
-              url: "https://github.com/mchestr"
+            - name: Repository
+              url: "https://github.com/mchestr/cluster-k3s"
         - name: k8s@Home
           links:
             - name: Awesome Home Kubernetes
