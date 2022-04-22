@@ -17,7 +17,7 @@ spec:
   csi:
     driver: nfs.csi.k8s.io
     readOnly: false
-    volumeHandle: paperless-data-pv-id
+    volumeHandle: code-appdaemon-pv-id
     volumeAttributes:
       server: ${NAS_ADDR}
       share: /volume1/shared/code/appdaemon
