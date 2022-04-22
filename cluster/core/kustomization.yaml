@@ -4,11 +4,9 @@ kind: Kustomization
 resources:
   - namespaces
   - cert-manager
-  - csi-driver-nfs
-  - home
+  - csi-driver-nfs.yaml
   - kube-system
   - kubernetes-dashboard
   - longhorn-system
   - media
   - metallb-system
-  - paperless

@@ -6,5 +6,4 @@ resources:
   - kube-system
   - media
   - networking
-  - paperless
   - system-upgrade
