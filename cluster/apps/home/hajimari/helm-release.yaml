@@ -113,13 +113,13 @@ spec:
           hajimari.io/icon: "weather-sunset"
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         hosts:
-          - host: "hajimari.${CLUSTER_DOMAIN}"
+          - host: "home.${CLUSTER_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - hosts:
-              - "hajimari.${CLUSTER_DOMAIN}"
+              - "home.${CLUSTER_DOMAIN}"
             secretName: "hajimari-tls"
     persistence:
       data:
