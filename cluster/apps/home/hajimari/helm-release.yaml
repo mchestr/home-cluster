@@ -29,14 +29,7 @@ spec:
     hajimari:
       defaultEnable: false
       namespaceSelector:
-        matchNames:
-          - default
-          - networking
-          - kubernetes-dashboard
-          - longhorn-system
-          - media
-          - home
-          - paperless
+        any: true
       name: "you"
       customApps: []
       groups:
