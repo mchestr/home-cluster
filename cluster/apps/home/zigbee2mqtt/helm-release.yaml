@@ -25,7 +25,7 @@ spec:
   values:
     image:
       repository: koenkk/zigbee2mqtt
-      tag: 1.19.1
+      tag: 1.25.0
     env:
       TZ: ${TZ}
 
