@@ -15,3 +15,5 @@ resources:
   - sonarr
   - tautulli
   - unpackerr
+  - persistent-volume.yaml
+  - persistent-volume-claim.yaml
