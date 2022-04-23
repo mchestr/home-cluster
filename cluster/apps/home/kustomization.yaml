@@ -10,4 +10,4 @@ resources:
   - home-assistant
   - mosquitto
   - zigbee2mqtt
-  - zwave2mqtt
+  - zwavejs2mqtt
