@@ -40,7 +40,9 @@ spec:
       configinc:
         enabled: true
         mountPath: /mosquitto/configinc
-        existingClaim: code-mosquitto-pv-claim
+        storageClass: longhorn
+        size: 30Mi
+        accessMode: ReadWriteOnce
       mosquitto-config:
         enabled: true
         type: secret
