@@ -35,7 +35,7 @@ spec:
   resources:
     requests:
       storage: 1Gi
-  volumeName: code-zigbe2mqtt-pv
+  volumeName: code-zigbee2mqtt-pv
   storageClassName: nfs-csi
 ---
 kind: PersistentVolumeClaim
