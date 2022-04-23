@@ -34,6 +34,8 @@ spec:
       data:
         enabled: true
         storageClass: longhorn
+        accessMode: ReadWriteOnce
       configinc:
         enabled: true
         storageClass: longhorn
+        accessMode: ReadWriteOnce
