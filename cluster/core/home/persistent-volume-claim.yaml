@@ -28,7 +28,7 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: code-zigbe2mqtt-pv-claim
+  name: code-zigbee2mqtt-pv-claim
 spec:
   accessModes:
     - ReadWriteMany
