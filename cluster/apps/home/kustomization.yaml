@@ -8,5 +8,6 @@ resources:
   - esphome
   - hajimari
   - home-assistant
+  - uptime-kuma
   - zigbee2mqtt
   - zwave2mqtt
