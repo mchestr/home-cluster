@@ -11,5 +11,4 @@ resources:
   - metallb-system.yaml
   - networking.yaml
   - paperless.yaml
-  - postgres.yaml
   - system-upgrade.yaml
