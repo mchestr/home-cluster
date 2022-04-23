@@ -28,3 +28,4 @@ resources:
   - stakater-charts.yaml
   - traefik-charts.yaml
   - weaveworks-kured-charts.yaml
+  - zalando-postgres-ui-charts.yaml
