@@ -40,4 +40,4 @@ spec:
       configinc:
         enabled: true
         mountPath: /mosquitto/configinc
-        existingClaim: code-mosquitto-config-pv-claim
+        existingClaim: code-mosquitto-pv-claim
