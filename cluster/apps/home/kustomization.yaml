@@ -6,7 +6,6 @@ resources:
   - appdaemon
   - cloudflared
   - esphome
-  - hajimari
   - home-assistant
   - uptime-kuma
   - zigbee2mqtt
