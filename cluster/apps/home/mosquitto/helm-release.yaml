@@ -35,7 +35,9 @@ spec:
         enabled: true
         storageClass: longhorn
         accessMode: ReadWriteOnce
+        size: 128Mi
       configinc:
         enabled: true
         storageClass: longhorn
         accessMode: ReadWriteOnce
+        size: 1Mi
