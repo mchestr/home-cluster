@@ -53,7 +53,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: "code-{{ .Release.Name }}-pv-claim"
+        existingClaim: "code-{{ $.Release.Name }}-pv-claim"
 
     addons:
       codeserver:
