@@ -37,17 +37,11 @@ spec:
         storageClass: longhorn
         size: 1Gi
         accessMode: ReadWriteOnce
-      configinc:
-        enabled: true
-        mountPath: /mosquitto/configinc
-        storageClass: longhorn
-        size: 30Mi
-        accessMode: ReadWriteOnce
       mosquitto-config:
         enabled: true
         type: secret
         subPath: mosquitto.conf
-        mountPath: /mosquitto/configinc/mosquitto.conf
+        mountPath: /mosquitto/mosquitto.conf
         readOnly: true
         name: mosquitto-secrets
       mosquitto-passwords:
