@@ -2,7 +2,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: code-mosquitto-pv
+  name: code-mosquitto-pv-claim
 spec:
   accessModes:
     - ReadWriteMany
