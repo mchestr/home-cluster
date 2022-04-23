@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: uptime
+  name: uptime-kuma
 spec:
   interval: 5m
   chart:
@@ -34,6 +34,7 @@ spec:
         enabled: true
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
+          hajimari.io/appName: uptime
           hajimari.io/enable: "true"
           hajimari.io/icon: arrow-up-drop-circle-outline
           kubernetes.io/ingress.class: traefik
