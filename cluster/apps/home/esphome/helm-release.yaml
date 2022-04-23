@@ -25,7 +25,7 @@ spec:
   values:
     image:
       repository: esphome/esphome
-      tag: 1.18.0
+      tag: 2022.4.0
     env:
       TZ: ${TZ}
 
