@@ -70,5 +70,5 @@ spec:
               hosts:
                 - "{{ .Release.Name }}-code.${CLUSTER_DOMAIN}"
         volumeMounts:
-          - name: config
+          - name: configinc
             mountPath: /config
