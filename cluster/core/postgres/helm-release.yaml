@@ -28,13 +28,12 @@ spec:
         kubernetes.io/ingress.class: traefik
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
-      ingressClassName: traefik
       hosts:
-        - host: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+        - host: postgres-operator-ui${CLUSTER_DOMAIN}
           paths:
             - path: /
               pathType: Prefix
       tls:
-        - secretName: "{{ .Release.Name }}-tls"
+        - secretName: postgres-operator-ui-tls
           hosts:
-            - "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+            - postgres-operator-ui.${CLUSTER_DOMAIN}
