@@ -30,9 +30,7 @@ spec:
         traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
       hosts:
         - host: postgres-operator-ui${CLUSTER_DOMAIN}
-          paths:
-            - path: /
-              pathType: Prefix
+          paths: [""]
       tls:
         - secretName: postgres-operator-ui-tls
           hosts:
