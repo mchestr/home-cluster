@@ -28,3 +28,16 @@ spec:
       tag: 2.0.14
     env:
       TZ: ${TZ}
+    auth:
+      enabled: true
+    persistence:
+      data:
+        enabled: true
+        mountPath: /mosquitto/data
+        storageClass: longhorn
+        size: 1Gi
+        accessMode: ReadWriteOnce
+      configinc:
+        enabled: true
+        mountPath: /mosquitto/configinc
+        existingClaim: code-mosquitto-config-pv-claim
