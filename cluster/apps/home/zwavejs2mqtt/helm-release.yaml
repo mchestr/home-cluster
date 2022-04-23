@@ -2,14 +2,14 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: zwave2mqtt
+  name: zwavejs2mqtt
 spec:
   interval: 5m
   chart:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
-      version: 8.4.1
-      chart: zwave2mqtt
+      version: 5.2.0
+      chart: zwavejs2mqtt
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -54,4 +54,4 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: code-zwave2mqtt-pv-claim
+        existingClaim: code-zwavejs2mqtt-pv-claim

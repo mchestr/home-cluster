@@ -2,12 +2,12 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: code-zwave2mqtt-pv-claim
+  name: code-zwavejs2mqtt-pv-claim
 spec:
   accessModes:
     - ReadWriteMany
   resources:
     requests:
       storage: 1Gi
-  volumeName: code-zwave2mqtt-pv
+  volumeName: code-zwavejs2mqtt-pv
   storageClassName: nfs-csi
