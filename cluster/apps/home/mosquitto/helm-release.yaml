@@ -41,7 +41,7 @@ spec:
         enabled: true
         type: secret
         subPath: mosquitto.conf
-        mountPath: /mosquitto/mosquitto.conf
+        mountPath: /mosquitto/config/mosquitto.conf
         readOnly: true
         name: mosquitto-secrets
       mosquitto-passwords:
