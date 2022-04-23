@@ -18,6 +18,7 @@ spec:
   values:
     envs:
       resourcesVisible: "True"
+      targetNamespace: # Show all namespaces
     ingress:
       enabled: true
       annotations:
