@@ -41,3 +41,17 @@ spec:
         enabled: true
         mountPath: /mosquitto/configinc
         existingClaim: code-mosquitto-pv-claim
+      mosquitto-config:
+        enabled: true
+        type: secret
+        subPath: mosquitto.conf
+        mountPath: /mosquitto/configinc/mosquitto.conf
+        readOnly: true
+        existingClaim: mosquitto-secrets
+      mosquitto-passwords:
+        enabled: true
+        type: secret
+        subPath: passwords
+        mountPath: /mosquitto/config/passwords
+        readOnly: true
+        existingClaim: mosquitto-secrets
