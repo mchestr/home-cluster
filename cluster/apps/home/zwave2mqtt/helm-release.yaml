@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
-      version: 5.2.0
+      version: 8.4.1
       chart: zwave2mqtt
       sourceRef:
         kind: HelmRepository
