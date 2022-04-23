@@ -52,4 +52,4 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: code-{{ $.Release.Name }}-pv-claim
+        existingClaim: code-zigbee2mqtt-pv-claim
