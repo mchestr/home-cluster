@@ -5,6 +5,7 @@ resources:
   - home
   - kube-system
   - media
+  - mosquitto
   - networking
   - paperless
   - system-upgrade
