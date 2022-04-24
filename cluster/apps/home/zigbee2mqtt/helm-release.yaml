@@ -104,4 +104,4 @@ spec:
                 - "{{ .Release.Name }}-code.${CLUSTER_DOMAIN}"
         volumeMounts:
           - name: config
-            mountPath: /data
+            mountPath: /config
