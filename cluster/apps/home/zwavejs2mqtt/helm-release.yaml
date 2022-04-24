@@ -66,6 +66,8 @@ spec:
                   operator: In
                   values:
                     - "true"
+    securityContext:
+      privileged: true
     addons:
       codeserver:
         enabled: true
