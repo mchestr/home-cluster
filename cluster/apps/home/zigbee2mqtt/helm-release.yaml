@@ -50,10 +50,9 @@ spec:
               - "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
 
     persistence:
-      config:
+      data:
         enabled: true
         existingClaim: code-zigbee2mqtt-pv-claim
-        mountPath: /data
       usb:
         enabled: true
         type: hostPath
