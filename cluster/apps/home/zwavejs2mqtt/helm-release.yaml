@@ -49,7 +49,7 @@ spec:
             hosts:
               - "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
     persistence:
-      config:
+      data:
         enabled: true
         existingClaim: code-zwavejs2mqtt-pv-claim
       usb:
