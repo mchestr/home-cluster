@@ -67,7 +67,7 @@ spec:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
             - matchExpressions:
-                - key: app
+                - key: zwave-controller
                   operator: In
                   values:
-                    - zwave-controller
+                    - "true"
