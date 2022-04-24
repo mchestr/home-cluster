@@ -28,6 +28,7 @@ spec:
       tag: 2022.4.0
     env:
       TZ: ${TZ}
+      ESPHOME_DASHBOARD_USE_PING: true
 
     ingress:
       main:
