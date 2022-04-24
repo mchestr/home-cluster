@@ -48,9 +48,6 @@ spec:
           - secretName: "{{ .Release.Name }}-tls"
             hosts:
               - "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
-    securityContext:
-      # -- (bool) Privileged securityContext may be required if USB devices are accessed directly through the host machine
-      privileged: false
     persistence:
       config:
         enabled: true
