@@ -48,8 +48,6 @@ spec:
           - secretName: "{{ .Release.Name }}-tls"
             hosts:
               - "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
-    securityContext:
-      privileged: false
     persistence:
       config:
         enabled: true
