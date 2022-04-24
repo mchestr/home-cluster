@@ -55,3 +55,19 @@ spec:
       config:
         enabled: true
         existingClaim: code-zwavejs2mqtt-pv-claim
+    additionalVolumeMounts:
+      - name: husbzb-zwave
+        mountPath: /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_71500DDD-if00-port0
+    additionalVolumes:
+      - name: husbzb-zwave
+        hostPath:
+          path: /dev/zwave
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                    - zwave-controller
