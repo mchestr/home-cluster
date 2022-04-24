@@ -53,3 +53,20 @@ spec:
       config:
         enabled: true
         existingClaim: code-zigbee2mqtt-pv-claim
+
+    additionalVolumeMounts:
+      - name: husbzb-zigbee
+        mountPath: /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_71500DDD-if01-port0
+    additionalVolumes:
+      - name: husbzb-zigbee
+        hostPath:
+          path: /dev/zigbee
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                    - zigbee-controller
