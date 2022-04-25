@@ -32,6 +32,7 @@ spec:
     env:
       TZ: ${TZ}
       DASH_URL: "http://$HOSTNAME:5050"
+      HA_URL: http://home-assistant:8123
 
     ingress:
       main:
