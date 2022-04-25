@@ -59,7 +59,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
+                  name: unifi
                   port: 8080
         tls:
           - secretName: "{{ .Release.Name }}-inform-tls"
