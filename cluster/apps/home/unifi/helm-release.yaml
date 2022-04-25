@@ -60,7 +60,7 @@ spec:
                 pathType: Prefix
                 service:
                   name: main
-                  port: portal-https
+                  port: 8080
         tls:
           - secretName: "{{ .Release.Name }}-inform-tls"
             hosts:
