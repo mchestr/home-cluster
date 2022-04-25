@@ -47,7 +47,7 @@ spec:
           - secretName: "{{ .Release.Name }}-tls"
             hosts:
               - "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
-      portal:
+      inform:
         enabled: true
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
