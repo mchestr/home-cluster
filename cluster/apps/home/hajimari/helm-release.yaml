@@ -34,7 +34,7 @@ spec:
       customApps:
         - name: LochNAS
           icon: nas
-          url: https://${NAS_IP}:5001
+          url: https://${NAS_ADDR}:5001
         - name: Plex
           icon: plex
           url: https://app.plex.tv
