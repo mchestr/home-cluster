@@ -31,7 +31,13 @@ spec:
       namespaceSelector:
         any: true
       name: "you"
-      customApps: []
+      customApps:
+        - name: LochNAS
+          icon: nas
+          url: https://${NAS_IP}:5001
+        - name: Plex
+          icon: plex
+          url: https://app.plex.tv
       groups:
         - name: Cluster
           links:
