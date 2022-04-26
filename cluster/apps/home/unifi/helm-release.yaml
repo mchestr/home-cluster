@@ -29,6 +29,13 @@ spec:
     env:
       TZ: ${TZ}
 
+    service:
+      main:
+        type: LoadBalancer
+        externalTrafficPolicy: Local
+        externalIPs:
+          - ${METALLB_UNIFI_ADDR}
+
     ingress:
       main:
         enabled: true
