@@ -3,7 +3,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: traefik-dashboard
-  namespace: networking
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
     hajimari.io/appName: traefik
