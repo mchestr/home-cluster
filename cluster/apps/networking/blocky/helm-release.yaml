@@ -25,24 +25,34 @@ spec:
       strategy: RollingUpdate
     env:
       TZ: ${TZ}
+
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          hajimari.io/enable: "true"
+          hajimari.io/icon: block-helper
+          kubernetes.io/ingress.class: traefik
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        hosts:
+          - host: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - secretName: "{{ .Release.Name }}-tls"
+            hosts:
+              - "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+
     service:
       main:
+        enabled: true
+      dns:
         enabled: true
         type: LoadBalancer
         externalIPs:
           - ${METALLB_BLOCKY_ADDR}
-        externalTrafficPolicy: Local
-        ports:
-          http:
-            enabled: true
-            port: 4000
-            protocol: HTTP
-      dns:
-        enabled: true
-        type: LoadBalancer
-        annotations:
-          metallb.universe.tf/allow-shared-ip: blocky
-          metallb.universe.tf/loadBalancerIPs: "${METALLB_BLOCKY_ADDR}"
         externalTrafficPolicy: Local
         ports:
           tcp:
@@ -55,8 +65,6 @@ spec:
             port: 53
             protocol: UDP
             targetPort: 53
-    metrics:
-      enabled: true
     config: |
       upstream:
         default:
