@@ -21,12 +21,31 @@ spec:
         name: prometheus-community-charts
         namespace: flux-system
       interval: 5m
+  valuesFrom:
+    - kind: Secret
+      name: prometheus-secrets
   values:
     fullnameOverride: prometheus
     alertmanager:
       enabled: true
       receivers:
         - name: "null"
+        - name: "discord"
+          slack_configs:
+            - channel: "#prometheus"
+              icon_url: https://avatars3.githubusercontent.com/u/3380462
+              username: "Prometheus"
+              send_resolved: true
+              title: |-
+                [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ if ne .CommonAnnotations.summary ""}}{{ .CommonAnnotations.summary }}{{ else }}{{ .CommonLabels.alertname }}{{ end }}
+              text: >-
+                {{ range .Alerts -}}
+                  **Alert:** {{ .Annotations.title }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
+                **Description:** {{ if ne .Annotations.description ""}}{{ .Annotations.description }}{{else}}N/A{{ end }}
+                **Details:**
+                  {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+                  {{ end }}
+                {{ end }}
       config:
         global:
           resolve_timeout: 5m
@@ -79,6 +98,12 @@ spec:
             sourceLabels:
               - node
             targetLabel: instance
+    kubeScheduler:
+      enabled: false
+    kubeProxy:
+      enabled: false
+    kubeControllerManager:
+      enabled: false
     # Setting this option to 0 disabled CPU limits
     prometheusOperator:
       configReloaderCpu: 0
