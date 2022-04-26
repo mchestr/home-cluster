@@ -49,6 +49,13 @@ spec:
       config:
         global:
           resolve_timeout: 5m
+        route:
+          receiver: discord
+          routes:
+            - match:
+                alertname: Watchdog
+              receiver: 'null'
+            - receiver: discord
       ingress:
         enabled: true
         pathType: Prefix
