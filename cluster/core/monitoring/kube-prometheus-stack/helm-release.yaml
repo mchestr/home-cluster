@@ -30,11 +30,11 @@ spec:
       enabled: true
       receivers:
         - name: "null"
-        - name: "discord"
+        - name: discord
           slack_configs:
             - channel: "#prometheus"
               icon_url: https://avatars3.githubusercontent.com/u/3380462
-              username: "Prometheus"
+              username: Prometheus
               send_resolved: true
               title: |-
                 [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ if ne .CommonAnnotations.summary ""}}{{ .CommonAnnotations.summary }}{{ else }}{{ .CommonLabels.alertname }}{{ end }}
