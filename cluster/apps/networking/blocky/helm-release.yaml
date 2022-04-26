@@ -19,35 +19,10 @@ spec:
     image:
       repository: ghcr.io/0xerr0r/blocky
       tag: v0.18
-    controller:
-      enabled: true
-      replicas: 1
-      strategy: RollingUpdate
     env:
       TZ: ${TZ}
 
-    ingress:
-      main:
-        enabled: true
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          hajimari.io/enable: "true"
-          hajimari.io/icon: block-helper
-          kubernetes.io/ingress.class: traefik
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        hosts:
-          - host: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
-        tls:
-          - secretName: "{{ .Release.Name }}-tls"
-            hosts:
-              - "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
-
     service:
-      main:
-        enabled: true
       dns:
         enabled: true
         type: LoadBalancer
@@ -65,6 +40,15 @@ spec:
             port: 53
             protocol: UDP
             targetPort: 53
+
+    metrics:
+      enabled: true
+      prometheusRule:
+        enabled: true
+
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: "blocky-config"
+
     config: |
       upstream:
         default:
@@ -78,9 +62,14 @@ spec:
       blocking:
         blackLists:
           ads:
-            - https://raw.githubusercontent.com/ookangzheng/dbl-oisd-nl/master/dbl.txt
+            - https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+            - https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
+            - http://sysctl.org/cameleon/hosts
+            - https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt
           fakenews:
             - https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews/hosts
+          kids:
+          - https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts
         whiteLists:
           ads:
             - https://raw.githubusercontent.com/anudeepND/whitelist/master/domains/whitelist.txt
