@@ -31,7 +31,6 @@ spec:
       GF_SECURITY_ALLOW_EMBEDDING: true
       GF_LOG_FILTERS: rendering:debug
       VAR_BLOCKY_URL: "http://blocky.networking.svc.cluster.local:4000"
-      GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: "natel-discrete-panel,pr0ps-trackmap-panel,panodata-map-panel"
     ingress:
       enabled: true
       annotations:
@@ -123,7 +122,7 @@ spec:
       grafana_net:
         url: https://grafana.net
       auth.basic:
-        disable_login_form: true
+        disable_login_form: false
   valuesFrom:
     - kind: Secret
       name: "grafana-secrets"
