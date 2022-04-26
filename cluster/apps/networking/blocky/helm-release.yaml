@@ -57,8 +57,6 @@ spec:
             targetPort: 53
     metrics:
       enabled: true
-      prometheusRule:
-        enabled: true
     config: |
       upstream:
         default:
