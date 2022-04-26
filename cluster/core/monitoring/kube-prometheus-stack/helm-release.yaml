@@ -97,7 +97,7 @@ spec:
               - "prometheus.${CLUSTER_DOMAIN}"
             secretName: prometheus-tls
       prometheusSpec:
-        replicas: 2
+        replicas: 1
         replicaExternalLabelName: "replica"
         ruleSelectorNilUsesHelmValues: false
         serviceMonitorSelectorNilUsesHelmValues: false
