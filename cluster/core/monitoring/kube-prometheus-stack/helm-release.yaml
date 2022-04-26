@@ -35,6 +35,7 @@ spec:
         pathType: Prefix
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
+          hajimari.io/appName: Alert Manager
           hajimari.io/enable: "true"
           hajimari.io/icon: alert-circle-outline
           kubernetes.io/ingress.class: traefik
@@ -85,6 +86,7 @@ spec:
         pathType: Prefix
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
+          hajimari.io/appName: Prometheus
           hajimari.io/enable: "true"
           hajimari.io/icon: database-eye
           kubernetes.io/ingress.class: traefik
