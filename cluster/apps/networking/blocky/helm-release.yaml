@@ -12,7 +12,7 @@ spec:
       version: 10.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home
+        name: k8s-at-home-charts
         namespace: flux-system
       interval: 5m
   values:
@@ -29,9 +29,8 @@ spec:
       main:
         enabled: true
         type: LoadBalancer
-        annotations:
-          metallb.universe.tf/allow-shared-ip: blocky
-          metallb.universe.tf/loadBalancerIPs: "${METALLB_BLOCKY_ADDR}"
+        externalIPs:
+          - ${METALLB_BLOCKY_ADDR}
         externalTrafficPolicy: Local
         ports:
           http:
