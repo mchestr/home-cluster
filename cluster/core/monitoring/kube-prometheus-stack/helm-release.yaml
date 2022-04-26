@@ -57,6 +57,8 @@ spec:
                   storage: 1Gi
     kube-state-metrics:
       fullnameOverride: kube-state-metrics
+    grafana:
+      enabled: false
     prometheus-node-exporter:
       fullnameOverride: node-exporter
       prometheus:
