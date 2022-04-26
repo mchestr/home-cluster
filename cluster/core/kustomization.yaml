@@ -9,4 +9,5 @@ resources:
   - kubernetes-dashboard
   - longhorn-system
   - metallb-system
+  - minio
   - monitoring
