@@ -9,6 +9,7 @@ resources:
   - longhorn-system.yaml
   - media.yaml
   - metallb-system.yaml
+  - minio.yaml
   - monitoring.yaml
   - networking.yaml
   - paperless.yaml
