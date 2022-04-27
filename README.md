@@ -20,8 +20,8 @@
 ```bash
 flux bootstrap github \
   --version=latest \
-  --owner=auricom \
-  --repository=home-cluster \
+  --owner=mchestr \
+  --repository=cluster-k3s \
   --path=cluster \
   --personal \
   --network-policy=false
