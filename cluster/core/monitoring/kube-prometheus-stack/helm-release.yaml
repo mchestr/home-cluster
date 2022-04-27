@@ -168,9 +168,7 @@ spec:
         serviceMonitorSelector: {}
         serviceMonitorNamespaceSelector: {}
         serviceMonitorSelectorNilUsesHelmValues: false
-        podMonitorSelector:
-          matchLabels:
-            app.kubernetes.io/part-of: flux
+        podMonitorSelector: {}
         podMonitorNamespaceSelector: {}
         podMonitorSelectorNilUsesHelmValues: false
         retention: 120d
