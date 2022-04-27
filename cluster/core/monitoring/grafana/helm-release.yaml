@@ -33,7 +33,7 @@ spec:
       GF_DISABLE_SANITIZE_HTML: true
       GF_LOG_FILTERS: rendering:debug
       VAR_BLOCKY_URL: "http://blocky.networking.svc.cluster.local:4000"
-      DS_PROMETHEUS: Prometheus
+      DS_PROMETHEUS: prometheus
     ingress:
       enabled: true
       annotations:
