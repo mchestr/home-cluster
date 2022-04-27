@@ -60,6 +60,10 @@ spec:
 
     metrics:
       enabled: true
+      serviceMonitor:
+        bearerTokenSecret:
+          name: home-assistant-secrets
+          key: token
       prometheusRule:
         enabled: true
 
