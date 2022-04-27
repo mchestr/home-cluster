@@ -58,18 +58,18 @@ spec:
           repeat_interval: 6h
           receiver: discord
           routes:
-            # - receiver: "null"
-            #   match:
-            #     alertname: Watchdog
+            - receiver: "null"
+              matchers:
+                - alertname=Watchdog
             - receiver: discord
-              match_re:
-                severity: critical|warning
+              matchers:
+                - severity=~"warning|critical"
               continue: true
         inhibit_rules:
-          - source_match:
-              severity: critical
-            target_match:
-              severity: warning
+          - source_matchers:
+              - severity=critical
+            target_matchers:
+              - severity=warning
             equal:
               - alertname
               - namespace
