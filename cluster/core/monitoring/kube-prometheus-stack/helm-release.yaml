@@ -58,9 +58,9 @@ spec:
           repeat_interval: 6h
           receiver: discord
           routes:
-            - receiver: "null"
-              match:
-                alertname: Watchdog
+            # - receiver: "null"
+            #   match:
+            #     alertname: Watchdog
             - receiver: discord
               match_re:
                 severity: critical|warning
