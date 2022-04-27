@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
-      version: 8.6.1
+      version: 8.6.2
       chart: paperless
       sourceRef:
         kind: HelmRepository
