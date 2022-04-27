@@ -60,7 +60,7 @@ spec:
           routes:
             - receiver: "null"
               matchers:
-                - alertname=Watchdog
+                - alertname=~"Watchdog|InfoInhibitor"
             - receiver: discord
               matchers:
                 - severity=~"warning|critical"
@@ -162,10 +162,15 @@ spec:
       prometheusSpec:
         replicas: 1
         replicaExternalLabelName: "replica"
+        ruleSelector: {}
+        ruleNamespaceSelector: {}
         ruleSelectorNilUsesHelmValues: false
+        serviceMonitorSelector: {}
+        serviceMonitorNamespaceSelector: {}
         serviceMonitorSelectorNilUsesHelmValues: false
+        podMonitorSelector: {}
+        podMonitorNamespaceSelector: {}
         podMonitorSelectorNilUsesHelmValues: false
-        probeSelectorNilUsesHelmValues: false
         retention: 120d
         enableAdminAPI: true
         walCompression: true
