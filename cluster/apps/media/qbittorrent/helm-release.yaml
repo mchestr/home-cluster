@@ -54,3 +54,10 @@ spec:
         existingClaim: media-pv-claim
     podSecurityContext:
       fsGroup: ${FS_GROUP}
+    metrics:
+      enabled: true
+      prometheusRule:
+        enabled: true
+      exporter:
+        repository: esanchezm/prometheus-qbittorrent-exporter
+        tag: v1.2.0
