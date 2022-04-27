@@ -29,6 +29,8 @@ spec:
     env:
       GF_EXPLORE_ENABLED: true
       GF_SECURITY_ALLOW_EMBEDDING: true
+      GF_PANELS_DISABLE_SANITIZE_HTML: true
+      GF_DISABLE_SANITIZE_HTML: true
       GF_LOG_FILTERS: rendering:debug
       VAR_BLOCKY_URL: "http://blocky.networking.svc.cluster.local:4000"
     ingress:
@@ -121,6 +123,8 @@ spec:
         mode: console
       grafana_net:
         url: https://grafana.net
+      panels:
+        disable_sanitize_html: true
       auth.basic:
         disable_login_form: false
   valuesFrom:
