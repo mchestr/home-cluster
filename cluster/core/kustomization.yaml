@@ -5,6 +5,7 @@ resources:
   - namespaces
   - cert-manager
   - csi-driver-nfs
+  - flux-system
   - kube-system
   - kubernetes-dashboard
   - longhorn-system
