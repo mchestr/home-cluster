@@ -22,9 +22,6 @@ spec:
   upgrade:
     remediation:
       retries: 3
-  valuesFrom:
-    - kind: Secret
-      name: home-assistant-secrets
   values:
     image:
       repository: ghcr.io/home-assistant/home-assistant
