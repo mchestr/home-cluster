@@ -94,6 +94,3 @@ spec:
         volumeMounts:
           - name: config
             mountPath: /config
-    prometheus:
-      serviceMonitor:
-        enabled: true

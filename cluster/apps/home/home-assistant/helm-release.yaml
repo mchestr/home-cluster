@@ -22,6 +22,9 @@ spec:
   upgrade:
     remediation:
       retries: 3
+  valuesFrom:
+    - kind: Secret
+      name: home-assistant-secrets
   values:
     image:
       repository: ghcr.io/home-assistant/home-assistant
@@ -54,6 +57,21 @@ spec:
       config:
         enabled: true
         existingClaim: code-home-assistant-pv-claim
+
+    metrics:
+      enabled: true
+      prometheusRule:
+        enabled: true
+        rules:
+          - alert: HomeAssistantAbsent
+            annotations:
+              description: Home Assistant has disappeared from Prometheus service discovery.
+              summary: Home Assistant is down.
+            expr: |
+              absent(up{job=~".*home-assistant.*"} == 1)
+            for: 5m
+            labels:
+              severity: critical
 
     addons:
       codeserver:
