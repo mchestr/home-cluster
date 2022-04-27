@@ -48,6 +48,9 @@ spec:
         scrapeTimeout: 10s
       prometheusRule:
         enabled: true
+    prometheus:
+      serviceMonitor:
+        enabled: true
 
     podAnnotations:
       configmap.reloader.stakater.com/reload: "blocky-config"
