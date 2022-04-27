@@ -1,0 +1,137 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: grafana
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://grafana.github.io/helm-charts
+      chart: grafana
+      version: 6.27.0
+      sourceRef:
+        kind: HelmRepository
+        name: grafana-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    deploymentStrategy:
+      type: Recreate
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: "grafana"
+    persistence:
+      enabled: true
+      storageClassName: "longhorn"
+      size: 10Gi
+      accessModes:
+        - ReadWriteOnce
+    env:
+      GF_EXPLORE_ENABLED: true
+      GF_SECURITY_ALLOW_EMBEDDING: true
+      GF_PANELS_DISABLE_SANITIZE_HTML: true
+      GF_DISABLE_SANITIZE_HTML: true
+      GF_LOG_FILTERS: rendering:debug
+      VAR_BLOCKY_URL: "http://blocky.networking.svc.cluster.local:4000"
+      DS_PROMETHEUS: prometheus
+    ingress:
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-production
+        hajimari.io/enable: "true"
+        hajimari.io/icon: chart-areaspline
+        kubernetes.io/ingress.class: traefik
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
+      hosts:
+        - "grafana.${CLUSTER_DOMAIN}"
+      tls:
+        - hosts:
+            - "grafana.${CLUSTER_DOMAIN}"
+          secretName: grafana-tls
+    plugins:
+      - pr0ps-trackmap-panel
+      - grafana-clock-panel
+      - vonage-status-panel
+      - grafana-piechart-panel
+      - natel-discrete-panel
+      - grafana-worldmap-panel
+      - grafana-singlestat-panel
+      - grafana-polystat-panel
+      - mxswat-separator-panel
+      - farski-blendstat-panel
+    serviceMonitor:
+      enabled: true
+    serviceAccount:
+      autoMount: true
+    dashboardProviders:
+      dashboardproviders.yaml:
+        apiVersion: 1
+        providers:
+          - name: "default"
+            orgId: 1
+            folder: ""
+            type: file
+            disableDeletion: false
+            allowUiUpdates: true
+            options:
+              path: /var/lib/grafana/dashboards/default
+    dashboards:
+      default:
+        1-node-exporter:
+          url: https://grafana.com/api/dashboards/11074/revisions/9/download
+          datasource: Prometheus
+        blocky:
+          url: https://raw.githubusercontent.com/0xERR0R/blocky/development/docs/blocky-grafana.json
+          datasource: Prometheus
+        flux-cluster:
+          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/cluster.json
+          datasource: Prometheus
+        flux-control-plane:
+          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/control-plane.json
+          datasource: Prometheus
+        node-exporter-full:
+          gnetId: 1860
+          revision: 23
+          datasource: Prometheus
+    sidecar:
+      datasources:
+        enabled: true
+        searchNamespace: ALL
+      dashboards:
+        enabled: true
+        searchNamespace: ALL
+    datasources:
+      datasources.yaml:
+        apiVersion: 1
+        # list of datasources that should be deleted from the database
+        deleteDatasources:
+          - name: Loki
+            orgId: 1
+        datasources:
+          - name: Prometheus
+            type: prometheus
+            access: proxy
+            url: http://prometheus-prometheus.monitoring.svc.cluster.local:9090/
+            isDefault: true
+    grafana.ini:
+      server:
+        root_url: "https://grafana.${CLUSTER_DOMAIN}"
+      paths:
+        data: /var/lib/grafana/data
+        logs: /var/log/grafana
+        plugins: /var/lib/grafana/plugins
+        provisioning: /etc/grafana/provisioning
+      analytics:
+        check_for_updates: false
+      log:
+        mode: console
+      grafana_net:
+        url: https://grafana.net
+      panels:
+        disable_sanitize_html: true
+      auth.basic:
+        disable_login_form: false
+  valuesFrom:
+    - kind: Secret
+      name: "grafana-secrets"
