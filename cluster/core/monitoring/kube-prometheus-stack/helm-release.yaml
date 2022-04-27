@@ -98,8 +98,6 @@ spec:
               resources:
                 requests:
                   storage: 1Gi
-    kube-state-metrics:
-      fullnameOverride: kube-state-metrics
     grafana:
       enabled: false
     prometheus-node-exporter:
@@ -128,6 +126,18 @@ spec:
       enabled: false
     kubeControllerManager:
       enabled: false
+    kubeApiServer:
+      enabled: true
+    nodeExporter:
+      enabled: true
+      serviceMonitor:
+        relabelings:
+          - action: replace
+            sourceLabels:
+              - __meta_kubernetes_pod_node_name
+            targetLabel: kubernetes_node
+    kube-state-metrics:
+      fullnameOverride: kube-state-metrics
     # Setting this option to 0 disabled CPU limits
     prometheusOperator:
       configReloaderCpu: 0
