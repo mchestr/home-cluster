@@ -54,7 +54,12 @@ spec:
       - grafana-clock-panel
       - vonage-status-panel
       - grafana-piechart-panel
-      - https://github.com/panodata/panodata-map-panel/releases/download/0.16.0/panodata-map-panel-0.16.0.zip;grafana-worldmap-panel-ng
+      - natel-discrete-panel
+      - grafana-worldmap-panel
+      - grafana-singlestat-panel
+      - grafana-polystat-panel
+      - mxswat-separator-panel
+      - farski-blendstat-panel
     serviceMonitor:
       enabled: true
     serviceAccount:
@@ -93,7 +98,6 @@ spec:
       datasources:
         enabled: true
         searchNamespace: ALL
-        # defaultDatasourceEnabled: false
       dashboards:
         enabled: true
         searchNamespace: ALL
@@ -108,7 +112,7 @@ spec:
           - name: Prometheus
             type: prometheus
             access: proxy
-            url: http://prometheus-prometheus:9090/
+            url: http://prometheus-prometheus.monitoring.svc.cluster.local:9090/
             isDefault: true
     grafana.ini:
       server:
