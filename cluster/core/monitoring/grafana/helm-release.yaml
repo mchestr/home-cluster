@@ -16,6 +16,10 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
+    image:
+      repository: grafana/grafana
+      tag: 8.5.0
+
     deploymentStrategy:
       type: Recreate
     podAnnotations:
