@@ -25,7 +25,7 @@ spec:
   values:
     image:
       repository: jacobalberty/unifi
-      tag: v7.0.25
+      tag: v7.1.61
     env:
       TZ: ${TZ}
 
