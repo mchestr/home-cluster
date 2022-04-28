@@ -1,0 +1,144 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: loki
+  namespace: monitoring
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: loki
+      version: 2.11.1
+      sourceRef:
+        kind: HelmRepository
+        name: grafana-charts
+        namespace: flux-system
+      interval: 5m
+  install:
+    createNamespace: true
+  values:
+    ingress:
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-production
+        hajimari.io/enable: "true"
+        hajimari.io/icon: math-log
+        kubernetes.io/ingress.class: traefik
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
+      hosts:
+        - host: &host "loki.${CLUSTER_DOMAIN}"
+          paths:
+            - /
+      tls:
+        - hosts:
+            - *host
+    serviceMonitor:
+      enabled: true
+    config:
+      limits_config:
+        enforce_metric_name: false
+        reject_old_samples: true
+        reject_old_samples_max_age: 168h
+        ingestion_rate_mb: 16
+        ingestion_burst_size_mb: 24
+      compactor:
+        retention_enabled: true
+      ruler:
+        storage:
+          type: local
+          local:
+            directory: /rules
+        rule_path: /tmp/scratch
+        alertmanager_url: http://prometheus-alertmanager.monitoring.svc.cluster.local:9093
+        ring:
+          kvstore:
+            store: inmemory
+        enable_api: true
+    persistence:
+      enabled: true
+      accessModes:
+        - ReadWriteOnce
+      size: 10Gi
+      storageClassName: longhorn
+    alerting_groups:
+      #
+      # zigbee2mqtt
+      #
+      - name: zigbee2mqtt
+        rules:
+          - alert: ZigbeeUnableToReachMQTT
+            expr: |
+              sum(count_over_time({app="zigbee2mqtt"} |~ "(?i)not connected to mqtt server"[2m])) > 0
+            for: 2m
+            labels:
+              severity: critical
+              category: logs
+            annotations:
+              summary: "Zigbee2mqtt is unable to reach MQTT"
+      #
+      # zwavejs2mqtt
+      #
+      - name: zwavejs2mqtt
+        rules:
+          - alert: ZwaveUnableToReachMQTT
+            expr: |
+              sum(count_over_time({app="zwavejs2mqtt"} |~ "(?i)error while connecting mqtt"[2m])) > 0
+            for: 2m
+            labels:
+              severity: critical
+              category: logs
+            annotations:
+              summary: "Zwavejs2mqtt is unable to reach MQTT"
+      #
+      # *arr
+      #
+      - name: arr
+        rules:
+          - alert: ArrDatabaseIsLocked
+            expr: |
+              sum by (app) (count_over_time({app=~".*arr"} |~ "(?i)database is locked"[2m])) > 0
+            for: 2m
+            labels:
+              severity: critical
+              category: logs
+            annotations:
+              summary: "{{ $labels.app }} is experiencing locked database issues"
+          - alert: ArrDatabaseIsMalformed
+            expr: |
+              sum by (app) (count_over_time({app=~".*arr"} |~ "(?i)database disk image is malformed"[2m])) > 0
+            for: 2m
+            labels:
+              severity: critical
+              category: logs
+            annotations:
+              summary: "{{ $labels.app }} is experiencing malformed database disk image issues"
+      #
+      # home-assistant
+      #
+      - name: home-assistant
+        rules:
+          - alert: HomeAssistantUnableToReachPostgresql
+            expr: |
+              sum by (app) (count_over_time({app="home-assistant"} |~ "(?i)error in database connectivity"[2m])) > 0
+            for: 2m
+            labels:
+              severity: critical
+              category: logs
+            annotations:
+              summary: "Home Assistant is unable to connect to postgresql"
+      #
+      # appdaemon
+      #
+      - name: appdaemon
+        rules:
+          - alert: AppDaemonUnableToReachHomeAssistant
+            expr: |
+              sum by (app) (count_over_time({app="appdaemon"} |~ "(?i)home assistant.*connecting to undefined"[2m])) > 0
+            for: 2m
+            labels:
+              severity: critical
+              category: logs
+            annotations:
+              summary: "AppDaemon is unable to connect to Home Assistant"
