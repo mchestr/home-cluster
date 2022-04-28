@@ -8,7 +8,6 @@ resources:
   - nzbget
   - overseerr
   - prowlarr
-  - qbittorrent
   - radarr
   - radarr-4k
   - readarr
