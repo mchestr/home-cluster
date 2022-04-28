@@ -1,0 +1,112 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: vector-aggregator
+  namespace: monitoring
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://helm.vector.dev
+      chart: vector
+      version: 0.10.2
+      sourceRef:
+        kind: HelmRepository
+        name: vector-charts
+        namespace: flux-system
+      interval: 5m
+  dependsOn:
+    - name: loki
+      namespace: monitoring
+  values:
+    image:
+      repository: timberio/vector
+      tag: 0.21.1-debian
+
+    role: "Stateless-Aggregator"
+
+    service:
+      enabled: true
+      type: LoadBalancer
+
+    podMonitor:
+      enabled: true
+      jobLabel: vector-aggregator
+      port: prometheus-sink
+
+    customConfig:
+      data_dir: /vector-data-dir
+
+      api:
+        enabled: false
+
+      # Sources
+      sources:
+        journal_logs:
+          type: vector
+          address: 0.0.0.0:6000
+          version: "2"
+        kubernetes_logs:
+          address: 0.0.0.0:6010
+          type: vector
+          version: "2"
+
+      # Sinks
+      sinks:
+        loki_journal:
+          type: loki
+          inputs:
+            - journal_logs
+          endpoint: http://loki:3100
+          encoding:
+            codec: json
+          batch:
+            max_bytes: 2049000
+          out_of_order_action: accept
+          remove_label_fields: true
+          remove_timestamp: true
+          labels:
+            hostname: >-
+              {{`{{ host }}`}}
+        loki_kubernetes:
+          type: loki
+          inputs:
+            - kubernetes_logs
+          endpoint: http://loki.monitoring.svc.cluster.local:3100
+          encoding:
+            codec: json
+          batch:
+            max_bytes: 2049000
+          out_of_order_action: rewrite_timestamp
+          remove_label_fields: true
+          remove_timestamp: true
+          labels:
+            app: >-
+              {{`{{ kubernetes.pod_labels.app\.kubernetes\.io/name }}`}}
+            container: >-
+              {{`{{ kubernetes.container_name }}`}}
+            filename: >-
+              {{`{{ kubernetes.file }}`}}
+            instance: >-
+              {{`{{ kubernetes.pod_labels.app\.kubernetes\.io/instance }}`}}
+            namespace: >-
+              {{`{{ kubernetes.pod_namespace }}`}}
+            node: >-
+              {{`{{ kubernetes.pod_node_name }}`}}
+            pod: >-
+              {{`{{ kubernetes.pod_name }}`}}
+  postRenderers:
+    - kustomize:
+        patchesJson6902:
+          - target:
+              kind: Service
+              name: vector-aggregator
+            patch:
+              - op: add
+                path: /spec/externalIPs
+                value:
+                  - "${METALLB_VECTOR_AGGREGATOR_ADDR}"
+              - op: replace
+                path: /spec/externalTrafficPolicy
+                value: Local
