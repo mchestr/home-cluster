@@ -85,13 +85,11 @@ spec:
           remove_label_fields: true
           labels:
             app: >-
-              {{`{{ pod_labels.app\.kubernetes\.io/name }}`}}
-            container: >-
               {{`{{ kubernetes.container_name }}`}}
             filename: >-
               {{`{{ file }}`}}
             instance: >-
-              {{`{{ pod_labels.app\.kubernetes\.io/instance }}`}}
+              {{`{{ kubernetes.pod_labels.app\.kubernetes\.io/instance }}`}}
             namespace: >-
               {{`{{ kubernetes.pod_namespace }}`}}
             node: >-
