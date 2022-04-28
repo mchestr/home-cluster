@@ -85,9 +85,11 @@ spec:
           remove_label_fields: true
           labels:
             app: >-
+              {{`{{ kubernetes.pod_labels.app\.kubernetes\.io/name }}`}}
+            container: >-
               {{`{{ kubernetes.container_name }}`}}
             filename: >-
-              {{`{{ file }}`}}
+              {{`{{ kubernetes.file }}`}}
             instance: >-
               {{`{{ kubernetes.pod_labels.app\.kubernetes\.io/instance }}`}}
             namespace: >-
@@ -95,7 +97,7 @@ spec:
             node: >-
               {{`{{ kubernetes.pod_node_name }}`}}
             pod: >-
-              {{`{{ pod_name }}`}}
+              {{`{{ kubernetes.pod_name }}`}}
         prometheus_sink:
           type: prometheus_exporter
           inputs:
