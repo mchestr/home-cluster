@@ -93,7 +93,7 @@ spec:
           batch:
             max_bytes: 2049000
           out_of_order_action: rewrite_timestamp
-          remove_label_fields: true
+          # remove_label_fields: true
           remove_timestamp: true
           labels:
             app: >-
