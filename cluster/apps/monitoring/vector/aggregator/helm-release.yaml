@@ -83,6 +83,8 @@ spec:
           out_of_order_action: rewrite_timestamp
           remove_timestamp: true
           labels:
+            pod_name: >-
+              {{`{{ pod_name }}`}}
             namespace: >-
               {{`{{ kubernetes.pod_namespace }}`}}
             node: >-
