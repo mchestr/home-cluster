@@ -5,6 +5,7 @@ resources:
   - home
   - kube-system
   - media
+  - monitoring
   - networking
   - paperless
   - system-upgrade
