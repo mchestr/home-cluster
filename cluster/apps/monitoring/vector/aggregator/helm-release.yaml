@@ -81,23 +81,23 @@ spec:
           batch:
             max_bytes: 2049000
           out_of_order_action: rewrite_timestamp
-          remove_label_fields: true
+          # remove_label_fields: true
           remove_timestamp: true
           labels:
-            app: >-
-              {{`{{ kubernetes.pod_labels.app\.kubernetes\.io/name }}`}}
-            container: >-
-              {{`{{ kubernetes.container_name }}`}}
-            filename: >-
-              {{`{{ kubernetes.file }}`}}
-            instance: >-
-              {{`{{ kubernetes.pod_labels.app\.kubernetes\.io/instance }}`}}
-            namespace: >-
-              {{`{{ kubernetes.pod_namespace }}`}}
-            node: >-
-              {{`{{ kubernetes.pod_node_name }}`}}
-            pod: >-
-              {{`{{ kubernetes.pod_name }}`}}
+          #   app: >-
+          #     {{`{{ kubernetes.pod_labels.app\.kubernetes\.io/name }}`}}
+          #   container: >-
+          #     {{`{{ kubernetes.container_name }}`}}
+            # filename: >-
+            #   {{`{{ kubernetes.file }}`}}
+          #   instance: >-
+          #     {{`{{ kubernetes.pod_labels.app\.kubernetes\.io/instance }}`}}
+            # namespace: >-
+            #   {{`{{ kubernetes.pod_namespace }}`}}
+            # node: >-
+            #   {{`{{ kubernetes.pod_node_name }}`}}
+            # pod: >-
+            #   {{`{{ kubernetes.pod_name }}`}}
         prometheus_sink:
           type: prometheus_exporter
           inputs:
