@@ -83,7 +83,7 @@ spec:
           out_of_order_action: rewrite_timestamp
           # remove_label_fields: true
           remove_timestamp: true
-          labels:
+          # labels:
           #   app: >-
           #     {{`{{ kubernetes.pod_labels.app\.kubernetes\.io/name }}`}}
           #   container: >-
