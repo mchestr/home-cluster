@@ -85,7 +85,7 @@ spec:
           remove_label_fields: true
           labels:
             app: >-
-              {{`{{ kubernetes.pod_labels.app\.kubernetes\.io/name }}`}}
+              {{`{{ kubernetes.pod_labels."app.kubernetes.io/name" }}`}}
             container: >-
               {{`{{ kubernetes.container_name }}`}}
             filename: >-
