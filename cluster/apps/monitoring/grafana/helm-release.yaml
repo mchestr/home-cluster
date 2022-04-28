@@ -121,6 +121,10 @@ spec:
             access: proxy
             url: http://prometheus-prometheus.monitoring.svc.cluster.local:9090/
             isDefault: true
+          - name: Loki
+            type: loki
+            access: proxy
+            url: http://loki.monitoring.svc.cluster.local:3100
     grafana.ini:
       server:
         root_url: "https://grafana.${CLUSTER_DOMAIN}"
