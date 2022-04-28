@@ -58,7 +58,7 @@ spec:
           type: loki
           inputs:
             - journal_logs
-          endpoint: http://loki:3100
+          endpoint: http://loki.monitoring.svc.cluster.local:3100
           encoding:
             codec: json
           batch:
