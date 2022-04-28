@@ -116,7 +116,7 @@ spec:
             - vector_metrics
           address: 0.0.0.0:9090
 
-  ostRenderers:
+  postRenderers:
     - kustomize:
         patchesJson6902:
           - target:
