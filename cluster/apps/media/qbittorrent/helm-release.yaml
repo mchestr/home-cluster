@@ -45,6 +45,18 @@ spec:
           - secretName: "{{ .Release.Name }}-tls"
             hosts:
               - "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+    service:
+      bittorrent:
+        enabled: true
+        type: LoadBalancer
+        loadBalancerIP: ${METALLB_QBITTORRENT_ADDR}
+        externalTrafficPolicy: Local
+        ports:
+          bittorrent:
+            enabled: true
+            port: 50413
+            protocol: TCP
+            targetPort: 50413
     persistence:
       config:
         enabled: true
