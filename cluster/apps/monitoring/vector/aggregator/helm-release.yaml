@@ -82,14 +82,21 @@ spec:
             max_bytes: 2049000
           out_of_order_action: rewrite_timestamp
           remove_timestamp: true
+          remove_label_fields: true
           labels:
-            pod_nameCustom: >-
-              {{`{{ pod_name }}`}}
-            namespaceCustom: >-
+            app: >-
+              {{`{{ kubernetes.pod_labels.app\.kubernetes\.io/name }}`}}
+            container: >-
+              {{`{{ kubernetes.container_name }}`}}
+            filename: >-
+              {{`{{ kubernetes.file }}`}}
+            instance: >-
+              {{`{{ kubernetes.pod_labels.app\.kubernetes\.io/instance }}`}}
+            namespace: >-
               {{`{{ kubernetes.pod_namespace }}`}}
-            nodeCustom: >-
+            node: >-
               {{`{{ kubernetes.pod_node_name }}`}}
-            podCustom: >-
+            pod: >-
               {{`{{ kubernetes.pod_name }}`}}
         prometheus_sink:
           type: prometheus_exporter
