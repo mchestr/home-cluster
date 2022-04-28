@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://helm.vector.dev
       chart: vector
-      version: 0.10.2
+      version: 0.9.0
       sourceRef:
         kind: HelmRepository
         name: vector-charts
@@ -40,18 +40,6 @@ spec:
 
       api:
         enabled: false
-
-      #
-      # Transformations
-      #
-      transforms:
-        kubernetes_logs_remap:
-          type: remap
-          inputs:
-            - kubernetes_logs
-          source: |
-            # Standardize 'app' index
-            .custom_app_name = .pod_labels."app.kubernetes.io/name" || .pod_labels.app || .pod_labels."k8s-app" || "unknown"
 
       # Sources
       sources:
@@ -86,7 +74,7 @@ spec:
         loki_kubernetes:
           type: loki
           inputs:
-            - kubernetes_logs_remap
+            - kubernetes_logs
           endpoint: http://loki.monitoring.svc.cluster.local:3100
           encoding:
             codec: json
