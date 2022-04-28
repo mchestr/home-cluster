@@ -41,6 +41,18 @@ spec:
       api:
         enabled: false
 
+      #
+      # Transformations
+      #
+      transforms:
+        kubernetes_logs_remap:
+          type: remap
+          inputs:
+            - kubernetes_logs
+          source: |
+            # Standardize 'app' index
+            .custom_app_name = .pod_labels."app.kubernetes.io/name" || .pod_labels.app || .pod_labels."k8s-app" || "unknown"
+
       # Sources
       sources:
         journal_logs:
@@ -51,6 +63,8 @@ spec:
           address: 0.0.0.0:6010
           type: vector
           version: "2"
+        vector_metrics:
+          type: internal_metrics
 
       # Sinks
       sinks:
