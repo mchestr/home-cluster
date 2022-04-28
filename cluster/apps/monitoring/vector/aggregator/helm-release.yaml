@@ -83,14 +83,14 @@ spec:
           out_of_order_action: rewrite_timestamp
           remove_timestamp: true
           labels:
-            pod_name: >-
+            pod_nameCustom: >-
               {{`{{ pod_name }}`}}
-            namespace: >-
-              {{`{{ kubernetes.pod_namespace }}`}}
-            node: >-
-              {{`{{ kubernetes.pod_node_name }}`}}
-            pod: >-
-              {{`{{ kubernetes.pod_name }}`}}
+            namespaceCustom: >-
+              {{ kubernetes.pod_namespace }}`}}
+            nodeCustom: >-
+              {{ kubernetes.pod_node_name }}
+            podCustom: >-
+              {{ kubernetes.pod_name }}
         prometheus_sink:
           type: prometheus_exporter
           inputs:
