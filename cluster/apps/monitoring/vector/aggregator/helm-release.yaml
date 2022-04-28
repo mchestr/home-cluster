@@ -86,7 +86,7 @@ spec:
             pod_nameCustom: >-
               {{`{{ pod_name }}`}}
             namespaceCustom: >-
-              {{ kubernetes.pod_namespace }}`}}
+              {{ kubernetes.pod_namespace }}
             nodeCustom: >-
               {{ kubernetes.pod_node_name }}
             podCustom: >-
