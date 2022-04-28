@@ -86,7 +86,7 @@ spec:
         loki_kubernetes:
           type: loki
           inputs:
-            - kubernetes_logs
+            - kubernetes_logs_remap
           endpoint: http://loki.monitoring.svc.cluster.local:3100
           encoding:
             codec: json
@@ -110,7 +110,13 @@ spec:
               {{`{{ kubernetes.pod_node_name }}`}}
             pod: >-
               {{`{{ kubernetes.pod_name }}`}}
-  postRenderers:
+        prometheus_sink:
+          type: prometheus_exporter
+          inputs:
+            - vector_metrics
+          address: 0.0.0.0:9090
+
+  ostRenderers:
     - kustomize:
         patchesJson6902:
           - target:
