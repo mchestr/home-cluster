@@ -1,4 +1,9 @@
 {
+  "extends": [
+    "github>mchestr/cluster-k3s//.github/renovate/autoMerge",
+    "github>mchestr/cluster-k3s//.github/renovate/labels",
+    "github>mchestr/cluster-k3s//.github/renovate/semanticCommits"
+  ],
   "enabled": true,
   "semanticCommits": "enabled",
   "dependencyDashboard": true,
@@ -6,7 +11,7 @@
   "suppressNotifications": ["prIgnoreNotification"],
   "rebaseWhen": "conflicted",
   "schedule": [
-    "every weekend"
+    "after 8am and before 8pm"
   ],
   // set up ignored deps
   "ignoreDeps": [
