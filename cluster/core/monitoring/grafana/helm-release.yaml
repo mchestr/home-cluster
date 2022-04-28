@@ -97,6 +97,10 @@ spec:
           gnetId: 1860
           revision: 23
           datasource: Prometheus
+        longhorn:
+          datasource: Prometheus
+          gnetId: 13032
+          revision: 6
     sidecar:
       datasources:
         enabled: true
