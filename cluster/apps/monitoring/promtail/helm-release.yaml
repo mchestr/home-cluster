@@ -51,6 +51,6 @@ spec:
         containerPort: 1514
         service:
           type: LoadBalancer
-          loadBalancerIP: ${METALLB_SYSLOG_ADDR}
+          loadBalancerIP: ${SVC_SYSLOG_ADDR}
     serviceMonitor:
       enabled: true
