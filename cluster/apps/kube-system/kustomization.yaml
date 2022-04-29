@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: kube-system
 resources:
   - descheduler
+  - intel-gpu-plugin
   - metrics-server
   - node-feature-discovery
   - reflector
