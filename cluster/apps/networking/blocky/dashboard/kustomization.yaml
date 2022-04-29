@@ -1,0 +1,15 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: flux-system
+configMapGenerator:
+  - name: blocky-dashboard
+    files:
+      - blocky-dashboard=https://raw.githubusercontent.com/0xERR0R/blocky/master/docs/blocky-grafana.json
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+    grafana_folder: Flux
+  labels:
+    grafana_dashboard: "true"
