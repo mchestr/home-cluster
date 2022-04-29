@@ -26,11 +26,6 @@ spec:
       supplementalGroups:
         - 44
         - 5600
-    service:
-      main:
-        type: LoadBalancer
-        loadBalancerIP: "${METALLB_JELLYFIN_ADDR}"
-        externalTrafficPolicy: Local
     ingress:
       main:
         enabled: true
