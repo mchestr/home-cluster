@@ -7,6 +7,7 @@ spec:
   interval: 5m
   chart:
     spec:
+      # renovate: registryUrl=https://charts.longhorn.io
       chart: longhorn
       version: 1.2.4
       sourceRef:
@@ -23,11 +24,15 @@ spec:
       retries: 3
   values:
     persistence:
-      defaultClass: false
+      defaultClass: true
       defaultClassReplicaCount: 2
+    defaultSettings:
+      backupTarget: nfs://${NAS_ADDR}:/volume1/backups
+      defaultReplicaCount: 2
+      defaultLonghornStaticStorageClass: longhorn
     ingress:
       enabled: true
-      host: "longhorn.${CLUSTER_DOMAIN}"
+      host: longhorn.${CLUSTER_DOMAIN}
       tls: true
       tlsSecret: longhorn-tls
       annotations:
