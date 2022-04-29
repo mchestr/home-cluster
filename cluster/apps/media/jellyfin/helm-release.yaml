@@ -21,11 +21,9 @@ spec:
       tag: 10.7.7
     env:
       TZ: "${TZ}"
-      JELLYFIN_CACHE_DIR: "/config/cache"
+      JELLYFIN_CACHE_DIR: /config/cache
     podSecurityContext:
-      supplementalGroups:
-        - 44
-        - 5600
+      fsGroup: ${FS_GROUP}
     ingress:
       main:
         enabled: true
@@ -36,7 +34,7 @@ spec:
           kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
         hosts:
-          - host: &host "jellyfin.${CLUSTER_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
