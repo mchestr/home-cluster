@@ -33,8 +33,6 @@ spec:
             - *host
     serviceMonitor:
       enabled: true
-      additionalLabels:
-        cluster: homelab
     config:
       limits_config:
         enforce_metric_name: false
