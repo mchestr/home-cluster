@@ -6,4 +6,4 @@ resources:
   - kube-prometheus-stack
   - grafana
   - loki
-  - promtail
+  - vector
