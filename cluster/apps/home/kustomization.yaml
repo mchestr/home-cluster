@@ -8,7 +8,6 @@ resources:
   - esphome
   - hajimari
   - home-assistant
-  - mosquitto
   - unifi
   - zigbee2mqtt
   - zwavejs2mqtt
