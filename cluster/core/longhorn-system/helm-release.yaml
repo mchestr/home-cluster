@@ -30,6 +30,13 @@ spec:
       backupTarget: nfs://${NAS_ADDR}:/volume1/backups
       defaultReplicaCount: 2
       defaultLonghornStaticStorageClass: longhorn
+      backupstorePollInterval: 300
+      createDefaultDiskLabeledNodes: true
+      defaultDataLocality: best-effort
+      nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
+      concurrentAutomaticEngineUpgradePerNodeLimit: 1
+      replicaSoftAntiAffinity: false
+      storageMinimalAvailablePercentage: 10
     ingress:
       enabled: true
       host: longhorn.${CLUSTER_DOMAIN}
