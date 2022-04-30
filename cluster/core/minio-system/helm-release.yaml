@@ -49,3 +49,30 @@ spec:
           - hosts:
               - *host
             secretName: minio-tls
+    tenants:
+      - name: thanos-storage
+        image:
+          repository: quay.io/minio/minio
+          tag: RELEASE.2022-01-08T03-11-54Z
+        namespace: monitoring
+        pools:
+          - servers: 1
+            volumeClaimTemplate:
+              metadata:
+                name: data
+              spec:
+                storageClassName: longhorn
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 10Gi
+        buckets:
+          - loki
+          - thanos
+        prometheusOperator: true
+        secrets:
+          enabled: true
+          name: minio-thanos
+          accessKey: ${SECRET_MINIO_THANOS_ACCESSKEY}
+          secretKey: ${SECRET_MINIO_THANOS_SECRETKEY}
