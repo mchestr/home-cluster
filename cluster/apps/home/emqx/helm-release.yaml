@@ -54,9 +54,7 @@ spec:
       annotations:
         prometheus.io/probe: "true"
         prometheus.io/protocol: tcp
-      type: LoadBalancer
       loadBalancerIP: ${METALLB_EMQX_ADDR}
-      externalTrafficPolicy: Local
 
     ingress:
       dashboard:
@@ -75,24 +73,11 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: "emqx-tls"
+            secretName: emqx-tls
 
     resources:
+      limits:
+        memory: 256Mi
       requests:
         cpu: 100m
-        memory: 300Mi
-      limits:
-        memory: 512Mi
-  postRenderers:
-    - kustomize:
-        patchesJson6902:
-          - target:
-              kind: Service
-              name: emqx
-            patch:
-              - op: remove
-                path: /spec/loadBalancerIP
-              - op: add
-                path: /spec/externalIPs
-                value:
-                  - "${METALLB_EMQX_ADDR}"
+        memory: 150Mi
