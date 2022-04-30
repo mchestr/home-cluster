@@ -18,6 +18,8 @@ spec:
   values:
     replicaCount: 3
     recreatePods: true
+    image:
+      repository: emqx/emqx
 
     emqxConfig:
       EMQX_ALLOW_ANONYMOUS: "false"
