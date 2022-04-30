@@ -26,10 +26,14 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
-    image:
-      repository: quay.io/minio/minio
-      tag: RELEASE.2022-04-26T01-20-24Z
+    operator:
+      image:
+        repository: minio/operator
+        tag: v4.4.16
     console:
+      image:
+        repository: minio/console
+        tag: v0.15.13
       ingress:
         enabled: true
         annotations:
