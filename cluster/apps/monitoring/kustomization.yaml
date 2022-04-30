@@ -4,5 +4,6 @@ kind: Kustomization
 namespace: monitoring
 resources:
   - kube-prometheus-stack
+  - grafana
   - loki
   - vector
