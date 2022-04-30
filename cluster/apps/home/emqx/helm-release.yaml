@@ -81,3 +81,6 @@ spec:
       requests:
         cpu: 100m
         memory: 150Mi
+
+    metrics:
+      enabled: true
