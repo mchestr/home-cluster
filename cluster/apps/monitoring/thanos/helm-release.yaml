@@ -46,12 +46,12 @@ spec:
           kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
-      hosts:
-        - &host "thanos.${CLUSTER_DOMAIN}"
-      tls:
-        - hosts:
-            - *host
-          secretName: thanos-tls
+        hosts:
+          - &host "thanos.${CLUSTER_DOMAIN}"
+        tls:
+          - hosts:
+              - *host
+            secretName: thanos-tls
 
     objstoreConfig:
       type: S3
