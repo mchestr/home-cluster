@@ -1,0 +1,89 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: thanos
+spec:
+  dependsOn:
+    - name: kube-prometheus-stack
+    - name: minio
+      namespace: minio-system
+  interval: 5m
+  install:
+    timeout: 15m
+    remediation:
+      retries: 5
+  upgrade:
+    timeout: 15m
+    remediation:
+      retries: 5
+      remediateLastFailure: true
+    cleanupOnFail: true
+  chart:
+    spec:
+      # renovate: registryUrl=https://charts.bitnami.com/bitnami
+      chart: thanos
+      version: 10.3.6
+      sourceRef:
+        kind: HelmRepository
+        name: bitnami-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    query:
+      enabled: true
+      replicaLabels:
+        - replica
+      dnsDiscovery:
+        sidecarsService: kube-prometheus-stack-thanos-discovery
+        sidecarsNamespace: monitoring
+      ingress:
+        enabled: true
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          hajimari.io/enable: "true"
+          hajimari.io/icon: database-eye
+          kubernetes.io/ingress.class: traefik
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
+      hosts:
+        - &host "thanos.${CLUSTER_DOMAIN}"
+      tls:
+        - hosts:
+            - *host
+          secretName: thanos-tls
+
+    objstoreConfig:
+      type: S3
+      config:
+        bucket: thanos
+        endpoint: minio.monitoring.svc.cluster.local
+        access_key: ${SECRET_MINIO_THANOS_ACCESSKEY}
+        secret_key: ${SECRET_MINIO_THANOS_SECRETKEY}
+        insecure: true
+
+    queryFrontend:
+      enabled: false
+
+    bucketweb:
+      enabled: true
+
+    compactor:
+      enabled: true
+      persistence:
+        enabled: false
+
+    storegateway:
+      enabled: true
+      persistence:
+        enabled: true
+        storageClassName: longhorn
+        size: 5Gi
+
+    ruler:
+      enabled: false
+
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
