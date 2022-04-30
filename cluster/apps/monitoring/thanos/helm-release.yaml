@@ -56,7 +56,7 @@ spec:
       type: S3
       config:
         bucket: thanos
-        endpoint: minio.minio-system.svc.cluster.local
+        endpoint: operator.minio-system.svc.cluster.local
         access_key: ${SECRET_MINIO_THANOS_ACCESSKEY}
         secret_key: ${SECRET_MINIO_THANOS_SECRETKEY}
         insecure: true
