@@ -31,15 +31,16 @@ spec:
       tag: 1.7.0
     env:
       COMPOSE_PROJECT_NAME: paperless
-      PAPERLESS_ALLOWED_HOSTS: paperless.${CLUSTER_DOMAIN}
+      PAPERLESS_ALLOWED_HOSTS: *host
       PAPERLESS_CONSUMER_POLLING: 5
-      PAPERLESS_CORS_ALLOWED_HOSTS: https://paperless.${CLUSTER_DOMAIN}
+      PAPERLESS_CORS_ALLOWED_HOSTS: *host
       PAPERLESS_OCR_LANGUAGE: eng
       PAPERLESS_PORT: 8000
       PAPERLESS_TIKA_ENABLED: 1
       PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://paperless-gotenberg:3000
       PAPERLESS_TIKA_ENDPOINT: http://paperless-tika:9998
       PAPERLESS_TIME_ZONE: ${TZ}
+      PAPERLESS_URL: *host
     ingress:
       main:
         enabled: true
