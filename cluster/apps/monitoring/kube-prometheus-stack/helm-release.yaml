@@ -128,6 +128,10 @@ spec:
       enabled: false
     kubeApiServer:
       enabled: true
+    kubeStateMetrics:
+      enabled: true
+    coreDns:
+      enabled: true
     nodeExporter:
       enabled: true
       serviceMonitor:
