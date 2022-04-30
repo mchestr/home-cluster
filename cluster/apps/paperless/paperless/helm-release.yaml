@@ -51,14 +51,14 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
         hosts:
-          - host: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - secretName: "{{ .Release.Name }}-tls"
             hosts:
-              - "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+              - *host
 
     persistence:
       data:

@@ -85,10 +85,10 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
         hosts:
-          - "alert-manager.${CLUSTER_DOMAIN}"
+          - &am-host "alert-manager.${CLUSTER_DOMAIN}"
         tls:
           - hosts:
-              - "alert-manager.${CLUSTER_DOMAIN}"
+              - *am-host
             secretName: alert-manager-tls
       alertmanagerSpec:
         storage:
@@ -154,10 +154,10 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
         hosts:
-          - "prometheus.${CLUSTER_DOMAIN}"
+          - &host "prometheus.${CLUSTER_DOMAIN}"
         tls:
           - hosts:
-              - "prometheus.${CLUSTER_DOMAIN}"
+              - *host
             secretName: prometheus-tls
       prometheusSpec:
         replicas: 1
