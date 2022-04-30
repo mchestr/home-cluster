@@ -70,11 +70,11 @@ spec:
           traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
         path: /
         hosts:
-          - &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+          - &host "emqx.${CLUSTER_DOMAIN}"
         tls:
           - hosts:
               - *host
-            secretName: "{{ .Release.Name }}-tls"
+            secretName: "emqx-tls"
 
     resources:
       requests:
