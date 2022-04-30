@@ -30,6 +30,9 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
+    image:
+      repository: bitnami/thanos
+      tag: 0.25.2-scratch-r5
     query:
       enabled: true
       replicaLabels:
