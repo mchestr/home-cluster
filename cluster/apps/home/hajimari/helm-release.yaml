@@ -35,9 +35,6 @@ spec:
         - name: LochNAS
           icon: nas
           url: https://${NAS_ADDR}:5001
-        - name: Plex
-          icon: plex
-          url: https://app.plex.tv
       groups:
         - name: Cluster
           links:
