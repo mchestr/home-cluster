@@ -53,7 +53,7 @@ spec:
       - name: thanos-storage
         image:
           repository: quay.io/minio/minio
-          tag: RELEASE.2022-01-08T03-11-54Z
+          tag: RELEASE.2022-04-29T01-27-09Z
         namespace: monitoring
         pools:
           - servers: 1
