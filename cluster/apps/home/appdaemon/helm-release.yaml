@@ -76,6 +76,7 @@ spec:
           enabled: true
           annotations:
             cert-manager.io/cluster-issuer: letsencrypt-production
+            hajimari.io/appName: appdaemon code
             hajimari.io/enable: "true"
             hajimari.io/icon: code-braces
             kubernetes.io/ingress.class: traefik
