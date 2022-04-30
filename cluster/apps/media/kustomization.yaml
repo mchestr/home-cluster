@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: media
 resources:
   - bazarr
-  - jellyfin
   - lidarr
   - nzbget
   - overseerr
