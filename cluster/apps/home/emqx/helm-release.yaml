@@ -63,6 +63,7 @@ spec:
         enabled: true
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
+          hajimari.io/appName: emqx
           hajimari.io/enable: "true"
           hajimari.io/icon: message-fast
           kubernetes.io/ingress.class: traefik
