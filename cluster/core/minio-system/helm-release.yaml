@@ -1,0 +1,69 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: minio
+spec:
+  interval: 5m
+  install:
+    timeout: 15m
+    remediation:
+      retries: 5
+  upgrade:
+    timeout: 15m
+    remediation:
+      retries: 5
+      remediateLastFailure: true
+    cleanupOnFail: true
+  chart:
+    spec:
+      # renovate: registryUrl=https://operator.min.io/
+      chart: minio-operator
+      version: 4.3.7
+      sourceRef:
+        kind: HelmRepository
+        name: minio-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    console:
+      ingress:
+        enabled: true
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          hajimari.io/appName: appdaemon code
+          hajimari.io/enable: "true"
+          hajimari.io/icon: server
+          kubernetes.io/ingress.class: traefik
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
+        host: &host minio.${CLUSTER_DOMAIN}
+        path: /
+        tls:
+          - hosts:
+              - *host
+            secretName: minio-tls
+    tenants:
+      - name: thanos-storage
+        namespace: monitoring
+        pools:
+          - servers: 1
+            volumeClaimTemplate:
+              metadata:
+                name: data
+              spec:
+                storageClassName: longhorn
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 10Gi
+        buckets:
+          - loki
+          - thanos
+        prometheusOperator: true
+        secrets:
+          enabled: true
+          name: minio-thanos
+          accessKey: ${SECRET_MINIO_THANOS_ACCESSKEY}
+          secretKey: ${SECRET_MINIO_THANOS_SECRETKEY}
