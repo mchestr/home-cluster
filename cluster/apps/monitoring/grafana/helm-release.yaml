@@ -47,10 +47,10 @@ spec:
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
       hosts:
-        - "grafana.${CLUSTER_DOMAIN}"
+        - &host "grafana.${CLUSTER_DOMAIN}"
       tls:
         - hosts:
-            - "grafana.${CLUSTER_DOMAIN}"
+            - *host
           secretName: grafana-tls
     plugins:
       - pr0ps-trackmap-panel

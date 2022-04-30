@@ -14,10 +14,10 @@ spec:
   ingressClassName: traefik
   tls:
     - hosts:
-        - "traefik.${CLUSTER_DOMAIN}"
+        - &host "traefik.${CLUSTER_DOMAIN}"
       secretName: traefik-dashboard-tls
   rules:
-    - host: "traefik.${CLUSTER_DOMAIN}"
+    - host: *host
       http:
         paths:
           - path: /

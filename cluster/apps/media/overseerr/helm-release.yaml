@@ -38,14 +38,14 @@ spec:
           kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
         hosts:
-          - host: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - secretName: "{{ .Release.Name }}-tls"
             hosts:
-              - "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+              - *host
     persistence:
       config:
         enabled: true

@@ -61,13 +61,13 @@ spec:
           cert-manager.io/cluster-issuer: "letsencrypt-production"
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         hosts:
-          - host: "home.${CLUSTER_DOMAIN}"
+          - host: &host "home.${CLUSTER_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - hosts:
-              - "home.${CLUSTER_DOMAIN}"
+              - *host
             secretName: "hajimari-tls"
     persistence:
       data:
