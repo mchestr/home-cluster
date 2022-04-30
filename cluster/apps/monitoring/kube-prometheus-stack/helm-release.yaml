@@ -163,6 +163,10 @@ spec:
           - hosts:
               - *host
             secretName: prometheus-tls
+      thanosService:
+        enabled: true
+      thanosServiceMonitor:
+        enabled: true
       prometheusSpec:
         replicas: 1
         replicaExternalLabelName: "replica"
@@ -185,3 +189,9 @@ spec:
               resources:
                 requests:
                   storage: 30Gi
+        thanos:
+          image: raspbernetes/thanos:v0.23.1
+          version: v0.22.0
+          objectStorageConfig:
+            name: thanos-objstore-secret
+            key: objstore.yml
