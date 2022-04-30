@@ -190,8 +190,6 @@ spec:
                 requests:
                   storage: 30Gi
         thanos:
-          image: raspbernetes/thanos:v0.23.1
-          version: v0.22.0
           objectStorageConfig:
             name: thanos-objstore-secret
             key: objstore.yml
