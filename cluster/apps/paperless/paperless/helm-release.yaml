@@ -29,16 +29,6 @@ spec:
     image:
       repository: ghcr.io/paperless-ngx/paperless-ngx
       tag: 1.7.0
-    env:
-      COMPOSE_PROJECT_NAME: paperless
-      PAPERLESS_CONSUMER_POLLING: 5
-      PAPERLESS_OCR_LANGUAGE: eng
-      PAPERLESS_PORT: 8000
-      PAPERLESS_TIKA_ENABLED: 1
-      PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://{{ .Release.Name }}-gotenberg:3000
-      PAPERLESS_TIKA_ENDPOINT: http://{{ .Release.Name }}-tika:9998
-      PAPERLESS_TIME_ZONE: ${TZ}
-      PAPERLESS_URL: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
     ingress:
       main:
         enabled: true
@@ -50,7 +40,7 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
         hosts:
-          - host: *host
+          - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
@@ -58,6 +48,15 @@ spec:
           - secretName: "{{ .Release.Name }}-tls"
             hosts:
               - *host
+    env:
+      PAPERLESS_CONSUMER_POLLING: 5
+      PAPERLESS_OCR_LANGUAGE: eng
+      PAPERLESS_PORT: 8000
+      PAPERLESS_TIKA_ENABLED: 1
+      PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://{{ .Release.Name }}-gotenberg:3000
+      PAPERLESS_TIKA_ENDPOINT: http://{{ .Release.Name }}-tika:9998
+      PAPERLESS_TIME_ZONE: ${TZ}
+      PAPERLESS_URL: *host
 
     persistence:
       data:
