@@ -33,7 +33,7 @@ spec:
     console:
       image:
         repository: minio/console
-        tag: v0.15.13
+        tag: v0.16.1
       ingress:
         enabled: true
         annotations:
