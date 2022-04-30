@@ -56,7 +56,7 @@ spec:
       PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://{{ .Release.Name }}-gotenberg:3000
       PAPERLESS_TIKA_ENDPOINT: http://{{ .Release.Name }}-tika:9998
       PAPERLESS_TIME_ZONE: ${TZ}
-      PAPERLESS_URL: *host
+      PAPERLESS_URL: https://{{ .Release.Name }}.${CLUSTER_DOMAIN}
 
     persistence:
       data:
