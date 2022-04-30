@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: home
 resources:
   - appdaemon
+  - emqx
   - esphome
   - hajimari
   - home-assistant
