@@ -34,6 +34,18 @@ spec:
     serviceMonitor:
       enabled: true
     config:
+      storage_config:
+        aws:
+          endpoint: minio.monitoring.svc.cluster.local
+          bucketnames: loki
+          access_key_id: ${SECRET_MINIO_THANOS_ACCESSKEY}
+          secret_access_key: ${SECRET_MINIO_THANOS_SECRETKEY}
+          s3forcepathstyle: true
+          insecure: true
+        boltdb_shipper:
+          active_index_directory: /data/index
+          cache_location: /data/boltdb-cache
+          shared_store: s3
       distributor:
         ring:
           kvstore:
