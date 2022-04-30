@@ -8,6 +8,7 @@ resources:
   - lidarr
   - nzbget
   - overseerr
+  - plex
   - prowlarr
   - qbittorrent
   - radarr
