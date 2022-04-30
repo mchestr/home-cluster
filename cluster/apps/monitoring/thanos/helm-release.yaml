@@ -52,7 +52,7 @@ spec:
     objstoreConfig:
       type: S3
       config:
-        bucket: thanos-storage
+        bucket: thanos
         endpoint: minio.monitoring.svc.cluster.local
         access_key: ${SECRET_MINIO_THANOS_ACCESSKEY}
         secret_key: ${SECRET_MINIO_THANOS_SECRETKEY}
