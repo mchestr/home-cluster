@@ -77,3 +77,39 @@ spec:
       limits:
         gpu.intel.com/i915: 1
         memory: 10000Mi
+
+    addons:
+      codeserver:
+        enabled: true
+        image:
+          repository: codercom/code-server
+          tag: 4.3.0
+        workingDir: /config
+        args:
+          - --auth
+          - "none"
+          - --user-data-dir
+          - /config/.vscode
+          - --extensions-dir
+          - /config/.vscode
+        ingress:
+          enabled: true
+          annotations:
+            cert-manager.io/cluster-issuer: letsencrypt-production
+            hajimari.io/enable: "true"
+            hajimari.io/icon: code-braces
+            kubernetes.io/ingress.class: traefik
+            traefik.ingress.kubernetes.io/router.entrypoints: websecure
+            traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
+          hosts:
+            - host: "{{ .Release.Name }}-code.${CLUSTER_DOMAIN}"
+              paths:
+                - path: /
+                  pathType: Prefix
+          tls:
+            - secretName: "{{ .Release.Name }}-code-tls"
+              hosts:
+                - "{{ .Release.Name }}-code.${CLUSTER_DOMAIN}"
+        volumeMounts:
+          - name: config
+            mountPath: /config
