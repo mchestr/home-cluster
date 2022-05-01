@@ -88,6 +88,11 @@ spec:
           kvstore:
             store: inmemory
         enable_api: true
+    extraPorts:
+      - port: 7956
+        protocol: TCP
+        name: loki-gossip-ring
+        targetPort: 7946
     persistence:
       enabled: true
       accessModes:
