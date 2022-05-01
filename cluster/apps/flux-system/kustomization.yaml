@@ -4,5 +4,6 @@ kind: Kustomization
 namespace: flux-system
 resources:
   - dashboard
+  - github
   - monitoring
   - notifications
