@@ -83,6 +83,7 @@ spec:
           requests:
             cpu: 50m
             memory: 100Mi
+
     cephBlockPools:
       - name: rook-ceph-blockpool
         spec:
