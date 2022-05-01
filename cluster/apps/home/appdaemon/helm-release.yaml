@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
-      version: 8.2.0
+      version: 8.3.0
       chart: appdaemon
       sourceRef:
         kind: HelmRepository
