@@ -43,8 +43,9 @@ spec:
           s3forcepathstyle: true
           insecure: true
         boltdb_shipper:
-          active_index_directory: /data/index
-          cache_location: /data/boltdb-cache
+          active_index_directory: /data/loki/index
+          cache_location: /data/loki/index_cache
+          resync_interval: 5s
           shared_store: s3
       distributor:
         ring:
@@ -59,6 +60,15 @@ spec:
           final_sleep: 0s
         chunk_idle_period: 5m
         chunk_retain_period: 30s
+      schema_config:
+        configs:
+          - from: "2020-10-24"
+            store: boltdb-shipper
+            object_store: s3
+            schema: v11
+            index:
+              prefix: index_
+              period: 24h
       memberlist:
         abort_if_cluster_join_fails: false
         bind_port: 7946
@@ -93,12 +103,6 @@ spec:
         protocol: TCP
         name: loki-gossip-ring
         targetPort: 7946
-    persistence:
-      enabled: true
-      accessModes:
-        - ReadWriteOnce
-      size: 10Gi
-      storageClassName: longhorn
     alerting_groups:
       #
       # zigbee2mqtt
