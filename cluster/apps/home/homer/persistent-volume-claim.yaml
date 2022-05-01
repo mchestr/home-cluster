@@ -1,0 +1,13 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: code-homer-pv-claim
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: code-homer-pv
+  storageClassName: nfs-csi
