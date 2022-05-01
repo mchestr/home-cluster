@@ -17,9 +17,6 @@ spec:
   dependsOn:
     - name: rook-ceph
   values:
-    cephVersion:
-      image: quay.io/ceph/ceph:v17.2.0
-      allowUnsupported: false
     monitoring:
       enabled: true
 
@@ -44,6 +41,9 @@ spec:
               - "rook.${CLUSTER_DOMAIN}"
 
     cephClusterSpec:
+      cephVersion:
+        image: quay.io/ceph/ceph:v17.2.0
+        allowUnsupported: false
       mgr:
         count: 1
         modules:
