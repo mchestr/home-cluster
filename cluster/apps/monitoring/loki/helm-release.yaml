@@ -17,7 +17,6 @@ spec:
   install:
     createNamespace: true
   values:
-    replicas: 1
     serviceMonitor:
       enabled: true
     persistence:
