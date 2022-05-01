@@ -28,7 +28,7 @@ spec:
       config:
         enabled: true
         mountPath: /www/assets
-        existingClaim: homer-config
+        existingClaim: code-homer-pv-claim
 
     service:
       main:
