@@ -17,6 +17,7 @@ spec:
   install:
     createNamespace: true
   values:
+    replicas: 2
     ingress:
       enabled: true
       annotations:
