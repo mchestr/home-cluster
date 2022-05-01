@@ -48,6 +48,7 @@ spec:
           - secretName: "{{ .Release.Name }}-tls"
             hosts:
               - *host
+
     env:
       PAPERLESS_CONSUMER_POLLING: 5
       PAPERLESS_OCR_LANGUAGE: eng
