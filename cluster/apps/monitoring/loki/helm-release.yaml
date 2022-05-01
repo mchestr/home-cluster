@@ -69,7 +69,7 @@ spec:
         rules:
           - alert: ZwaveUnableToReachMQTT
             expr: |
-              sum(count_over_time({app="zwavejs2mqtt"} |~ "(?i)error while connecting mqtt"[2m])) > 0
+              sum(count_over_time({app="zwavejs2mqtt"} |~ "(?i)Mqtt client error connect ECONNREFUSED"[2m])) > 0
             for: 2m
             labels:
               severity: critical
