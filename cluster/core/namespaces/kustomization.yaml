@@ -11,5 +11,4 @@ resources:
   - metallb-system.yaml
   - monitoring.yaml
   - networking.yaml
-  - paperless.yaml
   - system-upgrade.yaml
