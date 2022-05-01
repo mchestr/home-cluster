@@ -68,8 +68,10 @@ spec:
         enabled: true
         existingClaim: home-nfs-pvc
         subPath: paperless/media
+
     podSecurityContext:
       fsGroup: ${FS_GROUP}
+
     additionalContainers:
       gotenburg:
         name: gotenburg
