@@ -12,5 +12,4 @@ resources:
   - monitoring.yaml
   - networking.yaml
   - paperless.yaml
-  - rook-ceph.yaml
   - system-upgrade.yaml
