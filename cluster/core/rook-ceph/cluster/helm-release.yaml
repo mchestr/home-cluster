@@ -48,10 +48,11 @@ spec:
         urlPrefix: /
         ssl: false
       storage:
-        useAllNodes: false
+        useAllNodes: true
         useAllDevices: false
         config:
           osdsPerDevice: "1"
+        deviceFilter: sd[a-z]
       resources:
         mgr:
           requests:
