@@ -12,5 +12,3 @@ resources:
   - unifi
   - zigbee2mqtt
   - zwavejs2mqtt
-  - persistent-volume.yaml
-  - persistent-volume-claim.yaml
