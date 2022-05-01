@@ -46,6 +46,11 @@ spec:
     cephClusterSpec:
       mgr:
         count: 1
+        modules:
+          # Several modules should not need to be included in this list. The "dashboard" and "monitoring" modules
+          # are already enabled by other settings in the cluster CR.
+          - name: pg_autoscaler
+            enabled: true
       dashboard:
         enabled: true
         urlPrefix: /
