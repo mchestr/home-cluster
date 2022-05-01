@@ -45,6 +45,36 @@ spec:
         useAllDevices: true
         config:
           osdsPerDevice: "1"
+      resources:
+        mgr:
+          requests:
+            # @default cpu 600m
+            cpu: 200m
+            memory: 100Mi
+        mgr-sidecar:
+          # @default cpu 600m
+          requests:
+            cpu: 50m
+            memory: 50Mi
+        mon:
+          requests:
+            # @default cpu 1000m
+            cpu: 100m
+            memory: 256Mi
+        osd:
+          requests:
+            # @default cpu 3000m
+            cpu: 300m
+            memory: 512Mi
+        prepareosd:
+          requests:
+            # @default cpu 3000m
+            cpu: 100m
+            memory: 256Mi
+        crashcollector:
+          requests:
+            cpu: 50m
+            memory: 100Mi
     cephBlockPools:
       - name: rook-ceph-blockpool
         spec:
