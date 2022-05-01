@@ -10,7 +10,6 @@ metadata:
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
 spec:
-  ingressClassName: "nginx"
   rules:
     - host: "flux-webhook.${CLUSTER_DOMAIN}"
       http:
