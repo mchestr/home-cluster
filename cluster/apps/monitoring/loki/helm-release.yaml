@@ -20,6 +20,12 @@ spec:
     replicas: 1
     serviceMonitor:
       enabled: true
+    persistence:
+      enabled: true
+      accessModes:
+        - ReadWriteOnce
+      size: 10Gi
+      storageClassName: longhorn
     config:
       limits_config:
         enforce_metric_name: false
