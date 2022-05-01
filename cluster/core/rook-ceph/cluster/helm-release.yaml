@@ -50,7 +50,7 @@ spec:
         spec:
           failureDomain: host
           replicated:
-            size: 2
+            size: 1
         storageClass:
           enabled: true
           name: rook-ceph-block
