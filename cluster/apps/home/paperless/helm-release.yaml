@@ -90,8 +90,9 @@ spec:
       architecture: "standalone"
       auth:
         enabled: false
-      persistence:
-        enabled: false
+      master:
+        persistence:
+          enabled: false
     service:
       gotenburg:
         enabled: true
