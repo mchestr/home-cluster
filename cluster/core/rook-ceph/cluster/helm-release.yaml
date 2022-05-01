@@ -17,6 +17,9 @@ spec:
   dependsOn:
     - name: rook-ceph
   values:
+    cephVersion:
+      image: quay.io/ceph/ceph:v17.2.0
+      allowUnsupported: false
     monitoring:
       enabled: true
 
