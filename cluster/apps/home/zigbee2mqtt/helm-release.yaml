@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
-      version: 9.2.0
+      version: 9.3.0
       chart: zigbee2mqtt
       sourceRef:
         kind: HelmRepository
