@@ -29,7 +29,7 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: "letsencrypt-production"
           hajimari.io/enable: "true"
-          hajimari.io/appName: "Rook"
+          hajimari.io/appName: Rook
         host:
           name: "rook.${CLUSTER_DOMAIN}"
           path: "/"
