@@ -181,7 +181,7 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: rook-ceph-block
+              storageClassName: longhorn
               resources:
                 requests:
                   storage: 30Gi
