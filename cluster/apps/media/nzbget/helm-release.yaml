@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
-      version: 12.2.0
+      version: 12.3.0
       chart: nzbget
       sourceRef:
         kind: HelmRepository
