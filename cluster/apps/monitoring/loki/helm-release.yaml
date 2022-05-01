@@ -18,20 +18,6 @@ spec:
     createNamespace: true
   values:
     replicas: 2
-    ingress:
-      enabled: true
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-production
-        kubernetes.io/ingress.class: traefik
-        traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
-      hosts:
-        - host: &host "loki.${CLUSTER_DOMAIN}"
-          paths:
-            - /
-      tls:
-        - hosts:
-            - *host
     serviceMonitor:
       enabled: true
     config:
