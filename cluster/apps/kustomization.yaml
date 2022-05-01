@@ -5,6 +5,7 @@ resources:
   - cert-manager
   - flux-system
   - home
+  - homer
   - kube-system
   - media
   - monitoring
