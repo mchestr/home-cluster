@@ -56,11 +56,20 @@ spec:
         urlPrefix: /
         ssl: false
       storage:
-        useAllNodes: true
+        useAllNodes: false
         useAllDevices: false
         config:
           osdsPerDevice: "1"
-        deviceFilter: sd[a-z]
+        nodes:
+          - name: k8s-0
+            devices:
+              - name: /dev/mapper/ubuntu--vg-ubuntu--lv
+          - name: k8s-1
+            devices:
+              - name: /dev/mapper/ubuntu--vg-ubuntu--lv
+          - name: k8s-2
+            devices:
+              - name: /dev/mapper/ubuntu--vg-ubuntu--lv
       resources:
         mgr:
           requests:
