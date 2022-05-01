@@ -8,6 +8,7 @@ resources:
   - esphome
   - hajimari
   - home-assistant
+  - homer
   - paperless
   - unifi
   - zigbee2mqtt
