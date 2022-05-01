@@ -61,10 +61,12 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: paperless-data-pv-claim
+        existingClaim: home-nfs-pvc
+        subPath: "{{ .Release.Name }}/data"
       media:
         enabled: true
-        existingClaim: paperless-media-pv-claim
+        existingClaim: home-nfs-pvc
+        subPath: "{{ .Release.Name }}/media"
     podSecurityContext:
       fsGroup: ${FS_GROUP}
     additionalContainers:
