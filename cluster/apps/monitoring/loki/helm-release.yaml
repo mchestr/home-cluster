@@ -17,53 +17,10 @@ spec:
   install:
     createNamespace: true
   values:
-    replicas: 2
+    replicas: 1
     serviceMonitor:
       enabled: true
     config:
-      storage_config:
-        aws:
-          endpoint: minio.monitoring.svc.cluster.local
-          bucketnames: loki
-          access_key_id: ${SECRET_MINIO_THANOS_ACCESSKEY}
-          secret_access_key: ${SECRET_MINIO_THANOS_SECRETKEY}
-          s3forcepathstyle: true
-          insecure: true
-        boltdb_shipper:
-          active_index_directory: /data/loki/index
-          cache_location: /data/loki/index_cache
-          resync_interval: 5s
-          shared_store: s3
-      distributor:
-        ring:
-          kvstore:
-            store: memberlist
-      ingester:
-        lifecycler:
-          ring:
-            kvstore:
-              store: memberlist
-            replication_factor: 1
-          final_sleep: 0s
-        chunk_idle_period: 5m
-        chunk_retain_period: 30s
-      schema_config:
-        configs:
-          - from: "2020-10-24"
-            store: boltdb-shipper
-            object_store: s3
-            schema: v11
-            index:
-              prefix: index_
-              period: 24h
-      memberlist:
-        abort_if_cluster_join_fails: false
-        bind_port: 7946
-        join_members:
-          - loki-headless.monitoring.svc.cluster.local:7946
-        max_join_backoff: 1m
-        max_join_retries: 10
-        min_join_backoff: 1s
       limits_config:
         enforce_metric_name: false
         reject_old_samples: true
@@ -85,11 +42,6 @@ spec:
           kvstore:
             store: inmemory
         enable_api: true
-    extraPorts:
-      - port: 7956
-        protocol: TCP
-        name: loki-gossip-ring
-        targetPort: 7946
     alerting_groups:
       #
       # zigbee2mqtt

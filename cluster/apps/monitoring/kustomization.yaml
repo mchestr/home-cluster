@@ -6,5 +6,4 @@ resources:
   - kube-prometheus-stack
   - grafana
   - loki
-  - thanos
   - vector
