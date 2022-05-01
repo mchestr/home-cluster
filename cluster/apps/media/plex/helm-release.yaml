@@ -54,7 +54,7 @@ spec:
     persistence:
       config:
         enabled: true
-        size: 20Gi
+        size: 30Gi
       media:
         enabled: true
         existingClaim: media-pv-claim
