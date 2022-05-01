@@ -19,6 +19,10 @@ spec:
   values:
     monitoring:
       enabled: true
+
+    toolbox:
+      enabled: true
+
     ingress:
       ingressClassName: traefik
       dashboard:
@@ -33,6 +37,7 @@ spec:
           - secretName: rook-tls
             hosts:
               - "rook.${CLUSTER_DOMAIN}"
+
     cephClusterSpec:
       mgr:
         count: 1
