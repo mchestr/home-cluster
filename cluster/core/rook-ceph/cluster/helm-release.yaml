@@ -23,8 +23,6 @@ spec:
     toolbox:
       enabled: true
 
-    dataDirHostPath: /var/lib/rook
-
     ingress:
       ingressClassName: traefik
       dashboard:
@@ -41,6 +39,7 @@ spec:
               - "rook.${CLUSTER_DOMAIN}"
 
     cephClusterSpec:
+      dataDirHostPath: /var/lib/rook
       cephVersion:
         image: quay.io/ceph/ceph:v17.2.0
         allowUnsupported: false
