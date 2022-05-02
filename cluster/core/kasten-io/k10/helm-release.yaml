@@ -52,7 +52,7 @@ spec:
         kubernetes.io/ingress.class: traefik
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
-      urlPath: /
+      urlPath: k10
       hosts:
         - *host
       tls:
