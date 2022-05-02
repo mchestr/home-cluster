@@ -53,5 +53,6 @@ spec:
         enabled: true
         mountPath: /media
         existingClaim: media-pv-claim
+
     podSecurityContext:
       fsGroup: ${FS_GROUP}
