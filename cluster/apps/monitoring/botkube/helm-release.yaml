@@ -26,8 +26,6 @@ spec:
       recommendations: true
       settings:
         clustername: k8s
-        kubectl:
-          enabled: true
       resources:
         - name: v1/pods
           namespaces:
