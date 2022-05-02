@@ -92,7 +92,7 @@ spec:
                 icon: "fab fa-github"
                 url: "https://github.com/mchestr/cluster-k3s"
               - name: k8s@Home
-                icon: "fad fa-radar"
+                icon: "fad fa-chart-network"
                 url: "https://github.com/k8s-at-home/awesome-home-kubernetes"
 
             tags:
