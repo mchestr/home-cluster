@@ -6,7 +6,6 @@ resources:
   - appdaemon
   - emqx
   - esphome
-  - hajimari
   - home-assistant
   - homer
   - paperless
