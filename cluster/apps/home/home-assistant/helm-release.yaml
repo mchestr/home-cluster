@@ -36,9 +36,6 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-production
           external-dns.alpha.kubernetes.io/target: ipv4.${CLUSTER_DOMAIN}
           external-dns/is-public: "true"
-          hajimari.io/appName: home assistant
-          hajimari.io/enable: "true"
-          hajimari.io/icon: home-lightbulb
           kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
         hosts:
@@ -83,9 +80,6 @@ spec:
           enabled: true
           annotations:
             cert-manager.io/cluster-issuer: letsencrypt-production
-            hajimari.io/appName: home assistant code
-            hajimari.io/enable: "true"
-            hajimari.io/icon: code-braces
             kubernetes.io/ingress.class: traefik
             traefik.ingress.kubernetes.io/router.entrypoints: websecure
             traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
