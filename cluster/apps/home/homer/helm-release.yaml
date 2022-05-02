@@ -24,12 +24,6 @@ spec:
     env:
       TZ: "Europe/Paris"
 
-    persistence:
-      config:
-        enabled: true
-        mountPath: /www/assets
-        existingClaim: code-homer-pv-claim
-
     service:
       main:
         annotations:
@@ -55,39 +49,194 @@ spec:
           - hosts:
               - *host
             secretName: "{{ .Release.Name }}-tls"
+    configMap:
+      config:
+        data:
+          # Homepage configuration
+          # See https://fontawesome.com/v5/search for icons options
 
-    addons:
-      codeserver:
-        enabled: true
-        image:
-          repository: ghcr.io/k8s-at-home/code-server
-          tag: v4.3.0
-        workingDir: "/www/assets"
-        args:
-          - --auth
-          - "none"
-          - --user-data-dir
-          - "/www/assets/.vscode"
-          - --extensions-dir
-          - "/www/assets/.vscode"
-        ingress:
-          enabled: true
-          annotations:
-            cert-manager.io/cluster-issuer: letsencrypt-production
-            hajimari.io/appName: homer code
-            hajimari.io/enable: "true"
-            hajimari.io/icon: code-braces
-            kubernetes.io/ingress.class: traefik
-            traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          hosts:
-            - host: &host "{{ .Release.Name }}-code.${CLUSTER_DOMAIN}"
-              paths:
-                - path: /
-                  pathType: Prefix
-          tls:
-            - hosts:
-                - *host
-              secretName: "{{ .Release.Name }}-code-tls"
-        volumeMounts:
-          - name: config
-            mountPath: /www/assets
+          title: Home Dashboard
+          subtitle: ${CLUSTER_DOMAIN}
+
+          header: true
+          footer: '<p>Created with <span class="has-text-danger">❤️</span> with <a href="https://bulma.io/">bulma</a>, <a href="https://vuejs.org/">vuejs</a> & <a href="https://fontawesome.com/">font awesome</a> // Fork me on <a href="https://github.com/bastienwirtz/homer"><i class="fab fa-github-alt"></i></a></p>' # set false if you want to hide it.
+
+          # Optional theme customization
+          theme: default
+          colors:
+            light:
+              highlight-primary: "#3367d6"
+              highlight-secondary: "#4285f4"
+              highlight-hover: "#5a95f5"
+              background: "#f5f5f5"
+              card-background: "#ffffff"
+              text: "#363636"
+              text-header: "#ffffff"
+              text-title: "#303030"
+              text-subtitle: "#424242"
+              card-shadow: rgba(0, 0, 0, 0.1)
+              link: "#3273dc"
+              link-hover: "#363636"
+            dark:
+              highlight-primary: "#3367d6"
+              highlight-secondary: "#4285f4"
+              highlight-hover: "#5a95f5"
+              background: "#131313"
+              card-background: "#2b2b2b"
+              text: "#eaeaea"
+              text-header: "#ffffff"
+              text-title: "#fafafa"
+              text-subtitle: "#f5f5f5"
+              card-shadow: rgba(0, 0, 0, 0.4)
+              link: "#3273dc"
+              link-hover: "#ffdd57"
+
+          links:
+            - name: GitHub
+              icon: "fab fa-github"
+              url: "https://github.com/mchestr/cluster-k3s"
+            - name: k8s@Home
+              icon: "fad fa-radar"
+              url: "https://github.com/k8s-at-home/awesome-home-kubernetes"
+
+          tags:
+            Local: &Local
+              - tag: local
+                tagstyle: "is-success"
+
+          # Services
+          # First level array represent a group.
+          # Leave only a "items" key if not using group (group name, icon & tagstyle are optional, section separation will not be displayed).
+          services:
+            - name: Applications
+              icon: "fa fa-cloud"
+              items:
+                - name: Plex
+                  logo: "https://user-images.githubusercontent.com/58919902/70870444-48efc180-1f48-11ea-9994-dff2df2d9484.png"
+                  url: "https://plex.${CLUSTER_DOMAIN}"
+                  subtitle: Video on demand
+                - name: Overseerr
+                  subtitle: Media requests
+                  logo: "https://overseerr.dev/_next/image?url=%2Fos_logo_filled.svg&w=48&q=75"
+                  url: "https://overseerr.${CLUSTER_DOMAIN}"
+                - name: Home Assistant
+                  subtitle: "Home automation system"
+                  logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Home_Assistant_Logo.svg/200px-Home_Assistant_Logo.svg.png"
+                  url: "https://home-assistant.${CLUSTER_DOMAIN}"
+                - name: Paperless
+                  subtitle: Digital document storage
+                  logo: "https://raw.githubusercontent.com/paperless-ngx/paperless-ngx/128594584e00794f7d76cdbb23a5fc0ba101712d/src-ui/src/assets/logo-white-notext.svg"
+                  url: "https://paperless.${CLUSTER_DOMAIN}"
+                - name: Unifi
+                  logo: "https://dl.ubnt.com/press/Company_Logos/U_Logo/WEB/U_Logo_RGB.png"
+                  url: "https://unifi.${CLUSTER_DOMAIN}"
+                  subtitle: WiFi controller
+                - name: LochNAS
+                  logo: "https://apprecs.org/gp/images/app-icons/300/2e/com.synology.DSfinder.jpg"
+                  <<: *Local
+                  url: "https://${NAS_ADDR}:5001/"
+                  subtitle: Synology NAS
+
+            - name: Media Management
+              icon: "fa fa-tv"
+              items:
+                - name: Tautulli
+                  subtitle: Plex statistics
+                  logo: "https://tautulli.com/images/logo-circle.png"
+                  url: "https://tautulli.${CLUSTER_DOMAIN}"
+                  <<: *Local
+                - name: Radarr
+                  subtitle: Movie collection manager
+                  logo: "https://avatars1.githubusercontent.com/u/25025331?s=200&v=4"
+                  url: "https://radarr.${CLUSTER_DOMAIN}"
+                  <<: *Local
+                - name: Radarr 4K
+                  subtitle: Movie collection manager 4K
+                  logo: "https://avatars1.githubusercontent.com/u/25025331?s=200&v=4"
+                  url: "https://radarr-4k.${CLUSTER_DOMAIN}"
+                  <<: *Local
+                - name: Sonarr
+                  subtitle: TV series collection manager
+                  logo: "https://avatars3.githubusercontent.com/u/1082903?s=200&v=4"
+                  url: "https://sonarr.${CLUSTER_DOMAIN}"
+                  <<: *Local
+                - name: Bazarr
+                  subtitle: Subtitle manager
+                  logo: "https://user-images.githubusercontent.com/26902309/41456760-be00043e-7081-11e8-9646-1b724037b4ff.png"
+                  url: "https://bazarr.${CLUSTER_DOMAIN}"
+                  <<: *Local
+                - name: Readarr
+                  subtitle: Book collection manager
+                  logo: "https://avatars.githubusercontent.com/u/57576474?s=280&v=4"
+                  url: "https://readarr.${CLUSTER_DOMAIN}"
+                  <<: *Local
+                - name: Lidarr
+                  subtitle: Music collection manager
+                  logo: "https://opencollective-production.s3-us-west-1.amazonaws.com/b20d21f0-31ef-11e8-b30b-796b88a5d246.png"
+                  url: "https://lidarr.${CLUSTER_DOMAIN}"
+                  <<: *Local
+                - name: Prowlarr
+                  subtitle: "Indexer manager/proxy"
+                  logo: "https://avatars.githubusercontent.com/u/73049443?s=200&v=4"
+                  url: "https://prowlarr.${CLUSTER_DOMAIN}"
+                  <<: *Local
+                - name: qBittorrent
+                  subtitle: Torrent downloader
+                  logo: "https://user-images.githubusercontent.com/30808176/29239854-02cef3ca-7f76-11e7-8a5c-bdfa4b683840.png"
+                  url: "https://qbittorrent.${CLUSTER_DOMAIN}"
+                  <<: *Local
+                - name: NZBGet
+                  subtitle: Usenet downloader
+                  logo: "https://avatars.githubusercontent.com/u/3368377?s=280&v=4"
+                  url: "https://nzbget.${CLUSTER_DOMAIN}"
+                  <<: *Local
+
+            - name: Home Automation
+              icon: fad fa-solar-system
+              items:
+                - name: EMQX
+                  logo: "https://raw.githubusercontent.com/docker-library/docs/68aa4264fa058f323993fdaceacd63a8acbbeb48/emqx/logo.svg?sanitize=true"
+                  url: "https://emqx.${CLUSTER_DOMAIN}"
+                - name: ESPHome
+                  logo: "https://esphome.io/_static/favicon-512x512.png"
+                  url: "https://esphome.${CLUSTER_DOMAIN}"
+                - name: Zigbee2MQTT
+                  logo: "https://www.zigbee2mqtt.io/logo.png"
+                  url: "https://zigbee2mqtt.${CLUSTER_DOMAIN}"
+                - name: ZWaveJS2MQTT
+                  logo: "https://github.com/zwave-js/zwavejs2mqtt/blob/master/static/logo.png?raw=true"
+                  url: "https://zwavejs2mqtt.${CLUSTER_DOMAIN}"
+
+            - name: Administration
+              icon: fa fa-user-shield
+              items:
+                - name: Grafana
+                  logo: "https://grafana.com/static/img/logos/grafana_logo_swirl-events.svg"
+                  url: "https://grafana.${CLUSTER_DOMAIN}"
+                - name: Kubernetes Dashboard
+                  logo: "https://camo.githubusercontent.com/5b298bf6b0596795602bd771c5bddbb963e83e0f/68747470733a2f2f692e696d6775722e636f6d2f7031527a586a512e706e67"
+                  url: "https://dashboard.${CLUSTER_DOMAIN}"
+                - name: Longhorn
+                  logo: "https://longhorn.io/img/logos/longhorn-icon-white.png"
+                  url: "https://longhorn.${CLUSTER_DOMAIN}"
+                - name: Alertmanager
+                  logo: "https://cncf-branding.netlify.app/img/projects/prometheus/icon/color/prometheus-icon-color.png"
+                  url: "https://alert-manager.${CLUSTER_DOMAIN}"
+                - name: Prometheus
+                  logo: "https://cncf-branding.netlify.app/img/projects/prometheus/icon/color/prometheus-icon-color.png"
+                  url: "https://prometheus.${CLUSTER_DOMAIN}"
+                - name: Traefik
+                  logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0cWHIEJAINHTMJL1vjVapbyAUs2gf9MK4Mg&usqp=CAU"
+                  url: "https://traefik.${CLUSTER_DOMAIN}"
+
+            - name: Editors
+              icon: fa fa-code
+              items:
+                - name: AppDaemon
+                  subtitle: Code editor
+                  logo: "https://avatars.githubusercontent.com/u/67876516?s=200&v=4"
+                  url: "https://appdaemon-code.${CLUSTER_DOMAIN}"
+                - name: Home Assistant
+                  subtitle: Code editor
+                  logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Home_Assistant_Logo.svg/200px-Home_Assistant_Logo.svg.png"
+                  url: "https://home-assistant-code.${CLUSTER_DOMAIN}"
