@@ -47,6 +47,8 @@ spec:
       config:
         enabled: true
         storageClass: longhorn
+        labels:
+          kasten.io/backup-volume: enabled
       media:
         enabled: true
         existingClaim: media-pv-claim
