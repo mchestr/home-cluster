@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: media
 resources:
   - bazarr
+  - calibre-web
   - lidarr
   - nzbget
   - overseerr
