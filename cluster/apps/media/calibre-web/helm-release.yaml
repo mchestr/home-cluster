@@ -25,7 +25,7 @@ spec:
   values:
     image:
       repository: linuxserver/calibre-web
-      tag: 0.6.12
+      tag: version-0.6.12
     ingress:
       main:
         enabled: true
