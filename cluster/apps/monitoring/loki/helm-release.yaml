@@ -99,6 +99,25 @@ spec:
               category: logs
             annotations:
               summary: "{{ $labels.app }} is experiencing malformed database disk image issues"
+          - alert: ArrFailedToConnectToPlex
+            expr: |
+              sum by (app) (count_over_time({app=~".*arr"} |~ "Failed to Update Plex host|Unable to connect to Plex Media Server"[30m])) > 0
+            for: 2m
+            labels:
+              severity: warning
+              category: logs
+            annotations:
+              summary: "{{ $labels.app }} is having trouble connecting to Plex Media Server"
+          - alert: ArrFailedToConnectToProwlarr
+            expr: |
+              sum by (app) (count_over_time({app=~".*arr"} |~ "Connection refused|currently unavailable" |= "prowlarr:9696"[30m])) > 0
+            for: 2m
+            labels:
+              severity: warning
+              category: logs
+            annotations:
+              summary: "{{ $labels.app }} is having trouble connecting to Prowlarr"
+
       #
       # home-assistant
       #
