@@ -119,6 +119,10 @@ spec:
                     subtitle: "Home automation system"
                     logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Home_Assistant_Logo.svg/200px-Home_Assistant_Logo.svg.png"
                     url: "https://home-assistant.${CLUSTER_DOMAIN}"
+                  - name: Calibre Web
+                    logo: "https://developer.asustor.com/uploadIcons/0020_999_1573465183_calibre-web_256.png"
+                    url: "https://calibre-web.${CLUSTER_DOMAIN}"
+                    subtitle: Book collection manager
                   - name: Paperless
                     subtitle: Digital document storage
                     logo: "https://raw.githubusercontent.com/paperless-ngx/paperless-ngx/128594584e00794f7d76cdbb23a5fc0ba101712d/src-ui/src/assets/logo-white-notext.svg"
@@ -186,6 +190,10 @@ spec:
                     logo: "https://avatars.githubusercontent.com/u/3368377?s=280&v=4"
                     url: "https://nzbget.${CLUSTER_DOMAIN}"
                     <<: *Local
+                  - name: Calibre
+                    logo: "https://developer.asustor.com/uploadIcons/0020_999_1573465183_calibre-web_256.png"
+                    url: "https://calibre.${CLUSTER_DOMAIN}"
+                    subtitle: Book collection manager
 
               - name: Home Automation
                 icon: fad fa-solar-system
@@ -224,6 +232,10 @@ spec:
                   - name: Traefik
                     logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0cWHIEJAINHTMJL1vjVapbyAUs2gf9MK4Mg&usqp=CAU"
                     url: "https://traefik.${CLUSTER_DOMAIN}"
+                  - name: K10
+                    logo: "https://webobjects2.cdw.com/is/image/CDW/6716123?$product-main$"
+                    url: "https://k10.${CLUSTER_DOMAIN}/k10/"
+                    subtitle: Backup manager
 
               - name: Editors
                 icon: fa fa-code
