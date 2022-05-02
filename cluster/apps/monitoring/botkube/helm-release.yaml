@@ -33,6 +33,7 @@ spec:
               - all
             ignore:
               - kube-system
+              - kasten-io
           events:
             - create
             - delete
@@ -40,6 +41,8 @@ spec:
           namespaces:
             include:
               - all
+            ignore:
+              - kasten-io
           events:
             - create
             - delete
@@ -114,6 +117,8 @@ spec:
           namespaces:
             include:
               - all
+            ignore:
+              - kasten-io
           events:
             - create
             - delete
