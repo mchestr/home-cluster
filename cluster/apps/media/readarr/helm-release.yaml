@@ -50,5 +50,6 @@ spec:
       media:
         enabled: true
         existingClaim: media-pv-claim
+
     podSecurityContext:
       fsGroup: ${FS_GROUP}
