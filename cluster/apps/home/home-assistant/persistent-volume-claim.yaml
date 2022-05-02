@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: code-home-assistant-pv-claim
+  labels:
+    kasten.io/backup-volume: enabled
 spec:
   accessModes:
     - ReadWriteMany
