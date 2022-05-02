@@ -45,6 +45,10 @@ spec:
           - secretName: "{{ .Release.Name }}-tls"
             hosts:
               - *host
+    service:
+      webserver:
+        enabled: true
+
     persistence:
       config:
         enabled: true
