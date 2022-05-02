@@ -21,6 +21,9 @@ spec:
       tag: 22.02.2
       pullPolicy: IfNotPresent
 
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: homer-config
+
     env:
       TZ: ${TZ}
 
