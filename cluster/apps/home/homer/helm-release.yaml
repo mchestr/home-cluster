@@ -46,7 +46,7 @@ spec:
           - hosts:
               - *host
             secretName: "{{ .Release.Name }}-tls"
-    configMap:
+    configmap:
       config:
         enabled: true
         data:
