@@ -50,7 +50,7 @@ spec:
       config:
         enabled: true
         data:
-          config.yaml: |
+          config.yml: |
             title: Home Dashboard
             subtitle: ${CLUSTER_DOMAIN}
 
