@@ -1,0 +1,63 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: k10
+  namespace: kasten-io
+spec:
+  releaseName: k10
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://charts.kasten.io/
+      chart: k10
+      version: 4.5.14
+      sourceRef:
+        kind: HelmRepository
+        name: kasten-charts
+        namespace: flux-system
+      interval: 5m
+  install:
+    createNamespace: true
+    crds: CreateReplace
+    remediation: # perform remediation when helm install fails
+      retries: 5
+  upgrade:
+    crds: CreateReplace
+    remediation: # perform remediation when helm upgrade fails
+      retries: 5
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+  values:
+    eula:
+      accept: true
+      company: mchestr
+      email: mchestr@users.noreply.github.com
+
+    global:
+      persistence:
+        storageClass: longhorn
+
+    auth:
+      tokenAuth:
+        enabled: true
+
+    clusterName: k8s
+
+    ingress:
+      create: true
+      host: &host k10.${CLUSTER_DOMAIN}
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-production
+        kubernetes.io/ingress.class: traefik
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
+      urlPath: "k10"
+      hosts:
+        - *host
+      tls:
+        enabled: true
+        secretName: k10-tls
+
+    grafana:
+      enabled: false
