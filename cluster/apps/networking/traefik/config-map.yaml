@@ -25,8 +25,3 @@ data:
           headers:
             customRequestHeaders:
               accept-encoding: gzip;1.0,deflate;0.5,identity;0.1
-
-        # Here is an example middleware to add headers for qBittorrent support
-        qBittorrent-headers:
-          headers:
-            content-security-policy: default-src 'self'; style-src 'self' 'unsafe-inline' theme-park.dev raw.githubusercontent.com use.fontawesome.com; img-src 'self' theme-park.dev raw.githubusercontent.com data:; script-src 'self' 'unsafe-inline'; object-src 'none'; form-action 'self'; frame-ancestors 'self'; font-src use.fontawesome.com;
