@@ -130,15 +130,20 @@ spec:
                     subtitle: Digital document storage
                     logo: "https://raw.githubusercontent.com/paperless-ngx/paperless-ngx/128594584e00794f7d76cdbb23a5fc0ba101712d/src-ui/src/assets/logo-white-notext.svg"
                     url: "https://paperless.${CLUSTER_DOMAIN}"
-                  - name: Unifi
-                    logo: "https://dl.ubnt.com/press/Company_Logos/U_Logo/WEB/U_Logo_RGB.png"
-                    url: "https://unifi.${CLUSTER_DOMAIN}"
-                    subtitle: WiFi controller
+                  - name: BitWarden
+                    logo: "https://hossted.com/wp-content/uploads/2022/02/v.png"
+                    <<: *Local
+                    url: "https://vault.${CLUSTER_DOMAIN}"
+                    subtitle: Password manager
                   - name: LochNAS
                     logo: "https://apprecs.org/gp/images/app-icons/300/2e/com.synology.DSfinder.jpg"
                     <<: *Local
                     url: "https://${NAS_ADDR}:5001/"
                     subtitle: Synology NAS
+                  - name: Unifi
+                    logo: "https://dl.ubnt.com/press/Company_Logos/U_Logo/WEB/U_Logo_RGB.png"
+                    url: "https://unifi.${CLUSTER_DOMAIN}"
+                    subtitle: WiFi controller
 
               - name: Media Management
                 icon: "fa fa-tv"
