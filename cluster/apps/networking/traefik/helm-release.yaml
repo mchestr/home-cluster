@@ -67,7 +67,7 @@ spec:
       - "--providers.kubernetescrd.allowexternalnameservices=true"
       - "--experimental.plugins.plugin-rewritebody.modulename=github.com/packruler/rewrite-body"
       - "--experimental.plugins.plugin-rewritebody.version=v0.5.1"
-      - "--provides.file.directory=/config"
+      - "--providers.file.directory=/config"
     volumes:
       - name: traefik-helm-config-map
         type: configMap
