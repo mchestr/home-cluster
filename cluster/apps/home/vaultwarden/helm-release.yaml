@@ -1,0 +1,68 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: vaultwarden
+spec:
+  releaseName: vaultwarden
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: vaultwarden
+      version: 3.3.1
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      repository: vaultwarden/server
+      tag: 1.23.0-alpine
+    env:
+      TZ: ${TZ}
+      DATA_FOLDER: config
+      SIGNUPS_ALLOWED: false
+      WEBSOCKET_ENABLED: true
+      WEBSOCKET_ADDRESS: 0.0.0.0
+      WEBSOCKET_PORT: 3012
+      DOMAIN: https://vault.${CLUSTER_DOMAIN}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_FROM: ${SMTP_FROM}
+      SMTP_SSL: true
+      SMTP_PORT: 465
+      SMTP_USERNAME: ${SMTP_USERNAME}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      SMTP_FROM_NAME: Vaultwarden
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          external-dns.alpha.kubernetes.io/target: ipv4.${CLUSTER_DOMAIN}
+          external-dns/is-public: "true"
+          kubernetes.io/ingress.class: traefik
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure,bitwarden-theme@file
+        hosts:
+          - host: &host "vault.${CLUSTER_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+              - path: /notifications/hub/negotiate
+                pathType: Prefix
+              - path: /notifications/hub
+                pathType: Prefix
+                servicePort: 3012
+        tls:
+          - secretName: "{{ .Release.Name }}-tls"
+            hosts:
+              - *host
+    persistence:
+      config:
+        enabled: true
+        storageClass: longhorn
+        accessMode: ReadWriteOnce
+        size: 5Gi
+        labels:
+          kasten.io/backup-volume: enabled
