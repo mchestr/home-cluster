@@ -6,15 +6,12 @@ metadata:
 spec:
   interval: 5m
   install:
-    timeout: 15m
     remediation:
       retries: 5
   upgrade:
-    timeout: 15m
     remediation:
       retries: 5
       remediateLastFailure: true
-    cleanupOnFail: true
   chart:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
@@ -36,10 +33,12 @@ spec:
       config:
         enabled: true
         existingClaim: code-baikal-pvc
+        mountPath: /var/www/baikal/config
         subPath: config
       data:
         enabled: true
         existingClaim: code-baikal-pvc
+        mountPath: /var/www/baikal/Specific
         subPath: data
     mariadb:
       enabled: false
