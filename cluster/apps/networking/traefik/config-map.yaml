@@ -10,12 +10,19 @@ data:
       middlewares:
         #  Add any suppported base apps you would like to include in your auto generated middle set. "sonarr" and "radarr are the examples here.
         {{ range $index, $app := list "sonarr" "radarr" }}
-        {{ $app }}-theme:
+        {{ $app }}-theme-css:
           plugin:
             rewritebody:
               rewrites:
                 - regex: </head>
                   replacement: <link rel="stylesheet" type="text/css" href="https://theme-park.dev/css/base/{{ $app }}/{{ $theme }}.css"></head>
+
+        # Wrap CSS and theme headers in single middleware for ease of use
+        {{ $app }}-theme:
+          chain:
+            middlewares:
+              - theme-headers
+              - {{ $app }}-theme-css
         {{ end }}
   headers.yml: |
     # This is an example of how to set request headers to prioritize supported encoding.
