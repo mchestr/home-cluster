@@ -24,6 +24,14 @@ data:
               - theme-headers
               - {{ $app }}-theme-css
         {{ end }}
+
+        # Add Radarr 4k CSS
+        radarr-4k-theme:
+          plugin:
+            rewritebody:
+              rewrites:
+                - regex: </head>
+                  replacement: <link rel="stylesheet" type="text/css" href="https://theme-park.dev/css/base/radarr/{{ $theme }}.css"><link rel="stylesheet" type="text/css" href="https://theme-park.dev/css/addons/radarr/radarr-4k-logo/radarr-4k-logo.css"></head>
   headers.yml: |
     # This is an example of how to set request headers to prioritize supported encoding.
     http:
