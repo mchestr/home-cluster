@@ -64,6 +64,8 @@ spec:
       - "--providers.kubernetesingress.ingressendpoint.ip=${METALLB_TRAEFIK_ADDR}"
       - "--providers.kubernetesingress.allowexternalnameservices=true"
       - "--providers.kubernetescrd.allowexternalnameservices=true"
+      - "--experimental.plugins.plugin-rewritebody.modulename=github.com/packruler/rewrite-body"
+      - "--experimental.plugins.plugin-rewritebody.version=v0.5.1"
     ports:
       traefik:
         expose: true
@@ -85,9 +87,6 @@ spec:
     experimental:
       plugins:
         enabled: true
-        rewrite-body:
-          modulename: github.com/packruler/rewrite-body
-          version: v0.5.1
     resources:
       requests:
         memory: 100Mi
