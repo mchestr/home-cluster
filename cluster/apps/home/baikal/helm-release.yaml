@@ -34,12 +34,12 @@ spec:
         enabled: true
         type: nfs
         server: ${NAS_ADDR}
-        path: /volume1/shared/code/vaultwarden/config
+        path: /volume1/shared/code/{{ .Release.Name }}/config
       data:
         enabled: true
         type: nfs
         server: ${NAS_ADDR}
-        path: /volume1/shared/code/vaultwarden/data
+        path: /volume1/shared/code/{{ .Release.Name }}/data
     mariadb:
       enabled: false
     ingress:
