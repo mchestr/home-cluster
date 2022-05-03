@@ -11,7 +11,6 @@ spec:
   upgrade:
     remediation:
       retries: 5
-      remediateLastFailure: true
   chart:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
