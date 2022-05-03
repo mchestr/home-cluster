@@ -86,8 +86,8 @@ spec:
       plugins:
         enabled: true
         rewrite-body:
-          modulename: "github.com/packruler/rewrite-body"
-          version: "v0.5.1"
+          modulename: github.com/packruler/rewrite-body
+          version: v0.5.1
     resources:
       requests:
         memory: 100Mi
