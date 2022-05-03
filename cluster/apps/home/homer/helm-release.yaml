@@ -144,6 +144,10 @@ spec:
                     logo: "https://dl.ubnt.com/press/Company_Logos/U_Logo/WEB/U_Logo_RGB.png"
                     url: "https://unifi.${CLUSTER_DOMAIN}"
                     subtitle: WiFi controller
+                  - name: CalDAV
+                    logo: "https://sabre.io/img/baikal.png"
+                    url: "https://cal.${CLUSTER_DOMAIN}"
+                    subtitle: Calendar and address book manager
 
               - name: Media Management
                 icon: "fa fa-tv"
