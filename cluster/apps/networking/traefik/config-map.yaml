@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: traefik-helm-config-map
+stringData:
+  middleware.yaml: |
+    # Replace `nord` with your theme of choice!
+    {{ $theme := "nord" }}
+    http:
+      middlewares:
+        #  Add any suppported base apps you would like to include in your auto generated middle set. "sonarr" and "radarr are the examples here.
+        {{ range $index, $app := list "sonarr" "radarr" }}
+        {{ $app }}-theme:
+          plugin:
+            rewritebody:
+              rewrites:
+                - regex: </head>
+                  replacement: <link rel="stylesheet" type="text/css" href="https://theme-park.dev/css/base/{{ $app }}/{{ $theme }}.css"></head>
+        {{ end }}
+  headers.yaml: |
+    # This is an example of how to set request headers to prioritize supported encoding.
+    http:
+      middlewares:
+        theme-headers:
+          headers:
+            customRequestHeaders:
+              accept-encoding: gzip;1.0,deflate;0.5,identity;0.1
+
+        # Here is an example middleware to add headers for qBittorrent support
+        qBittorrent-headers:
+          headers:
+            content-security-policy: default-src 'self'; style-src 'self' 'unsafe-inline' theme-park.dev raw.githubusercontent.com use.fontawesome.com; img-src 'self' theme-park.dev raw.githubusercontent.com data:; script-src 'self' 'unsafe-inline'; object-src 'none'; form-action 'self'; frame-ancestors 'self'; font-src use.fontawesome.com;
