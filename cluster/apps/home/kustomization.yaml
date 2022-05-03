@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: home
 resources:
   - appdaemon
+  - baikal
   - emqx
   - esphome
   - home-assistant
