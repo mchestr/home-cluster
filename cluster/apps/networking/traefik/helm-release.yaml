@@ -65,8 +65,8 @@ spec:
       - "--providers.kubernetesingress.ingressendpoint.ip=${METALLB_TRAEFIK_ADDR}"
       - "--providers.kubernetesingress.allowexternalnameservices=true"
       - "--providers.kubernetescrd.allowexternalnameservices=true"
-      - "--experimental.plugins.plugin-rewritebody.modulename=github.com/packruler/rewrite-body"
-      - "--experimental.plugins.plugin-rewritebody.version=v0.5.1"
+      - "--experimental.plugins.rewritebody.modulename=github.com/packruler/rewrite-body"
+      - "--experimental.plugins.rewritebody.version=v0.5.1"
       - "--providers.file.directory=/config"
     volumes:
       - name: traefik-helm-config-map
