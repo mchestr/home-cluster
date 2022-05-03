@@ -39,6 +39,7 @@ spec:
       SMTP_USERNAME: ${SMTP_USERNAME}
       SMTP_PASSWORD: ${SMTP_PASSWORD}
       SMTP_FROM_NAME: Vaultwarden
+      TRASH_AUTO_DELETE_DAYS: 14
     ingress:
       main:
         enabled: true
