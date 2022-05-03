@@ -39,7 +39,7 @@ data:
           chain:
             middlewares:
               - theme-headers
-              - {{ $app }}-theme-css
+              - {{ $app }}-4k-theme-css
         {{ end }}
 
   headers.yml: |
