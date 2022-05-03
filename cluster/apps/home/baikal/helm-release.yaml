@@ -32,14 +32,14 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: code-baikal-pvc
-        mountPath: /var/www/baikal/config
-        subPath: config
+        type: nfs
+        server: ${NAS_ADDR}
+        path: /volume1/shared/code/vaultwarden/config
       data:
         enabled: true
-        existingClaim: code-baikal-pvc
-        mountPath: /var/www/baikal/Specific
-        subPath: data
+        type: nfs
+        server: ${NAS_ADDR}
+        path: /volume1/shared/code/vaultwarden/data
     mariadb:
       enabled: false
     ingress:
