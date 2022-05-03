@@ -25,7 +25,7 @@ spec:
   values:
     image:
       repository: ckulka/baikal
-      tag: 0.8.0
+      tag: 0.9.2
     podSecurityContext:
       fsGroup: ${FS_GROUP}
     env:
