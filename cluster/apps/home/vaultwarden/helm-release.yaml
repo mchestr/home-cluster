@@ -33,6 +33,7 @@ spec:
       DOMAIN: https://vault.${CLUSTER_DOMAIN}
       SMTP_HOST: ${SMTP_HOST}
       SMTP_FROM: ${SMTP_FROM}
+      SMTP_SECURITY: force_tls
       SMTP_SSL: true
       SMTP_PORT: 465
       SMTP_USERNAME: ${SMTP_USERNAME}
