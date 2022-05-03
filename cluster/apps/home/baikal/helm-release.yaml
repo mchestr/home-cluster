@@ -33,12 +33,12 @@ spec:
         enabled: true
         type: nfs
         server: ${NAS_ADDR}
-        path: /volume1/shared/code/{{ .Release.Name }}/config
+        path: /volume1/shared/code/baikal/config
       data:
         enabled: true
         type: nfs
         server: ${NAS_ADDR}
-        path: /volume1/shared/code/{{ .Release.Name }}/data
+        path: /volume1/shared/code/baikal/data
     mariadb:
       enabled: false
     ingress:
