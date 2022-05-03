@@ -3,9 +3,9 @@ kind: ConfigMap
 metadata:
   name: traefik-helm-config-map
 data:
-  middleware.yaml: |
+  middleware.yml: |
     # Replace `nord` with your theme of choice!
-    {{ $theme := "nord" }}
+    {{ $theme := "plex" }}
     http:
       middlewares:
         #  Add any suppported base apps you would like to include in your auto generated middle set. "sonarr" and "radarr are the examples here.
@@ -17,7 +17,7 @@ data:
                 - regex: </head>
                   replacement: <link rel="stylesheet" type="text/css" href="https://theme-park.dev/css/base/{{ $app }}/{{ $theme }}.css"></head>
         {{ end }}
-  headers.yaml: |
+  headers.yml: |
     # This is an example of how to set request headers to prioritize supported encoding.
     http:
       middlewares:
