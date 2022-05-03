@@ -46,7 +46,8 @@ spec:
           external-dns.alpha.kubernetes.io/target: ipv4.${CLUSTER_DOMAIN}
           external-dns/is-public: "true"
           kubernetes.io/ingress.class: traefik
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure,bitwarden-theme@file
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: bitwarden-theme@file
         hosts:
           - host: &host "vault.${CLUSTER_DOMAIN}"
             paths:
