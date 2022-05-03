@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: traefik-helm-config-map
-stringData:
+data:
   middleware.yaml: |
     # Replace `nord` with your theme of choice!
     {{ $theme := "nord" }}
