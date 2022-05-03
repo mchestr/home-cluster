@@ -23,6 +23,8 @@ spec:
     image:
       repository: vaultwarden/server
       tag: 1.24.0
+    strategy:
+      type: RollingUpdate
     env:
       TZ: ${TZ}
       DATA_FOLDER: config
@@ -67,8 +69,4 @@ spec:
     persistence:
       config:
         enabled: true
-        storageClass: longhorn
-        accessMode: ReadWriteOnce
-        size: 5Gi
-        labels:
-          kasten.io/backup-volume: enabled
+        existingClaim: code-vaultwarden-pvc
