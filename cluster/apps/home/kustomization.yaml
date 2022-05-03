@@ -10,5 +10,6 @@ resources:
   - homer
   - paperless
   - unifi
+  - vaultwarden
   - zigbee2mqtt
   - zwavejs2mqtt
