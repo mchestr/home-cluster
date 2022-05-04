@@ -19,12 +19,14 @@ spec:
   valuesFrom:
     - kind: Secret
       name: vaultwarden-helm-secrets
+  # https://github.com/k8s-at-home/charts/blob/master/charts/stable/vaultwarden/values.yaml
   values:
     image:
       repository: vaultwarden/server
       tag: 1.24.0
     strategy:
       type: RollingUpdate
+    # https://github.com/dani-garcia/vaultwarden/blob/main/.env.template
     env:
       TZ: ${TZ}
       DATA_FOLDER: config
