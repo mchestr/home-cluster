@@ -69,7 +69,7 @@ spec:
       - "--experimental.plugins.rewritebody.version=v0.5.1"
       - "--providers.file.directory=/config"
     volumes:
-      - name: traefik-helm-config-map
+      - name: traefik-middleware
         type: configMap
         mountPath: /config
     ports:

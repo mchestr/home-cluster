@@ -1,0 +1,11 @@
+---
+# This is an example of how to set request headers to prioritize supported encoding.
+http:
+  middlewares:
+    theme-headers:
+      headers:
+        customRequestHeaders:
+          accept-encoding: gzip;1.0,deflate;0.5,identity;0.1
+    qbittorrent-headers:
+      headers:
+        content-security-policy: default-src 'self'; style-src 'self' 'unsafe-inline' theme-park.${CLUSTER_DOMAIN} raw.githubusercontent.com use.fontawesome.com; img-src 'self' theme-park.${CLUSTER_DOMAIN} raw.githubusercontent.com data:; script-src 'self' 'unsafe-inline'; object-src 'none'; form-action 'self'; frame-ancestors 'self'; font-src use.fontawesome.com;
