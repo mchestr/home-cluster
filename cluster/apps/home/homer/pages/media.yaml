@@ -48,12 +48,10 @@ services:
         subtitle: Plex statistics
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/tautulli/android-chrome-maskable-512x512.png"
         url: "https://tautulli.${CLUSTER_DOMAIN}"
-        <<: *Local
       - name: Prowlarr
         subtitle: "Indexer manager/proxy"
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/prowlarr/android-chrome-maskable-512x512.png"
         url: "https://prowlarr.${CLUSTER_DOMAIN}"
-        <<: *Local
       - name: Calibre
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/calibre/android-chrome-maskable-512x512.png"
         url: "https://calibre.${CLUSTER_DOMAIN}"
