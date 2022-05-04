@@ -2,7 +2,16 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - config-map.yaml
   - dashboard
   - helm-release.yaml
   - secret.sops.yaml
+
+configMapGenerator:
+  - name: traefik-middleware
+    files:
+      - middleware/headers.yaml
+      - middleware/theme-park.yaml
+      - middleware/theme-park-addons.yaml
+
+configurations:
+  - kustomizeconfig.yaml
