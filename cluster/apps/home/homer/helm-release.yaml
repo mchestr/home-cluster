@@ -55,8 +55,7 @@ spec:
         enabled: true
         type: configMap
         name: homer-config
-        mountPath: /www/assets/config.yml
-        subPath: config.yaml
+        mountPath: /www/assets/
       data:
         enabled: true
         type: nfs

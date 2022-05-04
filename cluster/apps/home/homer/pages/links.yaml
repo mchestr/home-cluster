@@ -1,0 +1,22 @@
+subtitle: Links
+
+services:
+  - name: k8s@Home
+    icon: fas fa-users
+    items:
+      - name: Charts
+        url: https://github.com/k8s-at-home/charts/tree/master/charts
+      - name: Common Chart
+        url: https://github.com/k8s-at-home/library-charts/tree/main/charts/stable/common
+      - name: Awesome Home Kubernetes
+        url: https://github.com/k8s-at-home/awesome-home-kubernetes
+      - name: Organization
+        url: https://github.com/k8s-at-home
+
+  - name: GitHub
+    icon: fab fa-github
+    items:
+      - name: Renovate
+        url: https://github.com/mchestr/cluster-k3s/issues/1
+      - name: Repository
+        url: https://github.com/mchestr/cluster-k3s

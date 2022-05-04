@@ -1,0 +1,75 @@
+subtitle: System Administration
+
+services:
+
+  - name: Storage, Database & Messaging
+    icon: fas fa-database
+    items:
+      - name: LochNAS
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/lochnas/android-chrome-maskable-512x512.png
+        <<: *Local
+        url: https://${NAS_ADDR}:5001/
+        subtitle: Synology NAS
+      - name: Longhorn
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/longhorn/android-chrome-maskable-512x512.png
+        url: https://longhorn.${CLUSTER_DOMAIN}
+      - name: EMQX
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/emqx/android-chrome-maskable-512x512.png
+        url: https://emqx.${CLUSTER_DOMAIN}
+      - name: K10
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/k10/android-chrome-maskable-512x512.png
+        url: https://k10.${CLUSTER_DOMAIN}/k10/
+        subtitle: Backup manager
+
+  - name: System Management
+    icon: fas fa-project-diagram
+    items:
+      - name: Kubernetes Dashboard
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/kubernetes-dashboard/android-chrome-maskable-512x512.png
+        url: https://dashboard.${CLUSTER_DOMAIN}
+      - name: Grafana
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/grafana/android-chrome-maskable-512x512.png
+        url: https://grafana.${CLUSTER_DOMAIN}
+      - name: Unifi
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/unifi/android-chrome-maskable-512x512.png
+        url: https://unifi.${CLUSTER_DOMAIN}
+        subtitle: WiFi controller
+      - name: Prometheus
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/prometheus/android-chrome-maskable-512x512.png
+        url: https://prometheus.${CLUSTER_DOMAIN}
+      - name: Alertmanager
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/alertmanager/android-chrome-maskable-512x512.png
+        url: https://alert-manager.${CLUSTER_DOMAIN}
+      - name: CalDAV
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/caldav/android-chrome-maskable-512x512.png
+        url: https://cal.${CLUSTER_DOMAIN}
+        subtitle: Calendar and address book manager
+      - name: Traefik
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/traefik/android-chrome-maskable-512x512.png
+        url: https://traefik.${CLUSTER_DOMAIN}
+
+  - name: Home Automation Systems
+    icon: fas fa-magic
+    items:
+      - name: AppDaemon
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/appdaemon/android-chrome-maskable-512x512.png
+        url: https://appdaemon.${CLUSTER_DOMAIN}
+      - name: ESPHome
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/esphome/android-chrome-maskable-512x512.png
+        url: https://esphome.${CLUSTER_DOMAIN}
+      - name: Zigbee2MQTT
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/zigbee2mqtt/android-chrome-maskable-512x512.png
+        url: https://zigbee2mqtt.${CLUSTER_DOMAIN}
+      - name: ZWaveJS2MQTT
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/zwavejs2mqtt/android-chrome-maskable-512x512.png
+        url: https://zwavejs2mqtt.${CLUSTER_DOMAIN}
+
+  - name: Editors
+    icon: fa fa-code
+    items:
+      - name: AppDaemon Code
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/appdaemon-code/android-chrome-maskable-512x512.png
+        url: https://appdaemon-code.${CLUSTER_DOMAIN}
+      - name: Home Assistant Code
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/home-assistant-code/android-chrome-maskable-512x512.png
+        url: https://home-assistant-code.${CLUSTER_DOMAIN}
