@@ -55,42 +55,42 @@ services:
     icon: "fa fa-cloud"
     items:
       - name: Plex
-        logo: "https://homer.${CLUSTER_DOMAIN}/assets/data/plex/android-chrome-maskable-512x512.png"
-        url: "https://plex.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/plex/android-chrome-maskable-512x512.png
+        url: https://plex.${CLUSTER_DOMAIN}
         subtitle: Video on demand
       - name: Overseerr
         subtitle: Media requests
-        logo: "https://overseerr.dev/_next/image?url=%2Fos_logo_filled.svg&w=48&q=75"
-        url: "https://overseerr.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/overseerr/android-chrome-maskable-512x512.png
+        url: https://overseerr.${CLUSTER_DOMAIN}
       - name: Home Assistant
         subtitle: "Home automation system"
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Home_Assistant_Logo.svg/200px-Home_Assistant_Logo.svg.png"
-        url: "https://home-assistant.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/home-assistant/android-chrome-maskable-512x512.png
+        url: https://home-assistant.${CLUSTER_DOMAIN}
       - name: Calibre Web
-        logo: "https://developer.asustor.com/uploadIcons/0020_999_1573465183_calibre-web_256.png"
-        url: "https://calibre-web.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/calibre-web/android-chrome-maskable-512x512.png
+        url: https://calibre-web.${CLUSTER_DOMAIN}
         subtitle: Book collection manager
       - name: Paperless
         subtitle: Digital document storage
-        logo: "https://raw.githubusercontent.com/paperless-ngx/paperless-ngx/128594584e00794f7d76cdbb23a5fc0ba101712d/src-ui/src/assets/logo-white-notext.svg"
-        url: "https://paperless.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/paperless/android-chrome-maskable-512x512.png
+        url: https://paperless.${CLUSTER_DOMAIN}
       - name: BitWarden
-        logo: "https://hossted.com/wp-content/uploads/2022/02/v.png"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/bitwarden/android-chrome-maskable-512x512.png
         <<: *Local
-        url: "https://vault.${CLUSTER_DOMAIN}"
+        url: https://vault.${CLUSTER_DOMAIN}
         subtitle: Password manager
       - name: LochNAS
-        logo: "https://apprecs.org/gp/images/app-icons/300/2e/com.synology.DSfinder.jpg"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/lochnas/android-chrome-maskable-512x512.png
         <<: *Local
-        url: "https://${NAS_ADDR}:5001/"
+        url: https://${NAS_ADDR}:5001/
         subtitle: Synology NAS
       - name: Unifi
-        logo: "https://dl.ubnt.com/press/Company_Logos/U_Logo/WEB/U_Logo_RGB.png"
-        url: "https://unifi.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/unifi/android-chrome-maskable-512x512.png
+        url: https://unifi.${CLUSTER_DOMAIN}
         subtitle: WiFi controller
       - name: CalDAV
-        logo: "https://sabre.io/img/baikal.png"
-        url: "https://cal.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/caldav/android-chrome-maskable-512x512.png
+        url: https://cal.${CLUSTER_DOMAIN}
         subtitle: Calendar and address book manager
 
   - name: Media Management
@@ -98,99 +98,99 @@ services:
     items:
       - name: Tautulli
         subtitle: Plex statistics
-        logo: "https://tautulli.com/images/logo-circle.png"
-        url: "https://tautulli.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/tautulli/android-chrome-maskable-512x512.png
+        url: https://tautulli.${CLUSTER_DOMAIN}
         <<: *Local
       - name: Radarr
         subtitle: Movie collection manager
-        logo: "https://avatars1.githubusercontent.com/u/25025331?s=200&v=4"
-        url: "https://radarr.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/radarr/android-chrome-maskable-512x512.png
+        url: https://radarr.${CLUSTER_DOMAIN}
         <<: *Local
       - name: Radarr 4K
         subtitle: Movie collection manager 4K
-        logo: "https://avatars1.githubusercontent.com/u/25025331?s=200&v=4"
-        url: "https://radarr-4k.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/radarr-4k/android-chrome-maskable-512x512.png
+        url: https://radarr-4k.${CLUSTER_DOMAIN}
         <<: *Local
       - name: Sonarr
         subtitle: TV series collection manager
-        logo: "https://avatars3.githubusercontent.com/u/1082903?s=200&v=4"
-        url: "https://sonarr.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/sonarr/android-chrome-maskable-512x512.png
+        url: https://sonarr.${CLUSTER_DOMAIN}
         <<: *Local
       - name: Bazarr
         subtitle: Subtitle manager
-        logo: "https://user-images.githubusercontent.com/26902309/41456760-be00043e-7081-11e8-9646-1b724037b4ff.png"
-        url: "https://bazarr.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/bazarr/android-chrome-maskable-512x512.png
+        url: https://bazarr.${CLUSTER_DOMAIN}
         <<: *Local
       - name: Readarr
         subtitle: Book collection manager
-        logo: "https://avatars.githubusercontent.com/u/57576474?s=280&v=4"
-        url: "https://readarr.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/readarr/android-chrome-maskable-512x512.png
+        url: https://readarr.${CLUSTER_DOMAIN}
         <<: *Local
       - name: Lidarr
         subtitle: Music collection manager
-        logo: "https://opencollective-production.s3-us-west-1.amazonaws.com/b20d21f0-31ef-11e8-b30b-796b88a5d246.png"
-        url: "https://lidarr.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/lidarr/android-chrome-maskable-512x512.png
+        url: https://lidarr.${CLUSTER_DOMAIN}
         <<: *Local
       - name: Prowlarr
         subtitle: "Indexer manager/proxy"
-        logo: "https://avatars.githubusercontent.com/u/73049443?s=200&v=4"
-        url: "https://prowlarr.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/prowlarr/android-chrome-maskable-512x512.png
+        url: https://prowlarr.${CLUSTER_DOMAIN}
         <<: *Local
       - name: qBittorrent
         subtitle: Torrent downloader
-        logo: "https://user-images.githubusercontent.com/30808176/29239854-02cef3ca-7f76-11e7-8a5c-bdfa4b683840.png"
-        url: "https://qbittorrent.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/qbittorrent/android-chrome-maskable-512x512.png
+        url: https://qbittorrent.${CLUSTER_DOMAIN}
         <<: *Local
       - name: NZBGet
         subtitle: Usenet downloader
-        logo: "https://avatars.githubusercontent.com/u/3368377?s=280&v=4"
-        url: "https://nzbget.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/nzbget/android-chrome-maskable-512x512.png
+        url: https://nzbget.${CLUSTER_DOMAIN}
         <<: *Local
       - name: Calibre
-        logo: "https://developer.asustor.com/uploadIcons/0020_999_1573465183_calibre-web_256.png"
-        url: "https://calibre.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/calibre/android-chrome-maskable-512x512.png
+        url: https://calibre.${CLUSTER_DOMAIN}
         subtitle: Book collection manager
 
   - name: Home Automation
     icon: fad fa-solar-system
     items:
       - name: EMQX
-        logo: "https://raw.githubusercontent.com/docker-library/docs/68aa4264fa058f323993fdaceacd63a8acbbeb48/emqx/logo.svg?sanitize=true"
-        url: "https://emqx.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/emqx/android-chrome-maskable-512x512.png
+        url: https://emqx.${CLUSTER_DOMAIN}
       - name: ESPHome
-        logo: "https://esphome.io/_static/favicon-512x512.png"
-        url: "https://esphome.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/esphome/android-chrome-maskable-512x512.png
+        url: https://esphome.${CLUSTER_DOMAIN}
       - name: Zigbee2MQTT
-        logo: "https://www.zigbee2mqtt.io/logo.png"
-        url: "https://zigbee2mqtt.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/zigbee2mqtt/android-chrome-maskable-512x512.png
+        url: https://zigbee2mqtt.${CLUSTER_DOMAIN}
       - name: ZWaveJS2MQTT
-        logo: "https://github.com/zwave-js/zwavejs2mqtt/blob/master/static/logo.png?raw=true"
-        url: "https://zwavejs2mqtt.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/zwavejs2mqtt/android-chrome-maskable-512x512.png
+        url: https://zwavejs2mqtt.${CLUSTER_DOMAIN}
 
   - name: Administration
     icon: fa fa-user-shield
     items:
       - name: Grafana
-        logo: "https://grafana.com/static/img/logos/grafana_logo_swirl-events.svg"
-        url: "https://grafana.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/grafana/android-chrome-maskable-512x512.png
+        url: https://grafana.${CLUSTER_DOMAIN}
       - name: Kubernetes Dashboard
-        logo: "https://camo.githubusercontent.com/5b298bf6b0596795602bd771c5bddbb963e83e0f/68747470733a2f2f692e696d6775722e636f6d2f7031527a586a512e706e67"
-        url: "https://dashboard.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/kubernetes-dashboard/android-chrome-maskable-512x512.png
+        url: https://dashboard.${CLUSTER_DOMAIN}
       - name: Longhorn
-        logo: "https://longhorn.io/img/logos/longhorn-icon-white.png"
-        url: "https://longhorn.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/longhorn/android-chrome-maskable-512x512.png
+        url: https://longhorn.${CLUSTER_DOMAIN}
       - name: Alertmanager
-        logo: "https://cncf-branding.netlify.app/img/projects/prometheus/icon/color/prometheus-icon-color.png"
-        url: "https://alert-manager.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/alertmanager/android-chrome-maskable-512x512.png
+        url: https://alert-manager.${CLUSTER_DOMAIN}
       - name: Prometheus
-        logo: "https://cncf-branding.netlify.app/img/projects/prometheus/icon/color/prometheus-icon-color.png"
-        url: "https://prometheus.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/prometheus/android-chrome-maskable-512x512.png
+        url: https://prometheus.${CLUSTER_DOMAIN}
       - name: Traefik
-        logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0cWHIEJAINHTMJL1vjVapbyAUs2gf9MK4Mg&usqp=CAU"
-        url: "https://traefik.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/traefik/android-chrome-maskable-512x512.png
+        url: https://traefik.${CLUSTER_DOMAIN}
       - name: K10
-        logo: "https://webobjects2.cdw.com/is/image/CDW/6716123?$product-main$"
-        url: "https://k10.${CLUSTER_DOMAIN}/k10/"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/k10/android-chrome-maskable-512x512.png
+        url: https://k10.${CLUSTER_DOMAIN}/k10/
         subtitle: Backup manager
 
   - name: Editors
@@ -198,9 +198,9 @@ services:
     items:
       - name: AppDaemon
         subtitle: Code editor
-        logo: "https://avatars.githubusercontent.com/u/67876516?s=200&v=4"
-        url: "https://appdaemon-code.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/appdaemon-code/android-chrome-maskable-512x512.png
+        url: https://appdaemon-code.${CLUSTER_DOMAIN}
       - name: Home Assistant
         subtitle: Code editor
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Home_Assistant_Logo.svg/200px-Home_Assistant_Logo.svg.png"
-        url: "https://home-assistant-code.${CLUSTER_DOMAIN}"
+        logo: https://home.${CLUSTER_DOMAIN}/assets/data/home-assistant-code/android-chrome-maskable-512x512.png
+        url: https://home-assistant-code.${CLUSTER_DOMAIN}
