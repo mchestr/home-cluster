@@ -27,6 +27,9 @@ spec:
     env:
       TZ: ${TZ}
 
+    strategy:
+      type: RollingUpdate
+
     service:
       main:
         annotations:
