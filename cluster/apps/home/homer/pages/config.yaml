@@ -1,5 +1,5 @@
-title: Home Dashboard
-subtitle: ${CLUSTER_DOMAIN}
+title: ${CLUSTER_DOMAIN}
+subtitle: Applications
 
 header: true
 footer: '<p>Created with <span class="has-text-danger">❤️</span> with <a href="https://bulma.io/">bulma</a>, <a href="https://vuejs.org/">vuejs</a> & <a href="https://fontawesome.com/">font awesome</a> // Fork me on <a href="https://github.com/bastienwirtz/homer"><i class="fab fa-github-alt"></i></a></p>' # set false if you want to hide it.
@@ -52,28 +52,28 @@ links:
 # First level array represent a group.
 # Leave only a "items" key if not using group (group name, icon & tagstyle are optional, section separation will not be displayed).
 services:
-  items:
-    - name: Plex
-      logo: "https://home.${CLUSTER_DOMAIN}/assets/data/plex/android-chrome-maskable-512x512.png"
-      url: "https://plex.${CLUSTER_DOMAIN}"
-      subtitle: Video on demand
-    - name: Overseerr
-      subtitle: Media requests
-      logo: "https://home.${CLUSTER_DOMAIN}/assets/data/overseerr/android-chrome-maskable-512x512.png"
-      url: "https://overseerr.${CLUSTER_DOMAIN}"
-    - name: Home Assistant
-      subtitle: "Home automation system"
-      logo: "https://home.${CLUSTER_DOMAIN}/assets/data/home-assistant/android-chrome-maskable-512x512.png"
-      url: "https://home-assistant.${CLUSTER_DOMAIN}"
-    - name: Calibre Web
-      logo: "https://home.${CLUSTER_DOMAIN}/assets/data/calibre-web/android-chrome-maskable-512x512.png"
-      url: "https://calibre-web.${CLUSTER_DOMAIN}"
-      subtitle: Book collection manager
-    - name: Paperless
-      subtitle: Digital document storage
-      logo: "https://home.${CLUSTER_DOMAIN}/assets/data/paperless/android-chrome-maskable-512x512.png"
-      url: "https://paperless.${CLUSTER_DOMAIN}"
-    - name: BitWarden
-      logo: "https://home.${CLUSTER_DOMAIN}/assets/data/bitwarden/android-chrome-maskable-512x512.png"
-      url: "https://vault.${CLUSTER_DOMAIN}"
-      subtitle: Password manager
+  - items:
+      - name: Plex
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/plex/android-chrome-maskable-512x512.png"
+        url: "https://plex.${CLUSTER_DOMAIN}"
+        subtitle: Video on demand
+      - name: Overseerr
+        subtitle: Media requests
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/overseerr/android-chrome-maskable-512x512.png"
+        url: "https://overseerr.${CLUSTER_DOMAIN}"
+      - name: Home Assistant
+        subtitle: "Home automation system"
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/home-assistant/android-chrome-maskable-512x512.png"
+        url: "https://home-assistant.${CLUSTER_DOMAIN}"
+      - name: Calibre Web
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/calibre-web/android-chrome-maskable-512x512.png"
+        url: "https://calibre-web.${CLUSTER_DOMAIN}"
+        subtitle: Book collection manager
+      - name: Paperless
+        subtitle: Digital document storage
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/paperless/android-chrome-maskable-512x512.png"
+        url: "https://paperless.${CLUSTER_DOMAIN}"
+      - name: BitWarden
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/bitwarden/android-chrome-maskable-512x512.png"
+        url: "https://vault.${CLUSTER_DOMAIN}"
+        subtitle: Password manager
