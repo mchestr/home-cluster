@@ -7,7 +7,6 @@ services:
     items:
       - name: LochNAS
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/lochnas/android-chrome-maskable-512x512.png"
-        <<: *Local
         url: "https://${NAS_ADDR}:5001/"
         subtitle: Synology NAS
       - name: Longhorn
