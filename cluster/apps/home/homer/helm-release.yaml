@@ -54,7 +54,7 @@ spec:
       config:
         enabled: true
         type: configMap
-        existingClaim: homer-config
+        name: homer-config
         mountPath: /www/assets/config.yml
         subPath: config.yaml
       data:
