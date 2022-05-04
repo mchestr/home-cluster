@@ -1,0 +1,78 @@
+title: Home Dashboard
+subtitle: ${CLUSTER_DOMAIN}
+
+header: true
+footer: '<p>Created with <span class="has-text-danger">❤️</span> with <a href="https://bulma.io/">bulma</a>, <a href="https://vuejs.org/">vuejs</a> & <a href="https://fontawesome.com/">font awesome</a> // Fork me on <a href="https://github.com/bastienwirtz/homer"><i class="fab fa-github-alt"></i></a></p>' # set false if you want to hide it.
+
+# Optional theme customization
+theme: default
+colors:
+  light:
+    highlight-primary: "#3367d6"
+    highlight-secondary: "#4285f4"
+    highlight-hover: "#5a95f5"
+    background: "#f5f5f5"
+    card-background: "#ffffff"
+    text: "#363636"
+    text-header: "#ffffff"
+    text-title: "#303030"
+    text-subtitle: "#424242"
+    card-shadow: rgba(0, 0, 0, 0.1)
+    link: "#3273dc"
+    link-hover: "#363636"
+  dark:
+    highlight-primary: "#3367d6"
+    highlight-secondary: "#4285f4"
+    highlight-hover: "#5a95f5"
+    background: "#131313"
+    card-background: "#2b2b2b"
+    text: "#eaeaea"
+    text-header: "#ffffff"
+    text-title: "#fafafa"
+    text-subtitle: "#f5f5f5"
+    card-shadow: rgba(0, 0, 0, 0.4)
+    link: "#3273dc"
+    link-hover: "#ffdd57"
+
+links:
+  - name: Home
+    icon: fas fa-home
+    url: "#"
+  - name: Media
+    icon: fas fa-tv
+    url: "#media"
+  - name: Management
+    icon: fas fa-user-cog
+    url: "#admin"
+  - name: Useful Links
+    icon: fas fa-external-link-alt
+    url: "#links"
+
+# Services
+# First level array represent a group.
+# Leave only a "items" key if not using group (group name, icon & tagstyle are optional, section separation will not be displayed).
+services:
+  - name: Plex
+    logo: https://home.${CLUSTER_DOMAIN}/assets/data/plex/android-chrome-maskable-512x512.png
+    url: https://plex.${CLUSTER_DOMAIN}
+    subtitle: Video on demand
+  - name: Overseerr
+    subtitle: Media requests
+    logo: https://home.${CLUSTER_DOMAIN}/assets/data/overseerr/android-chrome-maskable-512x512.png
+    url: https://overseerr.${CLUSTER_DOMAIN}
+  - name: Home Assistant
+    subtitle: "Home automation system"
+    logo: https://home.${CLUSTER_DOMAIN}/assets/data/home-assistant/android-chrome-maskable-512x512.png
+    url: https://home-assistant.${CLUSTER_DOMAIN}
+  - name: Calibre Web
+    logo: https://home.${CLUSTER_DOMAIN}/assets/data/calibre-web/android-chrome-maskable-512x512.png
+    url: https://calibre-web.${CLUSTER_DOMAIN}
+    subtitle: Book collection manager
+  - name: Paperless
+    subtitle: Digital document storage
+    logo: https://home.${CLUSTER_DOMAIN}/assets/data/paperless/android-chrome-maskable-512x512.png
+    url: https://paperless.${CLUSTER_DOMAIN}
+  - name: BitWarden
+    logo: https://home.${CLUSTER_DOMAIN}/assets/data/bitwarden/android-chrome-maskable-512x512.png
+    url: https://vault.${CLUSTER_DOMAIN}
+    subtitle: Password manager
