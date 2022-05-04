@@ -10,8 +10,8 @@ configMapGenerator:
   - name: traefik-middleware
     files:
       - headers.yml=middleware/headers.yaml
-      - theme-park.yml=middleware/theme-park.yaml
-      - theme-park-addons.yml=middleware/theme-park-addons.yaml
+      - theme-park.yml=middleware/theme-park.go.tmpl
+      - theme-park-addons.yml=middleware/theme-park-addons.go.tmpl
 
 configurations:
   - kustomizeconfig.yaml
