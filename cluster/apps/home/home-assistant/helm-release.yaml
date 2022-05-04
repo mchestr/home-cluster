@@ -29,6 +29,9 @@ spec:
     env:
       TZ: ${TZ}
 
+    podSecurityContext:
+      fsGroup: ${FS_GROUP}
+
     ingress:
       main:
         enabled: true
