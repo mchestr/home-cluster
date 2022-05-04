@@ -6,55 +6,55 @@ services:
     items:
       - name: Radarr
         subtitle: Movie collection manager
-        logo: https://home.${CLUSTER_DOMAIN}/assets/data/radarr/android-chrome-maskable-512x512.png
-        url: https://radarr.${CLUSTER_DOMAIN}
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/radarr/android-chrome-maskable-512x512.png"
+        url: "https://radarr.${CLUSTER_DOMAIN}"
       - name: Radarr 4K
         subtitle: Movie collection manager 4K
-        logo: https://home.${CLUSTER_DOMAIN}/assets/data/radarr-4k/android-chrome-maskable-512x512.png
-        url: https://radarr-4k.${CLUSTER_DOMAIN}
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/radarr-4k/android-chrome-maskable-512x512.png"
+        url: "https://radarr-4k.${CLUSTER_DOMAIN}"
       - name: Sonarr
         subtitle: TV series collection manager
-        logo: https://home.${CLUSTER_DOMAIN}/assets/data/sonarr/android-chrome-maskable-512x512.png
-        url: https://sonarr.${CLUSTER_DOMAIN}
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/sonarr/android-chrome-maskable-512x512.png"
+        url: "https://sonarr.${CLUSTER_DOMAIN}"
       - name: Bazarr
         subtitle: Subtitle manager
-        logo: https://home.${CLUSTER_DOMAIN}/assets/data/bazarr/android-chrome-maskable-512x512.png
-        url: https://bazarr.${CLUSTER_DOMAIN}
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/bazarr/android-chrome-maskable-512x512.png"
+        url: "https://bazarr.${CLUSTER_DOMAIN}"
       - name: Readarr
         subtitle: Book collection manager
-        logo: https://home.${CLUSTER_DOMAIN}/assets/data/readarr/android-chrome-maskable-512x512.png
-        url: https://readarr.${CLUSTER_DOMAIN}
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/readarr/android-chrome-maskable-512x512.png"
+        url: "https://readarr.${CLUSTER_DOMAIN}"
       - name: Lidarr
         subtitle: Music collection manager
-        logo: https://home.${CLUSTER_DOMAIN}/assets/data/lidarr/android-chrome-maskable-512x512.png
-        url: https://lidarr.${CLUSTER_DOMAIN}
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/lidarr/android-chrome-maskable-512x512.png"
+        url: "https://lidarr.${CLUSTER_DOMAIN}"
 
   - name: Downloaders
     icon: "fa fa-tv"
     items:
       - name: qBittorrent
         subtitle: Torrent downloader
-        logo: https://home.${CLUSTER_DOMAIN}/assets/data/qbittorrent/android-chrome-maskable-512x512.png
-        url: https://qbittorrent.${CLUSTER_DOMAIN}
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/qbittorrent/android-chrome-maskable-512x512.png"
+        url: "https://qbittorrent.${CLUSTER_DOMAIN}"
       - name: NZBGet
         subtitle: Usenet downloader
-        logo: https://home.${CLUSTER_DOMAIN}/assets/data/nzbget/android-chrome-maskable-512x512.png
-        url: https://nzbget.${CLUSTER_DOMAIN}
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/nzbget/android-chrome-maskable-512x512.png"
+        url: "https://nzbget.${CLUSTER_DOMAIN}"
 
   - name: Other
     icon: "fa fa-tv"
     items:
       - name: Tautulli
         subtitle: Plex statistics
-        logo: https://home.${CLUSTER_DOMAIN}/assets/data/tautulli/android-chrome-maskable-512x512.png
-        url: https://tautulli.${CLUSTER_DOMAIN}
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/tautulli/android-chrome-maskable-512x512.png"
+        url: "https://tautulli.${CLUSTER_DOMAIN}"
         <<: *Local
       - name: Prowlarr
         subtitle: "Indexer manager/proxy"
-        logo: https://home.${CLUSTER_DOMAIN}/assets/data/prowlarr/android-chrome-maskable-512x512.png
-        url: https://prowlarr.${CLUSTER_DOMAIN}
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/prowlarr/android-chrome-maskable-512x512.png"
+        url: "https://prowlarr.${CLUSTER_DOMAIN}"
         <<: *Local
       - name: Calibre
-        logo: https://home.${CLUSTER_DOMAIN}/assets/data/calibre/android-chrome-maskable-512x512.png
-        url: https://calibre.${CLUSTER_DOMAIN}
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/calibre/android-chrome-maskable-512x512.png"
+        url: "https://calibre.${CLUSTER_DOMAIN}"
         subtitle: Book collection manager

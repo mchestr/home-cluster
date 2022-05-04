@@ -5,18 +5,24 @@ services:
     icon: fas fa-users
     items:
       - name: Charts
+        subtitle: Helm Charts
         url: https://github.com/k8s-at-home/charts/tree/master/charts
       - name: Common Chart
+        subtitle: Common Library Helm Chart
         url: https://github.com/k8s-at-home/library-charts/tree/main/charts/stable/common
       - name: Awesome Home Kubernetes
+        subtitle: Community
         url: https://github.com/k8s-at-home/awesome-home-kubernetes
       - name: Organization
+        subtitle: GitHub Organization Repository
         url: https://github.com/k8s-at-home
 
   - name: GitHub
     icon: fab fa-github
     items:
       - name: Renovate
+        subtitle: Renovate issue
         url: https://github.com/mchestr/cluster-k3s/issues/1
       - name: Repository
+        subtitle: GitOps & Flux Repository
         url: https://github.com/mchestr/cluster-k3s
