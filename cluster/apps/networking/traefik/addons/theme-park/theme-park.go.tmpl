@@ -14,7 +14,7 @@ http:
     {{ $app }}-theme:
       chain:
         middlewares:
-          - theme-headers
+          - networking-theme-headers
           - {{ $app }}-theme-css
     {{ end }}
 
@@ -31,6 +31,6 @@ http:
     {{ $app }}-4k-theme:
       chain:
         middlewares:
-          - theme-headers
+          - networking-theme-headers
           - {{ $app }}-4k-theme-css
     {{ end }}
