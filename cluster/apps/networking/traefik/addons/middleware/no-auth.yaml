@@ -8,4 +8,4 @@ spec:
     middlewares:
       # - name: secure-headers
       - name: rate-limit
-      - name: error-pages
+      # - name: error-pages
