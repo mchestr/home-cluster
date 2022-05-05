@@ -6,5 +6,5 @@ metadata:
 spec:
   chain:
     middlewares:
-      - name: authentik
+      - name: authentik-forward-auth
       - name: no-auth
