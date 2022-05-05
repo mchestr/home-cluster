@@ -16,12 +16,14 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
+    fullnameOverride: authentik
     image:
       repository: ghcr.io/goauthentik/server
       tag: 2022.4.1
 
     ingress:
       enabled: true
+      ingressClassName: "traefik"
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-production
         external-dns.alpha.kubernetes.io/target: ipv4.${CLUSTER_DOMAIN}
