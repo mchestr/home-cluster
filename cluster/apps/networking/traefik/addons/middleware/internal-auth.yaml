@@ -7,5 +7,7 @@ metadata:
 spec:
   chain:
     middlewares:
-      - name: rfc1918-ips
+      - name: local-only-access
+      - name: auth-sso
+        namespace: auth-system
       - name: error-pages
