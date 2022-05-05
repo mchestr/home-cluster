@@ -4,11 +4,11 @@ kind: Kustomization
 resources:
   - auth-system
   - cert-manager
+  - database-system
   - flux-system
   - home
   - kube-system
   - media
-  - messaging
   - monitoring
   - networking
   - system-upgrade
