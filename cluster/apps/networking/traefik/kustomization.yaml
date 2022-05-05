@@ -5,7 +5,7 @@ resources:
   - addons
   - helm-release.yaml
   - secret.sops.yaml
-  - service-monitor
+  - service-monitor.yaml
 
 configurations:
   - kustomizeconfig.yaml
