@@ -8,6 +8,5 @@ spec:
   chain:
     middlewares:
       - name: local-only-access
-      - name: secure
-        namespace: auth-system
+      - name: authentik
       - name: error-pages
