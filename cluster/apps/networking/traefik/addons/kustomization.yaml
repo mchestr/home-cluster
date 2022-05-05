@@ -4,13 +4,3 @@ kind: Kustomization
 resources:
   - dashboard
   - theme-park
-
-configMapGenerator:
-  - name: traefik-middleware
-    files:
-      # Create header middleware dynamically using traefik go templates, instead of many CRDs
-      - theme-park.yml=middleware/theme-park.go.tmpl
-      - theme-park-addons.yml=middleware/theme-park-addons.go.tmpl
-
-configurations:
-  - kustomizeconfig.yaml
