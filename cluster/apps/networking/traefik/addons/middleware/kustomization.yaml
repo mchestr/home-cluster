@@ -6,4 +6,4 @@ resources:
   - external-auth.yaml
   - internal-auth.yaml
   - internal.yaml
-  - rfc1918.yaml
+  - local-only-access.yaml
