@@ -26,6 +26,7 @@ spec:
       tag: 1.24.0
     strategy:
       type: RollingUpdate
+
     # https://github.com/dani-garcia/vaultwarden/blob/main/.env.template
     env:
       TZ: ${TZ}
