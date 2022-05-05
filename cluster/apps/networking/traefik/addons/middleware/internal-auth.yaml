@@ -8,6 +8,6 @@ spec:
   chain:
     middlewares:
       - name: local-only-access
-      - name: auth-sso
+      - name: secure
         namespace: auth-system
       - name: error-pages

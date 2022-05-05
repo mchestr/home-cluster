@@ -7,6 +7,6 @@ metadata:
 spec:
   chain:
     middlewares:
-      - name: auth-sso
+      - name: secure
         namespace: auth-system
       - name: error-pages
