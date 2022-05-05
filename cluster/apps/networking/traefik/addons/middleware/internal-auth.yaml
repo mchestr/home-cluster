@@ -7,4 +7,5 @@ spec:
   chain:
     middlewares:
       - name: internal
-      - name: authentik-forward-auth
+      - name: ak-outpost-authentik
+        namespace: auth-system
