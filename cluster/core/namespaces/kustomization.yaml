@@ -5,6 +5,7 @@ resources:
   - auth-system.yaml
   - cert-manager.yaml
   - csi-driver-nfs.yaml
+  - database-system.yaml
   - home.yaml
   - kasten-io.yaml
   - kubernetes-dashboard.yaml
