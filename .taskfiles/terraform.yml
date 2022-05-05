@@ -2,6 +2,23 @@
 version: "3"
 
 tasks:
+  init:authentik:
+    desc: Initialize terraform
+    dir: provision/terraform/authentik
+    cmds:
+      - "terraform init"
+
+  plan:authentik:
+    desc: Prepare all the k8s nodes for running k3s
+    dir: provision/terraform/authentik
+    cmds:
+      - "terraform plan"
+
+  apply:authentik:
+    desc: Prepare all the k8s nodes for running k3s
+    dir: provision/terraform/authentik
+    cmds:
+      - "terraform apply"
 
   init:cloudflare:
     desc: Initialize terraform
