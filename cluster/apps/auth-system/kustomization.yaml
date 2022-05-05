@@ -4,3 +4,4 @@ kind: Kustomization
 namespace: auth-system
 resources:
   - authentik
+  - vaultwarden
