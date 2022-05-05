@@ -25,7 +25,7 @@ spec:
   values:
     image:
       repository: zwavejs/zwavejs2mqtt
-      tag: 6.8.1
+      tag: 6.9.0
     env:
       TZ: ${TZ}
 
