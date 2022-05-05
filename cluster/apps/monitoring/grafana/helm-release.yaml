@@ -116,6 +116,8 @@ spec:
         deleteDatasources:
           - name: Loki
             orgId: 1
+          - name: Prometheus Direct
+            orgId: 1
         datasources: []
     grafana.ini:
       server:
