@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
   - error-handling.yaml
   - external-auth.yaml
-  - https-redirect.yaml
   - internal-auth.yaml
   - internal.yaml
   - rfc1918.yaml
