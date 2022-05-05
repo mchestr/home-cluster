@@ -61,6 +61,7 @@ spec:
       - grafana-polystat-panel
       - mxswat-separator-panel
       - farski-blendstat-panel
+      - redis-datasource
     serviceMonitor:
       enabled: true
     serviceAccount:
