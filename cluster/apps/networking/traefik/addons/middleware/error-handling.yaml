@@ -3,7 +3,6 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
   name: error-pages
-  namespace: traefik-system
 spec:
   errors:
     status:

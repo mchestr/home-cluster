@@ -2,10 +2,10 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: internal-auth
+  name: no-auth
 spec:
   chain:
     middlewares:
-      - name: local-only-access
-      - name: authentik
-      - name: no-auth
+      - name: secure-headers
+      - name: rate-limit
+      - name: error-pages
