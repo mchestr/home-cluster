@@ -14,7 +14,7 @@ http:
     {{ $app }}-theme:
       chain:
         middlewares:
-          - networking-theme-headers
+          - networking-theme-headers@kubernetescrd
           - {{ $app }}-theme-css
     {{ end }}
 
@@ -31,6 +31,6 @@ http:
     {{ $app }}-4k-theme:
       chain:
         middlewares:
-          - networking-theme-headers
+          - networking-theme-headers@kubernetescrd
           - {{ $app }}-4k-theme-css
     {{ end }}
