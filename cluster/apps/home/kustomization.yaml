@@ -11,6 +11,5 @@ resources:
   - paperless
   - theme-park
   - unifi
-  - vaultwarden
   - zigbee2mqtt
   - zwavejs2mqtt
