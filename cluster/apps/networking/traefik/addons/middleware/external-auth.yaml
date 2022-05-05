@@ -7,6 +7,5 @@ metadata:
 spec:
   chain:
     middlewares:
-      - name: secure
-        namespace: auth-system
+      - name: authentik
       - name: error-pages
