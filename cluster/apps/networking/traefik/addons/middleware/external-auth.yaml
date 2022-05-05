@@ -3,9 +3,8 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
   name: external-auth
-  namespace: traefik-system
 spec:
   chain:
     middlewares:
       - name: authentik
-      - name: error-pages
+      - name: no-auth
