@@ -22,7 +22,6 @@ spec:
 
     ingress:
       enabled: true
-      ingressClassName: "traefik"
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-production
         external-dns.alpha.kubernetes.io/target: ipv4.${CLUSTER_DOMAIN}
@@ -34,7 +33,7 @@ spec:
           paths:
             - path: /
       tls:
-        - secretName: "{{ .Release.Name }}-tls"
+        - secretName: authentik-tls
           hosts:
             - *host
 
