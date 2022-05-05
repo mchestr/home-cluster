@@ -6,6 +6,6 @@ metadata:
 spec:
   chain:
     middlewares:
-      # - name: secure-headers
+      - name: secure-headers
       - name: rate-limit
-      # - name: error-pages
+      - name: error-pages
