@@ -5,6 +5,7 @@ namespace: networking
 resources:
   - blocky
   - cloudflare-ddns
+  - error-pages
   - external-dns
   - k8s-gateway
   - traefik

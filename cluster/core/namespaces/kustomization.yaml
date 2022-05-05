@@ -9,6 +9,7 @@ resources:
   - kubernetes-dashboard.yaml
   - longhorn-system.yaml
   - media.yaml
+  - messaging.yaml
   - metallb-system.yaml
   - monitoring.yaml
   - networking.yaml
