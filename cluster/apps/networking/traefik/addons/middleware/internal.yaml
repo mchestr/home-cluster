@@ -7,4 +7,4 @@ spec:
   chain:
     middlewares:
       - name: rfc1918-ips
-      - name: error-pages
+      - name: no-auth

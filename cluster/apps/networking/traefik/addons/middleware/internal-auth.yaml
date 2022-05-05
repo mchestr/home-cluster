@@ -6,6 +6,5 @@ metadata:
 spec:
   chain:
     middlewares:
-      - name: local-only-access
-      - name: authentik-forward-auth
-      - name: no-auth
+      - name: internal
+      # - name: authentik-forward-auth
