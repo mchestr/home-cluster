@@ -12,7 +12,7 @@ spec:
   jobLabel: traefik
   namespaceSelector:
     matchNames:
-      - traefik-system
+      - networking
   selector:
     matchLabels:
       app.kubernetes.io/name: traefik
