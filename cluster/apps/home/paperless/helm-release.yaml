@@ -56,7 +56,7 @@ spec:
       PAPERLESS_TIKA_ENDPOINT: http://{{ .Release.Name }}-tika:9998
       PAPERLESS_TIME_ZONE: ${TZ}
       PAPERLESS_URL: https://{{ .Release.Name }}.${CLUSTER_DOMAIN}
-      PAPERLESS_REDIS: redis://redis-headless.messaging.svc.cluster.local:6379
+      PAPERLESS_REDIS: redis://redis-headless.database-system:6379
       PAPERLESS_DBHOST: ${NAS_ADDR}
 
     persistence:
