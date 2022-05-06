@@ -1,0 +1,33 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-calibre-web-ingress
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: calibre-web
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: networking
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: traefik
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-calibre-web-egress
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: calibre-web
+  policyTypes:
+    - Egress
+  egress:
+    - {}
