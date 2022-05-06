@@ -6,6 +6,6 @@ metadata:
 spec:
   chain:
     middlewares:
-      - name: security-auth
+      - name: security
         namespace: auth-system
       - name: no-auth
