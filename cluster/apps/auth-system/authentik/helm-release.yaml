@@ -41,9 +41,6 @@ spec:
           hosts:
             - *host
 
-    geoip:
-      enabled: true
-
     authentik:
       log_level: debug
       outposts:
