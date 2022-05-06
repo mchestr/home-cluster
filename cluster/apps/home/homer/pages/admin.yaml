@@ -26,6 +26,9 @@ services:
       - name: Kubernetes Dashboard
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/kubernetes-dashboard/android-chrome-maskable-512x512.png"
         url: "https://dashboard.${CLUSTER_DOMAIN}"
+      - name: Authentik Outpost
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/authentik/android-chrome-maskable-512x512.png"
+        url: "https://outpost.${CLUSTER_DOMAIN}"
       - name: Grafana
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/grafana/android-chrome-maskable-512x512.png"
         url: "https://grafana.${CLUSTER_DOMAIN}"
