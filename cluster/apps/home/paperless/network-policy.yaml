@@ -17,15 +17,6 @@ spec:
         - podSelector:
             matchLabels:
               app.kubernetes.io/name: traefik
-    - from:
-        - podSelector:
-            matchLabels:
-              app.kubernetes.io/name: paperless-gotenburg
-    - from:
-        - podSelector:
-            matchLabels:
-              app.kubernetes.io/name: paperless-tika
-
 
 ---
 apiVersion: networking.k8s.io/v1
