@@ -6,6 +6,6 @@ metadata:
 spec:
   chain:
     middlewares:
-      - name: ak-outpost-authentik
+      - name: security-auth
         namespace: auth-system
       - name: no-auth
