@@ -1,0 +1,10 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: security-auth
+spec:
+  chain:
+    middlewares:
+      - name: ak-outpost-authentik-embedded-outpost
+        namespace: auth-system
