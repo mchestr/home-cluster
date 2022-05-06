@@ -4,5 +4,6 @@ kind: Kustomization
 resources:
   - helm-release.yaml
   - secret.sops.yaml
+  - network-policy.yaml
   - persistent-volume.yaml
   - persistent-volume-claim.yaml
