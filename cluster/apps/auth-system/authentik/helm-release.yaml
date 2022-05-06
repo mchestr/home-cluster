@@ -15,6 +15,9 @@ spec:
         name: authentik-charts
         namespace: flux-system
       interval: 5m
+  valuesFrom:
+    - kind: Secret
+      name: authentik-secrets
   values:
     fullnameOverride: authentik
     image:
@@ -41,72 +44,6 @@ spec:
     geoip:
       enabled: true
 
-    envValueFrom:
-      AUTHENTIK_EMAIL__HOST:
-        secretKeyRef:
-          name: authentik-secrets
-          key: AUTHENTIK_EMAIL__HOST
-      AUTHENTIK_EMAIL__PORT:
-        secretKeyRef:
-          name: authentik-secrets
-          key: AUTHENTIK_EMAIL__PORT
-      AUTHENTIK_EMAIL__USERNAME:
-        secretKeyRef:
-          name: authentik-secrets
-          key: AUTHENTIK_EMAIL__USERNAME
-      AUTHENTIK_EMAIL__PASSWORD:
-        secretKeyRef:
-          name: authentik-secrets
-          key: AUTHENTIK_EMAIL__PASSWORD
-      AUTHENTIK_EMAIL__USE_TLS:
-        secretKeyRef:
-          name: authentik-secrets
-          key: AUTHENTIK_EMAIL__USE_TLS
-      AUTHENTIK_EMAIL__FROM:
-        secretKeyRef:
-          name: authentik-secrets
-          key: AUTHENTIK_EMAIL__FROM
-      AUTHENTIK_SECRET_KEY:
-        secretKeyRef:
-          name: authentik-secrets
-          key: AUTHENTIK_SECRET_KEY
-      AUTHENTIK_POSTGRESQL__HOST:
-        secretKeyRef:
-          name: authentik-secrets
-          key: AUTHENTIK_POSTGRESQL__HOST
-      AUTHENTIK_POSTGRESQL__NAME:
-        secretKeyRef:
-          name: authentik-secrets
-          key: AUTHENTIK_POSTGRESQL__NAME
-      AUTHENTIK_POSTGRESQL__USER:
-        secretKeyRef:
-          name: authentik-secrets
-          key: AUTHENTIK_POSTGRESQL__USER
-      AUTHENTIK_POSTGRESQL__PASSWORD:
-        secretKeyRef:
-          name: authentik-secrets
-          key: AUTHENTIK_POSTGRESQL__PASSWORD
-      AUTHENTIK_REDIS__HOST:
-        secretKeyRef:
-          name: authentik-secrets
-          key: AUTHENTIK_REDIS__HOST
-      AUTHENTIK_REDIS__CACHE_DB:
-        secretKeyRef:
-          name: authentik-secrets
-          key: AUTHENTIK_REDIS__CACHE_DB
-      AUTHENTIK_REDIS__MESSAGE_QUEUE_DB:
-        secretKeyRef:
-          name: authentik-secrets
-          key: AUTHENTIK_REDIS__MESSAGE_QUEUE_DB
-      AUTHENTIK_REDIS__WS_DB:
-        secretKeyRef:
-          name: authentik-secrets
-          key: AUTHENTIK_REDIS__WS_DB
-      AUTHENTIK_REDIS__OUTPUT_SESSION_DB:
-        secretKeyRef:
-          name: authentik-secrets
-          key: AUTHENTIK_REDIS__OUTPUT_SESSION_DB
-
     authentik:
       log_level: debug
       outposts:
@@ -122,15 +59,3 @@ spec:
         create: true
       serviceMonitor:
         create: true
-
-  valuesFrom:
-    - kind: Secret
-      name: authentik-secrets
-      valuesKey: AUTHENTIK_GEOIP_ACCOUNT_ID
-      targetPath: geoip.accountId
-      optional: false
-    - kind: Secret
-      name: authentik-secrets
-      valuesKey: AUTHENTIK_GEOIP_LICENSE_KEY
-      targetPath: geoip.licenseKey
-      optional: false
