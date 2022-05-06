@@ -80,7 +80,7 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
+          traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
         hosts:
           - &am-host "alert-manager.${CLUSTER_DOMAIN}"
         tls:
@@ -150,7 +150,7 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-forward-auth@kubernetescrd
+          traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
         hosts:
           - &host "prometheus.${CLUSTER_DOMAIN}"
         tls:

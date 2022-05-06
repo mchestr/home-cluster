@@ -37,6 +37,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: ipv4.${CLUSTER_DOMAIN}
           external-dns/is-public: "true"
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: networking-no-auth@kubernetescrd
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:
