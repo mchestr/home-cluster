@@ -59,7 +59,7 @@ spec:
       PAPERLESS_REDIS: redis://redis-headless.database-system:6379
       PAPERLESS_DBHOST: ${NAS_ADDR}
       PAPERLESS_ENABLE_HTTP_REMOTE_USER: true
-      PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME: X-Authentik-Email
+      PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME: HTTP_X_AUTHENTIK_USERNAME
 
     persistence:
       data:
