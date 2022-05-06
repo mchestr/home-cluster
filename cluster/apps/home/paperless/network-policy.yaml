@@ -1,0 +1,33 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-paperless-ingress
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: paperless
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              ns: networking
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: traefik
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-paperless-egress
+spec:
+  policyTypes:
+    - Egress
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: paperless
+  egress:
+    - action: Allow
