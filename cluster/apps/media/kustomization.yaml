@@ -17,6 +17,7 @@ resources:
   - readarr
   - sonarr
   - tautulli
+  - trash-updater
   - unpackerr
   - persistent-volume.yaml
   - persistent-volume-claim.yaml
