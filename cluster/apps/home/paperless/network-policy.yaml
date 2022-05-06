@@ -10,7 +10,8 @@ spec:
   policyTypes:
     - Ingress
   ingress:
-    - from:
+    - action: Allow
+      from:
         - namespaceSelector:
             matchLabels:
               ns: networking
