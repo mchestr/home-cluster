@@ -41,6 +41,7 @@ spec:
           kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: networking-no-auth@kubernetescrd
+
         hosts:
           - host: &host "plex.${CLUSTER_DOMAIN}"
             paths:
