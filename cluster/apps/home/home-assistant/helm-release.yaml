@@ -73,6 +73,8 @@ spec:
           repository: codercom/code-server
           tag: 4.4.0
         workingDir: /config
+        podSecurityContext:
+          fsGroup: ${FS_GROUP}
         args:
           - --auth
           - "none"
