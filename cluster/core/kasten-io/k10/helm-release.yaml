@@ -28,6 +28,7 @@ spec:
       retries: 5
       remediateLastFailure: true # remediate the last failure, when no retries remain
     cleanupOnFail: true
+  # https://github.com/kastenhq/partner-charts/blob/main/charts/k10/k10/4.5.1400/values.yaml
   values:
     eula:
       accept: true
