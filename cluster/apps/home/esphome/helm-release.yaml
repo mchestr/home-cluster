@@ -54,4 +54,4 @@ spec:
         enabled: true
         type: nfs
         server: ${NAS_ADDR}
-        path: /volume1/shared/code/esphome/config
+        path: /volume1/shared/code/esphome
