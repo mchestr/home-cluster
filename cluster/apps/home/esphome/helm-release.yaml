@@ -52,4 +52,6 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: code-esphome-pv-claim
+        type: nfs
+        server: ${NAS_ADDR}
+        path: /volume1/shared/code/{{ .Release.Name }}/config
