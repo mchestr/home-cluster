@@ -3,6 +3,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: code-appdaemon-pv
+  namespace: home
 spec:
   capacity:
     storage: 10Gi

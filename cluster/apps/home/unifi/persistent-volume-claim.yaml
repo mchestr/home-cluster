@@ -3,6 +3,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: code-unifi-pv-claim
+  namespace: home
 spec:
   accessModes:
     - ReadWriteMany
