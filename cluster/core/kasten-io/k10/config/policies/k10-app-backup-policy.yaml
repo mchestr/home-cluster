@@ -49,10 +49,5 @@ spec:
       - key: k10.kasten.io/appNamespace
         operator: In
         values:
-          - auth-system
           - database-system
-          - default
-          - home
           - media
-          - monitoring
-          - networking
