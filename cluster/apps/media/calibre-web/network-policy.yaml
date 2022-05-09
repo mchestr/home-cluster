@@ -24,6 +24,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: allow-calibre-web-egress
+  namespace: media
 spec:
   podSelector:
     matchLabels:
