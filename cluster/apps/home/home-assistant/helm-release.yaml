@@ -56,7 +56,9 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: code-home-assistant-pv-claim
+        type: nfs
+        server: ${NAS_ADDR}
+        path: /volume1/shared/code/home-assistant/config
 
     metrics:
       enabled: true
