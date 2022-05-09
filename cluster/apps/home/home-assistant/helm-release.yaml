@@ -58,7 +58,7 @@ spec:
         enabled: true
         type: nfs
         server: ${NAS_ADDR}
-        path: /volume1/shared/code/home-assistant/config
+        path: /volume1/shared/code/home-assistant
 
     metrics:
       enabled: true
