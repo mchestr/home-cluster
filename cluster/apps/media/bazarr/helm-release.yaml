@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
-      version: 10.5.1
+      version: 10.5.2
       chart: bazarr
       sourceRef:
         kind: HelmRepository
