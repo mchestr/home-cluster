@@ -4,7 +4,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: postgres-pvc
   labels:
-    kasten.io/backup-volume: "enabled"
+    kasten.io/backup-volume: enabled
 spec:
   storageClassName: longhorn
   accessModes:
