@@ -1,0 +1,27 @@
+apiVersion: config.kio.kasten.io/v1alpha1
+kind: Policy
+metadata:
+  name: media-backup
+  namespace: kasten-io
+spec:
+  comment: ""
+  paused: false
+  actions:
+    - action: backup
+      backupParameters:
+        profile:
+          namespace: kasten-io
+          name: k10-disaster-recovery
+  frequency: "@hourly"
+  retention:
+    daily: 1
+    hourly: 4
+    monthly: 1
+    weekly: 1
+    yearly: 1
+  selector:
+    matchExpressions:
+      - key: kasten.io/backup-volume
+        operator: In
+        values:
+          - enabled
