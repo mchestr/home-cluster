@@ -58,4 +58,6 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: code-unifi-pv-claim
+        type: nfs
+        server: ${NAS_ADDR}
+        path: /volume1/shared/code/unifi

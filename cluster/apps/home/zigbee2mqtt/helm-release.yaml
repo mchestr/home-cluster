@@ -51,7 +51,9 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: code-zigbee2mqtt-pv-claim
+        type: nfs
+        server: ${NAS_ADDR}
+        path: /volume1/shared/code/zigbee2mqtt
         mountPath: /data
       usb:
         enabled: true
