@@ -3,6 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: redis-datasource
+  namespace: database-system
   labels:
     grafana_datasource: "1"
 data:
