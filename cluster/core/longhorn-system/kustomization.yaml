@@ -5,4 +5,5 @@ resources:
   - helm-release.yaml
   - prometheus-rules.yaml
   - service-monitor.yaml
+  - snapshot-controller
   - volume-snapshot-class.yaml
