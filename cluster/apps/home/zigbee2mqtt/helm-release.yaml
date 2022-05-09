@@ -65,7 +65,7 @@ spec:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
             - matchExpressions:
-                - key: zigbee-controller
+                - key: custom-zigbee
                   operator: In
                   values:
                     - "true"

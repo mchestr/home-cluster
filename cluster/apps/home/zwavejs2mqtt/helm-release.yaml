@@ -63,7 +63,7 @@ spec:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
             - matchExpressions:
-                - key: zwave-controller
+                - key: custom-zwave
                   operator: In
                   values:
                     - "true"
