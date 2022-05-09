@@ -3,6 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: promethus-datasource
+  namespace: monitoring
   labels:
     grafana_datasource: "1"
 data:

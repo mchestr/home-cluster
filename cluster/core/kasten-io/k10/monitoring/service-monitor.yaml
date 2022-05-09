@@ -3,6 +3,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: k10
+  namespace: kasten-io
 spec:
   namespaceSelector:
     matchNames:

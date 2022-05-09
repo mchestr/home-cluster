@@ -3,6 +3,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
   name: theme-headers
+  namespace: networking
 spec:
   # Set request headers to prioritize supported encoding.
   headers:
@@ -14,6 +15,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
   name: qbittorrent-headers
+  namespace: networking
 spec:
   # set CSP for qbittorrent, otherwise need to do manually in the application.
   headers:

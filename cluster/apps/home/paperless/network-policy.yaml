@@ -3,6 +3,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: allow-paperless-ingress
+  namespace: home
 spec:
   podSelector:
     matchLabels:
@@ -23,6 +24,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: allow-paperless-egress
+  namespace: home
 spec:
   podSelector:
     matchLabels:
