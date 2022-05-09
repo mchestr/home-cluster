@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
-      version: 16.2.2
+      version: 16.2.3
       chart: radarr
       sourceRef:
         kind: HelmRepository
