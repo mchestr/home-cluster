@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
-      version: 5.3.1
+      version: 5.3.2
       chart: calibre
       sourceRef:
         kind: HelmRepository
