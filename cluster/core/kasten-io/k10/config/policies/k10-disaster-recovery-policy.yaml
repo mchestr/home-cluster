@@ -26,6 +26,3 @@ spec:
         operator: In
         values:
           - kasten-io
-          - auth-system
-          - home
-          - media
