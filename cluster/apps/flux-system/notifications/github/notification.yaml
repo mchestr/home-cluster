@@ -3,6 +3,7 @@ apiVersion: notification.toolkit.fluxcd.io/v1beta1
 kind: Provider
 metadata:
   name: github
+  namespace: flux-system
 spec:
   type: github
   address: https://github.com/mchestr/cluster-k3s
@@ -13,6 +14,7 @@ apiVersion: notification.toolkit.fluxcd.io/v1beta1
 kind: Alert
 metadata:
   name: github
+  namespace: flux-system
 spec:
   providerRef:
     name: github
