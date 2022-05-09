@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
-      version: 4.9.1
+      version: 4.9.2
       chart: unifi
       sourceRef:
         kind: HelmRepository
