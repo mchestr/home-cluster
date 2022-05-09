@@ -27,6 +27,7 @@ spec:
     persistence:
       defaultClass: true
       defaultClassReplicaCount: 2
+      defaultFsType: ext4
     defaultSettings:
       backupTarget: nfs://${NAS_ADDR}:/volume1/backups
       defaultReplicaCount: 2
@@ -38,6 +39,19 @@ spec:
       concurrentAutomaticEngineUpgradePerNodeLimit: 1
       replicaSoftAntiAffinity: false
       storageMinimalAvailablePercentage: 10
+      storageOverProvisioningPercentage: "200%"
+      upgradeChecker: false
+      priorityClass: high-priority
+      autoSalvage: true
+      autoDeletePodWhenVolumeDetachedUnexpectedly: true
+      disableSchedulingOnCordonedNode: false
+      replicaZoneSoftAntiAffinity: false
+      volumeAttachmentRecoveryPolicy: "wait"
+      mkfsExt4Parameters: -O ^64bit,^metadata_csum
+      replicaReplenishmentWaitInterval: 300
+      allowVolumeCreationWithDegradedAvailability: true
+      guaranteedEngineManagerCPU: 8
+      guaranteedReplicaManagerCPU: 8
     ingress:
       enabled: true
       host: longhorn.${CLUSTER_DOMAIN}
@@ -48,3 +62,27 @@ spec:
         kubernetes.io/ingress.class: traefik
         traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    longhornManager:
+      priorityClass: system-node-critical
+    longhornDriver:
+      priorityClass: system-node-critical
+      tolerations:
+        - key: node.kubernetes.io/unreachable
+          operator: Exists
+          effect: NoExecute
+          # Evict pods from the node if the node becomes unreachable after this toleration timer expires.
+          tolerationSeconds: 15
+    longhornUI:
+      tolerations:
+        - key: node.kubernetes.io/unreachable
+          operator: Exists
+          effect: NoExecute
+          # Evict pods from the node if the node becomes unreachable after this toleration timer expires.
+          tolerationSeconds: 15
+    resources:
+      requests:
+        cpu: 50m
+        memory: 50Mi
+      limits:
+        cpu: 250m
+        memory: 500Mi
