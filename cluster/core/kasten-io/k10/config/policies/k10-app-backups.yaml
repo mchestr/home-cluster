@@ -1,0 +1,58 @@
+---
+apiVersion: config.kio.kasten.io/v1alpha1
+kind: Policy
+metadata:
+  name: k10-disaster-recovery-policy
+  namespace: kasten-io
+spec:
+  actions:
+    - action: backup
+      backupParameters:
+        filters:
+          includeResources:
+            - matchExpressions:
+                - key: kasten.io/backup-volume
+                  operator: In
+                  values:
+                    - enabled
+        profile:
+          name: k10-disaster-recovery
+          namespace: kasten-io
+    - action: export
+      exportParameters:
+        frequency: "@daily"
+        receiveString: bIzAPpoanmEcwQZShgoy3OpXTFFOMULD/THSpFg5O8h/M+p0rX6UWqOFQeKinrJoKQnozKuNGU+u7zELhTr90xJkrCEXNM6bPo/3x+2PwYCDrapQ3XdQbAKQ3YXODrxTG5NTmG1JmORis7OQ7Nzcyn+IJMyWmG5q4k+aI1nJ6vrQlZAXUhDTl2m+iX37CS973JVdSMvxr2RE00o3MTiL9929XXSzHSjrpihO/IrbWJdep4bOOnTYbsUDs6SuidqyZJbfIPjMK9NzS3DooksmsjTbo7vTeOjY1UbYQ2wmGyh3X2PGqHE35jmptdzN48x/3QE0Lclcw2tG1N4zijvcQqJo/7hEWAkM+JJmld/rqKLlkhfJh5qN4DQ5wwzx3Xs6uZSvNK9W3+2kHjI/l9y01G/sA4AgNgcIq6nlbhyiWA
+        profile:
+          name: k10-disaster-recovery
+          namespace: kasten-io
+        migrationToken:
+          name: k10-disaster-recovery-policy-migration-token-x4jm5
+          namespace: kasten-io
+        exportData:
+          enabled: true
+          overrides:
+            - storageClassName: nfs-csi
+              enabled: false
+            - storageClassName: nfs-csi-secure
+              enabled: false
+      retention: {}
+  createdBy: kasten-io:k10-k10
+  frequency: "@hourly"
+  retention:
+    daily: 1
+    hourly: 4
+    monthly: 1
+    weekly: 1
+    yearly: 1
+  selector:
+    matchExpressions:
+      - key: k10.kasten.io/appNamespace
+        operator: In
+        values:
+          - auth-system
+          - database-system
+          - default
+          - home
+          - media
+          - monitoring
+          - networking
