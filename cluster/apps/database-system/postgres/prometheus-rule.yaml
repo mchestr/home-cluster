@@ -5,6 +5,7 @@ metadata:
   annotations:
     prometheus-operator-validated: 'true'
   name: postgres
+  namespace: database-system
 spec:
   groups:
     - name: postgres
