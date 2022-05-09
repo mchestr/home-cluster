@@ -2,7 +2,7 @@
 apiVersion: config.kio.kasten.io/v1alpha1
 kind: Policy
 metadata:
-  name: k10-disaster-recovery-policy
+  name: k10-app-backup-policy
   namespace: kasten-io
 spec:
   actions:
@@ -26,7 +26,7 @@ spec:
           name: k10-disaster-recovery
           namespace: kasten-io
         migrationToken:
-          name: k10-disaster-recovery-policy-migration-token-x4jm5
+          name: k10-app-backup-policy-migration-token-x4jm5
           namespace: kasten-io
         exportData:
           enabled: true
