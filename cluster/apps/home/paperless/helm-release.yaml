@@ -65,10 +65,14 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: paperless-data-pv-claim
+        type: nfs
+        server: ${NAS_ADDR}
+        path: /volume1/shared/code/paperless/data
       media:
         enabled: true
-        existingClaim: paperless-media-pv-claim
+        type: nfs
+        server: ${NAS_ADDR}
+        path: /volume1/shared/code/paperless/media
 
     podSecurityContext:
       fsGroup: ${FS_GROUP}
