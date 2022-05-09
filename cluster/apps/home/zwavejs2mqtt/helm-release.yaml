@@ -63,7 +63,7 @@ spec:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
             - matchExpressions:
-                - key: custom-zwave
+                - key: feature.node.kubernetes.io/custom-zwave
                   operator: In
                   values:
                     - "true"
