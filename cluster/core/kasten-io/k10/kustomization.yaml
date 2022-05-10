@@ -7,3 +7,4 @@ resources:
   - monitoring
   - persistent-volume.yaml
   - secret.sops.yaml
+  - secret-helm.sops.yaml
