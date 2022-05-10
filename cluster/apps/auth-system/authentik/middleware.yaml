@@ -7,5 +7,31 @@ metadata:
 spec:
   chain:
     middlewares:
-      - name: ak-outpost-authentik-embedded-outpost
+      - name: ak-outpost-authentik
         namespace: auth-system
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: ak-outpost-authentik
+  namespace: auth-system
+spec:
+  forwardAuth:
+    address: >-
+      http://ak-outpost-authentik-embedded-outpost.auth-system:9000/outpost.goauthentik.io/auth/traefik
+    authResponseHeaders:
+      # Enable Basic Auth
+      - authorization
+      - X-authentik-username
+      - X-authentik-groups
+      - X-authentik-email
+      - X-authentik-name
+      - X-authentik-uid
+      - X-authentik-jwt
+      - X-authentik-meta-jwks
+      - X-authentik-meta-outpost
+      - X-authentik-meta-provider
+      - X-authentik-meta-app
+      - X-authentik-meta-version
+    authResponseHeadersRegex: ''
+    trustForwardHeader: true
