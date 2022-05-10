@@ -34,6 +34,8 @@ spec:
       TZ: ${TZ}
       DASH_URL: "http://$HOSTNAME:5050"
       HA_URL: http://home-assistant:8123
+    podSecurityContext:
+      fsGroup: ${FS_GROUP}
 
     ingress:
       main:
@@ -55,7 +57,9 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: code-appdaemon-pv-claim
+        type: nfs
+        server: ${NAS_ADDR}
+        path: /volume1/shared/code/appdaemon
 
     addons:
       codeserver:
