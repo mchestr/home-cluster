@@ -40,7 +40,7 @@ spec:
   frequency: "@hourly"
   retention:
     daily: 1
-    hourly: 4
+    hourly: 1
     monthly: 1
     weekly: 1
     yearly: 1
