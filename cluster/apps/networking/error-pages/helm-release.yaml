@@ -26,7 +26,7 @@ spec:
       replicas: 1
     nameOverride: error-pages
     env:
-      TEMPLATE_NAME: i-said-random
+      TEMPLATE_NAME: lost-in-space
     service:
       main:
         ports:
