@@ -27,6 +27,8 @@ spec:
       tag: 1.24.0
     strategy:
       type: RollingUpdate
+    podSecurityContext:
+      fsGroup: ${FS_GROUP}
 
     # https://github.com/dani-garcia/vaultwarden/blob/main/.env.template
     env:
@@ -73,4 +75,6 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: code-vaultwarden-pvc
+        type: nfs
+        server: ${NAS_ADDR}
+        path: /volume1/shared/code/vaultwarden
