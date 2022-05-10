@@ -29,6 +29,8 @@ spec:
       tag: 1.25.1
     env:
       TZ: ${TZ}
+    podSecurityContext:
+      fsGroup: ${FS_GROUP}
 
     ingress:
       main:
