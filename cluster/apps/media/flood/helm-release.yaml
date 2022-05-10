@@ -37,6 +37,7 @@ spec:
         enabled: true
         storageClass: longhorn
         accessMode: ReadWriteOnce
+        size: 1Gi
         labels:
           kasten.io/backup-volume: enabled
 
