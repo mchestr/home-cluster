@@ -5,6 +5,7 @@ resources:
   - bazarr
   - calibre
   - calibre-web
+  - flood
   - lidarr
   - nzbget
   - overseerr
