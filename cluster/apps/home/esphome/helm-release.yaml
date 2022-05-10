@@ -30,6 +30,8 @@ spec:
     env:
       TZ: ${TZ}
       ESPHOME_DASHBOARD_USE_PING: true
+    podSecurityContext:
+      fsGroup: ${FS_GROUP}
 
     ingress:
       main:
