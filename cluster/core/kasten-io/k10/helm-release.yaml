@@ -28,6 +28,9 @@ spec:
       retries: 5
       remediateLastFailure: true # remediate the last failure, when no retries remain
     cleanupOnFail: true
+  valuesFrom:
+    - type: Secret
+      name: k10-helm-secret
   # https://github.com/kastenhq/partner-charts/blob/main/charts/k10/k10/4.5.1400/values.yaml
   values:
     eula:
@@ -40,8 +43,10 @@ spec:
         storageClass: longhorn
 
     auth:
-      tokenAuth:
+      oidcAuth:
         enabled: true
+        providerURL: https://outpost.${CLUSTER_DOMAIN}/application/o/k10/
+        redirectURL: https://k10.${CLUSTER_DOMAIN}/k10/auth-svc/v0/oidc/redirect
 
     clusterName: k8s
 
