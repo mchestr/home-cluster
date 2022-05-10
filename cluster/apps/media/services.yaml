@@ -1,0 +1,12 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: ak-outpost-authentik-embedded-outpost
+  namespace: media
+spec:
+  type: ExternalName
+  externalName: ak-outpost-authentik-embedded-outpost.auth-system.svc.cluster.local
+  ports:
+    - port: 9000
+      targetPort: 9000
