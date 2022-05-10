@@ -40,6 +40,15 @@ spec:
             paths:
               - path: /
                 pathType: Prefix
+          - host: *host
+            paths:
+              - path: /outpost.goauthentik.io/
+                pathType: Prefix
+                backend:
+                  service:
+                    name: ak-outpost-authentik-embedded-outpost
+                    port:
+                      number: 9000
         tls:
           - secretName: "{{ .Release.Name }}-tls"
             hosts:
