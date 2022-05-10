@@ -43,10 +43,8 @@ spec:
         storageClass: longhorn
 
     auth:
-      oidcAuth:
+      basicAuth:
         enabled: true
-        providerURL: https://outpost.${CLUSTER_DOMAIN}/application/o/k10/
-        redirectURL: https://k10.${CLUSTER_DOMAIN}/k10/auth-svc/v0/oidc/redirect
 
     clusterName: k8s
 
