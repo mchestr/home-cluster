@@ -21,4 +21,3 @@ resources:
   - unpackerr
   - persistent-volume.yaml
   - persistent-volume-claim.yaml
-  - services.yaml
