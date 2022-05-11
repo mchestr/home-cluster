@@ -23,9 +23,9 @@ spec:
   upgrade:
     remediation:
       retries: 3
-  valuesFrom:
-    - kind: Secret
-      name: wikijs-helm-values
+  # valuesFrom:
+  #   - kind: Secret
+  #     name: wikijs-helm-values
   values:
     image:
       repository: ghcr.io/linuxserver/wikijs
