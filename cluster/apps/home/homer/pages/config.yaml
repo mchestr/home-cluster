@@ -67,7 +67,7 @@ services:
         url: "https://home-assistant.${CLUSTER_DOMAIN}"
       - name: Wiki.js
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/wikijs/android-chrome-maskable-512x512.png"
-        url: "https://wikijs.${CLUSTER_DOMAIN}"
+        url: "https://wiki.${CLUSTER_DOMAIN}"
         subtitle: Documentation Wiki
       - name: Paperless
         subtitle: Digital document storage
