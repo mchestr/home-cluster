@@ -13,3 +13,4 @@ resources:
   - wikijs
   - zigbee2mqtt
   - zwavejs2mqtt
+  - network-policy.yaml

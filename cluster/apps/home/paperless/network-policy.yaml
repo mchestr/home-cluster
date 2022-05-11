@@ -18,18 +18,3 @@ spec:
         - podSelector:
             matchLabels:
               app.kubernetes.io/name: traefik
-
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: allow-paperless-egress
-  namespace: home
-spec:
-  podSelector:
-    matchLabels:
-      app.kubernetes.io/name: paperless
-  policyTypes:
-    - Egress
-  egress:
-    - {}
