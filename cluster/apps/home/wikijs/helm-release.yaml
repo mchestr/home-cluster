@@ -28,8 +28,8 @@ spec:
   #     name: wikijs-helm-values
   values:
     image:
-      repository: ghcr.io/linuxserver/wikijs
-      tag: version-2.5.201
+      repository: ghcr.io/k8s-at-home/wikijs
+      tag: v2.5.281
 
     podSecurityContext:
       fsGroup: ${FS_GROUP}
