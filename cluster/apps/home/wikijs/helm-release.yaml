@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
-      version: 6.4.2
+      version: 6.3.2
       chart: wikijs
       sourceRef:
         kind: HelmRepository
