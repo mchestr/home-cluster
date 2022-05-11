@@ -25,17 +25,3 @@ spec:
       annotations:
         metallb.universe.tf/loadBalancerIPs: "${METALLB_K8S_GATEWAY_ADDR}"
       externalTrafficPolicy: Local
-    # Increase replicaCount and set an anti-affinity if you wish to scale this
-    # replicaCount: 1
-    # affinity:
-    #   podAntiAffinity:
-    #     preferredDuringSchedulingIgnoredDuringExecution:
-    #       - weight: 100
-    #         podAffinityTerm:
-    #           labelSelector:
-    #             matchExpressions:
-    #               - key: app.kubernetes.io/name
-    #                 operator: In
-    #                 values:
-    #                   - k8s-gateway
-    #           topologyKey: kubernetes.io/hostname
