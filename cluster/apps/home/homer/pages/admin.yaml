@@ -21,7 +21,7 @@ services:
         subtitle: Backup manager
       - name: phpMyAdmin
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/phpMyAdmin/android-chrome-maskable-512x512.png"
-        url: "https://{NAS_ADDR}:9443"
+        url: "https://${NAS_ADDR}:9443"
 
   - name: System Management
     icon: fas fa-project-diagram
