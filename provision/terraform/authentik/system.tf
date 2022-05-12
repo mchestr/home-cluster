@@ -11,7 +11,6 @@ resource "authentik_tenant" "home" {
 
   flow_authentication = authentik_flow.authentication.uuid
   flow_invalidation   = data.authentik_flow.default-invalidation.id
-  flow_recovery       = data.authentik_flow.default-recovery.id
   flow_user_settings  = data.authentik_flow.default-user-settings.id
   event_retention     = "days=365"
 }

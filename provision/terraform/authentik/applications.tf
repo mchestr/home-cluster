@@ -1,7 +1,7 @@
 locals {
   apps = {
-    "zwavejs2mqtt"        = { group = "Home" }
-    "zigbee2mqtt"         = { group = "Home" }
+    "zwavejs2mqtt"        = { group = "Home System" }
+    "zigbee2mqtt"         = { group = "Home System" }
     "traefik"             = { group = "System" }
     "tautulli"            = { group = "Media" }
     "sonarr"              = { group = "Media", basic_auth_enabled = true }
@@ -17,16 +17,26 @@ locals {
     "lidarr"              = { group = "Media", basic_auth_enabled = true }
     "k10"                 = { group = "System", basic_auth_enabled = true, launch_url = format("https://k10.%s/k10/", data.sops_file.authentik_secrets.data["cluster_domain"]) }
     "home-assistant-code" = { group = "Editors" }
-    "esphome"             = { group = "Home" }
+    "esphome"             = { group = "Home System" }
     "emqx"                = { group = "System", basic_auth_enabled = true }
     "calibre-web"         = { group = "Home" }
     "calibre"             = { group = "System" }
     "cal"                 = { group = "System" }
     "bazarr"              = { group = "Media", basic_auth_enabled = true }
-    "appdaemon"           = { group = "Home" }
+    "appdaemon"           = { group = "Home System" }
     "appdaemon-code"      = { group = "Editors" }
     "alert-manager"       = { group = "System" }
   }
+
+  admin_apps = toset(compact(([
+    for i, each in local.apps :
+    contains(["System", "Editors", "Home System"], each.group) ? i : ""
+  ])))
+
+  media_apps = toset(compact(([
+    for i, each in local.apps :
+    contains(["Media"], each.group) ? i : ""
+  ])))
 }
 
 resource "authentik_provider_proxy" "providers" {
@@ -54,12 +64,12 @@ resource "authentik_application" "name" {
 }
 
 resource "authentik_provider_oauth2" "grafana" {
-  name                       = "grafana"
-  client_id                  = data.sops_file.authentik_secrets.data["grafana_client_id"]
-  client_secret              = data.sops_file.authentik_secrets.data["grafana_client_secret"]
-  authorization_flow         = data.authentik_flow.default-authorization.id
-  signing_key                = data.authentik_certificate_key_pair.generated.id
-  property_mappings          = data.authentik_scope_mapping.scopes.ids
+  name               = "grafana"
+  client_id          = data.sops_file.authentik_secrets.data["grafana_client_id"]
+  client_secret      = data.sops_file.authentik_secrets.data["grafana_client_secret"]
+  authorization_flow = data.authentik_flow.default-authorization.id
+  signing_key        = data.authentik_certificate_key_pair.generated.id
+  property_mappings  = data.authentik_scope_mapping.scopes.ids
   redirect_uris = [
     data.sops_file.authentik_secrets.data["grafana_redirect_uri"]
   ]

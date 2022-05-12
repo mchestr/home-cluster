@@ -4,14 +4,22 @@ resource "authentik_user" "user1" {
   username = data.sops_file.authentik_secrets.data["user1_username"]
   name     = data.sops_file.authentik_secrets.data["user1_name"]
   email    = data.sops_file.authentik_secrets.data["user1_email"]
-  groups   = [authentik_group.system-admins.id, authentik_group.grafana-admins.id, data.authentik_group.admins.id]
+  groups = [
+    authentik_group.system-admins.id,
+    authentik_group.grafana-admins.id,
+    authentik_group.paperless-users.id,
+    data.authentik_group.admins.id
+  ]
 }
 
 resource "authentik_user" "user2" {
   username = data.sops_file.authentik_secrets.data["user2_username"]
   name     = data.sops_file.authentik_secrets.data["user2_name"]
   email    = data.sops_file.authentik_secrets.data["user2_email"]
-  groups   = [authentik_group.media-users.id]
+  groups = [
+    authentik_group.media-users.id,
+    authentik_group.paperless-users.id
+  ]
 }
 
 resource "authentik_source_oauth" "google" {
@@ -36,8 +44,6 @@ resource "authentik_source_plex" "name" {
     data.sops_file.authentik_secrets.data["plex_server"]
   ]
 }
-
-
 
 data "authentik_group" "admins" {
   name = "authentik Admins"
@@ -89,6 +95,10 @@ resource "authentik_group" "media-users" {
     sonarr_user          = data.sops_file.authentik_secrets.data["sonarr_user"],
     sonarr_password      = data.sops_file.authentik_secrets.data["sonarr_password"],
   })
+}
+
+resource "authentik_group" "paperless-users" {
+  name = "paperless-users"
 }
 
 resource "authentik_group" "grafana-admins" {

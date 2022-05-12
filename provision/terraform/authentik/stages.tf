@@ -22,3 +22,9 @@ resource "authentik_stage_authenticator_validate" "authentication-mfa-validation
 resource "authentik_stage_user_login" "authentication-login" {
   name = "authentication-login"
 }
+
+resource "authentik_stage_captcha" "recaptcha" {
+  name        = "recaptcha"
+  public_key = data.sops_file.authentik_secrets.data["recaptcha_site_key"]
+  private_key  = data.sops_file.authentik_secrets.data["recaptcha_secret_key"]
+}
