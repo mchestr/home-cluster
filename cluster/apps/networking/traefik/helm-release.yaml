@@ -90,7 +90,7 @@ spec:
         maxVersion: VersionTLS13
         sniStrict: true
     pilot:
-      enabled: false
+      enabled: true
     experimental:
       plugins:
         enabled: true
