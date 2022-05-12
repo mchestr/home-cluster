@@ -7,6 +7,5 @@ metadata:
 spec:
   chain:
     middlewares:
-      - name: external
-      - name: security
-        namespace: auth-system
+      - name: cloudflare-ips
+      - name: no-auth
