@@ -20,3 +20,27 @@ tasks:
     dir: provision/terraform/cloudflare
     cmds:
       - terraform apply {{.CLI_ARGS}}
+
+  authentik:init:
+    desc: Initialize terraform dependencies
+    dir: provision/terraform/authentik
+    cmds:
+      - terraform init {{.CLI_ARGS}}
+
+  authentik:plan:
+    desc: Show the changes terraform will make
+    dir: provision/terraform/authentik
+    cmds:
+      - terraform plan {{.CLI_ARGS}}
+
+  authentik:apply:
+    desc: Apply the changes to Authentik
+    dir: provision/terraform/authentik
+    cmds:
+      - terraform apply {{.CLI_ARGS}}
+
+  authentik:destroy:
+    desc: Destroy the changes to Authentik
+    dir: provision/terraform/authentik
+    cmds:
+      - terraform destroy {{.CLI_ARGS}}
