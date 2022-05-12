@@ -25,6 +25,9 @@ spec:
   upgrade:
     remediation:
       retries: 3
+  valuesFrom:
+    - kind: Secret
+      name: traefik-helm-secrets
   values:
     image:
       name: ghcr.io/k8s-at-home/traefik
@@ -89,8 +92,6 @@ spec:
         minVersion: VersionTLS12
         maxVersion: VersionTLS13
         sniStrict: true
-    pilot:
-      enabled: true
     experimental:
       plugins:
         enabled: true

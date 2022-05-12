@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - addons
   - helm-release.yaml
+  - secret.sops.yaml
   - service-monitor.yaml
 
 configurations:
