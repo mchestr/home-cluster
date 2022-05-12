@@ -1,5 +1,3 @@
-
-
 resource "authentik_user" "user1" {
   username = data.sops_file.authentik_secrets.data["user1_username"]
   name     = data.sops_file.authentik_secrets.data["user1_name"]
