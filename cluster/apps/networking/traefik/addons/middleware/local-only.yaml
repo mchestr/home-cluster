@@ -2,7 +2,7 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: rfc1918-ips
+  name: private-ips
   namespace: networking
 spec:
   ipWhiteList:
@@ -15,9 +15,9 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: local-only-access
+  name: local-only
   namespace: networking
 spec:
   chain:
     middlewares:
-      - name: rfc1918-ips
+      - name: private-ips

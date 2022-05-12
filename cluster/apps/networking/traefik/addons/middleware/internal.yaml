@@ -7,5 +7,5 @@ metadata:
 spec:
   chain:
     middlewares:
-      - name: rfc1918-ips
+      - name: local-only
       - name: no-auth
