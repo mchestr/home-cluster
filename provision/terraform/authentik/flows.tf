@@ -18,10 +18,6 @@ data "authentik_flow" "default-invalidation" {
   slug = "default-invalidation-flow"
 }
 
-data "authentik_flow" "default-recovery" {
-  slug = "default-recovery-flow"
-}
-
 data "authentik_flow" "default-user-settings" {
   slug = "default-user-settings-flow"
 }
@@ -33,6 +29,13 @@ resource "authentik_flow" "authentication" {
   designation        = "authentication"
   background         = "/static/dist/assets/images/flow_background.jpg"
   policy_engine_mode = "all"
+}
+
+resource "authentik_flow_stage_binding" "authentication-flow-binding-00" {
+  target               = authentik_flow.authentication.uuid
+  stage                = authentik_stage_captcha.recaptcha.id
+  re_evaluate_policies = true
+  order  = 0
 }
 
 resource "authentik_flow_stage_binding" "authentication-flow-binding-10" {
