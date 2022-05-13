@@ -1,6 +1,6 @@
 resource "authentik_stage_identification" "authentication-identification" {
   name               = "authentication-identification"
-  user_fields        = ["username"]
+  user_fields        = ["username", "email"]
   sources            = [authentik_source_oauth.google.uuid, authentik_source_plex.name.uuid]
   show_source_labels = true
   show_matched_user  = true

@@ -5,7 +5,6 @@ resource "authentik_user" "user1" {
   groups = [
     authentik_group.system-admins.id,
     authentik_group.grafana-admins.id,
-    authentik_group.paperless-users.id,
     data.authentik_group.admins.id
   ]
 }
