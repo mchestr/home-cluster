@@ -52,8 +52,6 @@ spec:
           kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
-          external-dns.alpha.kubernetes.io/target: ipv4.${CLUSTER_DOMAIN}
-          external-dns/is-public: "true"
         hosts:
           - host: &host "cal.${CLUSTER_DOMAIN}"
             paths:

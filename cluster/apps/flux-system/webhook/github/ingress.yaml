@@ -10,9 +10,10 @@ metadata:
     external-dns/is-public: "true"
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.middlewares: networking-external@kubernetescrd
 spec:
   rules:
-    - host: "flux-webhook.${CLUSTER_DOMAIN}"
+    - host: &host "flux-webhook.${CLUSTER_DOMAIN}"
       http:
         paths:
           - path: /
@@ -25,4 +26,4 @@ spec:
   tls:
     - secretName: flux-webhook-tls
       hosts:
-        - "flux-webhook.${CLUSTER_DOMAIN}"
+        - *host
