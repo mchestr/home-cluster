@@ -11,7 +11,6 @@ locals {
     "qbittorrent"         = { group = "Downloaders", basic_auth_enabled = true }
     "prowlarr"            = { group = "Media", basic_auth_enabled = true }
     "prometheus"          = { group = "System" }
-    "plex"                = { group = "Media" }
     "paperless"           = { group = "Home" }
     "nzbget"              = { group = "Downloaders", basic_auth_enabled = true }
     "longhorn"            = { group = "System" }
@@ -20,6 +19,7 @@ locals {
     "home-assistant-code" = { group = "Editors" }
     "esphome"             = { group = "Home System" }
     "emqx"                = { group = "System", basic_auth_enabled = true }
+    "dashboard"           = { group = "System" }
     "calibre-web"         = { group = "Home" }
     "calibre"             = { group = "System" }
     "cal"                 = { group = "System" }
