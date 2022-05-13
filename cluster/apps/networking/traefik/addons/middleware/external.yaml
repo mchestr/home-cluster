@@ -7,5 +7,5 @@ metadata:
 spec:
   chain:
     middlewares:
-      - name: cloudflare-ips
+      - name: cloudflare-only
       - name: no-auth
