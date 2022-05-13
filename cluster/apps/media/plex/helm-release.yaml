@@ -41,7 +41,8 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          # traefik.ingress.kubernetes.io/router.middlewares: networking-no-auth@kubernetescrd
+          # error-pages middleware breaks the plex.tv redirect
+          traefik.ingress.kubernetes.io/router.middlewares: networking-cloudflare-only@kubernetescrd,networking-secure-headers@kubernetescrd,networking-rate-limit@kubernetescrd
 
         hosts:
           - host: &host "plex.${CLUSTER_DOMAIN}"
