@@ -129,6 +129,9 @@ spec:
       dashboards:
         enabled: true
         searchNamespace: ALL
+        folderAnnotation: grafana_dashboard_folder
+        provider:
+          foldersFromFilesStructure: true
     datasources:
       datasources.yaml:
         apiVersion: 1
