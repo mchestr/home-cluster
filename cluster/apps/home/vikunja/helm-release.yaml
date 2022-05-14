@@ -21,6 +21,8 @@ spec:
       repository: caddy
       tag: 2.5.0-alpine
       pullPolicy: IfNotPresent
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: vikunja-secrets
 
     postgresql:
       enabled: false
@@ -61,6 +63,6 @@ spec:
         image: vikunja/frontend:0.18.2
   valuesFrom:
     - kind: Secret
-      name: vikunja-helm-secrets
+      name: vikunja-secrets
       valuesKey: config.yaml
       targetPath: vikunja.config
