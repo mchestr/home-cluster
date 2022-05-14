@@ -2,7 +2,7 @@
 http:
   middlewares:
     #  Add any suppported base apps you would like to include in your auto generated middle set. "sonarr" and "radarr are the examples here.
-    {{ range $index, $app := list "sonarr" "radarr" "lidarr" "readarr" "prowlarr" "bazarr" "overseerr" "tautulli" "nzbget" "qbittorrent" "bitwarden" }}
+    {{ range $index, $app := list "sonarr" "radarr" "lidarr" "readarr" "prowlarr" "bazarr" "overseerr" "tautulli" "nzbget" "qbittorrent" "bitwarden" "sabnzbd" }}
     {{ $app }}-theme-css:
       plugin:
         rewritebody:

@@ -14,6 +14,7 @@ resources:
   - radarr
   - radarr-4k
   - readarr
+  - sabnzbd
   - sonarr
   - tautulli
   - trash-updater
