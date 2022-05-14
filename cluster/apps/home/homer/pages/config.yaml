@@ -69,6 +69,10 @@ services:
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/wikijs/android-chrome-maskable-512x512.png"
         url: "https://wiki.${CLUSTER_DOMAIN}"
         subtitle: Documentation Wiki
+      - name: Vikunja
+        subtitle: Todo list generator
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/vikunja/android-chrome-maskable-512x512.png"
+        url: "https://vikunja.${CLUSTER_DOMAIN}"
       - name: Paperless
         subtitle: Digital document storage
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/paperless/android-chrome-maskable-512x512.png"
