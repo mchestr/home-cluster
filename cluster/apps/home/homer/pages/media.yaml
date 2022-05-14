@@ -36,10 +36,6 @@ services:
         subtitle: Torrent downloader
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/qbittorrent/android-chrome-maskable-512x512.png"
         url: "https://qbittorrent.${CLUSTER_DOMAIN}"
-      - name: NZBGet
-        subtitle: Usenet downloader
-        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/nzbget/android-chrome-maskable-512x512.png"
-        url: "https://nzbget.${CLUSTER_DOMAIN}"
 
   - name: Other
     icon: "fa fa-tv"
