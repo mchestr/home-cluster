@@ -54,33 +54,6 @@ spec:
     additionalContainers:
       api:
         image: vikunja/api:0.18.1
-        env:
-          - name: VIKUNJA_DATABASE_TYPE
-            value: mysql
-          - name: VIKUNJA_DATABASE_HOST
-            value: ${NAS_ADDR}
-          - name: VIKUNJA_DATABASE_DATABASE
-            value: vikunja
-          - name: VIKUNJA_DATABASE_USER
-            value: vikunja
-          - name: VIKUNJA_REDIS_ENABLED
-            value: 'true'
-          - name: VIKUNJA_REDIS_HOST
-            value: redis-headless.database-system
-          - name: VIKUNJA_REDIS_DB
-            value: vikunja
-          - name: VIKUNJA_MAILER_ENABLED
-            value: 'true'
-          - name: VIKUNJA_MAILER_HOST
-            value: ${SMTP_HOST}
-          - name: VIKUNJA_MAILER_PORT
-            value: ${SMTP_PORT}
-          - name: VIKUNJA_MAILER_USERNAME
-            value: ${SMTP_USERNAME}
-          - name: VIKUNJA_MAILER_PASSWORD
-            value: ${SMTP_PASSWORD}
-          - name: VIKUNJA_MAILER_FROMEMAIL
-            value: ${SMTP_FROM}
         volumeMounts:
           - name: files
             mountPath: /app/vikunja/files
