@@ -21,7 +21,7 @@ spec:
       repository: caddy
       tag: 2.5.1-alpine
     podAnnotations:
-      configmap.reloader.stakater.com/reload: vikunja-secrets
+      secret.reloader.stakater.com/reload: vikunja-secrets
 
     postgresql:
       enabled: false
