@@ -74,7 +74,7 @@ spec:
           - name: VIKUNJA_MAILER_HOST
             value: ${SMTP_HOST}
           - name: VIKUNJA_MAILER_PORT
-            value: 465
+            value: ${SMTP_PORT}
           - name: VIKUNJA_MAILER_USERNAME
             value: ${SMTP_USERNAME}
           - name: VIKUNJA_MAILER_PASSWORD
