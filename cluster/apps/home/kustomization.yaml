@@ -10,6 +10,7 @@ resources:
   - paperless
   - theme-park
   - unifi
+  - vikunja
   - wikijs
   - zigbee2mqtt
   - zwavejs2mqtt

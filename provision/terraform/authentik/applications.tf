@@ -105,3 +105,24 @@ resource "authentik_application" "wiki" {
   meta_launch_url   = data.sops_file.authentik_secrets.data["wikijs_redirect_uri"]
   group             = "System"
 }
+
+resource "authentik_provider_oauth2" "vikunja" {
+  name               = "vikunja"
+  client_id          = data.sops_file.authentik_secrets.data["vikunja_client_id"]
+  client_secret      = data.sops_file.authentik_secrets.data["vikunja_client_secret"]
+  authorization_flow = data.authentik_flow.default-authorization.id
+  signing_key        = data.authentik_certificate_key_pair.generated.id
+  property_mappings  = data.authentik_scope_mapping.scopes.ids
+  redirect_uris = [
+    data.sops_file.authentik_secrets.data["vikunja_redirect_url"],
+    format("%s/Vikunja", data.sops_file.authentik_secrets.data["vikunja_redirect_url"])
+  ]
+}
+
+resource "authentik_application" "vikunja" {
+  name              = "vikunja"
+  slug              = "vikunja"
+  protocol_provider = authentik_provider_oauth2.vikunja.id
+  meta_icon         = format("https://home.%s/assets/data/vikunja/android-chrome-maskable-512x512.png", data.sops_file.authentik_secrets.data["cluster_domain"])
+  group             = "Home"
+}

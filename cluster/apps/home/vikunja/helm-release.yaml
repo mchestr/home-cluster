@@ -1,0 +1,101 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: vikunja
+  namespace: home
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: vikunja
+      version: 5.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      repository: caddy
+      tag: 2.5.0-alpine
+      pullPolicy: IfNotPresent
+
+    postgresql:
+      enabled: false
+
+    persistence:
+      files:
+        enabled: true
+        storageClass: longhorn
+        mountpath: /app/vikunja/files
+
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/ingress.class: traefik
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
+        hosts:
+          - host: &host "vik.${CLUSTER_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+            secretName: "{{ .Release.Name }}-tls"
+
+    additionalContainers:
+      api:
+        image: vikunja/api:0.18.1
+        env:
+          - name: VIKUNJA_SERVICE_JWTSECRET
+          - name: VIKUNJA_DATABASE_PASSWORD
+          - name: VIKUNJA_DATABASE_TYPE
+            value: mysql
+          - name: VIKUNJA_DATABASE_HOST
+            value: ${NAS_ADDR}
+          - name: VIKUNJA_DATABASE_DATABASE
+            value: vikunja
+          - name: VIKUNJA_DATABASE_USER
+            value: vikunja
+          - name: VIKUNJA_REDIS_ENABLED
+            value: 'true'
+          - name: VIKUNJA_REDIS_HOST
+            value: redis-headless.database-system
+          - name: VIKUNJA_REDIS_DB
+            value: vikunja
+          - name: VIKUNJA_MAILER_ENABLED
+            value: 'true'
+          - name: VIKUNJA_MAILER_HOST
+            value: ${SMTP_HOST}
+          - name: VIKUNJA_MAILER_PORT
+            value: 465
+          - name: VIKUNJA_MAILER_USERNAME
+            value: ${SMTP_USERNAME}
+          - name: VIKUNJA_MAILER_PASSWORD
+            value: ${SMTP_PASSWORD}
+          - name: VIKUNJA_MAILER_FROMEMAIL
+            value: ${SMTP_FROM}
+        volumeMounts:
+          - name: files
+            mountPath: /app/vikunja/files
+      frontend:
+        image: vikunja/frontend:0.18.2
+  valuesFrom:
+    - kind: Secret
+      name: vikunja-helm-secrets
+      valuesKey: VIKUNJA_SERVICE_JWTSECRET
+      targetPath: additionalContainers.api.env[0].value
+    - kind: Secret
+      name: vikunja-helm-secrets
+      valuesKey: VIKUNJA_DATABASE_PASSWORD
+      targetPath: additionalContainers.api.env[1].value
+    - kind: Secret
+      name: vikunja-helm-secrets
+      valuesKey: config.yaml
+      targetPath: vikunja.config
