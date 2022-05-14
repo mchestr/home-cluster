@@ -33,9 +33,13 @@ services:
     icon: "fa fa-tv"
     items:
       - name: qBittorrent
-        subtitle: Torrent downloader
+        subtitle: Torrent
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/qbittorrent/android-chrome-maskable-512x512.png"
         url: "https://qbittorrent.${CLUSTER_DOMAIN}"
+      - name: SABnzbd
+        subtitle: Usenet
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/sabnzbd/android-chrome-maskable-512x512.png"
+        url: "https://sabnzbd.${CLUSTER_DOMAIN}"
 
   - name: Other
     icon: "fa fa-tv"
