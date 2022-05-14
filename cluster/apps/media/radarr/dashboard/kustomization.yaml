@@ -10,6 +10,6 @@ generatorOptions:
   disableNameSuffixHash: true
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
+    grafana_dashboard_folder: media
   labels:
     grafana_dashboard: "true"
-    grafana_dashboard_folder: media
