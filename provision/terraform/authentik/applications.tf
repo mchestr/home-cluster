@@ -115,7 +115,7 @@ resource "authentik_provider_oauth2" "vikunja" {
   property_mappings  = data.authentik_scope_mapping.scopes.ids
   redirect_uris = [
     data.sops_file.authentik_secrets.data["vikunja_redirect_url"],
-    format("%s/Vikunja", data.sops_file.authentik_secrets.data["vikunja_redirect_url"])
+    format("%s/vikunja", data.sops_file.authentik_secrets.data["vikunja_redirect_url"])
   ]
 }
 
