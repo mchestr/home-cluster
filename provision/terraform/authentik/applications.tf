@@ -5,6 +5,7 @@ locals {
     "traefik"             = { group = "System" }
     "tautulli"            = { group = "Media" }
     "sonarr"              = { group = "Media", basic_auth_enabled = true }
+    "sabnzbd"             = { group = "Downloaders" }
     "readarr"             = { group = "Media", basic_auth_enabled = true }
     "radarr"              = { group = "Media", basic_auth_enabled = true }
     "radarr-4k"           = { group = "Media", basic_auth_enabled = true }
@@ -36,7 +37,7 @@ locals {
 
   media_apps = toset(compact(([
     for i, each in local.apps :
-    contains(["Media"], each.group) ? i : ""
+    contains(["Media", "Downloaders"], each.group) ? i : ""
   ])))
 }
 
