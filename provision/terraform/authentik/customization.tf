@@ -19,15 +19,7 @@ resource "authentik_policy_binding" "reputation-low" {
 }
 
 resource "authentik_policy_binding" "system-admins-apps" {
-  for_each = toset(
-    concat(
-      tolist(local.admin_apps),
-      tolist(concat(
-        tolist(local.media_apps),
-        tolist(["paperless"])
-      ))
-    )
-  )
+  for_each = local.apps
 
   target = authentik_application.name[each.key].uuid
   group  = authentik_group.system-admins.id
