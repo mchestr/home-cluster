@@ -17,10 +17,6 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
-    image:
-      name: kubernetesui/dashboard
-      tag: v2.3.0
-
     ingress:
       enabled: true
       annotations:
