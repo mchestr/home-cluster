@@ -42,9 +42,16 @@ resource "authentik_policy_binding" "media-users-apps" {
   order  = 10
 }
 
-resource "authentik_policy_binding" "paperless-users-app" {
-  target = authentik_application.name["paperless"].uuid
-  group  = authentik_group.paperless-users.id
+resource "authentik_policy_binding" "home-users-app" {
+  for_each = toset([
+    authentik_application.name["paperless"].uuid,
+    authentik_application.vikunja.uuid,
+    authentik_application.grafana.uuid,
+    authentik_application.wiki.uuid
+  ])
+
+  target = each.key
+  group  = authentik_group.home-users.id
   order  = 10
 }
 

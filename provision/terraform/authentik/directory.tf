@@ -5,7 +5,8 @@ resource "authentik_user" "user1" {
   groups = [
     authentik_group.system-admins.id,
     authentik_group.grafana-admins.id,
-    data.authentik_group.admins.id
+    data.authentik_group.admins.id,
+    authentik_group.home-users.id
   ]
 }
 
@@ -15,7 +16,7 @@ resource "authentik_user" "user2" {
   email    = data.sops_file.authentik_secrets.data["user2_email"]
   groups = [
     authentik_group.media-users.id,
-    authentik_group.paperless-users.id
+    authentik_group.home-users.id
   ]
 }
 
@@ -94,8 +95,8 @@ resource "authentik_group" "media-users" {
   })
 }
 
-resource "authentik_group" "paperless-users" {
-  name = "paperless-users"
+resource "authentik_group" "home-users" {
+  name = "home-users"
 }
 
 resource "authentik_group" "grafana-admins" {
