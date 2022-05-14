@@ -13,7 +13,6 @@ locals {
     "prowlarr"            = { group = "Media", basic_auth_enabled = true }
     "prometheus"          = { group = "System" }
     "paperless"           = { group = "Home" }
-    "nzbget"              = { group = "Downloaders", basic_auth_enabled = true }
     "longhorn"            = { group = "System" }
     "lidarr"              = { group = "Media", basic_auth_enabled = true }
     "k10"                 = { group = "System", basic_auth_enabled = true, launch_url = format("https://k10.%s/k10/", data.sops_file.authentik_secrets.data["cluster_domain"]) }

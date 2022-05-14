@@ -6,7 +6,6 @@ resources:
   - calibre
   - calibre-web
   - lidarr
-  - nzbget
   - overseerr
   - plex
   - prowlarr

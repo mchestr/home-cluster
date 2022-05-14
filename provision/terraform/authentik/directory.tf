@@ -58,8 +58,6 @@ resource "authentik_group" "system-admins" {
     k10_password         = data.sops_file.authentik_secrets.data["k10_password"],
     lidarr_user          = data.sops_file.authentik_secrets.data["lidarr_user"],
     lidarr_password      = data.sops_file.authentik_secrets.data["lidarr_password"],
-    nzbget_user          = data.sops_file.authentik_secrets.data["nzbget_control_user"],
-    nzbget_password      = data.sops_file.authentik_secrets.data["nzbget_control_password"],
     prowlarr_user        = data.sops_file.authentik_secrets.data["prowlarr_user"],
     prowlarr_password    = data.sops_file.authentik_secrets.data["prowlarr_password"],
     qbittorrent_user     = data.sops_file.authentik_secrets.data["qbittorrent_user"],
@@ -80,8 +78,6 @@ resource "authentik_group" "media-users" {
   attributes = jsonencode({
     bazarr_user          = data.sops_file.authentik_secrets.data["bazarr_user"],
     bazarr_password      = data.sops_file.authentik_secrets.data["bazarr_password"],
-    nzbget_user          = data.sops_file.authentik_secrets.data["nzbget_restricted_user"],
-    nzbget_password      = data.sops_file.authentik_secrets.data["nzbget_restricted_password"],
     qbittorrent_user     = data.sops_file.authentik_secrets.data["qbittorrent_user"],
     qbittorrent_password = data.sops_file.authentik_secrets.data["qbittorrent_password"],
     radarr-4k_user       = data.sops_file.authentik_secrets.data["radarr-4k_user"],
