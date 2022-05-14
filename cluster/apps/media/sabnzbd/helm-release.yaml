@@ -51,6 +51,7 @@ spec:
       fsGroup: ${FS_GROUP}
     persistence:
       config:
+        enabled: true
         storageClass: longhorn
         labels:
           kasten.io/backup-volume: enabled
