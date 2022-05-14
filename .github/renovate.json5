@@ -7,13 +7,13 @@
     ":semanticCommits",
     "docker:enableMajor",
     ":enablePreCommit",
-    "github>mchestr/home-ops//.github/renovate/autoMerge.json5",
-    "github>mchestr/home-ops//.github/renovate/groups.json5",
-    "github>mchestr/home-ops//.github/renovate/labels.json5",
-    "github>mchestr/home-ops//.github/renovate/semanticCommits.json5"
+    "github>mchestr/cluster-k3s//.github/renovate/autoMerge.json5",
+    "github>mchestr/cluster-k3s//.github/renovate/groups.json5",
+    "github>mchestr/cluster-k3s//.github/renovate/labels.json5",
+    "github>mchestr/cluster-k3s//.github/renovate/semanticCommits.json5"
   ],
   "platform": "github",
-  "repositories": ["onedr0p/home-ops"],
+  "repositories": ["mchestr/cluster-k3s"],
   "onboarding": false,
   "requireConfig": false,
   "dependencyDashboardTitle": "Renovate Dashboard",
