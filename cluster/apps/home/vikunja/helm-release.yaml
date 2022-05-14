@@ -29,6 +29,8 @@ spec:
       files:
         enabled: true
         storageClass: longhorn
+        accessMode: ReadWriteOnce
+        size: 1Gi
         mountpath: /app/vikunja/files
 
     ingress:
