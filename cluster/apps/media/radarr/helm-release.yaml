@@ -57,8 +57,16 @@ spec:
       fsGroup: ${FS_GROUP}
     metrics:
       enabled: true
+      serviceMonitor:
+        interval: 5m
+        scrapeTimeout: 1m
       prometheusRule:
         enabled: true
       exporter:
-        repository: ghcr.io/onedr0p/exportarr
-        tag: v1.0.0
+        image:
+          repository: ghcr.io/onedr0p/exportarr
+          tag: v1.0.0
+        env:
+          port: 9794
+          additionalMetrics: true
+          unknownQueueItems: true
