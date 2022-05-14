@@ -12,4 +12,4 @@ generatorOptions:
     kustomize.toolkit.fluxcd.io/substitute: disabled
   labels:
     grafana_dashboard: "true"
-    grafana_dashboard_folder: "/tmp/dashboards/media"
+    grafana_dashboard_folder: media
