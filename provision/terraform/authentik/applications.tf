@@ -21,7 +21,7 @@ locals {
     "esphome"             = { group = "Home System" }
     "emqx"                = { group = "System", basic_auth_enabled = true }
     "dashboard"           = { group = "System" }
-    "calibre-web"         = { group = "Home" }
+    "calibre-web"         = { group = "Media" }
     "calibre"             = { group = "System" }
     "cal"                 = { group = "System" }
     "bazarr"              = { group = "Media", basic_auth_enabled = true }
