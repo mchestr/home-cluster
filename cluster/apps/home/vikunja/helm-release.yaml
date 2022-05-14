@@ -55,8 +55,6 @@ spec:
       api:
         image: vikunja/api:0.18.1
         env:
-          - name: VIKUNJA_SERVICE_JWTSECRET
-          - name: VIKUNJA_DATABASE_PASSWORD
           - name: VIKUNJA_DATABASE_TYPE
             value: mysql
           - name: VIKUNJA_DATABASE_HOST
@@ -89,14 +87,6 @@ spec:
       frontend:
         image: vikunja/frontend:0.18.2
   valuesFrom:
-    - kind: Secret
-      name: vikunja-helm-secrets
-      valuesKey: VIKUNJA_SERVICE_JWTSECRET
-      targetPath: additionalContainers.api.env[0].value
-    - kind: Secret
-      name: vikunja-helm-secrets
-      valuesKey: VIKUNJA_DATABASE_PASSWORD
-      targetPath: additionalContainers.api.env[1].value
     - kind: Secret
       name: vikunja-helm-secrets
       valuesKey: config.yaml
