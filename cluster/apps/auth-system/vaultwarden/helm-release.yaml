@@ -43,7 +43,7 @@ spec:
       SMTP_FROM: ${SMTP_FROM}
       SMTP_SECURITY: force_tls
       SMTP_SSL: true
-      SMTP_PORT: 465
+      SMTP_PORT: ${SMTP_PORT}
       SMTP_USERNAME: ${SMTP_USERNAME}
       SMTP_PASSWORD: ${SMTP_PASSWORD}
       SMTP_FROM_NAME: Vaultwarden
