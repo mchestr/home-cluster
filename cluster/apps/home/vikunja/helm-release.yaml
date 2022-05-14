@@ -20,7 +20,6 @@ spec:
     image:
       repository: caddy
       tag: 2.5.1-alpine
-      pullPolicy: IfNotPresent
     podAnnotations:
       configmap.reloader.stakater.com/reload: vikunja-secrets
 
