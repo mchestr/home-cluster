@@ -56,8 +56,9 @@ spec:
       api:
         image: vikunja/api:0.18.1
         volumeMounts:
-          - name: files
-            mountPath: /app/vikunja/files
+          - name: vikunja-config
+            mountPath: /etc/vikunja/config.yml
+            subPath: Vikunja.yaml
       frontend:
         image: vikunja/frontend:0.18.2
   valuesFrom:
