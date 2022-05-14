@@ -24,6 +24,8 @@ spec:
       TZ: ${TZ}
 
     service:
+      main:
+        enabled: true
       dns:
         enabled: true
         type: LoadBalancer
