@@ -75,6 +75,18 @@ spec:
         image:
           repository: ghcr.io/k8s-at-home/prometheus-qbittorrent-exporter
           tag: v1.2.0
+        env:
+          user: ${QBITTORRENT_USER}
+          password:
       serviceMonitor:
         interval: 5m
         scrapeTimeout: 1m
+  valuesFrom:
+    - valuesKey: QBITTORRENT_USER
+      kind: Secret
+      name: qbittorrent-secrets
+      targetPath: metrics.exporter.env.user
+    - valuesKey: QBITTORRENT_PASSWORD
+      kind: Secret
+      name: qbittorrent-secrets
+      targetPath: metrics.exporter.env.password
