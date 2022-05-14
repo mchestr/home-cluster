@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/name: vikunja
 spec:
   endpoints:
-    - path: /metrics
+    - path: /api/v1/metrics
       targetPort: http
   jobLabel: vikunja
   namespaceSelector:
