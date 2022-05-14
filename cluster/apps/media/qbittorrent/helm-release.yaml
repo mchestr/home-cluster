@@ -72,5 +72,9 @@ spec:
       prometheusRule:
         enabled: true
       exporter:
-        repository: esanchezm/prometheus-qbittorrent-exporter
-        tag: v1.2.0
+        image:
+          repository: ghcr.io/k8s-at-home/prometheus-qbittorrent-exporter
+          tag: v1.2.0
+      serviceMonitor:
+        interval: 5m
+        scrapeTimeout: 1m
