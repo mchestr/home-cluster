@@ -147,3 +147,17 @@ spec:
               category: logs
             annotations:
               summary: "AppDaemon is unable to connect to Home Assistant"
+      #
+      # paperless
+      #
+      - name: paperless
+        rules:
+          - alert: PaperlessMailError
+            expr: |
+              sum by (app) (count_over_time({app="paperless"} |~ "(?i)[ERROR] [paperless_mail]"[15m])) > 0
+            for: 2m
+            labels:
+              severity: critical
+              category: logs
+            annotations:
+              summary: Paperless is having trouble fetching mail
