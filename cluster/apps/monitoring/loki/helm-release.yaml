@@ -102,7 +102,7 @@ spec:
               summary: "{{ $labels.app }} is experiencing malformed database disk image issues"
           - alert: ArrFailedToConnectToPlex
             expr: |
-              sum by (app) (count_over_time({app=~".*arr"} |~ "(?i)failed|unable" |~ "(?i)plex"[30m])) > 0
+              sum by (app) (count_over_time({app=~".*arr"} |~ "(?i)failed|unable" |~ "(?i)plex"[2m])) > 0
             for: 2m
             labels:
               severity: warning
@@ -112,7 +112,7 @@ spec:
           - alert: ArrFailedToConnectToProwlarr
             expr: |
               sum by (app) (count_over_time({app=~".*arr"} |~ "(?i)connection refused|currently unavailable" |= "(?i)prowlarr:9696"[5m])) > 0
-            for: 2m
+            for: 5m
             labels:
               severity: warning
               category: logs
@@ -155,7 +155,7 @@ spec:
           - alert: PaperlessMailError
             expr: |
               sum by (app) (count_over_time({app="paperless"} |~ "(?i)\\[ERROR\\] \\[paperless_mail\\]"[10m])) > 0
-            for: 2m
+            for: 10m
             labels:
               severity: critical
               category: logs
