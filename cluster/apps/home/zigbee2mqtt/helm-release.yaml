@@ -52,6 +52,7 @@ spec:
       config:
         enabled: true
         storageClass: longhorn
+        mountPath: /data
         labels:
           recurring-job.longhorn.io/backup: enabled
       usb:
