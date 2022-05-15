@@ -54,6 +54,8 @@ spec:
       config:
         enabled: true
         storageClass: longhorn
+        labels:
+          recurring-job.longhorn.io/backup: enabled
       media:
         enabled: true
         mountPath: /media

@@ -1,0 +1,14 @@
+---
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: pvc-backups
+  namespace: longhorn-system
+spec:
+  # Run every third day at 11
+  cron: 0 23 */3 * *
+  task: backup
+  groups:
+    - backup
+  retain: 5
+  concurrency: 2

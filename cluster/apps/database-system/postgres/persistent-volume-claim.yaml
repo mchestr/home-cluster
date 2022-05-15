@@ -4,6 +4,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: postgres-pvc
   namespace: database-system
+  labels:
+    recurring-job.longhorn.io/backup: enabled
 spec:
   storageClassName: longhorn
   accessModes:
