@@ -29,8 +29,6 @@ spec:
       tag: v7.1.65
     env:
       TZ: ${TZ}
-    podSecurityContext:
-      fsGroup: ${FS_GROUP}
 
     service:
       main:
@@ -60,6 +58,6 @@ spec:
     persistence:
       data:
         enabled: true
-        type: nfs
-        server: ${NAS_ADDR}
-        path: /volume1/shared/code/unifi
+        storageClass: longhorn
+        labels:
+          recurring-job.longhorn.io/backup: enabled
