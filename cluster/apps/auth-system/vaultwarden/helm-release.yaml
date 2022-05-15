@@ -57,7 +57,8 @@ spec:
           external-dns/is-public: "true"
           kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          # traefik.ingress.kubernetes.io/router.middlewares: networking-external@kubernetescrd,bitwarden-theme@file
+          # Skip error pages as it breaks 2fa redirect on login
+          traefik.ingress.kubernetes.io/router.middlewares: networking-cloudflare-only@kubernetescrd,networking-secure-headers@kubernetescrd,networking-rate-limit@kubernetescrd,bitwarden-theme@file
         hosts:
           - host: &host "vault.${CLUSTER_DOMAIN}"
             paths:
