@@ -78,6 +78,22 @@ spec:
       serviceMonitor:
         interval: 5m
         scrapeTimeout: 1m
+    additionalContainers:
+      vuetorrent:
+        name: vuetorrent
+        image: k8s.gcr.io/git-sync/git-sync:v3.5.0
+        args:
+          - --repo
+          - https://github.com/WDaan/VueTorrent
+          - --branch
+          - latest-release
+          - --root
+          - /config
+          - --wait
+          - "86400"
+        volumeMounts:
+          - name: config
+            mountPath: /config
     # Schedule on k8s-2 as it has better specs
     affinity:
       nodeAffinity:
