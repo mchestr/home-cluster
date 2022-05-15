@@ -54,6 +54,4 @@ spec:
     persistence:
       config:
         enabled: true
-        type: nfs
-        server: ${NAS_ADDR}
-        path: /volume1/shared/code/esphome
+        storageClass: longhorn
