@@ -76,6 +76,6 @@ spec:
     persistence:
       config:
         enabled: true
-        type: nfs
-        server: ${NAS_ADDR}
-        path: /volume1/shared/code/vaultwarden
+        storageClass: longhorn
+        labels:
+          recurring-job.longhorn.io/backup: enabled
