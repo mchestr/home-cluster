@@ -27,8 +27,6 @@ spec:
       tag: 1.24.0
     strategy:
       type: RollingUpdate
-    podSecurityContext:
-      fsGroup: ${FS_GROUP}
 
     # https://github.com/dani-garcia/vaultwarden/blob/main/.env.template
     env:
