@@ -15,10 +15,6 @@ services:
       - name: EMQX
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/emqx/android-chrome-maskable-512x512.png"
         url: "https://emqx.${CLUSTER_DOMAIN}"
-      - name: K10
-        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/k10/android-chrome-maskable-512x512.png"
-        url: "https://k10.${CLUSTER_DOMAIN}/k10/"
-        subtitle: Backup manager
       - name: phpMyAdmin
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/phpMyAdmin/android-chrome-maskable-512x512.png"
         url: "https://${NAS_ADDR}:9443"
