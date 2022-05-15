@@ -33,7 +33,7 @@ spec:
             claimName: data-source-pvc # change to data source pvc
         - name: new-vol
           persistentVolumeClaim:
-            claimName: baikal-config # change to data target pvc
+            claimName: baikal-data # change to data target pvc
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -57,7 +57,7 @@ spec:
     volumeHandle: data-source-pv-id
     volumeAttributes:
       server: 192.168.1.128
-      share: /volume1/shared/code/baikal/config
+      share: /volume1/shared/code/baikal/data
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
