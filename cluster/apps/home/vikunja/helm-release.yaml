@@ -34,7 +34,7 @@ spec:
         size: 1Gi
         mountpath: /app/vikunja/files
         labels:
-          recurring-job.longhorn.io/backup: enabled
+          recurring-job-group.longhorn.io/backup: enabled
 
     ingress:
       main:
