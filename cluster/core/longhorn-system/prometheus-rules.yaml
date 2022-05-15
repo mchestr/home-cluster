@@ -48,8 +48,8 @@ spec:
             description:
               The used storage of node {{$labels.node}} is at {{$value}}% capacity for
               more than 5 minutes.
-            summary: The used storage of node is over 70% of the capacity.
-          expr: (longhorn_node_storage_usage_bytes / longhorn_node_storage_capacity_bytes) * 100 > 70
+            summary: The used storage of node is over 90% of the capacity.
+          expr: (longhorn_node_storage_usage_bytes / longhorn_node_storage_capacity_bytes) * 100 > 90
           for: 5m
           labels:
             issue: The used storage of node {{$labels.node}} is high.
@@ -59,8 +59,8 @@ spec:
             description:
               The used storage of disk {{$labels.disk}} on node {{$labels.node}} is at {{$value}}% capacity for
               more than 5 minutes.
-            summary: The used storage of disk is over 70% of the capacity.
-          expr: (longhorn_disk_usage_bytes / longhorn_disk_capacity_bytes) * 100 > 70
+            summary: The used storage of disk is over 90% of the capacity.
+          expr: (longhorn_disk_usage_bytes / longhorn_disk_capacity_bytes) * 100 > 90
           for: 5m
           labels:
             issue: The used storage of disk {{$labels.disk}} on node {{$labels.node}} is high.
