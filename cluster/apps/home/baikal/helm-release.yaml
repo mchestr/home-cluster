@@ -38,14 +38,14 @@ spec:
         accessMode: ReadWriteOnce
         size: 512Mi
         labels:
-          recurring-job.longhorn.io/backup: enabled
+          recurring-job-group.longhorn.io/backup: enabled
       data:
         enabled: true
         storageClass: longhorn
         accessMode: ReadWriteOnce
         size: 512Mi
         labels:
-          recurring-job.longhorn.io/backup: enabled
+          recurring-job-group.longhorn.io/backup: enabled
     mariadb:
       enabled: false
     ingress:
