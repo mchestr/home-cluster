@@ -59,11 +59,15 @@ spec:
       config:
         enabled: true
         storageClass: longhorn
+        accessModes: ReadWriteOnce
+        size: 1Gi
         labels:
           recurring-job-group.longhorn.io/backup: enabled
 
       data:
         enabled: true
         storageClass: longhorn
+        accessModes: ReadWriteOnce
+        size: 1Gi
         labels:
           recurring-job-group.longhorn.io/backup: enabled
