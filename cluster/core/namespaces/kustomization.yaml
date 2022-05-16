@@ -6,6 +6,7 @@ resources:
   - cert-manager.yaml
   - csi-driver-nfs.yaml
   - database-system.yaml
+  - game-system.yaml
   - home.yaml
   - kubernetes-dashboard.yaml
   - longhorn-system.yaml
