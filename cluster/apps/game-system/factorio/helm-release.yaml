@@ -102,6 +102,7 @@ spec:
 
       white_list:
         - GreatAlot
+        - mchestr
 
     mods:
       enabled: true
