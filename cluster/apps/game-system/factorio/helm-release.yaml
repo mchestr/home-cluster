@@ -48,6 +48,9 @@ spec:
       repository: factoriotools/factorio
       tag: stable
 
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: factorio-settings
+
     env:
       # -- Set the container timezone
       TZ: ${TZ}
