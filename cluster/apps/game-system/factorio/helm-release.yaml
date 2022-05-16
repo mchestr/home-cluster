@@ -64,16 +64,6 @@ spec:
         loadBalancerIP: "${METALLB_FACTORIO_ADDR}"
         annotations:
           metallb.universe.tf/allow-shared-ip: factorio
-        ports:
-          server:
-            enabled: true
-            port: 34201
-            protocol: UDP
-          rcon:
-            enabled: true
-            primary: true
-            port: 27017
-            protocol: TCP
 
     persistence:
       config:
@@ -106,15 +96,6 @@ spec:
       white_list:
         - GreatAlot
         - mchestr
-
-    mods:
-      enabled: true
-      portal:
-        - helmod
-        - Squeak Through
-        - even-distribution
-        - Bottleneck
-        - AutoDeconstruct
 
     startupProbe:
       enabled: true
