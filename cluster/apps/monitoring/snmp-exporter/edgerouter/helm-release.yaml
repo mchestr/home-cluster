@@ -37,7 +37,7 @@ spec:
         - name: edgerouter
           module:
             - edgerouter
-          target: edgerouter
+          target: ${GATEWAY_IP}
       path: /snmp
       scrapeTimeout: 10s
       relabelings:
