@@ -57,6 +57,7 @@ spec:
       config:
         enabled: true
         storageClass: longhorn
+        size: 2Gi
         labels:
           recurring-job-group.longhorn.io/backup: enabled
 
