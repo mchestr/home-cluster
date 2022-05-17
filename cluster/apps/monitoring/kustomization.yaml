@@ -6,4 +6,5 @@ resources:
   - kube-prometheus-stack
   - grafana
   - loki
+  - snmp-exporter
   - vector
