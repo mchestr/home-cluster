@@ -21,13 +21,22 @@ spec:
     fullnameOverride: *release
     image:
       repository: quay.io/prometheus/snmp-exporter
+    extraArgs:
+      - "--config.file=/config/snmp.yaml"
+    extraConfigmapMounts:
+      - name: snmp-exporter-edgerouter
+        mountPath: /config/snmp.yaml
+        subPath: snmp.yaml
+        configMap: snmp-exporter-edgerouter
+        readOnly: true
+        defaultMode: 420
     serviceMonitor:
       enabled: true
       namespace: monitoring
       params:
         - name: edgerouter
           module:
-            - if_mb
+            - edgerouter
           target: ${GATEWAY_IP}
       path: /snmp
       scrapeTimeout: 10s
