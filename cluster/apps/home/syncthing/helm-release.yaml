@@ -44,11 +44,15 @@ spec:
         type: LoadBalancer
         loadBalancerIP: ${METALLB_SYNCTHING_ADDR}
         externalTrafficPolicy: Local
+        annotations:
+          metallb.universe.tf/allow-shared-ip: factorio
       discovery:
         enabled: true
         type: LoadBalancer
         loadBalancerIP: ${METALLB_SYNCTHING_ADDR}
         externalTrafficPolicy: Local
+        annotations:
+          metallb.universe.tf/allow-shared-ip: factorio
     ingress:
       main:
         enabled: true
