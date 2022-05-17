@@ -1,0 +1,68 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: syncthing
+  namespace: home
+spec:
+  releaseName: syncthing
+  interval: 5m
+  chart:
+    spec:
+      chart: syncthing
+      version: 3.4.2
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+      remediateLastFailure: true
+    cleanupOnFail: true
+  values:
+    image:
+      repository: syncthing/syncthing
+      tag: 1.20.1
+    env:
+      TZ: ${TZ}
+    persistence:
+      data:
+        enabled: true
+        type: nfs
+        server: ${NAS_ADDR}
+        path: /volume1/shared/syncthing
+        mountPath: /var/syncthing
+    service:
+      listen:
+        enabled: true
+        type: LoadBalancer
+        loadBalancerIP: ${METALLB_SYNCTHING_ADDR}
+        externalTrafficPolicy: Local
+      discovery:
+        enabled: true
+        type: LoadBalancer
+        loadBalancerIP: ${METALLB_SYNCTHING_ADDR}
+        externalTrafficPolicy: Local
+    ingress:
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-production
+        external-dns.alpha.kubernetes.io/target: ipv4.${CLUSTER_DOMAIN}
+        external-dns/is-public: "true"
+        kubernetes.io/ingress.class: traefik
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        traefik.ingress.kubernetes.io/router.middlewares: networking-external-auth@kubernetescrd
+      hosts:
+        - host: &host sync.${CLUSTER_DOMAIN}
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - *host
