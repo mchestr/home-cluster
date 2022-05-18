@@ -1,0 +1,119 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: factorio-k2
+  namespace: game-system
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: factorio
+      version: 1.1.2
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  install:
+    createNamespace: true
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+
+  valuesFrom:
+    - kind: Secret
+      name: factorio-secrets
+      valuesKey: GAME_PASSWORD
+      targetPath: config.server_settings.game_password
+    - kind: Secret
+      name: factorio-secrets
+      valuesKey: FACTORIO_TOKEN
+      targetPath: config.factorioServer.token
+    - kind: Secret
+      name: factorio-secrets
+      valuesKey: FACTORIO_USERNAME
+      targetPath: config.factorioServer.username
+    - kind: Secret
+      name: factorio-secrets
+      valuesKey: FACTORIO_RCON_PASSWORD
+      targetPath: config.rcon.password
+
+  values:
+    image:
+      repository: factoriotools/factorio
+      tag: stable
+
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: factorio-settings
+
+    env:
+      # -- Set the container timezone
+      TZ: ${TZ}
+
+    # -- Configures service settings for the chart.
+    # @default -- See values.yaml
+    service:
+      main:
+        type: LoadBalancer # Setting Ip external to cluster for easy port forward
+        externalTrafficPolicy: Cluster
+        loadBalancerIP: "${METALLB_FACTORIO_ADDR}"
+        annotations:
+          metallb.universe.tf/allow-shared-ip: factorio
+        ports:
+          server:
+            enabled: true
+            port: 34198
+            protocol: UDP
+          rcon:
+            enabled: true
+            primary: true
+            port: 27016
+            protocol: TCP
+
+    persistence:
+      config:
+        enabled: true
+        size: 10Gi
+        accessMode: ReadWriteOnce
+        storageClass: longhorn
+        labels:
+          recurring-job-group.longhorn.io/backup: enabled
+
+    config:
+      factorioServer:
+        save_name: k2
+        generate_new_save: false
+        update_mods_on_start: true
+        load_latest_save: true
+
+      server_settings:
+        name: Krastorio
+        description: K2 on k8s
+        non_blocking_saving: true
+        require_user_verification: true
+
+      rcon:
+        port: 30100
+
+      admin_list:
+        - mchestr
+
+      white_list:
+        - GreatAlot
+        - mchestr
+
+    startupProbe:
+      enabled: true
+      failureThreshold: 30
+      periodSeconds: 10
+
+    resources:
+      requests:
+        memory: 1555M
+      limits:
+        memory: 8006M
