@@ -24,6 +24,7 @@ does not have a data provider for the embedded Authentik Outpost, so we need to 
 ```bash
 terraform import authentik_service_connection_kubernetes.local "<authentik_service_connection_kubernetes_uuid>"
 terraform import authentik_outpost.outpost "<authentik_outpost_uuid>"
+terraform import authentik_outpost.ldap "<authentik_outpost_ldap_uuid>"
 ```
 
 We can now have Terraform add providers to the embedded outpost without manual intervention.
