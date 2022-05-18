@@ -28,10 +28,6 @@ spec:
   valuesFrom:
     - kind: Secret
       name: factorio-secrets
-      valuesKey: GAME_PASSWORD
-      targetPath: config.server_settings.game_password
-    - kind: Secret
-      name: factorio-secrets
       valuesKey: FACTORIO_TOKEN
       targetPath: config.factorioServer.token
     - kind: Secret
