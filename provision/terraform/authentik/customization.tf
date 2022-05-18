@@ -19,9 +19,9 @@ resource "authentik_policy_binding" "reputation-low" {
 }
 
 resource "authentik_policy_binding" "system-admins-apps" {
-  for_each = local.apps
+  for_each = authentik_application.name
 
-  target = authentik_application.name[each.key].uuid
+  target = each.value.uuid
   group  = authentik_group.system-admins.id
   order  = 5
 }
@@ -29,20 +29,15 @@ resource "authentik_policy_binding" "system-admins-apps" {
 resource "authentik_policy_binding" "media-users-apps" {
   for_each = local.media_apps
 
-  target = authentik_application.name[each.key].uuid
+  target = each.value.uuid
   group  = authentik_group.media-users.id
   order  = 10
 }
 
 resource "authentik_policy_binding" "home-users-app" {
-  for_each = toset([
-    authentik_application.name["paperless"].uuid,
-    authentik_application.vikunja.uuid,
-    authentik_application.grafana.uuid,
-    authentik_application.wiki.uuid
-  ])
+  for_each = local.home_apps
 
-  target = each.key
+  target = each.value.uuid
   group  = authentik_group.home-users.id
   order  = 10
 }
