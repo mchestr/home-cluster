@@ -26,17 +26,16 @@ locals {
     appdaemon           = { group = "Home System" }
     appdaemon-code      = { group = "Editors" }
     alert-manager       = { group = "System" }
-    sync = { group = "Home" }
+    sync                = { group = "Home", basic_auth_enabled = true }
   }
 
   oauth2_apps = {
     wiki    = { sub_mode = "user_username" },
     grafana = {}
-    vikunja = { group = "Home" }
+    vikunja = { group = "Home", basic_auth_enabled = true }
   }
 
   ldap_apps = {
-    sync = {group = "Home"}
   }
 
   media_apps = {
@@ -48,7 +47,7 @@ locals {
 }
 
 resource "authentik_service_connection_kubernetes" "local" {
-  name = "Local Kubernetes Cluster"
+  name  = "Local Kubernetes Cluster"
   local = true
 }
 
@@ -75,7 +74,6 @@ resource "authentik_outpost" "outpost" {
     kubernetes_image_pull_secrets  = []
     kubernetes_disabled_components = ["deployment", "secret"],
     kubernetes_ingress_annotations = {}, kubernetes_ingress_secret_name = "authentik-outpost-tls"
-
   })
 }
 
@@ -105,20 +103,12 @@ resource "authentik_provider_oauth2" "providers" {
   sub_mode           = lookup(each.value, "sub_mode", "hashed_user_id")
 }
 
-resource "authentik_provider_ldap" "providers" {
-  for_each = local.ldap_apps
-
-  name      = each.key
-  base_dn   = "dc=ldap,dc=goauthentik,dc=io"
-  bind_flow = data.authentik_flow.default-authorization.id
-}
-
 resource "authentik_application" "name" {
   for_each = merge(local.proxy_apps, local.oauth2_apps, local.ldap_apps)
 
   name              = each.key
   slug              = each.key
-  protocol_provider = lookup(authentik_provider_proxy.providers, each.key, lookup(authentik_provider_oauth2.providers, each.key, lookup(authentik_provider_ldap.providers, each.key, {}))).id
+  protocol_provider = lookup(authentik_provider_proxy.providers, each.key, lookup(authentik_provider_oauth2.providers, each.key, {})).id
   meta_icon         = format("https://home.%s/assets/data/%s/android-chrome-maskable-512x512.png", data.sops_file.authentik_secrets.data["cluster_domain"], each.key)
   meta_launch_url   = lookup(data.sops_file.authentik_secrets.data, format("%s_meta_launch_url", each.key), "")
   group             = lookup(each.value, "group", "System")
