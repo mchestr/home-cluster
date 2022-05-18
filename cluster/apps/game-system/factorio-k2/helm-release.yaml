@@ -27,19 +27,19 @@ spec:
 
   valuesFrom:
     - kind: Secret
-      name: factorio-secrets
+      name: factorio-k2-secrets
       valuesKey: GAME_PASSWORD
       targetPath: config.server_settings.game_password
     - kind: Secret
-      name: factorio-secrets
+      name: factorio-k2-secrets
       valuesKey: FACTORIO_TOKEN
       targetPath: config.factorioServer.token
     - kind: Secret
-      name: factorio-secrets
+      name: factorio-k2-secrets
       valuesKey: FACTORIO_USERNAME
       targetPath: config.factorioServer.username
     - kind: Secret
-      name: factorio-secrets
+      name: factorio-k2-secrets
       valuesKey: FACTORIO_RCON_PASSWORD
       targetPath: config.rcon.password
 
@@ -49,7 +49,7 @@ spec:
       tag: stable
 
     podAnnotations:
-      configmap.reloader.stakater.com/reload: factorio-settings
+      configmap.reloader.stakater.com/reload: factorio-k2-settings
 
     env:
       # -- Set the container timezone
