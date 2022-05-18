@@ -18,7 +18,7 @@ metadata:
 spec:
   forwardAuth:
     address: >-
-      http://ak-outpost-ak-outpost.auth-system:9000/outpost.goauthentik.io/auth/traefik
+      http://ak-outpost-authentik-embedded-outpost.auth-system:9000/outpost.goauthentik.io/auth/traefik
     authResponseHeaders:
       # Enable Basic Auth
       - authorization
