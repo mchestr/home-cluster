@@ -26,6 +26,7 @@ locals {
     appdaemon           = { group = "Home System" }
     appdaemon-code      = { group = "Editors" }
     alert-manager       = { group = "System" }
+    sync = { group = "Home" }
   }
 
   oauth2_apps = {
@@ -35,7 +36,7 @@ locals {
   }
 
   ldap_apps = {
-    sync = {}
+    sync = {group = "Home"}
   }
 
   media_apps = {
@@ -61,7 +62,7 @@ resource "authentik_outpost" "outpost" {
   config = jsonencode({
     log_level                      = "debug",
     docker_labels                  = null,
-    authentik_host                 = "https://outpost.${CLUSTER_DOMAIN}",
+    authentik_host                 = format("https://outpost.%s", data.sops_file.authentik_secrets.data["cluster_domain"]),
     docker_network                 = null,
     container_image                = null,
     docker_map_ports               = true,

@@ -58,11 +58,11 @@ spec:
         enabled: true
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
-          external-dns.alpha.kubernetes.io/target: ipv4.${CLUSTER_DOMAIN}
-          external-dns/is-public: "true"
+          # external-dns.alpha.kubernetes.io/target: ipv4.${CLUSTER_DOMAIN}
+          # external-dns/is-public: "true"
           kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/router.middlewares: networking-external-auth@kubernetescrd
+          traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
         hosts:
           - host: &host sync.${CLUSTER_DOMAIN}
             paths:
