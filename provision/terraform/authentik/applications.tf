@@ -1,47 +1,85 @@
 locals {
-  apps = {
-    "zwavejs2mqtt"        = { group = "Home System" }
-    "zigbee2mqtt"         = { group = "Home System" }
-    "traefik"             = { group = "System" }
-    "tautulli"            = { group = "Media" }
-    "sonarr"              = { group = "Media", basic_auth_enabled = true }
-    "sabnzbd"             = { group = "Downloaders" }
-    "readarr"             = { group = "Media", basic_auth_enabled = true }
-    "radarr"              = { group = "Media", basic_auth_enabled = true }
-    "radarr-4k"           = { group = "Media", basic_auth_enabled = true }
-    "qbittorrent"         = { group = "Downloaders", basic_auth_enabled = true }
-    "prowlarr"            = { group = "Media", basic_auth_enabled = true }
-    "prometheus"          = { group = "System" }
-    "paperless"           = { group = "Home" }
-    "longhorn"            = { group = "System" }
-    "lidarr"              = { group = "Media", basic_auth_enabled = true }
-    "k10"                 = { group = "System", basic_auth_enabled = true, launch_url = format("https://k10.%s/k10/", data.sops_file.authentik_secrets.data["cluster_domain"]) }
-    "home-assistant-code" = { group = "Editors" }
-    "esphome"             = { group = "Home System" }
-    "emqx"                = { group = "System", basic_auth_enabled = true }
-    "dashboard"           = { group = "System" }
-    "calibre-web"         = { group = "Media" }
-    "calibre"             = { group = "System" }
-    "cal"                 = { group = "System" }
-    "bazarr"              = { group = "Media", basic_auth_enabled = true }
-    "appdaemon"           = { group = "Home System" }
-    "appdaemon-code"      = { group = "Editors" }
-    "alert-manager"       = { group = "System" }
+  proxy_apps = {
+    zwavejs2mqtt        = { group = "Home System" }
+    zigbee2mqtt         = { group = "Home System" }
+    traefik             = { group = "System" }
+    tautulli            = { group = "Media" }
+    sonarr              = { group = "Media", basic_auth_enabled = true }
+    sabnzbd             = { group = "Downloaders" }
+    readarr             = { group = "Media", basic_auth_enabled = true }
+    radarr              = { group = "Media", basic_auth_enabled = true }
+    radarr-4k           = { group = "Media", basic_auth_enabled = true }
+    qbittorrent         = { group = "Downloaders", basic_auth_enabled = true }
+    prowlarr            = { group = "Media", basic_auth_enabled = true }
+    prometheus          = { group = "System" }
+    paperless           = { group = "Home" }
+    longhorn            = { group = "System" }
+    lidarr              = { group = "Media", basic_auth_enabled = true }
+    home-assistant-code = { group = "Editors" }
+    esphome             = { group = "Home System" }
+    emqx                = { group = "System", basic_auth_enabled = true }
+    dashboard           = { group = "System" }
+    calibre-web         = { group = "Media" }
+    calibre             = { group = "System" }
+    cal                 = { group = "System" }
+    bazarr              = { group = "Media", basic_auth_enabled = true }
+    appdaemon           = { group = "Home System" }
+    appdaemon-code      = { group = "Editors" }
+    alert-manager       = { group = "System" }
   }
 
-  admin_apps = toset(compact(([
-    for i, each in local.apps :
-    contains(["System", "Editors", "Home System"], each.group) ? i : ""
-  ])))
+  oauth2_apps = {
+    wiki    = { sub_mode = "user_username" },
+    grafana = {}
+    vikunja = { group = "Home" }
+  }
 
-  media_apps = toset(compact(([
-    for i, each in local.apps :
-    contains(["Media", "Downloaders"], each.group) ? i : ""
-  ])))
+  ldap_apps = {
+    sync = {}
+  }
+
+  media_apps = {
+    for k, v in authentik_application.name : k => v if contains(["Media"], v.group)
+  }
+  home_apps = {
+    for k, v in authentik_application.name : k => v if contains(["Home"], v.group)
+  }
+}
+
+resource "authentik_service_connection_kubernetes" "local" {
+  name = "Local Kubernetes Cluster"
+  local = true
+}
+
+resource "authentik_outpost" "outpost" {
+  name = "authentik Embedded Outpost"
+  type = "proxy"
+  protocol_providers = [
+    for app in authentik_provider_proxy.providers : app.id
+  ]
+  service_connection = authentik_service_connection_kubernetes.local.id
+  config = jsonencode({
+    log_level                      = "debug",
+    docker_labels                  = null,
+    authentik_host                 = "https://outpost.***REMOVED***",
+    docker_network                 = null,
+    container_image                = null,
+    docker_map_ports               = true,
+    kubernetes_replicas            = 1,
+    kubernetes_namespace           = "auth-system",
+    authentik_host_browser         = "",
+    object_naming_template         = "ak-outpost-%(name)s",
+    authentik_host_insecure        = false,
+    kubernetes_service_type        = "ClusterIP",
+    kubernetes_image_pull_secrets  = []
+    kubernetes_disabled_components = ["deployment", "secret"],
+    kubernetes_ingress_annotations = {}, kubernetes_ingress_secret_name = "authentik-outpost-tls"
+
+  })
 }
 
 resource "authentik_provider_proxy" "providers" {
-  for_each = local.apps
+  for_each = local.proxy_apps
 
   name                          = format("%s proxy", each.key)
   external_host                 = format("https://%s.%s%s", each.key, data.sops_file.authentik_secrets.data["cluster_domain"], lookup(each.value, "external_host_path", ""))
@@ -53,76 +91,34 @@ resource "authentik_provider_proxy" "providers" {
   basic_auth_username_attribute = format("%s_user", each.key)
 }
 
+resource "authentik_provider_oauth2" "providers" {
+  for_each = local.oauth2_apps
+
+  name               = each.key
+  client_id          = data.sops_file.authentik_secrets.data[format("%s_client_id", each.key)]
+  client_secret      = data.sops_file.authentik_secrets.data[format("%s_client_secret", each.key)]
+  authorization_flow = data.authentik_flow.default-authorization.id
+  signing_key        = data.authentik_certificate_key_pair.generated.id
+  property_mappings  = data.authentik_scope_mapping.scopes.ids
+  redirect_uris      = yamldecode(data.sops_file.authentik_secrets.raw)[format("%s_redirect_urls", each.key)]
+  sub_mode           = lookup(each.value, "sub_mode", "hashed_user_id")
+}
+
+resource "authentik_provider_ldap" "providers" {
+  for_each = local.ldap_apps
+
+  name      = each.key
+  base_dn   = "dc=ldap,dc=goauthentik,dc=io"
+  bind_flow = data.authentik_flow.default-authorization.id
+}
+
 resource "authentik_application" "name" {
-  for_each = local.apps
+  for_each = merge(local.proxy_apps, local.oauth2_apps, local.ldap_apps)
 
-  name              = format("%s", each.key)
-  slug              = format("%s", each.key)
-  protocol_provider = authentik_provider_proxy.providers[each.key].id
+  name              = each.key
+  slug              = each.key
+  protocol_provider = lookup(authentik_provider_proxy.providers, each.key, lookup(authentik_provider_oauth2.providers, each.key, lookup(authentik_provider_ldap.providers, each.key, {}))).id
   meta_icon         = format("https://home.%s/assets/data/%s/android-chrome-maskable-512x512.png", data.sops_file.authentik_secrets.data["cluster_domain"], each.key)
-  meta_launch_url   = lookup(each.value, "launch_url", "")
-  group             = lookup(each.value, "group", "")
-}
-
-resource "authentik_provider_oauth2" "grafana" {
-  name               = "grafana"
-  client_id          = data.sops_file.authentik_secrets.data["grafana_client_id"]
-  client_secret      = data.sops_file.authentik_secrets.data["grafana_client_secret"]
-  authorization_flow = data.authentik_flow.default-authorization.id
-  signing_key        = data.authentik_certificate_key_pair.generated.id
-  property_mappings  = data.authentik_scope_mapping.scopes.ids
-  redirect_uris = [
-    data.sops_file.authentik_secrets.data["grafana_redirect_uri"]
-  ]
-}
-
-resource "authentik_application" "grafana" {
-  name              = "grafana"
-  slug              = "grafana"
-  protocol_provider = authentik_provider_oauth2.grafana.id
-  meta_icon         = format("https://home.%s/assets/data/grafana/android-chrome-maskable-512x512.png", data.sops_file.authentik_secrets.data["cluster_domain"])
-  group             = "System"
-}
-
-resource "authentik_provider_oauth2" "wiki" {
-  name               = "wiki"
-  sub_mode           = "user_username"
-  client_id          = data.sops_file.authentik_secrets.data["wikijs_client_id"]
-  client_secret      = data.sops_file.authentik_secrets.data["wikijs_client_secret"]
-  authorization_flow = data.authentik_flow.default-authorization.id
-  signing_key        = data.authentik_certificate_key_pair.generated.id
-  property_mappings  = data.authentik_scope_mapping.scopes.ids
-  redirect_uris = [
-    format("%s/callback", data.sops_file.authentik_secrets.data["wikijs_redirect_uri"])
-  ]
-}
-
-resource "authentik_application" "wiki" {
-  name              = "wiki"
-  slug              = "wiki"
-  protocol_provider = authentik_provider_oauth2.wiki.id
-  meta_icon         = format("https://home.%s/assets/data/wikijs/android-chrome-maskable-512x512.png", data.sops_file.authentik_secrets.data["cluster_domain"])
-  meta_launch_url   = data.sops_file.authentik_secrets.data["wikijs_redirect_uri"]
-  group             = "System"
-}
-
-resource "authentik_provider_oauth2" "vikunja" {
-  name               = "vikunja"
-  client_id          = data.sops_file.authentik_secrets.data["vikunja_client_id"]
-  client_secret      = data.sops_file.authentik_secrets.data["vikunja_client_secret"]
-  authorization_flow = data.authentik_flow.default-authorization.id
-  signing_key        = data.authentik_certificate_key_pair.generated.id
-  property_mappings  = data.authentik_scope_mapping.scopes.ids
-  redirect_uris = [
-    data.sops_file.authentik_secrets.data["vikunja_redirect_url"],
-    format("%s/authentik", data.sops_file.authentik_secrets.data["vikunja_redirect_url"])
-  ]
-}
-
-resource "authentik_application" "vikunja" {
-  name              = "vikunja"
-  slug              = "vikunja"
-  protocol_provider = authentik_provider_oauth2.vikunja.id
-  meta_icon         = format("https://home.%s/assets/data/vikunja/android-chrome-maskable-512x512.png", data.sops_file.authentik_secrets.data["cluster_domain"])
-  group             = "Home"
+  meta_launch_url   = lookup(data.sops_file.authentik_secrets.data, format("%s_meta_launch_url", each.key), "")
+  group             = lookup(each.value, "group", "System")
 }
