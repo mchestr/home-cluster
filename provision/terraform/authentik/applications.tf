@@ -61,7 +61,7 @@ resource "authentik_outpost" "outpost" {
   config = jsonencode({
     log_level                      = "debug",
     docker_labels                  = null,
-    authentik_host                 = "https://outpost.***REMOVED***",
+    authentik_host                 = "https://outpost.${CLUSTER_DOMAIN}",
     docker_network                 = null,
     container_image                = null,
     docker_map_ports               = true,
