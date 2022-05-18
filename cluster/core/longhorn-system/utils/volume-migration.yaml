@@ -3,7 +3,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  namespace: home # namespace where the pvc's exist
+  namespace: game-system # namespace where the pvc's exist
   name: data-config-restore
 spec:
   completions: 1
@@ -33,13 +33,13 @@ spec:
             claimName: data-source-pvc # change to data source pvc
         - name: new-vol
           persistentVolumeClaim:
-            claimName: baikal-data # change to data target pvc
+            claimName: factorio-k2-config # change to data target pvc
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: data-source-pv
-  namespace: media
+  namespace: game-system
 spec:
   capacity:
     storage: 1Gi
@@ -57,13 +57,13 @@ spec:
     volumeHandle: data-source-pv-id
     volumeAttributes:
       server: 192.168.1.128
-      share: /volume1/shared/code/baikal/data
+      share: /volume1/shared/code/factorio-k2
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: data-source-pvc
-  namespace: home
+  namespace: game-system
 spec:
   accessModes:
     - ReadWriteMany
