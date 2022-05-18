@@ -32,7 +32,7 @@ locals {
   oauth2_apps = {
     wiki    = { sub_mode = "user_username" },
     grafana = {}
-    vikunja = { group = "Home", basic_auth_enabled = true }
+    vikunja = { group = "Home" }
   }
 
   ldap_apps = {
