@@ -4,4 +4,3 @@ kind: Kustomization
 resources:
   - helm-release.yaml
   - secret.sops.yaml
-  - persistent-volume-claim.yaml
