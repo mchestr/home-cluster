@@ -73,6 +73,11 @@ spec:
         type: nfs
         server: ${NAS_ADDR}
         path: /volume1/shared/code/paperless/media
+      consume:
+        enabled: true
+        type: nfs
+        server: ${NAS_ADDR}
+        path: /volume1/shared/syncthing/Sync/consume
 
     podSecurityContext:
       fsGroup: ${FS_GROUP}
