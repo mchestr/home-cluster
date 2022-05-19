@@ -27,6 +27,7 @@ locals {
     appdaemon-code      = { group = "Editors" }
     alert-manager       = { group = "System" }
     sync                = { group = "Home", basic_auth_enabled = true }
+    goldilocks          = { group = "System" }
   }
 
   oauth2_apps = {
