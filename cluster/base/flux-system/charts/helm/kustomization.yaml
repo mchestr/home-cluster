@@ -11,6 +11,7 @@ resources:
   - emberstack-charts.yaml
   - emqx-charts.yaml
   - external-dns-charts.yaml
+  - fairwind-charts.yaml
   - grafana-charts.yaml
   - hajimari-charts.yaml
   - infracloudio-charts.yaml

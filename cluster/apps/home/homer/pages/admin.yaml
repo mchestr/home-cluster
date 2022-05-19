@@ -51,6 +51,10 @@ services:
       - name: Traefik
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/traefik/android-chrome-maskable-512x512.png"
         url: "https://traefik.${CLUSTER_DOMAIN}"
+      - name: Goldilocks
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/goldilocks/android-chrome-maskable-512x512.png"
+        url: "https://goldilocks.${CLUSTER_DOMAIN}"
+
 
   - name: Home Automation Systems
     icon: fas fa-magic

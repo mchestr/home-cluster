@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - botkube
   - kube-prometheus-stack
+  - goldilocks
   - grafana
   - loki
   - snmp-exporter
