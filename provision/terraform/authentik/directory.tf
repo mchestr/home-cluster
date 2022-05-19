@@ -70,6 +70,8 @@ resource "authentik_group" "system-admins" {
     readarr_password     = data.sops_file.authentik_secrets.data["readarr_password"],
     sonarr_user          = data.sops_file.authentik_secrets.data["sonarr_user"],
     sonarr_password      = data.sops_file.authentik_secrets.data["sonarr_password"],
+    sync_user            = data.sops_file.authentik_secrets.data["sync_user"],
+    sync_password        = data.sops_file.authentik_secrets.data["sync_password"],
   })
 }
 

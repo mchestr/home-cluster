@@ -18,6 +18,9 @@ services:
       - name: phpMyAdmin
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/phpMyAdmin/android-chrome-maskable-512x512.png"
         url: "https://${NAS_ADDR}:9443"
+      - name: SyncThing
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/sync/android-chrome-maskable-512x512.png"
+        url: "https://sync.${CLUSTER_DOMAIN}"
 
   - name: System Management
     icon: fas fa-project-diagram

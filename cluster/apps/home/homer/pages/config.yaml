@@ -66,7 +66,7 @@ services:
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/home-assistant/android-chrome-maskable-512x512.png"
         url: "https://home-assistant.${CLUSTER_DOMAIN}"
       - name: Wiki.js
-        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/wikijs/android-chrome-maskable-512x512.png"
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/wiki/android-chrome-maskable-512x512.png"
         url: "https://wiki.${CLUSTER_DOMAIN}"
         subtitle: Documentation Wiki
       - name: Vikunja
