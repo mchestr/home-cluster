@@ -13,4 +13,3 @@ resources:
   - monitoring
   - networking
   - system-upgrade
-  - vpa
