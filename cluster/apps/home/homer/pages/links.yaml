@@ -16,6 +16,8 @@ services:
       - name: Organization
         subtitle: GitHub Organization Repository
         url: https://github.com/k8s-at-home
+      - name: Search Charts
+        url: https://whazor.github.io/k8s-at-home-search/
 
   - name: GitHub
     icon: fab fa-github
