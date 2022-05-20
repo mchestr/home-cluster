@@ -24,7 +24,6 @@ FILE_HEADER = """# DO NOT EDIT MANUALLY. File is managed via GitHub actions.
 ---"""
 
 
-
 def fetch_ips(url: str):
     resp = requests.get(url, headers=HEADERS)
     resp.raise_for_status()
