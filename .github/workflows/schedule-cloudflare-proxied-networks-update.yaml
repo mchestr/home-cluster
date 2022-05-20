@@ -7,7 +7,7 @@ on: # yamllint disable-line rule:truthy
     - cron: "0 0 * * *"
 
 env:
-  CLOUDFLARE_PROXIED_NETWORKS_FILE: >-
+  CLOUDFLARE_PROXIED_TRAEFIK_MIDDLEWARE_FILE: >-
     cluster/apps/networking/traefik/addons/middleware/cloudflare-only.yaml
 jobs:
   cloudflare-proxied-networks-update:
