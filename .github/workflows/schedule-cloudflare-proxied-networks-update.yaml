@@ -32,7 +32,7 @@ jobs:
           private_key: "${{ secrets.MCHESTR_BOT_APP_PRIVATE_KEY }}"
       - name: Cloudflare Proxied Networks
         run: |
-          python .github/scripts/cloudflare-proxied-networks.py
+          python .github/scripts/cloudflare-proxied-networks.py > ${{ env.CLOUDFLARE_PROXIED_TRAEFIK_MIDDLEWARE_FILE }}
         env:
           CLOUDFLARE_PROXIED_TRAEFIK_MIDDLEWARE_FILE: ${{ env.CLOUDFLARE_PROXIED_TRAEFIK_MIDDLEWARE_FILE }}
       - name: Create pull request
