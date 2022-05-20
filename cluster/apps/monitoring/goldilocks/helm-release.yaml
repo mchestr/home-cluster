@@ -20,20 +20,18 @@ spec:
     controller:
       resources:
         requests:
-          cpu: 35m
-          memory: 64M
+          cpu: 15m
+          memory: 145M
         limits:
-          cpu: 35m
-          memory: 64M
+          memory: 174M
 
     dashboard:
       replicaCount: 1
       resources:
         requests:
-          cpu: 15m
+          cpu: 75m
           memory: 64M
         limits:
-          cpu: 15m
           memory: 64M
 
       ingress:
