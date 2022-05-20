@@ -22,13 +22,6 @@ spec:
       tag: v0.12.4
     serviceMonitor:
       enabled: true
-    resources:
-      requests:
-        cpu: 15m
-        memory: 249M
-      limits:
-        cpu: 15m
-        memory: 249M
     config:
       recommendations: true
       settings:
