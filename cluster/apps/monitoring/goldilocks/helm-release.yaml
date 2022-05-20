@@ -8,6 +8,7 @@ spec:
   interval: 5m
   chart:
     spec:
+      # renovate: registryUrl=https://charts.fairwinds.com/stable
       chart: goldilocks
       version: 6.1.2
       sourceRef:
@@ -17,6 +18,9 @@ spec:
       interval: 5m
   timeout: 20m
   values:
+    image:
+      repository: us-docker.pkg.dev/fairwinds-ops/oss/goldilocks
+      tag: v4.3.1
     controller:
       resources:
         requests:
