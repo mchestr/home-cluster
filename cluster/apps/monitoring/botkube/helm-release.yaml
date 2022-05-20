@@ -24,10 +24,11 @@ spec:
       enabled: true
     resources:
       requests:
-        cpu: 23m
-        memory: 204M
+        cpu: 15m
+        memory: 249M
       limits:
-        memory: 326M
+        cpu: 15m
+        memory: 249M
     config:
       recommendations: true
       settings:
