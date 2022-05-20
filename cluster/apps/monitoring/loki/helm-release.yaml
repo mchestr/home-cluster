@@ -31,7 +31,6 @@ spec:
         cpu: 35m
         memory: 298M
       limits:
-        cpu: 35m
         memory: 298M
     config:
       limits_config:
