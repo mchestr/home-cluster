@@ -34,16 +34,16 @@ spec:
         limits:
           memory: 64M
 
-    ingress:
-      enabled: true
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-production
-        kubernetes.io/ingress.class: traefik
-        traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
-      hosts:
-        - &host goldilocks.${CLUSTER_DOMAIN}
-      tls:
-        - hosts:
-            - *host
-          secretName: goldilocks-tls
+      ingress:
+        enabled: true
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/ingress.class: traefik
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
+        hosts:
+          - &host goldilocks.${CLUSTER_DOMAIN}
+        tls:
+          - hosts:
+              - *host
+            secretName: goldilocks-tls
