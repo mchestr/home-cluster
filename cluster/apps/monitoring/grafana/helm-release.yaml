@@ -22,10 +22,11 @@ spec:
       tag: 8.5.2
     resources:
       requests:
-        cpu: 34m
-        memory: 94M
+        cpu: 11m
+        memory: 127M
       limits:
-        memory: 213M
+        cpu: 11m
+        memory: 127M
     deploymentStrategy:
       type: Recreate
     podAnnotations:
