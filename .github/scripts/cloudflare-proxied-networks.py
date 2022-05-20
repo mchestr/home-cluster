@@ -44,11 +44,11 @@ def main():
         print("ips changes, updating...")
         template[0]["spec"]["ipWhiteList"]["sourceRange"] = ips
 
-    with open(TEMPLATE_PATH, "w") as f:
-        yaml_f = yaml.YAML()
-        yaml_f.indent(sequence=4, offset=2)
-        f.write(FILE_HEADER)
-        yaml_f.dump_all(template, f)
+    # with open(TEMPLATE_PATH, "w") as f:
+    #     yaml_f = yaml.YAML()
+    #     yaml_f.indent(sequence=4, offset=2)
+    #     f.write(FILE_HEADER)
+        # yaml_f.dump_all(template, f)
 
 
 if __name__ == "__main__":
