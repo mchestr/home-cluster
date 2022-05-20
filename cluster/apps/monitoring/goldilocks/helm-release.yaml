@@ -42,7 +42,10 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
         hosts:
-          - &host goldilocks.${CLUSTER_DOMAIN}
+          - host: &host goldilocks.${CLUSTER_DOMAIN}
+            paths:
+              - path: /
+                type: Prefix
         tls:
           - hosts:
               - *host
