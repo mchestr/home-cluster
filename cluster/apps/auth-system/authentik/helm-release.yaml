@@ -24,6 +24,13 @@ spec:
     image:
       repository: ghcr.io/goauthentik/server
       tag: 2022.4.1
+    resources:
+      requests:
+        cpu: 163m
+        memory: 629M
+      limits:
+        cpu: 163m
+        memory: 629M
 
     ingress:
       enabled: true

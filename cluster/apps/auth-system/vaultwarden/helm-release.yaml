@@ -27,6 +27,13 @@ spec:
       tag: 1.24.0
     strategy:
       type: RollingUpdate
+    resources:
+      requests:
+        cpu: 15m
+        memory: 249M
+      limits:
+        cpu: 15m
+        memory: 249M
 
     # https://github.com/dani-garcia/vaultwarden/blob/main/.env.template
     env:
