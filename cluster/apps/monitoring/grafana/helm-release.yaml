@@ -136,7 +136,6 @@ spec:
             cpu: 11m
             memory: 79M
           limits:
-            cpu: 11m
             memory: 79M
       dashboards:
         enabled: true
@@ -149,7 +148,6 @@ spec:
             cpu: 11m
             memory: 94M
           limits:
-            cpu: 11m
             memory: 94M
     datasources:
       datasources.yaml:
