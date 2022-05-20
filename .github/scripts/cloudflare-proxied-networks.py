@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 import os
+import sys
 
 import requests
 import ruamel.yaml as yaml
 
+YAML = yaml.YAML()
+YAML.indent(sequence=4, offset=2)
 IPV4_URL = "https://www.cloudflare.com/ips-v4"
 IPV6_URL = "https://www.cloudflare.com/ips-v6"
 TEMPLATE_PATH = os.environ["CLOUDFLARE_PROXIED_TRAEFIK_MIDDLEWARE_FILE"]
@@ -18,8 +21,8 @@ LOCAL_IPS = [
 FILE_HEADER = """# DO NOT EDIT MANUALLY. File is managed via GitHub actions.
 # Script: https://github.com/mchestr/cluster-k3s/.github/scripts/cloudflare-proxied-networks.py
 # Action: https://github.com/mchestr/cluster-k3s/.github/workflows/schedule-cloudflare-proxied-networks-update.yaml
----
-"""
+---"""
+
 
 
 def fetch_ips(url: str):
@@ -44,11 +47,8 @@ def main():
         print("ips changes, updating...")
         template[0]["spec"]["ipWhiteList"]["sourceRange"] = ips
 
-    # with open(TEMPLATE_PATH, "w") as f:
-    #     yaml_f = yaml.YAML()
-    #     yaml_f.indent(sequence=4, offset=2)
-    #     f.write(FILE_HEADER)
-        # yaml_f.dump_all(template, f)
+    print(FILE_HEADER)
+    YAML.dump_all(template, sys.stdout)
 
 
 if __name__ == "__main__":
