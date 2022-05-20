@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
+import os
 
 import requests
 import yaml
 
 IPV4_URL = "https://www.cloudflare.com/ips-v4"
 IPV6_URL = "https://www.cloudflare.com/ips-v6"
-TEMPLATE_PATH = "cluster/apps/networking/traefik/addons/middleware/cloudflare-only.yaml"
+TEMPLATE_PATH = os.environ["CLOUDFLARE_PROXIED_TRAEFIK_MIDDLEWARE_FILE"]
 HEADERS = {
     'User-Agent': "https://github.com/mchestr/cluster-k3s",
 }
