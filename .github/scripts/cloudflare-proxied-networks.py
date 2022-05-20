@@ -31,19 +31,13 @@ def fetch_ips(url: str):
     return resp.text.split('\n')
 
 
-def get_template(path: str):
-    with open(path) as f:
-        return [section for section in yaml.load_all(f, Loader=yaml.Loader)]
-
-
 def main():
-    template = get_template(TEMPLATE_PATH)
+    template = list(YAML.load_all(sys.stdin))
 
     ips = fetch_ips(IPV4_URL) + fetch_ips(IPV6_URL)
     ips.extend(LOCAL_IPS)
 
     if set(template[0]["spec"]["ipWhiteList"]["sourceRange"]) != set(ips):
-        print("ips changes, updating...")
         template[0]["spec"]["ipWhiteList"]["sourceRange"] = ips
 
     print(FILE_HEADER)
