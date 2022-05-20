@@ -27,6 +27,7 @@ spec:
           cpu: 15m
           memory: 145M
         limits:
+          cpu: 75M
           memory: 174M
 
     dashboard:
@@ -36,6 +37,7 @@ spec:
           cpu: 15m
           memory: 64M
         limits:
+          cpu: 75M
           memory: 64M
 
       ingress:
