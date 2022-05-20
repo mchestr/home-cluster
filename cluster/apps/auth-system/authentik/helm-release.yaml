@@ -30,14 +30,12 @@ spec:
           cpu: 163m
           memory: 629M
         limits:
-          cpu: 163m
           memory: 629M
       worker:
         requests:
           cpu: 11m
           memory: 512M
         limits:
-          cpu: 11m
           memory: 512M
 
     ingress:
