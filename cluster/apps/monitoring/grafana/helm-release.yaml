@@ -132,12 +132,26 @@ spec:
       datasources:
         enabled: true
         searchNamespace: ALL
+        resources:
+          requests:
+            cpu: 11m
+            memory: 79M
+          limits:
+            cpu: 11m
+            memory: 79M
       dashboards:
         enabled: true
         searchNamespace: ALL
         folderAnnotation: grafana_dashboard_folder
         provider:
           foldersFromFilesStructure: true
+        resources:
+          requests:
+            cpu: 11m
+            memory: 94M
+          limits:
+            cpu: 11m
+            memory: 94M
     datasources:
       datasources.yaml:
         apiVersion: 1
