@@ -40,7 +40,7 @@ spec:
       VAR_BLOCKY_URL: "http://blocky.networking.svc.cluster.local:4000"
       GF_DASHBOARDS_MIN_REFRESH_INTERVAL: 2s
       GF_AUTH_GENERIC_OAUTH_ENABLED: "true"
-      GF_AUTH_GENERIC_OAUTH_NAME: "authentik"
+      GF_AUTH_GENERIC_OAUTH_NAME: authentik
       GF_AUTH_GENERIC_OAUTH_SCOPES: "openid profile email"
       GF_AUTH_GENERIC_OAUTH_AUTH_URL: "https://outpost.${CLUSTER_DOMAIN}/application/o/authorize/"
       GF_AUTH_GENERIC_OAUTH_TOKEN_URL: "https://outpost.${CLUSTER_DOMAIN}/application/o/token/"
