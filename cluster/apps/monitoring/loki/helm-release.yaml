@@ -26,6 +26,13 @@ spec:
         - ReadWriteOnce
       size: 10Gi
       storageClassName: longhorn
+    resources:
+      requests:
+        cpu: 35m
+        memory: 298M
+      limits:
+        cpu: 35m
+        memory: 298M
     config:
       limits_config:
         enforce_metric_name: false
