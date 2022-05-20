@@ -2,7 +2,7 @@
 import os
 
 import requests
-import yaml
+import ruamel.yaml as yaml
 
 IPV4_URL = "https://www.cloudflare.com/ips-v4"
 IPV6_URL = "https://www.cloudflare.com/ips-v6"
@@ -15,6 +15,11 @@ LOCAL_IPS = [
     "172.16.0.0/12",
     "10.0.0.0/8",
 ]
+FILE_HEADER = """# DO NOT EDIT MANUALLY. File is managed via GitHub actions.
+# Script: https://github.com/mchestr/cluster-k3s/.github/scripts/cloudflare-proxied-networks.py
+# Action: https://github.com/mchestr/cluster-k3s/.github/workflows/schedule-cloudflare-proxied-networks-update.yaml
+---
+"""
 
 
 def fetch_ips(url: str):
@@ -26,7 +31,7 @@ def fetch_ips(url: str):
 
 def get_template(path: str):
     with open(path) as f:
-        return [section for section in yaml.load_all(f, Loader=yaml.FullLoader)]
+        return [section for section in yaml.load_all(f, Loader=yaml.Loader)]
 
 
 def main():
@@ -35,12 +40,15 @@ def main():
     ips = fetch_ips(IPV4_URL) + fetch_ips(IPV6_URL)
     ips.extend(LOCAL_IPS)
 
-
     if set(template[0]["spec"]["ipWhiteList"]["sourceRange"]) != set(ips):
-        print("ips do not match, updating...")
+        print("ips changes, updating...")
         template[0]["spec"]["ipWhiteList"]["sourceRange"] = ips
 
-    print(yaml.dump_all(template))
+    with open(TEMPLATE_PATH, "w") as f:
+        yaml_f = yaml.YAML()
+        yaml_f.indent(sequence=4, offset=2)
+        f.write(FILE_HEADER)
+        yaml_f.dump_all(template, f)
 
 
 if __name__ == "__main__":

@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests pyyaml
+          pip install requests ruamel.yaml
       - name: Generate Token
         uses: tibdex/github-app-token@v1
         id: generate-token
@@ -32,7 +32,7 @@ jobs:
           private_key: "${{ secrets.MCHESTR_BOT_APP_PRIVATE_KEY }}"
       - name: Cloudflare Proxied Networks
         run: |
-          python ./.github/scripts/cloudflare-proxied-networks.py > ${{ env.CLOUDFLARE_PROXIED_TRAEFIK_MIDDLEWARE_FILE }}
+          python .github/scripts/cloudflare-proxied-networks.py > ${{ env.CLOUDFLARE_PROXIED_TRAEFIK_MIDDLEWARE_FILE }}
         env:
           CLOUDFLARE_PROXIED_TRAEFIK_MIDDLEWARE_FILE: ${{ env.CLOUDFLARE_PROXIED_TRAEFIK_MIDDLEWARE_FILE }}
       - name: Create pull request
