@@ -2,7 +2,6 @@
 version: "3"
 
 tasks:
-
   flux:verify:
     desc: Verify flux meets the prerequisites
     cmds:
@@ -29,6 +28,11 @@ tasks:
     cmds:
       - kubectl apply -k {{.CLUSTER_DIR}}/base/flux-system
 
+  list-dockerhub:
+    desc: What dockerhub images are running in my cluster
+    cmds:
+      - kubectl get pods --all-namespaces -o=jsonpath="{range .items[*]}{'\n'}{range .spec.containers[*]}{.image}{'\n'}{end}{end}" | sort | uniq | grep -Ev 'quay|gcr|ghcr|ecr|us-docker' | grep -Ev 'bitnami|rook|intel|grafana' |  sed -e 's/docker\.io\///g' | sort | uniq
+
   reconcile:
     desc: Force update Flux to pull in changes from your Git repository
     cmds:
@@ -43,6 +47,11 @@ tasks:
     desc: List all the pods in your cluster
     cmds:
       - kubectl get pods {{.CLI_ARGS | default "-A"}}
+
+  delete-failed-pods:
+    desc: Deletes failed pods
+    cmds:
+      - kubectl delete pods --field-selector status.phase=Failed -A --ignore-not-found=true
 
   kustomizations:
     desc: List all the kustomizations in your cluster
@@ -80,3 +89,79 @@ tasks:
       - task: gitrepositories
       - task: certificates
       - task: pods
+
+  debug-volume:
+    desc: Attach a volume to a container for debugging, ex. VOLUME=zigbee2mqtt-config-v1 NAMESPACE=home task debug-volume
+    interactive: true
+    silent: true
+    cmds:
+      - |
+        kubectl run debug-{{.VOLUME}} -n {{.NAMESPACE}} -i --tty --rm --image=null --overrides='
+          {
+            "spec": {
+              "containers": [
+                {
+                  "name": "debug",
+                  "image": "docker.io/library/alpine:3.15",
+                  "command": [
+                    "/bin/sh"
+                  ],
+                  "stdin": true,
+                  "stdinOnce": true,
+                  "tty": true,
+                  "lifecycle": {
+                    "postStart": {
+                      "exec": {
+                        "command": [
+                          "/bin/sh",
+                          "-c",
+                          "apk add --no-cache curl vim"
+                        ]
+                      }
+                    }
+                  },
+                  "volumeMounts": [
+                    {
+                      "name": "backups",
+                      "mountPath": "/mnt/backups/"
+                    },
+                    {
+                      "name": "debug-volume",
+                      "mountPath": "/mnt/volume/"
+                    }
+                  ]
+                }
+              ],
+              "volumes": [
+                {
+                  "name": "backups",
+                  "nfs": {
+                    "server": '{{.NAS_ADDR | default "192.168.1.128"}}',
+                    "path": '{{.NAS_PATH | default "/volume1/shared/"}}'
+                  }
+                },
+                {
+                  "name": "debug-volume",
+                  "persistentVolumeClaim": {
+                    "claimName": "{{.VOLUME}}"
+                  }
+                }
+              ],
+              "restartPolicy": "Never"
+            }
+          }'
+
+  debug-node:
+    desc: Create a privileged container on a node for debugging, ex. NODE=anvil task debug-node
+    interactive: true
+    cmds:
+      - |
+        kubectl run debug-{{.NODE}} -i --tty --rm --image="docker.io/library/alpine:3.15" --privileged --overrides='
+          {
+            "spec": {
+              "nodeSelector": {
+                "kubernetes.io/hostname": "{{.NODE}}"
+              },
+              "restartPolicy": "Never"
+            }
+          }'
