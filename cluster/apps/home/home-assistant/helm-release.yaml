@@ -30,9 +30,6 @@ spec:
     env:
       TZ: ${TZ}
 
-    podSecurityContext:
-      fsGroup: ${FS_GROUP}
-
     ingress:
       main:
         enabled: true
@@ -77,8 +74,6 @@ spec:
           repository: codercom/code-server
           tag: 4.4.0
         workingDir: /config
-        securityContext:
-          runAsGroup: ${FS_GROUP}
         args:
           - --auth
           - "none"
