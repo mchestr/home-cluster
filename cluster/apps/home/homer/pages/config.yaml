@@ -65,10 +65,6 @@ services:
         subtitle: "Home automation system"
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/home-assistant/android-chrome-maskable-512x512.png"
         url: "https://home-assistant.${CLUSTER_DOMAIN}"
-      - name: Wiki.js
-        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/wiki/android-chrome-maskable-512x512.png"
-        url: "https://wiki.${CLUSTER_DOMAIN}"
-        subtitle: Documentation Wiki
       - name: Vikunja
         subtitle: Todo list generator
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/vikunja/android-chrome-maskable-512x512.png"
