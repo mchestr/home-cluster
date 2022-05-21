@@ -28,8 +28,8 @@ jobs:
         uses: tibdex/github-app-token@v1
         id: generate-token
         with:
-          app_id: "${{ secrets.MCHESTR_BOT_APP_ID }}"
-          private_key: "${{ secrets.MCHESTR_BOT_APP_PRIVATE_KEY }}"
+          app_id: "${{ secrets.BOT_APP_ID }}"
+          private_key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
       - name: Cloudflare Proxied Networks
         run: |
           OUTPUT=$(cat ${{ env.CLOUDFLARE_PROXIED_TRAEFIK_MIDDLEWARE_FILE }} | python .github/scripts/cloudflare-proxied-networks.py)
