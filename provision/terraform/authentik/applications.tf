@@ -30,7 +30,6 @@ locals {
   }
 
   oauth2_apps = {
-    wiki    = { sub_mode = "user_username" },
     grafana = {}
     vikunja = { group = "Home" }
   }
