@@ -8,4 +8,3 @@ resources:
   - loki
   - snmp-exporter
   - vector
-  - vpa
