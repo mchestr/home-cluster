@@ -10,7 +10,6 @@ resources:
   - syncthing
   - theme-park
   - unifi
-  - vikunja
   - zigbee2mqtt
   - zwavejs2mqtt
   - network-policy.yaml
