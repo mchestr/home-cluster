@@ -30,7 +30,6 @@ locals {
 
   oauth2_apps = {
     grafana = {}
-    vikunja = { group = "Home" }
   }
 
   ldap_apps = {

@@ -65,10 +65,6 @@ services:
         subtitle: "Home automation system"
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/home-assistant/android-chrome-maskable-512x512.png"
         url: "https://home-assistant.${CLUSTER_DOMAIN}"
-      - name: Vikunja
-        subtitle: Todo list generator
-        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/vikunja/android-chrome-maskable-512x512.png"
-        url: "https://vikunja.${CLUSTER_DOMAIN}"
       - name: Paperless
         subtitle: Digital document storage
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/paperless/android-chrome-maskable-512x512.png"
