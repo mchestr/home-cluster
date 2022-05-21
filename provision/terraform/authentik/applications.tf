@@ -89,6 +89,7 @@ resource "authentik_provider_proxy" "providers" {
   basic_auth_enabled            = lookup(each.value, "basic_auth_enabled", false)
   basic_auth_password_attribute = format("%s_password", each.key)
   basic_auth_username_attribute = format("%s_user", each.key)
+  token_validity                = "weeks=1"
 }
 
 resource "authentik_provider_oauth2" "providers" {
