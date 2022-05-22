@@ -57,6 +57,12 @@ spec:
         size: 2Gi
         labels:
           recurring-job-group.longhorn.io/backup: enabled
+      backup:
+        enabled: true
+        type: nfs
+        server: ${NAS_ADDR}
+        path: /volume1/shared/code/home-assistant
+        mountPath: /config/backups
 
     metrics:
       enabled: true
