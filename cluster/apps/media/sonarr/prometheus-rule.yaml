@@ -1,0 +1,36 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: sonarr-exporter
+  namespace: media
+  labels:
+    role: alert-rules
+spec:
+  groups:
+    - name: sonarr.rules
+      rules:
+        - alert: SonarrExporterAbsent
+          annotations:
+            summary: The exporter for Sonarr has disappeared from Prometheus
+              service discovery
+          expr: |
+            absent(up{job="sonarr-metrics"} == 1)
+          for: 30m
+          labels:
+            severity: critical
+        - alert: SonarrDown
+          annotations:
+            summary: The Sonarr application is down or metrics are not
+              being collected
+          expr: |
+            sonarr_system_status{job="sonarr-metrics"} == 0
+          for: 30m
+          labels:
+            severity: critical
+        - alert: SonarrImportPendingStuck
+          annotations:
+            summary: Sonarr has been waiting to import a download for 15 minutes!
+          expr: |
+            sonarr_queue_total{job="sonarr-metrics", download_state="importPending"} > 0
+          for: 15m
