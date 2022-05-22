@@ -6,9 +6,11 @@ resources:
   - error-handling.yaml
   - external.yaml
   - external-auth.yaml
+  - external-no-error-pages.yaml
   - internal-auth.yaml
   - internal.yaml
   - local-only.yaml
   - no-auth.yaml
+  - no-auth-error-pages.yaml
   - rate-limit.yaml
   - secure-headers.yaml
