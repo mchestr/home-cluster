@@ -52,12 +52,30 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/ingress.class: traefik
+          external-dns.alpha.kubernetes.io/target: ipv4.${CLUSTER_DOMAIN}
+          external-dns/is-public: "true"
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
+          traefik.ingress.kubernetes.io/router.middlewares: networking-external-auth@kubernetescrd
         hosts:
           - host: &host "cal.${CLUSTER_DOMAIN}"
             paths:
               - path: /
+                pathType: Prefix
+        tls:
+          - secretName: "{{ .Release.Name }}-tls"
+            hosts:
+              - *host
+      caldav:
+        enabled: true
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/ingress.class: traefik
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: networking-external@kubernetescrd
+        hosts:
+          - host: *host
+            paths:
+              - path: /dav.php/
                 pathType: Prefix
         tls:
           - secretName: "{{ .Release.Name }}-tls"
