@@ -13,10 +13,10 @@ resources:
   - radarr
   - radarr-4k
   - readarr
+  - recyclarr
   - sabnzbd
   - sonarr
   - tautulli
-  - trash-updater
   - unpackerr
   - persistent-volume.yaml
   - persistent-volume-claim.yaml
