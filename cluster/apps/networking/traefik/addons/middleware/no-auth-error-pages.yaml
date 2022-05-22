@@ -2,10 +2,10 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: no-auth
+  name: no-auth-error-pages
   namespace: networking
 spec:
   chain:
     middlewares:
-      - name: secure-headers
-      - name: rate-limit
+      - name: no-auth
+      - name: error-pages

@@ -8,4 +8,4 @@ spec:
   chain:
     middlewares:
       - name: local-only
-      - name: no-auth
+      - name: no-auth-error-pages

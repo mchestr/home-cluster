@@ -42,7 +42,7 @@ spec:
           kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           # error-pages middleware breaks the plex.tv redirect
-          traefik.ingress.kubernetes.io/router.middlewares: networking-cloudflare-only@kubernetescrd,networking-secure-headers@kubernetescrd,networking-rate-limit@kubernetescrd
+          traefik.ingress.kubernetes.io/router.middlewares: networking-external-no-error-pages@kubernetescrd
 
         hosts:
           - host: &host "plex.${CLUSTER_DOMAIN}"

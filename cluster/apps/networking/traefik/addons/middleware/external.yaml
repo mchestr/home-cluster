@@ -8,4 +8,4 @@ spec:
   chain:
     middlewares:
       - name: cloudflare-only
-      - name: no-auth
+      - name: no-auth-error-pages
