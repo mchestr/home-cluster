@@ -1,0 +1,29 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lochnas
+  namespace: networking
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
+
+spec:
+  tls:
+    - secretName: lochnas-tls
+      hosts:
+        - "lochnas.${CLUSTER_DOMAIN}"
+
+  rules:
+    - host: lochnas.${CLUSTER_DOMAIN}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: lochnas
+                port:
+                  name: https

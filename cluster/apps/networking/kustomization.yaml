@@ -7,4 +7,5 @@ resources:
   - error-pages
   - external-dns
   - k8s-gateway
+  - static-routes
   - traefik
