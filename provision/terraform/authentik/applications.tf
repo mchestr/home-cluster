@@ -21,6 +21,7 @@ locals {
     dashboard           = { group = "System" }
     calibre-web         = { group = "Media" }
     calibre             = { group = "System" }
+    cal                 = { group = "System" }
     bazarr              = { group = "Media", basic_auth_enabled = true }
     appdaemon           = { group = "Home System" }
     appdaemon-code      = { group = "Editors" }
