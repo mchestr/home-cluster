@@ -1,7 +1,7 @@
 locals {
   proxy_apps = {
-    zwavejs2mqtt        = { group = "Home System" }
-    zigbee2mqtt         = { group = "Home System" }
+    zwavejs2mqtt        = { group = "Home Automation" }
+    zigbee2mqtt         = { group = "Home Automation" }
     traefik             = { group = "System" }
     tautulli            = { group = "Media" }
     sonarr              = { group = "Media", basic_auth_enabled = true }
@@ -15,16 +15,16 @@ locals {
     paperless           = { group = "Home" }
     longhorn            = { group = "System" }
     lidarr              = { group = "Media", basic_auth_enabled = true }
-    home-assistant-code = { group = "Editors" }
-    esphome             = { group = "Home System" }
+    home-assistant-code = { group = "Code Editors" }
+    esphome             = { group = "Home Automation" }
     emqx                = { group = "System", basic_auth_enabled = true }
     dashboard           = { group = "System" }
     calibre-web         = { group = "Media" }
     calibre             = { group = "System" }
     cal                 = { group = "System" }
     bazarr              = { group = "Media", basic_auth_enabled = true }
-    appdaemon           = { group = "Home System" }
-    appdaemon-code      = { group = "Editors" }
+    appdaemon           = { group = "Home Automation" }
+    appdaemon-code      = { group = "Code Editors" }
     alert-manager       = { group = "System" }
     sync                = { group = "Home", basic_auth_enabled = true }
   }
@@ -37,7 +37,7 @@ locals {
   }
 
   media_apps = {
-    for k, v in authentik_application.name : k => v if contains(["Media"], v.group)
+    for k, v in authentik_application.name : k => v if contains(["Media", "Downloaders"], v.group)
   }
   home_apps = {
     for k, v in authentik_application.name : k => v if contains(["Home"], v.group)
