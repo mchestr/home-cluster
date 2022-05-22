@@ -44,6 +44,10 @@ services:
       - name: Alertmanager
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/alertmanager/android-chrome-maskable-512x512.png"
         url: "https://alert-manager.${CLUSTER_DOMAIN}"
+      - name: CalDAV
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/caldav/android-chrome-maskable-512x512.png"
+        url: "https://cal.${CLUSTER_DOMAIN}"
+        subtitle: Calendar and address book manager
       - name: Traefik
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/traefik/android-chrome-maskable-512x512.png"
         url: "https://traefik.${CLUSTER_DOMAIN}"
