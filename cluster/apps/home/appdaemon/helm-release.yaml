@@ -57,7 +57,7 @@ spec:
           recurring-job-group.longhorn.io/backup: enabled
       secrets:
         enabled: true
-        storageClass: secret
+        type: secret
         name: appdaemon-secrets
         mountPath: /config/secrets.yaml
         subPath: secrets.yaml
