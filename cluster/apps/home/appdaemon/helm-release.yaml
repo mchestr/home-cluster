@@ -23,9 +23,6 @@ spec:
   upgrade:
     remediation:
       retries: 3
-  valuesFrom:
-    - kind: Secret
-      name: appdaemon-secrets
   values:
     image:
       repository: acockburn/appdaemon
@@ -58,6 +55,12 @@ spec:
         storageClass: longhorn
         labels:
           recurring-job-group.longhorn.io/backup: enabled
+      secrets:
+        enabled: true
+        storageClass: secret
+        name: appdaemon-secrets
+        mountPath: /config/secrets.yaml
+        subPath: secrets.yaml
 
     addons:
       codeserver:
