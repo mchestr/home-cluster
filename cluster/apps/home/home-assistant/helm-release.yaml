@@ -80,6 +80,8 @@ spec:
           repository: codercom/code-server
           tag: 4.4.0
         workingDir: /config
+        git:
+          deployKeySecret: home-assistant-deploykey
         args:
           - --auth
           - "none"
