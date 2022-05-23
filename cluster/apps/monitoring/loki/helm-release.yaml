@@ -22,10 +22,7 @@ spec:
       enabled: true
     persistence:
       enabled: true
-      accessModes:
-        - ReadWriteOnce
-      size: 20Gi
-      storageClassName: longhorn
+      existingClaim: loki-pv-claim
     config:
       limits_config:
         enforce_metric_name: false
