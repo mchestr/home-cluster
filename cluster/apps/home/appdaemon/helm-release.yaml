@@ -59,7 +59,7 @@ spec:
         enabled: true
         type: secret
         name: appdaemon-secrets
-        mountPath: /config/secrets.yaml
+        mountPath: /conf/secrets.yaml
         subPath: secrets.yaml
 
     addons:
