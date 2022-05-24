@@ -48,7 +48,7 @@ links:
     icon: fas fa-external-link-alt
     url: "#links"
   - name: k8s Dashboard
-    icon: fas fa-external-link-alt
+    icon: fa-solid fa-gauge
     url: "https://dashboard.${CLUSTER_DOMAIN}"
 
 # Services
