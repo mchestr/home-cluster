@@ -47,6 +47,9 @@ links:
   - name: Useful Links
     icon: fas fa-external-link-alt
     url: "#links"
+  - name: k8s Dashboard
+    icon: fas fa-external-link-alt
+    url: "https://dashboard.${CLUSTER_DOMAIN}"
 
 # Services
 # First level array represent a group.
