@@ -15,7 +15,7 @@
 
 ## Overview
 
-This is a repository for my home infrastructure and Kubernetes cluster.
+This is a repository for my home infrastructure and Kubernetes cluster. This repository is the source of truth and declarative state for my home lab k8s cluster.
 
 ### Core Components
 
