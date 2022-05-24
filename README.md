@@ -36,7 +36,7 @@ This repository is built off the [k8s-at-home/template-cluster-k3s](https://gith
 
 ## 🔧 Hardware
 
-My mash-mash setup of random hardware I managed to acquire. I also have a few SBC RaspberryPi/oDroids lying around, but haven't had a lot of good luck running k3s on them, so sticking to amd64 based machines for now.
+My mash-mash setup of random hardware I managed to acquire. I also have a few SBC RaspberryPi/ODROIDs lying around, but haven't had a lot of good luck running k3s on them, so sticking to amd64 based machines for now.
 
 | Device                                                                                                       | Count | OS Disk Size | Data Disk Size       | Ram  | Operating System | Purpose                         |
 |--------------------------------------------------------------------------------------------------------------|-------|--------------|----------------------|------|------------------|---------------------------------|
