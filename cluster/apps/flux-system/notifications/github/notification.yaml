@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   type: github
-  address: https://github.com/mchestr/cluster-k3s
+  address: https://github.com/mchestr/home-cluster
   secretRef:
     name: github-token
 ---
