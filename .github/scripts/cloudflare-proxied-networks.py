@@ -11,7 +11,7 @@ IPV4_URL = "https://www.cloudflare.com/ips-v4"
 IPV6_URL = "https://www.cloudflare.com/ips-v6"
 TEMPLATE_PATH = os.environ["CLOUDFLARE_PROXIED_TRAEFIK_MIDDLEWARE_FILE"]
 HEADERS = {
-    'User-Agent': "https://github.com/mchestr/cluster-k3s",
+    'User-Agent': "https://github.com/mchestr/home-cluster",
 }
 LOCAL_IPS = [
     "192.168.0.0/16",
@@ -19,8 +19,8 @@ LOCAL_IPS = [
     "10.0.0.0/8",
 ]
 FILE_HEADER = """# DO NOT EDIT MANUALLY. File is managed via GitHub actions.
-# Script: https://github.com/mchestr/cluster-k3s/.github/scripts/cloudflare-proxied-networks.py
-# Action: https://github.com/mchestr/cluster-k3s/.github/workflows/schedule-cloudflare-proxied-networks-update.yaml
+# Script: https://github.com/mchestr/home-cluster/.github/scripts/cloudflare-proxied-networks.py
+# Action: https://github.com/mchestr/home-cluster/.github/workflows/schedule-cloudflare-proxied-networks-update.yaml
 ---"""
 
 
