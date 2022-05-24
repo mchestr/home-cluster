@@ -15,7 +15,9 @@
 
 ## Overview
 
-This is a repository for my home infrastructure and Kubernetes cluster. This repository is the source of truth and declarative state for my home lab k8s cluster.
+This repository is my home Kubernetes cluster in a declarative state. [Flux](https://github.com/fluxcd/flux2) watches the [cluster](./cluster/) folder and will make the changes to the cluster based on the YAML manifests.
+
+This repository is built off the [k8s-at-home/template-cluster-k3s](https://github.com/k8s-at-home/template-cluster-k3s) repository.
 
 ### Core Components
 
@@ -25,6 +27,12 @@ This is a repository for my home infrastructure and Kubernetes cluster. This rep
 - [kubernetes-sigs/external-dns](https://github.com/kubernetes-sigs/external-dns): Automatically manages DNS records from my cluster in CloudFlare.
 - [jetstack/cert-manager](https://cert-manager.io/docs/): Creates SSL certificates for services in my Kubernetes cluster.
 - [traefik/traefik](https://github.com/traefik/traefik): Ingress controller to expose HTTP traffic to pods over DNS.
+
+### :robot:&nbsp; Automation
+
+- [Github Actions](https://docs.github.com/en/actions) for checking code formatting and running periodic jobs
+- Rancher [System Upgrade Controller](https://github.com/rancher/system-upgrade-controller) to apply updates to k3s
+- [Renovate](https://github.com/renovatebot/renovate) keeps the application charts and container images up-to-date
 
 ## 🔧 Hardware
 
@@ -44,7 +52,7 @@ My mash-mash setup of random hardware I managed to acquire. I also have a few SB
 
 ## 🤝 Graditude and Thanks
 
-Thanks to all the people who donate their time to the [Kubernetes @Home](https://github.com/k8s-at-home/) community. A lot of inspiration for my cluster came from the people that have shared their clusters over at [awesome-home-kubernetes](https://github.com/k8s-at-home/awesome-home-kubernetes), not to mention the [template](https://github.com/k8s-at-home/template-cluster-k3s) this repository is based upon.
+Thanks to all the people who donate their time to the [Kubernetes @Home](https://github.com/k8s-at-home/) community. A lot of inspiration for my cluster came from the people that have shared their clusters over at [awesome-home-kubernetes](https://github.com/k8s-at-home/awesome-home-kubernetes).
 
 ## 🔏 License
 
