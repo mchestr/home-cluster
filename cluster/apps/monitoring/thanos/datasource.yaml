@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: promethus-datasource
+  name: thanos-datasource
   namespace: monitoring
   labels:
     grafana_datasource: "1"
