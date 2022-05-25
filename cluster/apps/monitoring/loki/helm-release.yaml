@@ -24,6 +24,17 @@ spec:
       enabled: true
       existingClaim: loki-pv-claim
     config:
+      storage_config:
+        aws:
+          bucketnames: loki
+          endpoint: minio.database-system:9000
+          s3forcepathstyle: true
+          insecure: true
+        boltdb_shipper:
+          active_index_directory: /data/loki/index
+          cache_location: /data/loki/index_cache
+          resync_interval: 5s
+          shared_store: s3
       limits_config:
         enforce_metric_name: false
         reject_old_samples: true
@@ -158,3 +169,13 @@ spec:
               category: logs
             annotations:
               summary: Paperless is having trouble fetching mail
+
+  valuesFrom:
+    - targetPath: config.storage_config.aws.access_key_id
+      kind: Secret
+      name: loki-secrets
+      valuesKey: AWS_ACCESS_KEY_ID
+    - targetPath: config.storage_config.aws.secret_access_key
+      kind: Secret
+      name: loki-secrets
+      valuesKey: AWS_SECRET_ACCESS_KEY
