@@ -13,5 +13,5 @@ data:
       - name: Prometheus
         type: prometheus
         access: proxy
-        url: http://prometheus-prometheus.monitoring:9090/
+        url: http://thanos-query.monitoring:9090/
         isDefault: true
