@@ -24,7 +24,7 @@ services:
     items:
       - name: Renovate
         subtitle: Renovate issue
-        url: https://github.com/mchestr/home-cluster/issues/1
+        url: https://github.com/mchestr/home-cluster/issues/2
       - name: Repository
         subtitle: GitOps & Flux Repository
         url: https://github.com/mchestr/home-cluster
