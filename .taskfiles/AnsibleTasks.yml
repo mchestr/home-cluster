@@ -14,6 +14,7 @@ tasks:
     desc: Install / Upgrade Ansible galaxy deps
     dir: provision/ansible
     cmds:
+      - sudo apt install --no-install-recommends python3-netaddr
       - ansible-galaxy install -r requirements.yml --roles-path ~/.ansible/roles --force
       - ansible-galaxy collection install -r requirements.yml --collections-path ~/.ansible/collections --force
 
