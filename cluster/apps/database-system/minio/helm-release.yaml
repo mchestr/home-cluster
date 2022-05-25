@@ -42,7 +42,6 @@ spec:
         cert-manager.io/cluster-issuer: letsencrypt-production
         kubernetes.io/ingress.class: traefik
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        # TODO ADD AUTH
         traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
       hostname: &consoleHost "minio.${CLUSTER_DOMAIN}"
       tls: true
