@@ -61,3 +61,13 @@ return {
 }
 EOF
 }
+
+resource "authentik_scope_mapping" "oidc-scope-minio" {
+  name       = "OIDC-Scope-minio"
+  scope_name = "minio"
+  expression = <<EOF
+return {
+    "policy": "readwrite",
+}
+EOF
+}

@@ -31,6 +31,7 @@ locals {
 
   oauth2_apps = {
     grafana = {}
+    minio = { extra_scopes = [authentik_scope_mapping.oidc-scope-minio.id] }
   }
 
   ldap_apps = {
@@ -97,7 +98,7 @@ resource "authentik_provider_oauth2" "providers" {
   client_secret      = data.sops_file.authentik_secrets.data[format("%s_client_secret", each.key)]
   authorization_flow = data.authentik_flow.default-authorization.id
   signing_key        = data.authentik_certificate_key_pair.generated.id
-  property_mappings  = data.authentik_scope_mapping.scopes.ids
+  property_mappings  = concat(data.authentik_scope_mapping.scopes.ids, lookup(each.value, "extra_scopes", []))
   redirect_uris      = yamldecode(data.sops_file.authentik_secrets.raw)[format("%s_redirect_urls", each.key)]
   sub_mode           = lookup(each.value, "sub_mode", "hashed_user_id")
 }
