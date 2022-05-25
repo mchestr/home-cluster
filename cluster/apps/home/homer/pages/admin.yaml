@@ -12,24 +12,31 @@ services:
       - name: Longhorn
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/longhorn/android-chrome-maskable-512x512.png"
         url: "https://longhorn.${CLUSTER_DOMAIN}"
+        subtitle: Block storage
       - name: EMQX
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/emqx/android-chrome-maskable-512x512.png"
         url: "https://emqx.${CLUSTER_DOMAIN}"
+        subtitle: MQTT message broker
       - name: phpMyAdmin
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/phpMyAdmin/android-chrome-maskable-512x512.png"
         url: "https://${NAS_ADDR}:9443"
+        subtitle: WebGUI for MariaDB
       - name: SyncThing
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/sync/android-chrome-maskable-512x512.png"
         url: "https://sync.${CLUSTER_DOMAIN}"
+        subtitle: Real-time multi-device file synchronization
       - name: Minio
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/minio/android-chrome-maskable-512x512.png"
         url: "https://minio.${CLUSTER_DOMAIN}"
-      - name: Prometheus
-        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/prometheus/android-chrome-maskable-512x512.png"
-        url: "https://prometheus.${CLUSTER_DOMAIN}"
+        subtitle: S3 compatible datastore
       - name: Thanos
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/thanos/android-chrome-maskable-512x512.png"
         url: "https://thanos-query.${CLUSTER_DOMAIN}"
+        subtitle: Distributed metric datastore query service
+      - name: Prometheus
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/prometheus/android-chrome-maskable-512x512.png"
+        url: "https://prometheus.${CLUSTER_DOMAIN}"
+        subtitle: Metric datastore
       - name: CalDAV
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/caldav/android-chrome-maskable-512x512.png"
         url: "https://cal.${CLUSTER_DOMAIN}"
@@ -41,12 +48,15 @@ services:
       - name: Kubernetes Dashboard
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/kubernetes-dashboard/android-chrome-maskable-512x512.png"
         url: "https://dashboard.${CLUSTER_DOMAIN}"
+        subtitles: Cluster dashboard
       - name: Authentik Outpost
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/authentik/android-chrome-maskable-512x512.png"
         url: "https://outpost.${CLUSTER_DOMAIN}"
+        subtitle: Cluster authentication and authorization service
       - name: Grafana
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/grafana/android-chrome-maskable-512x512.png"
         url: "https://grafana.${CLUSTER_DOMAIN}"
+        subtitle: Cluster dashboards and graphs
       - name: Unifi
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/unifi/android-chrome-maskable-512x512.png"
         url: "https://unifi.${CLUSTER_DOMAIN}"
@@ -54,9 +64,11 @@ services:
       - name: Alertmanager
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/alertmanager/android-chrome-maskable-512x512.png"
         url: "https://alert-manager.${CLUSTER_DOMAIN}"
+        subtitle: Cluster alert aggregator and notifier
       - name: Traefik
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/traefik/android-chrome-maskable-512x512.png"
         url: "https://traefik.${CLUSTER_DOMAIN}"
+        subtitle: Cluster ingress
 
   - name: Home Automation Systems
     icon: fas fa-magic
@@ -64,15 +76,19 @@ services:
       - name: AppDaemon
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/appdaemon/android-chrome-maskable-512x512.png"
         url: "https://appdaemon.${CLUSTER_DOMAIN}"
+        subtitle: Python scripting automations
       - name: ESPHome
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/esphome/android-chrome-maskable-512x512.png"
         url: "https://esphome.${CLUSTER_DOMAIN}"
+        subtitle: ESP device management
       - name: Zigbee2MQTT
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/zigbee2mqtt/android-chrome-maskable-512x512.png"
         url: "https://zigbee2mqtt.${CLUSTER_DOMAIN}"
+        subtitle: Zigbee controller
       - name: ZWaveJS2MQTT
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/zwavejs2mqtt/android-chrome-maskable-512x512.png"
         url: "https://zwavejs2mqtt.${CLUSTER_DOMAIN}"
+        subtitle: Z-Wave controller
 
   - name: Editors
     icon: fa fa-code
