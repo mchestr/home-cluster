@@ -6,3 +6,4 @@ resources:
   - helm-release.yaml
   - persistent-volume-claim.yaml
   - prometheus-rule.yaml
+  - secret.sops.yaml
