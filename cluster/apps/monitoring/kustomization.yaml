@@ -7,4 +7,5 @@ resources:
   - grafana
   - loki
   - snmp-exporter
+  - thanos
   - vector
