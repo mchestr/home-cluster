@@ -1,0 +1,75 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: minio
+  namespace: database-system
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: minio
+      version: 11.5.5
+      sourceRef:
+        kind: HelmRepository
+        name: bitnami-charts
+        namespace: flux-system
+      interval: 15m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    extraEnvVars:
+      - name: TZ
+        value: "${TZ}"
+      - name: MINIO_PROMETHEUS_URL
+        value: http://prometheus-prometheus.monitoring:9090
+      - name: MINIO_PROMETHEUS_JOB_ID
+        value: minio
+      - name: MINIO_UPDATE
+        value: "off"
+      - name: MINIO_BROWSER_REDIRECT_URL
+        value: "https://minio.${CLUSTER_DOMAIN}"
+      - name: MINIO_SERVER_URL
+        value: "https://s3.${CLUSTER_DOMAIN}"
+    auth:
+      existingSecret: minio-creds
+    ingress:
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-production
+        kubernetes.io/ingress.class: traefik
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        # TODO ADD AUTH
+        traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
+      hostname: &consoleHost "minio.${CLUSTER_DOMAIN}"
+      tls: true
+      extraTls:
+        - hosts:
+            - *consoleHost
+    apiIngress:
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-production
+        kubernetes.io/ingress.class: traefik
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        # TODO ADD AUTH
+        traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
+      hostname: &apiHost "s3.${CLUSTER_DOMAIN}"
+      tls: true
+      extraTls:
+        - hosts:
+            - *apiHost
+    podSecurityContext:
+      enabled: true
+      fsGroup: ${FS_GROUP}
+    persistence:
+      enabled: true
+      existingClaim: minio-nfs
+    prometheus:
+      servicemonitor:
+        enabled: true
