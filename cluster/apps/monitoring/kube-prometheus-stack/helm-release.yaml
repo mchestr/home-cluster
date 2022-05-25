@@ -83,7 +83,7 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
         hosts:
-          - &am-host "alert-manager.${CLUSTER_DOMAIN}"
+          - &am-host alert-manager.${CLUSTER_DOMAIN}
         tls:
           - hosts:
               - *am-host
