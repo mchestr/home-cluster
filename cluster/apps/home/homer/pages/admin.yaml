@@ -21,6 +21,9 @@ services:
       - name: SyncThing
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/sync/android-chrome-maskable-512x512.png"
         url: "https://sync.${CLUSTER_DOMAIN}"
+      - name: Minio
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/minio/android-chrome-maskable-512x512.png"
+        url: "https://minio.${CLUSTER_DOMAIN}"
 
   - name: System Management
     icon: fas fa-project-diagram
@@ -41,6 +44,9 @@ services:
       - name: Prometheus
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/prometheus/android-chrome-maskable-512x512.png"
         url: "https://prometheus.${CLUSTER_DOMAIN}"
+      - name: Thanos
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/thanos/android-chrome-maskable-512x512.png"
+        url: "https://thanos-query.${CLUSTER_DOMAIN}"
       - name: Alertmanager
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/alertmanager/android-chrome-maskable-512x512.png"
         url: "https://alert-manager.${CLUSTER_DOMAIN}"
