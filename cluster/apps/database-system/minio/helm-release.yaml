@@ -23,21 +23,19 @@ spec:
     remediation:
       retries: 5
   values:
-    extraEnvVars:
-      - name: TZ
-        value: "${TZ}"
-      - name: MINIO_PROMETHEUS_URL
-        value: http://prometheus-prometheus.monitoring:9090
-      - name: MINIO_PROMETHEUS_JOB_ID
-        value: minio
-      - name: MINIO_UPDATE
-        value: "off"
-      - name: MINIO_BROWSER_REDIRECT_URL
-        value: "https://minio.${CLUSTER_DOMAIN}"
-      - name: MINIO_SERVER_URL
-        value: "https://s3.${CLUSTER_DOMAIN}"
+    envFrom:
+      - secretRef:
+          name: minio-secrets
+    env:
+      TZ: ${TZ}
+      MINIO_PROMETHEUS_URL: http://prometheus-prometheus.monitoring:9090
+      MINIO_PROMETHEUS_JOB_ID: minio
+      MINIO_UPDATE: "off"
+      MINIO_BROWSER_REDIRECT_URL: https://minio.${CLUSTER_DOMAIN}
+      MINIO_SERVER_URL: https://s3.${CLUSTER_DOMAIN}
     auth:
-      existingSecret: minio-creds
+      existingSecret: minio-secrets
+    defaultBuckets: thanos
     ingress:
       enabled: true
       annotations:
