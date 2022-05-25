@@ -8,6 +8,7 @@ spec:
   accessModes:
     - ReadWriteMany
   storageClassName: nfs-csi
+  volumeName: media-pv
   resources:
     requests:
       storage: 1Mi
