@@ -8,7 +8,7 @@ spec:
     storage: 1Mi
   accessModes:
     - ReadWriteMany
-  storageClassName: minio-nfs
+  storageClassName: nfs-csi
   persistentVolumeReclaimPolicy: Retain
   nfs:
     server: ${NAS_ADDR}
