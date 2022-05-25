@@ -10,7 +10,7 @@ data:
   prometheus-datasource.yaml: |-
     apiVersion: 1
     datasources:
-      - name: Prometheus
+      - name: Prometheus-Direct
         type: prometheus
         access: proxy
         url: http://thanos-query.monitoring:9090/
