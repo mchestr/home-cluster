@@ -1,6 +1,6 @@
 # DO NOT EDIT MANUALLY. File is managed via GitHub actions.
-# Script: https://github.com/mchestr/cluster-k3s/.github/scripts/cloudflare-proxied-networks.py
-# Action: https://github.com/mchestr/cluster-k3s/.github/workflows/schedule-cloudflare-proxied-networks-update.yaml
+# Script: https://github.com/mchestr/home-cluster/.github/scripts/cloudflare-proxied-networks.py
+# Action: https://github.com/mchestr/home-cluster/.github/workflows/schedule-cloudflare-proxied-networks-update.yaml
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
