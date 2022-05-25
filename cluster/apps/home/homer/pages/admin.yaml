@@ -24,6 +24,16 @@ services:
       - name: Minio
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/minio/android-chrome-maskable-512x512.png"
         url: "https://minio.${CLUSTER_DOMAIN}"
+      - name: Prometheus
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/prometheus/android-chrome-maskable-512x512.png"
+        url: "https://prometheus.${CLUSTER_DOMAIN}"
+      - name: Thanos
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/thanos/android-chrome-maskable-512x512.png"
+        url: "https://thanos-query.${CLUSTER_DOMAIN}"
+      - name: CalDAV
+        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/caldav/android-chrome-maskable-512x512.png"
+        url: "https://cal.${CLUSTER_DOMAIN}"
+        subtitle: Calendar and address book manager
 
   - name: System Management
     icon: fas fa-project-diagram
@@ -41,19 +51,9 @@ services:
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/unifi/android-chrome-maskable-512x512.png"
         url: "https://unifi.${CLUSTER_DOMAIN}"
         subtitle: WiFi controller
-      - name: Prometheus
-        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/prometheus/android-chrome-maskable-512x512.png"
-        url: "https://prometheus.${CLUSTER_DOMAIN}"
-      - name: Thanos
-        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/thanos/android-chrome-maskable-512x512.png"
-        url: "https://thanos-query.${CLUSTER_DOMAIN}"
       - name: Alertmanager
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/alertmanager/android-chrome-maskable-512x512.png"
         url: "https://alert-manager.${CLUSTER_DOMAIN}"
-      - name: CalDAV
-        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/caldav/android-chrome-maskable-512x512.png"
-        url: "https://cal.${CLUSTER_DOMAIN}"
-        subtitle: Calendar and address book manager
       - name: Traefik
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/traefik/android-chrome-maskable-512x512.png"
         url: "https://traefik.${CLUSTER_DOMAIN}"
