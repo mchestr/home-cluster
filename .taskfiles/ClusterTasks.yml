@@ -171,3 +171,16 @@ tasks:
     cmds:
       - kubectl get hr --all-namespaces | grep False | awk '{print $2, $1}' | xargs -l bash -c 'flux suspend hr $0 -n $1'
       - kubectl get hr --all-namespaces | grep False | awk '{print $2, $1}' | xargs -l bash -c 'flux resume hr $0 -n $1'
+
+  scale-down:
+    desc: Scale all deployments/replicas/daemonsets down
+    cmds:
+      - kubectl get deployments -A --no-headers | awk '{print $2, $1}' | xargs -l bash -c 'kubectl -n $1 scale deployment $0 --replicas=0'
+      - kubectl get statefulsets -A --no-headers | awk '{print $2, $1}' | xargs -l bash -c 'kubectl -n $1 scale statefulsets $0 --replicas=0'
+
+  scale-up:
+    desc: Scale all deployments/replicas/daemonsets up
+    cmds:
+      - kubectl get deployments -A --no-headers | awk '{print $2, $1}' | xargs -l bash -c 'kubectl -n $1 scale deployment $0 --replicas=1'
+      - kubectl get statefulsets -A --no-headers | awk '{print $2, $1}' | xargs -l bash -c 'kubectl -n $1 scale statefulsets $0 --replicas=1'
+      - kubectl -n networking scale deployment traefik --replicas=3

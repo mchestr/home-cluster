@@ -21,6 +21,11 @@ spec:
   upgrade:
     remediation:
       retries: 3
+  dependsOn:
+    - name: postgres
+      namespace: database-system
+    - name: redis
+      namespace: database-system
   valuesFrom:
     - kind: Secret
       name: authentik-secrets
