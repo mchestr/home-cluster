@@ -7,24 +7,28 @@ services:
       - name: Charts
         subtitle: Helm Charts
         url: https://github.com/k8s-at-home/charts/tree/master/charts
-      - name: Common Chart
-        subtitle: Common Library Helm Chart
-        url: https://github.com/k8s-at-home/library-charts/tree/main/charts/stable/common
+      - name: Search Charts
+        url: https://whazor.github.io/k8s-at-home-search/
+        subtitle: Simple helm chart indexer
+      - name: Search Users
+        url: https://sourcegraph.com/search?q=%28repo%3A%5Egithub%5C.com%2Fams0%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fangelnu%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fanthr76%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fauricom%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fbillimek%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fbjw-s%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fblackjid%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fbudimanjojo%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fbuvis-net%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fcarpenike%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fcbirkenbeul%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fcharlie-haley%2F.%2A+or+repo%3A%5Egithub%5C.com%2FDiaoul%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fdirtycajunrice%2F.%2A+or+repo%3A%5Egithub%5C.com%2Feyulf%2F.%2A+or+repo%3A%5Egithub%5C.com%2Ffabito%2F.%2A+or+repo%3A%5Egithub%5C.com%2Ffobiat%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fgeekdojo-ofc%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fh3mmy%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fjr0dd%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fkhuedoan%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fkitos9112%2F.%2A+or+repo%3A%5Egithub%5C.com%2Flanquarden%2F.%2A+or+repo%3A%5Egithub%5C.com%2Flib42%2F.%2A+or+repo%3A%5Egithub%5C.com%2Flocmai%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fmcfio%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fnarze%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fnicholaswilde%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fnpawelek%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fonedr0p%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fphybros%2F.%2A+or+repo%3A%5Egithub%5C.com%2Frafaribe%2F.%2A+or+repo%3A%5Egithub%5C.com%2Frogerrum%2F.%2A+or+repo%3A%5Egithub%5C.com%2Frust84%2F.%2A+or+repo%3A%5Egithub%5C.com%2Frwaltr%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fsamip5%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fshadyf%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fthaum-xyz%2F.%2A+or+repo%3A%5Egithub%5C.com%2Ftimtorchen%2F.%2A+or+repo%3A%5Egithub%5C.com%2Ftoboshii%2F.%2A+or+repo%3A%5Egithub%5C.com%2Ftodaywasawesome%2F.%2A+or+repo%3A%5Egithub%5C.com%2FTruxnell%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fvaskozl%2F.%2A+or+repo%3A%5Egithub%5C.com%2FWRMilling%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fxunholy%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fzacheryph%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fzbigniewzolnierowicz%2F.%2A+or+repo%3A%5Egithub%5C.com%2Fzenxedo%2F.%2A%29+count%3A2000&patternType=literal
+        subtitle: Search k8s@Home user GitHub repos
       - name: Awesome Home Kubernetes
         subtitle: Community
         url: https://github.com/k8s-at-home/awesome-home-kubernetes
+      - name: Common
+        subtitle: Common library helm chart
+        url: https://github.com/k8s-at-home/library-charts/tree/main/charts/stable/common
       - name: Organization
-        subtitle: GitHub Organization Repository
+        subtitle: GitHub repository
         url: https://github.com/k8s-at-home
-      - name: Search Charts
-        url: https://whazor.github.io/k8s-at-home-search/
 
   - name: GitHub
     icon: fab fa-github
     items:
       - name: Renovate
-        subtitle: Renovate issue
+        subtitle: Dashboard
         url: https://github.com/mchestr/home-cluster/issues/2
       - name: Repository
-        subtitle: GitOps & Flux Repository
+        subtitle: home-cluster
         url: https://github.com/mchestr/home-cluster
