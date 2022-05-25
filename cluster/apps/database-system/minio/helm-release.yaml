@@ -65,7 +65,7 @@ spec:
       fsGroup: ${FS_GROUP}
     persistence:
       enabled: true
-      existingClaim: minio-nfs
+      existingClaim: minio-pvc
     prometheus:
       servicemonitor:
         enabled: true
