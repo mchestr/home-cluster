@@ -153,7 +153,7 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
         hosts:
-          - &host "prometheus.${CLUSTER_DOMAIN}"
+          - &host prometheus.${CLUSTER_DOMAIN}
         tls:
           - hosts:
               - *host
