@@ -35,7 +35,7 @@ spec:
       MINIO_SERVER_URL: https://s3.${CLUSTER_DOMAIN}
     auth:
       existingSecret: minio-secrets
-    defaultBuckets: thanos
+    defaultBuckets: thanos, loki
     ingress:
       enabled: true
       annotations:
