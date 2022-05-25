@@ -2,13 +2,13 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: minio-nfs
+  name: minio-pvc
   namespace: database-system
 spec:
   accessModes:
     - ReadWriteMany
   storageClassName: nfs-csi
-  volumeName: media-pv
+  volumeName: minio-pv
   resources:
     requests:
       storage: 1Mi
