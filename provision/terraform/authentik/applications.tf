@@ -2,7 +2,7 @@ locals {
   proxy_apps = {
     zwavejs2mqtt        = { group = "Home Automation" }
     zigbee2mqtt         = { group = "Home Automation" }
-    traefik             = { group = "System" }
+    traefik             = {}
     tautulli            = { group = "Media" }
     sonarr              = { group = "Media", basic_auth_enabled = true }
     sabnzbd             = { group = "Downloaders" }
@@ -11,27 +11,28 @@ locals {
     radarr-4k           = { group = "Media", basic_auth_enabled = true }
     qbittorrent         = { group = "Downloaders", basic_auth_enabled = true }
     prowlarr            = { group = "Media", basic_auth_enabled = true }
-    prometheus          = { group = "System" }
+    prometheus          = {}
     paperless           = { group = "Home" }
-    longhorn            = { group = "System" }
+    longhorn            = {}
     lidarr              = { group = "Media", basic_auth_enabled = true }
     home-assistant-code = { group = "Code Editors" }
     esphome             = { group = "Home Automation" }
-    emqx                = { group = "System", basic_auth_enabled = true }
-    dashboard           = { group = "System" }
+    emqx                = { basic_auth_enabled = true }
+    dashboard           = {}
     calibre-web         = { group = "Media" }
-    calibre             = { group = "System" }
-    cal                 = { group = "System" }
+    calibre             = {}
+    cal                 = {}
     bazarr              = { group = "Media", basic_auth_enabled = true }
     appdaemon           = { group = "Home Automation" }
     appdaemon-code      = { group = "Code Editors" }
-    alert-manager       = { group = "System" }
+    alert-manager       = {}
     sync                = { group = "Home", basic_auth_enabled = true }
+    thanos              = {}
   }
 
   oauth2_apps = {
     grafana = {}
-    minio = { extra_scopes = [authentik_scope_mapping.oidc-scope-minio.id] }
+    minio   = { extra_scopes = [authentik_scope_mapping.oidc-scope-minio.id] }
   }
 
   ldap_apps = {
