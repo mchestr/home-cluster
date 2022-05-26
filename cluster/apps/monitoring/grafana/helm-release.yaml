@@ -146,6 +146,11 @@ spec:
           gnetId: 11312
           revision: 8
           datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/13502
+        minio:
+          gnetId: 13502
+          revision: 10
+          datasource: Prometheus
     sidecar:
       datasources:
         enabled: true
