@@ -8,4 +8,5 @@ resources:
   - loki
   - snmp-exporter
   - thanos
+  - unifi-poller
   - vector
