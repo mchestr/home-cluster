@@ -31,7 +31,7 @@ services:
         subtitle: S3 compatible datastore
       - name: Thanos
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/thanos/android-chrome-maskable-512x512.png"
-        url: "https://thanos-query.${CLUSTER_DOMAIN}"
+        url: "https://thanos.${CLUSTER_DOMAIN}"
         subtitle: Distributed metric datastore query service
       - name: Prometheus
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/prometheus/android-chrome-maskable-512x512.png"
