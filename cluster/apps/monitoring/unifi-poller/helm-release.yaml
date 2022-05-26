@@ -35,7 +35,7 @@ spec:
     env:
       TZ: ${TZ}
       UP_UNIFI_DEFAULT_ROLE: homelab-controller
-      UP_UNIFI_DEFAULT_URL: https://unifi.home.svc.cluster.local
+      UP_UNIFI_DEFAULT_URL: https://unifi.${CLUSTER_DOMAIN}
       UP_UNIFI_DEFAULT_VERIFY_SSL: false
       UP_UNIFI_DEFAULT_SAVE_SITES: true
       UP_UNIFI_DEFAULT_SAVE_DPI: false
