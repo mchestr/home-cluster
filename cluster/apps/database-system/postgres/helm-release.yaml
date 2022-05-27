@@ -22,10 +22,11 @@ spec:
       registry: public.ecr.aws
       repository: bitnami/postgresql
     architecture: standalone
-    auth:
-      username: root
-      database: root
-      existingSecret: postgres-secrets
+    global:
+      auth:
+        username: root
+        database: root
+        existingSecret: postgres-secrets
     primary:
       service:
         type: LoadBalancer
