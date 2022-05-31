@@ -34,6 +34,7 @@ spec:
           usb:
             deviceClassWhitelist:
               - "02"
+              - "03"
               - "0e"
               - "ef"
               - "fe"
@@ -66,12 +67,12 @@ spec:
                     class: ["ff"]
                     vendor: ["10c4"]
                     device: ["ea60"]
-            - name: ups
+            - name: cyberpower-ups
               matchOn:
                 - usbId:
-                    class: ["ff"]
-                    vendor: ["0764"]
-                    device: ["0501"]
+                  class: ["00"]
+                  vendor: ["0746"]
+                  device: ["0501"]
       annotations:
         configmap.reloader.stakater.com/reload: "nfd-worker-conf"
       tolerations:
