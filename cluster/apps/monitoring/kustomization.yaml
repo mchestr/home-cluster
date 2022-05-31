@@ -6,6 +6,7 @@ resources:
   - kube-prometheus-stack
   - grafana
   - loki
+  - network-ups-tools
   - snmp-exporter
   - thanos
   - unifi-poller
