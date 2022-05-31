@@ -1,0 +1,106 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: network-ups-tools
+  namespace: monitoring
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: network-ups-tools
+      version: 6.3.3
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      tag: v2.8.0
+    env:
+      TZ: ${TZ}
+    service:
+      main:
+        type: LoadBalancer
+        loadBalancerIP: ${METALLB_NUT_ADDR}
+        externalTrafficPolicy: Local
+        ports:
+          http:
+            enabled: false
+          server:
+            enabled: true
+            protocol: TCP
+            port: 3493
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          kubernetes.io/ingress.class: traefik
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
+        hosts:
+          - &host nut.${CLUSTER_DOMAIN}
+        tls:
+          - hosts:
+              - *host
+            secretName: nut-tls
+    persistence:
+      ups:
+        enabled: true
+        type: hostPath
+        hostPath: /dev/bus/usb/001/009
+        mountPath: /dev/bus/usb/001/001
+        readOnly: false
+    securityContext:
+      privileged: true
+
+    config:
+      mode: values
+      files:
+        nut.conf: |
+          MODE=netserver
+        upsd.conf: |
+          LISTEN 0.0.0.0
+        ups.conf: |
+          [cyberpower-ups]
+            driver = usbhid-ups
+            port = auto
+            desc = "CyberPower CP1500 AVR"
+            pollinterval = 10
+        upsd.users: |
+          [upsmon]
+            password  = "${NUT_PASSWORD}"
+            actions = SET
+            instcmds = ALL
+            upsmon primary
+        upsmon.conf: |
+          MONITOR cyber-power@localhost:3493 1 upsmon "${NUT_PASSWORD}" primary
+          SHUTDOWNCMD "/sbin/shutdown -h +0"
+          POWERDOWNFLAG /etc/killpower
+          POLLFREQ 15
+          POLLFREQALERT 5
+          HOSTSYNC 15
+    metrics:
+      enabled: true
+      serviceMonitor:
+        interval: 15s
+        scrapeTimeout: 10s
+      prometheusRule:
+        enabled: true
+      exporter:
+        image:
+          repository: hon95/prometheus-nut-exporter
+          tag: 1.1.1
+
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: "feature.node.kubernetes.io/custom-cyberpower-ups"
+                  operator: In
+                  values:
+                    - "true"
