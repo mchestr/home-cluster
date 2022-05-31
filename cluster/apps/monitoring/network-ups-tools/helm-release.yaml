@@ -23,9 +23,6 @@ spec:
       TZ: ${TZ}
     service:
       main:
-        type: LoadBalancer
-        loadBalancerIP: ${METALLB_NUT_ADDR}
-        externalTrafficPolicy: Local
         ports:
           http:
             enabled: false
