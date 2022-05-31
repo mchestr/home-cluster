@@ -151,7 +151,6 @@ spec:
           gnetId: 13502
           revision: 10
           datasource: Prometheus
-      power:
         # Ref: https://grafana.com/grafana/dashboards/14371
         nut:
           gnetId: 14371
