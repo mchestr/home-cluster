@@ -38,13 +38,15 @@ spec:
               imagePullPolicy: IfNotPresent
               env:
                 - name: TZ
-                  value: "${TIMEZONE}"
+                  value: ${TZ}
                 - name: XDG_CONFIG_HOME
                   value: /config
               command:
                 - /app/recyclarr
               args:
                 - sonarr
+                - --app-data
+                - /app
                 - --config
                 - /config/recyclarr.yaml
               volumeMounts:
@@ -58,13 +60,15 @@ spec:
               imagePullPolicy: IfNotPresent
               env:
                 - name: TZ
-                  value: "${TIMEZONE}"
+                  value: ${TZ}
                 - name: XDG_CONFIG_HOME
                   value: /config
               command:
                 - /app/recyclarr
               args:
                 - radarr
+                - --app-data
+                - /app
                 - --config
                 - /config/recyclarr.yaml
               volumeMounts:
