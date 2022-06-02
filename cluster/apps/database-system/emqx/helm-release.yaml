@@ -21,7 +21,7 @@ spec:
     recreatePods: true
     image:
       repository: emqx/emqx
-      tag: 4.4.3
+      tag: 4.4.4
 
     emqxConfig:
       EMQX_ALLOW_ANONYMOUS: "false"
