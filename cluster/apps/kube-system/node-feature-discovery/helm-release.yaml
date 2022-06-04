@@ -70,7 +70,7 @@ spec:
             - name: cyberpower-ups
               matchOn:
                 - usbId:
-                    class: ["03"]
+                    class: ["ff"]
                     vendor: ["0746"]
                     device: ["0501"]
       annotations:
