@@ -37,7 +37,7 @@ spec:
       ups:
         enabled: true
         type: hostPath
-        hostPath: /dev/bus/usb/001/009
+        hostPath: /dev/bus/usb/003/003
         mountPath: /dev/bus/usb/001/001
         readOnly: false
     securityContext:
