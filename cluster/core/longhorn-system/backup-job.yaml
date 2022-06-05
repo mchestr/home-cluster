@@ -5,10 +5,10 @@ metadata:
   name: pvc-backups
   namespace: longhorn-system
 spec:
-  # Run every third day at 11
-  cron: 0 23 */3 * *
+  # Run every day at 1 AM (UTC)
+  cron: 0 8 * * *
   task: backup
   groups:
     - backup
-  retain: 5
+  retain: 14
   concurrency: 2
