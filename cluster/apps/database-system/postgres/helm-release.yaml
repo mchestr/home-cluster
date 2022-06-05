@@ -50,6 +50,16 @@ spec:
         loadBalancerIP: ${METALLB_POSTGRES_ADDR}
       persistence:
         existingClaim: postgres-pvc
+      initdb:
+        scripts:
+          create-paperless-db.sql: |
+            CREATE DATABASE ${PAPERLESS_DATABASE_NAME};
+            CREATE USER ${PAPERLESS_DATABASE_USER} WITH PASSWORD '${PAPERLESS_DATABASE_PASSWORD}';
+            GRANT ALL PRIVILEGES ON DATABASE "${PAPERLESS_DATABASE_NAME}" to ${PAPERLESS_DATABASE_USER};
+          create-authentik-db.sql: |
+            CREATE DATABASE ${AUTHENTIK_DATABASE_NAME};
+            CREATE USER ${AUTHENTIK_DATABASE_USER} WITH PASSWORD '${AUTHENTIK_DATABASE_PASSWORD}';
+            GRANT ALL PRIVILEGES ON DATABASE "${AUTHENTIK_DATABASE_NAME}" to ${AUTHENTIK_DATABASE_USER};
     metrics:
       enabled: true
       image:

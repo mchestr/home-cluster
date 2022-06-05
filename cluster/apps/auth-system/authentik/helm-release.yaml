@@ -57,6 +57,20 @@ spec:
       log_level: debug
       outposts:
         docker_image_base: ghcr.io/goauthentik/%(type)s:%(version)s
+      postgresql:
+        host: postgres.database-system
+        name: ${AUTHENTIK_DATABASE_NAME}
+        user: ${AUTHENTIK_DATABASE_USER}
+        password: ${AUTHENTIK_DATABASE_PASSWORD}
+      email:
+        host: ${SMTP_HOST}
+        port: ${SMTP_PORT}
+        username: ${SMTP_USERNAME}
+        password: ${SMTP_PASSWORD}
+        use_ssl: true
+        from: outpost@${CLUSTER_DOMAIN}
+      redis:
+        host: redis-headless.database-system
 
     postgresql:
       enabled: false
