@@ -23,9 +23,6 @@ spec:
   upgrade:
     remediation:
       retries: 3
-  valuesFrom:
-    - kind: Secret
-      name: paperless-secrets
   values:
     image:
       repository: ghcr.io/paperless-ngx/paperless-ngx
