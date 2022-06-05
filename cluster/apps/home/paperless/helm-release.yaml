@@ -58,7 +58,7 @@ spec:
       PAPERLESS_TIME_ZONE: ${TZ}
       PAPERLESS_URL: https://{{ .Release.Name }}.${CLUSTER_DOMAIN}
       PAPERLESS_REDIS: redis://redis-headless.database-system:6379
-      PAPERLESS_DBHOST: ${NAS_ADDR}
+      PAPERLESS_DBHOST: postgres.database-system
       PAPERLESS_DBUSER: ${PAPERLESS_DATABASE_USER}
       PAPERLESS_DBNAME: ${PAPERLESS_DATABASE_NAME}
       PAPERLESS_DBPASS: ${PAPERLESS_DATABASE_PASSWORD}
