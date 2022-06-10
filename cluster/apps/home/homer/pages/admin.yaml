@@ -13,10 +13,10 @@ services:
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/longhorn/android-chrome-maskable-512x512.png"
         url: "https://longhorn.${CLUSTER_DOMAIN}"
         subtitle: Block storage
-      - name: EMQX
-        logo: "https://home.${CLUSTER_DOMAIN}/assets/data/emqx/android-chrome-maskable-512x512.png"
-        url: "https://emqx.${CLUSTER_DOMAIN}"
-        subtitle: MQTT message broker
+      # - name: EMQX
+      #   logo: "https://home.${CLUSTER_DOMAIN}/assets/data/emqx/android-chrome-maskable-512x512.png"
+      #   url: "https://emqx.${CLUSTER_DOMAIN}"
+      #   subtitle: MQTT message broker
       - name: phpMyAdmin
         logo: "https://home.${CLUSTER_DOMAIN}/assets/data/phpMyAdmin/android-chrome-maskable-512x512.png"
         url: "https://${NAS_ADDR}:9443"
