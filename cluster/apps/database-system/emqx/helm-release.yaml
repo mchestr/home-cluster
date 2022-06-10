@@ -59,7 +59,7 @@ spec:
 
     ingress:
       dashboard:
-        enabled: true
+        enabled: false
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           kubernetes.io/ingress.class: traefik
