@@ -27,6 +27,7 @@ spec:
 
     env:
       TZ: ${TZ}
+      INIT_ASSETS: "0"
 
     strategy:
       type: RollingUpdate
