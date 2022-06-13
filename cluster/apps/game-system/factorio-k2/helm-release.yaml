@@ -84,7 +84,7 @@ spec:
       factorioServer:
         save_name: k2
         generate_new_save: false
-        update_mods_on_start: true
+        update_mods_on_start: false
         load_latest_save: true
 
       server_settings:
