@@ -86,10 +86,6 @@ spec:
           - name: nfs
             server: ${NAS_ADDR}
             path: /volume1/shared/minecraft
-            mountOptions:
-              - nconnect=8  # only supported on linux kernel version >= 5.3
-              - hard
-              - nfsvers=4.1
           - configMap:
               defaultMode: 420
               name: minecraft-survival-bluemap-config
