@@ -34,9 +34,6 @@ spec:
       REPLACE_ENV_DURING_SYNC: "TRUE"
       CFG_LP_SERVER: "global"
       MODS: https://github.com/BlueMap-Minecraft/BlueMap/releases/download/v1.7.3/BlueMap-1.7.3-fabric-1.18.jar
-    envFrom:
-      - secretRef:
-          name: minecraft
     minecraftServer:
       eula: "TRUE"
       overrideServerProperties: true
