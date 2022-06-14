@@ -33,7 +33,7 @@ spec:
       REPLACE_ENV_VARIABLES: "TRUE"
       REPLACE_ENV_DURING_SYNC: "TRUE"
       CFG_LP_SERVER: "global"
-      MODS: https://www.dropbox.com/s/851h4naruo0jc14/BlueMap-1.7.3-fabric-1.18.jar?dl=0,https://www.dropbox.com/s/bsyh0j7n2ndtw86/fabric-api-0.56.0%2B1.18.2.jar?dl=0
+      MODS: https://www.dropbox.com/s/jrdlf51j6bx6s4u/mods.zip?dl=0
     minecraftServer:
       eula: "TRUE"
       overrideServerProperties: true
