@@ -1,0 +1,15 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - helm-release.yaml
+  - persistent-volume-claim.yaml
+configMapGenerator:
+  - name: minecraft-survival-bluemap-config
+    files:
+      - core.conf
+namespace: game-system
+generatorOptions:
+  disableNameSuffixHash: true
+commonLabels:
+  kustomize.toolkit.fluxcd.io/substitute: "disabled"

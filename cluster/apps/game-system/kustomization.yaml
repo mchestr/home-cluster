@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - factorio
   - factorio-k2
+  - minecraft
