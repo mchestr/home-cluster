@@ -29,7 +29,6 @@ spec:
         cpu: 3000m
     extraEnv:
       NETWORK_COMPRESSION_THRESHOLD: "-1"
-      COPY_CONFIG_DEST: "/data"
       REPLACE_ENV_VARIABLES: "TRUE"
       REPLACE_ENV_DURING_SYNC: "TRUE"
       CFG_LP_SERVER: "global"
@@ -80,13 +79,7 @@ spec:
             mountPath: /mods
             subPath: mods
             readOnly: true
-          - mountPath: /config/plugins/BlueMap/
-            name: bluemap-config
         volumes:
           - name: nfs
             server: ${NAS_ADDR}
             path: /volume1/shared/minecraft
-          - configMap:
-              defaultMode: 420
-              name: minecraft-survival-bluemap-config
-            name: bluemap-config
