@@ -1,0 +1,89 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: minecraft
+  namespace: game-system
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: minecraft
+      version: 4.0.0
+      sourceRef:
+        kind: HelmRepository
+        name: minecraft-server-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    nameOverride: "0"
+    image:
+      repository: docker.io/itzg/minecraft-server
+      tag: 2022.6.0
+    resources:
+      requests:
+        memory: 4Gi
+        cpu: 1500m
+      limits:
+        memory: 8Gi
+        cpu: 3000m
+    extraEnv:
+      NETWORK_COMPRESSION_THRESHOLD: "-1"
+      COPY_CONFIG_DEST: "/data"
+      REPLACE_ENV_VARIABLES: "TRUE"
+      REPLACE_ENV_DURING_SYNC: "TRUE"
+      CFG_LP_SERVER: "global"
+      MODS: https://github.com/BlueMap-Minecraft/BlueMap/releases/download/v1.7.3/BlueMap-1.7.3-fabric-1.18.jar
+    envFrom:
+      - secretRef:
+          name: minecraft
+    minecraftServer:
+      eula: "TRUE"
+      overrideServerProperties: true
+      version: "1.18.2"
+      jvmOpts: "-XX:MaxRAMPercentage=75"
+      type: "FABRIC"
+      difficulty: "hard"
+      viewDistance: 20
+      gameMode: survival
+      pvp: true
+      onlineMode: false
+      maxWorldSize: 29999984
+      maxTickTime: -1
+      memory: ""
+      rcon:
+        enabled: true
+      extraPorts:
+        - name: map
+          containerPort: 8100
+          protocol: TCP
+          service:
+            enabled: true
+            type: ClusterIP
+            port: 8100
+          ingress:
+            enabled: true
+            ingressClassName: traefik
+            annotations:
+              cert-manager.io/cluster-issuer: "letsencrypt-production"
+            hosts:
+              - name: mc-map.${CLUSTER_DOMAIN}
+                path: /
+            tls:
+              - secretName: bluemap-survival-tls
+                hosts:
+                  - mc-map.${CLUSTER_DOMAIN}
+    persistence:
+      storageClass: longhorn
+      dataDir:
+        enabled: true
+        existingClaim: minecraft-survival-v1
+    extraVolumes:
+      - volumeMounts:
+          - mountPath: /config/plugins/BlueMap/
+            name: bluemap-config
+        volumes:
+          - configMap:
+              defaultMode: 420
+              name: minecraft-survival-bluemap-config
+            name: bluemap-config
