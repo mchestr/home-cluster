@@ -33,7 +33,7 @@ spec:
       REPLACE_ENV_VARIABLES: "TRUE"
       REPLACE_ENV_DURING_SYNC: "TRUE"
       CFG_LP_SERVER: "global"
-      MODS: https://www.dropbox.com/s/jrdlf51j6bx6s4u/mods.zip?dl=0
+      MODPACK: https://www.dropbox.com/s/jrdlf51j6bx6s4u/mods.zip?dl=0
     minecraftServer:
       eula: "TRUE"
       overrideServerProperties: true
