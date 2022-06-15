@@ -33,6 +33,7 @@ spec:
       REPLACE_ENV_DURING_SYNC: "TRUE"
       CFG_LP_SERVER: "global"
       CF_SERVER_MOD: "All-of-Fabric-5-Server-1.2.4.zip"
+      USE_MODPACK_START_SCRIPT: "false"
     minecraftServer:
       eula: "TRUE"
       overrideServerProperties: true
