@@ -69,7 +69,7 @@ spec:
                   - path: /
                     pathType: Prefix
             tls:
-              - secretName: "mc-map-tls"
+              - secretName: mc-map-tls
                 hosts:
                   - *host
     persistence:
