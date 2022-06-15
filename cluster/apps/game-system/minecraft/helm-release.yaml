@@ -47,6 +47,8 @@ spec:
       maxWorldSize: 29999983
       maxTickTime: -1
       memory: ""
+      loadBalancerIP: ${METALLB_MINECRAFT_ADDR}
+      externalTrafficPolicy: Local
       rcon:
         enabled: true
       extraPorts:
