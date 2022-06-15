@@ -16,7 +16,7 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
-    nameOverride: "aof"
+    nameOverride: minecraft
     image:
       repository: docker.io/itzg/minecraft-server
       tag: 2022.6.0
