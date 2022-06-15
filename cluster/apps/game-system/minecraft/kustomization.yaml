@@ -11,5 +11,3 @@ configMapGenerator:
 namespace: game-system
 generatorOptions:
   disableNameSuffixHash: true
-commonLabels:
-  kustomize.toolkit.fluxcd.io/substitute: "disabled"
