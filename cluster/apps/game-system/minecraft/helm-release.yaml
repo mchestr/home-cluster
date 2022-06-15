@@ -47,7 +47,7 @@ spec:
       onlineMode: true
       maxWorldSize: 29999983
       maxTickTime: -1
-      memory: ""
+      memory: 4096M
       serviceType: LoadBalancer
       loadBalancerIP: ${METALLB_MINECRAFT_ADDR}
       externalTrafficPolicy: Local
