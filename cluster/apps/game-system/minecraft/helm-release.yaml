@@ -45,7 +45,7 @@ spec:
       gameMode: survival
       pvp: true
       onlineMode: false
-      maxWorldSize: 29999984
+      maxWorldSize: 29999983
       maxTickTime: -1
       memory: ""
       rcon:
