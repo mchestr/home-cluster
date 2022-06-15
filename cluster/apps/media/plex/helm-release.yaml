@@ -63,6 +63,7 @@ spec:
       transcode:
         enabled: true
         type: emptyDir
+
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
