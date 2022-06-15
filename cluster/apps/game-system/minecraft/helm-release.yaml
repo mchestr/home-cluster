@@ -32,7 +32,7 @@ spec:
       REPLACE_ENV_VARIABLES: "TRUE"
       REPLACE_ENV_DURING_SYNC: "TRUE"
       CFG_LP_SERVER: "global"
-      CF_SERVER_MOD: "All-of-Fabric-5-Server-1.2.4.zip"
+      CF_SERVER_MOD: "Server-Files-0.4.11.zip"
     minecraftServer:
       eula: "TRUE"
       overrideServerProperties: true
