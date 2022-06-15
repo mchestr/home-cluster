@@ -22,7 +22,7 @@ spec:
       retries: 3
   upgrade:
     remediation:
-      retries: 3
+      retries: 4
   values:
     image:
       repository: ghcr.io/home-assistant/home-assistant
