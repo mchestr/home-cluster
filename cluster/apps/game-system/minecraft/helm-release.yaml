@@ -27,6 +27,18 @@ spec:
       limits:
         memory: 8Gi
         cpu: 3000m
+    livenessProbe:
+      initialDelaySeconds: 600
+      periodSeconds: 5
+      failureThreshold: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+    readinessProbe:
+      initialDelaySeconds: 600
+      periodSeconds: 5
+      failureThreshold: 10
+      successThreshold: 1
+      timeoutSeconds: 1
     extraEnv:
       NETWORK_COMPRESSION_THRESHOLD: "-1"
       REPLACE_ENV_VARIABLES: "TRUE"
