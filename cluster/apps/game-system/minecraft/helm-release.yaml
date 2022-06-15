@@ -58,16 +58,19 @@ spec:
             port: 8100
           ingress:
             enabled: true
-            ingressClassName: traefik
             annotations:
-              cert-manager.io/cluster-issuer: "letsencrypt-production"
+              cert-manager.io/cluster-issuer: letsencrypt-production
+              kubernetes.io/ingress.class: traefik
+              traefik.ingress.kubernetes.io/router.entrypoints: websecure
             hosts:
-              - name: mc-map.${CLUSTER_DOMAIN}
-                path: /
+              - host: &host "mc-map.${CLUSTER_DOMAIN}"
+                paths:
+                  - path: /
+                    pathType: Prefix
             tls:
-              - secretName: bluemap-survival-tls
+              - secretName: "mc-map-tls"
                 hosts:
-                  - mc-map.${CLUSTER_DOMAIN}
+                  - *host
     persistence:
       storageClass: longhorn
       dataDir:
@@ -76,10 +79,9 @@ spec:
     extraVolumes:
       - volumeMounts:
           - name: nfs
-            mountPath: /mods
-            subPath: mods
+            mountPath: /minecraft
             readOnly: true
         volumes:
           - name: nfs
-            server: ${NAS_ADDR}
-            path: /volume1/shared/minecraft
+            persistentVolumeClaim:
+              claimName: mc-pvc
