@@ -78,12 +78,3 @@ spec:
       dataDir:
         enabled: true
         existingClaim: minecraft-survival-v1
-    extraVolumes:
-      - volumeMounts:
-          - name: nfs
-            mountPath: /minecraft
-            readOnly: true
-        volumes:
-          - name: nfs
-            persistentVolumeClaim:
-              claimName: mc-pvc
