@@ -67,10 +67,8 @@ spec:
               kubernetes.io/ingress.class: traefik
               traefik.ingress.kubernetes.io/router.entrypoints: websecure
             hosts:
-              - host: &host "mc-map.${CLUSTER_DOMAIN}"
-                paths:
-                  - path: /
-                    pathType: Prefix
+              - name: &host "mc-map.${CLUSTER_DOMAIN}"
+                path: /
             tls:
               - secretName: mc-map-tls
                 hosts:
