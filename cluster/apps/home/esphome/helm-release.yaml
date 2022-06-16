@@ -26,7 +26,7 @@ spec:
   values:
     image:
       repository: esphome/esphome
-      tag: 2022.5.1
+      tag: 2022.6.0
     env:
       TZ: ${TZ}
       ESPHOME_DASHBOARD_USE_PING: true
