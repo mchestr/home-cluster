@@ -94,3 +94,12 @@ spec:
       dataDir:
         enabled: true
         existingClaim: minecraft-survival-v1
+    extraVolumes:
+      - volumeMounts:
+          - mountPath: /data/config/bluemap/core.conf
+            name: bluemap-config
+        volumes:
+          - configMap:
+              defaultMode: 420
+              name: minecraft-survival-bluemap-config
+            name: bluemap-config
