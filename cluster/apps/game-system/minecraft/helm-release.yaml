@@ -81,6 +81,7 @@ spec:
               external-dns/is-public: "true"
               kubernetes.io/ingress.class: traefik
               traefik.ingress.kubernetes.io/router.entrypoints: websecure
+              traefik.ingress.kubernetes.io/router.middlewares: networking-external@kubernetescrd
             hosts:
               - name: &host "mc-map.${CLUSTER_DOMAIN}"
                 path: /
