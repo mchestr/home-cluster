@@ -48,7 +48,6 @@ spec:
       eula: "TRUE"
       overrideServerProperties: true
       version: "1.7.10"
-      jvmOpts: "-XX:MaxRAMPercentage=75"
       type: "FORGE"
       difficulty: "hard"
       viewDistance: 20
