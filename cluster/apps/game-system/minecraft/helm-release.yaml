@@ -65,30 +65,6 @@ spec:
       externalTrafficPolicy: Local
       rcon:
         enabled: true
-      extraPorts:
-        - name: map
-          containerPort: 8100
-          protocol: TCP
-          service:
-            enabled: true
-            type: ClusterIP
-            port: 8100
-          ingress:
-            enabled: true
-            annotations:
-              cert-manager.io/cluster-issuer: letsencrypt-production
-              external-dns.alpha.kubernetes.io/target: ipv4.${CLUSTER_DOMAIN}
-              external-dns/is-public: "true"
-              kubernetes.io/ingress.class: traefik
-              traefik.ingress.kubernetes.io/router.entrypoints: websecure
-              traefik.ingress.kubernetes.io/router.middlewares: networking-external@kubernetescrd
-            hosts:
-              - name: &host "mc-map.${CLUSTER_DOMAIN}"
-                path: /
-            tls:
-              - secretName: mc-map-tls
-                hosts:
-                  - *host
     persistence:
       storageClass: longhorn
       dataDir:
