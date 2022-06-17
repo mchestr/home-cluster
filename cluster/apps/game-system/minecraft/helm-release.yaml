@@ -19,7 +19,7 @@ spec:
     nameOverride: "0"
     image:
       repository: docker.io/itzg/minecraft-server
-      tag: 2022.8.0
+      tag: 2022.8.0-java8
     resources:
       requests:
         memory: 4Gi
@@ -45,11 +45,11 @@ spec:
       REPLACE_ENV_DURING_SYNC: "TRUE"
       CFG_LP_SERVER: "global"
       USE_MODPACK_START_SCRIPT: "false"
-      FORGE_INSTALLER: forge-1.18.2-40.1.31-installer.jar
+      FORGE_INSTALLER: forge-1.7.10-10.13.4.1614-1.7.10-universal.jar
     minecraftServer:
       eula: "TRUE"
       overrideServerProperties: true
-      version: "1.18.2"
+      version: "1.7.10"
       jvmOpts: "-XX:MaxRAMPercentage=75"
       type: "FORGE"
       difficulty: "hard"
@@ -93,14 +93,4 @@ spec:
       storageClass: longhorn
       dataDir:
         enabled: true
-        existingClaim: minecraft-survival-v1
-    extraVolumes:
-      - volumeMounts:
-          - mountPath: /data/config/bluemap/core.conf
-            name: bluemap-config
-            subPath: core.conf
-        volumes:
-          - configMap:
-              defaultMode: 420
-              name: minecraft-survival-bluemap-config
-            name: bluemap-config
+        existingClaim: minecraft-gtnh-v1
