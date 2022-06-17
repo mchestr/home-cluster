@@ -96,7 +96,7 @@ spec:
         existingClaim: minecraft-survival-v1
     extraVolumes:
       - volumeMounts:
-          - mountPath: /data/config/bluemap/core.conf
+          - mountPath: /data/config/bluemap
             name: bluemap-config
         volumes:
           - configMap:
