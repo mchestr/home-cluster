@@ -60,6 +60,7 @@ spec:
       serviceType: LoadBalancer
       loadBalancerIP: ${METALLB_MINECRAFT_ADDR}
       externalTrafficPolicy: Local
+      levelType: rwg
       rcon:
         enabled: true
     persistence:
