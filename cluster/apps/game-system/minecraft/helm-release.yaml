@@ -22,7 +22,7 @@ spec:
       tag: 2022.8.0-java8
     resources:
       requests:
-        memory: 4Gi
+        memory: 6Gi
         cpu: 1500m
       limits:
         memory: 8Gi
