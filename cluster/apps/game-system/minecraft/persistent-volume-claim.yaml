@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: minecraft-survival-v1
+  name: minecraft-gtnh-v1
   namespace: game-system
 spec:
   accessModes:
