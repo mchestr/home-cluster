@@ -44,7 +44,6 @@ spec:
       REPLACE_ENV_VARIABLES: "TRUE"
       REPLACE_ENV_DURING_SYNC: "TRUE"
       CFG_LP_SERVER: "global"
-      USE_MODPACK_START_SCRIPT: "false"
       FORGE_INSTALLER: forge-1.7.10-10.13.4.1614-1.7.10-universal.jar
     minecraftServer:
       eula: "TRUE"
