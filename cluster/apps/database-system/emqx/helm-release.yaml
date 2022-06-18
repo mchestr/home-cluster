@@ -20,8 +20,7 @@ spec:
     replicaCount: 3
     recreatePods: true
     image:
-      repository: emqx/emqx
-      tag: 4.4.4
+      repository: public.ecr.aws/emqx/emqx
 
     emqxConfig:
       EMQX_ALLOW_ANONYMOUS: "false"
