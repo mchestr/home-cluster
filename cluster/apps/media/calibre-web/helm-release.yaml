@@ -25,7 +25,7 @@ spec:
       retries: 3
   values:
     image:
-      repository: linuxserver/calibre-web
+      repository: ghcr.io/linuxserver/calibre-web
       tag: version-0.6.12
     env:
       TZ: ${TZ}
