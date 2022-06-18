@@ -25,7 +25,7 @@ spec:
       retries: 3
   values:
     image:
-      repository: koenkk/zigbee2mqtt
+      repository: ghcr.io/koenkk/zigbee2mqtt
       tag: 1.25.2
     env:
       TZ: ${TZ}
