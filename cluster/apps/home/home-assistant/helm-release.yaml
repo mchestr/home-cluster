@@ -71,7 +71,7 @@ spec:
       codeserver:
         enabled: true
         image:
-          repository: codercom/code-server
+          repository: ghcr.io/k8s-at-home/code-server
           tag: 4.4.0
         workingDir: /config
         git:
