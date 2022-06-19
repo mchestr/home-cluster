@@ -61,6 +61,7 @@ spec:
       loadBalancerIP: ${METALLB_MINECRAFT_ADDR}
       externalTrafficPolicy: Local
       levelType: rwg
+      jvmOpts: "-Dfml.queryResult=confirm"
       rcon:
         enabled: true
     persistence:
