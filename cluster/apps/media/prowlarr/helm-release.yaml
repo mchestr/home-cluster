@@ -26,7 +26,7 @@ spec:
   values:
     image:
       repository: ghcr.io/k8s-at-home/prowlarr-nightly
-      tag: v0.4.0.1818
+      tag: v0.4.0.1821
     ingress:
       main:
         enabled: true
