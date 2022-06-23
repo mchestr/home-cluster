@@ -79,4 +79,4 @@ spec:
         memory: 150Mi
 
     metrics:
-      enabled: true
+      enabled: false
