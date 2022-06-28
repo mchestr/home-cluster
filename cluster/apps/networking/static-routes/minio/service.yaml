@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio
+  namespace: networking
+spec:
+  type: ExternalName
+
+  ports:
+    - name: https
+      port: 9000
+    - name: https
+      port: 9001
+
+  externalName: 192.168.1.128
