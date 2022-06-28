@@ -10,7 +10,7 @@ spec:
   ports:
     - name: api
       port: 9000
-    - name: https
+    - name: http
       port: 9001
 
   externalName: lochnas

@@ -26,4 +26,4 @@ spec:
               service:
                 name: minio
                 port:
-                  name: https
+                  name: http
