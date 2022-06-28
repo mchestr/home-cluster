@@ -25,7 +25,7 @@ spec:
       type: s3
       config:
         bucket: thanos
-        endpoint: minio.database-system:9000
+        endpoint: minio.${CLUSTER_DOMAIN}:9000
         insecure: true
     query:
       enabled: true
