@@ -27,7 +27,7 @@ spec:
       storage_config:
         aws:
           bucketnames: loki
-          endpoint: minio.${CLUSTER_DOMAIN}:9000
+          endpoint: minio.networking:9000
           s3forcepathstyle: true
           insecure: true
         boltdb_shipper:
