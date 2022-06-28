@@ -13,4 +13,4 @@ spec:
     - name: https
       port: 9001
 
-  externalName: 192.168.1.128
+  externalName: lochnas.local
