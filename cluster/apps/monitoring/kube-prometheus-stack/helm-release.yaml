@@ -8,10 +8,10 @@ spec:
   interval: 5m
   install:
     remediation:
-      retries: 3
+      retries: 4
   upgrade:
     remediation:
-      retries: 3
+      retries: 4
   chart:
     spec:
       # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
