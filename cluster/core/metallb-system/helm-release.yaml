@@ -22,9 +22,10 @@ spec:
     remediation:
       retries: 3
   values:
-    configInline:
-      address-pools:
-        - name: default
-          protocol: layer2
-          addresses:
-            - "${METALLB_LB_RANGE}"
+    crds:
+      enabled: true
+    prometheus:
+      podMonitor:
+        enabled: true
+      prometheusRule:
+        enabled: true
