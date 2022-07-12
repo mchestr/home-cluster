@@ -26,6 +26,6 @@ spec:
       enabled: true
     prometheus:
       podMonitor:
-        enabled: true
+        enabled: false
       prometheusRule:
-        enabled: true
+        enabled: false
