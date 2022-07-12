@@ -4,6 +4,6 @@ kind: Kustomization
 resources:
   - backup-job.yaml
   - helm-release.yaml
-#   - prometheus-rules.yaml
+  - prometheus-rules.yaml
   - service-monitor.yaml
   - volume-snapshot-class.yaml
