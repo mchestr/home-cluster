@@ -21,8 +21,7 @@ spec:
     serviceMonitor:
       enabled: true
     persistence:
-      enabled: true
-      existingClaim: loki-pv-claim
+      enabled: false
     config:
       storage_config:
         aws:
