@@ -165,16 +165,12 @@ spec:
       prometheusSpec:
         replicas: 1
         replicaExternalLabelName: "replica"
-        ruleSelector: {}
-        ruleNamespaceSelector: {}
         ruleSelectorNilUsesHelmValues: false
-        serviceMonitorSelector: {}
-        serviceMonitorNamespaceSelector: {}
         serviceMonitorSelectorNilUsesHelmValues: false
-        podMonitorSelector: {}
-        podMonitorNamespaceSelector: {}
         podMonitorSelectorNilUsesHelmValues: false
-        retention: 2d
+        probeSelectorNilUsesHelmValues: false
+        retention: 6h
+        retentionSize: 6GB
         enableAdminAPI: true
         walCompression: true
         storageSpec:
@@ -183,10 +179,11 @@ spec:
               storageClassName: longhorn
               resources:
                 requests:
-                  storage: 80Gi
+                  storage: 10Gi
         thanos:
           image: quay.io/thanos/thanos:v0.27.0
-          version: v0.25.2
+          # renovate: datasource=docker depName=quay.io/thanos/thanos
+          version: "v0.27.0"
           objectStorageConfig:
             name: thanos-objstore-secret
             key: objstore.yml
