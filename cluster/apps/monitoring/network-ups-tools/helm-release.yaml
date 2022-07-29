@@ -80,7 +80,7 @@ spec:
       exporter:
         image:
           repository: hon95/prometheus-nut-exporter
-          tag: 1.1.1
+          tag: 1.2.0
 
     affinity:
       nodeAffinity:
