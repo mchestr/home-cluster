@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
-      version: 16.3.0
+      version: 16.3.2
       chart: sonarr
       sourceRef:
         kind: HelmRepository
