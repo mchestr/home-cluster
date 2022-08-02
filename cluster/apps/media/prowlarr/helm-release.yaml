@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
-      version: 4.5.0
+      version: 4.5.2
       chart: prowlarr
       sourceRef:
         kind: HelmRepository
