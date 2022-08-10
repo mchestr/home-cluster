@@ -28,7 +28,7 @@ spec:
   values:
     image:
       repository: ghcr.io/k8s-at-home/theme-park
-      tag: v1.9.11
+      tag: v1.10.0
 
     nameOverride: "theme-park"
 
