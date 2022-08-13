@@ -64,6 +64,7 @@ spec:
       jvmOpts: "-Dfml.queryResult=confirm"
       rcon:
         enabled: true
+      motd: "GTNH: §l§c2.1.2.4-25-pre§r §n"
     persistence:
       storageClass: longhorn
       dataDir:
