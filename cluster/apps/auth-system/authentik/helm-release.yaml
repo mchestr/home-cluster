@@ -28,7 +28,7 @@ spec:
       namespace: database-system
   valuesFrom:
     - kind: Secret
-      name: authentik-secrets
+      name: authentik-secrets-helm
   values:
     fullnameOverride: authentik
     image:
