@@ -26,7 +26,7 @@ spec:
   values:
     image:
       repository: ghcr.io/zwave-js/zwavejs2mqtt
-      tag: 6.15.2
+      tag: 6.16.0
     env:
       TZ: ${TZ}
 
