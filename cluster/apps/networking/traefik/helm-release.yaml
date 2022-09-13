@@ -31,7 +31,7 @@ spec:
   values:
     deployment:
       kind: Deployment
-      replicas: 2
+      replicas: 3
       minReadySeconds: 15
     service:
       enabled: true
