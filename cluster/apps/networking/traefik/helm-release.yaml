@@ -29,8 +29,6 @@ spec:
     - kind: Secret
       name: traefik-helm-secrets
   values:
-    image:
-      name: traefik
     deployment:
       kind: Deployment
       replicas: 2
