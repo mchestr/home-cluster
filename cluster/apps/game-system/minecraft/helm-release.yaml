@@ -19,7 +19,7 @@ spec:
     nameOverride: "0"
     image:
       repository: docker.io/itzg/minecraft-server
-      tag: 2022.11.0-java8
+      tag: 2022.13.0-java8
     resources:
       requests:
         memory: 6Gi
