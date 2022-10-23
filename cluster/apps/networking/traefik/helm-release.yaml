@@ -29,6 +29,10 @@ spec:
     - kind: Secret
       name: traefik-helm-secrets
   values:
+    rollback:
+      enable: true
+      retry: true
+      maxRetries: 5
     deployment:
       kind: Deployment
       replicas: 3
