@@ -28,6 +28,11 @@ tasks:
     cmds:
       - kubectl apply -k {{.CLUSTER_DIR}}/base/flux-system
 
+  flux:reconcile:
+    desc: Manually trigger pull from repo
+    cmds:
+      - flux reconcile source git flux-system
+
   list-dockerhub:
     desc: What dockerhub images are running in my cluster
     cmds:
