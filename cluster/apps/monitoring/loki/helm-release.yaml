@@ -168,6 +168,10 @@ spec:
               category: logs
             annotations:
               summary: Paperless is having trouble fetching mail
+    write:
+      replicas: 1
+    read:
+      replicas: 1
 
   valuesFrom:
     - targetPath: config.storage_config.aws.access_key_id
