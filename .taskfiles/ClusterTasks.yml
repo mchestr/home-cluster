@@ -28,11 +28,6 @@ tasks:
     cmds:
       - kubectl apply -k {{.CLUSTER_DIR}}/base/flux-system
 
-  flux:reconcile:
-    desc: Manually trigger pull from repo
-    cmds:
-      - flux reconcile source git flux-system
-
   list-dockerhub:
     desc: What dockerhub images are running in my cluster
     cmds:
@@ -171,7 +166,7 @@ tasks:
             }
           }'
 
-  hr-restart:
+  hr:restart:
     desc: Restart all failed Helm Releases
     cmds:
       - kubectl get hr --all-namespaces | grep False | awk '{print $2, $1}' | xargs -l bash -c 'flux suspend hr $0 -n $1'
