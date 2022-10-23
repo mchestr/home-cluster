@@ -27,6 +27,8 @@ spec:
       retries: 3
   rollback:
     enable: true
+    retry: true
+    maxRetries: 5
   valuesFrom:
     - kind: Secret
       name: traefik-helm-secrets
