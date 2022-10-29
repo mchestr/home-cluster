@@ -3,7 +3,7 @@ terraform {
   required_providers {
     authentik = {
       source  = "goauthentik/authentik"
-      version = "2022.8.1"
+      version = "2022.10.0"
     }
     sops = {
       source  = "carlpett/sops"
