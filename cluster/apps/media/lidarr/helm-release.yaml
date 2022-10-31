@@ -63,7 +63,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: "{{ .Release.Name }}-config-v1"
+        existingClaim: lidarr-config-v1
       media:
         enabled: true
         type: nfs
@@ -74,7 +74,7 @@ spec:
         enabled: true
         type: nfs
         server: ${NAS_ADDR}
-        path: "${NAS_BACKUP_DIR}/{{ .Release.Name }}"
+        path: ${NAS_BACKUP_DIR}/lidarr
         mountPath: /config/Backups
 
     podSecurityContext:
