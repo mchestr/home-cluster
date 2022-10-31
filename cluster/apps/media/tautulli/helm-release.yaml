@@ -56,7 +56,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: tautulli-config-v2
+        existingClaim: tautulli-config-v1
       backup:
         enabled: true
         type: nfs
@@ -64,7 +64,5 @@ spec:
         path: /volume1/backups/kubernetes/apps/tautulli
 
     podSecurityContext:
-      runAsUser: ${FS_USER}
       runAsGroup: ${FS_GROUP}
       fsGroup: ${FS_GROUP}
-      fsGroupChangePolicy: "OnRootMismatch"
