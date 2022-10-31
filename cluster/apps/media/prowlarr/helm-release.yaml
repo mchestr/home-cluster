@@ -2,31 +2,30 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: prowlarr
+  name: &app prowlarr
   namespace: media
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      version: 4.5.2
-      chart: prowlarr
+      chart: app-template
+      version: 0.2.2
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
   install:
     createNamespace: true
     remediation:
-      retries: 3
+      retries: 5
   upgrade:
     remediation:
-      retries: 3
+      retries: 5
   values:
     image:
-      repository: ghcr.io/k8s-at-home/prowlarr-nightly
-      tag: v0.4.7.2048
+      repository: ghcr.io/onedr0p/prowlarr-nightly
+      tag: 0.4.7.2048@sha256:f289c20b6b515c495c04e3ab9aa9a881be50ef681b621990ce09cd336d153f8c
+
     ingress:
       main:
         enabled: true
@@ -44,15 +43,39 @@ spec:
           - secretName: "{{ .Release.Name }}-tls"
             hosts:
               - *host
+
+    env:
+      TZ: ${TZ}
+      PROWLARR__INSTANCE_NAME: Prowlarr
+      PROWLARR__PORT: &port 80
+      PROWLARR__LOG_LEVEL: info
+
+    envFrom:
+      - secretRef:
+          name: *app
+
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+
     persistence:
       config:
         enabled: true
-        storageClass: longhorn
-        size: 4Gi
-        labels:
-          recurring-job-group.longhorn.io/backup: enabled
-      media:
+        existingClaim: prowlarr-config-v1
+      backup:
         enabled: true
-        existingClaim: media-pv-claim
+        type: nfs
+        server: ${NAS_ADDR}
+        path: ${NAS_BACKUP_DIR}/prowlarr
+        mountPath: /config/Backups
+
     podSecurityContext:
-      fsGroup: ${FS_GROUP}
+      runAsUser: ${RUN_AS_USER}
+      runAsGroup: ${RUN_AS_GROUP}
+      fsGroup: ${RUN_AS_GROUP}
+      fsGroupChangePolicy: "OnRootMismatch"
+
+    podAnnotations:
+      secret.reloader.stakater.com/reload: *app
