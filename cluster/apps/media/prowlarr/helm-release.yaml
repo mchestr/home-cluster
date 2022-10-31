@@ -47,7 +47,7 @@ spec:
     env:
       TZ: ${TZ}
       PROWLARR__INSTANCE_NAME: Prowlarr
-      PROWLARR__PORT: &port 80
+      PROWLARR__PORT: &port 9696
       PROWLARR__LOG_LEVEL: info
 
     envFrom:
@@ -64,12 +64,12 @@ spec:
       config:
         enabled: true
         existingClaim: prowlarr-config-v1
-      # backup:
-      #   enabled: true
-      #   type: nfs
-      #   server: ${NAS_ADDR}
-      #   path: ${NAS_BACKUP_DIR}/prowlarr
-      #   mountPath: /config/Backups
+      backup:
+        enabled: true
+        type: nfs
+        server: ${NAS_ADDR}
+        path: ${NAS_BACKUP_DIR}/prowlarr
+        mountPath: /config/Backups
 
     podSecurityContext:
       runAsUser: 568
