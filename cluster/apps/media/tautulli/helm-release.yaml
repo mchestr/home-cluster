@@ -62,6 +62,7 @@ spec:
         type: nfs
         server: ${NAS_ADDR}
         path: /volume1/backups/kubernetes/apps/tautulli
+        mountPath: /config/backups
 
     podSecurityContext:
       runAsUser: ${RUN_AS_USER}
