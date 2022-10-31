@@ -23,3 +23,5 @@ data:
   TZ: America/Vancouver
   RUN_AS_USER: "1037"
   RUN_AS_GROUP: "65539"
+  NAS_BACKUP_DIR: /volume1/backups/kubernetes/apps
+  NAS_MEDIA_DIR: /volume1/shared/media
