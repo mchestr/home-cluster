@@ -21,7 +21,7 @@ data:
   NAS_ADDR: 192.168.1.128
   GATEWAY_IP: 192.168.1.1
   TZ: America/Vancouver
-  RUN_AS_USER: "1037"
+  RUN_AS_USER: "568"
   RUN_AS_GROUP: "65539"
   NAS_BACKUP_DIR: /volume1/backups/kubernetes/apps
   NAS_MEDIA_DIR: /volume1/shared/media
