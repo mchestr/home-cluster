@@ -72,6 +72,8 @@ spec:
       #   mountPath: /config/Backups
 
     podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
       fsGroup: ${RUN_AS_GROUP}
       fsGroupChangePolicy: "OnRootMismatch"
       supplementalGroups:
