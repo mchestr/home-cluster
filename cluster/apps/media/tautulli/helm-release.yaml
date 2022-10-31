@@ -64,5 +64,4 @@ spec:
         path: /volume1/backups/kubernetes/apps/tautulli
 
     podSecurityContext:
-      runAsGroup: ${FS_GROUP}
       fsGroup: ${FS_GROUP}
