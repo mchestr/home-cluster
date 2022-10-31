@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: lidarr-config-v1
+  name: lidarr-config-v2
   namespace: media
   labels:
     app.kubernetes.io/name: &name lidarr
