@@ -61,11 +61,9 @@ spec:
         enabled: true
         type: nfs
         server: ${NAS_ADDR}
-        path: /volume1/backups/kubernetes/apps/tautulli
+        path: ${NAS_BACKUP_DIR}/tautulli
         mountPath: /config/backups
 
     podSecurityContext:
-      runAsUser: ${RUN_AS_USER}
-      runAsGroup: ${RUN_AS_GROUP}
       fsGroup: ${RUN_AS_GROUP}
       fsGroupChangePolicy: "OnRootMismatch"
