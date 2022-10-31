@@ -2,39 +2,49 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: overseerr
+  name: &app overseerr
   namespace: media
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      version: 5.4.2
-      chart: overseerr
+      chart: app-template
+      version: 0.2.2
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
   install:
     createNamespace: true
     remediation:
-      retries: 3
+      retries: 5
   upgrade:
     remediation:
-      retries: 3
+      retries: 5
   values:
     image:
       repository: ghcr.io/sct/overseerr
       tag: 1.30.1
+
+    env:
+      TZ: ${TZ}
+      LOG_LEVEL: "info"
+      PORT: &port 5055
+
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+
     ingress:
       main:
         enabled: true
+        ingressClassName: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           external-dns.alpha.kubernetes.io/target: ipv4.${CLUSTER_DOMAIN}
           external-dns/is-public: "true"
-          kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: networking-external@kubernetescrd,overseerr-theme@file
         hosts:
@@ -46,14 +56,13 @@ spec:
           - secretName: "{{ .Release.Name }}-tls"
             hosts:
               - *host
+
     persistence:
       config:
         enabled: true
-        storageClass: longhorn
-        labels:
-          recurring-job-group.longhorn.io/backup: enabled
-      media:
-        enabled: true
-        existingClaim: media-pv-claim
+        existingClaim: overseerr-config-v1
+        mountPath: /app/config
+
     podSecurityContext:
-      fsGroup: ${FS_GROUP}
+      fsGroup: ${RUN_AS_GROUP}
+      fsGroupChangePolicy: "OnRootMismatch"
