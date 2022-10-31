@@ -91,7 +91,7 @@ tasks:
       - task: pods
 
   debug-volume:
-    desc: Attach a volume to a container for debugging, ex. VOLUME=zigbee2mqtt-config-v1 NAMESPACE=home task debug-volume
+    desc: Attach a volume to a container for debugging, ex. VOLUME=zigbee2mqtt-config-v1 NAMESPACE=home task cluster:debug-volume
     interactive: true
     silent: true
     cmds:
