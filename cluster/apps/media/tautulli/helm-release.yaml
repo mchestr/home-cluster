@@ -64,4 +64,7 @@ spec:
         path: /volume1/backups/kubernetes/apps/tautulli
 
     podSecurityContext:
-      fsGroup: ${FS_GROUP}
+      runAsUser: 1037
+      runAsGroup: 65539
+      fsGroup: 65539
+      fsGroupChangePolicy: "OnRootMismatch"
