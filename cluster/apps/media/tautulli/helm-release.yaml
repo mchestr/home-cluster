@@ -27,7 +27,7 @@ spec:
       tag: 2.10.4@sha256:4275df0318a55a1c21f4a56e536f371da31cdf315919ee8317a2446246a1d4b9
 
     env:
-      TZ: "${TZ}"
+      TZ: ${TZ}
 
     service:
       main:
