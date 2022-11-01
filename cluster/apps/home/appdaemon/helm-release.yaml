@@ -2,42 +2,54 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: appdaemon
+  name: &app appdaemon
   namespace: home
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      version: 8.4.2
-      chart: appdaemon
+      chart: app-template
+      version: 0.2.2
+      interval: 15m
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-helm-charts
         namespace: flux-system
-      interval: 5m
   install:
     createNamespace: true
     remediation:
-      retries: 3
+      retries: 5
   upgrade:
     remediation:
-      retries: 3
+      retries: 5
+  dependsOn:
+    - name: home-assistant
   values:
     image:
       repository: acockburn/appdaemon
       tag: 4.2.1
+
     env:
       TZ: ${TZ}
-      DASH_URL: "http://$HOSTNAME:5050"
+      DASH_URL: http://$HOSTNAME:5050
       HA_URL: http://home-assistant:8123
+
+    service:
+      main:
+        ports:
+          http:
+            port: 5050
 
     ingress:
       main:
         enabled: true
+        ingressClassName: traefik
         annotations:
+          hajimari.io/enable: true
+          hajimari.io/icon: home-automation
+          hajimari.io/info: Home Automation scripts
+          hajimari.io/group: automation
           cert-manager.io/cluster-issuer: letsencrypt-production
-          kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
         hosts:
@@ -49,51 +61,14 @@ spec:
           - secretName: "{{ .Release.Name }}-tls"
             hosts:
               - *host
+
     persistence:
       config:
         enabled: true
-        storageClass: longhorn
-        labels:
-          recurring-job-group.longhorn.io/backup: enabled
+        existingClaim: appdaemon-config-v1
       secrets:
         enabled: true
         type: secret
-        name: appdaemon-secrets
+        name: *app
         mountPath: /conf/secrets.yaml
         subPath: secrets.yaml
-
-    addons:
-      codeserver:
-        enabled: true
-        image:
-          repository: ghcr.io/k8s-at-home/code-server
-          tag: v4.6.0
-        workingDir: /config
-        git:
-          deployKeySecret: appdaemon-deploykey
-        args:
-          - --auth
-          - "none"
-          - --user-data-dir
-          - /config/.vscode
-          - --extensions-dir
-          - /config/.vscode
-        ingress:
-          enabled: true
-          annotations:
-            cert-manager.io/cluster-issuer: letsencrypt-production
-            kubernetes.io/ingress.class: traefik
-            traefik.ingress.kubernetes.io/router.entrypoints: websecure
-            traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
-          hosts:
-            - host: "{{ .Release.Name }}-code.${CLUSTER_DOMAIN}"
-              paths:
-                - path: /
-                  pathType: Prefix
-          tls:
-            - secretName: "{{ .Release.Name }}-code-tls"
-              hosts:
-                - "{{ .Release.Name }}-code.${CLUSTER_DOMAIN}"
-        volumeMounts:
-          - name: config
-            mountPath: /config
