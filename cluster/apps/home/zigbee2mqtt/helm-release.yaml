@@ -5,39 +5,45 @@ metadata:
   name: zigbee2mqtt
   namespace: home
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      version: 9.4.2
-      chart: zigbee2mqtt
+      chart: app-template
+      version: 0.2.2
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
   install:
     createNamespace: true
     remediation:
-      retries: 3
+      retries: 5
   upgrade:
     remediation:
-      retries: 3
+      retries: 5
+  dependsOn:
+    - name: emqx
+      namespace: home
   values:
     image:
       repository: ghcr.io/koenkk/zigbee2mqtt
-      tag: 1.28.0
+      tag: latest-dev@sha256:0b344e6987141da382f4e2d8a5b1e41950f6fc90254caa8cf1abf6ee0f20b68b
+
     env:
       TZ: ${TZ}
+      ZIGBEE2MQTT_DATA: /data
 
     ingress:
       main:
         enabled: true
+        ingressClassName: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
-          kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:zigbee
+          hajimari.io/group: Automation
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:
@@ -51,10 +57,8 @@ spec:
     persistence:
       config:
         enabled: true
-        storageClass: longhorn
+        existingClaim: zigbee2mqtt-config-v1
         mountPath: /data
-        labels:
-          recurring-job-group.longhorn.io/backup: enabled
       usb:
         enabled: true
         type: hostPath
