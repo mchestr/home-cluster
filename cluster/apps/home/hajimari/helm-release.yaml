@@ -29,6 +29,7 @@ spec:
       darkTheme: espresso
       showAppGroups: true
       showAppInfo: true
+      showAppUrls: false
       namespaceSelector:
         matchNames:
           - auth-system
