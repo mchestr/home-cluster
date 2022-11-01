@@ -57,8 +57,6 @@ spec:
             secretName: emqx-tls
 
     resources:
-      limits:
-        memory: 256Mi
       requests:
         cpu: 100m
         memory: 150Mi
