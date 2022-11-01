@@ -26,16 +26,10 @@ spec:
       repository: ghcr.io/paperless-ngx/paperless-ngx
       tag: 1.9.2
 
-    service:
-      main:
-        ports:
-          http:
-            port: 8000
-
     env:
       PAPERLESS_CONSUMER_POLLING: 5
       PAPERLESS_OCR_LANGUAGE: eng
-      PAPERLESS_PORT: *port
+      PAPERLESS_PORT: &port 8000
       PAPERLESS_TIKA_ENABLED: 1
       PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
       PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
@@ -48,6 +42,12 @@ spec:
       PAPERLESS_DBPASS: ${PAPERLESS_DATABASE_PASSWORD}
       PAPERLESS_ENABLE_HTTP_REMOTE_USER: "true"
       PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME: HTTP_X_AUTHENTIK_USERNAME
+
+    service:
+      main:
+        ports:
+          http:
+            port: *port
 
     ingress:
       main:
