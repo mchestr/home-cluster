@@ -39,9 +39,11 @@ spec:
       config:
         enabled: true
         existingClaim: baikal-config-v1
+        mountPath: /var/www/baikal/config
       data:
         enabled: true
         existingClaim: baikal-data-v1
+        mountPath: /var/www/baikal/Specific
 
     ingress:
       main:
