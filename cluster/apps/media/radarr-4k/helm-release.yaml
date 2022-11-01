@@ -15,7 +15,7 @@ spec:
         name: bjw-s-charts
         namespace: flux-system
   install:
-    createNamespace: false
+    createNamespace: true
     remediation:
       retries: 5
   upgrade:
