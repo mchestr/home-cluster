@@ -32,10 +32,10 @@ spec:
       SABNZBD__HOST_WHITELIST_ENTRIES: >-
         sabnzbd,
         sabnzbd.media,
-        sabnzbd.default.svc,
-        sabnzbd.default.svc.cluster,
-        sabnzbd.default.svc.cluster.local,
-        sabnzbd.${EXTERNAL_DOMAIN}
+        sabnzbd.media.svc,
+        sabnzbd.media.svc.cluster,
+        sabnzbd.media.svc.cluster.local,
+        sabnzbd.${CLUSTER_DOMAIN}
 
     envFrom:
       - secretRef:
