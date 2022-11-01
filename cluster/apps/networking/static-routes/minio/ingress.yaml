@@ -9,6 +9,10 @@ metadata:
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
+    hajimari.io/enable: "true"
+    hajimari.io/icon: carbon:object-storage
+    hajimari.io/info: Object Storage
+    hajimari.io/group: Storage, Database, and Messaging
 
 spec:
   tls:

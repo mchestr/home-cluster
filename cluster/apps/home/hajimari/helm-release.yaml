@@ -32,14 +32,13 @@ spec:
           - media
           - monitoring
           - networking
-      name: You
-      groups:
-        - name: Kubernetes
-          links:
+      globalBookmarks:
+        - group: Kubernetes
+          bookmarks:
             - name: mchestr/home-cluster
               url: https://github.com/mchestr/home-cluster
-        - name: Services
-          links:
+        - group: Services
+          bookmarks:
             - name: Cloudflare
               url: https://dash.cloudflare.com
 
