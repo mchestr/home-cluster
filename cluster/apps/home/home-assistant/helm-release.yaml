@@ -97,8 +97,8 @@ spec:
             traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
             hajimari.io/enable: "true"
             hajimari.io/icon: cib:visual-studio-code
-            hajimari.io/group: Automation
-            hajimari.io/appName: Home Assistant Code
+            hajimari.io/group: Automation Code
+            hajimari.io/appName: Home Assistant
           hosts:
             - host: "{{ .Release.Name }}-code.${CLUSTER_DOMAIN}"
               paths:
