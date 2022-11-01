@@ -49,6 +49,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: simple-icons:mqtt
           hajimari.io/group: Storage, Database, and Messaging
+          hajimari.io/appName: EMQX
         hosts:
           - &host emqx.${CLUSTER_DOMAIN}
         tls:
