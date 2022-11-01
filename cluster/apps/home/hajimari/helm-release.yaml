@@ -32,7 +32,7 @@ spec:
           - media
           - monitoring
           - networking
-      name: "Swalbs"
+      name: Home
       groups:
         - name: Kubernetes
           links:
