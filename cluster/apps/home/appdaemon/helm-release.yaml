@@ -64,7 +64,7 @@ spec:
 
     persistence:
       config:
-        enabled: true
+        enabled: "true"
         existingClaim: appdaemon-config-v1
         mountPath: /conf
       secrets:
