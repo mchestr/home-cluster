@@ -49,8 +49,8 @@ spec:
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
           hajimari.io/enable: "true"
           hajimari.io/icon: home-automation
-          hajimari.io/info: Home Automation scripts
-          hajimari.io/group: Automation
+          hajimari.io/group: Automation Code
+          hajimari.io/appName: AppDaemon
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:

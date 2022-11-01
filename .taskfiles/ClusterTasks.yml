@@ -126,8 +126,12 @@ tasks:
                       "mountPath": "/mnt/backups/"
                     },
                     {
-                      "name": "debug-volume",
-                      "mountPath": "/mnt/volume/"
+                      "name": "old-volume",
+                      "mountPath": "/mnt/old/"
+                    },
+                    {
+                      "name": "new-volume",
+                      "mountPath": "/mnt/new/"
                     }
                   ]
                 }
@@ -141,9 +145,15 @@ tasks:
                   }
                 },
                 {
-                  "name": "debug-volume",
+                  "name": "old-volume",
                   "persistentVolumeClaim": {
-                    "claimName": "{{.VOLUME}}"
+                    "claimName": "zwavejs2mqtt-config"
+                  }
+                },
+                {
+                  "name": "new-volume",
+                  "persistentVolumeClaim": {
+                    "claimName": "zwavejs2mqtt-config-v1"
                   }
                 }
               ],
