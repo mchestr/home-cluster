@@ -27,7 +27,7 @@ spec:
       defaultEnable: false
       lightTheme: cloud
       darkTheme: espresso
-      showAppGroups: false
+      showAppGroups: true
       showAppInfo: true
       namespaceSelector:
         matchNames:
