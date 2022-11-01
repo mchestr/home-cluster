@@ -58,7 +58,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:cloud-download
           hajimari.io/info: Usenet Downloader
-          hajimari.io/group: media
+          hajimari.io/group: Download
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:

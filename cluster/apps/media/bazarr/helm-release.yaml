@@ -53,7 +53,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:subtitles-outline
           hajimari.io/info: Subtitle Manager
-          hajimari.io/group: media
+          hajimari.io/group: Media Management
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:

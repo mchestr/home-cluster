@@ -56,7 +56,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:plex
           hajimari.io/info: Media Server
-          hajimari.io/group: media
+          hajimari.io/group: Media
 
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"

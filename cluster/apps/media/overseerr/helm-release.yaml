@@ -50,7 +50,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:eye-circle
           hajimari.io/info: Media Requester
-          hajimari.io/group: media
+          hajimari.io/group: Media
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:
