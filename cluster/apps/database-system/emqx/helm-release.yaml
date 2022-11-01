@@ -64,9 +64,7 @@ spec:
         memory: 150Mi
 
     persistence:
-      enabled: true
-      storageClass: longhorn
-      size: 100Mi
+      enabled: false
 
     metrics:
       enabled: false
