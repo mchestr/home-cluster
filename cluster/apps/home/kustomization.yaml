@@ -5,6 +5,7 @@ resources:
   - appdaemon
   - baikal
   - esphome
+  - hajimari
   - home-assistant
   - homer
   - paperless
