@@ -65,7 +65,7 @@ spec:
               - *host
 
     podAnnotations:
-      configmap.reloader.stakater.com/reload: *app
+      configmap.reloader.stakater.com/reload: hajimari-settings
 
     resources:
       requests:
