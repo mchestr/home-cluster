@@ -34,6 +34,7 @@ spec:
       namespaceSelector:
         matchNames:
           - auth-system
+          - database-system
           - home
           - media
           - monitoring
