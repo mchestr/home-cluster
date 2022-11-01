@@ -2,40 +2,51 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: sabnzbd
+  name: &app sabnzbd
   namespace: media
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      chart: sabnzbd
-      version: 9.4.2
+      chart: app-template
+      version: 0.2.2
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
   install:
     createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
     image:
-      repository: ghcr.io/k8s-at-home/sabnzbd
-      tag: v3.6.1
+      repository: ghcr.io/onedr0p/sabnzbd
+      tag: 3.6.1@sha256:64e23a151f0b9e52474bf8edc12d7e0fced10d24970cc2fe1346a91489e6e80e
+
     env:
-      TZ: ${TZ}
-      HOST_WHITELIST_ENTRIES: >-
+      TZ: "${TZ}"
+      SABNZBD__PORT: &port 8080
+      SABNZBD__HOST_WHITELIST_ENTRIES: >-
         sabnzbd,
         sabnzbd.media,
-        sabnzbd.media.svc,
-        sabnzbd.media.svc.cluster,
-        sabnzbd.media.svc.cluster.local,
-        sabnzbd.${CLUSTER_DOMAIN}
+        sabnzbd.default.svc,
+        sabnzbd.default.svc.cluster,
+        sabnzbd.default.svc.cluster.local,
+        sabnzbd.${EXTERNAL_DOMAIN}
+
+    envFrom:
+      - secretRef:
+          name: *app
+
     ingress:
       main:
         enabled: true
+        ingressClassName: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
-          kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd,sabnzbd-theme@file
         hosts:
@@ -47,24 +58,26 @@ spec:
           - secretName: "{{ .Release.Name }}-tls"
             hosts:
               - *host
-    podSecurityContext:
-      fsGroup: ${FS_GROUP}
+
     persistence:
       config:
         enabled: true
-        storageClass: longhorn
-        labels:
-          recurring-job-group.longhorn.io/backup: enabled
+        existingClaim: sabnzbd-config-v1
       media:
         enabled: true
-        existingClaim: media-pv-claim
+        type: nfs
+        server: ${NAS_ADDR}
+        path: ${NAS_MEDIA_DIR}
+        mountPath: /media
       incomplete:
         enabled: true
         type: emptyDir
+
     resources:
       requests:
         cpu: 100m
         memory: 250Mi
+
     # Schedule on k8s-2 as it has better specs
     affinity:
       nodeAffinity:
@@ -75,3 +88,10 @@ spec:
                   operator: In
                   values:
                     - k8s-2
+
+    podSecurityContext:
+      fsGroup: ${RUN_AS_GROUP}
+      fsGroupChangePolicy: OnRootMismatch
+
+    podAnnotations:
+      secret.reloader.stakater.com/reload: *app
