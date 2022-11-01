@@ -23,8 +23,6 @@ spec:
     remediation:
       retries: 5
   dependsOn:
-    - name: postgres
-      namespace: database-system
     - name: emqx
       namespace: database-system
   values:
