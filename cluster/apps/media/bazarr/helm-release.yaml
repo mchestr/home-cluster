@@ -50,6 +50,10 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-production
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd,bazarr-theme@file
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:subtitles-outline
+          hajimari.io/info: Subtitle Manager
+          hajimari.io/group: media
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:
