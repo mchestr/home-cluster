@@ -5,47 +5,57 @@ metadata:
   name: plex
   namespace: media
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: plex
-      version: 6.4.3
+      chart: app-template
+      version: 0.2.2
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
   install:
-    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  dependsOn:
+    - name: intel-gpu-plugin
+      namespace: kube-system
+    - name: node-feature-discovery
+      namespace: kube-system
   values:
     image:
-      repository: ghcr.io/k8s-at-home/plex
-      tag: v1.29.1.6316-f4cdfea9c
+      repository: ghcr.io/onedr0p/plex
+      tag: 1.29.1.6316-f4cdfea9c@sha256:b9a570cb67d22f73d1fbdc1f3e781b901718f829176ccffa183646e8bf7e3c8b
+
     env:
-      TZ: "${TZ}"
-    podSecurityContext:
-      fsGroup: ${FS_GROUP}
+      TZ: ${TZ}
+
     service:
       main:
         type: LoadBalancer
-        externalIPs:
-          - "${METALLB_PLEX_ADDR}"
+        loadBalancerIP: "${METALLB_PLEX_ADDR}"
         externalTrafficPolicy: Local
+        ports:
+          http:
+            port: &port 32400
+
     ingress:
       main:
         enabled: true
+        ingressClassName: traefik
         annotations:
           external-dns.alpha.kubernetes.io/target: "ipv4.${CLUSTER_DOMAIN}"
           external-dns/is-public: "true"
           cert-manager.io/cluster-issuer: letsencrypt-production
-          kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           # error-pages middleware breaks the plex.tv redirect
           traefik.ingress.kubernetes.io/router.middlewares: networking-external-no-error-pages@kubernetescrd
 
         hosts:
-          - host: &host plex.${CLUSTER_DOMAIN}
+          - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
@@ -53,13 +63,23 @@ spec:
           - secretName: "{{ .Release.Name }}-tls"
             hosts:
               - *host
+
     persistence:
       config:
         enabled: true
-        size: 30Gi
+        existingClaim: plex-config-v1
       media:
         enabled: true
-        existingClaim: media-pv-claim
+        type: nfs
+        server: ${NAS_ADDR}
+        path: ${NAS_MEDIA_DIR}
+        mountPath: /media
+      backup:
+        enabled: true
+        type: nfs
+        server: ${NAS_ADDR}
+        path: ${NAS_BACKUP_DIR}/plex
+        mountPath: /config/backup
       transcode:
         enabled: true
         type: emptyDir
@@ -82,3 +102,7 @@ spec:
       limits:
         gpu.intel.com/i915: 1
         memory: 8000Mi
+
+    podSecurityContext:
+      fsGroup: ${FS_GROUP}
+      fsGroupChangePolicy: OnRootMismatch
