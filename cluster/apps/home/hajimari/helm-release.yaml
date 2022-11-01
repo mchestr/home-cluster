@@ -25,6 +25,10 @@ spec:
 
     hajimari:
       defaultEnable: false
+      lightTheme: cloud
+      darkTheme: espresso
+      showAppGroups: false
+      showAppInfo: true
       namespaceSelector:
         matchNames:
           - auth-system
@@ -32,7 +36,7 @@ spec:
           - media
           - monitoring
           - networking
-      globalBookmarks:
+      bookmarks:
         - group: Kubernetes
           bookmarks:
             - name: mchestr/home-cluster
