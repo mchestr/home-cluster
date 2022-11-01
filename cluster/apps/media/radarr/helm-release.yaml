@@ -37,6 +37,12 @@ spec:
       - secretRef:
           name: *app
 
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+
     ingress:
       main:
         enabled: true
