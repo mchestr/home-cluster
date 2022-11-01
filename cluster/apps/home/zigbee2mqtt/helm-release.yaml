@@ -23,7 +23,7 @@ spec:
       retries: 5
   dependsOn:
     - name: emqx
-      namespace: home
+      namespace: database-system
   values:
     image:
       repository: ghcr.io/koenkk/zigbee2mqtt
@@ -64,6 +64,7 @@ spec:
         type: hostPath
         hostPath: /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_71500DDD-if01-port0
         hostPathType: CharDevice
+
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
@@ -73,5 +74,6 @@ spec:
                   operator: In
                   values:
                     - "true"
+
     securityContext:
       privileged: true
