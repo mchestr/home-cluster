@@ -4,23 +4,22 @@ kind: CronJob
 metadata:
   name: &app recyclarr
   namespace: media
-  labels:
-    app: *app
 spec:
-  schedule: "0 3 * * *"
+  schedule: "@daily"
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
       template:
         spec:
           automountServiceAccountToken: false
+          restartPolicy: OnFailure
 
           initContainers:
             - name: render-configs
-              image: ghcr.io/k8s-at-home/recyclarr:v2.6.1
+              image: ghcr.io/onedr0p/recyclarr:2.6.1@sha256:f39ffcce0d5b75c4b60299c6a4177c4d247ea8678bea1ce2fb7ada14e4206c9f
               envFrom:
                 - secretRef:
-                    name: recyclarr-secrets
+                    name: *app
               command:
                 - "/bin/bash"
                 - -c
@@ -34,8 +33,7 @@ spec:
 
           containers:
             - name: sonarr
-              image: ghcr.io/k8s-at-home/recyclarr:v2.6.1
-              imagePullPolicy: IfNotPresent
+              image: ghcr.io/onedr0p/recyclarr:2.6.1@sha256:f39ffcce0d5b75c4b60299c6a4177c4d247ea8678bea1ce2fb7ada14e4206c9f
               env:
                 - name: TZ
                   value: ${TZ}
@@ -56,8 +54,7 @@ spec:
                   readOnly: true
 
             - name: radarr
-              image: ghcr.io/k8s-at-home/recyclarr:v2.6.1
-              imagePullPolicy: IfNotPresent
+              image: ghcr.io/onedr0p/recyclarr:2.6.1@sha256:f39ffcce0d5b75c4b60299c6a4177c4d247ea8678bea1ce2fb7ada14e4206c9f
               env:
                 - name: TZ
                   value: ${TZ}
@@ -77,11 +74,9 @@ spec:
                   subPath: recyclarr.yaml
                   readOnly: true
 
-          restartPolicy: OnFailure
-
           volumes:
             - name: config
               configMap:
-                name: recyclarr-config
+                name: *app
             - name: shared
               emptyDir: {}

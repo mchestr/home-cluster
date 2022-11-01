@@ -5,7 +5,7 @@ resources:
   - secret.sops.yaml
   - cron-job.yaml
 configMapGenerator:
-  - name: recyclarr-config
+  - name: recyclarr
     files:
       - recyclarr.yaml
 generatorOptions:
