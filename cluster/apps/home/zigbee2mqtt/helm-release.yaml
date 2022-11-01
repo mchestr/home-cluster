@@ -22,6 +22,8 @@ spec:
     remediation:
       retries: 5
   dependsOn:
+    - name: node-feature-discovery
+      namespace: kube-system
     - name: emqx
       namespace: database-system
   values:
