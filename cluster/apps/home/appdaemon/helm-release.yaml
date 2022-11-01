@@ -49,7 +49,7 @@ spec:
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
           hajimari.io/enable: "true"
           hajimari.io/icon: home-automation
-          hajimari.io/group: Automation Code
+          hajimari.io/group: Automation
           hajimari.io/appName: AppDaemon
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
@@ -103,8 +103,8 @@ spec:
             traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
             hajimari.io/enable: "true"
             hajimari.io/icon: cib:visual-studio-code
-            hajimari.io/group: Automation
-            hajimari.io/appName: Appdaemon Code
+            hajimari.io/group: Automation Code
+            hajimari.io/appName: AppDaemon
           hosts:
             - host: "{{ .Release.Name }}-code.${CLUSTER_DOMAIN}"
               paths:
