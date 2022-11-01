@@ -51,7 +51,6 @@ spec:
           hajimari.io/icon: home-automation
           hajimari.io/info: Home Automation scripts
           hajimari.io/group: automation
-          hajimari.io/appName: Appdaemon Code
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:
@@ -106,6 +105,7 @@ spec:
             hajimari.io/icon: cib:visual-studio-code
             hajimari.io/info: Home Automation scripts
             hajimari.io/group: automation
+            hajimari.io/appName: Appdaemon Code
           hosts:
             - host: "{{ .Release.Name }}-code.${CLUSTER_DOMAIN}"
               paths:
