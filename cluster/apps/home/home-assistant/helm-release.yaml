@@ -32,6 +32,12 @@ spec:
     env:
       TZ: ${TZ}
 
+    service:
+      main:
+        ports:
+          http:
+            port: 8123
+
     ingress:
       main:
         enabled: true
