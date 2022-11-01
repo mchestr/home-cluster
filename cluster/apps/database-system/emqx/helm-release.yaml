@@ -34,7 +34,8 @@ spec:
 
     service:
       type: LoadBalancer
-      loadBalancerIP: ${METALLB_EMQX_ADDR}
+      externalIPs: ["${SVC_EMQX_ADDR}"]
+      externalTrafficPolicy: Local
 
     ingress:
       dashboard:
