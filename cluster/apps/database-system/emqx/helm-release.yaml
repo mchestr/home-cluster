@@ -50,11 +50,11 @@ spec:
           hajimari.io/icon: simple-icons:mqtt
           hajimari.io/group: Storage, Database, and Messaging
         hosts:
-          - &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+          - &host emqx.${CLUSTER_DOMAIN}
         tls:
           - hosts:
               - *host
-            secretName: "{{ .Release.Name }}-tls"
+            secretName: emqx-tls
 
     resources:
       limits:
