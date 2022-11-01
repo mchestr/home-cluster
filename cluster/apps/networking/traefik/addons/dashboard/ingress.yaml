@@ -12,6 +12,8 @@ metadata:
     hajimari.io/icon: simple-icons:traefikproxy
     hajimari.io/info: Proxy Dashboard
     hajimari.io/group: System Management
+    hajimari.io/appName: Traefik
+
 
 spec:
   ingressClassName: traefik
