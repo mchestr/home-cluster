@@ -66,4 +66,4 @@ spec:
 
     podSecurityContext:
       fsGroup: ${RUN_AS_GROUP}
-      fsGroupChangePolicy: "OnRootMismatch"
+      fsGroupChangePolicy: OnRootMismatch
