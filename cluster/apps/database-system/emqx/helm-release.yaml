@@ -48,7 +48,7 @@ spec:
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
           hajimari.io/enable: "true"
           hajimari.io/icon: simple-icons:mqtt
-          hajimari.io/group: Storage, Database, and Messaging
+          hajimari.io/group: "Storage, Database, and Messaging"
         hosts:
           - &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
         tls:
