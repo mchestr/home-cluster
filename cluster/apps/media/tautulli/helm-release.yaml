@@ -46,7 +46,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:chart-areaspline
           hajimari.io/info: Plex Statistics
-          hajimari.io/group: media
+          hajimari.io/group: Media
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:
