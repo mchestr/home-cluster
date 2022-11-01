@@ -32,7 +32,7 @@ spec:
           - media
           - monitoring
           - networking
-      name: Home
+      name: You
       groups:
         - name: Kubernetes
           links:
