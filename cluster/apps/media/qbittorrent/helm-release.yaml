@@ -39,6 +39,10 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-production
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd,qbittorrent-theme@file,networking-qbittorrent-headers@kubernetescrd
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:cloud-download
+          hajimari.io/info: Torrent Downloader
+          hajimari.io/group: media
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:

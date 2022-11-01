@@ -47,6 +47,10 @@ spec:
           external-dns/is-public: "true"
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: networking-external@kubernetescrd,overseerr-theme@file
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:eye-circle
+          hajimari.io/info: Media Requester
+          hajimari.io/group: media
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:
