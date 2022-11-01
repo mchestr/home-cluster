@@ -44,13 +44,13 @@ spec:
         enabled: true
         ingressClassName: traefik
         annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
           hajimari.io/enable: "true"
           hajimari.io/icon: home-automation
           hajimari.io/info: Home Automation scripts
           hajimari.io/group: automation
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:
@@ -101,6 +101,10 @@ spec:
             cert-manager.io/cluster-issuer: letsencrypt-production
             traefik.ingress.kubernetes.io/router.entrypoints: websecure
             traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
+            hajimari.io/enable: "true"
+            hajimari.io/icon: cib:visual-studio-code
+            hajimari.io/info: Home Automation scripts
+            hajimari.io/group: automation
           hosts:
             - host: "{{ .Release.Name }}-code.${CLUSTER_DOMAIN}"
               paths:
