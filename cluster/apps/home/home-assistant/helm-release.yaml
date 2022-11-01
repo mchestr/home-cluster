@@ -2,44 +2,53 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: home-assistant
+  name: &app home-assistant
   namespace: home
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
-      version: 13.4.2
       chart: home-assistant
+      version: 12.0.1
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
         namespace: flux-system
-      interval: 5m
   install:
     createNamespace: true
     remediation:
-      retries: 3
+      retries: 5
   upgrade:
     remediation:
-      retries: 4
+      retries: 5
+  dependsOn:
+    - name: postgres
+      namespace: database-system
+    - name: emqx
+      namespace: database-system
   values:
     image:
-      repository: ghcr.io/home-assistant/home-assistant
-      tag: 2022.10.5
+      repository: ghcr.io/onedr0p/home-assistant
+      tag: 2022.10.5@sha256:16fa50d7339dab909beaa67d3a8ed45478494c8c3748db43d1dfd04b7fd66d32
+
     env:
       TZ: ${TZ}
 
     ingress:
       main:
         enabled: true
+        ingressClassName: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           external-dns.alpha.kubernetes.io/target: ipv4.${CLUSTER_DOMAIN}
           external-dns/is-public: "true"
-          kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: networking-external@kubernetescrd
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:home-assistant
+          hajimari.io/info: Home Automation System
+          hajimari.io/group: Automation
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:
@@ -53,29 +62,20 @@ spec:
     persistence:
       config:
         enabled: true
-        storageClass: longhorn
-        size: 2Gi
-        labels:
-          recurring-job-group.longhorn.io/backup: enabled
-
-    metrics:
-      enabled: true
-      serviceMonitor:
-        bearerTokenSecret:
-          name: home-assistant-secrets
-          key: token
-      prometheusRule:
-        enabled: true
+        existingClaim: home-assistant-config-v1
 
     addons:
       codeserver:
         enabled: true
         image:
-          repository: ghcr.io/k8s-at-home/code-server
-          tag: v4.6.0
+          repository: ghcr.io/coder/code-server
+          tag: 4.8.1
+
         workingDir: /config
+
         git:
           deployKeySecret: home-assistant-deploykey
+
         args:
           - --auth
           - "none"
@@ -83,22 +83,29 @@ spec:
           - /config/.vscode
           - --extensions-dir
           - /config/.vscode
+          - /config
+
         ingress:
           enabled: true
+          ingressClassName: traefik
           annotations:
             cert-manager.io/cluster-issuer: letsencrypt-production
-            kubernetes.io/ingress.class: traefik
             traefik.ingress.kubernetes.io/router.entrypoints: websecure
             traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
+            hajimari.io/enable: "true"
+            hajimari.io/icon: cib:visual-studio-code
+            hajimari.io/group: Automation
+            hajimari.io/appName: Home Assistant Code
           hosts:
-            - host: &host "{{ .Release.Name }}-code.${CLUSTER_DOMAIN}"
+            - host: "{{ .Release.Name }}-code.${CLUSTER_DOMAIN}"
               paths:
                 - path: /
                   pathType: Prefix
           tls:
             - secretName: "{{ .Release.Name }}-code-tls"
               hosts:
-                - *host
+                - "{{ .Release.Name }}-code.${CLUSTER_DOMAIN}"
+
         volumeMounts:
           - name: config
             mountPath: /config
