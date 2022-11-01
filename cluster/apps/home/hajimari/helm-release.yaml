@@ -15,7 +15,6 @@ spec:
         kind: HelmRepository
         name: hajimari-charts
         namespace: flux-system
-      interval: 15m
   values:
     image:
       repository: ghcr.io/toboshii/hajimari
