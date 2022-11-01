@@ -77,11 +77,14 @@ spec:
       codeserver:
         enabled: true
         image:
-          repository: ghcr.io/k8s-at-home/code-server
-          tag: v4.6.0
+          repository: ghcr.io/coder/code-server
+          tag: 4.8.1
+
         workingDir: /config
+
         git:
           deployKeySecret: appdaemon-deploykey
+
         args:
           - --auth
           - "none"
@@ -89,6 +92,8 @@ spec:
           - /config/.vscode
           - --extensions-dir
           - /config/.vscode
+          - /config
+
         ingress:
           enabled: true
           ingressClassName: traefik
@@ -105,6 +110,7 @@ spec:
             - secretName: "{{ .Release.Name }}-code-tls"
               hosts:
                 - "{{ .Release.Name }}-code.${CLUSTER_DOMAIN}"
+
         volumeMounts:
           - name: config
             mountPath: /config
