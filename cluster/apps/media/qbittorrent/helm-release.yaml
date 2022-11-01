@@ -2,37 +2,44 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: qbittorrent
+  name: &app qbittorrent
   namespace: media
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      version: 13.5.2
-      chart: qbittorrent
+      chart: app-template
+      version: 0.2.2
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
   install:
     createNamespace: true
     remediation:
-      retries: 3
+      retries: 5
   upgrade:
     remediation:
-      retries: 3
+      retries: 5
+  dependsOn:
+    - name: downloads-gateway
+      namespace: vpn
   values:
     image:
-      repository: ghcr.io/k8s-at-home/qbittorrent
-      tag: v4.4.3.1
+      repository: ghcr.io/onedr0p/qbittorrent
+      tag: 4.4.5@sha256:f78bda4a40b8c8734fba09e65b4553a8be89e88f746db614fe04a83ece1b817e
+
+    env:
+      TZ: "${TZ}"
+      QBITTORRENT__PORT: &port 8080
+      QBITTORRENT__BT_PORT: &port-bt 50413
+
     ingress:
       main:
         enabled: true
+        ingressClassName: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
-          kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd,qbittorrent-theme@file,networking-qbittorrent-headers@kubernetescrd
         hosts:
@@ -44,7 +51,12 @@ spec:
           - secretName: "{{ .Release.Name }}-tls"
             hosts:
               - *host
+
     service:
+      main:
+        ports:
+          http:
+            port: *port
       bittorrent:
         enabled: true
         type: LoadBalancer
@@ -53,31 +65,21 @@ spec:
         ports:
           bittorrent:
             enabled: true
-            port: 50413
+            port: *port-bt
             protocol: TCP
-            targetPort: 50413
+            targetPort: *port-bt
+
     persistence:
       config:
         enabled: true
-        storageClass: longhorn-static
-        labels:
-          recurring-job-group.longhorn.io/backup: enabled
+        existingClaim: qbittorrent-config-v1
       media:
         enabled: true
-        existingClaim: media-pv-claim
-    podSecurityContext:
-      fsGroup: ${FS_GROUP}
-    metrics:
-      enabled: true
-      prometheusRule:
-        enabled: true
-      exporter:
-        image:
-          repository: ghcr.io/k8s-at-home/prometheus-qbittorrent-exporter
-          tag: v1.2.0
-      serviceMonitor:
-        interval: 5m
-        scrapeTimeout: 1m
+        type: nfs
+        server: ${NAS_ADDR}
+        path: ${NAS_MEDIA_DIR}
+        mountPath: /media
+
     # Schedule on k8s-2 as it has better specs
     affinity:
       nodeAffinity:
@@ -89,12 +91,6 @@ spec:
                   values:
                     - k8s-2
 
-  valuesFrom:
-    - valuesKey: QBITTORRENT_USER
-      kind: Secret
-      name: qbittorrent-secrets
-      targetPath: metrics.exporter.env.user
-    - valuesKey: QBITTORRENT_PASSWORD
-      kind: Secret
-      name: qbittorrent-secrets
-      targetPath: metrics.exporter.env.password
+    podSecurityContext:
+      fsGroup: ${RUN_AS_GROUP}
+      fsGroupChangePolicy: OnRootMismatch
