@@ -5,39 +5,51 @@ metadata:
   name: zwavejs2mqtt
   namespace: home
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      version: 5.4.2
-      chart: zwavejs2mqtt
+      chart: app-template
+      version: 0.2.2
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
   install:
     createNamespace: true
     remediation:
-      retries: 3
+      retries: 5
   upgrade:
     remediation:
-      retries: 3
+      retries: 5
+  dependsOn:
+    - name: node-feature-discovery
+      namespace: kube-system
+    - name: emqx
+      namespace: database-system
   values:
     image:
-      repository: ghcr.io/zwave-js/zwavejs2mqtt
-      tag: 7.2.0
+      repository: ghcr.io/zwave-js/zwave-js-ui
+      tag: 8.2.2
     env:
       TZ: ${TZ}
+
+    service:
+      main:
+        ports:
+          http:
+            port: 8091
 
     ingress:
       main:
         enabled: true
+        ingressClassName: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
-          kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:z-wave
+          hajimari.io/group: Automation
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:
@@ -47,17 +59,17 @@ spec:
           - secretName: "{{ .Release.Name }}-tls"
             hosts:
               - *host
+
     persistence:
       config:
         enabled: true
-        storageClass: longhorn
-        labels:
-          recurring-job-group.longhorn.io/backup: enabled
+        existingClaim: zwavejs2mqtt-config-v1
       usb:
         enabled: true
         type: hostPath
         hostPath: /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_71500DDD-if00-port0
         hostPathType: CharDevice
+
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
@@ -67,5 +79,6 @@ spec:
                   operator: In
                   values:
                     - "true"
+
     securityContext:
       privileged: true
