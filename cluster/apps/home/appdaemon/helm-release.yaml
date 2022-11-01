@@ -44,7 +44,7 @@ spec:
         enabled: true
         ingressClassName: traefik
         annotations:
-          hajimari.io/enable: true
+          hajimari.io/enable: "true"
           hajimari.io/icon: home-automation
           hajimari.io/info: Home Automation scripts
           hajimari.io/group: automation
