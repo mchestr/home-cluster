@@ -6,7 +6,6 @@ resources:
   - cert-manager
   - database-system
   - flux-system
-  - game-system
   - home
   - kube-system
   - media
