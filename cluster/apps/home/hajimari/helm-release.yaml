@@ -31,6 +31,7 @@ spec:
       showAppGroups: true
       showAppInfo: false
       showAppUrls: false
+      title: Home
       namespaceSelector:
         matchNames:
           - auth-system
