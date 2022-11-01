@@ -47,7 +47,7 @@ spec:
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
           hajimari.io/enable: "true"
           hajimari.io/icon: simple-icons:esphome
-          hajimari.io/info: ESP Device Manager
+          hajimari.io/info: Device Manager
           hajimari.io/group: Automation
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
