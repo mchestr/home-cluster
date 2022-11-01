@@ -5,31 +5,37 @@ metadata:
   name: esphome
   namespace: home
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      version: 8.4.2
-      chart: esphome
+      chart: app-template
+      version: 0.2.2
+      interval: 15m
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-helm-charts
         namespace: flux-system
-      interval: 5m
   install:
     createNamespace: true
     remediation:
-      retries: 3
+      retries: 5
   upgrade:
     remediation:
-      retries: 3
+      retries: 5
   values:
     image:
       repository: ghcr.io/esphome/esphome
-      tag: 2022.10.1
+      tag: 2022.10.1@sha256:1f6749238fb84ca7e258b07f37113fbaf41c3e24974839ca89d203b373ab1bfa
+
     env:
       TZ: ${TZ}
       ESPHOME_DASHBOARD_USE_PING: true
+
+    service:
+      main:
+        ports:
+          http:
+            port: 6052
 
     ingress:
       main:
@@ -39,6 +45,10 @@ spec:
           kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
+          hajimari.io/enable: "true"
+          hajimari.io/icon: simple-icons:esphome
+          hajimari.io/info: ESP Device Manager
+          hajimari.io/group: Automation
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:
@@ -52,6 +62,4 @@ spec:
     persistence:
       config:
         enabled: true
-        storageClass: longhorn
-        labels:
-          recurring-job-group.longhorn.io/backup: enabled
+        existingClaim: esphome-config-v1
