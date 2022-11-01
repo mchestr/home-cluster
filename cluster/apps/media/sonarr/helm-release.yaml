@@ -28,14 +28,20 @@ spec:
 
     env:
       TZ: ${TZ}
-      RADARR__INSTANCE_NAME: Sonarr
-      RADARR__PORT: &port 8989
-      RADARR__APPLICATION_URL: "https://{{ .Release.Name }}.${CLUSTER_DOMAIN}"
-      RADARR__LOG_LEVEL: info
+      SONARR__INSTANCE_NAME: Sonarr
+      SONARR__PORT: &port 8989
+      SONARR__APPLICATION_URL: "https://{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+      SONARR__LOG_LEVEL: info
 
     envFrom:
       - secretRef:
           name: *app
+
+    service:
+      main:
+        ports:
+          http:
+            port: *port
 
     ingress:
       main:
