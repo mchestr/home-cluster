@@ -5,57 +5,58 @@ metadata:
   name: baikal
   namespace: home
 spec:
-  interval: 5m
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 0.2.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
   install:
     remediation:
       retries: 5
   upgrade:
     remediation:
       retries: 5
-  chart:
-    spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: baikal
-      version: 5.1.2
-      sourceRef:
-        kind: HelmRepository
-        name: k8s-at-home-charts
-        namespace: flux-system
-      interval: 5m
   # See https://github.com/k8s-at-home/charts/blob/master/charts/stable/baikal/values.yaml
   values:
     image:
       repository: ckulka/baikal
       tag: 0.9.2
+
     env:
       TZ: ${TZ}
+
+    service:
+      main:
+        ports:
+          http:
+            port: 80
+
     persistence:
       config:
         enabled: true
-        storageClass: longhorn
-        accessMode: ReadWriteOnce
-        size: 512Mi
-        labels:
-          recurring-job-group.longhorn.io/backup: enabled
+        existingClaim: baikal-config-v1
       data:
         enabled: true
-        storageClass: longhorn
-        accessMode: ReadWriteOnce
-        size: 512Mi
-        labels:
-          recurring-job-group.longhorn.io/backup: enabled
-    mariadb:
-      enabled: false
+        existingClaim: baikal-data-v1
+
     ingress:
       main:
         enabled: true
+        ingressClassName: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
-          kubernetes.io/ingress.class: traefik
           external-dns.alpha.kubernetes.io/target: ipv4.${CLUSTER_DOMAIN}
           external-dns/is-public: "true"
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: networking-external-no-error-pages@kubernetescrd
+          hajimari.io/enable: "true"
+          hajimari.io/icon: ant-design:calendar-outlined
+          hajimari.io/info: DAV Server
+          hajimari.io/group: Storage, Database, and Messaging
         hosts:
           - host: &host "cal.${CLUSTER_DOMAIN}"
             paths:
@@ -67,9 +68,9 @@ spec:
               - *host
       admin:
         enabled: true
+        ingressClassName: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
-          kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: networking-external-auth@kubernetescrd
         hosts:
