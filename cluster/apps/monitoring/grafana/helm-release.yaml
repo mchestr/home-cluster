@@ -24,7 +24,7 @@ spec:
   values:
     image:
       repository: grafana/grafana
-      tag: 9.2.2
+      tag: 9.2.3
 
     replicas: 1
     rbac:
