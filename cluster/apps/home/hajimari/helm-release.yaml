@@ -35,19 +35,33 @@ spec:
       showBookmarkGroups: true
       title: Home
       namespaceSelector:
-        matchNames:
-          - auth-system
-          - database-system
-          - home
-          - media
-          - monitoring
-          - networking
+        any: true
       globalBookmarks:
-        - group: Kubernetes
+        - group: Communicate
+          bookmarks:
+            - name: Twitch
+              url: "https://twitch.tv"
+            - name: Discord
+              url: "https://discord.com"
+            - name: Gmail
+              url: "https://gmail.com"
+            - name: Slack
+              url: "https://slack.com/signin"
+        - group: Git
           bookmarks:
             - name: mchestr/home-cluster
-              url: https://github.com/mchestr/home-cluster
-              icon: bxl:kubernetes
+              url: https://github.com/mchestr/home-cluster/issues/2
+              icon: file-icons:renovate
+            - name: mchestr/home-assistant
+              url: https://github.com/mchestr/home-assistant
+            - name: mchestr/appdaemon
+              url: https://github.com/mchestr/appdaemon
+            - name: k8s@Home Search
+              url: https://nanne.dev/k8s-at-home-search/
+              icon: ci:search
+            - name: Awesome Home Kubernetes
+              url: https://github.com/k8s-at-home/awesome-home-kubernetes
+              icon: carbon:kubernetes
         - group: Services
           bookmarks:
             - name: Cloudflare
@@ -70,7 +84,7 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
         hosts:
-          - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+          - host: &host "home.${CLUSTER_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
