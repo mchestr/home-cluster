@@ -24,7 +24,7 @@ spec:
   values:
     image:
       repository: ghcr.io/onedr0p/bazarr
-      tag: 1.1.2@sha256:0271747489399a8ac1a343c5753b1843ba4446faf39841977268a4bf1867965f
+      tag: 1.1.2@sha256:7e7daf150c72f17ebfea878ddd12c53fbee52f2a17ed9366d43c3cd15867c9a3
 
     env:
       TZ: ${TZ}
