@@ -44,8 +44,9 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
           hajimari.io/enable: "true"
-          hajimari.io/icon: mdi:cloud
+          hajimari.io/icon: logos:prometheus
           hajimari.io/group: Storage, Database, and Messaging
+          hajimari.io/appName: thanos
         tls: true
         extraTls:
           - hosts:

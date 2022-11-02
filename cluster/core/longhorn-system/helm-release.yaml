@@ -63,8 +63,9 @@ spec:
         traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         hajimari.io/enable: "true"
-        hajimari.io/icon: mdi:chart-areaspline
-        hajimari.io/group: Media Management
+        hajimari.io/icon: carbon:block-storage
+        hajimari.io/group: Storage, Database, and Messaging
+        hajimari.io/appName: longhorn
     longhornManager:
       priorityClass: system-node-critical
     longhornDriver:

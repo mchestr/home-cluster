@@ -27,6 +27,7 @@ spec:
         hajimari.io/enable: "true"
         hajimari.io/icon: bxl:kubernetes
         hajimari.io/group: System Management
+        hajimari.io/appName: k8s Dashboard
       hosts:
         - &host dashboard.${CLUSTER_DOMAIN}
       tls:
