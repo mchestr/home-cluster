@@ -5,32 +5,32 @@ metadata:
   name: unifi
   namespace: home
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      version: 5.1.2
-      chart: unifi
+      chart: app-template
+      version: 0.2.2
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
-
   install:
     createNamespace: true
     remediation:
-      retries: 3
-
+      retries: 5
   upgrade:
     remediation:
-      retries: 3
+      retries: 5
   values:
     image:
       repository: jacobalberty/unifi
       tag: v7.2.94
+
     env:
       TZ: ${TZ}
+      UNIFI_STDOUT: "true"
+      JVM_INIT_HEAP_SIZE:
+      JVM_MAX_HEAP_SIZE: 1024M
 
     service:
       main:
@@ -38,15 +38,52 @@ spec:
         externalTrafficPolicy: Local
         externalIPs:
           - ${METALLB_UNIFI_ADDR}
+        annotations:
+          metallb.universe.tf/allow-shared-ip: unifi
+        ports:
+          http:
+            port: 8443
+            protocol: HTTPS
+          controller:
+            enabled: true
+            port: 8080
+            protocol: TCP
+          portal-http:
+            enabled: false
+            port: 8880
+            protocol: HTTP
+          portal-https:
+            enabled: false
+            port: 8843
+            protocol: HTTPS
+          speedtest:
+            enabled: true
+            port: 6789
+            protocol: TCP
+          stun:
+            enabled: true
+            port: 3478
+            protocol: UDP
+          syslog:
+            enabled: true
+            port: 5514
+            protocol: UDP
+          discovery:
+            enabled: true
+            port: 10001
+            protocol: UDP
 
     ingress:
       main:
         enabled: true
+        ingressClassName: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
-          kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:wifi
+          hajimari.io/group: System Management
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:
@@ -60,8 +97,4 @@ spec:
     persistence:
       data:
         enabled: true
-        storageClass: longhorn
-        accessMode: ReadWriteOnce
-        size: 5Gi
-        labels:
-          recurring-job-group.longhorn.io/backup: enabled
+        existingClaim: unifi-config-v1
