@@ -37,6 +37,18 @@ spec:
       namespaceSelector:
         any: true
       globalBookmarks:
+        - group: Git
+          bookmarks:
+            - name: mchestr/home-cluster
+              url: https://github.com/mchestr/home-cluster/issues/2
+            - name: mchestr/home-assistant
+              url: https://github.com/mchestr/home-assistant
+            - name: mchestr/appdaemon
+              url: https://github.com/mchestr/appdaemon
+            - name: k8s@Home Search
+              url: https://nanne.dev/k8s-at-home-search/
+            - name: Awesome Home Kubernetes
+              url: https://github.com/k8s-at-home/awesome-home-kubernetes
         - group: Communicate
           bookmarks:
             - name: Twitch
@@ -47,26 +59,10 @@ spec:
               url: "https://gmail.com"
             - name: Slack
               url: "https://slack.com/signin"
-        - group: Git
-          bookmarks:
-            - name: mchestr/home-cluster
-              url: https://github.com/mchestr/home-cluster/issues/2
-              icon: file-icons:renovate
-            - name: mchestr/home-assistant
-              url: https://github.com/mchestr/home-assistant
-            - name: mchestr/appdaemon
-              url: https://github.com/mchestr/appdaemon
-            - name: k8s@Home Search
-              url: https://nanne.dev/k8s-at-home-search/
-              icon: ci:search
-            - name: Awesome Home Kubernetes
-              url: https://github.com/k8s-at-home/awesome-home-kubernetes
-              icon: carbon:kubernetes
         - group: Services
           bookmarks:
             - name: Cloudflare
               url: https://dash.cloudflare.com
-              icon: cib:cloudflare
 
       customApps:
         - group: Storage, Database, and Messaging
