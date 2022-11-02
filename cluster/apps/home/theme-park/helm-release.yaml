@@ -24,7 +24,7 @@ spec:
   values:
     image:
       repository: ghcr.io/onedr0p/theme-park
-      tag: 1.13.1@sha256:d6931110411d0681175aa12bbe9c5a5981b049777c5308b6b8046f27e2ed982f
+      tag: 1.13.1@sha256:d6b9cff648a967fdee4b9cf4fddf4834eb0a5e9683b9dbe03b5ffed7b64646c8
 
     nameOverride: "theme-park"
 
