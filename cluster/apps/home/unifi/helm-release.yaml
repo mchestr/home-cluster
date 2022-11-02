@@ -97,4 +97,4 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: unifi-config-v1
+        existingClaim: unifi-data-v1
