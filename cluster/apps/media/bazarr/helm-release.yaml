@@ -52,7 +52,6 @@ spec:
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd,bazarr-theme@file
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:subtitles-outline
-          hajimari.io/info: Subtitle Manager
           hajimari.io/group: Media Management
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"

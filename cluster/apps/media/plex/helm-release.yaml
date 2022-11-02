@@ -55,8 +55,7 @@ spec:
           traefik.ingress.kubernetes.io/router.middlewares: networking-external-no-error-pages@kubernetescrd
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:plex
-          hajimari.io/info: Media Server
-          hajimari.io/group: Media
+          hajimari.io/group: Home
 
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"

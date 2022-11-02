@@ -53,7 +53,6 @@ spec:
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd,sonarr-theme@file
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:television-box
-          hajimari.io/info: Series Manager
           hajimari.io/group: Media Management
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"

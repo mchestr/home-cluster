@@ -52,11 +52,14 @@ spec:
       GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH: "contains(groups[*], 'grafana-admins') && 'Admin' || contains(groups[*], 'grafana-editors') && 'Editor' || 'Viewer'"
     ingress:
       enabled: true
+      ingressClassName: traefik
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-production
-        kubernetes.io/ingress.class: traefik
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
+        hajimari.io/enable: "true"
+        hajimari.io/icon: cib:grafana
+        hajimari.io/group: System Management
       hosts:
         - &host "grafana.${CLUSTER_DOMAIN}"
       tls:

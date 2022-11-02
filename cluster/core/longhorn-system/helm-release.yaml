@@ -57,11 +57,14 @@ spec:
       host: longhorn.${CLUSTER_DOMAIN}
       tls: true
       tlsSecret: longhorn-tls
+      ingressClassName: traefik
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-production
-        kubernetes.io/ingress.class: traefik
         traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        hajimari.io/enable: "true"
+        hajimari.io/icon: mdi:chart-areaspline
+        hajimari.io/group: Media Management
     longhornManager:
       priorityClass: system-node-critical
     longhornDriver:

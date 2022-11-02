@@ -31,6 +31,8 @@ spec:
       showAppGroups: true
       showAppInfo: false
       showAppUrls: false
+      showGlobalBookmarks: true
+      showBookmarkGroups: true
       title: Home
       namespaceSelector:
         matchNames:
@@ -40,15 +42,24 @@ spec:
           - media
           - monitoring
           - networking
-      bookmarks:
+      globalBookmarks:
         - group: Kubernetes
           bookmarks:
             - name: mchestr/home-cluster
               url: https://github.com/mchestr/home-cluster
+              icon: bxl:kubernetes
         - group: Services
           bookmarks:
             - name: Cloudflare
               url: https://dash.cloudflare.com
+              icon: cib:cloudflare
+
+      customApps:
+        - group: Storage, Database, and Messaging
+          apps:
+            - name: phpMyAdmin
+              icon: simple-icons:phpmyadmin
+              url: https://${NAS_ADDR}:9443
 
     ingress:
       main:
