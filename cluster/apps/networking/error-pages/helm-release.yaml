@@ -19,7 +19,7 @@ spec:
   values:
     image:
       repository: ghcr.io/tarampampam/error-pages
-      tag: 2.18.0
+      tag: 2.19.0
 
     controller:
       replicas: 1
