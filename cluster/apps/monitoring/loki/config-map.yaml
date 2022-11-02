@@ -1,0 +1,122 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: loki-alerting-rules
+  namespace: monitoring
+data:
+  loki-alerting-rules.yaml: |-
+    groups:
+      #
+      # zigbee2mqtt
+      #
+      - name: zigbee2mqtt
+        rules:
+          - alert: ZigbeeUnableToReachMQTT
+            expr: |
+              sum(count_over_time({app="zigbee2mqtt"} |~ "(?i)not connected to mqtt server"[2m])) > 0
+            for: 2m
+            labels:
+              severity: critical
+              category: logs
+            annotations:
+              summary: "Zigbee2mqtt is unable to reach MQTT"
+      #
+      # zwavejs2mqtt
+      #
+      - name: zwavejs2mqtt
+        rules:
+          - alert: ZwaveUnableToReachMQTT
+            expr: |
+              sum(count_over_time({app="zwavejs2mqtt"} |~ "(?i)Mqtt client error connect ECONNREFUSED"[2m])) > 0
+            for: 2m
+            labels:
+              severity: critical
+              category: logs
+            annotations:
+              summary: "Zwavejs2mqtt is unable to reach MQTT"
+      #
+      # *arr
+      #
+      - name: arr
+        rules:
+          - alert: ArrDatabaseIsLocked
+            expr: |
+              sum by (app) (count_over_time({app=~".*arr"} |~ "(?i)database is locked"[2m])) > 0
+            for: 2m
+            labels:
+              severity: critical
+              category: logs
+            annotations:
+              summary: "{{ $labels.app }} is experiencing locked database issues"
+          - alert: ArrDatabaseIsMalformed
+            expr: |
+              sum by (app) (count_over_time({app=~".*arr"} |~ "(?i)database disk image is malformed"[2m])) > 0
+            for: 2m
+            labels:
+              severity: critical
+              category: logs
+            annotations:
+              summary: "{{ $labels.app }} is experiencing malformed database disk image issues"
+          - alert: ArrFailedToConnectToPlex
+            expr: |
+              sum by (app) (count_over_time({app=~".*arr"} |~ "(?i)failed|unable" |~ "(?i)plex"[2m])) > 0
+            for: 2m
+            labels:
+              severity: warning
+              category: logs
+            annotations:
+              summary: "{{ $labels.app }} is having trouble connecting to Plex Media Server"
+          - alert: ArrFailedToConnectToProwlarr
+            expr: |
+              sum by (app) (count_over_time({app=~".*arr"} |~ "(?i)connection refused|currently unavailable" |= "(?i)prowlarr:9696"[5m])) > 0
+            for: 5m
+            labels:
+              severity: warning
+              category: logs
+            annotations:
+              summary: "{{ $labels.app }} is having trouble connecting to Prowlarr"
+
+
+      #
+      # home-assistant
+      #
+      - name: home-assistant
+        rules:
+          - alert: HomeAssistantUnableToReachPostgresql
+            expr: |
+              sum by (app) (count_over_time({app="home-assistant"} |~ "(?i)error in database connectivity"[2m])) > 0
+            for: 2m
+            labels:
+              severity: critical
+              category: logs
+            annotations:
+              summary: "Home Assistant is unable to connect to postgresql"
+      #
+      # appdaemon
+      #
+      - name: appdaemon
+        rules:
+          - alert: AppDaemonUnableToReachHomeAssistant
+            expr: |
+              sum by (app) (count_over_time({app="appdaemon"} |~ "(?i)home assistant.*connecting to undefined"[2m])) > 0
+            for: 2m
+            labels:
+              severity: critical
+              category: logs
+            annotations:
+              summary: "AppDaemon is unable to connect to Home Assistant"
+      #
+      # paperless
+      #
+      - name: paperless
+        rules:
+          - alert: PaperlessMailError
+            expr: |
+              sum by (app) (count_over_time({app="paperless"} |= "[ERROR] [paperless_mail]"[10m])) > 0
+            for: 10m
+            labels:
+              severity: critical
+              category: logs
+            annotations:
+              summary: Paperless is having trouble fetching mail
