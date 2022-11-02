@@ -2,35 +2,44 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: grafana
+  name: &app grafana
   namespace: monitoring
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://grafana.github.io/helm-charts
       chart: grafana
-      version: 6.43.1
+      version: 6.43.3
       sourceRef:
         kind: HelmRepository
         name: grafana-charts
         namespace: flux-system
-      interval: 5m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
     image:
       repository: grafana/grafana
       tag: 9.2.2
 
-    deploymentStrategy:
-      type: Recreate
-    podAnnotations:
-      configmap.reloader.stakater.com/reload: "grafana"
+    replicas: 1
+
+    rbac:
+      pspEnabled: false
+
+    admin:
+      existingSecret: grafana-admin
+
+    envFromSecrets:
+      - name: *app
+
     persistence:
-      enabled: true
-      storageClassName: "longhorn"
-      size: 2Gi
-      accessModes:
-        - ReadWriteOnce
+      enabled: false
+
     env:
       GF_EXPLORE_ENABLED: true
       GF_SECURITY_ALLOW_EMBEDDING: true
@@ -50,6 +59,31 @@ spec:
       GF_AUTH_OAUTH_AUTO_LOGIN: "true"
       # Optionally map user groups to Grafana roles
       GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH: "contains(groups[*], 'grafana-admins') && 'Admin' || contains(groups[*], 'grafana-editors') && 'Editor' || 'Viewer'"
+
+    grafana.ini:
+      server:
+        root_url: "https://grafana.${CLUSTER_DOMAIN}"
+      paths:
+        data: /var/lib/grafana/data
+        logs: /var/log/grafana
+        plugins: /var/lib/grafana/plugins
+        provisioning: /etc/grafana/provisioning
+      analytics:
+        check_for_updates: false
+      log:
+        mode: console
+      grafana_net:
+        url: https://grafana.net
+      panels:
+        disable_sanitize_html: true
+      auth.basic:
+        disable_login_form: false
+      auth.anonymous:
+        enabled: true
+        org_name: HomeOps
+        org_id: 1
+        org_role: Viewer
+
     ingress:
       enabled: true
       ingressClassName: traefik
@@ -66,6 +100,7 @@ spec:
         - hosts:
             - *host
           secretName: grafana-tls
+
     plugins:
       - pr0ps-trackmap-panel
       - grafana-clock-panel
@@ -78,10 +113,13 @@ spec:
       - mxswat-separator-panel
       - farski-blendstat-panel
       - redis-datasource
+
     serviceMonitor:
       enabled: true
+
     serviceAccount:
       autoMount: true
+
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
@@ -94,6 +132,7 @@ spec:
             allowUiUpdates: true
             options:
               path: /var/lib/grafana/dashboards/default
+
     dashboards:
       default:
         1-node-exporter:
@@ -159,6 +198,7 @@ spec:
           gnetId: 14371
           revision: 1
           datasource: Prometheus
+
     sidecar:
       datasources:
         enabled: true
@@ -169,34 +209,20 @@ spec:
         folderAnnotation: grafana_dashboard_folder
         provider:
           foldersFromFilesStructure: true
+
     datasources:
       datasources.yaml:
         apiVersion: 1
-        # list of datasources that should be deleted from the database
         deleteDatasources:
           - name: Loki
             orgId: 1
-          - name: Prometheus Direct
-            orgId: 1
-        datasources: []
-    grafana.ini:
-      server:
-        root_url: "https://grafana.${CLUSTER_DOMAIN}"
-      paths:
-        data: /var/lib/grafana/data
-        logs: /var/log/grafana
-        plugins: /var/lib/grafana/plugins
-        provisioning: /etc/grafana/provisioning
-      analytics:
-        check_for_updates: false
-      log:
-        mode: console
-      grafana_net:
-        url: https://grafana.net
-      panels:
-        disable_sanitize_html: true
-      auth.basic:
-        disable_login_form: false
-  valuesFrom:
-    - kind: Secret
-      name: "grafana-secrets"
+        datasources:
+          - name: Prometheus
+            type: prometheus
+            access: proxy
+            url: http://thanos-query.monitoring.svc.cluster.local:9090
+            isDefault: true
+          - name: Loki
+            type: loki
+            access: proxy
+            url: http://loki-gateway.monitoring.svc.cluster.local:80
