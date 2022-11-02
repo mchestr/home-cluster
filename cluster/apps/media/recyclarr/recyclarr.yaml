@@ -9,7 +9,7 @@
 # https://github.com/rcdailey/trash-updater/wiki/Configuration-Reference
 
 sonarr:
-  - base_url: http://sonarr
+  - base_url: http://sonarr:8989
     api_key: ${SONARR_APIKEY}
     quality_definition: hybrid
     delete_old_custom_formats: true
