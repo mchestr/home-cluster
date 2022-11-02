@@ -57,7 +57,6 @@ spec:
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd,sabnzbd-theme@file
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:cloud-download
-          hajimari.io/info: Usenet Downloader
           hajimari.io/group: Download
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"

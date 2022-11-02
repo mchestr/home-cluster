@@ -53,7 +53,6 @@ spec:
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd,radarr-theme@file
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:filmstrip
-          hajimari.io/info: Movie Manager
           hajimari.io/group: Media Management
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
