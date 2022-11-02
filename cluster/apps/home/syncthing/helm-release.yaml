@@ -41,6 +41,11 @@ spec:
         externalTrafficPolicy: Local
         annotations:
           metallb.universe.tf/allow-shared-ip: syncthing
+        ports:
+          discovery:
+            enabled: true
+            port: 22000
+            protocol: TCP
       discovery:
         enabled: true
         type: LoadBalancer
@@ -48,6 +53,11 @@ spec:
         externalTrafficPolicy: Local
         annotations:
           metallb.universe.tf/allow-shared-ip: syncthing
+        ports:
+          discovery:
+            enabled: true
+            port: 21027
+            protocol: UDP
 
     ingress:
       main:
