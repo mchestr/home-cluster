@@ -30,6 +30,10 @@ spec:
       TZ: ${TZ}
 
     service:
+      main:
+        ports:
+          http:
+            port: 8384
       listen:
         enabled: true
         type: LoadBalancer
