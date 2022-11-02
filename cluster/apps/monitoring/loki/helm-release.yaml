@@ -18,167 +18,96 @@ spec:
   install:
     createNamespace: true
   values:
-    serviceMonitor:
-      enabled: true
-    persistence:
-      enabled: false
-    config:
-      storage_config:
-        aws:
-          bucketnames: loki
-          endpoint: minio.networking:9000
-          s3forcepathstyle: true
-          insecure: true
-        boltdb_shipper:
-          active_index_directory: /data/loki/index
-          cache_location: /data/loki/index_cache
-          resync_interval: 5s
+    loki:
+      structuredConfig:
+        auth_enabled: false
+        server:
+          log_level: info
+          http_listen_port: 3100
+          grpc_listen_port: 9095
+        memberlist:
+          join_members: ["loki-memberlist"]
+        limits_config:
+          retention_period: 14d
+          enforce_metric_name: false
+          reject_old_samples: true
+          reject_old_samples_max_age: 168h
+          max_cache_freshness_per_query: 10m
+          split_queries_by_interval: 15m
+          ingestion_rate_mb: 8
+          ingestion_burst_size_mb: 16
+        schema_config:
+          configs:
+            - from: "2021-08-01"
+              store: boltdb-shipper
+              object_store: s3
+              schema: v11
+              index:
+                prefix: loki_index_
+                period: 24h
+        common:
+          path_prefix: /var/loki
+          replication_factor: 3
+          storage:
+            s3:
+              s3: null
+              insecure: true
+              s3forcepathstyle: true
+          ring:
+            kvstore:
+              store: memberlist
+        ruler:
+          enable_api: true
+          enable_alertmanager_v2: true
+          alertmanager_url: http://prometheus-alertmanager.svc.cluster.local:9093
+          storage:
+            type: local
+            local:
+              directory: /rules
+          rule_path: /tmp/scratch
+          ring:
+            kvstore:
+              store: memberlist
+        distributor:
+          ring:
+            kvstore:
+              store: memberlist
+        compactor:
+          working_directory: /var/loki/boltdb-shipper-compactor
           shared_store: s3
-      limits_config:
-        enforce_metric_name: false
-        reject_old_samples: true
-        reject_old_samples_max_age: 168h
-        ingestion_rate_mb: 16
-        ingestion_burst_size_mb: 24
-        per_stream_rate_limit: 16MB
-        per_stream_rate_limit_burst: 24MB
-      compactor:
-        retention_enabled: true
-      ruler:
-        storage:
-          type: local
-          local:
-            directory: /rules
-        rule_path: /tmp/scratch
-        alertmanager_url: http://prometheus-alertmanager.monitoring.svc.cluster.local:9093
-        ring:
-          kvstore:
-            store: inmemory
-        enable_api: true
-    alerting_groups:
-      #
-      # zigbee2mqtt
-      #
-      - name: zigbee2mqtt
-        rules:
-          - alert: ZigbeeUnableToReachMQTT
-            expr: |
-              sum(count_over_time({app="zigbee2mqtt"} |~ "(?i)not connected to mqtt server"[2m])) > 0
-            for: 2m
-            labels:
-              severity: critical
-              category: logs
-            annotations:
-              summary: "Zigbee2mqtt is unable to reach MQTT"
-      #
-      # zwavejs2mqtt
-      #
-      - name: zwavejs2mqtt
-        rules:
-          - alert: ZwaveUnableToReachMQTT
-            expr: |
-              sum(count_over_time({app="zwavejs2mqtt"} |~ "(?i)Mqtt client error connect ECONNREFUSED"[2m])) > 0
-            for: 2m
-            labels:
-              severity: critical
-              category: logs
-            annotations:
-              summary: "Zwavejs2mqtt is unable to reach MQTT"
-      #
-      # *arr
-      #
-      - name: arr
-        rules:
-          - alert: ArrDatabaseIsLocked
-            expr: |
-              sum by (app) (count_over_time({app=~".*arr"} |~ "(?i)database is locked"[2m])) > 0
-            for: 2m
-            labels:
-              severity: critical
-              category: logs
-            annotations:
-              summary: "{{ $labels.app }} is experiencing locked database issues"
-          - alert: ArrDatabaseIsMalformed
-            expr: |
-              sum by (app) (count_over_time({app=~".*arr"} |~ "(?i)database disk image is malformed"[2m])) > 0
-            for: 2m
-            labels:
-              severity: critical
-              category: logs
-            annotations:
-              summary: "{{ $labels.app }} is experiencing malformed database disk image issues"
-          - alert: ArrFailedToConnectToPlex
-            expr: |
-              sum by (app) (count_over_time({app=~".*arr"} |~ "(?i)failed|unable" |~ "(?i)plex"[2m])) > 0
-            for: 2m
-            labels:
-              severity: warning
-              category: logs
-            annotations:
-              summary: "{{ $labels.app }} is having trouble connecting to Plex Media Server"
-          - alert: ArrFailedToConnectToProwlarr
-            expr: |
-              sum by (app) (count_over_time({app=~".*arr"} |~ "(?i)connection refused|currently unavailable" |= "(?i)prowlarr:9696"[5m])) > 0
-            for: 5m
-            labels:
-              severity: warning
-              category: logs
-            annotations:
-              summary: "{{ $labels.app }} is having trouble connecting to Prowlarr"
+          compaction_interval: 10m
+          retention_enabled: true
+          retention_delete_delay: 2h
+          retention_delete_worker_count: 150
+        ingester:
+          max_chunk_age: 1h
+          lifecycler:
+            ring:
+              kvstore:
+                store: memberlist
+        analytics:
+          reporting_enabled: false
 
-      #
-      # home-assistant
-      #
-      - name: home-assistant
-        rules:
-          - alert: HomeAssistantUnableToReachPostgresql
-            expr: |
-              sum by (app) (count_over_time({app="home-assistant"} |~ "(?i)error in database connectivity"[2m])) > 0
-            for: 2m
-            labels:
-              severity: critical
-              category: logs
-            annotations:
-              summary: "Home Assistant is unable to connect to postgresql"
-      #
-      # appdaemon
-      #
-      - name: appdaemon
-        rules:
-          - alert: AppDaemonUnableToReachHomeAssistant
-            expr: |
-              sum by (app) (count_over_time({app="appdaemon"} |~ "(?i)home assistant.*connecting to undefined"[2m])) > 0
-            for: 2m
-            labels:
-              severity: critical
-              category: logs
-            annotations:
-              summary: "AppDaemon is unable to connect to Home Assistant"
-      #
-      # paperless
-      #
-      - name: paperless
-        rules:
-          - alert: PaperlessMailError
-            expr: |
-              sum by (app) (count_over_time({app="paperless"} |= "[ERROR] [paperless_mail]"[10m])) > 0
-            for: 10m
-            labels:
-              severity: critical
-              category: logs
-            annotations:
-              summary: Paperless is having trouble fetching mail
     write:
       replicas: 1
+
     read:
       replicas: 1
 
   valuesFrom:
-    - targetPath: config.storage_config.aws.access_key_id
+    - kind: Secret
+      name: loki-secret
+      valuesKey: S3_BUCKET_NAME
+      targetPath: loki.structuredConfig.common.storage.s3.bucketnames
+    - kind: Secret
+      name: loki-secret
+      valuesKey: S3_BUCKET_HOST
+      targetPath: loki.structuredConfig.common.storage.s3.endpoint
+    - targetPath: loki.structuredConfig.common.storage.s3.access_key_id
       kind: Secret
       name: loki-secrets
-      valuesKey: AWS_ACCESS_KEY_ID
-    - targetPath: config.storage_config.aws.secret_access_key
+      valuesKey: S3_ACCESS_KEY
+    - targetPath: loki.structuredConfig.common.storage.s3.secret_access_key
       kind: Secret
       name: loki-secrets
-      valuesKey: AWS_SECRET_ACCESS_KEY
+      valuesKey: S3_SECRET_KEY
