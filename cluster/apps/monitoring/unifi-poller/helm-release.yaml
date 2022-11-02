@@ -5,24 +5,24 @@ metadata:
   name: unifi-poller
   namespace: monitoring
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      chart: unifi-poller
-      version: 11.1.2
+      chart: app-template
+      version: 0.2.2
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
+      interval: 15m
   install:
     createNamespace: true
-    remediation: # perform remediation when helm install fails
-      retries: 3
+    remediation:
+      retries: 5
   upgrade:
-    remediation: # perform remediation when helm upgrade fails
-      retries: 3
-      remediateLastFailure: true # remediate the last failure, when no retries remain
+    remediation:
+      retries: 5
+      remediateLastFailure: true
     cleanupOnFail: true
   values:
     image:
@@ -32,6 +32,7 @@ spec:
     envFrom:
       - secretRef:
           name: unifi-poller-secrets
+
     env:
       TZ: ${TZ}
       UP_UNIFI_DEFAULT_ROLE: homelab-controller
@@ -43,13 +44,11 @@ spec:
       UP_PROMETHEUS_DISABLE: false
       UP_PROMETHEUS_NAMESPACE: unifipoller
 
-    metrics:
-      enabled: true
-      serviceMonitor:
-        interval: 1m
-        scrapeTimeout: 30s
-      prometheusRule:
-        enabled: true
+    service:
+      main:
+        ports:
+          http:
+            port: 9130
 
     resources:
       requests:
