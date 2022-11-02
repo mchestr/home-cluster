@@ -96,11 +96,11 @@ spec:
 
   valuesFrom:
     - kind: Secret
-      name: loki-secret
+      name: loki-secrets
       valuesKey: S3_BUCKET_NAME
       targetPath: loki.structuredConfig.common.storage.s3.bucketnames
     - kind: Secret
-      name: loki-secret
+      name: loki-secrets
       valuesKey: S3_BUCKET_HOST
       targetPath: loki.structuredConfig.common.storage.s3.endpoint
     - targetPath: loki.structuredConfig.common.storage.s3.access_key_id
