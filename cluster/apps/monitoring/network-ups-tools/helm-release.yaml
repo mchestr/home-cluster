@@ -5,82 +5,77 @@ metadata:
   name: network-ups-tools
   namespace: monitoring
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: network-ups-tools
-      version: 6.4.2
+      chart: app-template
+      version: 0.2.2
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s
         namespace: flux-system
-      interval: 5m
   values:
     image:
-      repository: ghcr.io/k8s-at-home/network-ups-tools
-      tag: v2.8.0
+      repository: ghcr.io/jr0dd/network-ups-tools
+      tag: v2.8.0@sha256:77f93d419b26c2a9eec6db212a70e38b1bd922ab7d5e80cca75ebfd1268e37ba
+
+    controller:
+      strategy: RollingUpdate
+
     env:
       TZ: ${TZ}
+
     service:
       main:
         ports:
           http:
-            enabled: false
-          server:
-            enabled: true
             protocol: TCP
             port: 3493
-    ingress:
-      main:
-        enabled: false
+
     persistence:
+      config:
+        enabled: true
+        type: configMap
+        name: &config network-ups-tools-config
+        mountPath: /etc/nut
+        defaultMode: 256
       ups:
         enabled: true
         type: hostPath
         hostPath: /dev/bus/usb/003/003
         mountPath: /dev/bus/usb/001/001
         readOnly: false
+
     securityContext:
       privileged: true
 
-    config:
-      mode: values
-      files:
-        nut.conf: |
-          MODE=netserver
-        upsd.conf: |
-          LISTEN 0.0.0.0
-        ups.conf: |
-          [cyberpower-ups]
-            driver = usbhid-ups
-            port = auto
-            desc = "CyberPower CP1500 AVR"
-            pollinterval = 10
-        upsd.users: |
-          [upsmon]
-            password  = "${NUT_PASSWORD}"
-            actions = SET
-            instcmds = ALL
-            upsmon primary
-        upsmon.conf: |
-          MONITOR cyber-power@localhost:3493 1 upsmon "${NUT_PASSWORD}" primary
-          SHUTDOWNCMD "/sbin/shutdown -h +0"
-          POWERDOWNFLAG /etc/killpower
-          POLLFREQ 15
-          POLLFREQALERT 5
-          HOSTSYNC 15
-    metrics:
-      enabled: true
-      serviceMonitor:
-        interval: 15s
-        scrapeTimeout: 10s
-      prometheusRule:
+    configmap:
+      config:
         enabled: true
-      exporter:
-        image:
-          repository: hon95/prometheus-nut-exporter
-          tag: 1.2.1
+        data:
+          nut.conf: |-
+            MODE=netserver
+          upsd.conf: |-
+            LISTEN 0.0.0.0
+          ups.conf: |-
+            [cyberpower-ups]
+              driver = usbhid-ups
+              port = auto
+              desc = "CyberPower CP1500 AVR"
+              pollinterval = 10
+          upsd.users: |-
+            [upsmon]
+              password  = "${NUT_PASSWORD}"
+              actions = SET
+              instcmds = ALL
+              upsmon primary
+          upsmon.conf: |-
+            MONITOR cyber-power@localhost:3493 1 upsmon "${NUT_PASSWORD}" primary
+            SHUTDOWNCMD "/sbin/shutdown -h +0"
+            POWERDOWNFLAG /etc/killpower
+            POLLFREQ 15
+            POLLFREQALERT 5
+            HOSTSYNC 15
 
     affinity:
       nodeAffinity:
@@ -91,3 +86,11 @@ spec:
                   operator: In
                   values:
                     - "true"
+
+    additionalContainers:
+      exporter:
+        name: exporter
+        image: ghcr.io/druggeri/nut_exporter:2.4.2
+
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: *config
