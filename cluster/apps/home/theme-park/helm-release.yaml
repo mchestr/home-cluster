@@ -5,30 +5,26 @@ metadata:
   name: theme-park
   namespace: home
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: theme-park
-      version: 1.2.2
+      chart: app-template
+      version: 0.2.2
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
   install:
     createNamespace: true
-    remediation: # perform remediation when helm install fails
-      retries: 3
+    remediation:
+      retries: 5
   upgrade:
-    remediation: # perform remediation when helm upgrade fails
-      retries: 3
-      remediateLastFailure: true # remediate the last failure, when no retries remain
-    cleanupOnFail: true
+    remediation:
+      retries: 5
   values:
     image:
-      repository: ghcr.io/k8s-at-home/theme-park
-      tag: v1.13.1
+      repository: ghcr.io/onedr0p/theme-park
+      tag: 1.13.1@sha256:0916d776425b39d7804ab883ebfa57ec4bd9781d4f4cafb8f4eb13685728d38d
 
     nameOverride: "theme-park"
 
@@ -39,17 +35,16 @@ spec:
       main:
         ports:
           http:
-            enabled: true
             port: 8080
 
     ingress:
       main:
         enabled: true
+        ingressClassName: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           external-dns.alpha.kubernetes.io/target: ipv4.${CLUSTER_DOMAIN}
           external-dns/is-public: "true"
-          kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: networking-external@kubernetescrd
         hosts:
