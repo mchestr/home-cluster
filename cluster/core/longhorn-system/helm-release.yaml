@@ -64,7 +64,7 @@ spec:
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         hajimari.io/enable: "true"
         hajimari.io/icon: carbon:block-storage
-        hajimari.io/group: Storage, Database, and Messaging
+        hajimari.io/group: storage, database, and messaging
         hajimari.io/appName: longhorn
     longhornManager:
       priorityClass: system-node-critical

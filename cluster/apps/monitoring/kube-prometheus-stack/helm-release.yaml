@@ -158,7 +158,7 @@ spec:
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
           hajimari.io/enable: "true"
           hajimari.io/icon: simple-icons:prometheus
-          hajimari.io/group: Storage, Database, and Messaging
+          hajimari.io/group: storage, database, and messaging
           hajimari.io/appName: prometheus
         hosts:
           - &host prometheus.${CLUSTER_DOMAIN}

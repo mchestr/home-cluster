@@ -57,7 +57,7 @@ spec:
           traefik.ingress.kubernetes.io/router.middlewares: networking-external-no-error-pages@kubernetescrd
           hajimari.io/enable: "true"
           hajimari.io/icon: ant-design:calendar-outlined
-          hajimari.io/group: Storage, Database, and Messaging
+          hajimari.io/group: storage, database, and messaging
         hosts:
           - host: &host "cal.${CLUSTER_DOMAIN}"
             paths:
