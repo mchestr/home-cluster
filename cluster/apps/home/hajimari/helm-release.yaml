@@ -65,7 +65,7 @@ spec:
               url: https://dash.cloudflare.com
 
       customApps:
-        - group: Storage, Database, and Messaging
+        - group: storage, database, and messaging
           apps:
             - name: phpMyAdmin
               icon: simple-icons:phpmyadmin
