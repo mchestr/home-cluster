@@ -2,30 +2,42 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: blocky
+  name: &app blocky
   namespace: networking
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: blocky
-      version: 10.5.2
+      chart: app-template
+      version: 0.2.2
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s
         namespace: flux-system
-      interval: 5m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
     image:
       repository: ghcr.io/0xerr0r/blocky
       tag: v0.19
+
+    controller:
+      strategy: RollingUpdate
+
     env:
       TZ: ${TZ}
 
     service:
       main:
-        enabled: true
+        ports:
+          http:
+            port: 4000
+            protocol: TCP
       dns:
         enabled: true
         type: LoadBalancer
@@ -44,47 +56,51 @@ spec:
             protocol: UDP
             targetPort: 53
 
-    metrics:
-      enabled: true
-      serviceMonitor:
-        interval: 30s
-        scrapeTimeout: 10s
-      prometheusRule:
+    persistence:
+      config:
         enabled: true
+        type: configMap
+        name: &config blocky-config
+        mountPath: /app/config.yml
+        subPath: config.yml
+
+    configmap:
+      config:
+        enabled: true
+        data:
+          config.yml: |-
+            upstream:
+              default:
+                - tcp-tls:one.one.one.one:853
+            conditional:
+              mapping:
+                ${CLUSTER_DOMAIN}: tcp+udp:${METALLB_K8S_GATEWAY_ADDR}
+            clientLookup:
+              upstream: tcp+udp:${GATEWAY_IP}
+            bootstrapDns: tcp+udp:1.1.1.1
+            blocking:
+              blackLists:
+                ads:
+                  - https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+                  - https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
+                  - http://sysctl.org/cameleon/hosts
+                  - https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt
+                fakenews:
+                  - https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews/hosts
+                kids:
+                - https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts
+              whiteLists:
+                ads:
+                  - https://raw.githubusercontent.com/anudeepND/whitelist/master/domains/whitelist.txt
+              clientGroupsBlock:
+                default:
+                  - ads
+                  - fakenews
+            prometheus:
+              enable: true
+              path: /metrics
+            httpPort: 4000
+            logLevel: info
 
     podAnnotations:
-      configmap.reloader.stakater.com/reload: "blocky-config"
-
-    config: |
-      upstream:
-        default:
-          - tcp-tls:one.one.one.one:853
-      conditional:
-        mapping:
-          ${CLUSTER_DOMAIN}: tcp+udp:${METALLB_K8S_GATEWAY_ADDR}
-      clientLookup:
-        upstream: tcp+udp:${GATEWAY_IP}
-      bootstrapDns: tcp+udp:1.1.1.1
-      blocking:
-        blackLists:
-          ads:
-            - https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
-            - https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
-            - http://sysctl.org/cameleon/hosts
-            - https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt
-          fakenews:
-            - https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews/hosts
-          kids:
-          - https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts
-        whiteLists:
-          ads:
-            - https://raw.githubusercontent.com/anudeepND/whitelist/master/domains/whitelist.txt
-        clientGroupsBlock:
-          default:
-            - ads
-            - fakenews
-      prometheus:
-        enable: true
-        path: /metrics
-      httpPort: 4000
-      logLevel: info
+      configmap.reloader.stakater.com/reload: *config
