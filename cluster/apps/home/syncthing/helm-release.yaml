@@ -5,39 +5,30 @@ metadata:
   name: syncthing
   namespace: home
 spec:
-  releaseName: syncthing
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      chart: syncthing
-      version: 3.5.2
+      chart: app-template
+      version: 0.2.2
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
   install:
     createNamespace: true
     remediation:
-      retries: 3
+      retries: 5
   upgrade:
     remediation:
-      retries: 3
-      remediateLastFailure: true
-    cleanupOnFail: true
+      retries: 5
   values:
     image:
       repository: syncthing/syncthing
       tag: 1.22.0
+
     env:
       TZ: ${TZ}
-    persistence:
-      data:
-        enabled: true
-        type: nfs
-        server: ${NAS_ADDR}
-        path: /volume1/shared/syncthing
-        mountPath: /var/syncthing
+
     service:
       listen:
         enabled: true
@@ -45,24 +36,27 @@ spec:
         loadBalancerIP: ${METALLB_SYNCTHING_ADDR}
         externalTrafficPolicy: Local
         annotations:
-          metallb.universe.tf/allow-shared-ip: factorio
+          metallb.universe.tf/allow-shared-ip: syncthing
       discovery:
         enabled: true
         type: LoadBalancer
         loadBalancerIP: ${METALLB_SYNCTHING_ADDR}
         externalTrafficPolicy: Local
         annotations:
-          metallb.universe.tf/allow-shared-ip: factorio
+          metallb.universe.tf/allow-shared-ip: syncthing
+
     ingress:
       main:
         enabled: true
+        ingressClassName: traefik
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           external-dns.alpha.kubernetes.io/target: ipv4.${CLUSTER_DOMAIN}
           external-dns/is-public: "true"
-          kubernetes.io/ingress.class: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: networking-external-auth@kubernetescrd
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:cloud
         hosts:
           - host: &host sync.${CLUSTER_DOMAIN}
             paths:
@@ -72,3 +66,11 @@ spec:
           - hosts:
               - *host
             secretName: "{{ .Release.Name }}-tls"
+
+    persistence:
+      data:
+        enabled: true
+        type: nfs
+        server: ${NAS_ADDR}
+        path: /volume1/shared/syncthing
+        mountPath: /var/syncthing
