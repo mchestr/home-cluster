@@ -1,7 +1,0 @@
-# allows patching the configMap inside the chart with generated value
-nameReference:
-  - kind: ConfigMap
-    version: v1
-    fieldSpecs:
-      - path: spec/values/persistence/config/name
-        kind: HelmRelease
