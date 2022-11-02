@@ -5,33 +5,34 @@ metadata:
   name: error-pages
   namespace: networking
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: kah-common-chart
-      version: 1.2.2
+      chart: app-template
+      version: 0.2.2
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
   dependsOn:
     - name: traefik
   values:
     image:
       repository: ghcr.io/tarampampam/error-pages
       tag: 2.18.0
+
     controller:
       replicas: 1
-    nameOverride: error-pages
+
     env:
       TEMPLATE_NAME: lost-in-space
+
     service:
       main:
         ports:
           http:
             port: 8080
+
     resources:
       requests:
         memory: 100Mi
