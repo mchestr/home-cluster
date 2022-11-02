@@ -98,3 +98,4 @@ spec:
       data:
         enabled: true
         existingClaim: unifi-data-v1
+        mountPath: /unifi
