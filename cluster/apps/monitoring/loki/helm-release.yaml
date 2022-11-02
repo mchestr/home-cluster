@@ -90,9 +90,15 @@ spec:
 
     write:
       replicas: 1
+      persistence:
+        size: 10Gi
+        storageClass: longhorn
 
     read:
       replicas: 1
+      persistence:
+        size: 10Gi
+        storageClass: longhorn
 
   valuesFrom:
     - kind: Secret
