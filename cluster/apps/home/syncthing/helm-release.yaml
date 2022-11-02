@@ -71,6 +71,7 @@ spec:
           traefik.ingress.kubernetes.io/router.middlewares: networking-external-auth@kubernetescrd
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:cloud
+          hajimari.io/group: Home
         hosts:
           - host: &host sync.${CLUSTER_DOMAIN}
             paths:
