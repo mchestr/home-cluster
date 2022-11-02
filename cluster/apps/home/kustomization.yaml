@@ -7,7 +7,6 @@ resources:
   - esphome
   - hajimari
   - home-assistant
-  - homer
   - paperless
   - syncthing
   - theme-park
