@@ -59,6 +59,7 @@ spec:
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
           hajimari.io/enable: "true"
           hajimari.io/icon: file-outline
+          hajimari.io/group: Home
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:
