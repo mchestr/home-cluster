@@ -42,7 +42,7 @@ spec:
         annotations:
           metallb.universe.tf/allow-shared-ip: syncthing
         ports:
-          discovery:
+          listen:
             enabled: true
             port: 22000
             protocol: TCP
