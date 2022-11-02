@@ -17,3 +17,22 @@ spec:
       storage: 2Gi
 
   storageClassName: longhorn
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sonarr-config-v2
+  namespace: media
+  labels:
+    app.kubernetes.io/name: &name sonarr
+    app.kubernetes.io/instance: *name
+    recurring-job-group.longhorn.io/backup: enabled
+spec:
+  accessModes:
+    - ReadWriteOnce
+
+  resources:
+    requests:
+      storage: 2Gi
+
+  storageClassName: longhorn
