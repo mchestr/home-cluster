@@ -54,8 +54,6 @@ resource "authentik_group" "system-admins" {
     bazarr_password      = data.sops_file.authentik_secrets.data["bazarr_password"],
     emqx_user            = data.sops_file.authentik_secrets.data["emqx_user"],
     emqx_password        = data.sops_file.authentik_secrets.data["emqx_password"],
-    k10_user             = data.sops_file.authentik_secrets.data["k10_user"],
-    k10_password         = data.sops_file.authentik_secrets.data["k10_password"],
     lidarr_user          = data.sops_file.authentik_secrets.data["lidarr_user"],
     lidarr_password      = data.sops_file.authentik_secrets.data["lidarr_password"],
     prowlarr_user        = data.sops_file.authentik_secrets.data["prowlarr_user"],
