@@ -5,7 +5,7 @@ metadata:
   name: kubernetes-dashboard
   namespace: kubernetes-dashboard
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
       # renovate: registryUrl=https://kubernetes.github.io/dashboard
@@ -15,7 +15,6 @@ spec:
         kind: HelmRepository
         name: kubernetes-dashboard-charts
         namespace: flux-system
-      interval: 5m
   values:
     ingress:
       enabled: true
