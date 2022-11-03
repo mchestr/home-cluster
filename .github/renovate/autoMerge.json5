@@ -1,26 +1,32 @@
 {
   "packageRules": [
     {
-      "matchDatasources": [
-        "docker",
-        "github-actions",
-        "github-releases",
-        "github-tags",
-        "helm"
-      ],
+      "description": "Auto merge container digests",
+      "matchDatasources": ["docker"],
       "automerge": true,
       "automergeType": "branch",
       "requiredStatusChecks": null,
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
-      "matchPackageNames": [
-        "ghcr.io/k8s-at-home/lidarr",
-        "ghcr.io/k8s-at-home/prowlarr-nightly",
-        "ghcr.io/k8s-at-home/readarr",
-        "renovatebot/github-action"
-      ]
+      "matchUpdateTypes": ["digest"],
+      "automergeSchedule": ["after 10pm and before 5:00am"],
+      "matchPackagePattern": ["ghcr.io/k8s-at-home","ghcr.io/onedr0p"]
+    },
+    {
+      "description": "Auto merge containers",
+      "matchDatasources": ["docker"],
+      "automerge": true,
+      "automergeType": "branch",
+      "requiredStatusChecks": null,
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchPackageNames": ["ghcr.io/onedr0p/prowlarr-nightly"]
+    },
+    {
+      "description": "Auto merge GitHub Actions",
+      "matchDatasources": ["github-tags"],
+      "automerge": true,
+      "automergeType": "branch",
+      "requiredStatusChecks": null,
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchPackageNames": ["lycheeverse/lychee-action", "renovatebot/github-action"]
     }
   ]
 }
