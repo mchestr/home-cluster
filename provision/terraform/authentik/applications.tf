@@ -6,7 +6,6 @@ locals {
     tautulli            = { group = "Media" }
     sonarr              = { group = "Media", basic_auth_enabled = true }
     sabnzbd             = { group = "Downloaders" }
-    readarr             = { group = "Media", basic_auth_enabled = true }
     radarr              = { group = "Media", basic_auth_enabled = true }
     radarr-4k           = { group = "Media", basic_auth_enabled = true }
     qbittorrent         = { group = "Downloaders", basic_auth_enabled = true }
@@ -15,12 +14,11 @@ locals {
     paperless           = { group = "Home" }
     longhorn            = {}
     lidarr              = { group = "Media", basic_auth_enabled = true }
+    hyperion            = { group = "Home" }
     home-assistant-code = { group = "Code Editors" }
     esphome             = { group = "Home Automation" }
     emqx                = { basic_auth_enabled = true }
     dashboard           = {}
-    calibre-web         = { group = "Media" }
-    calibre             = {}
     cal                 = {}
     bazarr              = { group = "Media", basic_auth_enabled = true }
     appdaemon           = { group = "Home Automation" }
