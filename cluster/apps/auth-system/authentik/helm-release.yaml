@@ -52,7 +52,7 @@ spec:
           paths:
             - path: /
       tls:
-        - secretName: authentik-tls
+        - secretName: authentik-outpost-tls
           hosts:
             - *host
 
