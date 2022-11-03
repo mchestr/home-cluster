@@ -1,12 +1,13 @@
 {
   "extends": [
-    ":enableRenovate",
     "config:base",
+    "docker:enableMajor",
     ":disableRateLimiting",
     ":dependencyDashboard",
     ":semanticCommits",
-    "docker:enableMajor",
     ":enablePreCommit",
+    ":automergeDigest",
+    ":automergeBranch",
     "github>mchestr/home-cluster//.github/renovate/autoMerge.json5",
     "github>mchestr/home-cluster//.github/renovate/groups.json5",
     "github>mchestr/home-cluster//.github/renovate/labels.json5",
@@ -15,19 +16,11 @@
   "platform": "github",
   "repositories": ["mchestr/home-cluster"],
   "onboarding": false,
-  "requireConfig": false,
+  "requireConfig": "optional",
   "dependencyDashboardTitle": "Renovate Dashboard",
   "suppressNotifications": ["prIgnoreNotification"],
   "rebaseWhen": "conflicted",
   "commitBodyTable": true,
-  "ignoreDeps": [
-    "ghcr.io/fluxcd/helm-controller",
-    "ghcr.io/fluxcd/image-automation-controller",
-    "ghcr.io/fluxcd/image-reflector-controller",
-    "ghcr.io/fluxcd/kustomize-controller",
-    "ghcr.io/fluxcd/notification-controller",
-    "ghcr.io/fluxcd/source-controller"
-  ],
   "docker-compose": {
     "fileMatch": ["ansible/.+/docker-compose.*\\.ya?ml(\\.j2)?$"]
   },
