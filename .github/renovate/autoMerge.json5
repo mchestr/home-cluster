@@ -7,8 +7,7 @@
       "automergeType": "branch",
       "requiredStatusChecks": null,
       "matchUpdateTypes": ["digest"],
-      "automergeSchedule": ["after 10pm and before 5:00am"],
-      "matchPackagePattern": ["ghcr.io/k8s-at-home","ghcr.io/onedr0p"]
+      "automergeSchedule": ["after 10pm and before 5:00am"]
     },
     {
       "description": "Auto merge containers",
@@ -17,7 +16,7 @@
       "automergeType": "branch",
       "requiredStatusChecks": null,
       "matchUpdateTypes": ["minor", "patch"],
-      "matchPackageNames": ["ghcr.io/onedr0p/prowlarr-nightly"]
+      "automergeSchedule": ["after 10pm and before 5:00am"]
     },
     {
       "description": "Auto merge GitHub Actions",
