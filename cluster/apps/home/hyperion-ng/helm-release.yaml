@@ -34,6 +34,8 @@ spec:
         ports:
           http:
             port: 8090
+          ws:
+            port: 19444
 
     ingress:
       main:
