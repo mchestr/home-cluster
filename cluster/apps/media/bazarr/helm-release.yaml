@@ -78,7 +78,7 @@ spec:
         type: nfs
         server: ${NAS_ADDR}
         path: ${NAS_BACKUP_DIR}/bazarr
-        mountPath: /config/Backups
+        mountPath: /config/backup
 
     podSecurityContext:
       fsGroup: ${RUN_AS_GROUP}
