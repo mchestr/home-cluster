@@ -1,0 +1,63 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app hyperion-ng
+  namespace: home
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.0.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    image:
+      repository: sirfragalot/hyperion.ng
+      tag: 2.0.13
+
+    env:
+      TZ: ${TZ}
+
+    service:
+      main:
+        ports:
+          http:
+            port: 8090
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: traefik
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:led-variant-outline
+          hajimari.io/group: Home
+        hosts:
+          - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - secretName: "{{ .Release.Name }}-tls"
+            hosts:
+              - *host
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: hyperion-ng-config-v1
+        mountPath: /root/.hyperion
