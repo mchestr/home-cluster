@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: authentik
+  name: &app authentik
   namespace: auth-system
 spec:
   interval: 5m
@@ -28,7 +28,7 @@ spec:
       namespace: database-system
   valuesFrom:
     - kind: Secret
-      name: authentik-secrets-helm
+      name: *app
   values:
     fullnameOverride: authentik
     image:
@@ -73,7 +73,7 @@ spec:
         use_ssl: true
         from: outpost@${CLUSTER_DOMAIN}
       redis:
-        host: redis-headless.database-system
+        host: redis.database-system
 
     postgresql:
       enabled: false
