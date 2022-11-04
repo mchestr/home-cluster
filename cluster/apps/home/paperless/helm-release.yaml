@@ -22,6 +22,8 @@ spec:
     remediation:
       retries: 5
   dependsOn:
+    - name: postgres
+      namespace: database-system
     - name: redis
       namespace: database-system
   values:
