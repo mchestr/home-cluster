@@ -33,7 +33,7 @@ spec:
       main:
         ports:
           http:
-            port: 19400
+            port: 8090
 
     ingress:
       main:
