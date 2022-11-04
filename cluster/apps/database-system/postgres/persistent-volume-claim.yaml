@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-pvc
+  name: postgres-data-v1
   namespace: database-system
   labels:
     recurring-job-group.longhorn.io/backup: enabled

@@ -50,7 +50,7 @@ spec:
         type: LoadBalancer
         loadBalancerIP: ${METALLB_POSTGRES_ADDR}
       persistence:
-        existingClaim: postgres-pvc
+        existingClaim: postgres-data-v1
       initdb:
         scripts:
           create-paperless-db.sql: |
