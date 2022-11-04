@@ -14,7 +14,7 @@
         'digest',
       ],
       automergeSchedule: [
-        'after 3pm and before 4pm',
+        'after 10pm and before 5am',
       ],
     },
     {
