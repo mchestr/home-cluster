@@ -1,31 +1,55 @@
 {
-  "packageRules": [
+  packageRules: [
     {
-      "description": "Auto merge container digests",
-      "matchDatasources": ["docker"],
-      "automerge": true,
-      "automergeType": "branch",
-      "requiredStatusChecks": null,
-      "matchUpdateTypes": ["digest"],
-      "automergeSchedule": ["after 10pm and before 5:00am"]
+      description: 'Auto merge containers at night',
+      matchDatasources: [
+        'docker',
+      ],
+      automerge: true,
+      automergeType: 'branch',
+      requiredStatusChecks: null,
+      matchUpdateTypes: [
+        'minor',
+        'patch',
+        'digest',
+      ],
+      automergeSchedule: [
+        'after 3pm and before 4pm',
+      ],
     },
     {
-      "description": "Auto merge containers",
-      "matchDatasources": ["docker"],
-      "automerge": true,
-      "automergeType": "branch",
-      "requiredStatusChecks": null,
-      "matchUpdateTypes": ["minor", "patch"],
-      "automergeSchedule": ["after 10pm and before 5:00am"]
+      description: 'Auto merge containers anytime',
+      matchDatasources: [
+        'docker',
+      ],
+      automerge: true,
+      automergeType: 'branch',
+      requiredStatusChecks: null,
+      matchUpdateTypes: [
+        'minor',
+        'patch',
+        'digest',
+      ],
+      matchPackageNames: [
+        'ghcr.io/onedr0p/prowlarr-nightly',
+      ],
     },
     {
-      "description": "Auto merge GitHub Actions",
-      "matchDatasources": ["github-tags"],
-      "automerge": true,
-      "automergeType": "branch",
-      "requiredStatusChecks": null,
-      "matchUpdateTypes": ["minor", "patch"],
-      "matchPackageNames": ["lycheeverse/lychee-action", "renovatebot/github-action"]
-    }
-  ]
+      description: 'Auto merge GitHub Actions',
+      matchDatasources: [
+        'github-tags',
+      ],
+      automerge: true,
+      automergeType: 'branch',
+      requiredStatusChecks: null,
+      matchUpdateTypes: [
+        'minor',
+        'patch',
+      ],
+      matchPackageNames: [
+        'lycheeverse/lychee-action',
+        'renovatebot/github-action',
+      ],
+    },
+  ],
 }
