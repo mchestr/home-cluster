@@ -30,7 +30,7 @@ spec:
     image:
       registry: public.ecr.aws
       repository: bitnami/postgresql
-      tag: 14-debian-11
+      tag: 15-debian-11
     architecture: standalone
     global:
       auth:
