@@ -28,7 +28,7 @@ spec:
                 - name: POSTGRES_HOST
                   value: postgres.database-system.svc.cluster.local
                 - name: POSTGRES_USER
-                  value: root
+                  value: postgres
                 - name: POSTGRES_PASSWORD
                   valueFrom:
                     secretKeyRef:
