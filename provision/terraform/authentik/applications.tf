@@ -14,7 +14,7 @@ locals {
     paperless           = { group = "Home" }
     longhorn            = {}
     lidarr              = { group = "Media", basic_auth_enabled = true }
-    hyperion            = { group = "Home" }
+    hyperion-ng         = { group = "Home" }
     home-assistant-code = { group = "Code Editors" }
     esphome             = { group = "Home Automation" }
     emqx                = { basic_auth_enabled = true }
