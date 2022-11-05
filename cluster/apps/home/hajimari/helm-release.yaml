@@ -26,8 +26,9 @@ spec:
     hajimari:
       defaultEnable: false
       lightTheme: cloud
-      darkTheme: espresso
+      darkTheme: chalk
       showGreeting: false
+      showSearch: false
       showAppGroups: true
       showAppInfo: false
       showAppUrls: false
