@@ -55,6 +55,16 @@ tasks:
     cmds:
       - ansible all -i {{.ANSIBLE_INVENTORY_DIR}}/hosts.yml --one-line -a 'uptime'
 
+  restart:multipath:
+    desc: Restart multipath service when longhorn issues
+    cmds:
+      - ansible kubernetes -i {{.ANSIBLE_INVENTORY_DIR}}/hosts.yml -a '/usr/bin/systemctl restart multipathd.service' --become
+
+  restart:k3s:
+    desc: Restart multipath service when longhorn issues
+    cmds:
+      - ansible kubernetes -i {{.ANSIBLE_INVENTORY_DIR}}/hosts.yml -a '/usr/bin/systemctl restart k3s' --become
+
   reboot:
     desc: Reboot all the k8s nodes
     dir: provision/ansible
