@@ -23,7 +23,7 @@ spec:
                 - secretRef:
                     name: *app
               command:
-                - "/bin/bash"
+                - "/bin/sh"
                 - &scriptPath "/app/heartbeat.sh"
               volumeMounts:
                 - name: *app
