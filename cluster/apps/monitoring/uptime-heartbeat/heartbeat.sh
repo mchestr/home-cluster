@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/sh
 
 if [[ -z "${HEARTBEAT_URL}" ]]; then
     printf "%s - Error - Missing HEARTBEAT_URL environment variable" "$(date -u)"
