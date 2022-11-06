@@ -93,7 +93,7 @@ spec:
 
         - alert: PostgresqlHighRollbackRate
           expr: rate(pg_stat_database_xact_rollback{datname!~"template.*"}[3m]) / rate(pg_stat_database_xact_commit{datname!~"template.*"}[3m]) > 0.02
-          for: 0m
+          for: 1m
           labels:
             severity: warning
           annotations:
