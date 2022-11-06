@@ -46,8 +46,12 @@ spec:
               url: https://github.com/mchestr/home-assistant
             - name: mchestr/appdaemon
               url: https://github.com/mchestr/appdaemon
-            - name: k8s@Home Search
+        - group: k8s@Home
+          bookmarks:
+            - name: Search Charts
               url: https://nanne.dev/k8s-at-home-search/
+            - name: Org
+              url: https://github.com/k8s-at-home
             - name: Awesome Home Kubernetes
               url: https://github.com/k8s-at-home/awesome-home-kubernetes
         - group: Communicate
@@ -62,6 +66,8 @@ spec:
               url: "https://slack.com/signin"
         - group: Services
           bookmarks:
+            - name: Status Page
+              url: https://status.${CLUSTER_DOMAIN}
             - name: Cloudflare
               url: https://dash.cloudflare.com
 
