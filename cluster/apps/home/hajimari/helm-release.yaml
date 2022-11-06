@@ -66,8 +66,10 @@ spec:
               url: "https://slack.com/signin"
         - group: Services
           bookmarks:
-            - name: Status Page
+            - name: Cluster Uptime
               url: https://status.${CLUSTER_DOMAIN}
+            - name: Cluster Uptime Settings
+              url: https://status.${CLUSTER_DOMAIN}/dashboard
             - name: Cloudflare
               url: https://dash.cloudflare.com
 
