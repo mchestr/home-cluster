@@ -10,4 +10,5 @@ resources:
   - snmp-exporter
   - thanos
   - unifi-poller
+  - uptime-heartbeat
   - vector

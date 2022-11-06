@@ -1,0 +1,42 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  namespace: monitoring
+  name: &app uptime-heartbeat
+spec:
+  schedule: "* * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 60
+      template:
+        spec:
+          automountServiceAccountToken: false
+          restartPolicy: OnFailure
+          containers:
+            - name: *app
+              image: ghcr.io/onedr0p/kubernetes-kubectl:1.25.3@sha256:c6acda21cdc7a479e25b41660e8c5a955dc036b9234a6747f9912a979a674e57
+              envFrom:
+                - secretRef:
+                    name: *app
+              command:
+                - "/bin/bash"
+                - &scriptPath "/app/heartbeat.sh"
+              volumeMounts:
+                - name: *app
+                  mountPath: *scriptPath
+                  subPath: &scriptName heartbeat.sh
+                  readOnly: true
+          volumes:
+            - name: *app
+              projected:
+                defaultMode: 0775
+                sources:
+                  - configMap:
+                      name: *app
+                      items:
+                        - key: *scriptName
+                          path: *scriptName
