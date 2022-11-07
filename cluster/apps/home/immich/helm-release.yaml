@@ -40,6 +40,10 @@ spec:
         ports:
           http:
             port: 3000
+      api:
+        ports:
+          http:
+            port: 2283
 
     command:
       - "/bin/sh"
@@ -83,14 +87,18 @@ spec:
       machine-learning:
         name: machine-learning
         image: altran1502/immich-machine-learning:release@sha256:e52387c1d8a3065aed35088adf62fdb70e159d7b707bb30276fa86321b3dd5b9
+
         command:
           - "/bin/sh"
           - "./entrypoint.sh"
+
         env:
           NODE_ENV: production
+
         envFrom:
           - secretRef:
               name: *app
+
         volumeMounts:
           - name: data
             mountPath: /usr/src/app/upload
@@ -98,14 +106,18 @@ spec:
       microservices:
         name: microservices
         image: altran1502/immich-server:release@sha256:afff304c82c35058c2f399b6521ee5a251387cb7f06a81f1dd64968c6bd4b7ca
+
         command:
           - "/bin/sh"
           - "./start-microservices.sh"
+
         env:
           NODE_ENV: production
+
         envFrom:
           - secretRef:
               name: *app
+
         volumeMounts:
           - name: data
             mountPath: /usr/src/app/upload
@@ -113,14 +125,36 @@ spec:
       server:
         name: server
         image: altran1502/immich-server:release@sha256:afff304c82c35058c2f399b6521ee5a251387cb7f06a81f1dd64968c6bd4b7ca
+
         command:
           - "/bin/sh"
           - "./start-server.sh"
+
         env:
           NODE_ENV: production
+
         envFrom:
           - secretRef:
               name: *app
+
+        ingress:
+          api:
+            enabled: true
+            ingressClassName: traefik
+            annotations:
+              cert-manager.io/cluster-issuer: letsencrypt-production
+              traefik.ingress.kubernetes.io/router.entrypoints: websecure
+              traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
+            hosts:
+              - host: &host "{{ .Release.Name }}-api.${CLUSTER_DOMAIN}"
+                paths:
+                  - path: /
+                    pathType: Prefix
+            tls:
+              - secretName: "{{ .Release.Name }}-api-tls"
+                hosts:
+                  - *host
+
         volumeMounts:
           - name: data
             mountPath: /usr/src/app/upload
