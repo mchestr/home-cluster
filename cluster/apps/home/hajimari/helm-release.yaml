@@ -42,10 +42,8 @@ spec:
           bookmarks:
             - name: Uptime
               url: https://status.${CLUSTER_DOMAIN}
-            - name: Renovate
+            - name: mchestr/home-cluster
               url: https://github.com/mchestr/home-cluster/issues/2
-        - group: Git
-          bookmarks:
             - name: mchestr/home-assistant
               url: https://github.com/mchestr/home-assistant
             - name: mchestr/appdaemon
