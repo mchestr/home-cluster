@@ -104,7 +104,7 @@ spec:
             mountPath: /usr/src/app/upload
 
       server:
-        name: microservices
+        name: server
         image: altran1502/immich-server:release@sha256:afff304c82c35058c2f399b6521ee5a251387cb7f06a81f1dd64968c6bd4b7ca
         command:
           - "/bin/sh"
