@@ -46,6 +46,18 @@ spec:
           api:
             enabled: true
             port: &server-port 3001
+      microservices:
+        enabled: true
+        ports:
+          api:
+            enabled: true
+            port: &server-port 3002
+      machine-learning:
+        enabled: true
+        ports:
+          api:
+            enabled: true
+            port: &server-port 3003
 
     command:
       - "/bin/sh"
@@ -106,7 +118,7 @@ spec:
       fsGroupChangePolicy: OnRootMismatch
 
     additionalContainers:
-      machine-learning:
+      immich-machine-learning:
         name: immich-machine-learning
         image: altran1502/immich-machine-learning:release@sha256:e52387c1d8a3065aed35088adf62fdb70e159d7b707bb30276fa86321b3dd5b9
 
