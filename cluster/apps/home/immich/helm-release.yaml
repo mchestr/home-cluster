@@ -55,7 +55,7 @@ spec:
       machine-learning:
         enabled: true
         ports:
-          machine-learning:
+          ml:
             enabled: true
             port: &server-port 3003
 
