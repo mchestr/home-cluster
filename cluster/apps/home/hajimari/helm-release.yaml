@@ -38,9 +38,9 @@ spec:
       namespaceSelector:
         any: true
       globalBookmarks:
-        - group: Cluster
+        - group: Home
           bookmarks:
-            - name: Uptime
+            - name: Status Page
               url: https://status.${CLUSTER_DOMAIN}
             - name: mchestr/home-cluster
               url: https://github.com/mchestr/home-cluster/issues/2
@@ -50,22 +50,18 @@ spec:
               url: https://github.com/mchestr/appdaemon
         - group: k8s@Home
           bookmarks:
+            - name: Organization
+              url: https://github.com/k8s-at-home
             - name: Search Charts
               url: https://nanne.dev/k8s-at-home-search/
-            - name: Org
-              url: https://github.com/k8s-at-home
             - name: Awesome Home Kubernetes
               url: https://github.com/k8s-at-home/awesome-home-kubernetes
-        - group: Communicate
+        - group: Gaming
           bookmarks:
             - name: Twitch
               url: "https://twitch.tv"
-            - name: Discord
-              url: "https://discord.com"
             - name: Gmail
               url: "https://gmail.com"
-            - name: Slack
-              url: "https://slack.com/signin"
         - group: Services
           bookmarks:
             - name: Cloudflare
