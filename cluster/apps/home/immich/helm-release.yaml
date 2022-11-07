@@ -41,6 +41,10 @@ spec:
           http:
             port: 3000
 
+    command:
+      - "/bin/sh"
+      - "./entrypoint.sh"
+
     ingress:
       main:
         enabled: true
@@ -79,6 +83,9 @@ spec:
       machine-learning:
         name: machine-learning
         image: altran1502/immich-machine-learning:release@sha256:e52387c1d8a3065aed35088adf62fdb70e159d7b707bb30276fa86321b3dd5b9
+        command:
+          - "/bin/sh"
+          - "./entrypoint.sh"
         env:
           NODE_ENV: production
         envFrom:
