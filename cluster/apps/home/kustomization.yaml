@@ -8,6 +8,7 @@ resources:
   - hajimari
   - home-assistant
   - hyperion-ng
+  - immich
   - paperless
   - syncthing
   - theme-park
