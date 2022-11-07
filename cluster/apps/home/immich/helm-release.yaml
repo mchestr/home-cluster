@@ -71,6 +71,23 @@ spec:
             hosts:
               - *host
 
+      api:
+        enabled: true
+        ingressClassName: traefik
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
+        hosts:
+          - host: &host "{{ .Release.Name }}-api.${CLUSTER_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - secretName: "{{ .Release.Name }}-api-tls"
+            hosts:
+              - *host
+
     persistence:
       data:
         enabled: true
@@ -136,24 +153,6 @@ spec:
         envFrom:
           - secretRef:
               name: *app
-
-        ingress:
-          api:
-            enabled: true
-            ingressClassName: traefik
-            annotations:
-              cert-manager.io/cluster-issuer: letsencrypt-production
-              traefik.ingress.kubernetes.io/router.entrypoints: websecure
-              traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
-            hosts:
-              - host: &host "{{ .Release.Name }}-api.${CLUSTER_DOMAIN}"
-                paths:
-                  - path: /
-                    pathType: Prefix
-            tls:
-              - secretName: "{{ .Release.Name }}-api-tls"
-                hosts:
-                  - *host
 
         volumeMounts:
           - name: data
