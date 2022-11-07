@@ -45,7 +45,7 @@ spec:
         ports:
           api:
             enabled: true
-            port: 2283
+            port: &api-port 3001
 
     command:
       - "/bin/sh"
@@ -87,7 +87,7 @@ spec:
                 pathType: Prefix
                 service:
                   name: immich-api
-                  port: 2283
+                  port: *api-port
         tls:
           - secretName: "{{ .Release.Name }}-tls"
             hosts:
