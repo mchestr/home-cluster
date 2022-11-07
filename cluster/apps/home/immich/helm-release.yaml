@@ -40,7 +40,11 @@ spec:
         ports:
           http:
             port: 3000
+      api:
+        enabled: true
+        ports:
           api:
+            enabled: true
             port: 2283
 
     command:
