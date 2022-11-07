@@ -81,12 +81,12 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
         hosts:
-          - host: &host "{{ .Release.Name }}-api.${CLUSTER_DOMAIN}"
+          - host: *host
             paths:
-              - path: /
+              - path: /api
                 pathType: Prefix
         tls:
-          - secretName: "{{ .Release.Name }}-api-tls"
+          - secretName: "{{ .Release.Name }}-tls"
             hosts:
               - *host
 
