@@ -85,6 +85,8 @@ spec:
             paths:
               - path: /api
                 pathType: Prefix
+                service:
+                  name: api
         tls:
           - secretName: "{{ .Release.Name }}-tls"
             hosts:
