@@ -42,7 +42,7 @@ spec:
             port: 3000
       api:
         ports:
-          http:
+          api:
             port: 2283
 
     command:
