@@ -86,7 +86,8 @@ spec:
               - path: /api
                 pathType: Prefix
                 service:
-                  name: api
+                  name: immich-api
+                  port: 2283
         tls:
           - secretName: "{{ .Release.Name }}-tls"
             hosts:
