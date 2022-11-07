@@ -83,7 +83,7 @@ spec:
         hosts:
           - host: *host
             paths:
-              - path: /api
+              - path: /api(/|$)(.*)
                 pathType: Prefix
                 service:
                   name: immich-api
