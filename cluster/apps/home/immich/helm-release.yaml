@@ -70,7 +70,7 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
+          traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd,home-strip-prefix-api@kubernetescrd
           hajimari.io/enable: "true"
           hajimari.io/icon: heroicons:photo
           hajimari.io/group: Home
@@ -80,19 +80,6 @@ spec:
             paths:
               - path: /
                 pathType: Prefix
-        tls:
-          - secretName: "{{ .Release.Name }}-tls"
-            hosts:
-              - *host
-
-      server:
-        enabled: true
-        ingressClassName: traefik
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd,home-strip-prefix-api@kubernetescrd
-        hosts:
           - host: *host
             paths:
               - path: /api
