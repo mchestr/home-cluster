@@ -43,19 +43,19 @@ spec:
       server:
         enabled: true
         ports:
-          api:
+          server:
             enabled: true
             port: &server-port 3001
       microservices:
         enabled: true
         ports:
-          api:
+          microservices:
             enabled: true
             port: &server-port 3002
       machine-learning:
         enabled: true
         ports:
-          api:
+          machine-learning:
             enabled: true
             port: &server-port 3003
 
