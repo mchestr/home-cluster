@@ -28,8 +28,8 @@ spec:
       namespace: database-system
   values:
     image:
-      repository: altran1502/immich-web@sha256:42d0c892895a587ded57639ebe9671853a9fb439fa75643605caa25e737e4eeb
-      tag: release
+      repository: altran1502/immich-web
+      tag: release@sha256:42d0c892895a587ded57639ebe9671853a9fb439fa75643605caa25e737e4eeb
 
     envFrom:
       - secretRef:
