@@ -51,13 +51,13 @@ spec:
         ports:
           microservices:
             enabled: true
-            port: &server-port 3002
+            port: 3002
       machine-learning:
         enabled: true
         ports:
           ml:
             enabled: true
-            port: &server-port 3003
+            port: 3003
 
     command:
       - "/bin/sh"
