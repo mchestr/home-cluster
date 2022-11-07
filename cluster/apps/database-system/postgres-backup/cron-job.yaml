@@ -35,7 +35,7 @@ spec:
                       name: postgres-secrets
                       key: password
                 - name: POSTGRES_DB
-                  value: "authentik,paperless"
+                  value: "authentik,paperless,immich"
               volumeMounts:
                 - name: nas-backups
                   mountPath: /backups
