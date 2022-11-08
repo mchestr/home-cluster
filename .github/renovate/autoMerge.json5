@@ -1,7 +1,7 @@
 {
   packageRules: [
     {
-      description: 'Auto merge containers at night',
+      description: 'Auto merge digest',
       matchDatasources: [
         'docker',
       ],
@@ -9,12 +9,7 @@
       automergeType: 'branch',
       requiredStatusChecks: null,
       matchUpdateTypes: [
-        'minor',
-        'patch',
         'digest',
-      ],
-      automergeSchedule: [
-        'after 10pm and before 5am',
       ],
     },
     {
