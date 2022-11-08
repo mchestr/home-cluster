@@ -126,7 +126,7 @@ spec:
 
       microservices:
         name: immich-microservices
-        image: altran1502/immich-server:release@sha256:afff304c82c35058c2f399b6521ee5a251387cb7f06a81f1dd64968c6bd4b7ca
+        image: altran1502/immich-server:release@sha256:59eb952b7ecc15de9c12d59914681f0b2ea528c1ee6a97fe77e1909348d3b621
 
         command:
           - "/bin/sh"
@@ -145,7 +145,7 @@ spec:
 
       server:
         name: immich-server
-        image: altran1502/immich-server:release@sha256:afff304c82c35058c2f399b6521ee5a251387cb7f06a81f1dd64968c6bd4b7ca
+        image: altran1502/immich-server:release@sha256:59eb952b7ecc15de9c12d59914681f0b2ea528c1ee6a97fe77e1909348d3b621
 
         command:
           - "/bin/sh"
