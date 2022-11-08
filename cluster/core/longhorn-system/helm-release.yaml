@@ -5,7 +5,7 @@ metadata:
   name: longhorn
   namespace: longhorn-system
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
       # renovate: registryUrl=https://charts.longhorn.io
@@ -15,7 +15,6 @@ spec:
         kind: HelmRepository
         name: longhorn-charts
         namespace: flux-system
-      interval: 1m
   install:
     createNamespace: true
     remediation:
