@@ -5,7 +5,9 @@ metadata:
   name: postgres-data-v1
   namespace: database-system
   labels:
-    recurring-job-group.longhorn.io/backup: enabled
+    app.kubernetes.io/name: &name postgres
+    app.kubernetes.io/instance: *name
+    snapshot.home.arpa/enabled: "true"
 spec:
   storageClassName: longhorn
   accessModes:
