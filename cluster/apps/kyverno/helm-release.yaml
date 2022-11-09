@@ -15,7 +15,7 @@ spec:
         name: kyverno-charts
         namespace: flux-system
   install:
-    createNamespace: true
+    createNamespace: false
     remediation:
       retries: 5
   upgrade:
