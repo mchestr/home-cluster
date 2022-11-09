@@ -21,6 +21,7 @@ resources:
   - k8s-gateway-charts.yaml
   - kasten-charts.yaml
   - kubernetes-dashboard-charts.yaml
+  - kyverno-charts.yaml
   - longhorn-charts.yaml
   - metallb-charts.yaml
   - metrics-server-charts.yaml
