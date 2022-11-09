@@ -5,6 +5,7 @@ resources:
   - auth-system
   - cert-manager
   - database-system
+  - default
   - flux-system
   - home
   - kube-system
