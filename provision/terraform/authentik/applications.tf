@@ -26,6 +26,7 @@ locals {
     alert-manager       = {}
     sync                = { group = "Home", basic_auth_enabled = true }
     thanos              = {}
+    kopia               = {}
   }
 
   oauth2_apps = {
