@@ -64,7 +64,7 @@ spec:
               - path: /
                 pathType: Prefix
         tls:
-          - secretName: "{{ .Release.Name }}-tls"
+          - secretName: "{{ .Release.Name }}-tls-v2"
             hosts:
               - *host
       admin:
