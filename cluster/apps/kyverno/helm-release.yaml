@@ -22,7 +22,7 @@ spec:
     remediation:
       retries: 5
   values:
-    replicaCount: 2
+    replicaCount: 3
 
     serviceMonitor:
       enabled: true
