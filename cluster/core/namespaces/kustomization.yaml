@@ -9,6 +9,7 @@ resources:
   - game-system.yaml
   - home.yaml
   - kubernetes-dashboard.yaml
+  - kyverno.yaml
   - longhorn-system.yaml
   - media.yaml
   - metallb-system.yaml
