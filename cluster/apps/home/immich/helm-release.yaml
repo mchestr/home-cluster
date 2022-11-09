@@ -29,7 +29,7 @@ spec:
   values:
     image:
       repository: altran1502/immich-web
-      tag: release@sha256:42d0c892895a587ded57639ebe9671853a9fb439fa75643605caa25e737e4eeb
+      tag: release@sha256:7f7ddfe8ca55205cc34e143012ef91b2d5157c6854dc72b8fab2f89abd1057ef
 
     envFrom:
       - secretRef:
