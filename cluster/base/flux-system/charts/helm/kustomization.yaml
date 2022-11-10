@@ -5,6 +5,7 @@ resources:
   - authentik-charts.yaml
   - bitnami-charts.yaml
   - bjw-s-charts.yaml
+  - botkube-charts.yaml
   - csi-driver-nfs-charts.yaml
   - deliveryhero-charts.yaml
   - descheduler-charts.yaml
