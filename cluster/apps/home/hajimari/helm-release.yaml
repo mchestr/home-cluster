@@ -66,6 +66,8 @@ spec:
           bookmarks:
             - name: Cloudflare
               url: https://dash.cloudflare.com
+            - name: Backblaze
+              url: https://secure.backblaze.com/b2_buckets.htm
 
       customApps:
         - group: storage, database, and messaging
