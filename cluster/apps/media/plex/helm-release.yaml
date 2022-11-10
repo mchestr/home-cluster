@@ -107,5 +107,11 @@ spec:
         memory: 8000Mi
 
     podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
       fsGroup: ${FS_GROUP}
       fsGroupChangePolicy: OnRootMismatch
+      supplementalGroups:
+        - 44
+        - 109
+        - 100
