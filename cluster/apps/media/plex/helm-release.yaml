@@ -82,7 +82,7 @@ spec:
         type: nfs
         server: ${NAS_ADDR}
         path: ${NAS_BACKUP_DIR}/plex
-        mountPath: /config/backup
+        mountPath: /backup
       transcode:
         enabled: true
         type: emptyDir
