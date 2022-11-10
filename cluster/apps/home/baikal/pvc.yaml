@@ -17,22 +17,3 @@ spec:
       storage: 1Gi
 
   storageClassName: longhorn
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: baikal-data-v1
-  namespace: home
-  labels:
-    app.kubernetes.io/name: &name baikal
-    app.kubernetes.io/instance: *name
-    snapshot.home.arpa/enabled: "true"
-spec:
-  accessModes:
-    - ReadWriteOnce
-
-  resources:
-    requests:
-      storage: 1Gi
-
-  storageClassName: longhorn
