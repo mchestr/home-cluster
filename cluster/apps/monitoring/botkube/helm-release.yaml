@@ -13,7 +13,7 @@ spec:
       version: v0.15.0
       sourceRef:
         kind: HelmRepository
-        name: botkubeio-charts
+        name: botkube-charts
         namespace: flux-system
       interval: 5m
   install:
