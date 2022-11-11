@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: paperless
+  name: &app paperless
   namespace: home
 spec:
   interval: 15m
@@ -41,10 +41,18 @@ spec:
       PAPERLESS_TIME_ZONE: ${TZ}
       PAPERLESS_URL: https://{{ .Release.Name }}.${CLUSTER_DOMAIN}
       PAPERLESS_REDIS: redis://redis.database-system:6379
-      PAPERLESS_DBHOST: postgres.database-system
-      PAPERLESS_DBUSER: ${PAPERLESS_DATABASE_USER}
-      PAPERLESS_DBNAME: ${PAPERLESS_DATABASE_NAME}
-      PAPERLESS_DBPASS: ${PAPERLESS_DATABASE_PASSWORD}
+      PAPERLESS_DBHOST: postgres-rw.databases.svc.cluster.local
+      PAPERLESS_DBNAME: paperless
+      PAPERLESS_DBUSER:
+        valueFrom:
+          secretKeyRef:
+            name: *app
+            key: POSTGRES_USER
+      PAPERLESS_DBPASS:
+        valueFrom:
+          secretKeyRef:
+            name: *app
+            key: POSTGRES_PASS
       PAPERLESS_ENABLE_HTTP_REMOTE_USER: "true"
       PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME: HTTP_X_AUTHENTIK_USERNAME
 
