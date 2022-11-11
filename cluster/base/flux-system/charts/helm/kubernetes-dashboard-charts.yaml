@@ -4,5 +4,5 @@ metadata:
   name: kubernetes-dashboard-charts
   namespace: flux-system
 spec:
-  interval: 30m
+  interval: 1h
   url: https://kubernetes.github.io/dashboard
