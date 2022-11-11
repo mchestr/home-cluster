@@ -25,7 +25,7 @@ spec:
     - name: postgres
       namespace: database-system
     - name: redis
-      namespace: database-system
+      namespace: databases
   values:
     image:
       repository: altran1502/immich-web
