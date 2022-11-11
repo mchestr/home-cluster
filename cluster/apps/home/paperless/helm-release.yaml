@@ -46,12 +46,12 @@ spec:
       PAPERLESS_DBUSER:
         valueFrom:
           secretKeyRef:
-            name: *app
+            name: &pg-secret paperless-postgres
             key: POSTGRES_USER
       PAPERLESS_DBPASS:
         valueFrom:
           secretKeyRef:
-            name: *app
+            name: *pg-secret
             key: POSTGRES_PASS
       PAPERLESS_ENABLE_HTTP_REMOTE_USER: "true"
       PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME: HTTP_X_AUTHENTIK_USERNAME
