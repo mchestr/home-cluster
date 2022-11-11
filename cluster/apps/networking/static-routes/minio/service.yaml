@@ -13,4 +13,4 @@ spec:
     - name: http
       port: 9001
 
-  externalName: lochnas.local
+  externalName: lochnas.${PRIVATE_LOCAL_DOMAIN}
