@@ -7,7 +7,6 @@ resources:
   - bjw-s-charts.yaml
   - botkube-charts.yaml
   - cloudnative-pg-charts.yaml
-  - csi-driver-nfs-charts.yaml
   - deliveryhero-charts.yaml
   - dysnix-charts.yaml
   - descheduler-charts.yaml
