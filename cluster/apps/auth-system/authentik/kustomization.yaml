@@ -5,3 +5,5 @@ resources:
   - helm-release.yaml
   - middleware.yaml
   - secret.sops.yaml
+patchesStrategicMerge:
+  - patches/postgres-init.yaml
