@@ -46,6 +46,8 @@ spec:
           monitoring:
             enablePodMonitor: true
           postgresql:
+            parameters:
+              password_encryption: md5
             pg_hba:
               - host all vaultwarden all md5
           backup:
