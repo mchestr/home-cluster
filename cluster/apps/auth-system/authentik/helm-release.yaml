@@ -73,7 +73,7 @@ spec:
         use_ssl: true
         from: outpost@${CLUSTER_DOMAIN}
       redis:
-        host: redis.databases
+        host: redis.databases.svc.cluster.local
 
     postgresql:
       enabled: false
