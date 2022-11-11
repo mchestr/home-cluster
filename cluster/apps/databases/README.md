@@ -1,61 +1,18 @@
 # Databases
 
-## Postgres
+## Backblaze Setup
 
-### S3 Configuration
+This will set up replication to have your postgres backups sent to a [backblaze](https://www.backblaze.com/) b2 bucket.
 
-1. Create `~/.mc/config.json`
-    ```json
-    {
-        "version": "10",
-        "aliases": {
-            "minio": {
-                "url": "https://s3.<domain>",
-                "accessKey": "<access-key>",
-                "secretKey": "<secret-key>",
-                "api": "S3v4",
-                "path": "auto"
-            }
-        }
-    }
-    ```
+1. Create master `key-id` and `key` on [Account > App Keys](https://secure.backblaze.com/app_keys.htm)
 
-2. Create the database user and password
+2. Create a `bucket`, and then a `key-id` and `key` for access only to this new bucket
     ```sh
-    mc admin user add minio postgresql <super-secret-password>
+    export B2_APPLICATION_KEY_ID="<master-key-id>"
+    export B2_APPLICATION_KEY="<master-key>"
+    export B2_BUCKET_NAME="<bucket-name>"
+    b2 create-bucket $B2_BUCKET_NAME allPrivate --defaultServerSideEncryption "SSE-B2"  --lifecycleRules '[{"daysFromHidingToDeleting": 1,"daysFromUploadingToHiding": null,"fileNamePrefix": ""}]'
+    b2 create-key --bucket $B2_BUCKET_NAME $B2_BUCKET_NAME listBuckets,readBuckets,listFiles,readFiles,writeFiles,readBucketEncryption,readBucketReplications,readBucketRetentions,readFileRetentions,writeFileRetentions,readFileLegalHolds
     ```
 
-3. Create the outline bucket
-    ```sh
-    mc mb minio/postgresql
-    ```
-
-4. Create `postgresql-user-policy.json`
-    ```json
-    {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Action": [
-                    "s3:ListBucket",
-                    "s3:PutObject",
-                    "s3:GetObject",
-                    "s3:DeleteObject"
-                ],
-                "Effect": "Allow",
-                "Resource": ["arn:aws:s3:::postgresql/*", "arn:aws:s3:::postgresql"],
-                "Sid": ""
-            }
-        ]
-    }
-    ```
-
-5. Apply the bucket policies
-    ```sh
-    mc admin policy add minio postgresql-private postgresql-user-policy.json
-    ```
-
-6. Associate private policy with the user
-    ```sh
-    mc admin policy set minio postgresql-private user=postgresql
-    ```
+3. Create `secret.sops.yaml` for Postgres to use for s3 replication and reference key created in step 2.
