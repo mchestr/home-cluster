@@ -25,7 +25,7 @@ spec:
     - name: postgres
       namespace: database-system
     - name: redis
-      namespace: database-system
+      namespace: databases
   valuesFrom:
     - kind: Secret
       name: *app
@@ -73,7 +73,7 @@ spec:
         use_ssl: true
         from: outpost@${CLUSTER_DOMAIN}
       redis:
-        host: redis.database-system
+        host: redis.databases
 
     postgresql:
       enabled: false
