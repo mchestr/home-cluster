@@ -13,11 +13,7 @@ spec:
           - name: POSTGRES_HOST
             value: postgres-rw.databases.svc.cluster.local
           - name: POSTGRES_DB
-            value: authentik
-          - name: POSTGRES_USER_RESET
-            value: "true"
-          - name: POSTGRES_RESET_CONFIRM
-            value: YES
+            value: paperless
           - name: POSTGRES_SUPER_PASS
             valueFrom:
               secretKeyRef:
