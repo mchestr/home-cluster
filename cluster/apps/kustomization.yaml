@@ -5,6 +5,7 @@ resources:
   - auth-system
   - cert-manager
   - database-system
+  - databases
   - default
   - flux-system
   - home
