@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns-custom
+  namespace: kube-system
+data:
+  local.server: |
+    lochnas.${PRIVATE_LOCAL_DOMAIN}:53 {
+        errors
+        cache 30
+        forward . ${GATEWAY_IP}:53
+    }
