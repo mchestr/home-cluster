@@ -23,7 +23,7 @@ spec:
       retries: 5
   dependsOn:
     - name: postgres
-      namespace: default
+      namespace: *namespace
     - name: longhorn
       namespace: longhorn-system
   values:
