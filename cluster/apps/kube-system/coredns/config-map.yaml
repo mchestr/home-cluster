@@ -5,7 +5,7 @@ metadata:
   namespace: kube-system
 data:
   local.server: |
-    lochnas.${PRIVATE_LOCAL_DOMAIN}:53 {
+    ${PRIVATE_LOCAL_DOMAIN}:53 {
         errors
         cache 30
         forward . ${GATEWAY_IP}:53
