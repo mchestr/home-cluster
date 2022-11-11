@@ -5,7 +5,7 @@ metadata:
   name: postgres-data-v1
   namespace: database-system
   labels:
-    app.kubernetes.io/name: &name postgres
+    app.kubernetes.io/name: &name postgresql
     app.kubernetes.io/instance: *name
     snapshot.home.arpa/enabled: "true"
 spec:
