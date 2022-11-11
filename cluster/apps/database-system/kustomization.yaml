@@ -5,4 +5,3 @@ resources:
   - emqx
   - postgres
   - postgres-backup
-  - redis

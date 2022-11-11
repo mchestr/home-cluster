@@ -22,10 +22,10 @@ spec:
     remediation:
       retries: 5
   dependsOn:
-    - name: postgres
-      namespace: database-system
+    - name: postgres-cluster
+      namespace: databases
     - name: redis
-      namespace: database-system
+      namespace: databases
   values:
     image:
       repository: ghcr.io/paperless-ngx/paperless-ngx
@@ -40,7 +40,7 @@ spec:
       PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
       PAPERLESS_TIME_ZONE: ${TZ}
       PAPERLESS_URL: https://{{ .Release.Name }}.${CLUSTER_DOMAIN}
-      PAPERLESS_REDIS: redis://redis.database-system:6379
+      PAPERLESS_REDIS: redis://redis.databases:6379
       PAPERLESS_DBHOST: postgres-rw.databases.svc.cluster.local
       PAPERLESS_DBNAME: paperless
       PAPERLESS_DBUSER:
