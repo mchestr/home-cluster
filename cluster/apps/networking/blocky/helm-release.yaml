@@ -27,7 +27,10 @@ spec:
       tag: v0.19
 
     controller:
+      enabled: true
+      type: deployment
       strategy: RollingUpdate
+      replicas: 3
 
     env:
       TZ: ${TZ}
