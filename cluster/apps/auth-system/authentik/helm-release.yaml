@@ -61,7 +61,7 @@ spec:
       outposts:
         docker_image_base: ghcr.io/goauthentik/%(type)s:%(version)s
       postgresql:
-        host: postgres.databases.svc.cluster.local
+        host: postgres-rw.databases.svc.cluster.local
         name: authentik
       email:
         host: ${SMTP_HOST}
