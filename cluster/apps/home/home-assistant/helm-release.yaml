@@ -70,12 +70,6 @@ spec:
       config:
         enabled: true
         existingClaim: home-assistant-config-v1
-      secrets:
-        enabled: true
-        type: secret
-        name: *app
-        mountPath: /config/secrets.yaml
-        subPath: secrets.yaml
 
     podSecurityContext:
       fsGroup: ${RUN_AS_GROUP}
