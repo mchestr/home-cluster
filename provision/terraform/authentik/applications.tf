@@ -32,6 +32,7 @@ locals {
   oauth2_apps = {
     grafana = {}
     minio   = { extra_scopes = [authentik_scope_mapping.oidc-scope-minio.id] }
+    outline = { }
   }
 
   ldap_apps = {

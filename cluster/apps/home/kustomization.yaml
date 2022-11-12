@@ -9,6 +9,7 @@ resources:
   - home-assistant
   - hyperion-ng
   - immich
+  - outline
   - paperless
   - syncthing
   - theme-park
