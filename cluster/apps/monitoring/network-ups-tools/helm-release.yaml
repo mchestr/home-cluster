@@ -31,9 +31,6 @@ spec:
           http:
             protocol: TCP
             port: 3493
-      metrics:
-        enabled: true
-        ports:
           metrics:
             enabled: true
             port: 9199
