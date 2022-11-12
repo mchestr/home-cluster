@@ -105,6 +105,11 @@ spec:
             path: /metrics
             interval: 1m
             scrapeTimeout: 10s
+          - port: metrics
+            scheme: http
+            path: /ups_metrics
+            interval: 1m
+            scrapeTimeout: 10s
 
     podAnnotations:
       configmap.reloader.stakater.com/reload: *config
