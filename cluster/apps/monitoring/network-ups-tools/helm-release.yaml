@@ -98,8 +98,6 @@ spec:
         env:
           - name: HTTP_PATH
             value: /metrics
-          - name: HTTP_PORT
-            value: 9995
 
     serviceMonitor:
       main:
