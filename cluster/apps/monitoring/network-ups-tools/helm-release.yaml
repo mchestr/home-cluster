@@ -103,7 +103,8 @@ spec:
       main:
         enabled: true
         endpoints:
-          - relabelings:
+          - port: metrics
+            relabelings:
               - sourceLabels: [__param_target]
                 targetLabel: target
 
