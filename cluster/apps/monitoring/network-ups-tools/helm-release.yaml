@@ -94,7 +94,7 @@ spec:
     additionalContainers:
       exporter:
         name: exporter
-        image: hon95/prometheus-nut-exporter:1.1.1
+        image: hon95/prometheus-nut-exporter:1.2.1
         env:
           - name: HTTP_PATH
             value: /metrics
