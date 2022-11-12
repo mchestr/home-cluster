@@ -13,7 +13,7 @@ data:
     - name: Redis
       type: redis-datasource
       access: proxy
-      url: redis://redis.database-system:6379
+      url: redis://redis.databases.svc.cluster.local:6379
       jsonData:
         client: standalone
         poolSize: 5
