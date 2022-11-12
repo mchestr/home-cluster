@@ -23,7 +23,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: *app
-              image: alpine:3.16.2@sha256:1d96e60e5270815238e999aed0ae61d22ac6f5e5f976054b24796d0e0158b39c
+              image: alpine:3.16.3@sha256:b2774aff8c3025ec1d3d3aed595e50ac83a81930a61361ccd1edc4d33c26d013
               envFrom:
                 - secretRef:
                     name: *app
