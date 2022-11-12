@@ -51,12 +51,10 @@ spec:
       PGSSLMODE: disable
       PORT: 80
       REDIS_URL: redis://redis.databases.svc.cluster.local:6379
-      SMTP_HOST: ${SMTP_HOST}
-      SMTP_PORT: ${SMTPPORT}
-      SMTP_FROM_EMAIL: ${SMTP_FROM}
+      SMTP_HOST: smtp-relay.default.svc.cluster.local
+      SMTP_PORT: 2525
+      SMTP_FROM_EMAIL: outline@${CLUSTER_DOMAIN}
       SMTP_SECURE: "false"
-      SMTP_USERNAME: ${SMTP_USERNAME}
-      SMTP_PASSWORD: ${SMTP_PASSWORD}
       URL: "https://docs.${CLUSTER_DOMAIN}"
       WEB_CONCURRENCY: 10
 
