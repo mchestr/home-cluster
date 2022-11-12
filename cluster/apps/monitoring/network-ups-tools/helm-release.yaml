@@ -31,6 +31,13 @@ spec:
           http:
             protocol: TCP
             port: 3493
+      metrics:
+        enabled: true
+        ports:
+          metrics:
+            enabled: true
+            port: 9199
+            protocol: TCP
 
     persistence:
       config:
@@ -91,6 +98,10 @@ spec:
       exporter:
         name: exporter
         image: ghcr.io/druggeri/nut_exporter:2.4.2
+
+    serviceMonitor:
+      main:
+        enabled: true
 
     podAnnotations:
       configmap.reloader.stakater.com/reload: *config
