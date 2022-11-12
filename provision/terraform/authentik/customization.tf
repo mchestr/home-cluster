@@ -66,8 +66,13 @@ resource "authentik_scope_mapping" "oidc-scope-minio" {
   name       = "OIDC-Scope-minio"
   scope_name = "minio"
   expression = <<EOF
+if ak_is_group_member(request.user, name="system-admins"):
+    policy = "consoleAdmin"
+else:
+    policy = "readonly"
+
 return {
-    "policy": "readwrite",
+    "policy": policy,
 }
 EOF
 }
