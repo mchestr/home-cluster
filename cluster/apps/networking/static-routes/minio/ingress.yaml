@@ -36,7 +36,6 @@ kind: Ingress
 metadata:
   name: s3
   namespace: networking
-  ingressClassName: traefik
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
     kubernetes.io/ingress.class: traefik
