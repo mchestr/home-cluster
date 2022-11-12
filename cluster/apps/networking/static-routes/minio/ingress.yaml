@@ -30,3 +30,32 @@ spec:
                 name: minio
                 port:
                   name: http
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minio
+  namespace: networking
+  ingressClassName: traefik
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.middlewares: networking-local-only@kubernetescrd
+
+spec:
+  tls:
+    - secretName: minio-tls
+      hosts:
+        - "s3.${CLUSTER_DOMAIN}"
+
+  rules:
+    - host: s3.${CLUSTER_DOMAIN}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: minio
+                port:
+                  name: api
