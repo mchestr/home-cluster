@@ -106,9 +106,11 @@ spec:
         enabled: true
         endpoints:
           - port: metrics
+            interval: 15s
+            scrapeTimeout: 10s
             params:
               target:
-                - "localhost:9995"
+                - "localhost:3493"
             relabelings:
               - sourceLabels: [__param_target]
                 targetLabel: target
