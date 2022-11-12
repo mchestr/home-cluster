@@ -5,7 +5,6 @@ resources:
   - auth-system.yaml
   - cert-manager.yaml
   - csi-driver-nfs.yaml
-  - database-system.yaml
   - databases.yaml
   - game-system.yaml
   - home.yaml
