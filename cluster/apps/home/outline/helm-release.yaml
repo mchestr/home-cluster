@@ -52,7 +52,7 @@ spec:
       PORT: 80
       REDIS_URL: redis://redis.databases.svc.cluster.local:6379
       SMTP_HOST: ${SMTP_HOST}
-      SMTP_PORT: ${SMTP_HOST}
+      SMTP_PORT: ${SMTPPORT}
       SMTP_FROM_EMAIL: ${SMTP_FROM}
       SMTP_SECURE: "false"
       SMTP_USERNAME: ${SMTP_USERNAME}
