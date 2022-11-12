@@ -44,7 +44,7 @@ metadata:
 
 spec:
   tls:
-    - secretName: minio-tls
+    - secretName: s3-tls
       hosts:
         - "s3.${CLUSTER_DOMAIN}"
 
