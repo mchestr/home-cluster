@@ -49,7 +49,7 @@ spec:
             parameters:
               password_encryption: md5
             pg_hba:
-              - all all all all md5
+              - host all all all md5
           backup:
             retentionPolicy: 30d
             barmanObjectStore:
