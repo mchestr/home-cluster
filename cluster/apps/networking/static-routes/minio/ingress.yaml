@@ -8,7 +8,7 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-production
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: networking-local-only@kubernetescrd
     hajimari.io/enable: "true"
     hajimari.io/icon: carbon:object-storage
     hajimari.io/group: storage, database, and messaging
