@@ -95,21 +95,17 @@ spec:
       exporter:
         name: exporter
         image: ghcr.io/druggeri/nut_exporter:2.4.2
+        env:
+          - name: HTTP_PATH
+            value: /metrics
 
     serviceMonitor:
       main:
         enabled: true
         endpoints:
-          - port: metrics
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 10s
-          - port: metrics
-            scheme: http
-            path: /ups_metrics
-            interval: 1m
-            scrapeTimeout: 10s
+          - relabelings:
+              - sourceLabels: [__param_target]
+                targetLabel: target
 
     podAnnotations:
       configmap.reloader.stakater.com/reload: *config
