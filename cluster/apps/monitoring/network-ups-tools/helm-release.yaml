@@ -33,7 +33,7 @@ spec:
             port: 3493
           metrics:
             enabled: true
-            port: 9199
+            port: 9995
             protocol: TCP
 
     persistence:
@@ -94,16 +94,21 @@ spec:
     additionalContainers:
       exporter:
         name: exporter
-        image: ghcr.io/druggeri/nut_exporter:2.4.2
+        image: hon95/prometheus-nut-exporter:1.1.1
         env:
           - name: HTTP_PATH
             value: /metrics
+          - name: HTTP_PORT
+            value: 9995
 
     serviceMonitor:
       main:
         enabled: true
         endpoints:
           - port: metrics
+            params:
+              target:
+                - "localhost:9995"
             relabelings:
               - sourceLabels: [__param_target]
                 targetLabel: target
