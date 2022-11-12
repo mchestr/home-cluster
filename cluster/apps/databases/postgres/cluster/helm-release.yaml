@@ -45,11 +45,6 @@ spec:
             name: postgres-superuser
           monitoring:
             enablePodMonitor: true
-          postgresql:
-            parameters:
-              password_encryption: md5
-            pg_hba:
-              - host all all all md5
           backup:
             retentionPolicy: 30d
             barmanObjectStore:
