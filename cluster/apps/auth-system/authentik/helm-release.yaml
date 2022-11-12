@@ -64,11 +64,9 @@ spec:
         host: postgres-rw.databases.svc.cluster.local
         name: authentik
       email:
-        host: ${SMTP_HOST}
-        port: ${SMTP_PORT}
-        username: ${SMTP_USERNAME}
-        password: ${SMTP_PASSWORD}
-        use_ssl: true
+        host: smtp-relay.default.svc.cluster.local
+        port: 2525
+        use_ssl: false
         from: outpost@${CLUSTER_DOMAIN}
       redis:
         host: redis.databases.svc.cluster.local

@@ -32,14 +32,12 @@ spec:
       WEBSOCKET_ADDRESS: 0.0.0.0
       WEBSOCKET_PORT: 3012
       DOMAIN: https://vault.${CLUSTER_DOMAIN}
-      SMTP_HOST: ${SMTP_HOST}
-      SMTP_FROM: ${SMTP_FROM}
-      SMTP_SECURITY: force_tls
-      SMTP_SSL: true
-      SMTP_PORT: ${SMTP_PORT}
-      SMTP_USERNAME: ${SMTP_USERNAME}
-      SMTP_PASSWORD: ${SMTP_PASSWORD}
-      SMTP_FROM_NAME: Vaultwarden
+      SMTP_HOST: smtp-relay.default.svc.cluster.local
+      SMTP_FROM: vault@${CLUSTER_DOMAIN}
+      SMTP_SSL: "true"
+      SMTP_PORT: 2525
+      SMTP_SECURITY: off
+      SMTP_FROM_NAME: Vault
       TRASH_AUTO_DELETE_DAYS: 14
 
     service:
