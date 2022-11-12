@@ -23,7 +23,7 @@ spec:
       retries: 5
   dependsOn:
     - name: postgres
-      namespace: database-system
+      namespace: databases
     - name: redis
       namespace: databases
   values:
