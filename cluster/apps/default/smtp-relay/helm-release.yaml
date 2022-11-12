@@ -30,7 +30,7 @@ spec:
       tag: 0.6.2
 
     env:
-      DEBUG: "true"
+      DEBUG: "false"
       SMTP_DOMAIN: ${CLUSTER_DOMAIN}
       SMTP_SERVER: email-smtp.us-west-2.amazonaws.com
       SMTP_PORT: 465
