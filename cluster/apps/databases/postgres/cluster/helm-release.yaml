@@ -49,7 +49,7 @@ spec:
             parameters:
               password_encryption: md5
             pg_hba:
-              - host all vaultwarden all md5
+              - all all all all md5
           backup:
             retentionPolicy: 30d
             barmanObjectStore:
