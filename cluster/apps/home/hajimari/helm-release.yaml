@@ -68,6 +68,8 @@ spec:
               url: https://dash.cloudflare.com
             - name: Backblaze
               url: https://secure.backblaze.com/b2_buckets.htm
+            - name: AWS Console
+              url: https://aws.amazon.com/console/
 
       customApps:
         - group: storage, database, and messaging
