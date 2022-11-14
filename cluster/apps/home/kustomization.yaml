@@ -5,6 +5,7 @@ resources:
   - appdaemon
   - baikal
   - esphome
+  - ghostfolio
   - hajimari
   - home-assistant
   - hyperion-ng

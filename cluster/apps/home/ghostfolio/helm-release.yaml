@@ -1,0 +1,75 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app ghostfolio
+  namespace: home
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.0.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  dependsOn:
+    - name: postgres-cluster
+      namespace: databases
+    - name: redis
+      namespace: databases
+  values:
+    image:
+      repository: ghostfolio/ghostfolio
+      tag: 1.210.0
+
+    env:
+      TZ: ${TZ}
+      BASE_CURRENCY: CAD
+      REDIS_HOST: redis.databases.svc.cluster.local
+      REDIS_PORT: 6379
+      NODE_ENV: production
+
+    envFrom:
+      - secretRef:
+          name: *app
+
+    service:
+      main:
+        ports:
+          http:
+            port: 3333
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: traefik
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
+          hajimari.io/enable: "true"
+          hajimari.io/icon: ant-design:stock-outlined
+          hajimari.io/group: Home
+          hajimari.io/appName: Portfolio
+        hosts:
+          - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - secretName: "{{ .Release.Name }}-tls"
+            hosts:
+              - *host
+
+    podSecurityContext:
+      fsGroup: ${FS_GROUP}
+      fsGroupChangePolicy: OnRootMismatch
