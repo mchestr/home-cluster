@@ -29,7 +29,7 @@ spec:
   values:
     image:
       repository: ghostfolio/ghostfolio
-      tag: 1.210.0
+      tag: 1.213.0
 
     env:
       TZ: ${TZ}
