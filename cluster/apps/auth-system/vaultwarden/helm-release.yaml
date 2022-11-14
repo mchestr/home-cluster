@@ -63,6 +63,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:shield-key
           hajimari.io/group: Home
+          hajimari.io/appName: Bitwarden
         hosts:
           - host: &host "vault.${CLUSTER_DOMAIN}"
             paths:
