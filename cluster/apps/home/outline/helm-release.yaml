@@ -80,7 +80,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: iconoir:google-docs
           hajimari.io/group: Home
-          hajimari.io/appName: Docs
+          hajimari.io/appName: Wiki
         hosts:
           - host: &host "docs.${CLUSTER_DOMAIN}"
             paths:

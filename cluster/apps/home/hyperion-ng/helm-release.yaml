@@ -60,7 +60,8 @@ spec:
           traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:led-variant-outline
-          hajimari.io/group: Home
+          hajimari.io/group: Automation
+          hajimari.io/appName: Hyperion
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:

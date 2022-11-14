@@ -73,6 +73,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: file-outline
           hajimari.io/group: Home
+          hajimari.io/appName: Docs
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:
