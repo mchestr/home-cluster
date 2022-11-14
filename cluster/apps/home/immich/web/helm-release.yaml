@@ -57,7 +57,7 @@ spec:
           hajimari.io/group: Home
           hajimari.io/appName: Photos
         hosts:
-          - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+          - host: &host "photos.${CLUSTER_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
