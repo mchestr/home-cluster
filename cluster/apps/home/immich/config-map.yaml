@@ -11,7 +11,7 @@ data:
   DB_PORT: "5432"
   DISABLE_REVERSE_GEOCODING: "true"
   ENABLE_MAPBOX: "false"
-  LOG_LEVEL: info
+  LOG_LEVEL: simple
   NODE_ENV: production
   REDIS_HOSTNAME: redis.databases.svc.cluster.local
   REDIS_PORT: "6379"
@@ -19,3 +19,4 @@ data:
   IMMICH_WEB_URL: http://immich-web.home.svc.cluster.local:3000
   IMMICH_SERVER_URL: http://immich-server.home.svc.cluster.local:3001
   IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning.home.svc.cluster.local:3003
+  UPLOAD_LOCATION: /usr/src/app/upload
