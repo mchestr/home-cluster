@@ -81,6 +81,8 @@ spec:
         image:
           repository: ghcr.io/coder/code-server
           tag: 4.8.3
+        securityContext:
+          runAsUser: 568
 
         workingDir: /config
 
