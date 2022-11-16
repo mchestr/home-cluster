@@ -71,10 +71,6 @@ spec:
         enabled: true
         existingClaim: home-assistant-config-v1
 
-    podSecurityContext:
-      fsGroup: ${RUN_AS_GROUP}
-      fsGroupChangePolicy: OnRootMismatch
-
     addons:
       codeserver:
         enabled: true
