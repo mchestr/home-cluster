@@ -54,8 +54,6 @@ spec:
               url: https://github.com/k8s-at-home
             - name: Search Charts
               url: https://nanne.dev/k8s-at-home-search/
-            - name: Awesome Home Kubernetes
-              url: https://github.com/k8s-at-home/awesome-home-kubernetes
         - group: Gaming
           bookmarks:
             - name: Twitch
