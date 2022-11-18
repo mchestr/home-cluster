@@ -13,6 +13,8 @@ spec:
     namespace: flux-system
   backendConfig:
     disable: true
+  cliConfigSecretRef:
+    name: tfe-cli-config
   varsFrom:
     - kind: Secret
       name: terraform-cloudflare-vars
