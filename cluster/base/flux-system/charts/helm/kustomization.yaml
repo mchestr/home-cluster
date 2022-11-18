@@ -26,5 +26,6 @@ resources:
   - node-feature-discovery-charts.yaml
   - prometheus-community-charts.yaml
   - stakater-charts.yaml
+  - tf-controller-charts.yaml
   - traefik-charts.yaml
   - vector-charts.yaml
