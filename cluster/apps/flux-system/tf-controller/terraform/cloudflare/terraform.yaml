@@ -1,0 +1,20 @@
+apiVersion: infra.contrib.fluxcd.io/v1alpha1
+kind: Terraform
+metadata:
+  name: terraform-cloudflare
+  namespace: flux-system
+spec:
+  approvePlan: auto
+  interval: 12h
+  path: ./terraform/cloudflare
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  backendConfig:
+    disable: true
+  varsFrom:
+    - kind: Secret
+      name: terraform-cloudflare-vars
+  writeOutputsToSecret:
+    name: terraform-cloudflare-outputs
