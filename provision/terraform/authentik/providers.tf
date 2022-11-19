@@ -1,4 +1,4 @@
 provider "authentik" {
-  url   = "https://ak-outpost-authentik-embedded-outpost.auth-system.svc.cluster.local"
+  url   = format("https://outpost.%s", var.cluster_domain)
   token = var.authentik_token
 }
