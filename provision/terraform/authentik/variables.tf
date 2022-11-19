@@ -164,7 +164,7 @@ variable "recaptcha_secret_key" {
   sensitive = true
 }
 variable "oauth2_settings" {
-  type = map
-  description = "OAuth2 Provider Settings"
+  type = string
+  description = "OAuth2 provider settings in JSON format"
   sensitive = true
 }
