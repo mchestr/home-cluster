@@ -17,3 +17,4 @@ xanmanning.k3s*
 .terraform.tfstate*
 terraform.tfstate*
 tmpl/
+*.tfvars
