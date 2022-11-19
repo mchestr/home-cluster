@@ -47,12 +47,12 @@ resource "authentik_provider_oauth2" "providers" {
   for_each = local.oauth2_apps
 
   name               = each.key
-  client_id          = lookup(oauth2_settings_decoded, format("%s_client_id", each.key))
-  client_secret      = lookup(oauth2_settings_decoded, format("%s_client_secret", each.key))
+  client_id          = lookup(local.oauth2_settings_decoded, format("%s_client_id", each.key))
+  client_secret      = lookup(local.oauth2_settings_decoded, format("%s_client_secret", each.key))
   authorization_flow = data.authentik_flow.default-authorization.id
   signing_key        = data.authentik_certificate_key_pair.generated.id
   property_mappings  = concat(data.authentik_scope_mapping.scopes.ids, lookup(each.value, "extra_scopes", []))
-  redirect_uris      = [lookup(oauth2_settings_decoded, format("%s_redirect_url", each.key))]
+  redirect_uris      = [lookup(local.oauth2_settings_decoded, format("%s_redirect_url", each.key))]
   sub_mode           = lookup(each.value, "sub_mode", "hashed_user_id")
 }
 
