@@ -25,6 +25,6 @@ resource "authentik_stage_user_login" "authentication-login" {
 
 resource "authentik_stage_captcha" "recaptcha" {
   name        = "recaptcha"
-  public_key = data.sops_file.authentik_secrets.data["recaptcha_site_key"]
-  private_key  = data.sops_file.authentik_secrets.data["recaptcha_secret_key"]
+  public_key = var.recaptcha_site_key
+  private_key  = var.recaptcha_secret_key
 }
