@@ -49,10 +49,12 @@ locals {
     zwavejs2mqtt        = { group = "Home Automation" }
   }
 
+  oauth2_settings_decoded = jsondecode(var.oauth2_settings)
+
   oauth2_apps = {
     grafana = {}
     minio   = { extra_scopes = [authentik_scope_mapping.oidc-scope-minio.id] }
-    outline = { }
+    outline = {}
   }
 
   ldap_apps = {
