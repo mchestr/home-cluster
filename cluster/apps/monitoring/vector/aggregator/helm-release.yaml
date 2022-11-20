@@ -60,7 +60,7 @@ spec:
           type: loki
           inputs:
             - journal_logs
-          endpoint: http://loki.monitoring.svc.cluster.local:3100
+          endpoint: http://loki-gateway:80
           encoding:
             codec: json
           batch:
@@ -74,30 +74,22 @@ spec:
         loki_kubernetes:
           type: loki
           inputs:
-            - kubernetes_logs
-          endpoint: http://loki.monitoring.svc.cluster.local:3100
+            - kubernetes_logs_remap
+          endpoint: http://loki-gateway:80
           encoding:
             codec: json
           batch:
             max_bytes: 2049000
-          out_of_order_action: rewrite_timestamp
-          remove_timestamp: true
+          out_of_order_action: accept
           remove_label_fields: true
+          remove_timestamp: true
           labels:
             app: >-
-              {{`{{ kubernetes.pod_labels."app.kubernetes.io/name" }}`}}
-            container: >-
-              {{`{{ kubernetes.container_name }}`}}
-            filename: >-
-              {{`{{ kubernetes.file }}`}}
-            instance: >-
-              {{`{{ kubernetes.pod_labels."app.kubernetes.io/instance" }}`}}
+              {{`{{ custom_app_name }}`}}
             namespace: >-
               {{`{{ kubernetes.pod_namespace }}`}}
             node: >-
               {{`{{ kubernetes.pod_node_name }}`}}
-            pod: >-
-              {{`{{ kubernetes.pod_name }}`}}
         prometheus_sink:
           type: prometheus_exporter
           inputs:
