@@ -1,108 +1,85 @@
 {
   extends: [
-    'config:base',
-    'docker:enableMajor',
-    ':disableRateLimiting',
-    ':dependencyDashboard',
-    ':semanticCommits',
-    ':enablePreCommit',
-    ':automergeDigest',
-    ':automergeBranch',
-    'github>mchestr/home-cluster//.github/renovate/autoMerge.json5',
-    'github>mchestr/home-cluster//.github/renovate/groups.json5',
-    'github>mchestr/home-cluster//.github/renovate/labels.json5',
-    'github>mchestr/home-cluster//.github/renovate/semanticCommits.json5',
+    "config:base",
+    "docker:enableMajor",
+    ":disableRateLimiting",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":enablePreCommit",
+    ":automergeDigest",
+    ":automergeBranch",
+    "github>mchestr/home-cluster//.github/renovate/autoMerge.json5",
+    "github>mchestr/home-cluster//.github/renovate/groups.json5",
+    "github>mchestr/home-cluster//.github/renovate/labels.json5",
+    "github>mchestr/home-cluster//.github/renovate/semanticCommits.json5",
   ],
-  platform: 'github',
-  repositories: [
-    'mchestr/home-cluster',
-  ],
-  timezone: 'America/Vancouver',
+  platform: "github",
+  repositories: ["mchestr/home-cluster"],
+  timezone: "America/Vancouver",
   onboarding: false,
-  requireConfig: 'optional',
-  dependencyDashboardTitle: 'Renovate Dashboard',
-  suppressNotifications: [
-    'prIgnoreNotification',
-  ],
-  rebaseWhen: 'conflicted',
+  requireConfig: "optional",
+  dependencyDashboardTitle: "Renovate Dashboard",
+  suppressNotifications: ["prIgnoreNotification"],
+  rebaseWhen: "conflicted",
   commitBodyTable: true,
-  'docker-compose': {
-    fileMatch: [
-      'ansible/.+/docker-compose.*\\.ya?ml(\\.j2)?$',
-    ],
+  "docker-compose": {
+    fileMatch: ["ansible/.+/docker-compose.*\\.ya?ml(\\.j2)?$"],
   },
   flux: {
-    fileMatch: [
-      'cluster/.+\\.ya?ml$',
-    ],
+    fileMatch: ["cluster/.+\\.ya?ml$"],
   },
-  'helm-values': {
-    fileMatch: [
-      'cluster/.+\\.ya?ml$',
-    ],
+  "helm-values": {
+    fileMatch: ["cluster/.+\\.ya?ml$"],
   },
   kubernetes: {
-    fileMatch: [
-      'cluster/.+\\.ya?ml$',
-    ],
+    fileMatch: ["cluster/.+\\.ya?ml$"],
   },
   regexManagers: [
     {
-      description: 'Process various dependencies',
+      description: "Process various dependencies",
       fileMatch: [
-        'ansible/.+\\.ya?ml$',
-        'cluster/.+\\.ya?ml$',
-        'hack/.+\\.sh$',
+        "ansible/.+\\.ya?ml$",
+        "cluster/.+\\.ya?ml$",
+        "hack/.+\\.sh$",
       ],
       matchStrings: [
         'datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( versioning=(?<versioning>\\S+))?\n.*?"(?<currentValue>.*)"\n',
       ],
-      datasourceTemplate: '{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}',
-      versioningTemplate: '{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}',
+      datasourceTemplate: "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
+      versioningTemplate: "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
     },
     {
-      description: 'Process GitRepository CRD dependencies - Chart and Github Release are the same version',
-      fileMatch: [
-        'cluster/crds/.+\\.ya?ml$',
-      ],
+      description: "Process GitRepository CRD dependencies - Chart and Github Release are the same version",
+      fileMatch: ["cluster/crds/.+\\.ya?ml$"],
       matchStrings: [
-        'registryUrl=(?<registryUrl>\\S+) chart=(?<depName>\\S+)\n.*?(?<currentValue>[^-\\s]*)\n',
+        "registryUrl=(?<registryUrl>\\S+) chart=(?<depName>\\S+)\n.*?(?<currentValue>[^-\\s]*)\n",
       ],
-      datasourceTemplate: 'helm',
+      datasourceTemplate: "helm",
     },
     {
-      description: 'Process Kustomization CRD dependencies - Image and Github Release are the same version',
-      fileMatch: [
-        'cluster/crds/.+\\.ya?ml$',
-      ],
+      description: "Process Kustomization CRD dependencies - Image and Github Release are the same version",
+      fileMatch: ["cluster/crds/.+\\.ya?ml$"],
       matchStrings: [
-        'datasource=(?<datasource>\\S+) image=(?<depName>\\S+)\n.*?-\\s(.*?)/(?<currentValue>[^/]+)/[^/]+\n',
+        "datasource=(?<datasource>\\S+) image=(?<depName>\\S+)\n.*?-\\s(.*?)/(?<currentValue>[^/]+)/[^/]+\n",
       ],
-      datasourceTemplate: 'docker',
+      datasourceTemplate: "docker",
     },
   ],
   packageRules: [
     {
-      description: 'Use custom regex versioning for frigate image',
-      matchDatasources: [
-        'docker',
-      ],
-      versioning: 'regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<compatibility>.*)$',
-      matchPackageNames: [
-        'docker.io/blakeblackshear/frigate',
-      ],
+      description: "Use custom regex versioning for frigate image",
+      matchDatasources: ["docker"],
+      versioning: "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<compatibility>.*)$",
+      matchPackageNames: ["docker.io/blakeblackshear/frigate"],
     },
     {
-      description: 'Use loose versioning for certain dependencies',
-      matchDatasources: [
-        'docker',
-        'github-releases',
-      ],
-      versioning: 'loose',
+      description: "Use loose versioning for certain dependencies",
+      matchDatasources: ["docker", "github-releases"],
+      versioning: "loose",
       matchPackageNames: [
-        'ghcr.io/k8s-at-home/plex',
-        'ghcr.io/k8s-at-home/qbittorrent',
-        'Hypfer/Valetudo',
+        "ghcr.io/onedr0p/plex",
+        "ghcr.io/onedr0p/qbittorrent",
+        "docker.io/altran1502/immich",
       ],
     },
   ],
