@@ -54,6 +54,15 @@ spec:
         vector_metrics:
           type: internal_metrics
 
+      transforms:
+        kubernetes_logs_remap:
+          type: remap
+          inputs:
+            - kubernetes_logs
+          source: |
+            # Standardize 'app' index
+            .custom_app_name = .pod_labels."app.kubernetes.io/name" || .pod_labels.app || .pod_labels."k8s-app" || "unknown"
+
       # Sinks
       sinks:
         loki_journal:
