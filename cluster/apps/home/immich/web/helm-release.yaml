@@ -27,7 +27,7 @@ spec:
   values:
     image:
       repository: altran1502/immich-web
-      tag: release@sha256:7f7ddfe8ca55205cc34e143012ef91b2d5157c6854dc72b8fab2f89abd1057ef
+      tag: release@sha256:88f1b4955203485842c93b110488d6418d1272880dbd36fa92d253ed2253636a
     command: /bin/sh
     args:
       - ./entrypoint.sh
