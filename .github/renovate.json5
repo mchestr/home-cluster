@@ -8,6 +8,7 @@
     ":enablePreCommit",
     ":automergeDigest",
     ":automergeBranch",
+    "github>mchestr/home-cluster//.github/renovate/allowedVersions.json5",
     "github>mchestr/home-cluster//.github/renovate/autoMerge.json5",
     "github>mchestr/home-cluster//.github/renovate/groups.json5",
     "github>mchestr/home-cluster//.github/renovate/labels.json5",
