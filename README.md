@@ -40,13 +40,13 @@ My mash-mash setup of random hardware I managed to acquire. I also have a few SB
 
 | Device                                                                                                       | Count | OS Disk Size | Data Disk Size       | Ram  | Operating System | Purpose                         |
 |--------------------------------------------------------------------------------------------------------------|-------|--------------|----------------------|------|------------------|---------------------------------|
-| [HP EliteDesk 800 G1](https://amzn.to/3MOdRG4)                                                               | 1     | 240GB SSD    | 220GB                | 8GB  | Ubuntu 20.04     | Kubernetes (k3s) Worker         |
+| HP EliteDesk 800 G1                                                               | 1     | 240GB SSD    | 220GB                | 8GB  | Ubuntu 20.04     | Kubernetes (k3s) Worker         |
 | i5-2500K/R7 370 (old repurposed gaming computer)                                                             | 1     | 120GB SSD    | 480GB                | 24GB | Ubuntu 20.04     | Kubernetes (k3s) Worker         |
-| [HP Elite Desk 800 G3](https://amzn.to/3wGnpxd)                                                              | 2     | 512GB SSD    | 480GB                | 16GB | Ubuntu 20.04     | Kubernetes (k3s) Worker/Master  |
-| [Synology DS920+](https://amzn.to/3wHw9Df)                                                                   | 1     | N/A          | 2x8TB & 2x4TB        | 20GB | DSM 7.0.1        | NAS                             |
-| [CyberPower CP1500AVRLCD](https://amzn.to/3MI1N9b)                                                           | 1     | N/A          | N/A                  | N/A  | N/A              | UPS                             |
-| [Ubiquiti EdgeRouter 10X](https://store.ui.com/collections/operator-edgemax-routers/products/edgerouter-10x) | 1     | N/A          | N/A                  | 512MB| EdgeOS           | Router                          |
-| [Ubiquiti UAP-AC-Lite](https://amzn.to/3PHeD9p)                                                              | 1     | N/A          | N/A                  | N/A  | N/A              | WiFi AP                         |
+| HP Elite Desk 800 G3                                                            | 2     | 512GB SSD    | 480GB                | 16GB | Ubuntu 20.04     | Kubernetes (k3s) Worker/Master  |
+| Synology DS920+                                                                   | 1     | N/A          | 2x8TB & 2x4TB        | 20GB | DSM 7.0.1        | NAS                             |
+| CyberPower CP1500AVRLCD                                                           | 1     | N/A          | N/A                  | N/A  | N/A              | UPS                             |
+| Ubiquiti EdgeRouter 10X | 1     | N/A          | N/A                  | 512MB| EdgeOS           | Router                          |
+| Ubiquiti UAP-AC-Lite)                                                              | 1     | N/A          | N/A                  | N/A  | N/A              | WiFi AP                         |
 
 ---
 
