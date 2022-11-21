@@ -20,7 +20,7 @@ resource "cloudflare_zone_settings_override" "cloudflare_settings" {
     minify {
       css  = "on"
       js   = "on"
-      html = "off"
+      html = "on"
     }
     rocket_loader = "on"
     # /caching/configuration
