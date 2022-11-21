@@ -50,7 +50,7 @@ locals {
 
   oauth2_apps = {
     grafana = {
-      redirect_urls = [format("https://minio.%s/oauth_callback", var.cluster_domain)],
+      redirect_urls = [format("https://grafana.%s/login/generic_oauth", var.cluster_domain)],
       client_secret = var.grafana_oauth2_client_secret
     }
     minio = {
