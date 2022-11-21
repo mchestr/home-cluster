@@ -8,8 +8,8 @@ spec:
   interval: 12h
   path: ./provision/terraform/authentik
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: OCIRepository
+    name: terraform-authentik-oci
     namespace: flux-system
   backendConfig:
     disable: true
