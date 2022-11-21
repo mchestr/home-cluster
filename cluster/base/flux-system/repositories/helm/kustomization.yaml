@@ -29,4 +29,3 @@ resources:
   - tf-controller-charts.yaml
   - traefik-charts.yaml
   - vector-charts.yaml
-  - weave-gitops.yaml

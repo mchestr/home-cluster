@@ -5,5 +5,4 @@ resources:
   - monitoring
   - notifications
   - tf-controller
-  - weave-gitops
   - webhook
