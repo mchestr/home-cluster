@@ -26,7 +26,7 @@ spec:
       namespace: home
   values:
     image:
-      repository: docker.io/altran1502/immich-machine-learning
+      repository: ghcr.io/immich-app/immich-machine-learning
       tag: v1.35.0_54-dev
     command: /bin/sh
     args:
