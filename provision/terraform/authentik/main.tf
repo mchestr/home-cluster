@@ -29,7 +29,6 @@ locals {
     emqx                = { basic_auth_enabled = true }
     esphome             = { group = "Home Automation" }
     home-assistant-code = { group = "Code Editors" }
-    hyperion-ng         = { group = "Home" }
     kopia               = {}
     lidarr              = { group = "Media", basic_auth_enabled = true }
     longhorn            = {}
