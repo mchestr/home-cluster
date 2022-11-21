@@ -20,3 +20,8 @@ data:
   IMMICH_SERVER_URL: http://immich-server.home.svc.cluster.local:3001
   IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning.home.svc.cluster.local:3003
   UPLOAD_LOCATION: /usr/src/app/upload
+  OAUTH_ENABLED: "true"
+  OAUTH_ISSUER_URL: "https://outpost.${SECRET_PUBLIC_DOMAIN}/application/o/immich/.well-known/openid-configuration"
+  OAUTH_CLIENT_ID: immich
+  OAUTH_AUTO_REGISTER: "true"
+  OAUTH_BUTTON_TEXT: "Login with Authentik"
