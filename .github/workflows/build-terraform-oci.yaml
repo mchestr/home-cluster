@@ -28,7 +28,7 @@ jobs:
           dir_names: true
           json: true
           files: |
-            terraform/**
+            provision/terraform/**
       - name: List all changed files
         run: |
           echo '${{ steps.generate-build-matrix.outputs.all_changed_files }}'
