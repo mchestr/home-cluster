@@ -50,6 +50,7 @@ spec:
       GF_AUTH_GENERIC_OAUTH_ENABLED: "true"
       GF_AUTH_GENERIC_OAUTH_NAME: authentik
       GF_AUTH_GENERIC_OAUTH_SCOPES: "openid profile email"
+      GF_AUTH_GENERIC_OAUTH_CLIENT_ID: *app
       GF_AUTH_GENERIC_OAUTH_AUTH_URL: "https://outpost.${CLUSTER_DOMAIN}/application/o/authorize/"
       GF_AUTH_GENERIC_OAUTH_TOKEN_URL: "https://outpost.${CLUSTER_DOMAIN}/application/o/token/"
       GF_AUTH_GENERIC_OAUTH_API_URL: "https://outpost.${CLUSTER_DOMAIN}/application/o/userinfo/"
