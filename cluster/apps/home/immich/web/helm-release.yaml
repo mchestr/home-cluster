@@ -26,7 +26,7 @@ spec:
       namespace: home
   values:
     image:
-      repository: altran1502/immich-web
+      repository: ghcr.io/immich-app/immich-web
       tag: release@sha256:88f1b4955203485842c93b110488d6418d1272880dbd36fa92d253ed2253636a
     command: /bin/sh
     args:
