@@ -8,5 +8,5 @@ variable "cloudflare_apikey" {
 }
 variable "cloudflare_domain" {
   type        = string
-  description = "My domain"
+  description = "Cluster domain"
 }
