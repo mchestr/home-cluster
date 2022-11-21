@@ -45,7 +45,7 @@ spec:
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         traefik.ingress.kubernetes.io/router.middlewares: networking-external@kubernetescrd
         hajimari.io/enable: "true"
-        hajimari.io/icon: arcticons:microsoftauthenticator
+        hajimari.io/icon: carbon:two-factor-authentication
         hajimari.io/group: System Management
       hosts:
         - host: &host outpost.${CLUSTER_DOMAIN}
