@@ -48,13 +48,24 @@ locals {
     zwavejs2mqtt        = { group = "Home Automation" }
   }
 
-  oauth2_settings_decoded = jsondecode(var.oauth2_settings)
-
   oauth2_apps = {
-    grafana = {}
-    minio   = { extra_scopes = [authentik_scope_mapping.oidc-scope-minio.id] }
-    outline = {}
-    immich  = {}
+    grafana = {
+      redirect_urls = [format("https://minio.%s/oauth_callback", var.cluster_domain)],
+      client_secret = var.grafana_oauth2_client_secret
+    }
+    minio = {
+      redirect_urls = [format("https://minio.%s/oauth_callback", var.cluster_domain)],
+      client_secret = var.minio_oauth2_client_secret,
+      extra_scopes  = [authentik_scope_mapping.oidc-scope-minio.id]
+    }
+    outline = {
+      redirect_urls = [format("https://docs.%s/auth/oidc.callback", var.cluster_domain)],
+      client_secret = var.outline_oauth2_client_secret
+    }
+    immich = {
+      redirect_urls = [format("https://photos.%s/auth/login", var.cluster_domain), "app.immich:/"],
+      client_secret = var.immich_oauth2_client_secret
+    }
   }
 
   ldap_apps = {

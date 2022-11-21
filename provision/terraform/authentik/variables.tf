@@ -163,8 +163,23 @@ variable "recaptcha_secret_key" {
   description = "Google Recaptcha secret key"
   sensitive = true
 }
-variable "oauth2_settings" {
+variable "grafana_oauth2_client_secret" {
   type = string
-  description = "OAuth2 provider settings in JSON format"
+  description = "Grafana client secret"
+  sensitive = true
+}
+variable "minio_oauth2_client_secret" {
+  type = string
+  description = "Minio client secret"
+  sensitive = true
+}
+variable "outline_oauth2_client_secret" {
+  type = string
+  description = "Outline client secret"
+  sensitive = true
+}
+variable "immich_oauth2_client_secret" {
+  type = string
+  description = "Immich client secret"
   sensitive = true
 }

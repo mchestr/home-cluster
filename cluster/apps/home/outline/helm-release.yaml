@@ -42,6 +42,7 @@ spec:
       AWS_S3_UPLOAD_BUCKET_URL: https://s3.${CLUSTER_DOMAIN}
       AWS_S3_UPLOAD_MAX_SIZE: "26214400"
       ENABLE_UPDATES: "false"
+      OIDC_CLIENT_ID: *app
       OIDC_AUTH_URI: https://outpost.${CLUSTER_DOMAIN}/application/o/authorize/
       OIDC_DISPLAY_NAME: Authentik
       OIDC_SCOPES: openid profile email
