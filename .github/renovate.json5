@@ -79,7 +79,7 @@
       matchPackageNames: [
         "ghcr.io/onedr0p/plex",
         "ghcr.io/onedr0p/qbittorrent",
-        "ghcr.io/immich-app/immich-app",
+        "ghcr.io/immich-app/immich",
       ],
     },
   ],
