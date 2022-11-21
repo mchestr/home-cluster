@@ -61,7 +61,7 @@ resource "authentik_application" "name" {
 
   name              = each.key
   slug              = each.key
-  meta_icon         = "empty-icon"
+  meta_icon         = "noop"
   protocol_provider = lookup(authentik_provider_proxy.providers, each.key, lookup(authentik_provider_oauth2.providers, each.key, {})).id
   group             = lookup(each.value, "group", "System")
 }
