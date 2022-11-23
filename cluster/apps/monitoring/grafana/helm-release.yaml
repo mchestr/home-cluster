@@ -200,22 +200,3 @@ spec:
         folderAnnotation: grafana_dashboard_folder
         provider:
           foldersFromFilesStructure: true
-
-    datasources:
-      datasources.yaml:
-        apiVersion: 1
-        deleteDatasources:
-          - name: Loki
-            orgId: 1
-          - name: Prometheus
-            orgId: 1
-        datasources:
-          - name: Prometheus
-            type: prometheus
-            access: proxy
-            url: http://thanos-query.monitoring.svc.cluster.local:9090
-            isDefault: true
-          - name: Loki
-            type: loki
-            access: proxy
-            url: http://loki-gateway.monitoring.svc.cluster.local:80
