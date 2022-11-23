@@ -31,7 +31,7 @@ spec:
   values:
     image:
       repository: ghcr.io/immich-app/immich-server
-      tag: v1.36.2_56-dev
+      tag: 1002
 
     command: /bin/sh
     args:
