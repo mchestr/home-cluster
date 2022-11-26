@@ -49,6 +49,13 @@ spec:
       main:
         enabled: true
         ingressClassName: traefik
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
+          hajimari.io/enable: "true"
+          hajimari.io/icon: simple-icons:jellyfin
+          hajimari.io/group: Home
         hosts:
           - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
             paths:
