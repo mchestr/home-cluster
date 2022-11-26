@@ -2,31 +2,31 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: lochnas
+  name: octoprint
   namespace: networking
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: networking-local-only@kubernetescrd
     hajimari.io/enable: "true"
-    hajimari.io/icon: mdi:nas
-    hajimari.io/group: storage, database, and messaging
+    hajimari.io/icon: simple-icons:octoprint
+    hajimari.io/group: Home
 
 spec:
   ingressClassName: traefik
   tls:
-    - secretName: lochnas-tls
+    - secretName: octoprint-tls
       hosts:
-        - "lochnas.${CLUSTER_DOMAIN}"
+        - "octoprint.${CLUSTER_DOMAIN}"
 
   rules:
-    - host: lochnas.${CLUSTER_DOMAIN}
+    - host: octoprint.${CLUSTER_DOMAIN}
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: lochnas
+                name: octoprint
                 port:
-                  name: https
+                  name: http

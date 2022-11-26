@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: octoprint
+  namespace: networking
+spec:
+  type: ExternalName
+
+  ports:
+    - name: http
+      port: 5001
+
+  externalName: octoprint.${PRIVATE_LOCAL_DOMAIN}
