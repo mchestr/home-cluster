@@ -6,14 +6,14 @@ metadata:
   namespace: networking
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
-    kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.middlewares: networking-local-only@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
     hajimari.io/enable: "true"
     hajimari.io/icon: carbon:object-storage
     hajimari.io/group: storage, database, and messaging
 
 spec:
+  ingressClassName: traefik
   tls:
     - secretName: minio-tls
       hosts:
@@ -38,11 +38,11 @@ metadata:
   namespace: networking
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
-    kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.middlewares: networking-local-only@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
 
 spec:
+  ingressClassName: traefik
   tls:
     - secretName: s3-tls
       hosts:
