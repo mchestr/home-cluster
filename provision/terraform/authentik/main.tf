@@ -32,6 +32,7 @@ locals {
     kopia               = {}
     lidarr              = { group = "Media", basic_auth_enabled = true }
     longhorn            = {}
+    octoprint           = { group = "Home" }
     paperless           = { group = "Home" }
     prometheus          = {}
     prowlarr            = { group = "Media", basic_auth_enabled = true }
