@@ -71,20 +71,6 @@ spec:
       redis:
         host: redis.databases.svc.cluster.local
 
-    volumes:
-      - name: media
-        nfs:
-          server: ${NAS_ADDR}
-          path: ${NAS_BACKUP_DIR}/authentik
-
-    volumeMounts:
-      - name: media
-        mountPath: /media/assets
-
-    securityContext:
-      fsGroup: ${RUN_AS_GROUP}
-      fsGroupChangePolicy: OnRootMismatch
-
     postgresql:
       enabled: false
     redis:
