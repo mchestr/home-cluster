@@ -27,7 +27,7 @@ resource "authentik_flow" "authentication" {
   title              = "Welcome!"
   slug               = "authentication-flow"
   designation        = "authentication"
-  background         = "/static/dist/assets/images/flow_background.jpg"
+  background         = "/media/space2.jpg"
   policy_engine_mode = "all"
 }
 
