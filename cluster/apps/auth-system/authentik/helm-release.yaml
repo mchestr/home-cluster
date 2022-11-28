@@ -71,6 +71,14 @@ spec:
       redis:
         host: redis.databases.svc.cluster.local
 
+    persistence:
+      media:
+        enabled: true
+        type: nfs
+        server: ${NAS_ADDR}
+        path: ${NAS_BACKUP_DIR}/authentik
+        mountPath: /media
+
     postgresql:
       enabled: false
     redis:
