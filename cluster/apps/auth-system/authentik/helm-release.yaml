@@ -79,7 +79,7 @@ spec:
 
     volumeMounts:
       - name: media
-        mountPath: /media
+        mountPath: /media/assets
 
     securityContext:
       fsGroup: ${RUN_AS_GROUP}
