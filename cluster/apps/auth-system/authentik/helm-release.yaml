@@ -81,7 +81,7 @@ spec:
       - name: media
         mountPath: /media
 
-    podSecurityContext:
+    securityContext:
       fsGroup: ${RUN_AS_GROUP}
       fsGroupChangePolicy: OnRootMismatch
 
