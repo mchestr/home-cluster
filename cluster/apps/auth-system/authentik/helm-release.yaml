@@ -81,6 +81,10 @@ spec:
       - name: media
         mountPath: /media
 
+    podSecurityContext:
+      fsGroup: ${RUN_AS_GROUP}
+      fsGroupChangePolicy: OnRootMismatch
+
     postgresql:
       enabled: false
     redis:
