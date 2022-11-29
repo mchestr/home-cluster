@@ -41,7 +41,6 @@ locals {
     radarr-4k           = { group = "Media", basic_auth_enabled = true }
     sabnzbd             = { group = "Downloaders" }
     sonarr              = { group = "Media", basic_auth_enabled = true }
-    sync                = { group = "Home", basic_auth_enabled = true }
     tautulli            = { group = "Media" }
     thanos              = {}
     traefik             = {}
