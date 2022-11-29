@@ -10,7 +10,6 @@ resources:
   - immich
   - outline
   - paperless
-  - syncthing
   - theme-park
   - unifi
   - zigbee2mqtt
