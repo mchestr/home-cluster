@@ -5,3 +5,11 @@ resources:
   - helm-release.yaml
   - pvc.yaml
   - secret.sops.yaml
+configMapGenerator:
+  - name: sonarr-pushover
+    files:
+      - ./scripts/pushover-notify.sh
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
