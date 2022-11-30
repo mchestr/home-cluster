@@ -6,7 +6,7 @@ resources:
   - pvc.yaml
   - secret.sops.yaml
 configMapGenerator:
-  - name: sonarr-pushover
+  - name: radarr-4k-pushover
     files:
       - ./scripts/pushover-notify.sh
 generatorOptions:

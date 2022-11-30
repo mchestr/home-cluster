@@ -83,7 +83,7 @@ spec:
       scripts:
         enabled: true
         type: configMap
-        name: radarr-pushover
+        name: radarr-4k-pushover
         subPath: pushover-notify.sh
         mountPath: /scripts/pushover-notify.sh
         defaultMode: 0775
