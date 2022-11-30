@@ -10,6 +10,7 @@ resource "authentik_policy_reputation" "name" {
   name           = "reputation"
   check_ip       = true
   check_username = true
+  threshold      = -3
 }
 
 resource "authentik_policy_binding" "reputation-low" {
