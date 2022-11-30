@@ -80,6 +80,14 @@ spec:
         server: ${NAS_ADDR}
         path: ${NAS_BACKUP_DIR}/radarr
         mountPath: /config/Backups
+      scripts:
+        enabled: true
+        type: configMap
+        name: radarr-pushover
+        subPath: pushover-notify.sh
+        mountPath: /scripts/pushover-notify.sh
+        defaultMode: 0775
+        readOnly: true
 
     podSecurityContext:
       fsGroup: ${RUN_AS_GROUP}
