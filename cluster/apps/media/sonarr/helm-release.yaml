@@ -28,6 +28,8 @@ spec:
 
     env:
       TZ: ${TZ}
+      PUSHOVER_DEBUG: "false"
+      PUSHOVER_APP_URL: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
       SONARR__INSTANCE_NAME: Sonarr
       SONARR__PORT: &port 8989
       SONARR__APPLICATION_URL: "https://{{ .Release.Name }}.${CLUSTER_DOMAIN}"

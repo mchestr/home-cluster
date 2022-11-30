@@ -28,6 +28,8 @@ spec:
 
     env:
       TZ: ${TZ}
+      PUSHOVER_DEBUG: "false"
+      PUSHOVER_APP_URL: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
       RADARR__INSTANCE_NAME: Radarr
       RADARR__PORT: &port 7878
       RADARR__APPLICATION_URL: "https://{{ .Release.Name }}.${CLUSTER_DOMAIN}"
