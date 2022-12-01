@@ -2,11 +2,9 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: baikal-config-v2
+  name: radicale-config-v1
   namespace: home
   labels:
-    app.kubernetes.io/name: &name baikal
-    app.kubernetes.io/instance: *name
     snapshot.home.arpa/enabled: "true"
 spec:
   accessModes:
