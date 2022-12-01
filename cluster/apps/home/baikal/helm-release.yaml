@@ -37,7 +37,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: baikal-config-v2
+        existingClaim: baikal-config-v1
         mountPath: /var/www/baikal/config
 
     ingress:
