@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: baikal-config-v1
+  name: baikal-config-v2
   namespace: home
   labels:
     app.kubernetes.io/name: &name baikal
