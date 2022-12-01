@@ -24,7 +24,7 @@ locals {
     appdaemon           = { group = "Home Automation" }
     appdaemon-code      = { group = "Code Editors" }
     bazarr              = { group = "Media", basic_auth_enabled = true }
-    cal                 = {}
+    cal                 = { basic_auth_enabled = true }
     dashboard           = {}
     emqx                = { basic_auth_enabled = true }
     esphome             = { group = "Home Automation" }
