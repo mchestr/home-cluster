@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
   - appdaemon
   - baikal
-  - baikal2
   - esphome
   - hajimari
   - home-assistant
