@@ -44,7 +44,7 @@ spec:
           hajimari.io/icon: ant-design:calendar-outlined
           hajimari.io/group: storage, database, and messaging
         hosts:
-          - host: &host cal.${INGRESS_DOMAIN}
+          - host: &host cal.${CLUSTER_DOMAIN}
             paths:
               - path: /
         tls:
