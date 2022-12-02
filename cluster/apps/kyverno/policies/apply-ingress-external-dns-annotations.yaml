@@ -27,4 +27,4 @@ spec:
           metadata:
             annotations:
               +(external-dns.alpha.kubernetes.io/target): |-
-                ipv4.${CLUSTER_DOMAIN}
+                ipv4.${SECRET_CLUSTER_DOMAIN}
