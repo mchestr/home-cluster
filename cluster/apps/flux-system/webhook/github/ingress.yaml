@@ -4,10 +4,10 @@ kind: Ingress
 metadata:
   name: webhook-receiver
   namespace: flux-system
-  ingressClassName: nginx
   annotations:
     external-dns.home.arpa/enabled: "true"
 spec:
+  ingressClassName: nginx
   rules:
     - host: &host "flux-webhook.${SECRET_CLUSTER_DOMAIN}"
       http:
