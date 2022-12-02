@@ -1,0 +1,141 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app authelia
+  namespace: auth-system
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.1.3
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  dependsOn:
+    - name: postgres
+      namespace: databases
+    - name: glauth
+      namespace: auth-system
+    - name: redis
+      namespace: databases
+  values:
+    controller:
+      replicas: 3
+      strategy: RollingUpdate
+      annotations:
+        reloader.stakater.com/auto: "true"
+
+    image:
+      repository: ghcr.io/authelia/authelia
+      tag: 4.37.2
+
+    env:
+      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ADDITIONAL_USERS_DN: ou=users
+      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_BASE_DN: dc=home,dc=arpa
+      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_DISPLAY_NAME_ATTRIBUTE: givenName
+      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_GROUPS_FILTER: "(&(memberUid={username})(objectClass=posixGroup))"
+      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_GROUP_NAME_ATTRIBUTE: cn
+      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_MAIL_ATTRIBUTE: mail
+      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_URL: "ldap://glauth.default.svc.cluster.local:389"
+      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_USER: cn=search,ou=svcaccts,dc=home,dc=arpa
+      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_USERNAME_ATTRIBUTE: uid
+      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_USERS_FILTER: "(&({username_attribute}={input})(objectClass=posixAccount))"
+      AUTHELIA_AUTHENTICATION_BACKEND_PASSWORD_RESET_DISABLE: "true"
+      AUTHELIA_DEFAULT_REDIRECTION_URL: "https://auth.${CLUSTER_DOMAIN}"
+      AUTHELIA_DUO_API_DISABLE: "true"
+      AUTHELIA_LOG_LEVEL: trace
+      AUTHELIA_NOTIFIER_SMTP_DISABLE_REQUIRE_TLS: "true"
+      AUTHELIA_NOTIFIER_SMTP_HOST: smtp-relay.default.svc.cluster.local
+      AUTHELIA_NOTIFIER_SMTP_PORT: 2525
+      AUTHELIA_NOTIFIER_SMTP_SENDER: "Authelia <authelia@${CLUSTER_DOMAIN}>"
+      AUTHELIA_SERVER_DISABLE_HEALTHCHECK: "true"
+      AUTHELIA_SERVER_PORT: 80
+      AUTHELIA_SESSION_DOMAIN: "${CLUSTER_DOMAIN}"
+      AUTHELIA_SESSION_REDIS_DATABASE_INDEX: 14
+      AUTHELIA_SESSION_REDIS_HOST: redis.databases.svc.cluster.local
+      AUTHELIA_STORAGE_POSTGRES_DATABASE: authelia
+      AUTHELIA_STORAGE_POSTGRES_HOST: postgres-rw.databases.svc.cluster.local
+      AUTHELIA_TELEMETRY_METRICS_ADDRESS: "tcp://0.0.0.0:8080"
+      AUTHELIA_TELEMETRY_METRICS_ENABLED: "true"
+      AUTHELIA_THEME: grey
+      AUTHELIA_TOTP_ISSUER: authelia.com
+      AUTHELIA_WEBAUTHN_DISABLE: "true"
+
+    envFrom:
+      - secretRef:
+          name: *app
+
+    enableServiceLinks: false
+
+    service:
+      main:
+        ports:
+          http:
+            port: 80
+          metrics:
+            enabled: true
+            port: 8080
+
+    serviceMonitor:
+      main:
+        enabled: true
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: traefik
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
+          hajimari.io/enable: "true"
+          hajimari.io/group: Home
+        hosts:
+          - host: &host auth.${CLUSTER_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - secretName: "{{ .Release.Name }}-tls"
+            hosts:
+              - *host
+
+    persistence:
+      config:
+        enabled: true
+        type: configMap
+        name: authelia-configmap
+        subPath: configuration.yaml
+        mountPath: /config/configuration.yml
+        readOnly: false
+
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: *app
+
+    resources:
+      requests:
+        cpu: 5m
+        memory: 10Mi
+      limits:
+        memory: 100Mi

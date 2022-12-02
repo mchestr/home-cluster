@@ -1,0 +1,58 @@
+---
+session:
+  redis:
+    host:
+      host: redis.databases.svc.cluster.local
+      port: 6379
+
+access_control:
+  default_policy: two_factor
+  networks:
+    - name: internal
+      networks: ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+  rules:
+    - domain: ["grafana.${CLUSTER_DOMAIN}"]
+      policy: bypass
+
+identity_providers:
+  oidc:
+    cors:
+      endpoints: ["authorization", "token", "revocation", "introspection"]
+      allowed_origins_from_client_redirect_uris: true
+    # clients:
+    #   - id: grafana
+    #     description: Grafana
+    #     secret: "${SECRET_GRAFANA_OAUTH_CLIENT_SECRET}"
+    #     public: false
+    #     authorization_policy: two_factor
+    #     pre_configured_consent_duration: 1y
+    #     scopes: ["openid", "profile", "groups", "email"]
+    #     redirect_uris: ["https://grafana.${CLUSTER_DOMAIN}/login/generic_oauth"]
+    #     userinfo_signing_algorithm: none
+    #   - id: immich
+    #     description: Immich
+    #     secret: "${SECRET_IMMICH_OAUTH_CLIENT_SECRET}"
+    #     public: false
+    #     authorization_policy: two_factor
+    #     pre_configured_consent_duration: 1y
+    #     scopes: ["openid", "profile", "email"]
+    #     redirect_uris: ["https://photos.${CLUSTER_DOMAIN}/auth/login"]
+    #     userinfo_signing_algorithm: none
+    #   - id: outline
+    #     description: Outline
+    #     secret: "${SECRET_OUTLINE_OAUTH_CLIENT_SECRET}"
+    #     public: false
+    #     authorization_policy: two_factor
+    #     pre_configured_consent_duration: 1y
+    #     scopes: ["openid", "profile", "email", "offline_access"]
+    #     redirect_uris: ["https://docs.${CLUSTER_DOMAIN}/auth/oidc.callback"]
+    #     userinfo_signing_algorithm: none
+    #   - id: minio
+    #     description: Minio
+    #     secret: "${SECRET_MINIO_OAUTH_CLIENT_SECRET}"
+    #     public: false
+    #     authorization_policy: two_factor
+    #     pre_configured_consent_duration: 1y
+    #     scopes: ["openid", "profile", "groups", "email"]
+    #     redirect_uris: ["https://minio.${CLUSTER_DOMAIN}/oauth_callback"]
+    #     userinfo_signing_algorithm: none
