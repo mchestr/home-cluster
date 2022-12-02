@@ -18,8 +18,8 @@ spec:
   values:
     ingress:
       enabled: true
-      ingressClassName: nginx
       annotations:
+        kubernetes.io/ingress.class: nginx
         auth.home.arpa/enabled: "true"
         hajimari.io/enable: "true"
         hajimari.io/icon: bxl:kubernetes
