@@ -6,7 +6,7 @@ resources:
   - secret.sops.yaml
   - helm-release.yaml
 patchesStrategicMerge:
-  - patches/postgres.yaml
+  - patches/postgres-init.yaml
 configMapGenerator:
   - name: authelia-configmap
     files:
