@@ -99,21 +99,16 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: traefik
+        ingressClassName: nginx
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
-          hajimari.io/enable: "true"
-          hajimari.io/group: Home
+          external-dns.home.arpa/enabled: "true"
         hosts:
           - host: &host auth.${CLUSTER_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
         tls:
-          - secretName: "{{ .Release.Name }}-tls"
-            hosts:
+          - hosts:
               - *host
 
     persistence:
