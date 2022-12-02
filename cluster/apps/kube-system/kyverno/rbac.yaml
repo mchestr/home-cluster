@@ -10,4 +10,4 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: kyverno
-    namespace: kyverno
+    namespace: kube-system
