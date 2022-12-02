@@ -1,5 +1,5 @@
 ---
-name: Schedule - Cloudflare Proxied Networks Update
+name: "Schedule: Cloudflare Proxied Networks"
 
 on: # yamllint disable-line rule:truthy
   workflow_dispatch:
@@ -7,37 +7,35 @@ on: # yamllint disable-line rule:truthy
     - cron: "0 0 * * *"
 
 env:
-  CLOUDFLARE_PROXIED_TRAEFIK_MIDDLEWARE_FILE: >-
-    cluster/apps/networking/traefik/addons/middleware/cloudflare-only.yaml
+  DEFAULT_CLOUDFLARE_PROXIED_NETWORKS_FILE: |-
+    cluster/apps/default/ingress-nginx/cloudflare-proxied-networks.txt
+
 jobs:
   cloudflare-proxied-networks-update:
     name: Cloudflare Proxied Networks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install requests ruamel.yaml
+        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # renovate: tag=v3.1.0
+
       - name: Generate Token
-        uses: tibdex/github-app-token@v1
+        uses: tibdex/github-app-token@021a2405c7f990db57f5eae5397423dcc554159c # renovate: tag=v1.7.0
         id: generate-token
         with:
           app_id: "${{ secrets.BOT_APP_ID }}"
           private_key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+
       - name: Cloudflare Proxied Networks
         run: |
-          OUTPUT=$(cat ${{ env.CLOUDFLARE_PROXIED_TRAEFIK_MIDDLEWARE_FILE }} | python .github/scripts/cloudflare-proxied-networks.py)
-          echo "${OUTPUT}" > ${{ env.CLOUDFLARE_PROXIED_TRAEFIK_MIDDLEWARE_FILE }}
-        env:
-          CLOUDFLARE_PROXIED_TRAEFIK_MIDDLEWARE_FILE: ${{ env.CLOUDFLARE_PROXIED_TRAEFIK_MIDDLEWARE_FILE }}
+          cloudflare_proxied_networks_file=$(find . -name "cloudflare-proxied-networks.txt" -print -quit)
+          if [[ ! -f "${cloudflare_proxied_networks_file}" ]]; then
+              bash ./.github/scripts/cloudflare-proxied-networks.sh > ${{ env.DEFAULT_CLOUDFLARE_PROXIED_NETWORKS_FILE }}
+          else
+              bash ./.github/scripts/cloudflare-proxied-networks.sh > "${cloudflare_proxied_networks_file}"
+          fi
+
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v4
+        uses: peter-evans/create-pull-request@2b011faafdcbc9ceb11414d64d0573f37c774b04 # v4.2.3
         with:
           token: "${{ steps.generate-token.outputs.token }}"
           branch: github-action/update-cloudflare-proxied-networks
