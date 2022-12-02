@@ -45,7 +45,7 @@ resource "cloudflare_zone_settings_override" "cloudflare_settings" {
   }
 }
 
-resource "cloudflare_zone_settings_override" "cloudflare_settings" {
+resource "cloudflare_zone_settings_override" "cloudflare_zone_settings" {
   zone_id = lookup(data.cloudflare_zones.cluster_domain.zones[0], "id")
   settings {
     # /ssl-tls
