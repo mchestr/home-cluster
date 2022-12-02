@@ -26,7 +26,7 @@ spec:
         hajimari.io/group: System Management
         hajimari.io/appName: k8s Dashboard
       hosts:
-        - &host dashboard.${SECRET_CLUSTER_DOMAIN}
+        - &host k8s.${SECRET_CLUSTER_DOMAIN}
       tls:
         - hosts:
             - *host
