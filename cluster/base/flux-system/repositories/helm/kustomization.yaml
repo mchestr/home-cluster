@@ -15,6 +15,7 @@ resources:
   - external-dns-charts.yaml
   - grafana-charts.yaml
   - hajimari-charts.yaml
+  - ingress-nginx-charts.yaml
   - jetstack-charts.yaml
   - k8s-gateway-charts.yaml
   - kubernetes-dashboard-charts.yaml

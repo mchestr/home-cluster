@@ -5,6 +5,7 @@ resources:
   - blocky
   - error-pages
   - external-dns
+  - ingress-nginx
   - k8s-gateway
   - static-routes
   - traefik
