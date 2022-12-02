@@ -60,7 +60,7 @@ spec:
           hajimari.io/group: Home
           hajimari.io/appName: Bitwarden
         hosts:
-          - host: &host auth.${SECRET_CLUSTER_DOMAIN}
+          - host: &host vault.${SECRET_CLUSTER_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
