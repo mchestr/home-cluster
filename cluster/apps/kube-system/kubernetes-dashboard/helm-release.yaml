@@ -32,7 +32,7 @@ spec:
       tls:
         - hosts:
             - *host
-          secretName: "kubernetes-dashboard-tls"
+          secretName: kubernetes-dashboard-tls
     # protocolHttp: true
     extraArgs:
       - --enable-skip-login
