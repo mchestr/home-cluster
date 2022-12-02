@@ -26,7 +26,7 @@ This repository is built off the [k8s-at-home/template-cluster-k3s](https://gith
 - [mozilla/sops](https://toolkit.fluxcd.io/guides/mozilla-sops/): Manages secrets for Kubernetes, Ansible and Terraform.
 - [kubernetes-sigs/external-dns](https://github.com/kubernetes-sigs/external-dns): Automatically manages DNS records from my cluster in CloudFlare.
 - [jetstack/cert-manager](https://cert-manager.io/docs/): Creates SSL certificates for services in my Kubernetes cluster.
-- [traefik/traefik](https://github.com/traefik/traefik): Ingress controller to expose HTTP traffic to pods over DNS.
+- [kubernetes/ingress-nginx](https://github.com/kubernetes/ingress-nginx/): Ingress controller to expose HTTP traffic to pods over DNS.
 
 ### :robot:&nbsp; Automation
 
