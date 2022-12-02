@@ -193,4 +193,3 @@ tasks:
     cmds:
       - kubectl get deployments -A --no-headers | awk '{print $2, $1}' | xargs -l bash -c 'kubectl -n $1 scale deployment $0 --replicas=1'
       - kubectl get statefulsets -A --no-headers | awk '{print $2, $1}' | xargs -l bash -c 'kubectl -n $1 scale statefulsets $0 --replicas=1'
-      - kubectl -n networking scale deployment traefik --replicas=3
