@@ -21,7 +21,8 @@ data:
   IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning.home.svc.cluster.local:3003
   UPLOAD_LOCATION: /usr/src/app/upload
   OAUTH_ENABLED: "true"
-  OAUTH_ISSUER_URL: "https://outpost.${CLUSTER_DOMAIN}/application/o/immich/.well-known/openid-configuration"
+  OAUTH_ISSUER_URL: https://auth.${CLUSTER_DOMAIN}/.well-known/openid-configuration
   OAUTH_CLIENT_ID: immich
+  OAUTH_CLIENT_SECRET: ${SECRET_IMMICH_OAUTH_CLIENT_SECRET}
   OAUTH_AUTO_REGISTER: "true"
-  OAUTH_BUTTON_TEXT: "Login with Authentik"
+  OAUTH_BUTTON_TEXT: Login with Authelia
