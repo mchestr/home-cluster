@@ -45,24 +45,12 @@ spec:
       GF_PANELS_DISABLE_SANITIZE_HTML: true
       GF_DISABLE_SANITIZE_HTML: true
       GF_LOG_FILTERS: rendering:debug
-      VAR_BLOCKY_URL: "http://blocky.networking.svc.cluster.local:4000"
+      VAR_BLOCKY_URL: http://blocky.networking.svc.cluster.local:4000
       GF_DASHBOARDS_MIN_REFRESH_INTERVAL: 2s
-      GF_AUTH_GENERIC_OAUTH_ENABLED: "true"
-      GF_AUTH_GENERIC_OAUTH_NAME: authentik
-      GF_AUTH_GENERIC_OAUTH_SCOPES: "openid profile email"
-      GF_AUTH_GENERIC_OAUTH_CLIENT_ID: *app
-      GF_AUTH_GENERIC_OAUTH_AUTH_URL: "https://outpost.${CLUSTER_DOMAIN}/application/o/authorize/"
-      GF_AUTH_GENERIC_OAUTH_TOKEN_URL: "https://outpost.${CLUSTER_DOMAIN}/application/o/token/"
-      GF_AUTH_GENERIC_OAUTH_API_URL: "https://outpost.${CLUSTER_DOMAIN}/application/o/userinfo/"
-      GF_AUTH_SIGNOUT_REDIRECT_URL: "https://outpost.${CLUSTER_DOMAIN}/application/o/grafana/end-session/"
-      # Optionally enable auto-login (bypasses Grafana login screen)
-      GF_AUTH_OAUTH_AUTO_LOGIN: "true"
-      # Optionally map user groups to Grafana roles
-      GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH: "contains(groups[*], 'grafana-admins') && 'Admin' || contains(groups[*], 'grafana-editors') && 'Editor' || 'Viewer'"
 
     grafana.ini:
       server:
-        root_url: "https://grafana.${CLUSTER_DOMAIN}"
+        root_url: https://grafana.${SECRET_CLUSTER_DOMAIN}
       paths:
         data: /var/lib/grafana/data
         logs: /var/log/grafana
@@ -76,8 +64,29 @@ spec:
         url: https://grafana.net
       panels:
         disable_sanitize_html: true
+      auth:
+        signout_redirect_url: "https://auth.${SECRET_CLUSTER_DOMAIN}/logout"
+        oauth_auto_login: false
+      auth.generic_oauth:
+        enabled: true
+        name: Authelia
+        client_id: grafana
+        client_secret: ${SECRET_GRAFANA_OAUTH_CLIENT_SECRET}
+        scopes: openid profile email groups
+        empty_scopes: false
+        auth_url: https://auth.${SECRET_CLUSTER_DOMAIN}/api/oidc/authorization
+        token_url: https://auth.${SECRET_CLUSTER_DOMAIN}/api/oidc/token
+        api_url: https://auth.${SECRET_CLUSTER_DOMAIN}/api/oidc/userinfo
+        login_attribute_path: preferred_username
+        groups_attribute_path: groups
+        name_attribute_path: name
+        use_pkce: true
+      auth.generic_oauth.group_mapping:
+        role_attribute_path: |
+          contains(groups[*], 'admins') && 'Admin' || contains(groups[*], 'people') && 'Viewer'
+        org_id: 1
       auth.basic:
-        disable_login_form: false
+        enabled: false
       auth.anonymous:
         enabled: true
         org_name: HomeOps
@@ -86,20 +95,16 @@ spec:
 
     ingress:
       enabled: true
-      ingressClassName: traefik
+      ingressClassName: nginx
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-production
-        traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
         hajimari.io/enable: "true"
         hajimari.io/icon: cib:grafana
         hajimari.io/group: System Management
       hosts:
-        - &host "grafana.${CLUSTER_DOMAIN}"
+        - &host "grafana.${SECRET_CLUSTER_DOMAIN}"
       tls:
         - hosts:
             - *host
-          secretName: grafana-tls
 
     plugins:
       - pr0ps-trackmap-panel
@@ -146,10 +151,6 @@ spec:
           datasource: Prometheus
           gnetId: 13032
           revision: 6
-        traefik:
-          gnetId: 11462
-          revision: 1
-          datasource: Prometheus
         redis:
           gnetId: 12776
           revision: 2
