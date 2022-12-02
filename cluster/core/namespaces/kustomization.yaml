@@ -7,7 +7,6 @@ resources:
   - databases.yaml
   - game-system.yaml
   - home.yaml
-  - kubernetes-dashboard.yaml
   - longhorn-system.yaml
   - media.yaml
   - metallb-system.yaml
