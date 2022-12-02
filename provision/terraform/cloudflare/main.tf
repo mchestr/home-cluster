@@ -31,3 +31,9 @@ data "cloudflare_zones" "domain" {
     name = var.cloudflare_domain
   }
 }
+
+data "cloudflare_zones" "cluster_domain" {
+  filter {
+    name = var.cloudflare_cluster_domain
+  }
+}

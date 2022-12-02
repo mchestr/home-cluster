@@ -10,3 +10,7 @@ variable "cloudflare_domain" {
   type        = string
   description = "Cluster domain"
 }
+variable "cloudflare_cluster_domain" {
+  type        = string
+  description = "New cluster domain"
+}
