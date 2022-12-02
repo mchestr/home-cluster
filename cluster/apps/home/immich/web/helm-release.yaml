@@ -55,7 +55,7 @@ spec:
           hajimari.io/group: Home
           hajimari.io/appName: Photos
         hosts:
-          - host: &host "photos.${CLUSTER_DOMAIN}"
+          - host: &host "photos.${SECRET_CLUSTER_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
