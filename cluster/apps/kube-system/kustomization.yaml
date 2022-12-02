@@ -8,7 +8,6 @@ resources:
   - external-dns
   - intel-gpu-plugin
   - kubernetes-dashboard
-  - kyverno
   - metrics-server
   - node-feature-discovery
   - node-problem-detector

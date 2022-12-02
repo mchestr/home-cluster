@@ -8,6 +8,7 @@ resources:
   - flux-system
   - home
   - kube-system
+  - kyverno
   - media
   - monitoring
   - networking
