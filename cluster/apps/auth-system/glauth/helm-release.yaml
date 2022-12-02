@@ -27,10 +27,13 @@ spec:
       strategy: RollingUpdate
       annotations:
         reloader.stakater.com/auto: "true"
+
     image:
       repository: docker.io/glauth/glauth
       tag: v2.2.0-RC1
+
     command: ["/app/glauth", "-c", "/config"]
+
     service:
       main:
         ports:
@@ -39,6 +42,7 @@ spec:
           ldap:
             enabled: true
             port: 389
+
     serviceMonitor:
       main:
         enabled: true
@@ -48,11 +52,13 @@ spec:
             path: /metrics
             interval: 1m
             scrapeTimeout: 10s
+
     podSecurityContext:
       runAsUser: 1000
       runAsGroup: 1000
       fsGroup: 1000
       fsGroupChangePolicy: "OnRootMismatch"
+
     persistence:
       config:
         enabled: true
@@ -65,6 +71,7 @@ spec:
             path: groups.toml
           - key: users.toml
             path: users.toml
+
     topologySpreadConstraints:
       - maxSkew: 1
         topologyKey: kubernetes.io/hostname
@@ -72,6 +79,7 @@ spec:
         labelSelector:
           matchLabels:
             app.kubernetes.io/name: *app
+
     resources:
       requests:
         cpu: 5m
