@@ -1,9 +1,8 @@
 ---
 session:
   redis:
-    host:
-      host: redis.databases.svc.cluster.local
-      port: 6379
+    host: redis.databases.svc.cluster.local
+    port: 6379
 
 access_control:
   default_policy: two_factor
