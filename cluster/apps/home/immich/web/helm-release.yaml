@@ -67,8 +67,7 @@ spec:
                   name: immich-server
                   port: 3001
         tls:
-          - secretName: "{{ .Release.Name }}-tls"
-            hosts:
+          - hosts:
               - *host
 
     persistence:
