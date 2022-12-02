@@ -80,6 +80,7 @@ spec:
             conditional:
               mapping:
                 status.${CLUSTER_DOMAIN}: tcp+udp:1.1.1.1
+                status.${SECRET_CLUSTER_DOMAIN}: tcp+udp:1.1.1.1
                 ${CLUSTER_DOMAIN}: tcp+udp:${METALLB_K8S_GATEWAY_ADDR}
                 ${SECRET_CLUSTER_DOMAIN}: tcp+udp:${METALLB_K8S_GATEWAY_ADDR}
             clientLookup:
