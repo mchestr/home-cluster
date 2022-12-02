@@ -7,6 +7,7 @@ resources:
   - databases.yaml
   - game-system.yaml
   - home.yaml
+  - kyverno.yaml
   - longhorn-system.yaml
   - media.yaml
   - metallb-system.yaml
