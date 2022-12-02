@@ -36,8 +36,7 @@ metadata:
 spec:
   ingressClassName: nginx
   tls:
-    - secretName: s3-tls
-      hosts:
+    - hosts:
         - s3.${SECRET_CLUSTER_DOMAIN}
 
   rules:

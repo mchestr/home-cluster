@@ -160,7 +160,6 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: prometheus-tls
       thanosService:
         enabled: true
       thanosServiceMonitor:
