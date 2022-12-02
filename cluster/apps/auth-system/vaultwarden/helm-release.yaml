@@ -31,9 +31,9 @@ spec:
       WEBSOCKET_ENABLED: true
       WEBSOCKET_ADDRESS: 0.0.0.0
       WEBSOCKET_PORT: 3012
-      DOMAIN: https://vault.${CLUSTER_DOMAIN}
+      DOMAIN: https://vault.${SECRET_CLUSTER_DOMAIN}
       SMTP_HOST: smtp-relay.default.svc.cluster.local
-      SMTP_FROM: vault@${CLUSTER_DOMAIN}
+      SMTP_FROM: vault@${SECRET_CLUSTER_DOMAIN}
       SMTP_SSL: "true"
       SMTP_PORT: 2525
       SMTP_SECURITY: off
@@ -52,20 +52,15 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: traefik
+        ingressClassName: nginx
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          external-dns.alpha.kubernetes.io/target: ipv4.${CLUSTER_DOMAIN}
-          external-dns/is-public: "true"
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          # Skip error pages as it breaks 2fa redirect on login
-          traefik.ingress.kubernetes.io/router.middlewares: networking-external-no-error-pages@kubernetescrd,bitwarden-theme@file
+          external-dns.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:shield-key
           hajimari.io/group: Home
           hajimari.io/appName: Bitwarden
         hosts:
-          - host: &host "vault.${CLUSTER_DOMAIN}"
+          - host: &host auth.${SECRET_CLUSTER_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
@@ -75,8 +70,7 @@ spec:
                 pathType: Prefix
                 servicePort: 3012
         tls:
-          - secretName: "{{ .Release.Name }}-tls"
-            hosts:
+          - hosts:
               - *host
 
     podAnnotations:

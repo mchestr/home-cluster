@@ -45,26 +45,20 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: traefik
+        ingressClassName: nginx
         annotations:
-          external-dns.alpha.kubernetes.io/target: "ipv4.${CLUSTER_DOMAIN}"
-          external-dns/is-public: "true"
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          # error-pages middleware breaks the plex.tv redirect
-          traefik.ingress.kubernetes.io/router.middlewares: networking-external-no-error-pages@kubernetescrd
+          external-dns.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:plex
           hajimari.io/group: Home
 
         hosts:
-          - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
-          - secretName: "{{ .Release.Name }}-tls"
-            hosts:
+          - hosts:
               - *host
 
     persistence:

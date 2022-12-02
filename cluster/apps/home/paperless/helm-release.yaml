@@ -39,7 +39,7 @@ spec:
       PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
       PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
       PAPERLESS_TIME_ZONE: ${TZ}
-      PAPERLESS_URL: https://{{ .Release.Name }}.${CLUSTER_DOMAIN}
+      PAPERLESS_URL: https://{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}
       PAPERLESS_REDIS: redis://redis.databases:6379
       PAPERLESS_DBHOST: postgres-rw.databases.svc.cluster.local
       PAPERLESS_DBNAME: paperless
@@ -53,8 +53,6 @@ spec:
           secretKeyRef:
             name: *pg-secret
             key: POSTGRES_PASS
-      PAPERLESS_ENABLE_HTTP_REMOTE_USER: "true"
-      PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME: HTTP_X_AUTHENTIK_USERNAME
 
     service:
       main:
@@ -65,23 +63,20 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: traefik
+        ingressClassName: nginx
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
+          auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: file-outline
           hajimari.io/group: Home
           hajimari.io/appName: Docs
         hosts:
-          - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
-          - secretName: "{{ .Release.Name }}-tls"
-            hosts:
+          - hosts:
               - *host
 
     persistence:

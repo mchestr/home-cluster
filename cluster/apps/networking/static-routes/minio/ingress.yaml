@@ -5,22 +5,18 @@ metadata:
   name: minio
   namespace: networking
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-production
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
     hajimari.io/enable: "true"
     hajimari.io/icon: carbon:object-storage
     hajimari.io/group: storage, database, and messaging
 
 spec:
-  ingressClassName: traefik
+  ingressClassName: nginx
   tls:
-    - secretName: minio-tls
-      hosts:
-        - "minio.${CLUSTER_DOMAIN}"
+    - hosts:
+        - minio.${SECRET_CLUSTER_DOMAIN}
 
   rules:
-    - host: minio.${CLUSTER_DOMAIN}
+    - host: minio.${SECRET_CLUSTER_DOMAIN}
       http:
         paths:
           - path: /
@@ -36,20 +32,16 @@ kind: Ingress
 metadata:
   name: s3
   namespace: networking
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-production
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
 
 spec:
-  ingressClassName: traefik
+  ingressClassName: nginx
   tls:
     - secretName: s3-tls
       hosts:
-        - "s3.${CLUSTER_DOMAIN}"
+        - s3.${SECRET_CLUSTER_DOMAIN}
 
   rules:
-    - host: s3.${CLUSTER_DOMAIN}
+    - host: s3.${SECRET_CLUSTER_DOMAIN}
       http:
         paths:
           - path: /

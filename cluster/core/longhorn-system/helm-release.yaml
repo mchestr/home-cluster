@@ -54,14 +54,11 @@ spec:
       guaranteedReplicaManagerCPU: 8
     ingress:
       enabled: true
-      host: longhorn.${CLUSTER_DOMAIN}
+      host: longhorn.${SECRET_CLUSTER_DOMAIN}
       tls: true
-      tlsSecret: longhorn-tls
-      ingressClassName: traefik
+      ingressClassName: nginx
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-production
-        traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
-        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        auth.home.arpa/enabled: "true"
         hajimari.io/enable: "true"
         hajimari.io/icon: carbon:block-storage
         hajimari.io/group: storage, database, and messaging

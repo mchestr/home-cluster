@@ -29,10 +29,10 @@ spec:
     env:
       TZ: ${TZ}
       PUSHOVER_DEBUG: "false"
-      PUSHOVER_APP_URL: "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+      PUSHOVER_APP_URL: "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
       RADARR__INSTANCE_NAME: Radarr
       RADARR__PORT: &port 7878
-      RADARR__APPLICATION_URL: "https://{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+      RADARR__APPLICATION_URL: "https://{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
       RADARR__LOG_LEVEL: info
 
     envFrom:
@@ -48,22 +48,23 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: traefik
+        ingressClassName: nginx
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd,radarr-theme@file
+          auth.home.arpa/enabled: "true"
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            proxy_set_header Accept-Encoding "";
+            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_CLUSTER_DOMAIN}/css/base/radarr/nord.css"></head>';
+            sub_filter_once on;
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:filmstrip
           hajimari.io/group: Media Management
         hosts:
-          - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
-          - secretName: "{{ .Release.Name }}-tls"
-            hosts:
+          - hosts:
               - *host
 
     persistence:

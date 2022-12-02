@@ -43,38 +43,30 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: traefik
+        ingressClassName: nginx
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          external-dns.alpha.kubernetes.io/target: ipv4.${CLUSTER_DOMAIN}
-          external-dns/is-public: "true"
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/router.middlewares: networking-external-no-error-pages@kubernetescrd
+          external-dns.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: ant-design:calendar-outlined
           hajimari.io/group: storage, database, and messaging
         hosts:
-          - host: &host cal.${CLUSTER_DOMAIN}
+          - host: &host cal.${SECRET_CLUSTER_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
         tls:
-          - secretName: "{{ .Release.Name }}-tls"
-            hosts:
+          - hosts:
               - *host
       admin:
         enabled: true
-        ingressClassName: traefik
+        ingressClassName: nginx
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/router.middlewares: networking-external-auth@kubernetescrd
+          auth.home.arpa/enabled: "true"
         hosts:
           - host: *host
             paths:
               - path: /admin
                 pathType: Prefix
         tls:
-          - secretName: "{{ .Release.Name }}-tls"
-            hosts:
+          - hosts:
               - *host
