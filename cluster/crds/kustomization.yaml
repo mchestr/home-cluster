@@ -6,4 +6,3 @@ resources:
   - kube-prometheus-stack
   - kyverno
   - system-upgrade-controller
-  - traefik
