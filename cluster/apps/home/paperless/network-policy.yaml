@@ -17,4 +17,4 @@ spec:
               kubernetes.io/metadata.name: networking
         - podSelector:
             matchLabels:
-              app.kubernetes.io/name: traefik
+              app.kubernetes.io/name: ingress-nginx

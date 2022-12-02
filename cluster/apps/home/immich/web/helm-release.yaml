@@ -47,11 +47,9 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: traefik
+        ingressClassName: nginx
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd,home-strip-prefix-api@kubernetescrd
+          nginx.ingress.kubernetes.io/rewrite-target: /$2
           hajimari.io/enable: "true"
           hajimari.io/icon: heroicons:photo
           hajimari.io/group: Home
@@ -63,7 +61,7 @@ spec:
                 pathType: Prefix
           - host: *host
             paths:
-              - path: /api
+              - path: /api(/|$)(.*)
                 pathType: Prefix
                 service:
                   name: immich-server

@@ -4,16 +4,12 @@ kind: Ingress
 metadata:
   name: webhook-receiver
   namespace: flux-system
+  ingressClassName: nginx
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-production
-    external-dns.alpha.kubernetes.io/target: ipv4.${CLUSTER_DOMAIN}
-    external-dns/is-public: "true"
-    kubernetes.io/ingress.class: traefik
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.middlewares: networking-external@kubernetescrd
+    external-dns.home.arpa/enabled: "true"
 spec:
   rules:
-    - host: &host "flux-webhook.${CLUSTER_DOMAIN}"
+    - host: &host "flux-webhook.${SECRET_CLUSTER_DOMAIN}"
       http:
         paths:
           - path: /
@@ -24,6 +20,5 @@ spec:
                 port:
                   number: 80
   tls:
-    - secretName: flux-webhook-tls
-      hosts:
+    - hosts:
         - *host

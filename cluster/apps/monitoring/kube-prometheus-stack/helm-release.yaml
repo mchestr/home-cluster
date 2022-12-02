@@ -77,21 +77,18 @@ spec:
       ingress:
         enabled: true
         pathType: Prefix
-        ingressClassName: traefik
+        ingressClassName: nginx
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
+          auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: akar-icons:circle-alert
           hajimari.io/group: System Management
           hajimari.io/appName: alertmanager
         hosts:
-          - &am-host alert-manager.${CLUSTER_DOMAIN}
+          - &am-host alert-manager.${SECRET_CLUSTER_DOMAIN}
         tls:
           - hosts:
               - *am-host
-            secretName: alert-manager-tls
       alertmanagerSpec:
         storage:
           volumeClaimTemplate:
@@ -151,17 +148,15 @@ spec:
       ingress:
         enabled: true
         pathType: Prefix
-        ingressClassName: traefik
+        ingressClassName: nginx
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
+          auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: simple-icons:prometheus
           hajimari.io/group: storage, database, and messaging
           hajimari.io/appName: prometheus
         hosts:
-          - &host prometheus.${CLUSTER_DOMAIN}
+          - &host prometheus.${SECRET_CLUSTER_DOMAIN}
         tls:
           - hosts:
               - *host

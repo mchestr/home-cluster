@@ -5,22 +5,18 @@ metadata:
   name: lochnas
   namespace: networking
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-production
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.middlewares: networking-internal@kubernetescrd
     hajimari.io/enable: "true"
     hajimari.io/icon: mdi:nas
     hajimari.io/group: storage, database, and messaging
 
 spec:
-  ingressClassName: traefik
+  ingressClassName: nginx
   tls:
-    - secretName: lochnas-tls
-      hosts:
-        - "lochnas.${CLUSTER_DOMAIN}"
+    - hosts:
+        - lochnas.${SECRET_CLUSTER_DOMAIN}
 
   rules:
-    - host: lochnas.${CLUSTER_DOMAIN}
+    - host: lochnas.${SECRET_CLUSTER_DOMAIN}
       http:
         paths:
           - path: /

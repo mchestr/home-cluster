@@ -39,23 +39,20 @@ spec:
     ingress:
       dashboard:
         enabled: true
-        ingressClassName: traefik
         path: /
         pathType: Prefix
+        ingressClassName: nginx
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
+          auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: simple-icons:mqtt
           hajimari.io/group: storage, database, and messaging
           hajimari.io/appName: EMQX
         hosts:
-          - &host emqx.${CLUSTER_DOMAIN}
+          - &host emqx.${SECRET_CLUSTER_DOMAIN}
         tls:
           - hosts:
               - *host
-            secretName: emqx-tls
 
     resources:
       requests:

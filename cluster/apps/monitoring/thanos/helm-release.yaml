@@ -37,12 +37,10 @@ spec:
         sidecarsNamespace: monitoring
       ingress:
         enabled: true
-        hostname: &host thanos.${CLUSTER_DOMAIN}
-        ingressClassName: traefik
+        hostname: &host thanos.${SECRET_CLUSTER_DOMAIN}
+        ingressClassName: nginx
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
+          auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: fluent-mdl2:promoted-database
           hajimari.io/group: storage, database, and messaging

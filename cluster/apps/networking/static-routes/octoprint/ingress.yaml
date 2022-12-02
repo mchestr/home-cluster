@@ -5,22 +5,18 @@ metadata:
   name: octoprint
   namespace: networking
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-production
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
     hajimari.io/enable: "true"
     hajimari.io/icon: simple-icons:octoprint
     hajimari.io/group: Home
 
 spec:
-  ingressClassName: traefik
+  ingressClassName: nginx
   tls:
-    - secretName: octoprint-tls
-      hosts:
-        - "octoprint.${CLUSTER_DOMAIN}"
+    - hosts:
+        - octoprint.${SECRET_CLUSTER_DOMAIN}
 
   rules:
-    - host: octoprint.${CLUSTER_DOMAIN}
+    - host: octoprint.${SECRET_CLUSTER_DOMAIN}
       http:
         paths:
           - path: /

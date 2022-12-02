@@ -44,13 +44,12 @@ spec:
         annotations:
           external-dns.home.arpa/enabled: "true"
         hosts:
-          - host: &host "{{ .Release.Name }}.${CLUSTER_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
-          - secretName: "{{ .Release.Name }}-tls"
-            hosts:
+          - hosts:
               - *host
 
     resources:

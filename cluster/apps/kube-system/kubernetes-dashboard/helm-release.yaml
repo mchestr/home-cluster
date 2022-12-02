@@ -18,21 +18,18 @@ spec:
   values:
     ingress:
       enabled: true
-      className: traefik
+      ingressClassName: nginx
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-production
-        traefik.ingress.kubernetes.io/router.middlewares: networking-internal-auth@kubernetescrd
-        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        auth.home.arpa/enabled: "true"
         hajimari.io/enable: "true"
         hajimari.io/icon: bxl:kubernetes
         hajimari.io/group: System Management
         hajimari.io/appName: k8s Dashboard
       hosts:
-        - &host dashboard.${CLUSTER_DOMAIN}
+        - &host dashboard.${SECRET_CLUSTER_DOMAIN}
       tls:
         - hosts:
             - *host
-          secretName: kubernetes-dashboard-tls
     # protocolHttp: true
     extraArgs:
       - --enable-skip-login
