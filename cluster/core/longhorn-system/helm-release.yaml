@@ -56,7 +56,6 @@ spec:
       enabled: true
       host: longhorn.${SECRET_CLUSTER_DOMAIN}
       tls: true
-      tlsSecret: kube-system/${SECRET_CLUSTER_DOMAIN/./-}-tls
       ingressClassName: nginx
       annotations:
         auth.home.arpa/enabled: "true"
