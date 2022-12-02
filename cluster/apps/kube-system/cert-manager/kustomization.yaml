@@ -4,4 +4,6 @@ kind: Kustomization
 namespace: kube-system
 resources:
   - dashboard
+  - issuers
+  - helm-release.yaml
   - prometheus-rule.yaml
