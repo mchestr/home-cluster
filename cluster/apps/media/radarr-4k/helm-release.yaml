@@ -24,7 +24,7 @@ spec:
   values:
     image:
       repository: ghcr.io/onedr0p/radarr-develop
-      tag: 4.3.0.6671@sha256:cdd1c3a3dd411dd19c37f10ba8dd5be0bd9fcf3e3ccd42ea96deea657d22b8e6
+      tag: 4.3.0.6671@sha256:35c1d2365e84bf14f3347200c709606510c61d1f1c3d7a17d75127cbc3db3497
 
     env:
       TZ: ${TZ}
