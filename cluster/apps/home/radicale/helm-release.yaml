@@ -38,7 +38,7 @@ spec:
         annotations:
           external-dns.home.arpa/enabled: "true"
         hosts:
-          - host: &host "radicale.${SECRET_CLUSTER_DOMAIN}"
+          - host: &host cal.${SECRET_CLUSTER_DOMAIN}
             paths:
               - path: /
         tls:
