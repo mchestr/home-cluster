@@ -21,7 +21,7 @@ identity_providers:
     clients:
       - id: grafana
         description: Grafana
-        secret: "${SECRET_GRAFANA_OAUTH_CLIENT_SECRET}"
+        secret: ${SECRET_GRAFANA_OAUTH_CLIENT_SECRET}
         public: false
         authorization_policy: two_factor
         pre_configured_consent_duration: 1y
@@ -30,16 +30,16 @@ identity_providers:
         userinfo_signing_algorithm: none
       - id: immich
         description: Immich
-        secret: "${SECRET_IMMICH_OAUTH_CLIENT_SECRET}"
+        secret: ${SECRET_IMMICH_OAUTH_CLIENT_SECRET}
         public: false
         authorization_policy: two_factor
         pre_configured_consent_duration: 1y
         scopes: ["openid", "profile", "email"]
-        redirect_uris: ["https://photos.${SECRET_CLUSTER_DOMAIN}/auth/login"]
+        redirect_uris: ["https://photos.${SECRET_CLUSTER_DOMAIN}/auth/login", "app.immich:/"]
         userinfo_signing_algorithm: none
       - id: minio
         description: Minio
-        secret: "${SECRET_MINIO_OAUTH_CLIENT_SECRET}"
+        secret: ${SECRET_MINIO_OAUTH_CLIENT_SECRET}
         public: false
         authorization_policy: two_factor
         pre_configured_consent_duration: 1y
