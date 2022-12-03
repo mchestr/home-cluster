@@ -9,6 +9,7 @@ resources:
   - home-assistant
   - immich
   - paperless
+  - radicale
   - theme-park
   - unifi
   - zigbee2mqtt
