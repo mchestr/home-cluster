@@ -5,8 +5,7 @@ metadata:
   name: lochnas
   namespace: networking
   annotations:
-    # Override default custom-http-errors or signin redirect breaks
-    nginx.ingress.kubernetes.io/custom-http-errors: 500,502,503,504
+    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
     hajimari.io/enable: "true"
     hajimari.io/icon: mdi:nas
     hajimari.io/group: storage, database, and messaging
