@@ -50,7 +50,7 @@ spec:
         enabled: true
         ingressClassName: nginx
         annotations:
-          auth.home.arpa/enabled: "true"
+          external-dns.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: simple-icons:jellyfin
           hajimari.io/group: Home

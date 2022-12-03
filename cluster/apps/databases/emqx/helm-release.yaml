@@ -43,7 +43,6 @@ spec:
         pathType: Prefix
         ingressClassName: nginx
         annotations:
-          auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: simple-icons:mqtt
           hajimari.io/group: storage, database, and messaging
