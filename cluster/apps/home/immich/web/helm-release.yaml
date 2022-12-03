@@ -57,11 +57,11 @@ spec:
         hosts:
           - host: &host photos.${SECRET_CLUSTER_DOMAIN}
             paths:
-              - path: (/|$)(.*)
+              - path: /(.*)
                 pathType: Prefix
           - host: *host
             paths:
-              - path: /api(/|$)(.*)
+              - path: /api/(.*)
                 pathType: Prefix
                 service:
                   name: immich-server
