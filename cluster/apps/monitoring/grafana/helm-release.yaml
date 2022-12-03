@@ -66,7 +66,7 @@ spec:
         disable_sanitize_html: true
       auth:
         signout_redirect_url: "https://auth.${SECRET_CLUSTER_DOMAIN}/logout"
-        oauth_auto_login: false
+        oauth_auto_login: true
       auth.generic_oauth:
         enabled: true
         name: Authelia
