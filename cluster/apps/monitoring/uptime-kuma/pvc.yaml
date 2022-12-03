@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: uptime-kuma-config-v1
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/name: &name uptime-kuma
+    app.kubernetes.io/instance: *name
+    snapshot.home.arpa/enabled: "true"
+spec:
+  accessModes:
+    - ReadWriteOnce
+
+  resources:
+    requests:
+      storage: 1Gi
+
+  storageClassName: longhorn
