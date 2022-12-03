@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - kube-prometheus-stack
   - grafana
+  - kubernetes-dashboard
   - loki
   - network-ups-tools
   - snmp-exporter
