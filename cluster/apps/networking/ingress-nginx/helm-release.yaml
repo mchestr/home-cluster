@@ -31,7 +31,8 @@ spec:
         - name: TZ
           value: ${TZ}
       service:
-        externalIPs: ["${METALLB_NGINX_ADDR}"]
+        type: LoadBalancer
+        loadBalancerIP: "${METALLB_NGINX_ADDR}"
         externalTrafficPolicy: Local
       publishService:
         enabled: true
