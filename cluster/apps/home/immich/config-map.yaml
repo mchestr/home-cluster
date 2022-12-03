@@ -21,7 +21,7 @@ data:
   IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning.home.svc.cluster.local:3003
   UPLOAD_LOCATION: /usr/src/app/upload
   OAUTH_ENABLED: "true"
-  OAUTH_ISSUER_URL: https://auth.${CLUSTER_DOMAIN}
+  OAUTH_ISSUER_URL: https://auth.${SECRET_CLUSTER_DOMAIN}
   OAUTH_CLIENT_ID: immich
   OAUTH_CLIENT_SECRET: ${SECRET_IMMICH_OAUTH_CLIENT_SECRET}
   OAUTH_AUTO_REGISTER: "true"
