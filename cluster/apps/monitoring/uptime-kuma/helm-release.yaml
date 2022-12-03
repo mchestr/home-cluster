@@ -41,6 +41,11 @@ spec:
       main:
         enabled: true
         ingressClassName: nginx
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: simple-icons:uptimekuma
+          hajimari.io/group: System Management
+          hajimari.io/appName: Uptime
         hosts:
           - host: &host uptime.${SECRET_CLUSTER_DOMAIN}
             paths:
