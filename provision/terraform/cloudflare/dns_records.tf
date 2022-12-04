@@ -39,17 +39,17 @@ resource "cloudflare_record" "aws_ses_cname3" {
   value   = var.aws_ses_cname3_value
 }
 resource "cloudflare_record" "aws_ses_mx" {
-  zone_id = lookup(data.cloudflare_zones.domain.zones[0], "id")
-  proxied = false
-  type    = "MX"
-  name    = "mail"
-  value   = "feedback-smtp.us-west-2.amazonses.com"
-}
-resource "cloudflare_record" "aws_ses_txt" {
   zone_id  = lookup(data.cloudflare_zones.domain.zones[0], "id")
   proxied  = false
-  type     = "TXT"
+  type     = "MX"
   name     = "mail"
-  value    = "v=spf1 include:amazonses.com ~all"
+  value    = "feedback-smtp.us-west-2.amazonses.com"
   priority = 10
+}
+resource "cloudflare_record" "aws_ses_txt" {
+  zone_id = lookup(data.cloudflare_zones.domain.zones[0], "id")
+  proxied = false
+  type    = "TXT"
+  name    = "mail"
+  value   = "v=spf1 include:amazonses.com ~all"
 }
