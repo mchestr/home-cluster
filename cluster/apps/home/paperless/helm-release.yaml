@@ -54,6 +54,7 @@ spec:
             name: *pg-secret
             key: POSTGRES_PASS
       PAPERLESS_ENABLE_HTTP_REMOTE_USER: 'true'
+      PAPERLESS_LOGOUT_REDIRECT_URL: https://auth.${SECRET_CLUSTER_DOMAIN}/logout
 
     service:
       main:
