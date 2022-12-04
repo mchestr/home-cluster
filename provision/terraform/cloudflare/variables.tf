@@ -34,11 +34,3 @@ variable "aws_ses_cname3_value" {
   type        = string
   description = "AWS SES CNAME 3 value"
 }
-variable "aws_ses_mx" {
-  type        = string
-  description = "AWS SES MX record"
-}
-variable "aws_ses_txt" {
-  type        = string
-  description = "AWS SES TXT record"
-}
