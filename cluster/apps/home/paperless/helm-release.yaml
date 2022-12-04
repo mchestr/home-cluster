@@ -53,6 +53,7 @@ spec:
           secretKeyRef:
             name: *pg-secret
             key: POSTGRES_PASS
+      PAPERLESS_ENABLE_HTTP_REMOTE_USER: 'true'
 
     service:
       main:
