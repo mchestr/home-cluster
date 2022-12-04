@@ -46,12 +46,10 @@ resource "cloudflare_record" "aws_ses_mx" {
   value   = "feedback-smtp.us-west-2.amazonses.com"
 }
 resource "cloudflare_record" "aws_ses_txt" {
-  zone_id = lookup(data.cloudflare_zones.domain.zones[0], "id")
-  proxied = false
-  type    = "TXT"
-  name    = var.aws_ses_txt
-  value   = "v=spf1 include:amazonses.com ~all"
-  data {
-    priority = 10
-  }
+  zone_id  = lookup(data.cloudflare_zones.domain.zones[0], "id")
+  proxied  = false
+  type     = "TXT"
+  name     = var.aws_ses_txt
+  value    = "v=spf1 include:amazonses.com ~all"
+  priority = 10
 }
