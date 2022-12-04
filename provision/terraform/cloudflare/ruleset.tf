@@ -1,8 +1,9 @@
 resource "cloudflare_ruleset" "transform_remove_x_forward_for" {
-  zone_id = lookup(data.cloudflare_zones.domain.zones[0], "id")
-  name    = "Remove X-Forwarded-For Header"
-  kind    = "zone"
-  phase   = "http_request_late_transform"
+  zone_id     = lookup(data.cloudflare_zones.domain.zones[0], "id")
+  name        = "Remove X-Forwarded-For Header"
+  description = "Remove X-Forwarded-For Header"
+  kind        = "zone"
+  phase       = "http_request_late_transform"
   rules {
     action = "rewrite"
     action_parameters {
@@ -11,7 +12,8 @@ resource "cloudflare_ruleset" "transform_remove_x_forward_for" {
         operation = "remove"
       }
     }
-    enabled    = true
-    expression = "true"
+    enabled     = true
+    expression  = "true"
+    description = "Remove X-Forwarded-For Header"
   }
 }
