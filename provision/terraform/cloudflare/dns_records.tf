@@ -31,12 +31,12 @@ resource "cloudflare_record" "aws_ses_cname2" {
   name    = var.aws_ses_cname2
   value   = var.aws_ses_cname2_value
 }
-resource "cloudflare_record" "aws_ses_cname2" {
+resource "cloudflare_record" "aws_ses_cname3" {
   zone_id = lookup(data.cloudflare_zones.domain.zones[0], "id")
   proxied = false
   type    = "CNAME"
-  name    = var.aws_ses_cname2
-  value   = var.aws_ses_cname2_value
+  name    = var.aws_ses_cname3
+  value   = var.aws_ses_cname3_value
 }
 resource "cloudflare_record" "aws_ses_mx" {
   zone_id = lookup(data.cloudflare_zones.domain.zones[0], "id")
