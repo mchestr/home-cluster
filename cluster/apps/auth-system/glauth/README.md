@@ -69,6 +69,9 @@ Below are the decrypted versions of the sops encrypted toml files.
     [[groups]]
         name = "media"
         gidnumber = 6503
+    [[groups]] # For Minio
+        name = "consoleAdmin"
+        gidnumber = 6504
     ```
 
 3. `users.sops.toml`
