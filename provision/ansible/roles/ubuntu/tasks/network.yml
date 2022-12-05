@@ -1,4 +1,15 @@
 ---
+- include_vars:
+    file: 00-installer-config.yaml
+    name: netplan_conf
+
+- template:
+    src: 00-installer-config.yaml.j2
+    dest: 00-installer-config.yaml
+  vars:
+    _addresses: "{{ netplan_conf.network.ethernets.enp3s0.nameservers.addresses|
+                    regex_replace('192.168.86.14', '192.168.86.16') }}"
+
 - name: Set hostname to inventory hostname
   ansible.builtin.hostname:
     name: "{{ inventory_hostname }}"

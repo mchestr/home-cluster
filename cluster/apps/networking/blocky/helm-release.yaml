@@ -81,6 +81,8 @@ spec:
               mapping:
                 status.${SECRET_CLUSTER_DOMAIN}: tcp+udp:1.1.1.1
                 ${SECRET_CLUSTER_DOMAIN}: tcp+udp:${METALLB_K8S_GATEWAY_ADDR}
+                lochnas.${PRIVATE_LOCAL_DOMAIN}: 192.168.1.128
+                octorprint.${PRIVATE_LOCAL_DOMAIN}: 192.168.1.105
             clientLookup:
               upstream: tcp+udp:${GATEWAY_IP}
             bootstrapDns: tcp+udp:1.1.1.1
