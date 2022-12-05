@@ -9,7 +9,7 @@
 # https://github.com/rcdailey/trash-updater/wiki/Configuration-Reference
 
 sonarr:
-  - base_url: http://sonarr:8989
+  - base_url: http://sonarr.media.svc.cluster.local:8989
     api_key: ${SONARR_APIKEY}
     quality_definition: hybrid
     delete_old_custom_formats: true
@@ -68,7 +68,7 @@ sonarr:
             reset_unmatched_scores: true
 
 radarr:
-  - base_url: http://radarr:7878
+  - base_url: http://radarr.media.svc.cluster.local:7878
     api_key: ${RADARR_APIKEY}
     delete_old_custom_formats: true
     quality_definition:
@@ -159,7 +159,7 @@ radarr:
           - name: SD
             score: 0
 
-  - base_url: http://radarr-4k:7878
+  - base_url: http://radarr-4k.media.svc.cluster.local:7878
     api_key: ${RADARR_4K_APIKEY}
     delete_old_custom_formats: true
     quality_definition:
