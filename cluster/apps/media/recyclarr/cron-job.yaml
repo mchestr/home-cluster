@@ -39,7 +39,7 @@ spec:
               volumeMounts:
                 - name: shared
                   mountPath: /config/recyclarr.yml
-                  subPath: recyclarr.yaml
+                  subPath: recyclarr.yml
                   readOnly: true
             - name: radarrs
               image: ghcr.io/recyclarr/recyclarr:3.0.0
@@ -50,7 +50,7 @@ spec:
               volumeMounts:
                 - name: shared
                   mountPath: /config/recyclarr.yml
-                  subPath: recyclarr.yaml
+                  subPath: recyclarr.yml
                   readOnly: true
           volumes:
             - name: config
