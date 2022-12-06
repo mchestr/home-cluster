@@ -42,12 +42,16 @@
   block:
     - name: Configure task scheduler
       community.network.edgeos_config:
+        save: true
+        backup: true
         lines:
           - set system task-scheduler task renew.acme interval 1d
           - set system task-scheduler task renew.acme executable path /config/scripts/renew.acme.sh
           - set system task-scheduler task renew.acme executable arguments "-d dns.{{ cluster_domain }}"
     - name: Configure gui
       community.network.edgeos_config:
+        save: true
+        backup: true
         lines:
           - set service gui cert-file /config/ssl/server.pem
           - set service gui ca-file /config/ssl/ca.pem

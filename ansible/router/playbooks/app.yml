@@ -16,3 +16,6 @@
     - name: Deploy Uptime Kuma ping
       role: "uptime-kuma-ping.router"
       tags: [uptime-kuma-ping]
+    - name: Deploy WireGuard
+      role: "wireguard.router"
+      tags: [wireguard]
