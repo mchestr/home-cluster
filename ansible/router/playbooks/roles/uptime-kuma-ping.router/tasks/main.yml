@@ -10,7 +10,7 @@
 - name: Copy Uptime Kuma ping script
   ansible.builtin.template:
     src: ping.sh.j2
-    dest: /usr/local/etc/uptime-kuma/ping.sh
+    dest: /config/scripts/ping.sh
     mode: 0777
 
 - name: Configure Uptime Kuma Ping Scheduler
@@ -22,4 +22,4 @@
       community.network.edgeos_config:
         lines:
           - set system task-scheduler task uptime-kuma interval 1m
-          - set system task-scheduler task uptime-kuma executable path /usr/local/etc/uptime-kuma/ping.sh
+          - set system task-scheduler task uptime-kuma executable path /config/scripts/ping.sh
