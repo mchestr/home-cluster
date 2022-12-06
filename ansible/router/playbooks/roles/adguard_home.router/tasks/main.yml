@@ -15,6 +15,7 @@
   register: adguard_home_version_check
 
 - name: Download Adguard Home
+  notify: Restart adguard_home
   when: >
     adguard_home_version_check.stdout is not defined
     or adguard_home_version not in adguard_home_version_check.stdout
@@ -43,12 +44,15 @@
         src: AdGuardHome.yaml.j2
         dest: /usr/local/etc/adguard_home/AdGuardHome.yaml
         mode: 0644
+      register: config
     - name: Install systemd service
       ansible.builtin.template:
         src: AdGuardHome.service.j2
         dest: /etc/systemd/system/AdGuardHome.service
         mode: 0644
+      register: service
     - name: Reload & Restart the service
+      when: config.changed or service.changed
       ansible.builtin.systemd:
         state: restarted
         daemon_reload: yes

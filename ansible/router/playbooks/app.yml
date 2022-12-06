@@ -7,6 +7,9 @@
   any_errors_fatal: true
 
   roles:
+    - name: Grab acme certs
+      role: "acme.router"
+      tags: [acme]
     - name: Deploy Adguard Home
       role: "adguard_home.router"
       tags: [adguard_home]
