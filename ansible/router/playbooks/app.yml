@@ -9,3 +9,6 @@
     - name: Deploy Adguard Home
       role: "adguard_home.router"
       tags: [adguard_home]
+    - name: Deploy Uptime Kuma ping
+      role: "uptime-kuma.router"
+      tags: [uptime-kuma]
