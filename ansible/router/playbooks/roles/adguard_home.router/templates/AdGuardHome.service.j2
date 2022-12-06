@@ -1,0 +1,17 @@
+[Unit]
+Description=AdGuard Home: Network-level blocker
+ConditionFileIsExecutable=/usr/sbin/adguard_home
+
+After=syslog.target network-online.target
+
+[Service]
+StartLimitInterval=5
+StartLimitBurst=10
+ExecStartPre=/bin/mkdir -p /var/log/
+ExecStart=/usr/sbin/adguard_home "-c" "/usr/local/etc/adguard_home/AdGuardHome.yaml" "-s" "run"
+Restart=always
+RestartSec=10
+EnvironmentFile=-/etc/sysconfig/AdGuardHome
+
+[Install]
+WantedBy=multi-user.target

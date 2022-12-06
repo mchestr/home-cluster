@@ -1,0 +1,55 @@
+---
+- name: Create AdGuard Home directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  loop:
+    - /usr/local/etc/adguard_home
+    - /var/log/adguard_home
+
+- name: Check current AdGuard Home version
+  ansible.builtin.command: "/usr/sbin/adguard_home --version"
+  failed_when: false
+  changed_when: false
+  register: adguard_home_version_check
+
+- name: Download Adguard Home
+  when: >
+    adguard_home_version_check.stdout is not defined
+    or adguard_home_version not in adguard_home_version_check.stdout
+  block:
+    - name: Download AdGuard Home
+      ansible.builtin.get_url:
+        url: "{{ adguard_home_download_url }}"
+        dest: "/tmp/adguard_home-{{ adguard_home_version }}.tar.gz"
+        mode: 0755
+    - name: Extract AdGuard Home
+      ansible.builtin.shell:
+        cmd: >-
+          mkdir -p /tmp/adguard_home-{{ adguard_home_version }};
+          tar xvf /tmp/adguard_home-{{ adguard_home_version }}.tar.gz -C /tmp/adguard_home-{{ adguard_home_version }}
+    - name: Move AdGuard Home binary into place
+      ansible.builtin.copy:
+        src: /tmp/adguard_home-{{ adguard_home_version }}/AdGuardHome/AdGuardHome
+        dest: /usr/sbin/adguard_home
+        mode: 0755
+        remote_src: true
+
+- name: Configure Adguard Home
+  block:
+    - name: Copy AdGuard config
+      ansible.builtin.template:
+        src: AdGuardHome.yaml.j2
+        dest: /usr/local/etc/adguard_home/AdGuardHome.yaml
+        mode: 0644
+    - name: Install systemd service
+      ansible.builtin.template:
+        src: AdGuardHome.service.j2
+        dest: /etc/systemd/system/AdGuardHome.service
+        mode: 0644
+    - name: Reload & Restart the service
+      ansible.builtin.systemd:
+        state: restarted
+        daemon_reload: yes
+        name: AdGuardHome
