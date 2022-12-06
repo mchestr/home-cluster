@@ -113,7 +113,9 @@ filters:
     name: AdAway Default Blocklist
     id: 2
 whitelist_filters: []
-user_rules: []
+user_rules:
+  - '@@||stats.grafana.org^$important'
+  - ""
 dhcp:
   enabled: false
   interface_name: ""
