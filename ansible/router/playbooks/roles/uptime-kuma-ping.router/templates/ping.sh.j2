@@ -1,0 +1,3 @@
+#!/bin/sh
+
+curl --connect-timeout 10 --max-time 30 -I -s -o /dev/null -w '%{http_code}' {{ uptime_kuma_ping_url }}
