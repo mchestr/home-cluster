@@ -1,0 +1,13 @@
+---
+#
+# SECRET* vars are encrypted with sops
+#
+
+# renovate: datasource=github-releases depName=WireGuard/wireguard-vyatta-ubnt
+wireguard_version: "1.0.20220627-1"
+wireguard_module: "1.0.20220627"
+wireguard_tools: "1.0.20210914"
+wireguard_edge_os: e50-v2
+wireguard_download_url: https://github.com/WireGuard/wireguard-vyatta-ubnt/releases/download/{{ wireguard_version }}/{{ wireguard_edge_os }}-v{{ wireguard_module }}-v{{ wireguard_tools }}.deb
+
+wireguard_mchestr_phone_public_key: zGtM/OyWujkWAiQ0w9vmIiRXx3zBZg7JfxvdzV8EemI=

@@ -20,3 +20,4 @@ xanmanning.k3s*
 terraform.tfstate*
 tmpl/
 *.tfvars
+edgerouter_config**

@@ -22,6 +22,8 @@
   block:
     - name: Configure task scheduler
       community.network.edgeos_config:
+        save: true
+        backup: true
         lines:
           - set system task-scheduler task uptime-kuma interval 1m
           - set system task-scheduler task uptime-kuma executable path /config/scripts/ping.sh

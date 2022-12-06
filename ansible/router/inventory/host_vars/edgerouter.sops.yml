@@ -6,6 +6,7 @@ internal_domain: ENC[AES256_GCM,data:L84G12qwk0I=,iv:KioHJYRRio2c7AM1nmccoNL02KP
 admin_user: ENC[AES256_GCM,data:DORzVkY=,iv:ak8zyAIyQq5PJOEZ10h/hBWIoUJOKgbSfFp63aV6Ow4=,tag:+ivOIk7xGEVi6x3waah38g==,type:str]
 admin_password: ENC[AES256_GCM,data:ClsEMNYdr+fqLjW2HiZek/ft9lSMvktfEtJi0hQyYIfVDeXGiMR12lyD3xppehsh2Jr+Kdd9xi6sZvic,iv:ojIN0zowSOdx3k+qOcyHAdonvdH+s39VncHElZvTcbg=,tag:TQbCjrYdv2tvC5TShMjJKQ==,type:str]
 uptime_kuma_ping_url: ENC[AES256_GCM,data:f++KPvhRi28LOJUXWUYWZQqRG/SBzIjdaRaysQssTo/ReWu99BQHiWP16PcQwXl4/+tcAxhQPOqDqYnNf2R9rsX11D8=,iv:V7l8B6GhKCw70L92Cj/fQXY1fQ3IIC750TVGq61iV9k=,tag:0VcSksM0hwJ8qpNYkq9CPA==,type:str]
+wireguard_private_key: ENC[AES256_GCM,data:/TzkiLUSyVgR7GG2IlMi8vjwCo68ILrN8kPtJpm74SoP5v4wiOJaiTdu6kA=,iv:FnXW/BmWS2otDEj0E79P9De1t/LpOKzd4YZmemWd5LE=,tag:YtJ0OioS9IjC2oDS6XCqZw==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -21,8 +22,8 @@ sops:
             T2JEYWJ0WHV0ZjB5NWtJWWFrVTJyU28Kg+FbZpxhYP85UwBhPYKwQJi30WrRRhD9
             XFuyQjcXrlIPaJSOrHGh3s1iqGOAyr4C0/8ouyJVYO9sgX50kSvi2w==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2022-12-06T05:24:00Z"
-    mac: ENC[AES256_GCM,data:d7/H03y2vcfE3kXHx5igZ4964gSjhIAxGFLJSoXFUi3a5td5t9v/N+VjN5AC0nbImHA/Q/qTmA14tnoqidrck2AKkukAk+Qg8tKFiatCPHIz+yWhScSUBdcKK1y8OcR0GQDvMijh7mVVyzyMW1q7HooFTlk8yh/0WQ2jBqOTAMc=,iv:HscZZeiXaFKI8qFtbxj9JDz5liLjT6yWoajnCXrmGKs=,tag:BVnW05hKuMJXykslhMb9aQ==,type:str]
+    lastmodified: "2022-12-06T07:40:14Z"
+    mac: ENC[AES256_GCM,data:I3aHs2XLG2c5gNH/OgYtP4wXWeRPuBQkjYsdG3wKn1hgqDqmlrsFQF5cssjnbYnVgFL+3ON330ETdheI7STZ+LTqKD+Zt8vIAO7WF0UwzoPvaV8/xAssro5X1dKv3/n+zrbxzMiV+IxqnRokqUG5vHY3lyJiv+nhwVOpTHs0Lcg=,iv:Qh0NjUFs3GlEcREAy6oJWGGOLsktAtY0nv7nToJzQwg=,tag:4SMUBV4TukqniGtj2RUZjA==,type:str]
     pgp: []
     unencrypted_regex: ^(kind)$
     version: 3.7.3
