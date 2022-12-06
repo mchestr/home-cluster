@@ -6,7 +6,7 @@ metadata:
 spec:
   approvePlan: auto
   interval: 12h
-  path: ./provision/terraform/cloudflare
+  path: ./terraform/cloudflare
   sourceRef:
     kind: OCIRepository
     name: terraform-cloudflare-oci

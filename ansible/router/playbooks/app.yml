@@ -1,0 +1,11 @@
+---
+- name: Configure EdgeRouter
+  hosts:
+    - edgerouter
+  become: true
+  gather_facts: false
+  any_errors_fatal: true
+  roles:
+    - name: Deploy Adguard Home
+      role: "adguard_home.router"
+      tags: [adguard_home]

@@ -7,7 +7,7 @@ on: # yamllint disable-line rule:truthy
     branches:
       - main
     paths:
-      - "provision/terraform/**"
+      - "terraform/**"
 
 jobs:
   generate-build-matrix:
@@ -28,7 +28,7 @@ jobs:
           dir_names: true
           json: true
           files: |
-            provision/terraform/**
+            terraform/**
       - name: List all changed files
         run: |
           echo '${{ steps.generate-build-matrix.outputs.all_changed_files }}'
