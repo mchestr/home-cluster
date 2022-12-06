@@ -1,0 +1,25 @@
+---
+- name: Create Uptime Kuma directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  loop:
+    - /usr/local/etc/uptime-kuma
+
+- name: Copy Uptime Kuma ping script
+  ansible.builtin.template:
+    src: ping.sh.j2
+    dest: /usr/local/etc/uptime-kuma/ping.sh
+    mode: 0777
+
+- name: Configure Uptime Kuma Ping Scheduler
+  vars:
+    ansible_network_os: edgeos
+    ansible_connection: network_cli
+  block:
+    - name: Configure task scheduler
+      community.network.edgeos_config:
+        lines:
+          - set system task-scheduler task uptime-kuma interval 1m
+          - set system task-scheduler task uptime-kuma executable path /usr/local/etc/uptime-kuma/ping.sh
