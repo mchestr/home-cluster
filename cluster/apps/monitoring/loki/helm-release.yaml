@@ -46,6 +46,7 @@ spec:
                 prefix: loki_index_
                 period: 24h
         common:
+          reporting_enabled: false
           path_prefix: /var/loki
           replication_factor: 3
           storage:
