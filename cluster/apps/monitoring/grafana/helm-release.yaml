@@ -40,6 +40,7 @@ spec:
       enabled: false
 
     env:
+      GF_ANALYTICS_REPORTING_ENABLED: 'false'
       GF_EXPLORE_ENABLED: true
       GF_SECURITY_ALLOW_EMBEDDING: true
       GF_PANELS_DISABLE_SANITIZE_HTML: true
