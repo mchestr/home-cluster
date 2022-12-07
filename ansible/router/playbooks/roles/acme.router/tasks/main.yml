@@ -55,3 +55,4 @@
         lines:
           - set service gui cert-file /config/ssl/server.pem
           - set service gui ca-file /config/ssl/ca.pem
+          - set system static-host-mapping host-name dns.{{ cluster_domain }} inet 192.168.1.1
