@@ -1,0 +1,50 @@
+---
+- name: Configure IGMP Proxy
+  vars:
+    prefix: set port-forward
+  community.network.edgeos_config:
+    lines:
+      - "{{ prefix }} auto-firewall enable"
+      - "{{ prefix }} hairpin-nat enable"
+      - "{{ prefix }} wan-interface eth0"
+      - "{{ prefix }} lan-interface switch0.1"
+      - "{{ prefix }} lan-interface switch0"
+
+- name: Configure Rules
+  vars:
+    prefix: set port-forward
+    rules:
+      - name: qBittorrent
+        forward:
+          address: 192.168.1.224
+          port: 50413
+        original_port: 50413
+        protocol: tcp_udp
+      - name: Plex
+        forward:
+          address: 192.168.1.227
+          port: 32400
+        original_port: 32400
+        protocol: tcp_udp
+      - name: MetalLB
+        forward:
+          address: 192.168.1.230
+          port: 443
+        original_port: 443
+        protocol: tcp
+      - name: MetalLB
+        forward:
+          address: 192.168.1.230
+          port: 80
+        original_port: 80
+        protocol: tcp
+  loop: "{{ rules }}"
+  loop_control:
+    index_var: index
+  community.network.edgeos_config:
+    lines:
+      - "{{ prefix }} rule {{ index }} description {{ item.name }}"
+      - "{{ prefix }} rule {{ index }} forward-to address {{ item.forward.address }}"
+      - "{{ prefix }} rule {{ index }} forward-to port {{ item.forward.port }}"
+      - "{{ prefix }} rule {{ index }} original-port {{ item.original_port }}"
+      - "{{ prefix }} rule {{ index }} protocol {{ item.protocol }}"

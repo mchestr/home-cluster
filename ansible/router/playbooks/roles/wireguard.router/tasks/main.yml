@@ -4,12 +4,12 @@
     path: "{{ item }}"
     state: directory
     mode: 0755
-    recurse: yes
+    recurse: true
   loop:
     - /config/auth
 
 - name: Check WireGuard version
-  command: dpkg-query -W wireguard
+  ansible.builtin.command: dpkg-query -W wireguard
   register: wireguard_version_check
   failed_when: false
   changed_when: false
@@ -21,6 +21,7 @@
   ansible.builtin.get_url:
     url: "{{ wireguard_download_url }}"
     dest: /tmp/wireguard-{{ wireguard_version }}.deb
+    mode: 0755
 
 - name: Create WireGuard private key
   ansible.builtin.copy:
@@ -52,10 +53,10 @@
           - set interfaces wireguard wg0 listen-port 51820
           - set interfaces wireguard wg0 route-allowed-ips true
 
-          - set firewall name WAN_LOCAL rule 20 action accept
-          - set firewall name WAN_LOCAL rule 20 protocol udp
-          - set firewall name WAN_LOCAL rule 20 description 'WireGuard'
-          - set firewall name WAN_LOCAL rule 20 destination port 51820
+          - set firewall name WAN_LOCAL rule 30 action accept
+          - set firewall name WAN_LOCAL rule 30 protocol udp
+          - set firewall name WAN_LOCAL rule 30 description 'WireGuard'
+          - set firewall name WAN_LOCAL rule 30 destination port 51820
 
           - set interfaces wireguard wg0 peer {{ wireguard_mchestr_phone_public_key }} allowed-ips 192.168.33.10/32
 

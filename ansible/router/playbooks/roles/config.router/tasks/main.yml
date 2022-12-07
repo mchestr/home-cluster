@@ -1,32 +1,31 @@
 ---
 - name: Configure EdgeOS
+  notify: Save
   vars:
     ansible_network_os: edgeos
     ansible_connection: network_cli
   block:
     - name: Configure System
-      community.network.edgeos_config:
-        save: true
-        backup: true
-        lines:
-          - set system host-name EdgeRouter-10X
-          - set system analytics-handler send-analytics-report false
-          - set system crash-handler send-crash-report false
-          - set system login user {{ edgeos_user_name }} authentication encrypted-password {{ edgeos_user_password }}
-          - set system login user {{ edgeos_user_name }} authentication public-keys vsc key AAAAC3NzaC1lZDI1NTE5AAAAICBlTsTFoRxMUTDF6ekB7lrrqsce5f9qjNZUIDKrXeHv
-          - set system login user {{ edgeos_user_name }} authentication public-keys vsc type ssh-ed25519
-          - set system login user {{ edgeos_user_name }} level admin
-          - set system name-server 127.0.0.1
-          - set system name-server 1.1.1.1
-          - set system name-server 1.0.0.1
-          - set system ntp server 0.ubnt.pool.ntp.org
-          - set system ntp server 1.ubnt.pool.ntp.org
-          - set system ntp server 2.ubnt.pool.ntp.org
-          - set system ntp server 3.ubnt.pool.ntp.org
-          - set system offload hwnat enable
-          - set system offload ipsec enable
-          - set system syslog global facility all level notice
-          - set system syslog global facility protocols level debug
-          - set system time-zone America/Vancouver
-          - set system traffic-analysis dpi disable
-          - set system traffic-analysis export enable
+      ansible.builtin.include_tasks:
+        file: system.yml
+    - name: Configure Firewall
+      ansible.builtin.include_tasks:
+        file: firewall.yml
+    - name: Configure DHCP
+      ansible.builtin.include_tasks:
+        file: dhcp.yml
+    - name: Configure Interfaces
+      ansible.builtin.include_tasks:
+        file: interfaces.yml
+    - name: Configure DNS
+      ansible.builtin.include_tasks:
+        file: dns.yml
+    - name: Configure Services
+      ansible.builtin.include_tasks:
+        file: services.yml
+    - name: Configure Protocols
+      ansible.builtin.include_tasks:
+        file: protocols.yml
+    - name: Configure Port Forwards
+      ansible.builtin.include_tasks:
+        file: port-forward.yml
