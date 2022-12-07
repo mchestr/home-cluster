@@ -82,7 +82,7 @@ spec:
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: akar-icons:circle-alert
-          hajimari.io/group: System Management
+          hajimari.io/group: system management
           hajimari.io/appName: alertmanager
         hosts:
           - &am-host alert-manager.${SECRET_CLUSTER_DOMAIN}

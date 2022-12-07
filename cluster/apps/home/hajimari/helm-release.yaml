@@ -77,6 +77,16 @@ spec:
             - name: phpMyAdmin
               icon: simple-icons:phpmyadmin
               url: https://${NAS_ADDR}:9443
+        - group: system management
+          apps:
+            - name: Router
+              icon: mdi:router
+              url: https://dns.{SECRET_CLUSTER_DOMAIN}:8443
+        - group: system management
+          apps:
+            - name: AdGuardHome
+              icon: simple-icons:adguard
+              url: https://dns.{SECRET_CLUSTER_DOMAIN}
 
     ingress:
       main:

@@ -100,7 +100,7 @@ spec:
       annotations:
         hajimari.io/enable: "true"
         hajimari.io/icon: cib:grafana
-        hajimari.io/group: System Management
+        hajimari.io/group: system management
       hosts:
         - &host "grafana.${SECRET_CLUSTER_DOMAIN}"
       tls:
