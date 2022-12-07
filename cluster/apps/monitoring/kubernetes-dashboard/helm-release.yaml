@@ -23,7 +23,7 @@ spec:
         auth.home.arpa/enabled: "true"
         hajimari.io/enable: "true"
         hajimari.io/icon: bxl:kubernetes
-        hajimari.io/group: System Management
+        hajimari.io/group: system management
         hajimari.io/appName: k8s
       hosts:
         - &host k8s.${SECRET_CLUSTER_DOMAIN}

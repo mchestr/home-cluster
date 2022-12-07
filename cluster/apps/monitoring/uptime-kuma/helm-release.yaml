@@ -44,7 +44,7 @@ spec:
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: simple-icons:uptimekuma
-          hajimari.io/group: System Management
+          hajimari.io/group: system management
           hajimari.io/appName: Uptime
         hosts:
           - host: &host uptime.${SECRET_CLUSTER_DOMAIN}

@@ -82,7 +82,7 @@ spec:
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:wifi
-          hajimari.io/group: System Management
+          hajimari.io/group: system management
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
             paths:
