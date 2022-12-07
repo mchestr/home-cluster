@@ -7,6 +7,9 @@
   any_errors_fatal: true
 
   roles:
+    - name: Deploy Router Config
+      role: "config.router"
+      tags: [config]
     - name: Grab acme certs
       role: "acme.router"
       tags: [acme]
