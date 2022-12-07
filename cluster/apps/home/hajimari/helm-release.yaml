@@ -16,6 +16,9 @@ spec:
         name: hajimari-charts
         namespace: flux-system
   values:
+    controller:
+      replicas: 3
+      strategy: RollingUpdate
     image:
       repository: ghcr.io/toboshii/hajimari
       tag: v0.3.1
@@ -82,8 +85,6 @@ spec:
             - name: Router
               icon: mdi:router
               url: https://dns.{SECRET_CLUSTER_DOMAIN}:8443
-        - group: system management
-          apps:
             - name: AdGuardHome
               icon: simple-icons:adguard
               url: https://dns.{SECRET_CLUSTER_DOMAIN}
