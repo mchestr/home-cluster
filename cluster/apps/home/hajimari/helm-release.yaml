@@ -84,10 +84,10 @@ spec:
           apps:
             - name: Router
               icon: mdi:router
-              url: https://dns.{SECRET_CLUSTER_DOMAIN}:8443
+              url: https://dns.${SECRET_CLUSTER_DOMAIN}:8443
             - name: AdGuardHome
               icon: simple-icons:adguard
-              url: https://dns.{SECRET_CLUSTER_DOMAIN}
+              url: https://dns.${SECRET_CLUSTER_DOMAIN}
 
     ingress:
       main:
