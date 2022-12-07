@@ -4,7 +4,7 @@
     path: "{{ item }}"
     state: directory
     mode: 0755
-    recurse: yes
+    recurse: true
   loop:
     - /config/scripts
     - /usr/local/etc/uptime-kuma

@@ -1,0 +1,185 @@
+---
+- name: Configure General Firewall Options
+  community.network.edgeos_config:
+    lines:
+      - set firewall all-ping enable
+      - set firewall broadcast-ping disable
+      - set firewall ip-src-route disable
+      - set firewall log-martians enable
+      - set firewall receive-redirects disable
+      - set firewall send-redirects enable
+      - set firewall source-validation disable
+      - set firewall syn-cookies enable
+      - set firewall ipv6-receive-redirects disable
+      - set firewall ipv6-src-route disable
+
+      - set firewall group network-group RFC1918 description "RFC1918 Ranges"
+      - set firewall group network-group RFC1918 network 10.0.0.0/8
+      - set firewall group network-group RFC1918 network 172.16.0.0/12
+      - set firewall group network-group RFC1918 network 192.168.0.0/16
+
+- name: Configure WANv6_IN Firewall
+  vars:
+    prefix: set firewall ipv6-name WANv6_IN
+  community.network.edgeos_config:
+    lines:
+      - "{{ prefix }} default-action drop"
+      - "{{ prefix }} description 'WAN inbound traffic forwarded to LAN'"
+      - "{{ prefix }} enable-default-log"
+
+      - "{{ prefix }} rule 10 action accept"
+      - "{{ prefix }} rule 10 description 'Allow established/related sessions'"
+      - "{{ prefix }} rule 10 state established enable"
+      - "{{ prefix }} rule 10 state related enable"
+
+      - "{{ prefix }} rule 20 action drop"
+      - "{{ prefix }} rule 20 description 'Drop invalid state'"
+      - "{{ prefix }} rule 20 log disable"
+      - "{{ prefix }} rule 20 protocol all"
+      - "{{ prefix }} rule 20 state invalid enable"
+
+- name: Configure WANv6_LOCAL Firewall
+  vars:
+    prefix: set firewall ipv6-name WANv6_LOCAL
+  community.network.edgeos_config:
+    lines:
+      - "{{ prefix }} default-action drop"
+      - "{{ prefix }} description 'WAN inbound traffic to the router'"
+      - "{{ prefix }} enable-default-log"
+
+      - "{{ prefix }} rule 10 action accept"
+      - "{{ prefix }} rule 10 description 'Allow established/related sessions'"
+      - "{{ prefix }} rule 10 state established enable"
+      - "{{ prefix }} rule 10 state related enable"
+
+      - "{{ prefix }} rule 20 action drop"
+      - "{{ prefix }} rule 20 description 'Drop invalid state'"
+      - "{{ prefix }} rule 20 log disable"
+      - "{{ prefix }} rule 20 protocol all"
+      - "{{ prefix }} rule 20 state invalid enable"
+
+      - "{{ prefix }} rule 30 action accept"
+      - "{{ prefix }} rule 30 description 'Allow IPv6 icmp'"
+      - "{{ prefix }} rule 30 protocol ipv6-icmp"
+
+      - "{{ prefix }} rule 40 action accept"
+      - "{{ prefix }} rule 40 description 'allow dhcpv6'"
+      - "{{ prefix }} rule 40 destination port 546"
+      - "{{ prefix }} rule 40 protocol udp"
+      - "{{ prefix }} rule 40 source port 547"
+
+- name: Configure GUEST_IN Firewall
+  vars:
+    prefix: set firewall name GUEST_IN
+  community.network.edgeos_config:
+    lines:
+      - "{{ prefix }} default-action accept"
+      - "{{ prefix }} description 'GUEST inbound traffic forwarded to LAN'"
+      - "{{ prefix }} enable-default-log"
+
+      - "{{ prefix }} rule 10 action accept"
+      - "{{ prefix }} rule 10 description 'Allow established/related'"
+      - "{{ prefix }} rule 10 log disable"
+      - "{{ prefix }} rule 10 protocol all"
+      - "{{ prefix }} rule 10 state established enable"
+      - "{{ prefix }} rule 10 state related enable"
+
+      - "{{ prefix }} rule 20 action drop"
+      - "{{ prefix }} rule 20 description 'Drop invalid state'"
+      - "{{ prefix }} rule 20 log disable"
+      - "{{ prefix }} rule 20 protocol all"
+      - "{{ prefix }} rule 20 state invalid enable"
+
+      - "{{ prefix }} rule 30 action accept"
+      - "{{ prefix }} rule 30 description 'Allow MQTT'"
+      - "{{ prefix }} rule 30 log disable"
+      - "{{ prefix }} rule 30 protocol tcp"
+      - "{{ prefix }} rule 30 destination address 192.168.1.226"
+      - "{{ prefix }} rule 30 destination port 1883"
+      - "{{ prefix }} rule 30 state new enable"
+
+      - "{{ prefix }} rule 40 action drop"
+      - "{{ prefix }} rule 40 description 'Block local access'"
+      - "{{ prefix }} rule 40 log disable"
+      - "{{ prefix }} rule 40 protocol all"
+      - "{{ prefix }} rule 40 destination group network-group RFC1918"
+
+- name: Configure GUEST_LOCAL Firewall
+  vars:
+    prefix: set firewall name GUEST_LOCAL
+  community.network.edgeos_config:
+    lines:
+      - "{{ prefix }} default-action drop"
+      - "{{ prefix }} description 'GUEST inbound traffic to the router'"
+      - "{{ prefix }} enable-default-log"
+
+      - "{{ prefix }} rule 10 action accept"
+      - "{{ prefix }} rule 10 description 'Allow established/related'"
+      - "{{ prefix }} rule 10 log disable"
+      - "{{ prefix }} rule 10 protocol all"
+      - "{{ prefix }} rule 10 state established enable"
+      - "{{ prefix }} rule 10 state related enable"
+
+      - "{{ prefix }} rule 20 action drop"
+      - "{{ prefix }} rule 20 description 'Drop invalid state'"
+      - "{{ prefix }} rule 20 log disable"
+      - "{{ prefix }} rule 20 protocol all"
+      - "{{ prefix }} rule 20 state invalid enable"
+
+      - "{{ prefix }} rule 30 action accept"
+      - "{{ prefix }} rule 30 description 'Allow DNS'"
+      - "{{ prefix }} rule 30 log disable"
+      - "{{ prefix }} rule 30 protocol tcp_udp"
+      - "{{ prefix }} rule 30 destination port 53"
+
+      - "{{ prefix }} rule 40 action accept"
+      - "{{ prefix }} rule 40 description 'Allow DHCP'"
+      - "{{ prefix }} rule 40 log disable"
+      - "{{ prefix }} rule 40 protocol udp"
+      - "{{ prefix }} rule 40 destination port 67"
+
+      - "{{ prefix }} rule 50 action accept"
+      - "{{ prefix }} rule 50 description 'Allow mDNS'"
+      - "{{ prefix }} rule 50 log disable"
+      - "{{ prefix }} rule 50 protocol udp"
+      - "{{ prefix }} rule 50 destination port 5353"
+
+- name: Configure WAN_IN Firewall
+  vars:
+    prefix: set firewall name WAN_IN
+  community.network.edgeos_config:
+    lines:
+      - "{{ prefix }} default-action drop"
+      - "{{ prefix }} description 'WAN inbound traffic forwarded to LAN'"
+      - "{{ prefix }} enable-default-log"
+
+      - "{{ prefix }} rule 10 action accept"
+      - "{{ prefix }} rule 10 description 'Allow established/related'"
+      - "{{ prefix }} rule 10 state established enable"
+      - "{{ prefix }} rule 10 state related enable"
+
+      - "{{ prefix }} rule 20 action drop"
+      - "{{ prefix }} rule 20 description 'Drop invalid state'"
+      - "{{ prefix }} rule 20 log disable"
+      - "{{ prefix }} rule 20 protocol all"
+      - "{{ prefix }} rule 20 state invalid enable"
+
+- name: Configure WAN_LOCAL Firewall
+  vars:
+    prefix: set firewall name WAN_LOCAL
+  community.network.edgeos_config:
+    lines:
+      - "{{ prefix }} default-action drop"
+      - "{{ prefix }} description 'WAN inbound traffic to the router'"
+      - "{{ prefix }} enable-default-log"
+
+      - "{{ prefix }} rule 10 action accept"
+      - "{{ prefix }} rule 10 description 'Allow established/related'"
+      - "{{ prefix }} rule 10 state established enable"
+      - "{{ prefix }} rule 10 state related enable"
+
+      - "{{ prefix }} rule 20 action drop"
+      - "{{ prefix }} rule 20 description 'Drop invalid state'"
+      - "{{ prefix }} rule 20 log disable"
+      - "{{ prefix }} rule 20 protocol all"
+      - "{{ prefix }} rule 20 state invalid enable"
