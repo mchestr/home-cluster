@@ -1,6 +1,6 @@
 kind: Secret
 ansible_user: ENC[AES256_GCM,data:ba8VxJj+6A==,iv:S+ZSsrdcNyMX3V+RaBeS8n6MNmT5WqB3LJRz3Tkc5PY=,tag:xOSfMhD5B9nDNSpuFgynpw==,type:str]
-octoprint_user: ENC[AES256_GCM,data:mwAz7JC0bQ==,iv:OjpvFTOMAPvf+YrkeSfZmJ3y9BH9t+cmjbzMaBG+MyM=,tag:afNFBRJHNOF3tUzMmxPtAw==,type:str]
+octoprint_user: ENC[AES256_GCM,data:yLc4jZYJyaEe,iv:wg9Mg+u+Qlz7TEHee9gJBGz1if7K4anWVfMjEzpp2aA=,tag:ji6GRo43NAf0KMKaX6qXeg==,type:str]
 octoprint_password_salted: ENC[AES256_GCM,data:Px5UzM1MHi+GJBxuHyjRsLvCoB4xU3OKYXGvXCMkFY7QZ3oF0Tiyg2ymijNPs2dBUcGovxiZLre2YXoX3f7qM/OFHsgmlZbOQaY1+uvFDrTVlZcT1aJOoRJaM4BKE4dsAg==,iv:GNbT8LpdsoGYFRcFDl4YsmC4mI4fTFs6maKNHITQvLg=,tag:HO7/V3UD7q9tP44E5wXTpA==,type:str]
 cloudflare:
     email: ENC[AES256_GCM,data:chVzIYuux/2n0AWsMrFx3i5T/0u9bA==,iv:IzQTGatvIa/HxBrurhJ31CoR71mx+souq1btFO8TMQI=,tag:Y2Mm47DTb5YsfQdqfgvdYg==,type:str]
@@ -23,8 +23,8 @@ sops:
             T2JEYWJ0WHV0ZjB5NWtJWWFrVTJyU28Kg+FbZpxhYP85UwBhPYKwQJi30WrRRhD9
             XFuyQjcXrlIPaJSOrHGh3s1iqGOAyr4C0/8ouyJVYO9sgX50kSvi2w==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2022-12-08T08:13:00Z"
-    mac: ENC[AES256_GCM,data:/3i8noH/pJW3Fd8BP/ha0Me73YGGFg0WeP+iwdEEhX5fYYOWBQdVhxByXJBO+VRUm4lw8qqs4VzKMq2Db0w47zsnhz3Q1Yg1Wfv7Yc4fVbzGQzuBKFLVY/gjkQVilFreJwtu1BUqmpUbMMNrTs6W0rKNuVPIxEQFfQ+X/FP65Zo=,iv:HN1miPOyk8JrZ33XETAeu05ePIVF8THVJiBmeT5MJT0=,tag:moVaAwVH3E6+cXbLtdNAgg==,type:str]
+    lastmodified: "2022-12-08T20:33:32Z"
+    mac: ENC[AES256_GCM,data:OcImXP6gKaGAB34ZfXj8X/aoLajDFvMPmxoB6O/C/2JhVaOhM8j0LDAC5b4nVCIaHWanNztWyGF9i8yIqhWAvt9f6nWgfhOKgIhR8aeYmbeHNTfixBBLaZUFFAnnXW2dT183c5WGq91hMvS7YgHo5uYkH9qHzB5MOTTP1szCciY=,iv:BdZ4t6XrLAIN/nfYi0A5DZDJO0EtwvqjO0/Cs3oZ+EE=,tag:JSLoBWhq14ymL0T/rRxAxg==,type:str]
     pgp: []
     unencrypted_regex: ^(kind)$
     version: 3.7.3

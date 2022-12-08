@@ -5,7 +5,7 @@
     install_recommends: false
   register: apt_install_common
   retries: 5
-  loop: apt_packages_to_install
+  loop: "{{ apt_packages_to_install | default([]) }}"
   until: apt_install_common is success
 
 - name: Install octoprint plugins
@@ -16,7 +16,7 @@
     virtualenv: "/home/{{ octoprint_user }}/Octoprint/venv"
     virtualenv_command: virtualenv
     state: latest
-  loop: python_packages_to_install
+  loop: "{{ python_packages_to_install | default([]) }}"
   notify: Restart octoprint
 
 - name: Copy user.yaml

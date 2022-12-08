@@ -21,12 +21,12 @@
     createhome: true
 
 - name: Import GitHub SSH keys
+  remote_user: "{{ bootstrap_user }}"
   ansible.builtin.command: "ssh-import-id gh:{{ ansible_user }}"
-  become_user: "{{ ansible_user }}"
   register: ssh_key_result
   changed_when: ssh_key_result.rc != 0
 
-- name: Setup ssh-import-id at boot
+- name: Setup ssh-import-id at boot and test SSH works with ansible user
   ansible.builtin.cron:
     name: ssh-import-id
     special_time: reboot
