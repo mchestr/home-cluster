@@ -4,7 +4,7 @@
     path: "{{ item }}"
     state: directory
     mode: 0755
-    recurse: yes
+    recurse: true
   loop:
     - /config/scripts
     - /config/.acme.sh
@@ -21,19 +21,19 @@
     dest: /config/scripts/renew.acme.sh
     mode: 0755
 
-- name: register status of /config/ssl/server.pem
-  stat:
+- name: Register status of /config/ssl/server.pem
+  ansible.builtin.stat:
     path: /config/ssl/server.pem
   register: server_pem_path
 
-- name: register status of /config/ssl/ca.pem
-  stat:
+- name: Register status of /config/ssl/ca.pem
+  ansible.builtin.stat:
     path: /config/ssl/ca.pem
   register: ca_pem_path
 
 - name: Get initial certs
   when: not (server_pem_path.stat.exists or ca_pem_path.stat.exists)
-  command: sh /config/scripts/renew.acme.sh -d dns.{{ cluster_domain }}
+  ansible.builtin.command: sh /config/scripts/renew.acme.sh -d dns.{{ cluster_domain }}
 
 - name: Configure EdgeOS
   vars:
