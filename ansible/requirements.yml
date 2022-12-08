@@ -12,3 +12,5 @@ roles:
   - name: xanmanning.k3s
     src: https://github.com/PyratLabs/ansible-role-k3s.git
     version: v3.3.1
+  - name: semuadmin.octoprint
+    version: v1.0.4

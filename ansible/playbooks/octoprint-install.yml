@@ -1,0 +1,34 @@
+---
+- name: Setup Octoprint Servers
+  hosts: octoprint
+
+  gather_facts: true
+  any_errors_fatal: true
+
+  tags: octoprint
+  become: true
+  vars:
+    octoprint_port: 5000
+    webcam_type: usb
+    os_timezone: "America/Vancouver"
+    os_packages_install:
+      - python3-dev
+
+  tasks:
+    - name: Setup common role
+      ansible.builtin.import_role:
+        name: common.debian
+      tags:
+        - common
+
+    - name: Install OctoPrint
+      ansible.builtin.import_role:
+        name: semuadmin.octoprint
+      tags:
+        - octoprint
+
+    - name: Install octoprint plugins
+      ansible.builtin.import_role:
+        name: pip.octoprint
+      tags:
+        - pip

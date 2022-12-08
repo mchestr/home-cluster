@@ -1,0 +1,64 @@
+---
+- name: Determine if acme.sh is installed
+  ansible.builtin.stat:
+    path: "~/.acme.sh/acme.sh"
+  register: acme_installed
+
+- name: Git clone acme.sh
+  ansible.builtin.git:
+    repo: https://github.com/acmesh-official/acme.sh
+    version: 3.0.1
+    dest: /tmp/acme.sh
+  when: not acme_installed.stat.exists
+
+- name: Set script permissions
+  ansible.builtin.file:
+    path: /tmp/acme.sh/acme.sh
+    state: file
+    mode: 0755
+
+- name: Install acme.sh
+  ansible.builtin.command: >-
+    ./acme.sh --install -m {{ cloudflare['email'] }}
+  args:
+    chdir: /tmp/acme.sh/
+    creates: "~/.acme.sh/acme.sh"
+
+- name: Upgrade acme.sh
+  ansible.builtin.command: /root/.acme.sh/acme.sh --upgrade
+  register: upgrade_result
+  changed_when: upgrade_result.rc == 0 and "Upgrade success" not in upgrade_result.stdout
+
+- name: Issue certificate
+  ansible.builtin.command: >-
+    /root/.acme.sh/acme.sh --issue --dns dns_cf
+    -d {{ certificate['common_name'] }}
+    --renew-hook "cat /root/.acme.sh/{{ certificate['common_name'] }}/fullchain.cer /root/.acme.sh/{{ certificate['common_name'] }}/{{ certificate['common_name'] }}.key >/etc/ssl/snakeoil.pem"
+  environment:
+    CF_Account_ID: "{{ cloudflare['account_id'] }}"
+    CF_Token: "{{ cloudflare['api_token'] }}"
+  register: issue_result
+  changed_when: issue_result.rc == 0 and "Cert success" in issue_result.stdout
+  failed_when: issue_result.rc != 0 and "Domains not changed" not in issue_result.stdout
+
+- name: Create cloudflare email environment variable in crontab
+  ansible.builtin.cron:
+    name: CF_Account_ID
+    env: true
+    job: "{{ cloudflare['account_id'] }}"
+
+- name: Create cloudflare apikey environment variable in crontab
+  ansible.builtin.cron:
+    name: CF_Token
+    env: true
+    job: "{{ cloudflare['api_token'] }}"
+
+- name: Create certificate renewal job in crontab
+  ansible.builtin.cron:
+    name: "renew cronjob"
+    minute: 0
+    hour: 0
+    job: >-
+      /root/.acme.sh/acme.sh --renew
+      -d {{ certificate['common_name'] }}
+      --renew-hook "cat /root/.acme.sh/{{ certificate['common_name'] }}/fullchain.cer /root/.acme.sh/{{ certificate['common_name'] }}/{{ certificate['common_name'] }}.key >/etc/ssl/snakeoil.pem"

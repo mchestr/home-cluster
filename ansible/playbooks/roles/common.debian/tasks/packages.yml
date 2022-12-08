@@ -1,0 +1,30 @@
+---
+- name: Disable APT recommends
+  ansible.builtin.blockinfile:
+    path: /etc/apt/apt.conf.d/02norecommends
+    mode: 0644
+    create: true
+    block: |
+      APT::Install-Recommends "false";
+      APT::Install-Suggests "false";
+      APT::Get::Install-Recommends "false";
+      APT::Get::Install-Suggests "false";
+
+- name: Upgrade all system packages
+  ansible.builtin.apt:
+    upgrade: full
+    update_cache: true
+    cache_valid_time: 3600
+    autoclean: true
+    autoremove: true
+  register: apt_upgrade
+  retries: 5
+  until: apt_upgrade is success
+
+- name: Install common packages
+  ansible.builtin.apt:
+    name: "{{ os_packages_install | default([]) }}"
+    install_recommends: false
+  register: apt_install_common
+  retries: 5
+  until: apt_install_common is success
