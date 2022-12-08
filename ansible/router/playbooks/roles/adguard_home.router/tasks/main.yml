@@ -24,6 +24,7 @@
     src: "{{ adguard_home_download_url }}"
     dest: /usr/sbin/adguard_home
     remote_src: true
+    mode: 0755
 
 - name: Configure Adguard Home
   block:
