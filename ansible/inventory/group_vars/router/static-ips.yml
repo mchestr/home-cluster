@@ -9,6 +9,9 @@ static_lan_ips:
   WiFi-AP:
     ip_address: 192.168.1.174
     mac_address: f4:92:bf:16:25:40
+  ender:
+    ip_address: 192.168.1.250
+    mac_address: b8:27:eb:3e:05:1d
 static_iot_ips:
   wled-WLED:
     ip_address: 10.0.10.54

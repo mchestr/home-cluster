@@ -8,17 +8,26 @@
 
   roles:
     - name: Deploy Router Config
-      role: "config.router"
-      tags: [config]
+      role: config.router
+      tags:
+        - config
+
     - name: Grab acme certs
-      role: "acme.router"
-      tags: [acme]
+      role: acme.router
+      tags:
+        - acme
+
     - name: Deploy Adguard Home
-      role: "adguard_home.router"
-      tags: [adguard_home]
+      role: adguard_home.router
+      tags:
+        - adguard_home
+
     - name: Deploy Uptime Kuma ping
-      role: "uptime-kuma-ping.router"
-      tags: [uptime-kuma-ping]
+      role: uptime-kuma-ping.router
+      tags:
+        - uptime-kuma-ping
+
     - name: Deploy WireGuard
-      role: "wireguard.router"
-      tags: [wireguard]
+      role: wireguard.router
+      tags:
+        - wireguard

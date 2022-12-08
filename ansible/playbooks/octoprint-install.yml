@@ -2,7 +2,7 @@
 - name: Setup Octoprint Servers
   hosts: octoprint
 
-  gather_facts: true
+  gather_facts: false
   any_errors_fatal: true
 
   tags: octoprint
@@ -32,3 +32,9 @@
         name: pip.octoprint
       tags:
         - pip
+
+    - name: Install acme
+      ansible.builtin.import_role:
+        name: acme.octoprint
+      tags:
+        - acme

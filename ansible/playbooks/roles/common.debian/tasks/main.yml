@@ -1,4 +1,9 @@
 ---
+- name: Setup user
+  ansible.builtin.import_tasks: user.yml
+  tags:
+    - user
+
 - name: Setup locale
   ansible.builtin.import_tasks: locale.yml
   tags:
@@ -14,10 +19,6 @@
   tags:
     - network
 
-- name: Setup user
-  ansible.builtin.import_tasks: user.yml
-  tags:
-    - user
 
 - name: Setup ssh
   ansible.builtin.import_tasks: ssh.yml
