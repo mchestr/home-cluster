@@ -53,9 +53,7 @@ identity_providers:
           - email
         redirect_uris:
           - https://photos.${SECRET_CLUSTER_DOMAIN}/auth/login
-          # Not supported in 4.37.2, should be fixed next release
-          # https://github.com/authelia/authelia/pull/4410/files
-          # - app.immich:/
+          - app.immich:/
         userinfo_signing_algorithm: none
       - id: minio
         description: Minio
