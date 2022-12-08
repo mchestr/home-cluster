@@ -1,0 +1,27 @@
+---
+- name: Install prerequisites for octoprint plugins
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    install_recommends: false
+  register: apt_install_common
+  retries: 5
+  loop: apt_packages_to_install
+  until: apt_install_common is success
+
+- name: Install octoprint plugins
+  tags:
+    - skip_ansible_lint
+  ansible.builtin.pip:
+    name: "{{ item }}"
+    virtualenv: "/home/{{ octoprint_user }}/Octoprint/venv"
+    virtualenv_command: virtualenv
+    state: latest
+  loop: python_packages_to_install
+  notify: Restart octoprint
+
+- name: Copy user.yaml
+  ansible.builtin.template:
+    src: user.yaml.j2
+    dest: "/home/{{ octoprint_user }}/.octoprint/user.yaml"
+    mode: 0755
+  notify: Restart octoprint

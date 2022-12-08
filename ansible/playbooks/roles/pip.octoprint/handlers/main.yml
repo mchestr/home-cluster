@@ -1,0 +1,7 @@
+---
+- name: Restart octoprint
+  ansible.builtin.systemd:
+    name: octoprint.service
+    state: restarted
+    enabled: true
+    daemon_reload: true
