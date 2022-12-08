@@ -75,12 +75,12 @@ spec:
           group_wait: 30s
           group_interval: 5m
           repeat_interval: 6h
-          receiver: discord
+          receiver: pushover
           routes:
             - receiver: "null"
               matchers:
                 - alertname=~"Watchdog|InfoInhibitor"
-            - receiver: discord
+            - receiver: pushover
               matchers:
                 - severity=~"warning|critical"
               continue: true
@@ -108,6 +108,7 @@ spec:
           - hosts:
               - *am-host
       alertmanagerSpec:
+        replicas: 3
         storage:
           volumeClaimTemplate:
             spec:
