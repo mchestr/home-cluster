@@ -24,7 +24,7 @@ tasks:
     desc: List all the hosts
     dir: ansible
     cmds:
-      - ansible all -i {{.ANSIBLE_KUBERNETES_INVENTORY_DIR}}/hosts.yml --list-hosts
+      - ansible all -i {{.ANSIBLE_KUBERNETES_INVENTORY_DIR}}/hosts.yml --list-hosts {{.CLI_ARGS}}
 
   k8s:prepare:
     desc: Prepare all the k8s nodes for running k3s
@@ -49,44 +49,44 @@ tasks:
     desc: Ping all the hosts
     dir: ansible
     cmds:
-      - ansible all -i {{.ANSIBLE_KUBERNETES_INVENTORY_DIR}}/hosts.yml --one-line -m 'ping'
+      - ansible all -i {{.ANSIBLE_KUBERNETES_INVENTORY_DIR}}/hosts.yml --one-line -m 'ping' {{.CLI_ARGS}}
 
   k8s:uptime:
     desc: Uptime of all the hosts
     dir: ansible
     cmds:
-      - ansible all -i {{.ANSIBLE_KUBERNETES_INVENTORY_DIR}}/hosts.yml --one-line -a 'uptime'
+      - ansible all -i {{.ANSIBLE_KUBERNETES_INVENTORY_DIR}}/hosts.yml --one-line -a 'uptime' {{.CLI_ARGS}}
 
   k8s:restart:multipath:
     desc: Restart multipath service when longhorn issues
     cmds:
-      - ansible kubernetes -i {{.ANSIBLE_KUBERNETES_INVENTORY_DIR}}/hosts.yml -a '/usr/bin/systemctl restart multipathd.service' --become
+      - ansible kubernetes -i {{.ANSIBLE_KUBERNETES_INVENTORY_DIR}}/hosts.yml -a '/usr/bin/systemctl restart multipathd.service' --become {{.CLI_ARGS}}
 
   k8s:restart:k3s:
     desc: Restart multipath service when longhorn issues
     cmds:
-      - ansible kubernetes -i {{.ANSIBLE_KUBERNETES_INVENTORY_DIR}}/hosts.yml -a '/usr/bin/systemctl restart k3s' --become
+      - ansible kubernetes -i {{.ANSIBLE_KUBERNETES_INVENTORY_DIR}}/hosts.yml -a '/usr/bin/systemctl restart k3s' --become {{.CLI_ARGS}}
 
   k8s:reboot:
     desc: Reboot all the k8s nodes
     dir: ansible
     cmds:
-      - ansible kubernetes -i {{.ANSIBLE_KUBERNETES_INVENTORY_DIR}}/hosts.yml -a '/usr/bin/systemctl reboot' --become
+      - ansible kubernetes -i {{.ANSIBLE_KUBERNETES_INVENTORY_DIR}}/hosts.yml -a '/usr/bin/systemctl reboot' --become {{.CLI_ARGS}}
 
   k8s:poweroff:
     desc: Shutdown all the k8s nodes
     dir: ansible
     cmds:
-      - ansible kubernetes -i {{.ANSIBLE_KUBERNETES_INVENTORY_DIR}}/hosts.yml -a '/usr/bin/systemctl poweroff' --become
+      - ansible kubernetes -i {{.ANSIBLE_KUBERNETES_INVENTORY_DIR}}/hosts.yml -a '/usr/bin/systemctl poweroff' --become {{.CLI_ARGS}}
 
   router:list:
     desc: List all the hosts
     dir: ansible
     cmds:
-      - ansible all -i {{.ANSIBLE_ROUTER_INVENTORY_DIR}}/hosts.yml --list-hosts
+      - ansible all -i {{.ANSIBLE_ROUTER_INVENTORY_DIR}}/hosts.yml --list-hosts {{.CLI_ARGS}}
 
   router:install:
     desc: Install Kubernetes on the nodes
     dir: ansible
     cmds:
-      - ansible-playbook -i {{.ANSIBLE_ROUTER_INVENTORY_DIR}}/hosts.yml {{.ANSIBLE_ROUTER_PLAYBOOK_DIR}}/app.yml
+      - ansible-playbook -i {{.ANSIBLE_ROUTER_INVENTORY_DIR}}/hosts.yml {{.ANSIBLE_ROUTER_PLAYBOOK_DIR}}/app.yml {{.CLI_ARGS}}

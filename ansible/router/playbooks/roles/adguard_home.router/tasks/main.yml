@@ -4,7 +4,7 @@
     path: "{{ item }}"
     state: directory
     mode: 0755
-    recurse: yes
+    recurse: true
   loop:
     - /usr/local/etc/adguard_home
     - /var/log/adguard_home
@@ -15,28 +15,15 @@
   changed_when: false
   register: adguard_home_version_check
 
-- name: Download Adguard Home
+- name: Download & Extract AdGuard Home
   notify: Restart adguard_home
   when: >
     adguard_home_version_check.stdout is not defined
     or adguard_home_version not in adguard_home_version_check.stdout
-  block:
-    - name: Download AdGuard Home
-      ansible.builtin.get_url:
-        url: "{{ adguard_home_download_url }}"
-        dest: "/tmp/adguard_home-{{ adguard_home_version }}.tar.gz"
-        mode: 0755
-    - name: Extract AdGuard Home
-      ansible.builtin.shell:
-        cmd: >-
-          mkdir -p /tmp/adguard_home-{{ adguard_home_version }};
-          tar xvf /tmp/adguard_home-{{ adguard_home_version }}.tar.gz -C /tmp/adguard_home-{{ adguard_home_version }}
-    - name: Move AdGuard Home binary into place
-      ansible.builtin.copy:
-        src: /tmp/adguard_home-{{ adguard_home_version }}/AdGuardHome/AdGuardHome
-        dest: /usr/sbin/adguard_home
-        mode: 0755
-        remote_src: true
+  ansible.builtin.unarchive:
+    src: "{{ adguard_home_download_url }}"
+    dest: /usr/sbin/adguard_home
+    remote_src: true
 
 - name: Configure Adguard Home
   block:
@@ -56,5 +43,5 @@
       when: config.changed or service.changed
       ansible.builtin.systemd:
         state: restarted
-        daemon_reload: yes
+        daemon_reload: true
         name: AdGuardHome
