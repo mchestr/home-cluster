@@ -41,7 +41,7 @@
   when: "'LochNas' in item.key"
   community.network.edgeos_config:
     lines:
-      - "{{ prefix }} options address=/lochnas.{{ cluster_domain }}/{{ item.value.ip_address }}"
+      - "{{ prefix }} options address=/lochnas.{{ internal_domain }}/{{ item.value.ip_address }}"
 
 - name: Configure octoprint Forwarding
   vars:
@@ -50,7 +50,7 @@
   when: "'OctoPrint' in item.key"
   community.network.edgeos_config:
     lines:
-      - "{{ prefix }} options address=/octoprint.{{ cluster_domain }}/{{ item.value.ip_address }}"
+      - "{{ prefix }} options address=/octoprint.{{ internal_domain }}/{{ item.value.ip_address }}"
 
 - name: Configure octoprint ender Forwarding
   vars:
