@@ -9,6 +9,9 @@ static_lan_ips:
   WiFi-AP:
     ip_address: 192.168.1.174
     mac_address: f4:92:bf:16:25:40
+  sidero:
+    ip_address: 192.168.1.195
+    mac_address: 16:e2:77:16:cd:4c
   ender:
     ip_address: 192.168.1.250
     mac_address: b8:27:eb:3e:05:1d
