@@ -45,3 +45,8 @@
         file: port-forward.yml
       tags:
         - port-forward
+    - name: Configure PXE
+      ansible.builtin.include_tasks:
+        file: pxe.yml
+      tags:
+        - pxe
