@@ -27,7 +27,7 @@ spec:
   values:
     image:
       repository: ghcr.io/immich-app/immich-machine-learning
-      tag: v1.38.1_60-dev
+      tag: v1.38.2_60-dev
     command: /bin/sh
     args:
       - ./entrypoint.sh
