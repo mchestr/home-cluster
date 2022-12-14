@@ -13,8 +13,8 @@ static_lan_ips:
     ip_address: 192.168.1.195
     mac_address: 16:e2:77:16:cd:4c
   ender:
-    ip_address: 192.168.1.250
-    mac_address: b8:27:eb:3e:05:1d
+    ip_address: 192.168.1.190
+    mac_address: 00:1e:06:42:f0:dc
 static_iot_ips:
   wled-WLED:
     ip_address: 10.0.10.54

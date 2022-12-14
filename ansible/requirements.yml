@@ -13,4 +13,5 @@ roles:
     src: https://github.com/PyratLabs/ansible-role-k3s.git
     version: v3.3.1
   - name: semuadmin.octoprint
-    version: v1.0.4
+    src: https://github.com/semuconsulting/ansible_octoprint
+    version: master

@@ -19,9 +19,9 @@
   loop: "{{ python_packages_to_install | default([]) }}"
   notify: Restart octoprint
 
-- name: Copy user.yaml
+- name: Copy users.yaml
   ansible.builtin.template:
-    src: user.yaml.j2
-    dest: "/home/{{ octoprint_user }}/.octoprint/user.yaml"
+    src: users.yaml.j2
+    dest: "/home/{{ octoprint_user }}/.octoprint/users.yaml"
     mode: 0755
   notify: Restart octoprint
