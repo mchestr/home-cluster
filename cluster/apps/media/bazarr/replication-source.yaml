@@ -1,0 +1,16 @@
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: bazarr
+  namespace: media
+spec:
+  sourcePVC: bazarr-config-v1
+  trigger:
+    schedule: "0 */12 * * *"
+  restic:
+    copyMethod: Snapshot
+    pruneIntervalDays: 14
+    repository: bazarr-restic
+    retain:
+      daily: 14
