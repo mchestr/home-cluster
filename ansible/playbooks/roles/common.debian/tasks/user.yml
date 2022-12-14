@@ -14,19 +14,18 @@
 
 - name: Add sudoers users to wheel group
   ansible.builtin.user:
-    name: "{{ ansible_user }}"
+    name: mchestr
     groups: wheel
     append: true
     state: present
     createhome: true
 
 - name: Import GitHub SSH keys
-  remote_user: "{{ bootstrap_user }}"
   ansible.builtin.command: "ssh-import-id gh:{{ ansible_user }}"
   register: ssh_key_result
   changed_when: ssh_key_result.rc != 0
 
-- name: Setup ssh-import-id at boot and test SSH works with ansible user
+- name: Setup ssh-import-id at boot
   ansible.builtin.cron:
     name: ssh-import-id
     special_time: reboot

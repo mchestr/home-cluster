@@ -1,6 +1,8 @@
 ---
 ansible_python_interpreter: /usr/bin/python3
+
 python_packages_to_install:
+  - https://github.com/RomainOdeval/OctoPrint-CrealityTemperature/archive/master.zip
   - https://github.com/cmroche/OctoPrint-HomeAssistant/archive/master.zip
   - https://github.com/j7126/OctoPrint-Dashboard/archive/master.zip
   - https://github.com/tg44/OctoPrint-Prometheus-Exporter/archive/master.zip
@@ -8,3 +10,4 @@ python_packages_to_install:
   - https://github.com/BillyBlaze/OctoPrint-FullScreen/archive/master.zip
   - https://github.com/OctoPrint/OctoPrint-MQTT/archive/master.zip
   - https://github.com/jneilliii/OctoPrint-TasmotaMQTT/archive/master.zip
+  - https://github.com/SimplyPrint/OctoPrint-Creality2xTemperatureReportingFix/archive/master.zip
