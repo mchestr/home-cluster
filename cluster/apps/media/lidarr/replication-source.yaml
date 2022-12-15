@@ -1,0 +1,16 @@
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: lidarr
+  namespace: media
+spec:
+  sourcePVC: lidarr-config-v1
+  trigger:
+    schedule: "0 */12 * * *"
+  restic:
+    copyMethod: Snapshot
+    pruneIntervalDays: 14
+    repository: lidarr-restic-secret
+    retain:
+      daily: 14

@@ -1,0 +1,16 @@
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: tautulli
+  namespace: media
+spec:
+  sourcePVC: tautulli-config-v1
+  trigger:
+    schedule: "0 */12 * * *"
+  restic:
+    copyMethod: Snapshot
+    pruneIntervalDays: 14
+    repository: tautulli-restic-secret
+    retain:
+      daily: 14

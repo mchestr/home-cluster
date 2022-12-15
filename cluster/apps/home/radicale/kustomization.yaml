@@ -4,8 +4,9 @@ kind: Kustomization
 namespace: home
 resources:
   - helm-release.yaml
-  - secret.sops.yaml
   - pvc.yaml
+  - replication-source.yaml
+  - secret.sops.yaml
 commonLabels:
   app.kubernetes.io/name: radicale
   app.kubernetes.io/instance: radicale
