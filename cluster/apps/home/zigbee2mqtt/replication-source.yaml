@@ -1,0 +1,16 @@
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: zigbee2mqtt
+  namespace: home
+spec:
+  sourcePVC: zigbee2mqtt-config-v1
+  trigger:
+    schedule: "0 */12 * * *"
+  restic:
+    copyMethod: Snapshot
+    pruneIntervalDays: 14
+    repository: zigbee2mqtt-restic-secret
+    retain:
+      daily: 14
