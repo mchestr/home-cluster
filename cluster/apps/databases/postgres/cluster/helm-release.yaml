@@ -47,7 +47,8 @@ spec:
             enablePodMonitor: true
           bootstrap:
             recovery:
-              backup: postgres-1670716800
+              backup:
+                name: postgres-1670716800
 
           backup:
             retentionPolicy: 30d
