@@ -185,11 +185,53 @@ tasks:
   scale-down:
     desc: Scale all deployments/replicas/daemonsets down
     cmds:
+      - flux suspend kustomization --all
       - kubectl get deployments -A --no-headers | awk '{print $2, $1}' | xargs -l bash -c 'kubectl -n $1 scale deployment $0 --replicas=0'
       - kubectl get statefulsets -A --no-headers | awk '{print $2, $1}' | xargs -l bash -c 'kubectl -n $1 scale statefulsets $0 --replicas=0'
+
+  kyverno:fix:
+    desc: Remove kyverno shit when it breaks everything
+    cmds:
+      - kubectl delete mutatingwebhookconfigurations kyverno-policy-mutating-webhook-cfg
+      - kubectl delete mutatingwebhookconfigurations kyverno-resource-mutating-webhook-cfg
+      - kubectl delete mutatingwebhookconfigurations kyverno-verify-mutating-webhook-cfg
+      - kubectl delete validatingwebhookconfigurations kyverno-policy-validating-webhook-cfg
+      - kubectl delete validatingwebhookconfigurations kyverno-resource-validating-webhook-cfg
 
   scale-up:
     desc: Scale all deployments/replicas/daemonsets up
     cmds:
-      - kubectl get deployments -A --no-headers | awk '{print $2, $1}' | xargs -l bash -c 'kubectl -n $1 scale deployment $0 --replicas=1'
-      - kubectl get statefulsets -A --no-headers | awk '{print $2, $1}' | xargs -l bash -c 'kubectl -n $1 scale statefulsets $0 --replicas=1'
+      - flux suspend kustomization --all
+      - kubectl -n calico-system scale deploy calico-typha --replicas 2
+      - kubectl -n calico-system scale deploy calico-kube-controllers --replicas 1
+      - kubectl -n calico-apiserver scale deploy calico-apiserver --replicas 2
+      - kubectl -n tigera-operator scale deploy tigera-operator --replicas 1
+      - kubectl get deployments -n kube-system --no-headers | awk '{print $2, $1}' | xargs -l bash -c 'kubectl -n kube-system scale deployment $1 --replicas=1'
+      - kubectl get deployments -n flux-system --no-headers | awk '{print $2, $1}' | xargs -l bash -c 'kubectl -n flux-system scale deployment $1 --replicas=1'
+      - kubectl get deployments -n longhorn-system --no-headers | awk '{print $2, $1}' | xargs -l bash -c 'kubectl -n longhorn-system scale deployment $1 --replicas=1'
+      - sleep 60
+      - kubectl -n databases scale deploy postgres-cloudnative-pg --replicas 1
+      - kubectl -n databases scale deploy redis --replicas 1
+      - kubectl -n kyverno scale deploy kyverno --replicas 3
+      - kubectl -n metallb-system scale deploy metallb-controller --replicas 1
+      - kubectl get deployments -n monitoring --no-headers | awk '{print $2, $1}' | xargs -l bash -c 'kubectl -n monitoring scale deployment $1 --replicas=1'
+      - sleep 300
+      - kubectl -n networking scale deploy ingress-nginx-controller --replicas 1
+      - kubectl -n networking scale deploy ingress-nginx-defaultbackend --replicas 1
+      - kubectl -n networking scale deploy k8s-gateway --replicas 3
+      - kubectl -n databases scale statefulsets emqx --replicas 3
+      - kubectl -n kube-system scale statefulsets snapshot-controller --replicas 1
+      - kubectl -n monitoring scale statefulsets alertmanager-prometheus-alertmanager --replicas 2
+      - kubectl -n monitoring scale statefulsets loki-read --replicas 3
+      - kubectl -n monitoring scale statefulsets loki-write --replicas 3
+      - kubectl -n monitoring scale statefulsets thanos-storegateway --replicas 1
+      - kubectl -n monitoring scale statefulsets prometheus-prometheus-prometheus --replicas 1
+      - kubectl -n auth-system scale deploy glauth --replicas 3
+      - kubectl -n auth-system scale deploy authelia --replicas 3
+      - kubectl -n auth-system scale deploy vaultwarden --replicas 1
+      - kubectl -n default scale deploy smtp-relay --replicas 3
+      - kubectl get deployments -n home --no-headers | awk '{print $2, $1}' | xargs -l bash -c 'kubectl -n home scale deployment $1 --replicas=1'
+      - kubectl -n home scale deploy hajimari --replicas 3
+      - kubectl get deployments -n system-upgrade --no-headers | awk '{print $2, $1}' | xargs -l bash -c 'kubectl -n system-upgrade scale deployment $1 --replicas=1'
+      - kubectl get deployments -n media --no-headers | awk '{print $2, $1}' | xargs -l bash -c 'kubectl -n media scale deployment $1 --replicas=1'
+      - flux resume kustomization --all

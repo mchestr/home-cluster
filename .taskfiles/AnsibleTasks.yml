@@ -52,8 +52,8 @@ tasks:
     desc: Uninstall Kubernetes on the nodes
     dir: ansible
     cmds:
-      - ansible-playbook -i {{.ANSIBLE_INVENTORY_DIR}}/hosts.yml {{.ANSIBLE_PLAYBOOK_DIR}}/k3s-nuke.yml
-      - defer: ansible kubernetes -i {{.ANSIBLE_INVENTORY_DIR}}/hosts.yml --limit 'kubernetes' -a '/usr/bin/systemctl reboot' --become
+      - ansible-playbook -i {{.ANSIBLE_INVENTORY_DIR}}/hosts.yml --limit 'worker' {{.ANSIBLE_PLAYBOOK_DIR}}/k3s-nuke.yml
+      - defer: ansible kubernetes -i {{.ANSIBLE_INVENTORY_DIR}}/hosts.yml --limit 'worker' -a '/usr/bin/systemctl reboot' --become
 
   k8s:restart:multipath:
     desc: Restart multipath service when longhorn issues
