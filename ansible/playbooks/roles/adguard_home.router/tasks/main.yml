@@ -20,11 +20,24 @@
   when: >
     adguard_home_version_check.stdout is not defined
     or adguard_home_version not in adguard_home_version_check.stdout
-  ansible.builtin.unarchive:
-    src: "{{ adguard_home_download_url }}"
-    dest: /usr/sbin/adguard_home
-    remote_src: true
-    mode: 0755
+  block:
+    - name: mkdir for extract
+      ansible.builtin.file:
+        path: "/tmp/adguard_home-{{ adguard_home_version }}"
+        state: directory
+        mode: 0755
+    - name: Download & extract
+      ansible.builtin.unarchive:
+        src: "{{ adguard_home_download_url }}"
+        dest: /tmp/adguard_home-{{ adguard_home_version }}
+        remote_src: true
+        mode: 0755
+    - name: Move AdGuard Home binary into place
+      ansible.builtin.copy:
+        src: /tmp/adguard_home-{{ adguard_home_version }}/AdGuardHome/AdGuardHome
+        dest: /usr/sbin/adguard_home
+        mode: 0755
+        remote_src: true
 
 - name: Configure Adguard Home
   block:
