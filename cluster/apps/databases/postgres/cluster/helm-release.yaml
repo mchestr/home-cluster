@@ -52,10 +52,11 @@ spec:
           externalClusters:
             - name: postgres-v1
               barmanObjectStore:
+                serverName: postgres-v1
                 wal:
                   compression: bzip2
                   maxParallel: 8
-                destinationPath: s3://${B2_BUCKET_POSTGRES_BACKUP}/postgres-v1
+                destinationPath: s3://${B2_BUCKET_POSTGRES_BACKUP}/
                 endpointURL: ${B2_BUCKET_POSTGRES_BACKUP_ENDPOINT}
                 s3Credentials:
                   accessKeyId:
