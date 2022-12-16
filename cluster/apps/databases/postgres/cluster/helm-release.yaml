@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: postgres-cluster
+  name: postgres-cluster-v2
   namespace: &namespace databases
 spec:
   interval: 15m
@@ -58,7 +58,7 @@ spec:
                 maxParallel: 8
               destinationPath: s3://${B2_BUCKET_POSTGRES_BACKUP}/
               endpointURL: ${B2_BUCKET_POSTGRES_BACKUP_ENDPOINT}
-              serverName: postgres-v1
+              serverName: postgres-v2
               s3Credentials:
                 accessKeyId:
                   name: postgres-b2
