@@ -48,6 +48,7 @@ spec:
           bootstrap:
             recovery:
               source: postgres-v1
+
           externalClusters:
             - name: postgres-v1
               barmanObjectStore:
