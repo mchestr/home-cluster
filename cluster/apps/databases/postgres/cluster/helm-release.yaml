@@ -65,19 +65,19 @@ spec:
                   secretAccessKey:
                     name: postgres-b2
                     key: SECRET_KEY
-          backup:
-            retentionPolicy: 30d
-            barmanObjectStore:
-              wal:
-                compression: bzip2
-                maxParallel: 8
-              destinationPath: s3://${B2_BUCKET_POSTGRES_BACKUP}/
-              endpointURL: ${B2_BUCKET_POSTGRES_BACKUP_ENDPOINT}
-              serverName: postgres-v1
-              s3Credentials:
-                accessKeyId:
-                  name: postgres-b2
-                  key: ACCESS_KEY
-                secretAccessKey:
-                  name: postgres-b2
-                  key: SECRET_KEY
+          # backup:
+          #   retentionPolicy: 30d
+          #   barmanObjectStore:
+          #     wal:
+          #       compression: bzip2
+          #       maxParallel: 8
+          #     destinationPath: s3://${B2_BUCKET_POSTGRES_BACKUP}/
+          #     endpointURL: ${B2_BUCKET_POSTGRES_BACKUP_ENDPOINT}
+          #     serverName: postgres-v1
+          #     s3Credentials:
+          #       accessKeyId:
+          #         name: postgres-b2
+          #         key: ACCESS_KEY
+          #       secretAccessKey:
+          #         name: postgres-b2
+          #         key: SECRET_KEY
