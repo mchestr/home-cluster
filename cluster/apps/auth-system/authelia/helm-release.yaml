@@ -37,7 +37,7 @@ spec:
 
     image:
       repository: ghcr.io/authelia/authelia
-      tag: 4.37.3
+      tag: 4.37.4
 
     env:
       AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ADDITIONAL_USERS_DN: ou=users
