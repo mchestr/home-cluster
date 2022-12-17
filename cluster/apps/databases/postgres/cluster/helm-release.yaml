@@ -41,6 +41,7 @@ spec:
           storage:
             size: 8Gi
             storageClass: longhorn
+
           superuserSecret:
             name: postgres-superuser
 
