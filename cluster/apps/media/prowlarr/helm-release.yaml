@@ -67,7 +67,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: prowlarr-config-v2
+        existingClaim: prowlarr-config-v1
       backup:
         enabled: true
         type: nfs
