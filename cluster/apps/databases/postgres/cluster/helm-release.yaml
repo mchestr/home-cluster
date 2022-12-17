@@ -43,6 +43,7 @@ spec:
             storageClass: longhorn
           superuserSecret:
             name: postgres-superuser
+
           monitoring:
             enablePodMonitor: true
 
