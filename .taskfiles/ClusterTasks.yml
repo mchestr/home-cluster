@@ -90,70 +90,40 @@ tasks:
       - task: certificates
       - task: pods
 
-  debug-volume:
-    desc: Attach a volume to a container for debugging, ex. VOLUME=zigbee2mqtt-config-v1 NAMESPACE=home task cluster:debug-volume
+
+  volume:
+    desc: |-
+      Create a container for debugging a PVC (ex. task PVC=plex-config-v1 debug:volume)
     interactive: true
-    silent: true
     cmds:
       - |
-        kubectl run debug-{{.VOLUME}} -n {{.NAMESPACE}} -i --tty --rm --image=null --overrides='
+        kubectl run -n $(kubectl get pvc -A | grep {{.PVC}} | awk '{print $1}') debug-{{.PVC}} -i --tty --rm --image=null --privileged --overrides='
           {
+            "apiVersion": "v1",
             "spec": {
               "containers": [
                 {
                   "name": "debug",
-                  "image": "docker.io/library/alpine:3.15",
+                  "image": "ghcr.io/onedr0p/alpine:rolling",
                   "command": [
-                    "/bin/sh"
+                    "/bin/bash"
                   ],
                   "stdin": true,
                   "stdinOnce": true,
                   "tty": true,
-                  "lifecycle": {
-                    "postStart": {
-                      "exec": {
-                        "command": [
-                          "/bin/sh",
-                          "-c",
-                          "apk add --no-cache curl vim"
-                        ]
-                      }
-                    }
-                  },
                   "volumeMounts": [
                     {
-                      "name": "backups",
-                      "mountPath": "/mnt/backups/"
-                    },
-                    {
-                      "name": "old-volume",
-                      "mountPath": "/mnt/old/"
-                    },
-                    {
-                      "name": "new-volume",
-                      "mountPath": "/mnt/new/"
+                      "name": "config",
+                      "mountPath": "/data/config"
                     }
                   ]
                 }
               ],
               "volumes": [
                 {
-                  "name": "backups",
-                  "nfs": {
-                    "server": "192.168.1.128",
-                    "path": "/volume1/shared/"
-                  }
-                },
-                {
-                  "name": "old-volume",
+                  "name": "config",
                   "persistentVolumeClaim": {
-                    "claimName": "zwavejs2mqtt-config"
-                  }
-                },
-                {
-                  "name": "new-volume",
-                  "persistentVolumeClaim": {
-                    "claimName": "zwavejs2mqtt-config-v1"
+                    "claimName": "{{.PVC}}"
                   }
                 }
               ],
