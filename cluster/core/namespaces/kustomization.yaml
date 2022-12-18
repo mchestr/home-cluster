@@ -3,15 +3,11 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - auth-system.yaml
-  - csi-driver-nfs.yaml
   - databases.yaml
-  - game-system.yaml
   - home.yaml
   - kyverno.yaml
-  - longhorn-system.yaml
   - media.yaml
   - metallb-system.yaml
   - monitoring.yaml
   - networking.yaml
-  - system-upgrade.yaml
-  - volsync-system.yaml
+  - rook-ceph.yaml

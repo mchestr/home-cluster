@@ -1,0 +1,132 @@
+clusterName: home-cluster
+talosVersion: v1.3.0
+kubernetesVersion: v1.25.5
+endpoint: https://192.168.1.254:6443
+allowSchedulingOnMasters: true
+clusterPodNets:
+  - 10.244.0.0/16
+clusterSvcNets:
+  - 10.96.0.0/12
+cniConfig:
+  name: custom
+  urls:
+    - "https://raw.githubusercontent.com/mchestr/home-cluster/talos/talos/cni/cilium.yaml"
+nodes:
+  - hostname: k8s-0
+    ipAddress: 192.168.1.200
+    installDisk: /dev/sda
+    controlPlane: true
+    disableSearchDomain: true
+
+  - hostname: k8s-1
+    ipAddress: 192.168.1.201
+    installDisk: /dev/sda
+    controlPlane: true
+    disableSearchDomain: true
+
+  - hostname: k8s-2
+    ipAddress: 192.168.1.202
+    installDisk: /dev/sdb
+    controlPlane: false
+    disableSearchDomain: true
+
+  - hostname: k8s-3
+    ipAddress: 192.168.1.203
+    installDisk: /dev/sda
+    controlPlane: true
+    disableSearchDomain: true
+
+controlPlane:
+  inlinePatch:
+    cluster:
+      allowSchedulingOnMasters: true
+      apiServer:
+        disablePodSecurityPolicy: true
+        admissionControl: []
+        certSANs:
+          - ${clusterEndpointIP}
+          - cluster.${domainName}
+        extraArgs:
+          feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
+      controllerManager:
+        extraArgs:
+          feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
+      discovery:
+        registries:
+          service:
+            disabled: true
+      extraManifests:
+        - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/v0.6.3/deploy/ha-install.yaml
+      proxy:
+        disabled: true
+        extraArgs:
+          feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
+      scheduler:
+        extraArgs:
+          feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
+    machine:
+      certSANs:
+        - ${clusterEndpointIP}
+        - cluster.${domainName}
+      kubelet:
+        extraArgs:
+          feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
+          rotate-server-certificates: "true"
+      sysctls:
+        fs.inotify.max_user_watches: "1048576"
+        fs.inotify.max_user_instances: "8192"
+      time:
+        disabled: false
+        servers:
+          - time.cloudflare.com
+      files:
+        - content: |
+            [plugins."io.containerd.grpc.v1.cri"]
+              enable_unprivileged_ports = true
+              enable_unprivileged_icmp = true
+          op: create
+          permissions: 0o666
+          path: /var/cri/conf.d/allow-unpriv-ports.toml
+      network:
+        interfaces:
+          - interface: eth0
+            mtu: 0
+            dhcp: true
+            vip:
+              ip: 192.168.1.254
+worker:
+  inlinePatch:
+    cluster:
+      discovery:
+        registries:
+          service:
+            disabled: true
+
+    machine:
+      certSANs:
+        - ${clusterEndpointIP}
+        - cluster.${domainName}
+      time:
+        disabled: false
+        servers:
+          - time.cloudflare.com
+      kubelet:
+        extraArgs:
+          feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
+          rotate-server-certificates: "true"
+      sysctls:
+        fs.inotify.max_user_watches: "1048576"
+        fs.inotify.max_user_instances: "8192"
+      files:
+        - content: |
+            [plugins."io.containerd.grpc.v1.cri"]
+              enable_unprivileged_ports = true
+              enable_unprivileged_icmp = true
+          op: create
+          permissions: 0o666
+          path: /var/cri/conf.d/allow-unpriv-ports.toml
+      network:
+        interfaces:
+          - interface: eth0
+            mtu: 0
+            dhcp: true

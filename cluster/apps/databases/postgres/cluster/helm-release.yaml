@@ -24,8 +24,8 @@ spec:
   dependsOn:
     - name: postgres
       namespace: *namespace
-    - name: longhorn
-      namespace: longhorn-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   values:
     resources:
       - apiVersion: postgresql.cnpg.io/v1
@@ -41,7 +41,7 @@ spec:
 
           storage:
             size: 8Gi
-            storageClass: longhorn
+            storageClass: ceph-block
 
           superuserSecret:
             name: postgres-superuser
@@ -56,7 +56,7 @@ spec:
 
           bootstrap:
             recovery:
-              source: postgres-v1
+              source: postgres-v2
 
           backup:
             retentionPolicy: 30d
@@ -66,7 +66,7 @@ spec:
                 maxParallel: 8
               destinationPath: s3://${B2_BUCKET_POSTGRES_BACKUP}/
               endpointURL: ${B2_BUCKET_POSTGRES_BACKUP_ENDPOINT}
-              serverName: postgres-v2
+              serverName: postgres-v3
               s3Credentials:
                 accessKeyId:
                   name: postgres-b2
@@ -76,7 +76,7 @@ spec:
                   key: SECRET_KEY
 
           externalClusters:
-            - name: postgres-v1
+            - name: postgres-v2
               barmanObjectStore:
                 wal:
                   compression: bzip2

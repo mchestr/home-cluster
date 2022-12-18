@@ -65,7 +65,7 @@ spec:
       persistence:
         enabled: true
         size: 10Gi
-        storageClass: longhorn
+        storageClass: ceph-block
     ruler:
       enabled: false
     metrics:

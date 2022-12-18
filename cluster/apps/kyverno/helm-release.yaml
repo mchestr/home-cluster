@@ -22,7 +22,8 @@ spec:
     remediation:
       retries: 5
   values:
-    replicaCount: 3
+    installCRDs: false
+    replicaCount: 1
 
     serviceMonitor:
       enabled: true

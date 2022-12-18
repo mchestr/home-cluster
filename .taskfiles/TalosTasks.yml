@@ -1,0 +1,15 @@
+---
+version: "3"
+
+tasks:
+  generate:
+    desc: Generate Talos machine configurations
+    dir: talos
+    cmds:
+      - talhelper genconfig
+
+  apply:
+    desc: Apply Talos config to a specific node (task talos:apply NODE=0)
+    dir: talos
+    cmds:
+      - talosctl apply-config --nodes 192.168.1.20{{.NODE}} --file clusterconfig/home-cluster-k8s-{{.NODE}}.yaml {{.CLI_ARGS}}

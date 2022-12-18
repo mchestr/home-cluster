@@ -12,6 +12,10 @@ creation_rules:
     encrypted_regex: "^(data|stringData)$"
     age: >-
       age1257acz7c2nyglyxaq6ulxwdndrkvl8u7tx84hqvq5qp04ekws38s20gzxp
+  - path_regex: (global|clusters|manifests|talos)/.*\.sops\.ya?ml
+    encrypted_regex: "((?i)(pass|secret($|[^N])|key|token|id|domainName|^data$|^stringData))"
+    age: >-
+      age1257acz7c2nyglyxaq6ulxwdndrkvl8u7tx84hqvq5qp04ekws38s20gzxp
   - path_regex: cluster/.*\.sops\.toml
     key_groups:
     - age:

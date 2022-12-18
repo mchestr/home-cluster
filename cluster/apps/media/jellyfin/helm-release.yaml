@@ -26,8 +26,8 @@ spec:
       namespace: kube-system
     - name: node-feature-discovery
       namespace: kube-system
-    - name: longhorn
-      namespace: longhorn-system
+    - name: ceph-block-cluster
+      namespace: ceph-block
   values:
     image:
       repository: ghcr.io/onedr0p/jellyfin

@@ -112,7 +112,7 @@ spec:
         storage:
           volumeClaimTemplate:
             spec:
-              storageClassName: longhorn
+              storageClassName: ceph-block
               resources:
                 requests:
                   storage: 1Gi
@@ -197,10 +197,10 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: longhorn
+              storageClassName: ceph-block
               resources:
                 requests:
-                  storage: 80Gi
+                  storage: 40Gi
         thanos:
           image: quay.io/thanos/thanos:v0.29.0
           # renovate: datasource=docker depName=quay.io/thanos/thanos

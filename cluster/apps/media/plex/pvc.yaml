@@ -16,4 +16,4 @@ spec:
     requests:
       storage: 30Gi
 
-  storageClassName: longhorn
+  storageClassName: ceph-block

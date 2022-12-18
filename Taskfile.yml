@@ -17,6 +17,7 @@ includes:
   ansible: .taskfiles/AnsibleTasks.yml
   cluster: .taskfiles/ClusterTasks.yml
   precommit: .taskfiles/PrecommitTasks.yml
+  talos: .taskfiles/TalosTasks.yml
   terraform: .taskfiles/TerraformTasks.yml
   snapshot: .taskfiles/SnapshotTasks.yml
   volsync: .taskfiles/VolSync/Tasks.yml
