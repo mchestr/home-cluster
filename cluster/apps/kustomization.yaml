@@ -12,5 +12,3 @@ resources:
   - media
   - monitoring
   - networking
-  - system-upgrade
-  - volsync

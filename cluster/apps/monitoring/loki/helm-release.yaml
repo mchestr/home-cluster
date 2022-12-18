@@ -92,7 +92,7 @@ spec:
       replicas: 3
       persistence:
         size: 10Gi
-        storageClass: longhorn
+        storageClass: ceph-block
 
     read:
       replicas: 3
@@ -113,7 +113,7 @@ spec:
           emptyDir: {}
       persistence:
         size: 10Gi
-        storageClass: longhorn
+        storageClass: ceph-block
 
   valuesFrom:
     - kind: Secret

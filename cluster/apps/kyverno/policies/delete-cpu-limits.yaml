@@ -44,8 +44,12 @@ spec:
                 resources:
                   limits:
                     cpu: null
+                  requests:
+                    cpu: null
             containers:
               - (name): "*"
                 resources:
                   limits:
+                    cpu: null
+                  requests:
                     cpu: null

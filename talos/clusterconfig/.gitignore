@@ -1,0 +1,8 @@
+home-cluster-k8s-0.yaml
+home-cluster-k8s-1.yaml
+home-cluster-k8s-2.yaml
+home-cluster-k8s-3.yaml
+talosconfig
+cluster-0.yaml
+server-class.yaml
+talos-control-plane.yaml
