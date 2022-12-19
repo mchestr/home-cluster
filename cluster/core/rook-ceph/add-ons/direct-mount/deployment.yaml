@@ -46,8 +46,6 @@ spec:
               name: libmodules
             - name: mon-endpoint-volume
               mountPath: /etc/rook
-            - name: direct-mount-scripts
-              mountPath: /scripts
             - name: nas-backup
               mountPath: /mnt/nas-backup
           resources:
@@ -74,13 +72,7 @@ spec:
             items:
               - key: data
                 path: mon-endpoints
-        - name: direct-mount-scripts
-          projected:
-            defaultMode: 0775
-            sources:
-              - configMap:
-                  name: direct-mount-scripts
         - name: nas-backup
           nfs:
-            server: "${NAS_ADDRESS}"
-            path: /volume1/Backup/Kubernetes
+            server: ${NAS_ADDR}
+            path: ${NAS_BACKUP_DIR}
