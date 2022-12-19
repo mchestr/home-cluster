@@ -5,6 +5,7 @@ namespace: media
 resources:
   - helm-release.yaml
   - pvc.yaml
+  - replication-source.yaml
   - secret.sops.yaml
 configMapGenerator:
   - name: sonarr-pushover
