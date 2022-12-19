@@ -20,7 +20,6 @@ includes:
   talos: .taskfiles/TalosTasks.yml
   terraform: .taskfiles/TerraformTasks.yml
   snapshot: .taskfiles/SnapshotTasks.yml
-  volsync: .taskfiles/VolSync/Tasks.yml
 
 tasks:
 
