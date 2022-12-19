@@ -26,7 +26,7 @@ spec:
       namespace: kube-system
     - name: node-feature-discovery
       namespace: kube-system
-    - name: ceph-block-cluster
+    - name: rook-ceph-cluster
       namespace: ceph-block
   values:
     image:
