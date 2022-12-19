@@ -9,7 +9,7 @@ The following config is being used, and seems to work ok.
 <?xml version="1.0" encoding="utf-8"?>
 <PluginConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <LdapServer>glauth.auth-system.svc.cluster.local</LdapServer>
-  <LdapPort>389</LdapPort>
+  <LdapPort>3389</LdapPort>
   <UseSsl>false</UseSsl>
   <UseStartTls>false</UseStartTls>
   <SkipSslVerify>false</SkipSslVerify>
