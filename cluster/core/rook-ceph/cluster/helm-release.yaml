@@ -103,9 +103,9 @@ spec:
         config:
           osdsPerDevice: "1"
         nodes:
-          - name: "k8s-0"
-            devices:
-              - name: "/dev/disk/by-id/ata-KingFast_01172222X0267"
+          # - name: "k8s-0"
+          #   devices:
+          #     - name: "/dev/disk/by-id/ata-KingFast_01172222X0267"
           - name: "k8s-1"
             devices:
               - name: "/dev/disk/by-id/nvme-Samsung_SSD_950_PRO_256GB_S2GLNCAGA04430N"
