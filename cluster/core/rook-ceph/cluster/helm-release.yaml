@@ -124,7 +124,7 @@ spec:
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
-          hajimari.io/icon: content-save
+          hajimari.io/icon: mdi:chess-rook
           hajimari.io/appName: Rook Ceph
           hajimari.io/group: storage, database, and messaging
 
