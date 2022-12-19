@@ -24,8 +24,8 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: volsync
-      namespace: snapscheduler
+    - name: snapscheduler
+      namespace: volsync
   values:
     resources:
       - apiVersion: snapscheduler.backube/v1
