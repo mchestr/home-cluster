@@ -87,7 +87,7 @@ spec:
           contains(groups[*], 'admins') && 'Admin' || contains(groups[*], 'people') && 'Viewer'
         org_id: 1
       auth.basic:
-        enabled: false
+        enabled: true
       auth.anonymous:
         enabled: true
         org_name: HomeOps
