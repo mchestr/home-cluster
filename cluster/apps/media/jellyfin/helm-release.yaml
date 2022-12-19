@@ -27,7 +27,7 @@ spec:
     - name: node-feature-discovery
       namespace: kube-system
     - name: rook-ceph-cluster
-      namespace: ceph-block
+      namespace: rook-ceph
   values:
     image:
       repository: ghcr.io/onedr0p/jellyfin
