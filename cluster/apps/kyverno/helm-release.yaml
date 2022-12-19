@@ -23,7 +23,7 @@ spec:
       retries: 5
   values:
     installCRDs: false
-    replicaCount: 2
+    replicaCount: 3
 
     serviceMonitor:
       enabled: true
