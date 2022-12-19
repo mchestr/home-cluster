@@ -12,3 +12,4 @@ resources:
   - node-problem-detector
   - reflector
   - reloader
+  - snapshot-controller
