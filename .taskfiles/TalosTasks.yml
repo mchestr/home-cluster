@@ -1,6 +1,9 @@
 ---
 version: "3"
 
+vars:
+  NODES: '{{.NODE | default "192.168.1.200,192.168.1.201,192.168.1.202,192.168.1.203"}}'
+
 tasks:
   generate:
     desc: Generate Talos machine configurations
@@ -13,3 +16,39 @@ tasks:
     dir: talos
     cmds:
       - talosctl apply-config --nodes 192.168.1.20{{.NODE}} --file clusterconfig/home-cluster-k8s-{{.NODE}}.yaml {{.CLI_ARGS}}
+
+  memory:
+    desc: Get all nodes memory
+    dir: talos
+    cmds:
+      - talosctl --nodes {{.NODES}} memory {{.CLI_ARGS}}
+
+  stats:
+    desc: Get all nodes stats
+    dir: talos
+    cmds:
+      - talosctl --nodes {{.NODES}} stats {{.CLI_ARGS}}
+
+  time:
+    desc: Get all nodes time
+    dir: talos
+    cmds:
+      - talosctl --nodes {{.NODES}} time {{.CLI_ARGS}}
+
+  services:
+    desc: Get all nodes services
+    dir: talos
+    cmds:
+      - talosctl --nodes {{.NODES}} services {{.CLI_ARGS}}
+
+  health:
+    desc: Get cluster health
+    dir: talos
+    cmds:
+      - talosctl --nodes 192.168.1.200 health {{.CLI_ARGS}}
+
+  dashboard:
+    desc: Get all nodes dashboard
+    dir: talos
+    cmds:
+      - talosctl --nodes 192.168.1.200 dashboard {{.CLI_ARGS}}
