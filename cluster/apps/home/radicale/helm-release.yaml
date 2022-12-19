@@ -37,6 +37,8 @@ spec:
         ingressClassName: nginx
         annotations:
           external-dns.home.arpa/enabled: "true"
+          # doesn't seem to work without
+          nginx.ingress.kubernetes.io/custom-http-errors: 500,502,503,504
         hosts:
           - host: &host cal.${SECRET_CLUSTER_DOMAIN}
             paths:
