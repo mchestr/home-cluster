@@ -28,6 +28,7 @@ This repository is built off the [k8s-at-home/template-cluster-k3s](https://gith
 - [jetstack/cert-manager](https://cert-manager.io/docs/): Creates SSL certificates for services in my Kubernetes cluster.
 - [kubernetes/ingress-nginx](https://github.com/kubernetes/ingress-nginx/): Ingress controller to expose HTTP traffic to pods over DNS.
 - [siderolabs/talos](https://www.talos.dev/): The Kubernetes Operating System.
+- [backube/volsync](https://github.com/backube/volsync) and [backube/snapscheduler](https://github.com/backube/snapscheduler): Backup and recovery of persistent volume claims.
 
 ### :robot:&nbsp; Automation
 
