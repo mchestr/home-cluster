@@ -125,7 +125,8 @@ spec:
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: content-save
-          hajimari.io/appName: "rook-ceph"
+          hajimari.io/appName: Rook Ceph
+          hajimari.io/group: storage, databases, and messaging
 
         host:
           name: &host "rook.${SECRET_CLUSTER_DOMAIN}"
