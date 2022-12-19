@@ -22,8 +22,8 @@ spec:
     remediation:
       retries: 5
   dependsOn:
-    - name: rook-ceph
-      namespace: rook-ceph-cluster
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
     - name: volsync
       namespace: snapscheduler
   values:
