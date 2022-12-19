@@ -126,7 +126,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: content-save
           hajimari.io/appName: Rook Ceph
-          hajimari.io/group: storage, databases, and messaging
+          hajimari.io/group: storage, database, and messaging
 
         host:
           name: &host "rook.${SECRET_CLUSTER_DOMAIN}"
