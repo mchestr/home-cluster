@@ -59,7 +59,7 @@ spec:
           nginx.ingress.kubernetes.io/custom-http-errors: 401,403,404,500,502,503,504
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:shield-key
-          hajimari.io/group: Home
+          hajimari.io/group: home
           hajimari.io/appName: Bitwarden
         hosts:
           - host: &host vault.${SECRET_CLUSTER_DOMAIN}

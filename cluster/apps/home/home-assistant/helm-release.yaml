@@ -51,7 +51,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:home-assistant
           hajimari.io/appName: Home Assistant
-          hajimari.io/group: Home
+          hajimari.io/group: home
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
             paths:
