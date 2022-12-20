@@ -25,8 +25,10 @@ spec:
           log_level: info
           http_listen_port: 3100
           grpc_listen_port: 9095
+
         memberlist:
           join_members: ["loki-memberlist"]
+
         limits_config:
           retention_period: 14d
           enforce_metric_name: false
@@ -36,6 +38,7 @@ spec:
           split_queries_by_interval: 15m
           ingestion_rate_mb: 8
           ingestion_burst_size_mb: 16
+
         schema_config:
           configs:
             - from: "2021-08-01"
@@ -45,6 +48,7 @@ spec:
               index:
                 prefix: loki_index_
                 period: 24h
+
         common:
           path_prefix: /var/loki
           replication_factor: 3
@@ -56,6 +60,7 @@ spec:
           ring:
             kvstore:
               store: memberlist
+
         ruler:
           enable_api: true
           enable_alertmanager_v2: true
@@ -68,10 +73,12 @@ spec:
           ring:
             kvstore:
               store: memberlist
+
         distributor:
           ring:
             kvstore:
               store: memberlist
+
         compactor:
           working_directory: /var/loki/boltdb-shipper-compactor
           shared_store: s3
@@ -79,14 +86,31 @@ spec:
           retention_enabled: true
           retention_delete_delay: 2h
           retention_delete_worker_count: 150
+
         ingester:
           max_chunk_age: 1h
           lifecycler:
             ring:
               kvstore:
                 store: memberlist
+
         analytics:
           reporting_enabled: false
+
+    gateway:
+      enabled: true
+      replicas: 3
+      ingress:
+        enabled: true
+        ingressClassName: nginx
+        hosts:
+          - host: &host "loki.${SECRET_CLUSTER_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
 
     write:
       replicas: 3
@@ -114,6 +138,20 @@ spec:
       persistence:
         size: 10Gi
         storageClass: ceph-block
+
+    monitoring:
+      serviceMonitor:
+        enabled: false
+        metricsInstance:
+          enabled: false
+      selfMonitoring:
+        enabled: false
+        grafanaAgent:
+          installOperator: false
+        lokiCanary:
+          enabled: false
+    test:
+      enabled: false
 
   valuesFrom:
     - kind: Secret

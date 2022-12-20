@@ -38,6 +38,11 @@ tasks:
     cmds:
       - flux reconcile source git flux-system {{.CLI_ARGS | default "-n flux-system"}}
 
+  reconcile:apps:
+    desc: Reconcile the apps kustomizations
+    cmds:
+      - flux reconcile kustomization apps {{.CLI_ARGS | default "-n flux-system"}}
+
   nodes:
     desc: List all the nodes in your cluster
     cmds:
