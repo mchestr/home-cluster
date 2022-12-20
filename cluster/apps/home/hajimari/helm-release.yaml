@@ -88,6 +88,11 @@ spec:
             - name: AdGuardHome
               icon: simple-icons:adguard
               url: https://dns.${SECRET_CLUSTER_DOMAIN}
+        - group: home
+          apps:
+            - name: Ender
+              icon: mdi:printer-3d-nozzle
+              url: https://ender.${SECRET_CLUSTER_DOMAIN}
 
     ingress:
       main:

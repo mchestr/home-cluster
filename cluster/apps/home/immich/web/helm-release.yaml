@@ -52,7 +52,7 @@ spec:
           nginx.ingress.kubernetes.io/rewrite-target: /$1
           hajimari.io/enable: "true"
           hajimari.io/icon: heroicons:photo
-          hajimari.io/group: Home
+          hajimari.io/group: home
           hajimari.io/appName: Photos
         hosts:
           - host: &host photos.${SECRET_CLUSTER_DOMAIN}

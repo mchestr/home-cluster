@@ -52,7 +52,7 @@ spec:
           external-dns.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:plex
-          hajimari.io/group: Home
+          hajimari.io/group: home
 
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
