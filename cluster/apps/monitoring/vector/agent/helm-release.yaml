@@ -28,6 +28,9 @@ spec:
     customConfig:
       data_dir: /vector-data-dir
 
+      batch:
+        max_bytes: 2049000
+
       api:
         enabled: false
 
