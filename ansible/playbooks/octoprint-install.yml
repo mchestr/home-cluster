@@ -27,6 +27,40 @@
       tags:
         - octoprint
 
+    - name: Add octoprint users to wheel group
+      ansible.builtin.user:
+        name: "{{ octoprint_user }}"
+        groups: wheel
+        append: true
+        state: present
+        createhome: true
+
+    - name: Change streamer user to octoprint user
+      ansible.builtin.lineinfile:
+        path: /etc/systemd/system/mjpg_streamer.service
+        regexp: '^User='
+        line: "User={{ octoprint_user }}"
+
+    - name: Change Octoprint to serve on loopback
+      notify: Restart mjpg_streamer
+      ansible.builtin.lineinfile:
+        path: /etc/systemd/system/mjpg_streamer.service
+        regexp: '^ExecStart='
+        line: ExecStart=/home/{{ octoprint_user }}/mjpg-streamer/mjpg-streamer-experimental/mjpg_streamer -o "output_http.so -w /home/{{ octoprint_user }}/mjpg-streamer/mjpg-streamer-experimental/www -l 127.0.0.1" -i "input_uvc.so -r 1920x1080 -f 10"
+
+    - name: Change Octoprint to serve on loopback
+      notify: Restart octoprint
+      ansible.builtin.lineinfile:
+        path: /etc/systemd/system/octoprint.service
+        regexp: '^ExecStart='
+        line: ExecStart=/home/{{ octoprint_user }}/Octoprint/venv/bin/octoprint --host=127.0.0.1
+
+    - name: Install HAProxy
+      ansible.builtin.import_role:
+        name: haproxy.octoprint
+      tags:
+        - haproxy
+
     - name: Install octoprint plugins
       ansible.builtin.import_role:
         name: pip.octoprint
@@ -39,13 +73,13 @@
       tags:
         - acme
 
-    - name: "Install vector"
+    - name: Install vector
       ansible.builtin.import_role:
         name: vector.octoprint
       tags:
         - vector
 
-    - name: "Install node-exporter"
+    - name: Install node-exporter
       ansible.builtin.import_role:
         name: node_exporter.octoprint
       tags:

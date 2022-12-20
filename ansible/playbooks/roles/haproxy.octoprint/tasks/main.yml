@@ -1,0 +1,11 @@
+---
+- name: "Configure Load balancer"
+  package:
+    name: haproxy
+- name: Copy HAProxy config
+  notify: Restart haproxy
+  ansible.builtin.template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    mode: 0644
+  register: config

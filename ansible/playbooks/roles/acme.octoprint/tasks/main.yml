@@ -16,6 +16,7 @@
     path: /tmp/acme.sh/acme.sh
     state: file
     mode: 0755
+  when: not acme_installed.stat.exists
 
 - name: Install acme.sh
   ansible.builtin.command: >-
@@ -23,6 +24,7 @@
   args:
     chdir: /tmp/acme.sh/
     creates: "~/.acme.sh/acme.sh"
+  when: not acme_installed.stat.exists
 
 - name: Upgrade acme.sh
   ansible.builtin.command: /root/.acme.sh/acme.sh --upgrade
