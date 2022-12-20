@@ -12,7 +12,7 @@ spec:
       version: 0.18.0
       sourceRef:
         kind: HelmRepository
-        name: vector
+        name: vector-charts
         namespace: flux-system
       interval: 30m
   values:
