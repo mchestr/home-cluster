@@ -1,0 +1,18 @@
+---
+data_dir: /tmp
+sources:
+  var_logs:
+    type: "file"
+    ignore_older_secs: 600
+    include:
+      - "/var/log/*.log"
+      - "/home/{{ octoprint_user }}/.octoprint/logs/*.log"
+    read_from: "beginning"
+
+sinks:
+  vector_sink:
+    type: vector
+    inputs:
+      - var_logs
+    address: "{{ vector_aggregator_addr }}:{{ vector_aggregator_port }}"
+    version: "2"
