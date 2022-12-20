@@ -2,120 +2,59 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: vector-aggregator
+  name: &app vector-aggregator
   namespace: monitoring
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://helm.vector.dev
-      chart: vector
-      version: 0.18.0
+      chart: app-template
+      version: 1.2.0
       sourceRef:
         kind: HelmRepository
-        name: vector-charts
+        name: bjw-s
         namespace: flux-system
-      interval: 5m
-  dependsOn:
-    - name: loki
-      namespace: monitoring
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
   values:
+    controller:
+      strategy: RollingUpdate
+      annotations:
+        reloader.stakater.com/auto: "true"
     image:
-      repository: timberio/vector
+      repository: docker.io/timberio/vector
       tag: 0.26.0-debian
-
-    role: "Stateless-Aggregator"
+    args: ["--config", "/etc/vector/vector.yaml"]
 
     service:
-      enabled: true
-      type: LoadBalancer
+      main:
+        type: LoadBalancer
+        loadBalancerIP: ${METALLB_VECTOR_AGGREGATOR_ADDR}
+        annotations:
+          coredns.io/hostname: vector.${SECRET_CLUSTER_DOMAIN}
+        externalTrafficPolicy: Local
+        ports:
+          http:
+            port: 8686
 
-    podMonitor:
-      enabled: true
-      jobLabel: vector-aggregator
-      port: prometheus-sink
-
-    customConfig:
-      data_dir: /vector-data-dir
-
-      api:
-        enabled: false
-
-      # Sources
-      sources:
-        journal_logs:
-          type: vector
-          address: 0.0.0.0:6000
-          version: "2"
-        kubernetes_logs:
-          address: 0.0.0.0:6010
-          type: vector
-          version: "2"
-        vector_metrics:
-          type: internal_metrics
-
-      transforms:
-        kubernetes_logs_remap:
-          type: remap
-          inputs:
-            - kubernetes_logs
-          source: |
-            # Standardize 'app' index
-            .custom_app_name = .pod_labels."app.kubernetes.io/name" || .pod_labels.app || .pod_labels."k8s-app" || "unknown"
-
-      # Sinks
-      sinks:
-        loki_journal:
-          type: loki
-          inputs:
-            - journal_logs
-          endpoint: http://loki-gateway:80
-          encoding:
-            codec: json
-          batch:
-            max_bytes: 2049000
-          out_of_order_action: accept
-          remove_label_fields: true
-          remove_timestamp: true
-          labels:
-            hostname: >-
-              {{`{{ host }}`}}
-        loki_kubernetes:
-          type: loki
-          inputs:
-            - kubernetes_logs_remap
-          endpoint: http://loki-gateway:80
-          encoding:
-            codec: json
-          batch:
-            max_bytes: 2049000
-          out_of_order_action: accept
-          remove_label_fields: true
-          remove_timestamp: true
-          labels:
-            app: >-
-              {{`{{ custom_app_name }}`}}
-            namespace: >-
-              {{`{{ kubernetes.pod_namespace }}`}}
-            node: >-
-              {{`{{ kubernetes.pod_node_name }}`}}
-        prometheus_sink:
-          type: prometheus_exporter
-          inputs:
-            - vector_metrics
-          address: 0.0.0.0:9090
-
-  postRenderers:
-    - kustomize:
-        patchesJson6902:
-          - target:
-              kind: Service
-              name: vector-aggregator
-            patch:
-              - op: add
-                path: /spec/externalIPs
-                value:
-                  - "${METALLB_VECTOR_AGGREGATOR_ADDR}"
-              - op: replace
-                path: /spec/externalTrafficPolicy
-                value: Local
+    persistence:
+      config:
+        enabled: true
+        type: configMap
+        name: vector-aggregator-configmap
+        subPath: vector.yaml
+        mountPath: /etc/vector/vector.yaml
+        readOnly: true
+      data:
+        enabled: true
+        type: emptyDir
+        mountPath: /vector-data-dir
+      geoip:
+        enabled: true
+        type: emptyDir
+        mountPath: /usr/share/GeoIP
