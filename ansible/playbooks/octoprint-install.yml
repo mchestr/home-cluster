@@ -38,3 +38,8 @@
         name: acme.octoprint
       tags:
         - acme
+
+    - name: "Install node-exporter"
+      ansible.builtin.import_role:
+        name: node_exporter.octoprint
+      tags: node-exporter
