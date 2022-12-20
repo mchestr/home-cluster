@@ -39,7 +39,14 @@
       tags:
         - acme
 
+    - name: "Install vector"
+      ansible.builtin.import_role:
+        name: vector.octoprint
+      tags:
+        - vector
+
     - name: "Install node-exporter"
       ansible.builtin.import_role:
         name: node_exporter.octoprint
-      tags: node-exporter
+      tags:
+        - node-exporter
