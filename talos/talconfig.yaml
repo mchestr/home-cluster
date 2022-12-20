@@ -68,6 +68,13 @@ controlPlane:
       certSANs:
         - ${clusterEndpointIP}
         - cluster.${domainName}
+      install:
+        extraKernelArgs:
+          - talos.logging.kernel=udp://vector.${domainName}:6050/
+      logging:
+        destinations:
+          - endpoint: udp://vector.${domainName}:6051/
+            format: json_lines
       kubelet:
         extraArgs:
           feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
@@ -106,10 +113,17 @@ worker:
       certSANs:
         - ${clusterEndpointIP}
         - cluster.${domainName}
+      install:
+        extraKernelArgs:
+          - talos.logging.kernel=udp://vector.${domainName}:6050/
       time:
         disabled: false
         servers:
           - time.cloudflare.com
+      logging:
+        destinations:
+          - endpoint: udp://vector.${domainName}:6051/
+            format: json_lines
       kubelet:
         extraArgs:
           feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
