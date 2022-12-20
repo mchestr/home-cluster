@@ -41,19 +41,19 @@ spec:
         ports:
           http:
             port: 8686
-          kubernetes_source:
+          kubernetes-source:
             enabled: true
             port: 6000
-          vyos_logs:
+          vyos-logs:
             enabled: true
             port: 6001
-          journald_source:
+          journald-source:
             enabled: true
             port: 6002
-          talos_kernel_logs:
+          talos-kernel-logs:
             enabled: true
             port: 6050
-          talos_service_logs:
+          talos-service-logs:
             enabled: true
             port: 6051
 
