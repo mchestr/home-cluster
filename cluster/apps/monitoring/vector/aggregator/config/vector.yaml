@@ -50,6 +50,26 @@ sources:
 
 # Transformations
 transforms:
+  talos_kernel_logs_xform:
+    type: remap
+    inputs:
+      - talos_kernel_logs
+    source: |-
+      .__host = replace!(.__host, "192.168.1.200", "k8s-0")
+      .__host = replace(.__host, "192.168.1.201", "k8s-1")
+      .__host = replace(.__host, "192.168.1.202", "k8s-2")
+      .__host = replace(.__host, "192.168.1.203", "k8s-3")
+
+  talos_service_logs_xform:
+    type: remap
+    inputs:
+      - talos_service_logs
+    source: |-
+      .__host = replace!(.__host, "192.168.1.200", "k8s-0")
+      .__host = replace(.__host, "192.168.1.201", "k8s-1")
+      .__host = replace(.__host, "192.168.1.202", "k8s-2")
+      .__host = replace(.__host, "192.168.1.203", "k8s-3")
+
   kubernetes_remap:
     type: remap
     inputs:
@@ -112,7 +132,7 @@ sinks:
   talos_kernel:
     type: loki
     inputs:
-      - talos_kernel_logs
+      - talos_kernel_logs_xform
     endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
     encoding:
       codec: json
@@ -128,7 +148,7 @@ sinks:
   talos_service:
     type: loki
     inputs:
-      - talos_service_logs
+      - talos_service_logs_xform
     endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
     encoding:
       codec: json
