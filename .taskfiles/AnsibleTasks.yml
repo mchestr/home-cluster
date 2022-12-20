@@ -17,7 +17,13 @@ tasks:
       - ansible-playbook -i {{.ANSIBLE_INVENTORY_DIR}}/hosts.yml {{.ANSIBLE_PLAYBOOK_DIR}}/router-install.yml {{.CLI_ARGS}}
 
   octoprint:install:
-    desc: Install Kubernetes on the nodes
+    desc: Install Octoprint
     dir: ansible
     cmds:
       - ansible-playbook -i {{.ANSIBLE_INVENTORY_DIR}}/hosts.yml {{.ANSIBLE_PLAYBOOK_DIR}}/octoprint-install.yml {{.CLI_ARGS}}
+
+  octoprint:update:
+    desc: Update Octoprint
+    dir: ansible
+    cmds:
+      - ansible-playbook -i {{.ANSIBLE_INVENTORY_DIR}}/hosts.yml {{.ANSIBLE_PLAYBOOK_DIR}}/octoprint-update.yml {{.CLI_ARGS}}
