@@ -40,7 +40,7 @@ defaults
 frontend public
     bind *:80
     bind 0.0.0.0:443 ssl crt /etc/ssl/snakeoil.pem
-    redirect scheme https code 301 if !{ ssl_fc }
+    http-request redirect scheme https code 301 unless { ssl_fc }
     use_backend webcam if { path_beg /webcam/ }
     default_backend octoprint
 

@@ -212,6 +212,7 @@ spec:
           - job_name: ender
             scrape_interval: 1m
             scrape_timeout: 10s
+            scheme: https
             metrics_path: "/plugin/prometheus_exporter/metrics"
             params:
               apikey: ["${ENDER_OCTOPRINT_API_KEY}"]
