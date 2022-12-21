@@ -21,7 +21,7 @@
     or vector_version not in vector_version_check.stdout
 - name: Move vector binary into place
   ansible.builtin.copy:
-    src: /tmp/vector-armv7-unknown-linux-gnueabihf/bin/vector
+    src: /tmp/vector-armv7-unknown-linux-musleabihf/bin/vector
     dest: /usr/local/bin/vector
     mode: 0755
     remote_src: true
