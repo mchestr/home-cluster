@@ -212,7 +212,6 @@ spec:
           - job_name: node-exporter
             scrape_interval: 1m
             scrape_timeout: 10s
-            scheme: https
             honor_timestamps: true
             static_configs:
               - targets:
