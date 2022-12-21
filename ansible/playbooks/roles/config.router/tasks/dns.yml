@@ -42,8 +42,6 @@
   community.network.edgeos_config:
     lines:
       - "{{ prefix }} options address=/lochnas.{{ cluster_domain }}/{{ item.value.ip_address }}"
-      - "{{ prefix }} options address=/s3.{{ cluster_domain }}/{{ item.value.ip_address }}"
-      - "{{ prefix }} options address=/minio.{{ cluster_domain }}/{{ item.value.ip_address }}"
 
 - name: Configure octoprint ender Forwarding
   vars:
