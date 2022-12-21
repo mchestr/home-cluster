@@ -79,7 +79,13 @@ spec:
           apps:
             - name: phpMyAdmin
               icon: simple-icons:phpmyadmin
-              url: https://${NAS_ADDR}:9443
+              url: https://lochnas.${SECRET_CLUSTER_DOMAIN}:9443
+            - name: Minio
+              icon: simple-icons:amazons3
+              url: https://minio.${SECRET_CLUSTER_DOMAIN}:9000
+            - name: NAS
+              icon: arcticons:synology-active-insight
+              url: https://lochnas.${SECRET_CLUSTER_DOMAIN}:9000
         - group: system management
           apps:
             - name: Router
