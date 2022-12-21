@@ -209,7 +209,7 @@ spec:
             name: thanos-objstore-secret
             key: objstore.yml
         additionalScrapeConfigs:
-          - job_name: node-exporter-ender
+          - job_name: node-exporter
             scrape_interval: 1m
             scrape_timeout: 10s
             scheme: https
