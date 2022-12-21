@@ -4,4 +4,3 @@ kind: Kustomization
 resources:
   - ingress-nginx
   - k8s-gateway
-  - static-routes
