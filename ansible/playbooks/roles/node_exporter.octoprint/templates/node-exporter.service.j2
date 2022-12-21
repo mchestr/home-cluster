@@ -4,7 +4,7 @@ Description=NodeExporter
 [Service]
 TimeoutStartSec=0
 User=root
-ExecStart=/usr/local/bin/node-exporter
+ExecStart=/usr/local/bin/node-exporter --web.listen-address=127.0.0.1:9100 --web.config=/etc/node-exporter/config.yml
 
 [Install]
 WantedBy=multi-user.target
