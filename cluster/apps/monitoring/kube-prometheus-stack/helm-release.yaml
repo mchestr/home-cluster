@@ -209,7 +209,7 @@ spec:
             name: thanos-objstore-secret
             key: objstore.yml
         additionalScrapeConfigs:
-          - job_name: node-exporter
+          - job_name: node-exporter-https
             scrape_interval: 1m
             scrape_timeout: 10s
             honor_timestamps: true
@@ -217,13 +217,26 @@ spec:
             static_configs:
               - targets:
                   - ender.${SECRET_CLUSTER_DOMAIN}
-          - job_name: node-exporter
+                labels:
+                  job: node-exporter
+            relabel_config:
+              - source_labels:
+                  - job
+                target_label: job
+                replacement: node-exporter
+          - job_name: node-exporter-http
             scrape_interval: 1m
             scrape_timeout: 10s
             honor_timestamps: true
             static_configs:
               - targets:
                   - lochnas.${SECRET_CLUSTER_DOMAIN}:9100
+            relabel_config:
+              - source_labels:
+                  - job
+                target_label: job
+                replacement: node-exporter
+
           - job_name: octoprint
             scrape_interval: 1m
             scrape_timeout: 10s
