@@ -208,3 +208,13 @@ spec:
           objectStorageConfig:
             name: thanos-objstore-secret
             key: objstore.yml
+        additionalScrapeConfigs:
+          - job_name: ender
+            scrape_interval: 1m
+            scrape_timeout: 10s
+            metrics_path: "/plugin/prometheus_exporter/metrics"
+            params:
+              apikey: ["${ENDER_OCTOPRINT_API_KEY}"]
+            static_configs:
+              - targets:
+                  - ender.${SECRET_CLUSTER_DOMAIN}
