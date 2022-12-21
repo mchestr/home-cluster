@@ -213,9 +213,16 @@ spec:
             scrape_interval: 1m
             scrape_timeout: 10s
             honor_timestamps: true
+            scheme: https
             static_configs:
               - targets:
                   - ender.${SECRET_CLUSTER_DOMAIN}
+          - job_name: node-exporter
+            scrape_interval: 1m
+            scrape_timeout: 10s
+            honor_timestamps: true
+            static_configs:
+              - targets:
                   - lochnas.${SECRET_CLUSTER_DOMAIN}
           - job_name: octoprint
             scrape_interval: 1m
