@@ -209,7 +209,18 @@ spec:
             name: thanos-objstore-secret
             key: objstore.yml
         additionalScrapeConfigs:
-          - job_name: ender
+          - job_name: node-exporter-ender
+            scrape_interval: 1m
+            scrape_timeout: 10s
+            scheme: https
+            honor_timestamps: true
+            basic_auth:
+              username: ${ENDER_NODE_EXPORTER_USERNAME}
+              password: ${ENDER_NODE_EXPORTER_PASSWORD}
+            static_configs:
+              - targets:
+                  - ender.${SECRET_CLUSTER_DOMAIN}
+          - job_name: octoprint
             scrape_interval: 1m
             scrape_timeout: 10s
             scheme: https

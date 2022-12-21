@@ -31,4 +31,13 @@
         src: node-exporter.service.j2
         dest: /etc/systemd/system/node-exporter.service
         mode: 0644
+    - name: Creates directory
+      ansible.builtin.file:
+        path: /etc/node-exporter
+        state: directory
+    - name: Create node-exporter config file
+      ansible.builtin.template:
+        src: config.yaml.j2
+        dest: /etc/node-exporter/config.yml
+        mode: 0644
   notify: Restart node-exporter
