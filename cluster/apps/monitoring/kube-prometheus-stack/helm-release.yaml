@@ -217,4 +217,4 @@ spec:
               apikey: ["${ENDER_OCTOPRINT_API_KEY}"]
             static_configs:
               - targets:
-                  - ender.${SECRET_CLUSTER_DOMAIN}
+                  - ender.${SECRET_CLUSTER_DOMAIN}:443
