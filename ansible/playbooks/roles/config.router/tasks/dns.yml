@@ -41,16 +41,9 @@
   when: "'LochNas' in item.key"
   community.network.edgeos_config:
     lines:
-      - "{{ prefix }} options address=/lochnas.{{ internal_domain }}/{{ item.value.ip_address }}"
-
-- name: Configure octoprint Forwarding
-  vars:
-    prefix: set service dns forwarding
-  loop: "{{ lookup('ansible.builtin.dict', static_lan_ips) }}"
-  when: "'OctoPrint' in item.key"
-  community.network.edgeos_config:
-    lines:
-      - "{{ prefix }} options address=/octoprint.{{ internal_domain }}/{{ item.value.ip_address }}"
+      - "{{ prefix }} options address=/lochnas.{{ cluster_domain }}/{{ item.value.ip_address }}"
+      - "{{ prefix }} options address=/s3.{{ cluster_domain }}/{{ item.value.ip_address }}"
+      - "{{ prefix }} options address=/minio.{{ cluster_domain }}/{{ item.value.ip_address }}"
 
 - name: Configure octoprint ender Forwarding
   vars:
