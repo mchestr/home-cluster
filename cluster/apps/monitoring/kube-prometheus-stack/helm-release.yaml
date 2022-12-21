@@ -219,10 +219,8 @@ spec:
                   - ender.${SECRET_CLUSTER_DOMAIN}
                 labels:
                   job: node-exporter
-            relabel_config:
-              - source_labels:
-                  - job
-                target_label: job
+            relabel_configs:
+              - target_label: job
                 replacement: node-exporter
           - job_name: node-exporter-http
             scrape_interval: 1m
@@ -231,10 +229,8 @@ spec:
             static_configs:
               - targets:
                   - lochnas.${SECRET_CLUSTER_DOMAIN}:9100
-            relabel_config:
-              - source_labels:
-                  - job
-                target_label: job
+            relabel_configs:
+              - target_label: job
                 replacement: node-exporter
 
           - job_name: octoprint
