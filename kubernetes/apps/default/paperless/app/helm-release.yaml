@@ -21,11 +21,6 @@ spec:
   upgrade:
     remediation:
       retries: 5
-  dependsOn:
-    - name: postgres-cluster-v2
-      namespace: databases
-    - name: redis
-      namespace: databases
   values:
     image:
       repository: ghcr.io/paperless-ngx/paperless-ngx
