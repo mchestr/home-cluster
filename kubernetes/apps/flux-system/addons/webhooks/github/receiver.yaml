@@ -18,8 +18,8 @@ spec:
       name: apps
       apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
     - kind: Kustomization
-      name: core
+      name: cluster
       apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
     - kind: Kustomization
-      name: crds
+      name: flux
       apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
