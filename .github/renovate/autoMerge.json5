@@ -1,50 +1,22 @@
 {
   packageRules: [
     {
-      description: 'Auto merge digest',
-      matchDatasources: [
-        'docker',
-      ],
+      description: 'Auto merge container digests',
+      matchDatasources: ['docker'],
       automerge: true,
       automergeType: 'branch',
       requiredStatusChecks: null,
-      matchUpdateTypes: [
-        'digest',
-      ],
-    },
-    {
-      description: 'Auto merge containers anytime',
-      matchDatasources: [
-        'docker',
-      ],
-      automerge: true,
-      automergeType: 'branch',
-      requiredStatusChecks: null,
-      matchUpdateTypes: [
-        'minor',
-        'patch',
-        'digest',
-      ],
-      matchPackageNames: [
-        'ghcr.io/onedr0p/prowlarr-nightly',
-      ],
+      matchUpdateTypes: ['digest'],
+      matchPackagePattern: ['ghcr.io/onedr0p']
     },
     {
       description: 'Auto merge GitHub Actions',
-      matchDatasources: [
-        'github-tags',
-      ],
+      matchManagers: ['github-actions'],
+      matchDatasources: ['github-tags'],
       automerge: true,
       automergeType: 'branch',
       requiredStatusChecks: null,
-      matchUpdateTypes: [
-        'minor',
-        'patch',
-      ],
-      matchPackageNames: [
-        'lycheeverse/lychee-action',
-        'renovatebot/github-action',
-      ],
-    },
-  ],
+      matchUpdateTypes: ['minor', 'patch']
+    }
+  ]
 }
