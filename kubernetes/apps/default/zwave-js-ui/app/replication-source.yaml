@@ -2,10 +2,10 @@
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: zwavejs2mqtt
+  name: zwave-j2-ui
   namespace: default
 spec:
-  sourcePVC: zwavejs2mqtt-config-v1
+  sourcePVC: zwave-js-ui-config-v1
   trigger:
     schedule: "0 0 * * *"
   restic:
@@ -14,6 +14,6 @@ spec:
     cacheCapacity: 1Gi
     volumeSnapshotClassName: csi-ceph-blockpool
     storageClassName: ceph-block
-    repository: zwavejs2mqtt-restic-secret
+    repository: zwave-js-ui-restic-secret
     retain:
       daily: 10
