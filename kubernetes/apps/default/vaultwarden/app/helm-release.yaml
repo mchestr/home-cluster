@@ -14,11 +14,6 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
-  dependsOn:
-    - name: postgres
-      namespace: databases
-    - name: ingress-nginx
-      namespace: networking
   valuesFrom:
     - kind: Secret
       name: *app
