@@ -27,7 +27,7 @@ jobs:
 
       - name: Cloudflare Proxied Networks
         run: |
-          cloudflare_proxied_networks_file=$(find . -name "cloudflare-proxied-networks.txt" -print -quit)
+          cloudflare_proxied_networks_file=$(find . -name "cloudflare-networks.txt" -print -quit)
           if [[ ! -f "${cloudflare_proxied_networks_file}" ]]; then
               bash ./.github/scripts/cloudflare-proxied-networks.sh > ${{ env.DEFAULT_CLOUDFLARE_PROXIED_NETWORKS_FILE }}
           else
