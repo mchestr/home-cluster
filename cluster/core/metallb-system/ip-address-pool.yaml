@@ -1,15 +1,41 @@
 ---
-apiVersion: metallb.io/v1beta1
-kind: IPAddressPool
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
 metadata:
-  name: default
-  namespace: metallb-system
+  name: bazarr-backups
+  namespace: media
 spec:
-  addresses:
-    - ${METALLB_LB_RANGE}
----
-apiVersion: metallb.io/v1beta1
-kind: L2Advertisement
-metadata:
-  name: default
-  namespace: metallb-system
+  interval: 15m
+  chart:
+    spec:
+      chart: raw
+      version: v0.3.1
+      sourceRef:
+        kind: HelmRepository
+        name: dysnix-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  dependsOn:
+    - name: metallb
+      namespace: metallb-system
+  values:
+    resources:
+      - apiVersion: metallb.io/v1beta1
+        kind: IPAddressPool
+        metadata:
+          name: default
+          namespace: metallb-system
+        spec:
+          addresses:
+            - ${METALLB_LB_RANGE}
+      - apiVersion: metallb.io/v1beta1
+        kind: L2Advertisement
+        metadata:
+          name: default
+          namespace: metallb-system
