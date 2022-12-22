@@ -10,7 +10,7 @@ clusterSvcNets:
 cniConfig:
   name: custom
   urls:
-    - "https://raw.githubusercontent.com/mchestr/home-cluster/talos/talos/cni/cilium.yaml"
+    - "https://raw.githubusercontent.com/mchestr/home-cluster/main/talos/cni/cilium.yaml"
 nodes:
   - hostname: k8s-0
     ipAddress: 192.168.1.200
