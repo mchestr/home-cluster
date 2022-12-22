@@ -101,7 +101,7 @@ spec:
     image: busybox
     securityContext:
       privileged: true
-    command: ["/bin/sh", "-c", "dd if=/dev/zero bs=1M count=100 oflag=direct of=/dev/sdb"]
+    command: ["/bin/sh", "-c", "dd if=/dev/zero bs=1M count=100 oflag=direct of=/dev/nvme0n1"]
 EOF
 cat <<EOF | kubectl apply -f -
 apiVersion: v1
@@ -122,36 +122,6 @@ cat <<EOF | kubectl apply -f -
 apiVersion: v1
 kind: Pod
 metadata:
-  name: disk-wipe-k8s-2
-spec:
-  restartPolicy: Never
-  nodeName: k8s-2
-  containers:
-  - name: disk-wipe
-    image: busybox
-    securityContext:
-      privileged: true
-    command: ["/bin/sh", "-c", "dd if=/dev/zero bs=1M count=100 oflag=direct of=/dev/sda"]
-EOF
-cat <<EOF | kubectl apply -f -
-apiVersion: v1
-kind: Pod
-metadata:
-  name: disk-wipe-k8s-2-2
-spec:
-  restartPolicy: Never
-  nodeName: k8s-2
-  containers:
-  - name: disk-wipe
-    image: busybox
-    securityContext:
-      privileged: true
-    command: ["/bin/sh", "-c", "dd if=/dev/zero bs=1M count=100 oflag=direct of=/dev/sdc"]
-EOF
-cat <<EOF | kubectl apply -f -
-apiVersion: v1
-kind: Pod
-metadata:
   name: disk-wipe-k8s-3
 spec:
   restartPolicy: Never
@@ -161,5 +131,5 @@ spec:
     image: busybox
     securityContext:
       privileged: true
-    command: ["/bin/sh", "-c", "dd if=/dev/zero bs=1M count=100 oflag=direct of=/dev/sdb"]
+    command: ["/bin/sh", "-c", "dd if=/dev/zero bs=1M count=100 oflag=direct of=/dev/nvme0n1"]
 EOF
