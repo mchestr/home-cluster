@@ -116,6 +116,7 @@ spec:
           - name: "k8s-3"
             devices:
               - name: "/dev/disk/by-id/ata-KingFast_04182222C0492"
+              - name: "/dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_AA221020NV051200243"
 
     ingress:
       dashboard:
