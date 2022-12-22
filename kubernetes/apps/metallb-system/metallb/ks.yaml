@@ -7,7 +7,7 @@ metadata:
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
-  path: ./kubernetes/apps/flux-system/metallb-system/metallb/app
+  path: ./kubernetes/apps/metallb-system/metallb/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -31,7 +31,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-metallb
-  path: ./kubernetes/apps/flux-system/metallb-system/metallb/ip-address-pool
+  path: ./kubernetes/apps/metallb-system/metallb/ip-address-pool
   prune: true
   sourceRef:
     kind: GitRepository
