@@ -22,7 +22,7 @@ spec:
       retries: 5
   dependsOn:
     - name: postgres
-      namespace: *namespace
+      namespace: default
     - name: rook-ceph-cluster
       namespace: rook-ceph
   values:
@@ -31,7 +31,7 @@ spec:
         kind: Cluster
         metadata:
           name: postgres
-          namespace: *namespace
+          namespace: default
           annotations:
             kyverno.io/ignore: "true"
         spec:
