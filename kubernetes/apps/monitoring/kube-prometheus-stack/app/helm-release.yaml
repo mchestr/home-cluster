@@ -1,0 +1,258 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: kube-prometheus-stack
+  namespace: monitoring
+spec:
+  interval: 5m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  chart:
+    spec:
+      # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
+      chart: kube-prometheus-stack
+      version: 43.1.2
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community-charts
+        namespace: flux-system
+      interval: 5m
+  valuesFrom:
+    - kind: Secret
+      name: prometheus-secrets
+  dependsOn:
+    - name: ingress-ngix
+      namespace: networking
+  values:
+    fullnameOverride: prometheus
+    alertmanager:
+      enabled: true
+      config:
+        global:
+          resolve_timeout: 5m
+        receivers:
+          - name: "null"
+          - name: "pushover"
+            pushover_configs:
+              - token: "${SECRET_PUSHOVER_ALERT_MANAGER_APIKEY}"
+                user_key: "${SECRET_PUSHOVER_USERKEY}"
+                send_resolved: true
+                html: true
+                priority: |-
+                  {{ if eq .Status "firing" }}1{{ else }}0{{ end }}
+                url_title: View in Alert Manager
+                title: |-
+                  [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
+                message: |-
+                  {{- range .Alerts }}
+                    {{- if ne .Labels.severity "" }}
+                      <b>Severity:</b> <i>{{ .Labels.severity }}</i>
+                    {{- else }}
+                      <b>Severity:</b> <i>N/A</i>
+                    {{- end }}
+                    {{- if ne .Annotations.description "" }}
+                      <b>Description:</b> <i>{{ .Annotations.description }}</i>
+                    {{- else if ne .Annotations.summary "" }}
+                      <b>Summary:</b> <i>{{ .Annotations.summary }}</i>
+                    {{- else if ne .Annotations.message "" }}
+                      <b>Message:</b> <i>{{ .Annotations.message }}</i>
+                    {{- else }}
+                      <b>Description:</b> <i>N/A</i>
+                    {{- end }}
+                    {{- if gt (len .Labels.SortedPairs) 0 }}
+                      <b>Details:</b>
+                      {{- range .Labels.SortedPairs }}
+                        • <b>{{ .Name }}:</b> <i>{{ .Value }}</i>
+                      {{- end }}
+                    {{- end }}
+                  {{- end }}
+        route:
+          group_by:
+            - alertname
+            - job
+          group_wait: 30s
+          group_interval: 5m
+          repeat_interval: 6h
+          receiver: pushover
+          routes:
+            - receiver: "null"
+              matchers:
+                - alertname=~"Watchdog|InfoInhibitor"
+            - receiver: pushover
+              matchers:
+                - severity=~"warning|critical"
+              continue: true
+        inhibit_rules:
+          - source_matchers:
+              - severity=critical
+            target_matchers:
+              - severity=warning
+            equal:
+              - alertname
+              - namespace
+      ingress:
+        enabled: true
+        pathType: Prefix
+        ingressClassName: nginx
+        annotations:
+          auth.home.arpa/enabled: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: akar-icons:circle-alert
+          hajimari.io/group: system management
+          hajimari.io/appName: alertmanager
+        hosts:
+          - &am-host alert-manager.${SECRET_CLUSTER_DOMAIN}
+        tls:
+          - hosts:
+              - *am-host
+      alertmanagerSpec:
+        replicas: 3
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: ceph-block
+              resources:
+                requests:
+                  storage: 1Gi
+    grafana:
+      enabled: false
+    prometheus-node-exporter:
+      fullnameOverride: node-exporter
+      prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels:
+                - __meta_kubernetes_pod_node_name
+              targetLabel: kubernetes_node
+    kubelet:
+      enabled: true
+      serviceMonitor:
+        metricRelabelings:
+          - action: replace
+            sourceLabels:
+              - node
+            targetLabel: instance
+    kubeScheduler:
+      enabled: false
+    kubeProxy:
+      enabled: false
+    kubeControllerManager:
+      enabled: false
+    kubeApiServer:
+      enabled: true
+    kubeStateMetrics:
+      enabled: true
+    coreDns:
+      enabled: true
+    nodeExporter:
+      enabled: true
+      serviceMonitor:
+        relabelings:
+          - action: replace
+            sourceLabels:
+              - __meta_kubernetes_pod_node_name
+            targetLabel: kubernetes_node
+    kube-state-metrics:
+      fullnameOverride: kube-state-metrics
+    # Setting this option to 0 disabled CPU limits
+    prometheusOperator:
+      configReloaderCpu: 0
+    prometheus:
+      ingress:
+        enabled: true
+        pathType: Prefix
+        ingressClassName: nginx
+        annotations:
+          auth.home.arpa/enabled: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: simple-icons:prometheus
+          hajimari.io/group: storage, database, and messaging
+          hajimari.io/appName: prometheus
+        hosts:
+          - &host prometheus.${SECRET_CLUSTER_DOMAIN}
+        tls:
+          - hosts:
+              - *host
+      thanosService:
+        enabled: true
+      thanosServiceMonitor:
+        enabled: true
+      prometheusSpec:
+        replicas: 1
+        replicaExternalLabelName: "replica"
+        ruleSelectorNilUsesHelmValues: false
+        serviceMonitorSelectorNilUsesHelmValues: false
+        podMonitorSelectorNilUsesHelmValues: false
+        probeSelectorNilUsesHelmValues: false
+        retention: 6h
+        retentionSize: 6GB
+        enableAdminAPI: true
+        walCompression: true
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: ceph-block
+              resources:
+                requests:
+                  storage: 40Gi
+        thanos:
+          image: quay.io/thanos/thanos:v0.29.0
+          # renovate: datasource=docker depName=quay.io/thanos/thanos
+          version: "v0.29.0"
+          objectStorageConfig:
+            name: thanos-objstore-secret
+            key: objstore.yml
+        additionalScrapeConfigs:
+          - job_name: node-exporter-https
+            scrape_interval: 1m
+            scrape_timeout: 10s
+            honor_timestamps: true
+            scheme: https
+            static_configs:
+              - targets:
+                  - ender.${SECRET_CLUSTER_DOMAIN}
+                labels:
+                  job: node-exporter
+            relabel_configs:
+              - target_label: job
+                replacement: node-exporter
+          - job_name: node-exporter-http
+            scrape_interval: 1m
+            scrape_timeout: 10s
+            honor_timestamps: true
+            static_configs:
+              - targets:
+                  - lochnas.${SECRET_CLUSTER_DOMAIN}:9100
+            relabel_configs:
+              - target_label: job
+                replacement: node-exporter
+
+          - job_name: octoprint
+            scrape_interval: 1m
+            scrape_timeout: 10s
+            scheme: https
+            metrics_path: "/plugin/prometheus_exporter/metrics"
+            params:
+              apikey: ["${ENDER_OCTOPRINT_API_KEY}"]
+            static_configs:
+              - targets:
+                  - ender.${SECRET_CLUSTER_DOMAIN}
+
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: kubernetes.io/hostname
+                      operator: In
+                      values:
+                        - k8s-2
