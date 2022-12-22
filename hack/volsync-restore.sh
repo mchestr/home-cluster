@@ -4,6 +4,8 @@ task snapshot:restore RSRC=vaultwarden CLAIM=vaultwarden-config-v1
 task snapshot:restore RSRC=appdaemon CLAIM=appdaemon-config-v1 NAMESPACE=home
 task snapshot:restore RSRC=esphome CLAIM=esphome-config-v1 NAMESPACE=home
 task snapshot:restore RSRC=home-assistant CLAIM=home-assistant-config-v1 NAMESPACE=home
+task snapshot:restore RSRC=zigbee2mqtt CLAIM=zigbee2mqtt-config-v1 NAMESPACE=home
+task snapshot:restore RSRC=zwavejs2mqtt CLAIM=zwavejs2mqtt-config-v1 NAMESPACE=home
 task snapshot:restore RSRC=radicale CLAIM=radicale-data-v1 NAMESPACE=home
 task snapshot:restore RSRC=unifi CLAIM=unifi-data-v1 NAMESPACE=home
 task snapshot:restore RSRC=zigbee2mqtt CLAIM=zigbee2mqtt-config-v1 NAMESPACE=home
