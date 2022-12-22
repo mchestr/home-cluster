@@ -15,9 +15,6 @@ spec:
         kind: HelmRepository
         name: kubernetes-dashboard-charts
         namespace: flux-system
-  dependsOn:
-    - name: ingress-ngix
-      namespace: networking
   values:
     ingress:
       enabled: true
