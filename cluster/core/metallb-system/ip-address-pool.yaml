@@ -3,7 +3,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: metallb-ip-address-pool
-  namespace: media
+  namespace: metallb-system
 spec:
   interval: 15m
   chart:
