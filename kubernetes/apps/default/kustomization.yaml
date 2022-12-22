@@ -12,9 +12,15 @@ resources:
   - emqx/ks.yaml
   - esphome/ks.yaml
   - glauth/ks.yaml
+  - hajimari/ks.yaml
   - home-assistant/ks.yaml
+  - immich/ks.yaml
+  - paperless/ks.yaml
+  - radicale/ks.yaml
   - redis/ks.yaml
   - smtp-relay/ks.yaml
+  - theme-park/ks.yaml
+  - unifi/ks.yaml
   - vaultwarden/ks.yaml
   - zigbee2mqtt/ks.yaml
   - zwave-js-ui/ks.yaml
