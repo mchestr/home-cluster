@@ -2,36 +2,12 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: cluster-apps-ingress-nginx-certificates
+  name: cluster-apps-metallb
   namespace: flux-system
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
-  dependsOn:
-    - name: cluster-apps-cert-manager-issuers
-  path: ./kubernetes/apps/networking/ingress-nginx/certificates
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: home-ops-kubernetes
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 3m
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
-kind: Kustomization
-metadata:
-  name: cluster-apps-ingress-nginx
-  namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
-spec:
-  dependsOn:
-    - name: cluster-apps-ingress-nginx-certificates
-    - name: cluster-apps-kyverno
-    - name: cluster-apps-metallb
-  path: ./kubernetes/apps/networking/ingress-nginx/app
+  path: ./kubernetes/apps/flux-system/metallb-system/metallb/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -39,8 +15,27 @@ spec:
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2beta1
       kind: HelmRelease
-      name: ingress-nginx
-      namespace: networking
+      name: metallb
+      namespace: metallb-system
+  interval: 30m
+  retryInterval: 1m
+  timeout: 3m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: cluster-apps-metallb-ip-address-pool
+  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/enabled: "true"
+spec:
+  dependsOn:
+    - name: cluster-apps-metallb
+  path: ./kubernetes/apps/flux-system/metallb-system/metallb/ip-address-pool
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops-kubernetes
   interval: 30m
   retryInterval: 1m
   timeout: 3m
