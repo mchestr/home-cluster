@@ -11,7 +11,7 @@ spec:
         image: ghcr.io/onedr0p/postgres-initdb:14.6@sha256:0ceb9386a7da7f646fc2c971dcb34dfed3bf44ff0ee8e29c81a2a084a7b1b88c
         env:
           - name: POSTGRES_HOST
-            value: postgres-rw.databases.svc.cluster.local
+            value: postgres-rw.default.svc.cluster.local
           - name: POSTGRES_DB
             value: *app
           - name: POSTGRES_SUPER_PASS
