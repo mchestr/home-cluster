@@ -21,9 +21,6 @@ spec:
   upgrade:
     remediation:
       retries: 5
-  dependsOn:
-    - name: ingress-ngix
-      namespace: networking
   values:
     image:
       repository: grafana/grafana
