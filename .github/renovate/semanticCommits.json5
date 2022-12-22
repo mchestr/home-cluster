@@ -1,214 +1,114 @@
 {
   packageRules: [
     {
-      matchDatasources: [
-        'docker',
-      ],
-      matchUpdateTypes: [
-        'major',
-      ],
-      commitMessagePrefix: 'feat(container)!: ',
+      matchDatasources: ['docker'],
+      matchUpdateTypes: ['major'],
+      commitMessagePrefix: 'feat(container)!: '
     },
     {
-      matchDatasources: [
-        'docker',
-      ],
-      matchUpdateTypes: [
-        'minor',
-      ],
+      matchDatasources: ['docker'],
+      matchUpdateTypes: ['minor'],
       semanticCommitType: 'feat',
-      semanticCommitScope: 'container',
+      semanticCommitScope: 'container'
     },
     {
-      matchDatasources: [
-        'docker',
-      ],
-      matchUpdateTypes: [
-        'digest',
-        'patch',
-      ],
+      matchDatasources: ['docker'],
+      matchUpdateTypes: ['patch'],
       semanticCommitType: 'fix',
-      semanticCommitScope: 'container',
+      semanticCommitScope: 'container'
     },
     {
-      matchDatasources: [
-        'helm',
-      ],
-      matchUpdateTypes: [
-        'major',
-      ],
-      commitMessagePrefix: 'feat(helm)!: ',
+      matchDatasources: ['docker'],
+      matchUpdateTypes: ['digest'],
+      semanticCommitType: 'chore',
+      semanticCommitScope: 'container'
     },
     {
-      matchDatasources: [
-        'helm',
-      ],
-      matchUpdateTypes: [
-        'minor',
-      ],
+      matchDatasources: ['helm'],
+      matchUpdateTypes: ['major'],
+      commitMessagePrefix: 'feat(helm)!: '
+    },
+    {
+      matchDatasources: ['helm'],
+      matchUpdateTypes: ['minor'],
       semanticCommitType: 'feat',
-      semanticCommitScope: 'helm',
+      semanticCommitScope: 'helm'
     },
+
     {
-      matchDatasources: [
-        'helm',
-      ],
-      matchUpdateTypes: [
-        'patch',
-      ],
+      matchDatasources: ['helm'],
+      matchUpdateTypes: ['patch'],
       semanticCommitType: 'fix',
-      semanticCommitScope: 'helm',
+      semanticCommitScope: 'helm'
     },
     {
-      matchDatasources: [
-        'galaxy',
-        'galaxy-collection',
-      ],
-      matchUpdateTypes: [
-        'major',
-      ],
-      commitMessagePrefix: 'feat(ansible)!: ',
+      matchDatasources: ['galaxy', 'galaxy-collection'],
+      matchUpdateTypes: ['major'],
+      commitMessagePrefix: 'feat(ansible)!: '
     },
     {
-      matchDatasources: [
-        'galaxy',
-        'galaxy-collection',
-      ],
-      matchUpdateTypes: [
-        'minor',
-      ],
+      matchDatasources: ['galaxy', 'galaxy-collection'],
+      matchUpdateTypes: ['minor'],
       semanticCommitType: 'feat',
-      semanticCommitScope: 'ansible',
+      semanticCommitScope: 'ansible'
     },
+
     {
-      matchDatasources: [
-        'galaxy',
-        'galaxy-collection',
-      ],
-      matchUpdateTypes: [
-        'patch',
-      ],
+      matchDatasources: ['galaxy', 'galaxy-collection'],
+      matchUpdateTypes: ['patch'],
       semanticCommitType: 'fix',
-      semanticCommitScope: 'ansible',
+      semanticCommitScope: 'ansible'
     },
     {
-      matchDatasources: [
-        'terraform-provider',
-      ],
-      matchUpdateTypes: [
-        'major',
-      ],
-      commitMessagePrefix: 'feat(terraform)!: ',
+      matchDatasources: ['terraform-provider'],
+      matchUpdateTypes: ['major'],
+      commitMessagePrefix: 'feat(terraform)!: '
     },
     {
-      matchDatasources: [
-        'terraform-provider',
-      ],
-      matchUpdateTypes: [
-        'minor',
-      ],
+      matchDatasources: ['terraform-provider'],
+      matchUpdateTypes: ['minor'],
       semanticCommitType: 'feat',
-      semanticCommitScope: 'terraform',
+      semanticCommitScope: 'terraform'
     },
     {
-      matchDatasources: [
-        'terraform-provider',
-      ],
-      matchUpdateTypes: [
-        'patch',
-      ],
+      matchDatasources: ['terraform-provider'],
+      matchUpdateTypes: ['patch'],
       semanticCommitType: 'fix',
-      semanticCommitScope: 'terraform',
+      semanticCommitScope: 'terraform'
     },
     {
-      matchDatasources: [
-        'github-releases',
-        'github-tags',
-      ],
-      matchUpdateTypes: [
-        'major',
-      ],
-      commitMessagePrefix: 'feat(github-release)!: ',
+      matchDatasources: ['github-releases', 'github-tags'],
+      matchUpdateTypes: ['major'],
+      commitMessagePrefix: 'feat(github-release)!: '
     },
     {
-      matchDatasources: [
-        'github-releases',
-        'github-tags',
-      ],
-      matchUpdateTypes: [
-        'minor',
-      ],
+      matchDatasources: ['github-releases', 'github-tags'],
+      matchUpdateTypes: ['minor'],
       semanticCommitType: 'feat',
-      semanticCommitScope: 'github-release',
+      semanticCommitScope: 'github-release'
     },
     {
-      matchDatasources: [
-        'github-releases',
-        'github-tags',
-      ],
-      matchUpdateTypes: [
-        'patch',
-      ],
+      matchDatasources: ['github-releases', 'github-tags'],
+      matchUpdateTypes: ['patch'],
       semanticCommitType: 'fix',
-      semanticCommitScope: 'github-release',
+      semanticCommitScope: 'github-release'
     },
     {
-      matchManagers: [
-        'github-actions',
-      ],
-      matchUpdateTypes: [
-        'major',
-      ],
-      commitMessagePrefix: 'feat(github-action)!: ',
+      matchManagers: ['github-actions'],
+      matchUpdateTypes: ['major'],
+      commitMessagePrefix: 'feat(github-action)!: '
     },
     {
-      matchManagers: [
-        'github-actions',
-      ],
-      matchUpdateTypes: [
-        'minor',
-      ],
+      matchManagers: ['github-actions'],
+      matchUpdateTypes: ['minor'],
       semanticCommitType: 'feat',
-      semanticCommitScope: 'github-action',
+      semanticCommitScope: 'github-action'
     },
     {
-      matchManagers: [
-        'github-actions',
-      ],
-      matchUpdateTypes: [
-        'patch',
-      ],
+      matchManagers: ['github-actions'],
+      matchUpdateTypes: ['patch'],
       semanticCommitType: 'fix',
-      semanticCommitScope: 'github-action',
-    },
-    {
-      matchDatasources: [
-        'pypi',
-      ],
-      matchUpdateTypes: [
-        'major',
-      ],
-      commitMessagePrefix: 'feat(pip)!: ',
-    },
-    {
-      matchDatasources: [
-        'pypi',
-      ],
-      matchUpdateTypes: [
-        'minor',
-      ],
-      semanticCommitType: 'feat',
-      semanticCommitScope: 'pip',
-    },
-    {
-      matchDatasources: [
-        'pypi',
-      ],
-      matchUpdateTypes: [
-        'patch',
-      ],
-      semanticCommitType: 'fix',
-      semanticCommitScope: 'pip',
-    },
-  ],
+      semanticCommitScope: 'github-action'
+    }
+  ]
 }
