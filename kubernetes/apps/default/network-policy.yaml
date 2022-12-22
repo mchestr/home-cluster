@@ -3,7 +3,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: allow-all-egress
-  namespace: home
+  namespace: default
 spec:
   podSelector: {}
   policyTypes:
