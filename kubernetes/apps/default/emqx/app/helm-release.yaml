@@ -1,0 +1,80 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app emqx
+  namespace: databases
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: emqx
+      version: 5.0.12
+      sourceRef:
+        kind: HelmRepository
+        name: emqx-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    replicaCount: 3
+    recreatePods: true
+    image:
+      repository: public.ecr.aws/emqx/emqx
+
+    emqxConfig:
+      EMQX_ALLOW_ANONYMOUS: "false"
+      EMQX_AUTH__MNESIA__PASSWORD_HASH: plain
+
+    service:
+      type: LoadBalancer
+      loadBalancerIP: ${METALLB_EMQX_ADDR}
+      externalTrafficPolicy: Local
+
+    ingress:
+      dashboard:
+        enabled: true
+        path: /
+        pathType: Prefix
+        ingressClassName: nginx
+        annotations:
+          auth.home.arpa/enabled: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: simple-icons:mqtt
+          hajimari.io/group: storage, database, and messaging
+          hajimari.io/appName: EMQX
+        hosts:
+          - &host emqx.${SECRET_CLUSTER_DOMAIN}
+        tls:
+          - hosts:
+              - *host
+
+    resources:
+      requests:
+        cpu: 100m
+        memory: 150Mi
+
+    persistence:
+      enabled: false
+
+    metrics:
+      enabled: false
+
+  valuesFrom:
+    - targetPath: emqxConfig.EMQX_DASHBOARD__DEFAULT_PASSWORD
+      kind: Secret
+      name: *app
+      valuesKey: admin_password
+    - targetPath: emqxConfig.EMQX_AUTH__USER__1__USERNAME
+      kind: Secret
+      name: *app
+      valuesKey: user_1_username
+    - targetPath: emqxConfig.EMQX_AUTH__USER__1__PASSWORD
+      kind: Secret
+      name: *app
+      valuesKey: user_1_password
