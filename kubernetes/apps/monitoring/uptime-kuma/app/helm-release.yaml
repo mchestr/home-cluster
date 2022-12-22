@@ -27,16 +27,19 @@ spec:
     image:
       repository: louislam/uptime-kuma
       tag: 1.18.5
+
     service:
       main:
         ports:
           http:
             port: 3001
+
     persistence:
       config:
         enabled: true
         existingClaim: uptime-kuma-config-v1
         mountPath: /app/data
+
     ingress:
       main:
         enabled: true
