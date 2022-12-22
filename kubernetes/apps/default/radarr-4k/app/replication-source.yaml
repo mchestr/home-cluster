@@ -1,0 +1,19 @@
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: radarr-4k
+  namespace: default
+spec:
+  sourcePVC: radarr-4k-config-v1
+  trigger:
+    schedule: "0 0 * * *"
+  restic:
+    copyMethod: Snapshot
+    pruneIntervalDays: 10
+    cacheCapacity: 1Gi
+    volumeSnapshotClassName: csi-ceph-blockpool
+    storageClassName: ceph-block
+    repository: radarr-4k-restic-secret
+    retain:
+      daily: 10
