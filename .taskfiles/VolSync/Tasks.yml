@@ -89,7 +89,7 @@ tasks:
           if [[ -z $(kubectl -n {{.NAMESPACE}} get persistentvolumeclaim {{.CLAIM}} -o jsonpath="{.metadata.annotations.volume\.kubernetes\.io/storage-provisioner}") ]]; then
             echo "deployments.apps/$app" && exit 0
           fi
-          echo "statefulsets.apps/$app"
+          echo "deployments.apps/$app"
     env: *task-vars
     preconditions:
       - sh: test -f {{.WIPE_JOB_TEMPLATE}}
