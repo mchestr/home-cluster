@@ -28,6 +28,8 @@ spec:
       namespace: auth-system
     - name: redis
       namespace: databases
+    - name: ingress-nginx
+      namespace: networking
   values:
     controller:
       replicas: 3
