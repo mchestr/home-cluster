@@ -25,6 +25,9 @@ spec:
   valuesFrom:
     - kind: Secret
       name: prometheus-secrets
+  dependsOn:
+    - name: ingress-ngix
+      namespace: networking
   values:
     fullnameOverride: prometheus
     alertmanager:
