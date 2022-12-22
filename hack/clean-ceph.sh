@@ -1,93 +1,93 @@
 #!/bin/bash
 
-cat <<EOF | kubectl apply -f -
-apiVersion: v1
-kind: Pod
-metadata:
-  name: disk-clean-k8s-0
-spec:
-  restartPolicy: Never
-  nodeName: k8s-0
-  volumes:
-  - name: rook-data-dir
-    hostPath:
-      path: /var/lib/rook
-  containers:
-  - name: disk-clean
-    image: busybox
-    securityContext:
-      privileged: true
-    volumeMounts:
-    - name: rook-data-dir
-      mountPath: /node/rook-data
-    command: ["/bin/sh", "-c", "rm -rf /node/rook-data/*"]
-EOF
-cat <<EOF | kubectl apply -f -
-apiVersion: v1
-kind: Pod
-metadata:
-  name: disk-clean-k8s-1
-spec:
-  restartPolicy: Never
-  nodeName: k8s-1
-  volumes:
-  - name: rook-data-dir
-    hostPath:
-      path: /var/lib/rook
-  containers:
-  - name: disk-clean
-    image: busybox
-    securityContext:
-      privileged: true
-    volumeMounts:
-    - name: rook-data-dir
-      mountPath: /node/rook-data
-    command: ["/bin/sh", "-c", "rm -rf /node/rook-data/*"]
-EOF
-cat <<EOF | kubectl apply -f -
-apiVersion: v1
-kind: Pod
-metadata:
-  name: disk-clean-k8s-2
-spec:
-  restartPolicy: Never
-  nodeName: k8s-2
-  volumes:
-  - name: rook-data-dir
-    hostPath:
-      path: /var/lib/rook
-  containers:
-  - name: disk-clean
-    image: busybox
-    securityContext:
-      privileged: true
-    volumeMounts:
-    - name: rook-data-dir
-      mountPath: /node/rook-data
-    command: ["/bin/sh", "-c", "rm -rf /node/rook-data/*"]
-EOF
-cat <<EOF | kubectl apply -f -
-apiVersion: v1
-kind: Pod
-metadata:
-  name: disk-clean-k8s-3
-spec:
-  restartPolicy: Never
-  nodeName: k8s-3
-  volumes:
-  - name: rook-data-dir
-    hostPath:
-      path: /var/lib/rook
-  containers:
-  - name: disk-clean
-    image: busybox
-    securityContext:
-      privileged: true
-    volumeMounts:
-    - name: rook-data-dir
-      mountPath: /node/rook-data
-    command: ["/bin/sh", "-c", "rm -rf /node/rook-data/*"]
-EOF
+# cat <<EOF | kubectl apply -f -
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: disk-clean-k8s-0
+# spec:
+#   restartPolicy: Never
+#   nodeName: k8s-0
+#   volumes:
+#   - name: rook-data-dir
+#     hostPath:
+#       path: /var/lib/rook
+#   containers:
+#   - name: disk-clean
+#     image: busybox
+#     securityContext:
+#       privileged: true
+#     volumeMounts:
+#     - name: rook-data-dir
+#       mountPath: /node/rook-data
+#     command: ["/bin/sh", "-c", "rm -rf /node/rook-data/*"]
+# EOF
+# cat <<EOF | kubectl apply -f -
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: disk-clean-k8s-1
+# spec:
+#   restartPolicy: Never
+#   nodeName: k8s-1
+#   volumes:
+#   - name: rook-data-dir
+#     hostPath:
+#       path: /var/lib/rook
+#   containers:
+#   - name: disk-clean
+#     image: busybox
+#     securityContext:
+#       privileged: true
+#     volumeMounts:
+#     - name: rook-data-dir
+#       mountPath: /node/rook-data
+#     command: ["/bin/sh", "-c", "rm -rf /node/rook-data/*"]
+# EOF
+# cat <<EOF | kubectl apply -f -
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: disk-clean-k8s-2
+# spec:
+#   restartPolicy: Never
+#   nodeName: k8s-2
+#   volumes:
+#   - name: rook-data-dir
+#     hostPath:
+#       path: /var/lib/rook
+#   containers:
+#   - name: disk-clean
+#     image: busybox
+#     securityContext:
+#       privileged: true
+#     volumeMounts:
+#     - name: rook-data-dir
+#       mountPath: /node/rook-data
+#     command: ["/bin/sh", "-c", "rm -rf /node/rook-data/*"]
+# EOF
+# cat <<EOF | kubectl apply -f -
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: disk-clean-k8s-3
+# spec:
+#   restartPolicy: Never
+#   nodeName: k8s-3
+#   volumes:
+#   - name: rook-data-dir
+#     hostPath:
+#       path: /var/lib/rook
+#   containers:
+#   - name: disk-clean
+#     image: busybox
+#     securityContext:
+#       privileged: true
+#     volumeMounts:
+#     - name: rook-data-dir
+#       mountPath: /node/rook-data
+#     command: ["/bin/sh", "-c", "rm -rf /node/rook-data/*"]
+# EOF
 cat <<EOF | kubectl apply -f -
 apiVersion: v1
 kind: Pod
