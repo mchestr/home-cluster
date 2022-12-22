@@ -4,10 +4,13 @@ kind: Kustomization
 resources:
   # Pre Flux-Kustomizations
   - namespace.yaml
+  - network-policy.yaml
   # Flux-Kustomizations
+  - appdaemon/ks.yaml
   - authelia/ks.yaml
   - cloudnative-pg/ks.yaml
   - emqx/ks.yaml
+  - esphome/ks.yaml
   - glauth/ks.yaml
   - home-assistant/ks.yaml
   - redis/ks.yaml
