@@ -1,0 +1,84 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: zigbee2mqtt
+  namespace: home
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.2.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  dependsOn:
+    - name: node-feature-discovery
+      namespace: kube-system
+    - name: emqx
+      namespace: databases
+  values:
+    image:
+      repository: ghcr.io/koenkk/zigbee2mqtt
+      tag: latest-dev@sha256:40075ad47031b401ac331733d5cee12f1af4190e2e4905b02ba16723585b471e
+
+    env:
+      TZ: ${TZ}
+      ZIGBEE2MQTT_DATA: /data
+
+    service:
+      main:
+        ports:
+          http:
+            port: 8080
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          auth.home.arpa/enabled: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:zigbee
+          hajimari.io/group: automation
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: zigbee2mqtt-config-v1
+        mountPath: /data
+      usb:
+        enabled: true
+        type: hostPath
+        hostPath: /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_71500DDD-if01-port0
+        hostPathType: CharDevice
+
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: feature.node.kubernetes.io/custom-zigbee
+                  operator: In
+                  values:
+                    - "true"
+
+    securityContext:
+      privileged: true

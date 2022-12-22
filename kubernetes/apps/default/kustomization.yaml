@@ -6,3 +6,7 @@ resources:
   - namespace.yaml
   # Flux-Kustomizations
   - cloudnative-pg/ks.yaml
+  - emqx/ks.yaml
+  - home-assistant/ks.yaml
+  - zigbee2mqtt/ks.yaml
+  - zwave-js-ui/ks.yaml

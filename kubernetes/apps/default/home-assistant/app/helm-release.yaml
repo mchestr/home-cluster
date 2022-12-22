@@ -1,0 +1,110 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app home-assistant
+  namespace: home
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.2.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  dependsOn:
+    - name: emqx
+      namespace: databases
+  values:
+    image:
+      repository: ghcr.io/onedr0p/home-assistant
+      tag: 2022.12.7@sha256:1e911c26966dd1399998329801e1400cf3497d13e70cd94928f9039e789f05be
+
+    env:
+      TZ: ${TZ}
+
+    envFrom:
+      - secretRef:
+          name: *app
+
+    service:
+      main:
+        ports:
+          http:
+            port: 8123
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          external-dns.home.arpa/enabled: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:home-assistant
+          hajimari.io/appName: Home Assistant
+          hajimari.io/group: home
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: home-assistant-config-v1
+
+    addons:
+      codeserver:
+        enabled: true
+        image:
+          repository: ghcr.io/coder/code-server
+          tag: 4.9.1
+
+        workingDir: /config
+
+        git:
+          deployKeySecret: home-assistant-deploykey
+
+        args:
+          - --auth
+          - "none"
+          - --user-data-dir
+          - /config/.vscode
+          - --extensions-dir
+          - /config/.vscode
+          - /config
+
+        ingress:
+          enabled: true
+          ingressClassName: nginx
+          annotations:
+            auth.home.arpa/enabled: "true"
+            hajimari.io/enable: "true"
+            hajimari.io/icon: cib:visual-studio-code
+            hajimari.io/group: Automation Code
+            hajimari.io/appName: Home Assistant
+          hosts:
+            - host: &code-host "{{ .Release.Name }}-code.${SECRET_CLUSTER_DOMAIN}"
+              paths:
+                - path: /
+                  pathType: Prefix
+          tls:
+            - hosts:
+                - *code-host
+
+        volumeMounts:
+          - name: config
+            mountPath: /config
