@@ -36,8 +36,7 @@ spec:
       main:
         type: LoadBalancer
         externalTrafficPolicy: Local
-        externalIPs:
-          - ${METALLB_UNIFI_ADDR}
+        loadBalancerIP: ${METALLB_UNIFI_ADDR}
         annotations:
           metallb.universe.tf/allow-shared-ip: unifi
         ports:
