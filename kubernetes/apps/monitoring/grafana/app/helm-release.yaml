@@ -46,7 +46,6 @@ spec:
       GF_PANELS_DISABLE_SANITIZE_HTML: true
       GF_DISABLE_SANITIZE_HTML: true
       GF_LOG_FILTERS: rendering:debug
-      VAR_BLOCKY_URL: http://blocky.networking.svc.cluster.local:4000
       GF_DASHBOARDS_MIN_REFRESH_INTERVAL: 2s
 
     grafana.ini:
