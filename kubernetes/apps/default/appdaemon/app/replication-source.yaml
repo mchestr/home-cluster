@@ -3,7 +3,7 @@ apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
   name: appdaemon
-  namespace: home
+  namespace: default
 spec:
   sourcePVC: appdaemon-config-v1
   trigger:
