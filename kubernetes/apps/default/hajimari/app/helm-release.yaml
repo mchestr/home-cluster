@@ -1,0 +1,123 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app hajimari
+  namespace: default
+spec:
+  interval: 15m
+  chart:
+    spec:
+      # renovate: registryUrl=https://hajimari.io
+      chart: hajimari
+      version: 2.0.2
+      sourceRef:
+        kind: HelmRepository
+        name: hajimari-charts
+        namespace: flux-system
+  values:
+    controller:
+      replicas: 3
+      strategy: RollingUpdate
+    image:
+      repository: ghcr.io/toboshii/hajimari
+      tag: v0.3.1
+
+    env:
+      TZ: ${TZ}
+
+    hajimari:
+      defaultEnable: false
+      lightTheme: cloud
+      darkTheme: chalk
+      showGreeting: false
+      showSearch: false
+      showAppGroups: true
+      showAppInfo: false
+      showAppUrls: false
+      showGlobalBookmarks: true
+      showBookmarkGroups: true
+      title: Home
+      namespaceSelector:
+        any: true
+      globalBookmarks:
+        - group: Home
+          bookmarks:
+            - name: Status Page
+              url: https://status.${SECRET_CLUSTER_DOMAIN}
+            - name: mchestr/home-cluster
+              url: https://github.com/mchestr/home-cluster/issues/2
+            - name: mchestr/home-assistant
+              url: https://github.com/mchestr/home-assistant
+            - name: mchestr/appdaemon
+              url: https://github.com/mchestr/appdaemon
+        - group: k8s@Home
+          bookmarks:
+            - name: Organization
+              url: https://github.com/k8s-at-home
+            - name: Search Charts
+              url: https://nanne.dev/k8s-at-home-search/
+        - group: Gaming
+          bookmarks:
+            - name: Twitch
+              url: "https://twitch.tv"
+            - name: Gmail
+              url: "https://gmail.com"
+        - group: Services
+          bookmarks:
+            - name: Cloudflare
+              url: https://dash.cloudflare.com
+            - name: Backblaze
+              url: https://secure.backblaze.com/b2_buckets.htm
+            - name: AWS Console
+              url: https://aws.amazon.com/console/
+            - name: Terraform Cloud
+              url: https://app.terraform.io
+
+      customApps:
+        - group: storage, database, and messaging
+          apps:
+            - name: phpMyAdmin
+              icon: simple-icons:phpmyadmin
+              url: https://lochnas.${SECRET_CLUSTER_DOMAIN}:9443
+            - name: NAS
+              icon: arcticons:synology-active-insight
+              url: https://lochnas.${SECRET_CLUSTER_DOMAIN}:5001
+        - group: system management
+          apps:
+            - name: Router
+              icon: mdi:router
+              url: https://dns.${SECRET_CLUSTER_DOMAIN}:8443
+            - name: AdGuardHome
+              icon: simple-icons:adguard
+              url: https://dns.${SECRET_CLUSTER_DOMAIN}
+        - group: home
+          apps:
+            - name: Ender
+              icon: mdi:printer-3d-nozzle
+              url: https://ender.${SECRET_CLUSTER_DOMAIN}
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: nginx
+        hosts:
+          - host: &host "home.${SECRET_CLUSTER_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: hajimari-settings
+
+    persistence:
+      data:
+        enabled: false
+
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128M
