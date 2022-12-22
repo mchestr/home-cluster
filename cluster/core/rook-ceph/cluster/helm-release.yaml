@@ -105,10 +105,10 @@ spec:
         nodes:
           - name: "k8s-0"
             devices:
-              - name: "/dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_AA221020NV051200709"
+              - name: "/dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_AA221020NV051201345"
           - name: "k8s-1"
             devices:
-              - name: "/dev/disk/by-id/nvme-Samsung_SSD_950_PRO_256GB_S2GLNCAGA04430N"
+              - name: "/dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_AA221020NV051200709"
           - name: "k8s-3"
             devices:
               - name: "/dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_AA221020NV051200243"
