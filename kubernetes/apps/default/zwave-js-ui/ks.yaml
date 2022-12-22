@@ -11,6 +11,7 @@ spec:
     - name: cluster-apps-node-feature-discovery
     - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-volsync-app
+    - name: cluster-apps-emqx-app
   path: ./kubernetes/apps/default/zwave-js-ui/app
   prune: true
   sourceRef:
