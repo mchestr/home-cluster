@@ -84,6 +84,12 @@ tasks:
       - kubectl get certificates {{.CLI_ARGS | default "-A"}}
       - kubectl get certificaterequests {{.CLI_ARGS | default "-A"}}
 
+  flux:restart:
+    desc: Restart a helm release
+    cmds:
+      - flux suspend hr {{.NAME}} -n {{.NAMESPACE | default "default"}}
+      - flux resume hr {{.NAME}} -n {{.NAMESPACE | default "default"}}
+
   resources:
     desc: Gather common resources in your cluster, useful when asking for support
     cmds:
