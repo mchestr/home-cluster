@@ -5,5 +5,14 @@ resources:
   # Pre Flux-Kustomizations
   - namespace.yaml
   # Flux-Kustomizations
+  - grafana/ks.yaml
   - kube-prometheus-stack/ks.yaml
   - kubernetes-dashboard/ks.yaml
+  - loki/ks.yaml
+  - network-ups-tools/ks.yaml
+  - snmp-exporter/ks.yaml
+  - thanos/ks.yaml
+  - unifi-poller/ks.yaml
+  - uptime-heartbeat/ks.yaml
+  - uptime-kuma/ks.yaml
+  - vector/ks.yaml
