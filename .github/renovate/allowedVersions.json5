@@ -2,7 +2,7 @@
   packageRules: [
     {
       matchDatasources: ["docker"],
-      matchPackagePrefixes: ["immich"],
+      matchPackagePrefixes: ["ghcr.io/immich"],
       allowedVersions: "<10",
     }
   ],
