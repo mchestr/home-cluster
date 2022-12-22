@@ -1,0 +1,90 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app jellyfin
+  namespace: default
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.2.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    image:
+      repository: ghcr.io/onedr0p/jellyfin
+      tag: 10.8.8@sha256:f43a14b5936c90972ec379b6ff64e377163d2b41c03a08f6b0e32242939546a3
+
+    env:
+      TZ: ${TZ}
+
+    service:
+      main:
+        type: LoadBalancer
+        loadBalancerIP: ${METALLB_JELLYFIN_ADDR}
+        externalTrafficPolicy: Local
+        ports:
+          http:
+            port: &port 8096
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          external-dns.home.arpa/enabled: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: simple-icons:jellyfin
+          hajimari.io/group: home
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+
+    podSecurityContext:
+      fsGroup: ${RUN_AS_GROUP}
+      fsGroupChangePolicy: OnRootMismatch
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: jellyfin-config-v1
+      media:
+        enabled: true
+        type: nfs
+        server: ${NAS_ADDR}
+        path: ${NAS_MEDIA_DIR}
+        mountPath: /media
+      transcode:
+        enabled: true
+        type: emptyDir
+
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: feature.node.kubernetes.io/custom-intel-gpu
+                  operator: In
+                  values:
+                    - "true"
+    resources:
+      requests:
+        gpu.intel.com/i915: 1
+      limits:
+        gpu.intel.com/i915: 1
