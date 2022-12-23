@@ -2,7 +2,7 @@
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: zwave-j2-ui
+  name: zwave-js-ui
   namespace: default
 spec:
   sourcePVC: zwave-js-ui-config-v1
