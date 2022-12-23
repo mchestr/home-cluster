@@ -55,7 +55,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: zwavejs2mqtt-config-v1
+        existingClaim: zwave-js-ui-config-v1
         mountPath: /usr/src/app/store
       usb:
         enabled: true
