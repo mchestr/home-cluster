@@ -28,6 +28,7 @@ tasks:
     desc: Initialize workstation dependencies with Brew
     cmds:
       - brew install {{.DEPS}} {{.CLI_ARGS}}
+      - task: precommit:init
     preconditions:
       - sh: command -v brew
         msg: |
@@ -53,13 +54,3 @@ tasks:
         terraform
         yamllint
         yq
-
-  verify:
-    desc: Verify env settings
-    cmds:
-      - ./configure --verify
-
-  configure:
-    desc: Configure repository from env settings
-    cmds:
-      - ./configure

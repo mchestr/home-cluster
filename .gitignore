@@ -3,6 +3,7 @@
 Thumbs.db
 # k8s
 kubeconfig
+provision/
 # vscode-sops
 .decrypted~*.yaml
 .decrypted~*.yml
