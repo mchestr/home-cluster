@@ -28,6 +28,7 @@ tasks:
     desc: Describe all kustomizations that are not applied
     cmds:
       - flux get all --status-selector ready=false
+      - flux get all --status-selector suspended=true
 
   list-dockerhub:
     desc: What dockerhub images are running in my cluster
