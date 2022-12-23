@@ -35,6 +35,11 @@ tasks:
       - sh: test -f {{.WAIT_FOR_JOB_SCRIPT}}
       - sh: test -f {{.LIST_JOB_TEMPLATE}}
 
+  list:rsrc:
+    desc: list all ReplicationSource CRD objects
+    cmds:
+      - kubectl get replicationsource -A
+
   # To run backup jobs in parallel for all replicationsources:
   #  - kubectl get replicationsources --all-namespaces --no-headers | awk '{print $2, $1}' | xargs --max-procs=4 -l bash -c 'task volsync:snapshot RSRC=$0 NAMESPACE=$1'
   #
