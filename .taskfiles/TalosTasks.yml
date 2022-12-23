@@ -2,7 +2,10 @@
 version: "3"
 
 vars:
-  NODES: '{{.NODE | default "192.168.1.200,192.168.1.201,192.168.1.202,192.168.1.203"}}'
+  N: '{{ .N | default "0" }}'
+  NODES: '{{.NODES | default "192.168.1.200,192.168.1.201,192.168.1.202,192.168.1.203"}}'
+  NODE:
+    sh: 'echo ${NODE:-192.168.1.20{{ .N }}}'
 
 tasks:
   generate:
@@ -15,7 +18,7 @@ tasks:
     desc: Apply Talos config to a specific node (task talos:apply NODE=0)
     dir: talos
     cmds:
-      - talosctl apply-config --nodes 192.168.1.20{{.NODE}} --file clusterconfig/home-cluster-k8s-{{.NODE}}.yaml {{.CLI_ARGS}}
+      - talosctl apply-config --nodes {{.NODE}} --file clusterconfig/home-cluster-k8s-{{.NODE}}.yaml {{.CLI_ARGS}}
 
   memory:
     desc: Get all nodes memory
@@ -45,7 +48,7 @@ tasks:
     desc: Get cluster health
     dir: talos
     cmds:
-      - talosctl --nodes 192.168.1.200 health {{.CLI_ARGS}}
+      - talosctl --nodes {{.NODE}} health {{.CLI_ARGS}}
 
   dashboard:
     desc: Get all nodes dashboard

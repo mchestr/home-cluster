@@ -2,31 +2,27 @@
 version: "3"
 
 tasks:
-  flux:verify:
-    desc: Verify flux meets the prerequisites
+  bootstrap:
+    desc: Bootstrap Cluster and have flux manage its state
     cmds:
       - flux check --pre
-
-  flux:namespace:
-    desc: Create the flux-system namespace
-    cmds:
       - kubectl create namespace flux-system --dry-run=client -o yaml | kubectl apply -f -
+      - kubectl apply --server-side --kustomize ./kubernetes/bootstrap/flux
+      - sops --decrypt kubernetes/bootstrap/flux/age-key.sops.yaml | kubectl apply -f -
+      - kubectl apply -f kubernetes/flux/vars/cluster-settings.yaml
+      - kubectl apply --server-side --kustomize ./kubernetes/flux/config
 
-  flux:secret:
-    desc: Create the Age secret in the flux-system namespace
+  hr:restart:
+    desc: Restart a helm release
     cmds:
-      - cat {{.SOPS_AGE_KEY_FILE}} | kubectl -n flux-system create secret generic sops-age --from-file=age.agekey=/dev/stdin
-    preconditions:
-      - sh: test -f {{.SOPS_AGE_KEY_FILE}}
-        msg: |
-          Age key file is not found. Did you forget to create it?
-    vars:
-      SOPS_AGE_KEY_FILE: ~/.config/sops/age/keys.txt
+      - flux suspend hr {{.NAME}} -n {{.NAMESPACE | default "default"}}
+      - flux resume hr {{.NAME}} -n {{.NAMESPACE | default "default"}}
 
-  flux:install:
-    desc: Install Flux into your cluster, run this again if it fails
+  hr:restart:failed:
+    desc: Restart all failed Helm Releases
     cmds:
-      - kubectl apply -k {{.CLUSTER_DIR}}/base/flux-system
+      - kubectl get hr --all-namespaces | grep False | awk '{print $2, $1}' | xargs -l bash -c 'flux suspend hr $0 -n $1'
+      - kubectl get hr --all-namespaces | grep False | awk '{print $2, $1}' | xargs -l bash -c 'flux resume hr $0 -n $1'
 
   list-dockerhub:
     desc: What dockerhub images are running in my cluster
@@ -38,69 +34,10 @@ tasks:
     cmds:
       - flux reconcile source git home-ops-kubernetes {{.CLI_ARGS | default "-n flux-system"}}
 
-  reconcile:apps:
-    desc: Reconcile the apps kustomizations
-    cmds:
-      - flux reconcile kustomization apps {{.CLI_ARGS | default "-n flux-system"}}
-
-  nodes:
-    desc: List all the nodes in your cluster
-    cmds:
-      - kubectl get nodes {{.CLI_ARGS | default "-o wide"}}
-
-  pods:
-    desc: List all the pods in your cluster
-    cmds:
-      - kubectl get pods {{.CLI_ARGS | default "-A"}}
-
   delete-failed-pods:
     desc: Deletes failed pods
     cmds:
       - kubectl delete pods --field-selector status.phase=Failed -A --ignore-not-found=true
-
-  kustomizations:
-    desc: List all the kustomizations in your cluster
-    cmds:
-      - kubectl get kustomizations {{.CLI_ARGS | default "-A"}}
-
-  helmreleases:
-    desc: List all the helmreleases in your cluster
-    cmds:
-      - kubectl get helmreleases {{.CLI_ARGS | default "-A"}}
-
-  helmrepositories:
-    desc: List all the helmreleases in your cluster
-    cmds:
-      - kubectl get helmrepositories {{.CLI_ARGS | default "-A"}}
-
-  gitrepositories:
-    desc: List all the helmreleases in your cluster
-    cmds:
-      - kubectl get gitrepositories {{.CLI_ARGS | default "-A"}}
-
-  certificates:
-    desc: List all the certificates in your cluster
-    cmds:
-      - kubectl get certificates {{.CLI_ARGS | default "-A"}}
-      - kubectl get certificaterequests {{.CLI_ARGS | default "-A"}}
-
-  flux:restart:
-    desc: Restart a helm release
-    cmds:
-      - flux suspend hr {{.NAME}} -n {{.NAMESPACE | default "default"}}
-      - flux resume hr {{.NAME}} -n {{.NAMESPACE | default "default"}}
-
-  resources:
-    desc: Gather common resources in your cluster, useful when asking for support
-    cmds:
-      - task: nodes
-      - task: kustomizations
-      - task: helmreleases
-      - task: helmrepositories
-      - task: gitrepositories
-      - task: certificates
-      - task: pods
-
 
   volume:
     desc: |-
@@ -141,33 +78,3 @@ tasks:
               "restartPolicy": "Never"
             }
           }'
-
-  debug-node:
-    desc: Create a privileged container on a node for debugging, ex. NODE=anvil task debug-node
-    interactive: true
-    cmds:
-      - |
-        kubectl run debug-{{.NODE}} -i --tty --rm --image="docker.io/library/alpine:3.15" --privileged --overrides='
-          {
-            "spec": {
-              "nodeSelector": {
-                "kubernetes.io/hostname": "{{.NODE}}"
-              },
-              "restartPolicy": "Never"
-            }
-          }'
-
-  hr:restart:
-    desc: Restart all failed Helm Releases
-    cmds:
-      - kubectl get hr --all-namespaces | grep False | awk '{print $2, $1}' | xargs -l bash -c 'flux suspend hr $0 -n $1'
-      - kubectl get hr --all-namespaces | grep False | awk '{print $2, $1}' | xargs -l bash -c 'flux resume hr $0 -n $1'
-
-  kyverno:fix:
-    desc: Remove kyverno shit when it breaks everything
-    cmds:
-      - kubectl delete mutatingwebhookconfigurations kyverno-policy-mutating-webhook-cfg
-      - kubectl delete mutatingwebhookconfigurations kyverno-resource-mutating-webhook-cfg
-      - kubectl delete mutatingwebhookconfigurations kyverno-verify-mutating-webhook-cfg
-      - kubectl delete validatingwebhookconfigurations kyverno-policy-validating-webhook-cfg
-      - kubectl delete validatingwebhookconfigurations kyverno-resource-validating-webhook-cfg
