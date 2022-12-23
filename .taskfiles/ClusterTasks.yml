@@ -24,6 +24,11 @@ tasks:
       - kubectl get hr --all-namespaces | grep False | awk '{print $2, $1}' | xargs -l bash -c 'flux suspend hr $0 -n $1'
       - kubectl get hr --all-namespaces | grep False | awk '{print $2, $1}' | xargs -l bash -c 'flux resume hr $0 -n $1'
 
+  check:
+    desc: Describe all kustomizations that are not applied
+    cmds:
+      - flux get all --status-selector ready=false
+
   list-dockerhub:
     desc: What dockerhub images are running in my cluster
     cmds:
