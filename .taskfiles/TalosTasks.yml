@@ -6,8 +6,22 @@ vars:
   NODES: '{{.NODES | default "192.168.1.200,192.168.1.201,192.168.1.202,192.168.1.203"}}'
   NODE:
     sh: 'echo ${NODE:-192.168.1.20{{ .N }}}'
+  # renovate: datasource=github-releases depName=siderolabs/talos
+  TALOS_VERSION: v1.3.0
+  # renovate: datasource=github-releases depName=budimanjojo/talhelper
+  TALHELPER_VERSION: v1.5.5
 
 tasks:
+
+  init:
+    desc: Init talosctl and grab kubeconfig
+    cmds:
+      - mkdir config || true
+      - sudo curl -Lo /usr/local/bin/talosctl https://github.com/siderolabs/talos/releases/download/{{.TALOS_VERSION}}/talosctl-$(uname -s | tr "[:upper:]" "[:lower:]")-amd64 && sudo chmod +x /usr/local/bin/talosctl
+      - curl -Lo /tmp/talhelper-{{.TALHELPER_VERSION}}.tar.gz https://github.com/budimanjojo/talhelper/releases/download/{{.TALHELPER_VERSION}}/talhelper_$(uname -s | tr "[:upper:]" "[:lower:]")_amd64.tar.gz && tar -xzf /tmp/talhelper-{{.TALHELPER_VERSION}}.tar.gz -C /tmp && sudo mv /tmp/talhelper /usr/local/bin/talhelper
+      - task: generate
+      - talosctl --talosconfig=talos/clusterconfig/talosconfig kubeconfig --nodes 192.168.1.200 $KUBECONFIG
+
   generate:
     desc: Generate Talos machine configurations
     dir: talos
