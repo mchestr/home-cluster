@@ -29,6 +29,7 @@ tasks:
     cmds:
       - brew install {{.DEPS}} {{.CLI_ARGS}}
       - task: precommit:init
+      - task: talos:init
     preconditions:
       - sh: command -v brew
         msg: |
@@ -38,6 +39,7 @@ tasks:
       DEPS: >-
         age
         ansible
+        ansible-lint
         direnv
         fluxcd/tap/flux
         gitleaks
