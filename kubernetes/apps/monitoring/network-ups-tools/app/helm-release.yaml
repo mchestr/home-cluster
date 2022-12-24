@@ -27,6 +27,11 @@ spec:
 
     service:
       main:
+        type: LoadBalancer
+        loadBalancerIP: ${METALLB_UPSMON_ADDR}
+        annotations:
+          coredns.io/hostname: ups.${SECRET_CLUSTER_DOMAIN}
+        externalTrafficPolicy: Local
         ports:
           http:
             protocol: TCP
