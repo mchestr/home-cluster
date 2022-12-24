@@ -58,7 +58,16 @@
           - set firewall name WAN_LOCAL rule 30 description 'WireGuard'
           - set firewall name WAN_LOCAL rule 30 destination port 51820
 
-          - set interfaces wireguard wg0 peer {{ wireguard_mchestr_phone_public_key }} allowed-ips 192.168.33.10/32
+- name: Add WireGuard peers
+  vars:
+    ansible_network_os: edgeos
+    ansible_connection: network_cli
+  loop: "{{ wireguard_public_keys | default([]) }}"
+  community.network.edgeos_config:
+    save: true
+    backup: true
+    lines:
+      - set interfaces wireguard wg0 peer {{ item }} allowed-ips 192.168.33.0/24
 
 - name: Upgrade WireGuard
   when: >
