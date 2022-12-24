@@ -67,19 +67,19 @@ spec:
           upsd.conf: |-
             LISTEN 0.0.0.0
           ups.conf: |-
-            [cyberpower-ups]
+            [ups]
               driver = usbhid-ups
               port = auto
               desc = "CyberPower CP1500 AVR"
               pollinterval = 10
           upsd.users: |-
-            [upsmon]
+            [monuser]
               password  = "${NUT_PASSWORD}"
               actions = SET
               instcmds = ALL
               upsmon primary
           upsmon.conf: |-
-            MONITOR cyber-power@localhost:3493 1 upsmon "${NUT_PASSWORD}" primary
+            MONITOR ups@localhost:3493 1 monuser "${NUT_PASSWORD}" primary
             SHUTDOWNCMD "/sbin/shutdown -h +0"
             POWERDOWNFLAG /etc/killpower
             POLLFREQ 15
