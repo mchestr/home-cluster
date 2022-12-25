@@ -1,4 +1,6 @@
 domainName: ENC[AES256_GCM,data:fTad0IVoPXp2hA==,iv:9lvso3IWY1nne9/sLM0LBprUVWf4J7MyqyVjIaE9jZ8=,tag:JmzX/BHMGIpZXagHdpRt7Q==,type:str]
+upsmonPasswd: ENC[AES256_GCM,data:51mqMgAR,iv:YbFWyH2QSPdcnXiSXGTBojgsasezcyomO7tMtDCpkWY=,tag:sjCyb8SFcQHQyAspbZhs7Q==,type:str]
+upsmonUser: monuser
 sops:
     kms: []
     gcp_kms: []
@@ -14,8 +16,8 @@ sops:
             QkpTa2dPTVdoUzBpQ2drbTdJVDBYL3cKHM7MjfHya1u49VM1oe0xRhmd1jRuvlMH
             zRvZms3egSIByUqgFui0eOw4pGLpBFAgua4XKHO4RN5EaNvcI+eDcg==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2022-12-18T18:41:40Z"
-    mac: ENC[AES256_GCM,data:RX9EvGDzcs59Ej2/9msN3BqewO3zFcIeEfPqooWnczgvZSsl4zih8HQMy8p0+SyGRDQY3wR4Ttfrrer/eCB29zzEFVu3Mb4RpjIbL0xHfZmgRJtcdL55u5Dsl22Ts6RwbmKUvNfmydLexDsIhYhnNRGwyyfbVBZ+D8RvyZ3s76Y=,iv:JUPd9N8x4w1kiZZ35zSp9ARoMG1gRxEMfOlQmtyTL2Y=,tag:ELQy7GeegDzS6OHc3o8jqw==,type:str]
+    lastmodified: "2022-12-24T23:32:34Z"
+    mac: ENC[AES256_GCM,data:toRx61hm7PfTSsqF3wIDl//oXnu4zwcsVmtv6goKekXvnmuJIGzSmuS2Jokr1otBH2wcf6UP0vosIQadVv0qVeDb4MMtun2ul4e3tvPbNz5Lmhlr8FyYmKzTYo5di+SaCQmBya79JU/vIkeyZm8ZV8xHONrD4Hw0snGQi36QXms=,iv:W3E4tL0smAtJxZmm7y/WVSBOxh9jv0nFd0E7/Fo8GTQ=,tag:9QSr0DC2AiUVi2c5j5uyyQ==,type:str]
     pgp: []
     encrypted_regex: ((?i)(pass|secret($|[^N])|key|token|id|domainName|^data$|^stringData))
     version: 3.7.3
