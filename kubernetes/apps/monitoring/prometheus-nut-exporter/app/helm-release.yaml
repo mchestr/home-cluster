@@ -29,8 +29,7 @@ spec:
     service:
       main:
         ports:
-          metrics:
-            enabled: true
+          http:
             protocol: TCP
             port: 9995
 
@@ -38,7 +37,7 @@ spec:
       main:
         enabled: true
         endpoints:
-          - port: metrics
+          - port: http
             interval: 15s
             scrapeTimeout: 10s
             params:
