@@ -2,7 +2,8 @@
 
 logger 'WakeOnLan started, waiting 120s...';
 sleep 120;
-{% for mac_address in wake_on_lan %}
-sudo etherwake {{ mac_address }};
+{% for host in wake_on_lan %}
+sudo etherwake {{ host.mac }};
+sleep {{ host.delay }};
 {% endfor %}
 logger 'WakeOnLan complete.';
