@@ -71,6 +71,8 @@ controlPlane:
       install:
         extraKernelArgs:
           - talos.logging.kernel=udp://vector.${domainName}:6050/
+        extensions:
+          - image: ghcr.io/siderolabs/nut-client:v1.3.0
       logging:
         destinations:
           - endpoint: udp://vector.${domainName}:6051/
@@ -94,6 +96,12 @@ controlPlane:
           op: create
           permissions: 0o666
           path: /var/cri/conf.d/allow-unpriv-ports.toml
+        - path: /var/etc/nut/upsmon.conf
+          permissions: 0o666
+          op: create
+          content: |
+            MONITOR ups@lochnas.${domainName} 1 ${upsmonUser} ${upsmonPasswd} slave
+            SHUTDOWNCMD "/sbin/poweroff"
       network:
         interfaces:
           - interface: eth0
