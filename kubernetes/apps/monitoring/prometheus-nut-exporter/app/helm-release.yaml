@@ -29,7 +29,8 @@ spec:
     service:
       main:
         ports:
-          http:
+          metrics:
+            enabled: true
             protocol: TCP
             port: 9995
 
