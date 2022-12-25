@@ -50,3 +50,11 @@
         file: pxe.yml
       tags:
         - pxe
+
+- name: Configure Scripts
+  block:
+    - name: Setup wake on lan
+      ansible.builtin.template:
+        src: wake-on-lan.sh.j2
+        dest: /config/scripts/post-config.d/wake-on-lan.sh
+        mode: 0775
