@@ -35,6 +35,11 @@ tasks:
     cmds:
       - flux get kustomizations -w
 
+  watch:reconcile:
+    desc: Describe all kustomizations that are not applied
+    cmds:
+      - watch flux get kustomizations --status-selector ready=false
+
   list-dockerhub:
     desc: What dockerhub images are running in my cluster
     cmds:
