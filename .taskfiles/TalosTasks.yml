@@ -32,7 +32,7 @@ tasks:
     desc: Apply Talos config to a specific node (task talos:apply NODE=0)
     dir: talos
     cmds:
-      - talosctl apply-config --nodes {{.NODE}} --file clusterconfig/home-cluster-k8s-{{.NODE}}.yaml {{.CLI_ARGS}}
+      - talosctl apply-config --nodes {{.NODE}} --file clusterconfig/home-cluster-k8s-{{.N}}.yaml {{.CLI_ARGS}}
 
   memory:
     desc: Get all nodes memory
