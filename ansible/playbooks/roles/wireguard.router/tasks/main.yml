@@ -43,20 +43,23 @@
         lines:
           - dpkg -i /tmp/wireguard-{{ wireguard_version }}.deb
           - modprobe wireguard
-    - name: Configure Interfaces
-      community.network.edgeos_config:
-        save: true
-        backup: true
-        lines:
-          - set interfaces wireguard wg0 private-key /config/auth/wg.key
-          - set interfaces wireguard wg0 address 192.168.33.1/24
-          - set interfaces wireguard wg0 listen-port 51820
-          - set interfaces wireguard wg0 route-allowed-ips true
 
-          - set firewall name WAN_LOCAL rule 30 action accept
-          - set firewall name WAN_LOCAL rule 30 protocol udp
-          - set firewall name WAN_LOCAL rule 30 description 'WireGuard'
-          - set firewall name WAN_LOCAL rule 30 destination port 51820
+- name: Configure Interfaces
+  vars:
+    ansible_network_os: edgeos
+    ansible_connection: network_cli
+  community.network.edgeos_config:
+    save: true
+    lines:
+      - set interfaces wireguard wg0 private-key /config/auth/wg.key
+      - set interfaces wireguard wg0 address 192.168.33.1/24
+      - set interfaces wireguard wg0 listen-port 51820
+      - set interfaces wireguard wg0 route-allowed-ips true
+
+      - set firewall name WAN_LOCAL rule 30 action accept
+      - set firewall name WAN_LOCAL rule 30 protocol udp
+      - set firewall name WAN_LOCAL rule 30 description 'WireGuard'
+      - set firewall name WAN_LOCAL rule 30 destination port 51820
 
 - name: Add WireGuard peers
   vars:
@@ -65,9 +68,8 @@
   loop: "{{ wireguard_public_keys | default([]) }}"
   community.network.edgeos_config:
     save: true
-    backup: true
     lines:
-      - set interfaces wireguard wg0 peer {{ item }} allowed-ips 192.168.33.0/24
+      - set interfaces wireguard wg0 peer {{ item.peer }} allowed-ips {{ item.ip_address }}
 
 - name: Upgrade WireGuard
   when: >
