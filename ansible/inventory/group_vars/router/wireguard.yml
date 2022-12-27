@@ -10,5 +10,9 @@ wireguard_tools: "1.0.20210914"
 wireguard_edge_os: e50-v2
 wireguard_download_url: https://github.com/WireGuard/wireguard-vyatta-ubnt/releases/download/{{ wireguard_version }}/{{ wireguard_edge_os }}-v{{ wireguard_module }}-v{{ wireguard_tools }}.deb
 wireguard_public_keys:
-  - zGtM/OyWujkWAiQ0w9vmIiRXx3zBZg7JfxvdzV8EemI=
-  - 81eB02K9mgybqr9rOxyTrrn4YrGJQOr26YKY1mJahH8=
+  - peer: zGtM/OyWujkWAiQ0w9vmIiRXx3zBZg7JfxvdzV8EemI=
+    ip_address: 192.168.33.10/32
+    name: phone
+  - peer: 81eB02K9mgybqr9rOxyTrrn4YrGJQOr26YKY1mJahH8=
+    ip_address: 192.168.33.11/32
+    name: tablet
