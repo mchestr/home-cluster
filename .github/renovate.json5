@@ -24,13 +24,13 @@
   rebaseWhen: 'conflicted',
   commitBodyTable: true,
   'docker-compose': {
-    fileMatch: ['ansible/.+/docker-compose.*\\.ya?ml(\\.j2)?$']
+    fileMatch: ['ansible/.+/docker-compose.*\\.ya?ml(\\.j2)?$', 'talos/.+\\.ya?ml$']
   },
   flux: {
-    fileMatch: ['kubernetes/.+\\.ya?ml$']
+    fileMatch: ['kubernetes/.+\\.ya?ml$', 'talos/.+\\.ya?ml$']
   },
   'helm-values': {
-    fileMatch: ['kubernetes/.+\\.ya?ml$']
+    fileMatch: ['kubernetes/.+\\.ya?ml$', 'talos/.+\\.ya?ml$']
   },
   kubernetes: {
     fileMatch: ['kubernetes/.+\\.ya?ml$', 'talos/.+\\.ya?ml$']
