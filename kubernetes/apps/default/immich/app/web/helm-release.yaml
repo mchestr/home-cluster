@@ -48,12 +48,6 @@ spec:
       main:
         enabled: true
         ingressClassName: nginx
-        annotations:
-          nginx.ingress.kubernetes.io/rewrite-target: /$1
-          hajimari.io/enable: "true"
-          hajimari.io/icon: heroicons:photo
-          hajimari.io/group: home
-          hajimari.io/appName: Photos
         hosts:
           - host: &host photos.${SECRET_CLUSTER_DOMAIN}
             paths:
@@ -69,6 +63,13 @@ spec:
         tls:
           - hosts:
               - *host
+        annotations:
+          nginx.ingress.kubernetes.io/rewrite-target: /$1
+          hajimari.io/enable: "true"
+          hajimari.io/icon: heroicons:photo
+          hajimari.io/group: home
+          hajimari.io/appName: Photos
+          hajimari.io/url: *host
 
     persistence:
       data:
