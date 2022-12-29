@@ -69,7 +69,7 @@ spec:
           hajimari.io/icon: heroicons:photo
           hajimari.io/group: home
           hajimari.io/appName: Photos
-          hajimari.io/url: *host
+          hajimari.io/url: https://photos.${SECRET_CLUSTER_DOMAIN}
 
     persistence:
       data:
