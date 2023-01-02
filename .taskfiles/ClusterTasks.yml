@@ -13,7 +13,7 @@ tasks:
       - kubectl apply --server-side --kustomize ./kubernetes/flux/config
 
   hr:restart:
-    desc: Restart a helm release
+    desc: Restart a helm release (ex. task cluster:hr:restart NAME=plex)
     cmds:
       - flux suspend hr {{.NAME}} -n {{.NAMESPACE | default "default"}}
       - flux resume hr {{.NAME}} -n {{.NAMESPACE | default "default"}}
