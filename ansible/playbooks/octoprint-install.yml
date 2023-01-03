@@ -69,7 +69,7 @@
 
     - name: Install acme
       ansible.builtin.import_role:
-        name: acme.octoprint
+        name: acme.pi
       tags:
         - acme
 
