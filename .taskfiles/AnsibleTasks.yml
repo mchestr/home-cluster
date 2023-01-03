@@ -10,6 +10,12 @@ vars:
 
 tasks:
 
+  fluidd:install:
+    desc: Install Octoprint
+    dir: ansible
+    cmds:
+      - ansible-playbook -i {{.ANSIBLE_INVENTORY_DIR}}/hosts.yml {{.ANSIBLE_PLAYBOOK_DIR}}/fluidd-install.yml {{.CLI_ARGS}}
+
   router:install:
     desc: Install Kubernetes on the nodes
     dir: ansible

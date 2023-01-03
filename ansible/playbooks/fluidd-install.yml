@@ -1,0 +1,41 @@
+---
+- name: Setup Octoprint Servers
+  hosts: fluidd
+
+  gather_facts: true
+  any_errors_fatal: true
+
+  tags: fluidd
+  become: true
+
+  tasks:
+    - name: Install acme
+      tags:
+        - acme
+      block:
+        - name: Setup ACME
+          ansible.builtin.import_role:
+            name: acme.pi
+        - name: Create symlink for cert
+          ansible.builtin.file:
+            src: "/root/.acme.sh/{{ certificate['common_name'] }}/fullchain.cer"
+            dest: "/home/{{ ansible_user }}/printer_data/certs/moonraker.cert"
+            state: link
+        - name: Create symlink for cert
+          ansible.builtin.file:
+            src: "/root/.acme.sh/{{ certificate['common_name'] }}/{{ certificate['common_name'] }}.key"
+            dest: "/home/{{ ansible_user }}/printer_data/certs/moonraker.key"
+            state: link
+
+
+    # - name: Install vector
+    #   ansible.builtin.import_role:
+    #     name: vector.octoprint
+    #   tags:
+    #     - vector
+
+    # - name: Install node-exporter
+    #   ansible.builtin.import_role:
+    #     name: node_exporter.octoprint
+    #   tags:
+    #     - node-exporter
