@@ -1,5 +1,5 @@
 ---
-- name: Setup Octoprint Servers
+- name: Setup Fluidd Servers
   hosts: fluidd
 
   gather_facts: true
