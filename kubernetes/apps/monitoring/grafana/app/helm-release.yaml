@@ -117,7 +117,6 @@ spec:
       - grafana-polystat-panel
       - mxswat-separator-panel
       - farski-blendstat-panel
-      - redis-datasource
 
     serviceMonitor:
       enabled: true
@@ -147,10 +146,6 @@ spec:
           gnetId: 1860
           revision: 23
           datasource: Prometheus
-        redis:
-          gnetId: 12776
-          revision: 2
-          datasource: Redis
         flux-cluster:
           url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/cluster.json
           datasource: Prometheus

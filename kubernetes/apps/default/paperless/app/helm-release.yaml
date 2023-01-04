@@ -35,7 +35,7 @@ spec:
       PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
       PAPERLESS_TIME_ZONE: ${TZ}
       PAPERLESS_URL: https://{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}
-      PAPERLESS_REDIS: redis://redis.default:6379
+      PAPERLESS_REDIS: redis://paperless-redis.default:6379
       PAPERLESS_DBHOST: postgres-rw.default.svc.cluster.local
       PAPERLESS_DBNAME: paperless
       PAPERLESS_DBUSER:
