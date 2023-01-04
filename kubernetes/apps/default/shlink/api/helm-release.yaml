@@ -29,7 +29,7 @@ spec:
         reloader.stakater.com/auto: "true"
     image:
       repository: ghcr.io/shlinkio/shlink
-      tag: 3.3.2
+      tag: 3.4.0
     env:
       DB_DRIVER: postgres
       DB_HOST: postgres-rw.default.svc.cluster.local
