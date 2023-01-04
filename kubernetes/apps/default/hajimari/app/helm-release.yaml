@@ -73,6 +73,8 @@ spec:
               url: https://aws.amazon.com/console/
             - name: Terraform Cloud
               url: https://app.terraform.io
+            - name: Pushover
+              url: https://pushover.net/
 
       customApps:
         - group: storage, database, and messaging
