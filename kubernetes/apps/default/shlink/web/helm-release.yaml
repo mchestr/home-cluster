@@ -53,7 +53,7 @@ spec:
           hajimari.io/icon: mdi:link
           hajimari.io/group: system management
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
+          - host: &host shlink.${SECRET_CLUSTER_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
