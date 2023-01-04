@@ -52,6 +52,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:link
           hajimari.io/group: system management
+          hajimari.io/appName: shlink
         hosts:
           - host: &host shlink.${SECRET_CLUSTER_DOMAIN}
             paths:
