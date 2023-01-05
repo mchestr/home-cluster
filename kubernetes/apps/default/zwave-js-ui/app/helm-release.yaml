@@ -42,6 +42,7 @@ spec:
           auth.home.arpa/enabled: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:z-wave
+          hajimari.io/appName: z-wave
           hajimari.io/group: automation
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
