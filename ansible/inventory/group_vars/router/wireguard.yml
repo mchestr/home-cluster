@@ -16,3 +16,6 @@ wireguard_public_keys:
   - peer: 81eB02K9mgybqr9rOxyTrrn4YrGJQOr26YKY1mJahH8=
     ip_address: 192.168.33.11/32
     name: tablet
+  - peer: S5775sFCwpBbGRtXRkptRumfnb3nl7Kz/PCA0AcT82I=
+    ip_address: 192.168.33.12/32
+    name: laptop
