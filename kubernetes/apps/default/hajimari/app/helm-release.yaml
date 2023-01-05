@@ -74,7 +74,7 @@ spec:
             - name: Terraform Cloud
               url: https://app.terraform.io
             - name: Pushover
-              url: https://pushover.net/
+              url: https://client.pushover.net/
 
       customApps:
         - group: storage, database, and messaging
