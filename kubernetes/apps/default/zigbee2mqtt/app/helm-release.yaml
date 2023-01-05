@@ -45,6 +45,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:zigbee
           hajimari.io/group: automation
+          hajimari.io/appName: zigbee
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
             paths:
