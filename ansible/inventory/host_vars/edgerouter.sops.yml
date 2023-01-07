@@ -12,6 +12,7 @@ uptime_kuma_ping_url: ENC[AES256_GCM,data:f++KPvhRi28LOJUXWUYWZQqRG/SBzIjdaRaysQ
 wireguard_private_key: ENC[AES256_GCM,data:/TzkiLUSyVgR7GG2IlMi8vjwCo68ILrN8kPtJpm74SoP5v4wiOJaiTdu6kA=,iv:FnXW/BmWS2otDEj0E79P9De1t/LpOKzd4YZmemWd5LE=,tag:YtJ0OioS9IjC2oDS6XCqZw==,type:str]
 edgeos_user_name: ENC[AES256_GCM,data:kxzyH28dYg==,iv:aFILph3rKn6bHd/abWFiCxEPa3vZn2t7MGMYIc/PUKU=,tag:oAZ2Uk8rdJJyN5nCCDeQuQ==,type:str]
 edgeos_user_password: ENC[AES256_GCM,data:rNn+ndVqiqRH1AQonaddjq2+gClV0zhnRA+c2pjFn5VzB85pjjIe9wmVRAZJbjmP9ea+ttPzz6fpzqiLrJ4o,iv:4O0lZ82NEDe43oiXodQPY0oBmq5yYrKKn6LvKYWMXZQ=,tag:SOR1rkFo+CqHy4onQqvuEQ==,type:str]
+wordpress_0_domain: ENC[AES256_GCM,data:96mAaPGuuvzT,iv:2ZxxMXYgukUggVBfQGhDp9UVgxkDVRaW7uL8DsOduds=,tag:C0dLCWBtI1foUXPiw1RpjA==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -27,8 +28,8 @@ sops:
             T2JEYWJ0WHV0ZjB5NWtJWWFrVTJyU28Kg+FbZpxhYP85UwBhPYKwQJi30WrRRhD9
             XFuyQjcXrlIPaJSOrHGh3s1iqGOAyr4C0/8ouyJVYO9sgX50kSvi2w==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2022-12-07T06:08:04Z"
-    mac: ENC[AES256_GCM,data:D8OMnfM2R1/NH5iJjAgcxOZSxve3c71fa/mHOCdlieSA5RkT2rccCoczJCJG6R2svtPrGjf93PPRGEMH6768Zkw1BBrVYfI7T2XK+OxYsoTvXwEXMTl5N42meCtNYNJA5qVIIkAw89XgnoN3yMZlDmYHatu/YqCxXJ9lFjA04tQ=,iv:UaG4nJ2HaW88BQKqXMzmMwYl21QsQ9bee02eMZtbgoE=,tag:SBR9ilGA9z2tx1WjXbIUzA==,type:str]
+    lastmodified: "2023-01-07T21:28:22Z"
+    mac: ENC[AES256_GCM,data:7PAn293gJqIksgPJFst6rn7ekpP2OXZZ5sbhurjonY7tb7L8ZWJtz8OB6voglBJfT2Rbe5RCZs7KxsjdnhyNuL33DSbCNrY9ZL84wa1hk/RIdHXCYlOmupRB1EIXAdBq88yZAxOMEAJIaQPBwewY8nOu/OKm8Lr2rEyfM7QcOMc=,iv:ckxGMcjRqx4O8XCkBJOm029zD+6b2fqLtTPbF5498Zg=,tag:7vEULQ9op4XA7vzoxrFqIg==,type:str]
     pgp: []
     unencrypted_regex: ^(kind)$
     version: 3.7.3
