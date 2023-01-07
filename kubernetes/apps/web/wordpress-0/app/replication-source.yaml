@@ -24,7 +24,7 @@ spec:
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: wordpress-0
+  name: wordpress-0-databse
   namespace: web
 spec:
   sourcePVC: wordpress-0-database-v1
