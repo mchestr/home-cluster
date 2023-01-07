@@ -46,6 +46,7 @@ spec:
     txtOwnerId: "default"
     domainFilters:
       - "${SECRET_CLUSTER_DOMAIN}"
+      - "${SECRET_WORDPRESS_DOMAIN_0}"
     serviceMonitor:
       enabled: true
     resources:
