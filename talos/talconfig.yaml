@@ -97,7 +97,7 @@ controlPlane:
               enable_unprivileged_icmp = true
           op: create
           permissions: 0o666
-          path: /var/cri/conf.d/allow-unpriv-ports.toml
+          path: /etc/cri/conf.d/allow-unpriv-ports.toml
         - path: /var/etc/nut/upsmon.conf
           permissions: 0o666
           op: create
@@ -150,7 +150,7 @@ worker:
               enable_unprivileged_icmp = true
           op: create
           permissions: 0o666
-          path: /var/cri/conf.d/allow-unpriv-ports.toml
+          path: /etc/cri/conf.d/allow-unpriv-ports.toml
         - path: /var/etc/nut/upsmon.conf
           permissions: 0o666
           op: create
