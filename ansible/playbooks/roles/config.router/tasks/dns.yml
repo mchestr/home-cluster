@@ -10,6 +10,9 @@
       - domain: "{{ personal_domain }}"
         hosts:
           - vpn
+      - domain: "{{ wordpress_0_domain }}"
+        hosts:
+          - ipv4
   loop: "{{ services | subelements('hosts') }}"
   loop_control:
     index_var: index
