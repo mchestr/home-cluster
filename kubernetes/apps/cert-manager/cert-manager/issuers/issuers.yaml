@@ -19,6 +19,7 @@ spec:
         selector:
           dnsZones:
             - ${SECRET_CLUSTER_DOMAIN}
+            - ${SECRET_WORDPRESS_DOMAIN_0}
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -40,3 +41,4 @@ spec:
         selector:
           dnsZones:
             - ${SECRET_CLUSTER_DOMAIN}
+            - ${SECRET_WORDPRESS_DOMAIN_0}

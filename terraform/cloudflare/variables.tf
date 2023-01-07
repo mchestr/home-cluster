@@ -34,3 +34,7 @@ variable "aws_ses_cname3_value" {
   type        = string
   description = "AWS SES CNAME 3 value"
 }
+variable "wordpress_0_domain" {
+  type        = string
+  description = "Wordpress 0 domain"
+}

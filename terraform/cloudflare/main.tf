@@ -31,3 +31,9 @@ data "cloudflare_zones" "domain" {
     name = var.cloudflare_domain
   }
 }
+
+data "cloudflare_zones" "wordpress_0_domain" {
+  filter {
+    name = var.wordpress_0_domain
+  }
+}

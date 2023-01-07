@@ -16,6 +16,24 @@ resource "cloudflare_record" "root" {
   ttl     = 1
 }
 
+resource "cloudflare_record" "wordpress-ipv4" {
+  name    = "ipv4"
+  zone_id = lookup(data.cloudflare_zones.wordpress_0_domain.zones[0], "id")
+  value   = chomp(data.http.ipv4.response_body)
+  proxied = true
+  type    = "A"
+  ttl     = 1
+}
+
+resource "cloudflare_record" "wordpress-0-root" {
+  name    = var.wordpress_0_domain
+  zone_id = lookup(data.cloudflare_zones.wordpress_0_domain.zones[0], "id")
+  value   = "ipv4.${var.wordpress_0_domain}"
+  proxied = true
+  type    = "CNAME"
+  ttl     = 1
+}
+
 # Amazon SES Settings
 resource "cloudflare_record" "aws_ses_cname1" {
   zone_id = lookup(data.cloudflare_zones.domain.zones[0], "id")
