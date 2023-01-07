@@ -36,7 +36,7 @@ spec:
     cacheCapacity: 5Gi
     volumeSnapshotClassName: csi-ceph-blockpool
     storageClassName: ceph-block
-    repository: wordpress-0-restic-secret
+    repository: wordpress-0-database-restic-secret
     retain:
       daily: 5
       weekly: 4
