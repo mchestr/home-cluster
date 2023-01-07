@@ -1,0 +1,83 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: wordpress-0
+  namespace: web
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: wordpress
+      version: 15.2.22
+      sourceRef:
+        kind: HelmRepository
+        name: bitnami-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    image:
+      tag: 6.1.1-debian-11-r15
+
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      hostname: &host ${SECRET_WORDPRESS_DOMAIN_0}
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-production
+        nginx.ingress.kubernetes.io/custom-http-errors: 500,502,503,504
+        external-dns.home.arpa/enabled: "true"
+      tls: true
+
+    persistence:
+      enabled: true
+      existingCLaim: wordpress-0-data-v1
+
+    mariadb:
+      enabled: true
+      primary:
+        persistence:
+          enabled: true
+          existingClaim: wordpress-0-database-v1
+    memcached:
+      enabled: true
+
+  valuesFrom:
+    - targetPath: mariadb.auth.rootPassword
+      kind: Secret
+      name: wordpress-0-secret
+      valuesKey: mariaDbRootPassword
+    - targetPath: mariadb.auth.password
+      kind: Secret
+      name: wordpress-0-secret
+      valuesKey: mariaDbPassword
+    - targetPath: wordpressUsername
+      kind: Secret
+      name: wordpress-0-secret
+      valuesKey: wordpressUsername
+    - targetPath: wordpressPassword
+      kind: Secret
+      name: wordpress-0-secret
+      valuesKey: wordpressPassword
+    - targetPath: wordpressEmail
+      kind: Secret
+      name: wordpress-0-secret
+      valuesKey: wordpressEmail
+    - targetPath: wordpressFirstName
+      kind: Secret
+      name: wordpress-0-secret
+      valuesKey: wordpressFirstName
+    - targetPath: wordpressLastName
+      kind: Secret
+      name: wordpress-0-secret
+      valuesKey: wordpressLastName
+    - targetPath: wordpressBlogName
+      kind: Secret
+      name: wordpress-0-secret
+      valuesKey: wordpressBlogName

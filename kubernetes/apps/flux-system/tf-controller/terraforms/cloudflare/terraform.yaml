@@ -1,50 +1,34 @@
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
-kind: HelmRelease
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
 metadata:
-  name: cloudform-terraform
+  name: terraform-cloudflare-oci
   namespace: flux-system
 spec:
-  interval: 15m
-  chart:
-    spec:
-      chart: raw
-      version: v0.3.1
-      sourceRef:
-        kind: HelmRepository
-        name: dysnix-charts
-        namespace: flux-system
-  install:
-    createNamespace: true
-    remediation:
-      retries: 5
-  upgrade:
-    remediation:
-      retries: 5
-  dependsOn:
-    - name: tf-controller
-      namespace: flux-system
-  values:
-    resources:
-      - apiVersion: infra.contrib.fluxcd.io/v1alpha1
-        kind: Terraform
-        metadata:
-          name: terraform-cloudflare
-          namespace: flux-system
-        spec:
-          approvePlan: auto
-          interval: 12h
-          path: ./terraform/cloudflare
-          sourceRef:
-            kind: OCIRepository
-            name: terraform-cloudflare-oci
-            namespace: flux-system
-          backendConfig:
-            disable: true
-          cliConfigSecretRef:
-            name: tfe-cli-config
-          varsFrom:
-            - kind: Secret
-              name: terraform-cloudflare-vars
-          writeOutputsToSecret:
-            name: terraform-cloudflare-outputs
+  interval: 1m
+  url: oci://ghcr.io/mchestr/terraform-cloudflare-oci
+  ref:
+    tag: main
+---
+apiVersion: infra.contrib.fluxcd.io/v1alpha1
+kind: Terraform
+metadata:
+  name: terraform-cloudflare
+  namespace: flux-system
+spec:
+  approvePlan: auto
+  interval: 12h
+  path: ./
+  sourceRef:
+    kind: OCIRepository
+    name: terraform-cloudflare-oci
+    namespace: flux-system
+  backendConfig:
+    disable: true
+  cliConfigSecretRef:
+    name: tfe-cli-config
+  varsFrom:
+    - kind: Secret
+      name: terraform-cloudflare-vars
+  writeOutputsToSecret:
+    name: terraform-cloudflare-outputs
