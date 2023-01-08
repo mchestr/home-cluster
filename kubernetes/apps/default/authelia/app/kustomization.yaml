@@ -11,3 +11,6 @@ configMapGenerator:
       - config/configuration.yaml
 generatorOptions:
   disableNameSuffixHash: true
+  annotations:
+    # Disable or env-sub no worky for authelia config
+    kustomize.toolkit.fluxcd.io/substitute: disabled
