@@ -37,8 +37,9 @@ spec:
       repository: ghcr.io/authelia/authelia
       tag: master
 
+    args: ["--config", "/config/configuration.yml", "--config.experimental.filters", "expand-env"]
+
     env:
-      X_AUTHELIA_CONFIG_EXPERIMENTAL_FILTERS: expand-env,template
       AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ADDITIONAL_USERS_DN: ou=users
       AUTHELIA_AUTHENTICATION_BACKEND_LDAP_BASE_DN: dc=home,dc=arpa
       AUTHELIA_AUTHENTICATION_BACKEND_LDAP_DISPLAY_NAME_ATTRIBUTE: givenName
