@@ -11,7 +11,7 @@ static_lan_ips:
     mac_address: f4:92:bf:16:25:40
   ender:
     ip_address: 192.168.1.190
-    mac_address: 00:1e:06:42:f0:dc
+    mac_address: b8:27:eb:3e:05:1d
   k8s-0:
     ip_address: 192.168.1.200
     mac_address: 18:60:24:26:58:6d
