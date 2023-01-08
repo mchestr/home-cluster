@@ -8,6 +8,8 @@ metadata:
     substitution.flux.home.arpa/enabled: "true"
 spec:
   path: ./kubernetes/apps/kube-system/external-dns/app
+  dependsOn:
+    - name: cluster-apps-external-secrets-stores
   prune: true
   sourceRef:
     kind: GitRepository
