@@ -13,6 +13,7 @@ resources:
   - emberstack-charts.yaml
   - emqx-charts.yaml
   - external-dns-charts.yaml
+  - external-secrets-charts.yaml
   - grafana-charts.yaml
   - hajimari-charts.yaml
   - ingress-nginx-charts.yaml
