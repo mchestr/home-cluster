@@ -35,9 +35,10 @@ spec:
               name: *app
     image:
       repository: ghcr.io/authelia/authelia
-      tag: 4.37.5
+      tag: master
 
     env:
+      X_AUTHELIA_CONFIG_EXPERIMENTAL_FILTERS: expand-env,template
       AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ADDITIONAL_USERS_DN: ou=users
       AUTHELIA_AUTHENTICATION_BACKEND_LDAP_BASE_DN: dc=home,dc=arpa
       AUTHELIA_AUTHENTICATION_BACKEND_LDAP_DISPLAY_NAME_ATTRIBUTE: givenName
