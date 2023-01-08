@@ -1,5 +1,7 @@
 ---
+default_redirection_url: "https://auth.${CLUSTER_DOMAIN}"
 session:
+  domain: ${CLUSTER_DOMAIN}
   redis:
     high_availability:
       sentinel_name: redis-master
@@ -23,6 +25,10 @@ access_control:
     - domain:
         - grafana.${CLUSTER_DOMAIN}
       policy: bypass
+
+notifier:
+  smtp:
+    sender: "Authelia <authelia@${CLUSTER_DOMAIN}>"
 
 identity_providers:
   oidc:
