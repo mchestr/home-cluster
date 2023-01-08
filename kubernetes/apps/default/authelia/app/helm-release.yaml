@@ -32,7 +32,7 @@ spec:
         image: ghcr.io/onedr0p/postgres-initdb:14.6
         envFrom:
           - secretRef:
-              name: authelia-secret
+              name: *app
     image:
       repository: ghcr.io/authelia/authelia
       tag: 4.37.5
