@@ -21,7 +21,7 @@ access_control:
         - 192.168.0.0/16
   rules:
     - domain:
-        - grafana.${SECRET_CLUSTER_DOMAIN}
+        - grafana.${CLUSTER_DOMAIN}
       policy: bypass
 
 identity_providers:
@@ -46,7 +46,7 @@ identity_providers:
           - groups
           - email
         redirect_uris:
-          - https://grafana.${SECRET_CLUSTER_DOMAIN}/login/generic_oauth
+          - https://grafana.${CLUSTER_DOMAIN}/login/generic_oauth
         userinfo_signing_algorithm: none
       - id: immich
         description: Immich
@@ -59,7 +59,7 @@ identity_providers:
           - profile
           - email
         redirect_uris:
-          - https://photos.${SECRET_CLUSTER_DOMAIN}/auth/login
+          - https://photos.${CLUSTER_DOMAIN}/auth/login
           - app.immich:/
         userinfo_signing_algorithm: none
       - id: minio
@@ -74,5 +74,5 @@ identity_providers:
           - email
           - groups
         redirect_uris:
-          - https://minio.${SECRET_CLUSTER_DOMAIN}/oauth_callback
+          - https://minio.${CLUSTER_DOMAIN}/oauth_callback
         userinfo_signing_algorithm: none
