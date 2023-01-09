@@ -16,4 +16,4 @@ spec:
     storageClassName: ceph-block
     repository: jellyfin-restic-secret
     retain:
-      daily: 10
+      daily: 3
