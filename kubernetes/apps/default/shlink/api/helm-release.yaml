@@ -30,10 +30,20 @@ spec:
     image:
       repository: ghcr.io/shlinkio/shlink
       tag: 3.4.0
+
+    initContainers:
+      init-db:
+        image: ghcr.io/onedr0p/postgres-initdb:14.6
+        envFrom:
+          - secretRef:
+              name: *app
+
+    envFrom:
+      - secretRef:
+          name: *app
+
     env:
       DB_DRIVER: postgres
-      DB_HOST: postgres-rw.default.svc.cluster.local
-      DB_NAME: shlink
       DEFAULT_DOMAIN: &host "ln.${SECRET_CLUSTER_DOMAIN}"
       DISABLE_TRACKING_FROM: 10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
       ENABLE_PERIODIC_VISIT_LOCATE: "true"
@@ -46,9 +56,6 @@ spec:
         redis-node-1.redis-headless.default.svc.cluster.local:26379,
         redis-node-2.redis-headless.default.svc.cluster.local:26379
       TIMEZONE: ${TZ}
-    envFrom:
-      - secretRef:
-          name: shlink-api-secret
     service:
       main:
         ports:
