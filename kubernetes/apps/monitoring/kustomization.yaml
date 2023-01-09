@@ -7,7 +7,6 @@ resources:
   # Flux-Kustomizations
   - grafana/ks.yaml
   - kube-prometheus-stack/ks.yaml
-  - kubernetes-dashboard/ks.yaml
   - loki/ks.yaml
   - prometheus-nut-exporter/ks.yaml
   - snmp-exporter/ks.yaml
