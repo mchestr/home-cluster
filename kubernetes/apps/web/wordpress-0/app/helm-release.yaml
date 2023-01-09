@@ -65,33 +65,33 @@ spec:
   valuesFrom:
     - targetPath: mariadb.auth.rootPassword
       kind: Secret
-      name: wordpress-0-secret
+      name: *app
       valuesKey: mariaDbRootPassword
     - targetPath: mariadb.auth.password
       kind: Secret
-      name: wordpress-0-secret
+      name: *app
       valuesKey: mariaDbPassword
     - targetPath: wordpressUsername
       kind: Secret
-      name: wordpress-0-secret
+      name: *app
       valuesKey: wordpressUsername
     - targetPath: wordpressPassword
       kind: Secret
-      name: wordpress-0-secret
+      name: *app
       valuesKey: wordpressPassword
     - targetPath: wordpressEmail
       kind: Secret
-      name: wordpress-0-secret
+      name: *app
       valuesKey: wordpressEmail
     - targetPath: wordpressFirstName
       kind: Secret
-      name: wordpress-0-secret
+      name: *app
       valuesKey: wordpressFirstName
     - targetPath: wordpressLastName
       kind: Secret
-      name: wordpress-0-secret
+      name: *app
       valuesKey: wordpressLastName
     - targetPath: wordpressBlogName
       kind: Secret
-      name: wordpress-0-secret
+      name: *app
       valuesKey: wordpressBlogName
