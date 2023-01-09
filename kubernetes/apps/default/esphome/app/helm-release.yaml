@@ -23,6 +23,10 @@ spec:
     remediation:
       retries: 5
   values:
+    controller:
+      annotations:
+        reloader.stakater.com/auto: "true"
+
     image:
       repository: ghcr.io/esphome/esphome
       tag: 2022.12.3@sha256:177d219cd41d2af95abc3c0eddb6071602543bdb4716048902b16c62183fe054

@@ -26,6 +26,9 @@ spec:
       repository: grafana/grafana
       tag: 9.3.2
 
+    annotations:
+      reloader.stakater.com/auto: "true"
+
     replicas: 1
     rbac:
       pspEnabled: false

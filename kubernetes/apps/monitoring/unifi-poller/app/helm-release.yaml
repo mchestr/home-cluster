@@ -25,6 +25,10 @@ spec:
       remediateLastFailure: true
     cleanupOnFail: true
   values:
+    controller:
+      annotations:
+        reloader.stakater.com/auto: "true"
+
     image:
       repository: golift/unifi-poller
       tag: 2.1.3

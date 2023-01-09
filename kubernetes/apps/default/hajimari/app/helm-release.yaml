@@ -19,6 +19,9 @@ spec:
     controller:
       replicas: 3
       strategy: RollingUpdate
+      annotations:
+        reloader.stakater.com/auto: "true"
+
     image:
       repository: ghcr.io/toboshii/hajimari
       tag: v0.3.1
@@ -111,9 +114,6 @@ spec:
         tls:
           - hosts:
               - *host
-
-    podAnnotations:
-      configmap.reloader.stakater.com/reload: hajimari-settings
 
     persistence:
       data:
