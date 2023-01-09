@@ -29,6 +29,13 @@ spec:
     args:
       - ./start-server.sh
 
+    initContainers:
+      init-db:
+        image: ghcr.io/onedr0p/postgres-initdb:14.6
+        envFrom:
+          - secretRef:
+              name: immich
+
     envFrom:
       - secretRef:
           name: immich
