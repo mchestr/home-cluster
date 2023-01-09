@@ -11,6 +11,7 @@ spec:
     - name: cluster-apps-immich-redis-app
     - name: cluster-apps-cloudnative-pg-app
     - name: cluster-apps-volsync-app
+    - name: cluster-apps-external-secrets-stores
   path: ./kubernetes/apps/default/immich/app
   prune: true
   sourceRef:

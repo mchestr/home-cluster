@@ -10,6 +10,7 @@ spec:
   dependsOn:
     - name: cluster-apps-cloudnative-pg-app
     - name: cluster-apps-redis-app
+    - name: cluster-apps-external-secrets-stores
   path: ./kubernetes/apps/default/shlink/api
   prune: true
   sourceRef:
