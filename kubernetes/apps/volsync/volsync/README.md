@@ -29,5 +29,5 @@ This requires installing the Backblaze `b2` CLI tool
 4. Create the bucket username and password
     ```sh
     b2 create-key --bucket "${B2_BUCKET_NAME}" "${B2_BUCKET_NAME}" \
-      deleteFiles,listBuckets,listFiles,readBuckets,readFiles,readBucketEncryption,readFileLegalHolds,readFileRetentions,readBucketReplications,readBucketRetentions,writeFiles,writeFileRetentions
+      deleteFiles,listAllBucketNames,listBuckets,listFiles,readBucketEncryption,readBucketReplications,readBuckets,readFiles,shareFiles,writeBucketEncryption,writeBucketReplications,writeFiles
     ```
