@@ -36,6 +36,5 @@ resources:
   - theme-park/ks.yaml
   - unifi/ks.yaml
   - unpackerr/ks.yaml
-  - vaultwarden/ks.yaml
   - zigbee2mqtt/ks.yaml
   - zwave-js-ui/ks.yaml
