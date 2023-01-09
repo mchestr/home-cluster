@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: radicale
+  name: &app radicale
   namespace: default
 spec:
   interval: 30m
@@ -64,7 +64,7 @@ spec:
       auth:
         enabled: true
         type: secret
-        name: radicale-auth
+        name: *app
         subPath: users
         mountPath: /config/users
         readOnly: true
