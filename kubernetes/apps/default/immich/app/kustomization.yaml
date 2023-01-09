@@ -6,4 +6,4 @@ resources:
   - server
   - web
   - config-map.yaml
-  - secret.sops.yaml
+  - external-secret.yaml
