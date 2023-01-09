@@ -25,6 +25,8 @@ metadata:
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
+  dependsOn:
+    - name: cluster-apps-external-secrets-stores
   path: ./kubernetes/apps/flux-system/addons/notifications
   prune: true
   sourceRef:
@@ -43,6 +45,8 @@ metadata:
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
+  dependsOn:
+    - name: cluster-apps-external-secrets-stores
   path: ./kubernetes/apps/flux-system/addons/webhooks
   prune: true
   sourceRef:

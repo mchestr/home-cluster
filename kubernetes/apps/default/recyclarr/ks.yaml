@@ -11,6 +11,7 @@ spec:
     - name: cluster-apps-radarr-app
     - name: cluster-apps-radarr-4k-app
     - name: cluster-apps-sonarr-app
+    - name: cluster-apps-external-secrets-stores
   path: ./kubernetes/apps/default/recyclarr/app
   prune: true
   sourceRef:
