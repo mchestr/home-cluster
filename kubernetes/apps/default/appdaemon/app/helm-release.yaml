@@ -22,6 +22,10 @@ spec:
     remediation:
       retries: 5
   values:
+    controller:
+      annotations:
+        secret.reloader.stakater.com/reload: "appdaemon-secret,appdaemon-deploykey"
+
     image:
       repository: acockburn/appdaemon
       tag: 4.2.1
@@ -64,7 +68,7 @@ spec:
       secrets:
         enabled: true
         type: secret
-        name: *app
+        name: appdaemon-secret
         mountPath: /conf/secrets.yaml
         subPath: secrets.yaml
 
