@@ -10,6 +10,7 @@ spec:
   dependsOn:
     - name: cluster-apps-volsync-app
     - name: cluster-apps-home-assistant-app
+    - name: cluster-apps-external-secrets-stores
   path: ./kubernetes/apps/default/esphome/app
   prune: true
   sourceRef:
