@@ -4,6 +4,6 @@ kind: Kustomization
 resources:
   - config-map.yaml
   - datasource.yaml
+  - external-secret.yaml
   - helm-release.yaml
   - prometheus-rule.yaml
-  - secret.sops.yaml
