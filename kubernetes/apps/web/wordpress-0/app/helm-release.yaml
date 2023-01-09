@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: wordpress-0
+  name: &app wordpress-0
   namespace: web
 spec:
   interval: 15m
