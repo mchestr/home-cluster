@@ -4,9 +4,9 @@ kind: Kustomization
 namespace: default
 resources:
   - backups
+  - external-secret.yaml
   - helm-release.yaml
   - pvc.yaml
-  - secret.sops.yaml
 configMapGenerator:
   - name: radarr-pushover
     files:

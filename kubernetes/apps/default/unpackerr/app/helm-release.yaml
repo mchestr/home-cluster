@@ -32,6 +32,8 @@ spec:
       UN_SONARR_0_PATHS_0: /complete
       UN_RADARR_0_URL: http://radarr:7878
       UN_RADARR_0_PATHS_0: /complete
+      UN_RADARR_1_URL: http://radarr-4k:7878
+      UN_RADARR_1_PATHS_0: /complete
 
     envFrom:
       - secretRef:

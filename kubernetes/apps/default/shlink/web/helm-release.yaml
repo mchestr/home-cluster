@@ -38,7 +38,7 @@ spec:
       SHLINK_SERVER_URL: https://ln.${SECRET_CLUSTER_DOMAIN}
     envFrom:
       - secretRef:
-          name: shlink-web-secret
+          name: *app
     service:
       main:
         ports:
