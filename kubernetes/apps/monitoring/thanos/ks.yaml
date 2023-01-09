@@ -9,6 +9,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-kube-prometheus-stack-app
+    - name: cluster-apps-external-secrets-stores
   path: ./kubernetes/apps/monitoring/thanos/app
   prune: true
   sourceRef:

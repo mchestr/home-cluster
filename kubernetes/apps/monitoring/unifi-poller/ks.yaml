@@ -7,6 +7,9 @@ metadata:
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
+  dependsOn:
+    - name: cluster-apps-external-secrets-stores
+    - name: cluster-apps-unifi-app
   path: ./kubernetes/apps/monitoring/unifi-poller/app
   prune: true
   sourceRef:

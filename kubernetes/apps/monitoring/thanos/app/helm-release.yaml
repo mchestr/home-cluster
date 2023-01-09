@@ -74,10 +74,10 @@ spec:
         enabled: true
   valuesFrom:
     - kind: Secret
-      name: thanos-secrets
+      name: *app
       valuesKey: secret-key
       targetPath: objstoreConfig.config.secret_key
     - kind: Secret
-      name: thanos-secrets
+      name: *app
       valuesKey: access-key
       targetPath: objstoreConfig.config.access_key
