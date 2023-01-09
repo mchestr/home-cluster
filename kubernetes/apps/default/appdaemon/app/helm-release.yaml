@@ -22,6 +22,10 @@ spec:
     remediation:
       retries: 5
   values:
+    controller:
+      annotations:
+        reloader.stakater.com/auto: "true"
+
     image:
       repository: acockburn/appdaemon
       tag: 4.2.1

@@ -65,6 +65,9 @@ spec:
     metrics:
       enabled: false
 
+    podAnnotations:
+      reloader.stakater.com/auto: "true"
+
   valuesFrom:
     - targetPath: emqxConfig.EMQX_DASHBOARD__DEFAULT_PASSWORD
       kind: Secret
