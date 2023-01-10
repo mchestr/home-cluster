@@ -72,8 +72,6 @@ spec:
       ingress:
         enabled: true
         ingressClassName: nginx
-        annotations:
-          hajimari.io/enable: "false"
         hostname: &host thanos-compactor.${SECRET_CLUSTER_DOMAIN}
         tls: true
         extraTls:
@@ -84,8 +82,6 @@ spec:
       ingress:
         enabled: true
         ingressClassName: nginx
-        annotations:
-          hajimari.io/enable: "false"
         hostname: &host thanos-storegateway.${SECRET_CLUSTER_DOMAIN}
         tls: true
         extraTls:
@@ -111,8 +107,6 @@ spec:
       ingress:
         enabled: true
         ingressClassName: nginx
-        annotations:
-          hajimari.io/enable: "false"
         hostname: &host thanos-ruler.${SECRET_CLUSTER_DOMAIN}
         tls: true
         extraTls:
