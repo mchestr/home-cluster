@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: vector-aggregator
+  name: &app vector-aggregator
   namespace: monitoring
 spec:
   values:
@@ -18,7 +18,7 @@ spec:
             value: "true"
         envFrom:
           - secretRef:
-              name: vector-aggregator-secret
+              name: *app
         volumeMounts:
           - name: geoip
             mountPath: /usr/share/GeoIP
