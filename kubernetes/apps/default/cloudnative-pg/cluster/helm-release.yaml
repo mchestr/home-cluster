@@ -12,7 +12,6 @@ spec:
   storage:
     size: 8Gi
     storageClass: ceph-block
-
   superuserSecret:
     name: cloudnative-pg
 
