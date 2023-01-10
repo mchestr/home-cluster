@@ -61,5 +61,5 @@ spec:
         mountPath: /usr/src/app/upload
 
     podSecurityContext:
-      fsGroup: ${FS_GROUP}
+      fsGroup: ${RUN_AS_GROUP}
       fsGroupChangePolicy: OnRootMismatch

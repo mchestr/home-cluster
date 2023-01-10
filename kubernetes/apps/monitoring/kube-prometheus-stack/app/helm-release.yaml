@@ -210,19 +210,6 @@ spec:
             name: thanos-objstore-secret
             key: objstore.yml
         additionalScrapeConfigs:
-          # - job_name: node-exporter-https
-          #   scrape_interval: 1m
-          #   scrape_timeout: 10s
-          #   honor_timestamps: true
-          #   scheme: https
-          #   static_configs:
-          #     - targets:
-          #         - ender.${SECRET_CLUSTER_DOMAIN}
-          #       labels:
-          #         job: node-exporter
-          #   relabel_configs:
-          #     - target_label: job
-          #       replacement: node-exporter
           - job_name: node-exporter-http
             scrape_interval: 1m
             scrape_timeout: 10s
@@ -233,17 +220,6 @@ spec:
             relabel_configs:
               - target_label: job
                 replacement: node-exporter
-
-          # - job_name: octoprint
-          #   scrape_interval: 1m
-          #   scrape_timeout: 10s
-          #   scheme: https
-          #   metrics_path: "/plugin/prometheus_exporter/metrics"
-          #   params:
-          #     apikey: ["${ENDER_OCTOPRINT_API_KEY}"]
-          #   static_configs:
-          #     - targets:
-          #         - ender.${SECRET_CLUSTER_DOMAIN}
 
         affinity:
           nodeAffinity:
