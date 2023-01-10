@@ -9,7 +9,6 @@ metadata:
 spec:
   instances: 3
   primaryUpdateStrategy: unsupervised
-
   storage:
     size: 8Gi
     storageClass: ceph-block
