@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: monitoring
 resources:
   - cron-job.yaml
-  - secret.sops.yaml
+  - external-secret.yaml
 configMapGenerator:
   - name: uptime-heartbeat
     files:
