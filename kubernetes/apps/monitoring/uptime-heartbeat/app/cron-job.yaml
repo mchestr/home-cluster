@@ -23,7 +23,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: *app
-              image: ghcr.io/onedr0p/alpine:3.17.0
+              image: ghcr.io/onedr0p/alpine:3.17.1
               envFrom:
                 - secretRef:
                     name: *app
