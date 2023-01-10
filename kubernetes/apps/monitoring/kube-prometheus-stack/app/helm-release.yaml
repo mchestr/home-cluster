@@ -160,11 +160,7 @@ spec:
     # Setting this option to 0 disabled CPU limits
     prometheusOperator:
       configReloaderCpu: 0
-      annotations:
-        reloader.stakater.com/auto: "true"
     prometheus:
-      annotations:
-        reloader.stakater.com/auto: "true"
       ingress:
         enabled: true
         pathType: Prefix
