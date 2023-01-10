@@ -100,7 +100,7 @@ spec:
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568
-      fsGroup: ${FS_GROUP}
+      fsGroup: ${RUN_AS_GROUP}
       fsGroupChangePolicy: OnRootMismatch
       supplementalGroups:
         - 44

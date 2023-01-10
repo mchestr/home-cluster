@@ -100,7 +100,7 @@ spec:
         mountPath: /usr/src/paperless/consume
 
     podSecurityContext:
-      fsGroup: ${FS_GROUP}
+      fsGroup: ${RUN_AS_GROUP}
       fsGroupChangePolicy: OnRootMismatch
 
     additionalContainers:
