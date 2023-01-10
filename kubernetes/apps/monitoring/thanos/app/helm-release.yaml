@@ -57,7 +57,10 @@ spec:
         enabled: true
         ingressClassName: nginx
         annotations:
-          hajimari.io/enable: "false"
+          auth.home.arpa/enabled: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:bucket
+          hajimari.io/group: thanos
         hostname: &host thanos-bucketweb.${SECRET_CLUSTER_DOMAIN}
         tls: true
         extraTls:
@@ -72,6 +75,11 @@ spec:
       ingress:
         enabled: true
         ingressClassName: nginx
+        annotations:
+          auth.home.arpa/enabled: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: material-symbols:compress
+          hajimari.io/group: thanos
         hostname: &host thanos-compactor.${SECRET_CLUSTER_DOMAIN}
         tls: true
         extraTls:
@@ -82,6 +90,11 @@ spec:
       ingress:
         enabled: true
         ingressClassName: nginx
+        annotations:
+          auth.home.arpa/enabled: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: grommet-icons:gateway
+          hajimari.io/group: thanos
         hostname: &host thanos-storegateway.${SECRET_CLUSTER_DOMAIN}
         tls: true
         extraTls:
@@ -92,26 +105,7 @@ spec:
         size: 10Gi
         storageClass: ceph-block
     ruler:
-      enabled: true
-      dnsDiscovery:
-        enabled: true
-      alertmanagers: ["http://kube-prometheus-stack-alertmanager.monitoring:9093"]
-      clusterName: home-ops
-      extraFlags: ["--web.prefix-header=X-Forwarded-Prefix"]
-      config: |-
-        groups:
-          - name: "PrometheusWatcher"
-            rules:
-              - alert: "PrometheusDown"
-                expr: absent(up{job="kube-prometheus-stack-prometheus"})
-      ingress:
-        enabled: true
-        ingressClassName: nginx
-        hostname: &host thanos-ruler.${SECRET_CLUSTER_DOMAIN}
-        tls: true
-        extraTls:
-          - hosts:
-              - *host
+      enabled: false
     metrics:
       enabled: true
       serviceMonitor:
