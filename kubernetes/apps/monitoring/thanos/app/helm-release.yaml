@@ -61,6 +61,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:bucket
           hajimari.io/group: thanos
+          hajimari.io/appName: Bucket Web
         hostname: &host thanos-bucketweb.${SECRET_CLUSTER_DOMAIN}
         tls: true
         extraTls:
@@ -80,6 +81,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: material-symbols:compress
           hajimari.io/group: thanos
+          hajimari.io/appName: Compactor
         hostname: &host thanos-compactor.${SECRET_CLUSTER_DOMAIN}
         tls: true
         extraTls:
@@ -95,6 +97,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: grommet-icons:gateway
           hajimari.io/group: thanos
+          hajimari.io/appName: Storage Gateway
         hostname: &host thanos-storegateway.${SECRET_CLUSTER_DOMAIN}
         tls: true
         extraTls:
