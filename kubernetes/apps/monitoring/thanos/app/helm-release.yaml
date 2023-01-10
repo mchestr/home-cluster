@@ -25,7 +25,7 @@ spec:
       type: s3
       config:
         bucket: thanos
-        endpoint: minio.networking:9000
+        endpoint: minio.networking.svc.cluster.local:9000
         insecure: true
     query:
       enabled: true
@@ -53,21 +53,71 @@ spec:
       enabled: false
     bucketweb:
       enabled: true
+      ingress:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          hajimari.io/enable: "false"
+        hostname: &host thanos-bucketweb.${SECRET_CLUSTER_DOMAIN}
+        tls: true
+        extraTls:
+          - hosts:
+              - *host
     compactor:
       enabled: true
-      retentionResolutionRaw: 30d
-      retentionResolution5m: 30d
+      extraFlags: ["--compact.concurrency", "4"]
+      retentionResolutionRaw: 7d
+      retentionResolution5m: 14d
       retentionResolution1h: 30d
-      persistence:
-        enabled: false
+      ingress:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          hajimari.io/enable: "false"
+        hostname: &host thanos-compactor.${SECRET_CLUSTER_DOMAIN}
+        tls: true
+        extraTls:
+          - hosts:
+              - *host
     storegateway:
       enabled: true
+      ingress:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          hajimari.io/enable: "false"
+        hostname: &host thanos-storegateway.${SECRET_CLUSTER_DOMAIN}
+        tls: true
+        extraTls:
+          - hosts:
+              - *host
       persistence:
         enabled: true
         size: 10Gi
         storageClass: ceph-block
     ruler:
-      enabled: false
+      enabled: true
+      dnsDiscovery:
+        enabled: true
+      alertmanagers: ["http://kube-prometheus-stack-alertmanager.monitoring:9093"]
+      clusterName: home-ops
+      extraFlags: ["--web.prefix-header=X-Forwarded-Prefix"]
+      config: |-
+        groups:
+          - name: "PrometheusWatcher"
+            rules:
+              - alert: "PrometheusDown"
+                expr: absent(up{job="kube-prometheus-stack-prometheus"})
+      ingress:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          hajimari.io/enable: "false"
+        hostname: &host thanos-ruler.${SECRET_CLUSTER_DOMAIN}
+        tls: true
+        extraTls:
+          - hosts:
+              - *host
     metrics:
       enabled: true
       serviceMonitor:
@@ -75,9 +125,9 @@ spec:
   valuesFrom:
     - kind: Secret
       name: *app
-      valuesKey: secret-key
+      valuesKey: S3_SECRET_KEY
       targetPath: objstoreConfig.config.secret_key
     - kind: Secret
       name: *app
-      valuesKey: access-key
+      valuesKey: S3_ACCESS_KEY
       targetPath: objstoreConfig.config.access_key
