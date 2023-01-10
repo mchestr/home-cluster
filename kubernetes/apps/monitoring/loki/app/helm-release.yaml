@@ -57,6 +57,8 @@ spec:
               s3: null
               insecure: true
               s3forcepathstyle: true
+              bucketnames: loki
+              endpoint: minio.networking.svc.cluster.local:9000
           ring:
             kvstore:
               store: memberlist
