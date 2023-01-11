@@ -31,6 +31,8 @@ spec:
     service:
       type: ClusterIP
 
+    existingSecret: *app
+
     ingress:
       enabled: true
       ingressClassName: nginx
@@ -87,10 +89,6 @@ spec:
       kind: Secret
       name: *app
       valuesKey: wordpress-username
-    - targetPath: wordpressPassword
-      kind: Secret
-      name: *app
-      valuesKey: wordpress-password
     - targetPath: wordpressEmail
       kind: Secret
       name: *app
