@@ -25,13 +25,10 @@ spec:
     image:
       tag: 6.1.1-debian-11-r15
 
-    replicaCount: 3
+    replicaCount: 1
 
     updateStrategy:
-      type: RollingUpdate
-      rollingUpdate:
-        maxSurge: 25%
-        maxUnavailable: 50%`
+      type: Recreate
 
     service:
       type: ClusterIP
@@ -61,7 +58,7 @@ spec:
 
     persistence:
       enabled: true
-      existingClaim: wordpress-0-data-v2
+      existingClaim: wordpress-0-data-v1
 
     mariadb:
       enabled: true
