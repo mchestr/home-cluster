@@ -78,32 +78,32 @@ spec:
     - targetPath: mariadb.auth.rootPassword
       kind: Secret
       name: *app
-      valuesKey: mariaDbRootPassword
+      valuesKey: mariadb-root-password
     - targetPath: mariadb.auth.password
       kind: Secret
       name: *app
-      valuesKey: mariaDbPassword
+      valuesKey: mariadb-password
     - targetPath: wordpressUsername
       kind: Secret
       name: *app
-      valuesKey: wordpressUsername
+      valuesKey: wordpress-username
     - targetPath: wordpressPassword
       kind: Secret
       name: *app
-      valuesKey: wordpressPassword
+      valuesKey: wordpress-password
     - targetPath: wordpressEmail
       kind: Secret
       name: *app
-      valuesKey: wordpressEmail
+      valuesKey: wordpress-email
     - targetPath: wordpressFirstName
       kind: Secret
       name: *app
-      valuesKey: wordpressFirstName
+      valuesKey: wordpress-first-name
     - targetPath: wordpressLastName
       kind: Secret
       name: *app
-      valuesKey: wordpressLastName
+      valuesKey: wordpress-last-name
     - targetPath: wordpressBlogName
       kind: Secret
       name: *app
-      valuesKey: wordpressBlogName
+      valuesKey: wordpress-blog-name
