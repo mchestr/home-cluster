@@ -21,6 +21,25 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: wordpress-0-data-v2
+  namespace: web
+  labels:
+    app.kubernetes.io/name: &name wordpress-0
+    app.kubernetes.io/instance: *name
+    snapshot.home.arpa/enabled: "true"
+spec:
+  accessModes:
+    - ReadWriteMany
+
+  resources:
+    requests:
+      storage: 8Gi
+
+  storageClassName: ceph-block
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: wordpress-0-database-v1
   namespace: web
   labels:
