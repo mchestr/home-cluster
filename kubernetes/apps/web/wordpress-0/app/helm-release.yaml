@@ -62,6 +62,7 @@ spec:
         persistence:
           enabled: true
           existingClaim: wordpress-0-database-v1
+
     memcached:
       enabled: true
 
