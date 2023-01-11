@@ -27,6 +27,7 @@ spec:
 
     updateStrategy:
       type: Recreate
+      rollingUpdate: {}
 
     service:
       type: ClusterIP
