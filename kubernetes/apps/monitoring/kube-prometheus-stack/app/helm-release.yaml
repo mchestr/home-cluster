@@ -160,6 +160,8 @@ spec:
     # Setting this option to 0 disabled CPU limits
     prometheusOperator:
       configReloaderCpu: 0
+      serviceMonitor:
+        sampleLimit: 0
     prometheus:
       ingress:
         enabled: true
