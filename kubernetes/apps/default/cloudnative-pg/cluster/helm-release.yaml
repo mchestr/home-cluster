@@ -23,9 +23,9 @@ spec:
       max_connections: "300"
       shared_buffers: 512MB
 
-  bootstrap:
-    recovery:
-      source: postgres-v3
+  # bootstrap:
+  #   recovery:
+  #     source: postgres-v3
 
   backup:
     retentionPolicy: 30d
@@ -44,18 +44,18 @@ spec:
           name: cloudnative-pg
           key: s3-secret-access-key
 
-  externalClusters:
-    - name: postgres-v3
-      barmanObjectStore:
-        wal:
-          compression: bzip2
-          maxParallel: 8
-        destinationPath: s3://${B2_BUCKET_POSTGRES_BACKUP}/
-        endpointURL: ${B2_BUCKET_POSTGRES_BACKUP_ENDPOINT}
-        s3Credentials:
-          accessKeyId:
-            name: cloudnative-pg
-            key: b2-access-key-id
-          secretAccessKey:
-            name: cloudnative-pg
-            key: b2-secret-access-key
+  # externalClusters:
+  #   - name: postgres-v1
+  #     barmanObjectStore:
+  #       wal:
+  #         compression: bzip2
+  #         maxParallel: 8
+  #       destinationPath: s3://postgresql/
+  #       endpointURL: http://minio.networking.svc.cluster.local:9000
+  #       s3Credentials:
+  #         accessKeyId:
+  #           name: cloudnative-pg
+  #           key: s3-access-key-id
+  #         secretAccessKey:
+  #           name: cloudnative-pg
+  #           key: s3-secret-access-key
