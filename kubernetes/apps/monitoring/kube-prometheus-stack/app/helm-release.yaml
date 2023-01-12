@@ -33,8 +33,8 @@ spec:
           - name: "null"
           - name: "pushover"
             pushover_configs:
-              - token: "${SECRET_PUSHOVER_ALERT_MANAGER_APIKEY}"
-                user_key: "${SECRET_PUSHOVER_USERKEY}"
+              - token: "{{ .Values.alertmanager.secrets.pushover_token }}"
+                user_key: "{{ .Values.alertmanager.secrets.pushover_user_key }}"
                 send_resolved: true
                 html: true
                 priority: |-
@@ -228,3 +228,13 @@ spec:
                       operator: In
                       values:
                         - k8s-2
+
+  valuesFrom:
+    - targetPath: alertmanager.secrets.pushover_user_key
+      kind: Secret
+      name: alertmanager-secret
+      valuesKey: pushover_user_key
+    - targetPath: alertmanager.secrets.pushover_token
+      kind: Secret
+      name: alertmanager-secret
+      valuesKey: pushover_token
