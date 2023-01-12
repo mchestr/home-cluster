@@ -25,6 +25,7 @@ spec:
   values:
     fullnameOverride: prometheus
     alertmanager:
+      tplConfig: true
       enabled: true
       config:
         global:
