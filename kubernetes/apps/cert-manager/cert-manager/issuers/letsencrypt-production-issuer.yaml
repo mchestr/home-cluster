@@ -12,7 +12,7 @@ spec:
     solvers:
       - dns01:
           cloudflare:
-            apiKeySecretRef:
+            apiTokenSecretRef:
               name: cloudflare-api-key
               key: api-key
         selector:
