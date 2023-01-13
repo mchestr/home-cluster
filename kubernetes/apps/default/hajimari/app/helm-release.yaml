@@ -111,6 +111,8 @@ spec:
       main:
         enabled: true
         ingressClassName: nginx
+        annotations:
+          hajimari.io/enable: "false"
         hosts:
           - host: &host "home.${SECRET_CLUSTER_DOMAIN}"
             paths:
