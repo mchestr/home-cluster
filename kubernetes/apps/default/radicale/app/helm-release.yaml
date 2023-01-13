@@ -39,6 +39,9 @@ spec:
           external-dns.home.arpa/enabled: "true"
           # doesn't seem to work without
           nginx.ingress.kubernetes.io/custom-http-errors: 500,502,503,504
+          hajimari.io/appName: Cal
+          hajimari.io/group: home
+          hajimari.io/icon: material-symbols:calendar-month
         hosts:
           - host: &host cal.${SECRET_CLUSTER_DOMAIN}
             paths:
