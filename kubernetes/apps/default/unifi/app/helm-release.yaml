@@ -82,7 +82,6 @@ spec:
         ingressClassName: nginx
         annotations:
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-          hajimari.io/enable: "true"
           hajimari.io/icon: mdi:wifi
           hajimari.io/group: system management
         hosts:

@@ -5,7 +5,6 @@ metadata:
   name: minio
   namespace: networking
   annotations:
-    hajimari.io/enable: "true"
     hajimari.io/icon: carbon:object-storage
     hajimari.io/group: storage, database, and messaging
 

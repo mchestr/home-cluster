@@ -44,7 +44,6 @@ spec:
         ingressClassName: nginx
         annotations:
           external-dns.home.arpa/enabled: "true"
-          hajimari.io/enable: "true"
           hajimari.io/icon: simple-icons:jellyfin
           hajimari.io/group: home
         hosts:

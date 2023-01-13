@@ -51,7 +51,6 @@ spec:
         cert-manager.io/cluster-issuer: letsencrypt-production
         nginx.ingress.kubernetes.io/custom-http-errors: 500,502,503,504
         external-dns.home.arpa/enabled: "true"
-        hajimari.io/enable: "true"
         hajimari.io/icon: mdi:wordpress
         hajimari.io/group: web
         hajimari.io/appName: ${SECRET_WORDPRESS_DOMAIN_0}

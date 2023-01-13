@@ -47,7 +47,6 @@ spec:
         ingressClassName: nginx
         annotations:
           auth.home.arpa/enabled: "true"
-          hajimari.io/enable: "true"
           hajimari.io/icon: simple-icons:esphome
           hajimari.io/group: automation
         hosts:
