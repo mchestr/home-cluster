@@ -21,6 +21,7 @@ spec:
       strategy: RollingUpdate
       annotations:
         reloader.stakater.com/auto: "true"
+        hajimari.io/enable: "false"
 
     image:
       repository: ghcr.io/toboshii/hajimari
@@ -42,7 +43,10 @@ spec:
       showBookmarkGroups: true
       title: Home
       namespaceSelector:
-        any: true
+        - default
+        - monitoring
+        - rook-ceph
+        - web
       globalBookmarks:
         - group: Home
           bookmarks:
