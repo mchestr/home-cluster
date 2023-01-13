@@ -34,7 +34,7 @@ spec:
       lightTheme: cloud
       darkTheme: chalk
       showGreeting: false
-      showSearch: false
+      showSearch: true
       showAppGroups: true
       showAppInfo: false
       showAppUrls: false
