@@ -67,18 +67,6 @@ spec:
           initialDelaySeconds: 15
       startup:
         enabled: false
-    ingress:
-      main:
-        enabled: true
-        ingressClassName: nginx
-        hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
-        tls:
-          - hosts:
-              - *host
     persistence:
       shared:
         enabled: true
