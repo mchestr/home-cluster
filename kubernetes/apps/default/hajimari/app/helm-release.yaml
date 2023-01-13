@@ -43,10 +43,11 @@ spec:
       showBookmarkGroups: true
       title: Home
       namespaceSelector:
-        - default
-        - monitoring
-        - rook-ceph
-        - web
+        matchNames:
+          - default
+          - monitoring
+          - rook-ceph
+          - web
       globalBookmarks:
         - group: Home
           bookmarks:
