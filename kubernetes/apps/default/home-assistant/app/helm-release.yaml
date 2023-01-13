@@ -54,7 +54,6 @@ spec:
         ingressClassName: nginx
         annotations:
           external-dns.home.arpa/enabled: "true"
-          hajimari.io/enable: "true"
           hajimari.io/icon: mdi:home-assistant
           hajimari.io/appName: Home Assistant
           hajimari.io/group: home
@@ -98,7 +97,6 @@ spec:
           ingressClassName: nginx
           annotations:
             auth.home.arpa/enabled: "true"
-            hajimari.io/enable: "true"
             hajimari.io/icon: cib:visual-studio-code
             hajimari.io/group: Automation Code
             hajimari.io/appName: Home Assistant

@@ -30,7 +30,7 @@ spec:
       TZ: ${TZ}
 
     hajimari:
-      defaultEnable: false
+      defaultEnable: true
       lightTheme: cloud
       darkTheme: chalk
       showGreeting: false

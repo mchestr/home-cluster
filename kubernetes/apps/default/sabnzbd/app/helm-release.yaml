@@ -61,7 +61,6 @@ spec:
             proxy_set_header Accept-Encoding "";
             sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_CLUSTER_DOMAIN}/css/base/sabnzbd/nord.css"></head>';
             sub_filter_once on;
-          hajimari.io/enable: "true"
           hajimari.io/icon: mdi:cloud-download
           hajimari.io/group: Download
         hosts:

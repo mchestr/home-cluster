@@ -42,7 +42,6 @@ spec:
         ingressClassName: nginx
         annotations:
           auth.home.arpa/enabled: "true"
-          hajimari.io/enable: "true"
           hajimari.io/icon: mdi:zigbee
           hajimari.io/group: automation
           hajimari.io/appName: zigbee

@@ -41,7 +41,6 @@ spec:
         ingressClassName: nginx
         annotations:
           auth.home.arpa/enabled: "true"
-          hajimari.io/enable: "true"
           hajimari.io/icon: fluent-mdl2:promoted-database
           hajimari.io/group: storage, database, and messaging
           hajimari.io/appName: thanos
@@ -58,7 +57,6 @@ spec:
         ingressClassName: nginx
         annotations:
           auth.home.arpa/enabled: "true"
-          hajimari.io/enable: "true"
           hajimari.io/icon: mdi:bucket
           hajimari.io/group: thanos
           hajimari.io/appName: Bucket Web
@@ -78,7 +76,6 @@ spec:
         ingressClassName: nginx
         annotations:
           auth.home.arpa/enabled: "true"
-          hajimari.io/enable: "true"
           hajimari.io/icon: material-symbols:compress
           hajimari.io/group: thanos
           hajimari.io/appName: Compactor
@@ -94,7 +91,6 @@ spec:
         ingressClassName: nginx
         annotations:
           auth.home.arpa/enabled: "true"
-          hajimari.io/enable: "true"
           hajimari.io/icon: grommet-icons:gateway
           hajimari.io/group: thanos
           hajimari.io/appName: Storage Gateway

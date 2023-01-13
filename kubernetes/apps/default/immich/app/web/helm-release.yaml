@@ -69,7 +69,6 @@ spec:
               - *host
         annotations:
           nginx.ingress.kubernetes.io/rewrite-target: /$1
-          hajimari.io/enable: "true"
           hajimari.io/icon: heroicons:photo
           hajimari.io/group: home
           hajimari.io/appName: Photos

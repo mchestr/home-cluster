@@ -66,7 +66,6 @@ spec:
         ingressClassName: nginx
         annotations:
           auth.home.arpa/enabled: "true"
-          hajimari.io/enable: "true"
           hajimari.io/icon: file-outline
           hajimari.io/group: home
           hajimari.io/appName: Paperless

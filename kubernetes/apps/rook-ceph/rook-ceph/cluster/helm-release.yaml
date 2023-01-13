@@ -116,7 +116,6 @@ spec:
         ingressClassName: nginx
         annotations:
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-          hajimari.io/enable: "true"
           hajimari.io/icon: mdi:chess-rook
           hajimari.io/appName: Rook Ceph
           hajimari.io/group: storage, database, and messaging
