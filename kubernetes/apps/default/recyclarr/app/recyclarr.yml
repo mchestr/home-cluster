@@ -119,8 +119,6 @@ radarr:
           - 957d0f44b592285f26449575e8b1167e # Special Edition
           - eecf3a857724171f968a66cb5719e152 # IMAX
           - 9f6cbff8cfe4ebbc1bde14c7b7bec0de # IMAX Enhanced
-          - 403f3f6266b90439cacc1e07cae4dc2d # HQ-Remux
-          - 26fa26253af4001701fedb56cec376dc # HQ-Webdl
           - e7718d7a3ce595f289bfee26adc178f5 # Repack
           - ed38b889b31be83fda192888e2286d83 # BR-DISK -10000
           - 90cedc1fea7ea5d11298bebd3d1d3223 # EVO (no WEBDL) -1000
@@ -136,15 +134,6 @@ radarr:
             reset_unmatched_scores: true
           - name: SD
             reset_unmatched_scores: true
-      - trash_ids:
-          - 1c7d7b04b15cc53ea61204bebbcc1ee2 # HQ
-        quality_profiles:
-          - name: Any
-            score: 0
-          - name: HD
-            score: 0
-          - name: SD
-            score: 0
       - trash_ids:
           - 4b900e171accbfb172729b63323ea8ca # Optional: Multi
           - 923b6abef9b17f937fab56cfcf89e1f1 # Optional: DV (WEBDL) without fallback to HDR, set to manual score 0 or -10000
@@ -201,8 +190,6 @@ radarr:
           - 957d0f44b592285f26449575e8b1167e # Special Edition
           - eecf3a857724171f968a66cb5719e152 # IMAX
           - 9f6cbff8cfe4ebbc1bde14c7b7bec0de # IMAX Enhanced
-          - 403f3f6266b90439cacc1e07cae4dc2d # HQ-Remux
-          - 26fa26253af4001701fedb56cec376dc # HQ-Webdl
           - e7718d7a3ce595f289bfee26adc178f5 # Repack
           - ed38b889b31be83fda192888e2286d83 # BR-DISK -10000
           - 90cedc1fea7ea5d11298bebd3d1d3223 # EVO (no WEBDL) -1000
@@ -214,11 +201,6 @@ radarr:
         quality_profiles:
           - name: UHD
             reset_unmatched_scores: true
-      - trash_ids:
-          - 1c7d7b04b15cc53ea61204bebbcc1ee2 # HQ
-        quality_profiles:
-          - name: UHD
-            score: 0
       - trash_ids:
           - 4b900e171accbfb172729b63323ea8ca # Optional: Multi
           - 923b6abef9b17f937fab56cfcf89e1f1 # Optional: DV (WEBDL) without fallback to HDR, set to manual score 0 or -10000
