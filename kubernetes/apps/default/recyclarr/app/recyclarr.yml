@@ -12,7 +12,8 @@ sonarr:
   standard:
     base_url: http://sonarr.default.svc.cluster.local:8989
     api_key: ${SONARR_APIKEY}
-    quality_definition: hybrid
+    quality_definition:
+      type: series
     delete_old_custom_formats: true
     custom_formats:
       - trash_ids:
