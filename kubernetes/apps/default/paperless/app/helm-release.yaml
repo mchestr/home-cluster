@@ -83,9 +83,9 @@ spec:
         enabled: true
         existingClaim: paperless-config-v1
         subPath:
-          - path: paperless/data
+          - path: data
             mountPath: /usr/src/paperless/data
-          - path: paperless/media
+          - path: media
             mountPath: /usr/src/paperless/media
 
     podSecurityContext:
