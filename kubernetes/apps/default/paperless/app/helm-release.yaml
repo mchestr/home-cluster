@@ -81,22 +81,12 @@ spec:
     persistence:
       data:
         enabled: true
-        type: nfs
-        server: ${NAS_ADDR}
-        path: /volume1/shared/code/paperless/data
-        mountPath: /usr/src/paperless/data
-      media:
-        enabled: true
-        type: nfs
-        server: ${NAS_ADDR}
-        path: /volume1/shared/code/paperless/media
-        mountPath: /usr/src/paperless/media
-      consume:
-        enabled: true
-        type: nfs
-        server: ${NAS_ADDR}
-        path: /volume1/shared/syncthing/Sync/consume
-        mountPath: /usr/src/paperless/consume
+        existingClaim: paperless-config-v1
+        subPath:
+          - path: paperless/data
+            mountPath: /usr/src/paperless/data
+          - path: paperless/media
+            mountPath: /usr/src/paperless/media
 
     podSecurityContext:
       fsGroup: ${RUN_AS_GROUP}
