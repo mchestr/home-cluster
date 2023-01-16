@@ -29,10 +29,41 @@ tasks:
       - talhelper genconfig
 
   apply:
-    desc: Apply Talos config to a specific node (task talos:apply NODE=0)
+    desc: Apply Talos config to a specific node (task talos:apply N=0)
     dir: talos
     cmds:
       - talosctl apply-config --nodes {{.NODE}} --file clusterconfig/home-cluster-k8s-{{.N}}.yaml {{.CLI_ARGS}}
+
+  upgrade:
+    desc: Upgrade Talos OS to latest
+    dir: talos
+    cmds:
+      # Upgrade control-plane then workers, ensure rook-ceph cluster is healthy before each upgrade.
+      # First generate the latest config, then stage it before upgrade so it gets applied.
+      - task: generate
+      - kubectl -n rook-ceph wait --for jsonpath='{.status.ceph.health}'='HEALTH_OK' --timeout 10m cephcluster rook-ceph
+
+      # k8s-0 (cp)
+      - talosctl apply-config --nodes 192.168.1.200 --file clusterconfig/home-cluster-k8s-0.yaml -m staged
+      - talosctl upgrade --nodes 192.168.1.200 --image ghcr.io/siderolabs/installer:{{ .TALOS_VERSION }}
+      - kubectl -n rook-ceph wait --for jsonpath='{.status.ceph.health}'='HEALTH_OK' --timeout 10m cephcluster rook-ceph
+
+      # k8s-1 (cp)
+      - talosctl apply-config --nodes 192.168.1.201 --file clusterconfig/home-cluster-k8s-1.yaml -m staged
+      - talosctl upgrade --nodes 192.168.1.201 --image ghcr.io/siderolabs/installer:{{ .TALOS_VERSION }}
+      - kubectl -n rook-ceph wait --for jsonpath='{.status.ceph.health}'='HEALTH_OK' --timeout 10m cephcluster rook-ceph
+
+      # k8s-3 (cp)
+      - talosctl apply-config --nodes 192.168.1.203 --file clusterconfig/home-cluster-k8s-3.yaml -m staged
+      - talosctl upgrade --nodes 192.168.1.203 --image ghcr.io/siderolabs/installer:{{ .TALOS_VERSION }}
+      - kubectl -n rook-ceph wait --for jsonpath='{.status.ceph.health}'='HEALTH_OK' --timeout 10m cephcluster rook-ceph
+
+      # k8s-2 (worker)
+      - talosctl apply-config --nodes 192.168.1.202 --file clusterconfig/home-cluster-k8s-2.yaml -m staged
+      - talosctl upgrade --nodes 192.168.1.202 --image ghcr.io/siderolabs/installer:{{ .TALOS_VERSION }}
+
+      # Finally, wait for ceph cluster to be OK
+      - kubectl -n rook-ceph wait --for jsonpath='{.status.ceph.health}'='HEALTH_OK' --timeout 10m cephcluster rook-ceph
 
   memory:
     desc: Get all nodes memory
