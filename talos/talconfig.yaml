@@ -92,12 +92,12 @@ controlPlane:
           - time.cloudflare.com
       files:
         - content: |
-            [plugins."io.containerd.grpc.v1.cri"]
-              enable_unprivileged_ports = true
-              enable_unprivileged_icmp = true
+            [plugins]
+              [plugins."io.containerd.grpc.v1.cri"]
+                enable_unprivileged_ports = true
+                enable_unprivileged_icmp = true
+          path: /etc/cri/conf.d/20-customization.part
           op: create
-          permissions: 0o666
-          path: /etc/cri/conf.d/allow-unpriv-ports.toml
         - path: /var/etc/nut/upsmon.conf
           permissions: 0o666
           op: create
@@ -145,12 +145,12 @@ worker:
         fs.inotify.max_user_instances: "8192"
       files:
         - content: |
-            [plugins."io.containerd.grpc.v1.cri"]
-              enable_unprivileged_ports = true
-              enable_unprivileged_icmp = true
+            [plugins]
+              [plugins."io.containerd.grpc.v1.cri"]
+                enable_unprivileged_ports = true
+                enable_unprivileged_icmp = true
+          path: /etc/cri/conf.d/20-customization.part
           op: create
-          permissions: 0o666
-          path: /etc/cri/conf.d/allow-unpriv-ports.toml
         - path: /var/etc/nut/upsmon.conf
           permissions: 0o666
           op: create
