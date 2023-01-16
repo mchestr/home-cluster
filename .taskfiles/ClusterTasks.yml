@@ -35,7 +35,7 @@ tasks:
 
   volume:
     desc: |-
-      Create a container for debugging a PVC (ex. task PVC=plex-config-v1 debug:volume)
+      Create a container for debugging a PVC (ex. task PVC=plex-config-v1 cluster:volume)
     interactive: true
     cmds:
       - |
@@ -69,8 +69,8 @@ tasks:
                 {
                   "name": "nas",
                   "nfs": {
-                    "server": '{{.NAS_ADDR | default "lochnas.local"}}',
-                    "path": '{{.NAS_ADDR | default "/volume1"}}'
+                    "server": "{{.NAS_ADDR | default "192.168.1.128"}}",
+                    "path": "{{.NAS_PATH | default "/volume1"}}"
                   }
                 },
                 {
