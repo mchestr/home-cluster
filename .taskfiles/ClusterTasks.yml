@@ -55,6 +55,10 @@ tasks:
                   "tty": true,
                   "volumeMounts": [
                     {
+                      "name": "nas",
+                      "mountPath": "/data/nas"
+                    },
+                    {
                       "name": "config",
                       "mountPath": "/data/config"
                     }
@@ -62,6 +66,13 @@ tasks:
                 }
               ],
               "volumes": [
+                {
+                  "name": "nas",
+                  "nfs": {
+                    "server": '{{.NAS_ADDR | default "lochnas.local"}}',
+                    "path": '{{.NAS_ADDR | default "/volume1"}}'
+                  }
+                },
                 {
                   "name": "config",
                   "persistentVolumeClaim": {
