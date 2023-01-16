@@ -35,7 +35,7 @@ spec:
 
     envFrom:
       - secretRef:
-          name: unifi-poller-secrets
+          name: *app
 
     env:
       TZ: ${TZ}
