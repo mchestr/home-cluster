@@ -28,7 +28,7 @@ spec:
 
     image:
       repository: ghcr.io/onedr0p/prowlarr-nightly
-      tag: 1.1.0.2322@sha256:84f88ddb9f88ba3ae6239566433cc0af89cd179e747d46f0b83121b29c59d0b0
+      tag: 1.1.0.2325@sha256:269fc13918f7f3d5405fe3c8b09e2a1a200181ab5e47272ccc5accd36fc68ab2
 
     ingress:
       main:
