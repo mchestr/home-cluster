@@ -103,9 +103,9 @@ spec:
               url: https://dns.${SECRET_CLUSTER_DOMAIN}
         - group: home
           apps:
-            - name: Ender
+            - name: Mainsail
               icon: mdi:printer-3d-nozzle
-              url: https://ender.${SECRET_CLUSTER_DOMAIN}
+              url: https://mainsail.${SECRET_CLUSTER_DOMAIN}
 
     ingress:
       main:
