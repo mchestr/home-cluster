@@ -105,7 +105,7 @@ spec:
           apps:
             - name: Mainsail
               icon: mdi:printer-3d-nozzle
-              url: https://mainsail.${SECRET_CLUSTER_DOMAIN}
+              url: http://mainsail.local
 
     ingress:
       main:
