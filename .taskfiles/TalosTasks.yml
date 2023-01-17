@@ -35,35 +35,28 @@ tasks:
       - talosctl apply-config --nodes {{.NODE}} --file clusterconfig/home-cluster-k8s-{{.N}}.yaml {{.CLI_ARGS}}
 
   upgrade:
+    desc: Stage the latest updates for the node (task talos:upgrade N=0), then do the upgrade.
+    cmds:
+      - task: generate
+      - task: _wait_for_health
+        vars: {TIMEOUT: 10m}
+      - task: apply
+        vars: {CLI_ARGS: '-m staged'}
+      - talosctl upgrade --nodes {{ .NODE }} --image ghcr.io/siderolabs/installer:{{ .TALOS_VERSION }}
+
+  upgrade:all:
     desc: Upgrade Talos OS to latest
     dir: talos
     cmds:
-      # Upgrade control-plane then workers, ensure rook-ceph cluster is healthy before each upgrade.
-      # First generate the latest config, then stage it before upgrade so it gets applied.
-      - task: generate
-      - kubectl -n rook-ceph wait --for jsonpath='{.status.ceph.health}'='HEALTH_OK' --timeout 10m cephcluster rook-ceph
-
-      # k8s-0 (cp)
-      - talosctl apply-config --nodes 192.168.1.200 --file clusterconfig/home-cluster-k8s-0.yaml -m staged
-      - talosctl upgrade --nodes 192.168.1.200 --image ghcr.io/siderolabs/installer:{{ .TALOS_VERSION }}
-      - kubectl -n rook-ceph wait --for jsonpath='{.status.ceph.health}'='HEALTH_OK' --timeout 10m cephcluster rook-ceph
-
-      # k8s-1 (cp)
-      - talosctl apply-config --nodes 192.168.1.201 --file clusterconfig/home-cluster-k8s-1.yaml -m staged
-      - talosctl upgrade --nodes 192.168.1.201 --image ghcr.io/siderolabs/installer:{{ .TALOS_VERSION }}
-      - kubectl -n rook-ceph wait --for jsonpath='{.status.ceph.health}'='HEALTH_OK' --timeout 10m cephcluster rook-ceph
-
-      # k8s-3 (cp)
-      - talosctl apply-config --nodes 192.168.1.203 --file clusterconfig/home-cluster-k8s-3.yaml -m staged
-      - talosctl upgrade --nodes 192.168.1.203 --image ghcr.io/siderolabs/installer:{{ .TALOS_VERSION }}
-      - kubectl -n rook-ceph wait --for jsonpath='{.status.ceph.health}'='HEALTH_OK' --timeout 10m cephcluster rook-ceph
-
-      # k8s-2 (worker)
-      - talosctl apply-config --nodes 192.168.1.202 --file clusterconfig/home-cluster-k8s-2.yaml -m staged
-      - talosctl upgrade --nodes 192.168.1.202 --image ghcr.io/siderolabs/installer:{{ .TALOS_VERSION }}
-
-      # Finally, wait for ceph cluster to be OK
-      - kubectl -n rook-ceph wait --for jsonpath='{.status.ceph.health}'='HEALTH_OK' --timeout 10m cephcluster rook-ceph
+      # Upgrade control-plane then workers, ensure cluster is healthy before each upgrade.
+      - task: upgrade
+        vars: {N: 0}
+      - task: upgrade
+        vars: {N: 1}
+      - task: upgrade
+        vars: {N: 3}
+      - task: upgrade
+        vars: {N: 2}
 
   memory:
     desc: Get all nodes memory
@@ -100,3 +93,11 @@ tasks:
     dir: talos
     cmds:
       - talosctl --nodes {{.NODE}} dashboard {{.CLI_ARGS}}
+
+  _wait_for_health:
+    desc: Wait for services in cluster to be healthy
+    cmds:
+      # Ensure CephCluster is healthy
+      - kubectl -n rook-ceph wait --for jsonpath='{.status.ceph.health}'='HEALTH_OK' --timeout {{ .TIMEOUT | default "30s" }} cephcluster rook-ceph
+      # Ensure CloudNative-PG cluster has 3 ready instances
+      - kubectl wait for --jsonpath='{.status.readyInstances}'='3' --timeout {{ .TIMEOUT | default "30s" }} cluster postgres
