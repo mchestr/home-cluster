@@ -3,15 +3,12 @@ static_lan_ips:
   LochNas:
     ip_address: 192.168.1.128
     mac_address: 90:09:d0:03:83:ad
-  OctoPrint:
-    ip_address: 192.168.1.105
-    mac_address: 00:1e:06:39:b3:13
   WiFi-AP:
     ip_address: 192.168.1.174
     mac_address: f4:92:bf:16:25:40
-  ender:
+  mainsail:
     ip_address: 192.168.1.190
-    mac_address: b8:27:eb:3e:05:1d
+    mac_address: 00:1e:06:39:b3:13
   k8s-0:
     ip_address: 192.168.1.200
     mac_address: 18:60:24:26:58:6d

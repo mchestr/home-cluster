@@ -46,11 +46,11 @@
     lines:
       - "{{ prefix }} options address=/lochnas.{{ cluster_domain }}/{{ item.value.ip_address }}"
 
-- name: Configure octoprint ender Forwarding
+- name: Configure Mainsail Forwarding
   vars:
     prefix: set service dns forwarding
   loop: "{{ lookup('ansible.builtin.dict', static_lan_ips) }}"
-  when: "'ender' in item.key"
+  when: "'mainsail' in item.key"
   community.network.edgeos_config:
     lines:
-      - "{{ prefix }} options address=/ender.{{ cluster_domain }}/{{ item.value.ip_address }}"
+      - "{{ prefix }} options address=/mainsail.{{ cluster_domain }}/{{ item.value.ip_address }}"
