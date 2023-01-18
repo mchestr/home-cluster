@@ -36,7 +36,7 @@ spec:
     image:
       repository: ghcr.io/authelia/authelia
       # TODO use tag when one available with https://github.com/authelia/authelia/pull/4515
-      tag: master@sha256:54bc54979455eea9c53ad2e05695854c84d6e743c1b3c2029782578991ce5e8a
+      tag: master@sha256:8bb1911635eaa8b2fbb57614eba0a78ed2f611614aff5ff2a29d4b360dbd74ba
 
     args: ["--config", "/config/configuration.yml", "--config.experimental.filters", "expand-env"]
 
