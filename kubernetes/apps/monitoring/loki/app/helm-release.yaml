@@ -152,14 +152,6 @@ spec:
       enabled: false
 
   valuesFrom:
-    - kind: Secret
-      name: *app
-      valuesKey: S3_BUCKET_NAME
-      targetPath: loki.structuredConfig.common.storage.s3.bucketnames
-    - kind: Secret
-      name: *app
-      valuesKey: S3_BUCKET_HOST
-      targetPath: loki.structuredConfig.common.storage.s3.endpoint
     - targetPath: loki.structuredConfig.common.storage.s3.access_key_id
       kind: Secret
       name: *app
