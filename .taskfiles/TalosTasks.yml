@@ -10,6 +10,8 @@ vars:
   TALOS_VERSION: "v1.3.2"
   # renovate: datasource=github-releases depName=budimanjojo/talhelper
   TALHELPER_VERSION: "v1.5.6"
+  # renovate: datasource=github-releases depName=kubernetes/kubernetes
+  KUBERNETES_VERSION: "v1.26.0"
 
 tasks:
 
@@ -34,8 +36,15 @@ tasks:
     cmds:
       - talosctl apply-config --nodes {{.NODE}} --file clusterconfig/home-cluster-k8s-{{.N}}.yaml {{.CLI_ARGS}}
 
+  upgrade:k8s:
+    dir: talos
+    desc: Upgrade Kubernetes to latest version
+    cmds:
+      - talosctl --nodes 192.168.1.200 upgrade-k8s --to {{ .KUBERNETES_VERSION }}
+
   upgrade:
     desc: Stage the latest updates for the node (task talos:upgrade N=0), then do the upgrade.
+    dir: talos
     cmds:
       - task: generate
       - task: _wait_for_health
