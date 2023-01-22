@@ -28,7 +28,7 @@ spec:
                   mountPath: /shared
           containers:
             - name: main
-              image: ghcr.io/recyclarr/recyclarr:4.2.0
+              image: ghcr.io/recyclarr/recyclarr:4.3.0
               command: ["/app/recyclarr/recyclarr"]
               args: ["sync"]
               volumeMounts:
