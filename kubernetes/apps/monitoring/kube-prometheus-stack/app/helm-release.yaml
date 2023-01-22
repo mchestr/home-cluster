@@ -27,15 +27,6 @@ spec:
     alertmanager:
       tplConfig: true
       enabled: true
-      containers:
-        - name: uptime-kuma-proxy
-          image: ghcr.io/mchestr/alertmanager-uptime-kuma-proxy:v0.1.1
-          env:
-            UPTIME_KUMA_URL: "https://status.${SECRET_CLUSTER_DOMAIN}/api/push/{{ .Values.alertmanager.secrets.uptime_kuma_token }}?status=up&msg=OK"
-          ports:
-            - containerPort: 3000
-              name: proxy
-              protocol: TCP
       config:
         global:
           resolve_timeout: 5m
@@ -127,6 +118,15 @@ spec:
               - *am-host
       alertmanagerSpec:
         replicas: 3
+        containers:
+          - name: uptime-kuma-proxy
+            image: ghcr.io/mchestr/alertmanager-uptime-kuma-proxy:v0.1.1
+            env:
+              UPTIME_KUMA_URL: "https://status.${SECRET_CLUSTER_DOMAIN}/api/push/{{ .Values.alertmanager.secrets.uptime_kuma_token }}?status=up&msg=OK"
+            ports:
+              - containerPort: 3000
+                name: proxy
+                protocol: TCP
         storage:
           volumeClaimTemplate:
             spec:
