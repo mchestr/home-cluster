@@ -12,7 +12,7 @@
 
 <div>
 
-[![Cluster](https://status.chestr.dev/api/badge/1/uptime/24?style=for-the-badge&color=blue)](https://status.chestr.dev "Uptime")
+[![Cluster](https://status.chestr.dev/api/badge/14/uptime/24?style=for-the-badge&color=blue)](https://status.chestr.dev "Uptime")
 
 </div>
 <div>
