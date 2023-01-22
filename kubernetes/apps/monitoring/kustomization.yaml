@@ -12,6 +12,5 @@ resources:
   - snmp-exporter/ks.yaml
   - thanos/ks.yaml
   - unifi-poller/ks.yaml
-  - uptime-heartbeat/ks.yaml
   - uptime-kuma/ks.yaml
   - vector/ks.yaml
