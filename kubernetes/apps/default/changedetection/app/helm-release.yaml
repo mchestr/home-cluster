@@ -34,6 +34,7 @@ spec:
       TZ: ${TZ}
       PORT: &port 5000
       USE_X_SETTINGS: 1
+      BASE_URL: https://changedetection.${SECRET_CLUSTER_DOMAIN}
       PLAYWRIGHT_DRIVER_URL: ws://localhost:3000/?stealth=1&--disable-web-security=true&--user-data-dir=~/browserless-cache-123
       PUID: 1000
       PGID: 1000
