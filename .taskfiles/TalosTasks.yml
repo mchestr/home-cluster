@@ -59,13 +59,13 @@ tasks:
     cmds:
       # Upgrade control-plane then workers, ensure cluster is healthy before each upgrade.
       - task: upgrade
-        vars: {N: 0}
+        vars: {NODE: 192.168.1.200}
       - task: upgrade
-        vars: {N: 1}
+        vars: {NODE: 192.168.1.201}
       - task: upgrade
-        vars: {N: 3}
+        vars: {NODE: 192.168.1.203}
       - task: upgrade
-        vars: {N: 2}
+        vars: {NODE: 192.168.1.202}
 
   memory:
     desc: Get all nodes memory
@@ -109,4 +109,4 @@ tasks:
       # Ensure CephCluster is healthy
       - kubectl -n rook-ceph wait --for jsonpath='{.status.ceph.health}'='HEALTH_OK' --timeout {{ .TIMEOUT | default "30s" }} cephcluster rook-ceph
       # Ensure CloudNative-PG cluster has 3 ready instances
-      - kubectl wait for --jsonpath='{.status.readyInstances}'='3' --timeout {{ .TIMEOUT | default "30s" }} cluster postgres
+      - kubectl wait --for jsonpath='{.status.readyInstances}'='3' --timeout {{ .TIMEOUT | default "30s" }} cluster postgres
