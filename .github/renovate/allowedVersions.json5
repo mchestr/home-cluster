@@ -1,9 +1,3 @@
 {
-  packageRules: [
-    {
-      matchDatasources: ["docker"],
-      matchPackagePrefixes: ["ghcr.io/immich"],
-      allowedVersions: "<10",
-    }
-  ],
+
 }
