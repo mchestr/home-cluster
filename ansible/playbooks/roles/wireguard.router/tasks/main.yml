@@ -16,7 +16,7 @@
 
 - name: Download WireGuard
   when: >
-    wireguard_version_check.stdout is not defined
+    not wireguard_version_check.stdout
     or wireguard_version not in wireguard_version_check.stdout
   ansible.builtin.get_url:
     url: "{{ wireguard_download_url }}"
@@ -31,18 +31,12 @@
       {{ wireguard_private_key }}
 
 - name: Install WireGuard
-  when: wireguard_version_check.stdout is not defined
-  vars:
-    ansible_network_os: edgeos
-    ansible_connection: network_cli
-  block:
-    - name: Install WireGuard .deb
-      community.network.edgeos_config:
-        save: true
-        backup: true
-        lines:
-          - dpkg -i /tmp/wireguard-{{ wireguard_version }}.deb
-          - modprobe wireguard
+  when: not wireguard_version_check.stdout
+  ansible.builtin.command: dpkg -i /tmp/wireguard-{{ wireguard_version }}.deb
+
+- name: Modprobe WireGuard
+  when: not wireguard_version_check.stdout
+  ansible.builtin.command: modprobe wireguard
 
 - name: Configure Interfaces
   vars:
@@ -80,7 +74,6 @@
     ansible_connection: network_cli
   community.network.edgeos_config:
     save: true
-    backup: true
     lines:
       - set interfaces wireguard wg0 route-allowed-ips false
       - commit
