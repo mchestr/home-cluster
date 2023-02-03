@@ -14,6 +14,13 @@ spec:
         kind: HelmRepository
         name: minecraft-server-charts
         namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
   values:
     nameOverride: "0"
     image:
@@ -27,22 +34,21 @@ spec:
         memory: 8Gi
         cpu: 3000m
     livenessProbe:
-      initialDelaySeconds: 600
-      periodSeconds: 5
-      failureThreshold: 10
-      successThreshold: 1
-      timeoutSeconds: 1
+      initialDelaySeconds: 300
     readinessProbe:
-      initialDelaySeconds: 600
-      periodSeconds: 5
-      failureThreshold: 10
-      successThreshold: 1
-      timeoutSeconds: 1
+      initialDelaySeconds: 300
     extraEnv:
       NETWORK_COMPRESSION_THRESHOLD: "-1"
       REPLACE_ENV_VARIABLES: "TRUE"
       REPLACE_ENV_DURING_SYNC: "TRUE"
       CFG_LP_SERVER: "global"
+      GENERIC_PACKS: GT_New_Horizons_2.2.8_SERVER
+      GENERIC_PACKS_PREFIX: http://downloads.gtnewhorizons.com/ServerPacks/
+      GENERIC_PACKS_SUFFIX: .zip
+      SKIP_GENERIC_PACK_UPDATE_CHECK: "TRUE"
+      TZ: ${TZ}
+      ENABLE_AUTOPAUSE: "TRUE"
+
     minecraftServer:
       eula: "TRUE"
       overrideServerProperties: true
@@ -63,7 +69,8 @@ spec:
       jvmOpts: "-Dfml.queryResult=confirm"
       rcon:
         enabled: true
-      motd: "GTNH: §l§c2.1.2.4-25-pre§r §n"
+      motd: "GTNH: §l§c2.1.2.8§r §n"
+      whitelist: mchestr,PScholen
     persistence:
       dataDir:
         enabled: true
