@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: minecraft-gtnh
+  name: &app minecraft-gtnh
   namespace: game-system
 spec:
   interval: 15m
@@ -40,17 +40,24 @@ spec:
       # Startup can take some time, 10 * 60 = 10 minutes
       failureThreshold: 60
       periodSeconds: 10
+
     extraEnv:
       NETWORK_COMPRESSION_THRESHOLD: "-1"
       REPLACE_ENV_VARIABLES: "TRUE"
       REPLACE_ENV_DURING_SYNC: "TRUE"
       CFG_LP_SERVER: "global"
-      GENERIC_PACKS: GT_New_Horizons_2.2.8_SERVER
-      GENERIC_PACKS_PREFIX: http://downloads.gtnewhorizons.com/ServerPacks/
-      GENERIC_PACKS_SUFFIX: .zip
       SKIP_GENERIC_PACK_UPDATE_CHECK: "TRUE"
       TZ: ${TZ}
       ENABLE_AUTOPAUSE: "TRUE"
+
+      # Get latest GTNH release
+      GENERIC_PACKS: GT_New_Horizons_2.2.8_SERVER
+      GENERIC_PACKS_PREFIX: http://downloads.gtnewhorizons.com/ServerPacks/
+      GENERIC_PACKS_SUFFIX: .zip
+
+      # Bootstrap the mods, Remove anticheat journeymap, install FTBUtilities
+      REMOVE_OLD_MODS_INCLUDE: JourneyMapServer1.0.5_MC1.7.10.jar
+      MODS: https://github.com/GTNewHorizons/FTB-Utilities/releases/download/1.0.18.7-GTNH/FTBUtilities-1.7.10-1.0.18.7-GTNH.jar,https://mediafilez.forgecdn.net/files/2291/433/FTBLib-1.7.10-1.0.18.3.jar
 
     minecraftServer:
       eula: "TRUE"
