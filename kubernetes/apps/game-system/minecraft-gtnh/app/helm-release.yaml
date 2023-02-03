@@ -35,10 +35,11 @@ spec:
       limits:
         memory: 8Gi
         cpu: 3000m
-    livenessProbe:
-      initialDelaySeconds: 600
-    readinessProbe:
-      initialDelaySeconds: 600
+    startupProbe:
+      enabled: true
+      # Startup can take some time, 10 * 60 = 10 minutes
+      failureThreshold: 60
+      periodSeconds: 10
     extraEnv:
       NETWORK_COMPRESSION_THRESHOLD: "-1"
       REPLACE_ENV_VARIABLES: "TRUE"
