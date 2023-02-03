@@ -22,4 +22,4 @@ spec:
       namespace: game-system
   interval: 30m
   retryInterval: 1m
-  timeout: 3m
+  timeout: 15m
