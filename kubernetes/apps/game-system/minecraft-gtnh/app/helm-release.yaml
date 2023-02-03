@@ -49,16 +49,15 @@ spec:
       TZ: ${TZ}
       ENABLE_AUTOPAUSE: "TRUE"
 
-      # Get latest GTNH release
-      GENERIC_PACKS: GT_New_Horizons_2.2.8_SERVER
-      GENERIC_PACKS_PREFIX: http://downloads.gtnewhorizons.com/ServerPacks/
-      GENERIC_PACKS_SUFFIX: .zip
-      SKIP_GENERIC_PACK_UPDATE_CHECK: "TRUE"
-      SKIP_GENERIC_PACK_CHECKSUM: "TRUE"
-
-      # Bootstrap the mods, Remove anticheat journeymap, install FTBUtilities
-      REMOVE_OLD_MODS_INCLUDE: JourneyMapServer1.0.5_MC1.7.10.jar
-      MODS: https://mediafilez.forgecdn.net/files/2291/494/FTBUtilities-1.7.10-1.0.18.3.jar,https://mediafilez.forgecdn.net/files/2291/433/FTBLib-1.7.10-1.0.18.3.jar
+      # Get latest GTNH release, Only needed for bootstrap.
+      # Could leave as is if you want the keep anticheat JourneyMap enabled, but I remove it manually.
+      # GENERIC_PACKS: GT_New_Horizons_2.2.8_SERVER
+      # GENERIC_PACKS_PREFIX: http://downloads.gtnewhorizons.com/ServerPacks/
+      # GENERIC_PACKS_SUFFIX: .zip
+      # REMOVE_OLD_MODS: "TRUE"
+      # SKIP_GENERIC_PACK_UPDATE_CHECK: "TRUE"
+      # SKIP_GENERIC_PACK_CHECKSUM: "TRUE"
+      # MODS: https://mediafilez.forgecdn.net/files/2291/494/FTBUtilities-1.7.10-1.0.18.3.jar,https://mediafilez.forgecdn.net/files/2291/433/FTBLib-1.7.10-1.0.18.3.jar
 
     minecraftServer:
       eula: "TRUE"
