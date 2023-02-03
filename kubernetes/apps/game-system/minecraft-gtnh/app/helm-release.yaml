@@ -18,9 +18,11 @@ spec:
     createNamespace: true
     remediation:
       retries: 3
+    timeout: 15m
   upgrade:
     remediation:
       retries: 3
+    timeout: 15m
   values:
     nameOverride: "0"
     image:
