@@ -48,12 +48,13 @@ spec:
       CFG_LP_SERVER: "global"
       TZ: ${TZ}
       ENABLE_AUTOPAUSE: "TRUE"
-      REMOVE_OLD_MODS: "TRUE"
 
       # Get latest GTNH release
       GENERIC_PACKS: GT_New_Horizons_2.2.8_SERVER
       GENERIC_PACKS_PREFIX: http://downloads.gtnewhorizons.com/ServerPacks/
       GENERIC_PACKS_SUFFIX: .zip
+      SKIP_GENERIC_PACK_UPDATE_CHECK: "TRUE"
+      SKIP_GENERIC_PACK_CHECKSUM: "TRUE"
 
       # Bootstrap the mods, Remove anticheat journeymap, install FTBUtilities
       REMOVE_OLD_MODS_INCLUDE: JourneyMapServer1.0.5_MC1.7.10.jar
