@@ -24,3 +24,4 @@ data:
   RUN_AS_GROUP: "65539"
   NAS_BACKUP_DIR: /volume1/backups/kubernetes/apps
   NAS_MEDIA_DIR: /volume1/shared/media
+  THEME_PARK_ARR_THEME: organizr

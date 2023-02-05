@@ -48,6 +48,10 @@ spec:
           hajimari.io/icon: simple-icons:uptimekuma
           hajimari.io/group: system management
           hajimari.io/appName: Uptime
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            proxy_set_header Accept-Encoding "";
+            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_CLUSTER_DOMAIN}/css/base/uptime-kuma/${THEME_PARK_ARR_THEME}.css"></head>';
+            sub_filter_once on;
         hosts:
           - host: &host uptime.${SECRET_CLUSTER_DOMAIN}
             paths:
