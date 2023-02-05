@@ -47,6 +47,10 @@ spec:
           external-dns.home.arpa/enabled: "true"
           hajimari.io/icon: mdi:plex
           hajimari.io/group: home
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            proxy_set_header Accept-Encoding "";
+            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_CLUSTER_DOMAIN}/css/base/plex/${THEME_PARK_ARR_THEME}.css"></head>';
+            sub_filter_once on;
 
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
