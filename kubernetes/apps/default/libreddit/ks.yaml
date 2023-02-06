@@ -4,6 +4,8 @@ kind: Kustomization
 metadata:
   name: cluster-apps-libreddit-app
   namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/enabled: "true"
 spec:
   path: ./kubernetes/apps/default/libreddit/app
   prune: true
