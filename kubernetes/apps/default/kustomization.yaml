@@ -20,6 +20,7 @@ resources:
   - jellyfin/ks.yaml
   - libreddit/ks.yaml
   - lidarr/ks.yaml
+  - obsidian-sync/ks.yaml
   - overseerr/ks.yaml
   - paperless/ks.yaml
   - plex/ks.yaml

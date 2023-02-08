@@ -1,0 +1,93 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app obsidian-sync
+  namespace: default
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.3.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    initContainers:
+      init-config:
+        image: public.ecr.aws/docker/library/busybox:latest
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh", "-c", "cp /tmp/config/*.ini /default.d/; ls -lrt /default.d;"]
+        volumeMounts:
+          - { name: config-file, mountPath: /tmp/config }
+          - { name: config-storage, mountPath: /default.d }
+
+    controller:
+      type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
+
+    image:
+      repository: public.ecr.aws/docker/library/couchdb
+      tag: 3.3.1
+
+    envFrom:
+      - secretRef:
+          name: *app
+
+    service:
+      main:
+        ports:
+          http:
+            port: 5984
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          external-dns.home.arpa/enabled: "true"
+          hajimari.io/icon: mdi:note-outline
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      config-file:
+        enabled: true
+        type: configMap
+        name: obsidian-sync-configmap # overriden by kustomizeconfig
+        mountPath: "-"
+      config-storage:
+        enabled: true
+        type: emptyDir
+        mountPath: /opt/couchdb/etc/default.d
+      data:
+        enabled: true
+        existingClaim: obsidian-sync-data-v1
+        mountPath: /opt/couchdb/data
+
+    resources:
+      requests:
+        cpu: 10m
+        memory: 50Mi
+      limits:
+        memory: 100Mi
