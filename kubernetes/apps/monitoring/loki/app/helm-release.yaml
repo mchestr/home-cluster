@@ -122,6 +122,12 @@ spec:
     read:
       persistence:
         storageClass: ceph-block
+      extraVolumeMounts:
+        - name: rules
+          mountPath: /rules
+      extraVolumes:
+        - name: rules
+          emptyDir: {}
 
     backend:
       persistence:
