@@ -31,7 +31,7 @@ spec:
       tag: 2023.2.3@sha256:4dec60ce9a1cebbd2397142d0324e2cd762331f1c0cb447fd7c80ead17190e17
     initContainers:
       init-db:
-        image: ghcr.io/onedr0p/postgres-initdb:14.6
+        image: ghcr.io/onedr0p/postgres-initdb:14.7
         envFrom:
           - secretRef:
               name: *app
