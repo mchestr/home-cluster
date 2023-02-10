@@ -87,9 +87,6 @@ spec:
       customApps:
         - group: storage, database, and messaging
           apps:
-            - name: phpMyAdmin
-              icon: simple-icons:phpmyadmin
-              url: https://lochnas.${SECRET_CLUSTER_DOMAIN}:9443
             - name: NAS
               icon: arcticons:synology-active-insight
               url: https://lochnas.${SECRET_CLUSTER_DOMAIN}:5001
