@@ -97,6 +97,12 @@ tasks:
     cmds:
       - talosctl --nodes {{.NODE}} health {{.CLI_ARGS}}
 
+  version:
+    desc: Get cluster talos version
+    dir: talos
+    cmds:
+      - talosctl --nodes {{.NODES}} version {{.CLI_ARGS}}
+
   dashboard:
     desc: Get all nodes dashboard
     dir: talos
