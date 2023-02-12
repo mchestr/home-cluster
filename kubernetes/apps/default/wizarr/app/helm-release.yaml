@@ -27,6 +27,7 @@ spec:
 
     env:
       TZ: ${TZ}
+      APP_URL: https://join.${SECRET_CLUSTER_DOMAIN}
 
     service:
       main:
