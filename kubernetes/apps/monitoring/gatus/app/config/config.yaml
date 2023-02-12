@@ -24,6 +24,7 @@ default-authelia-endpoint: &default-authelia-endpoint
     - "[BODY] == pat(*auth.${CLUSTER_DOMAIN}*)"
 
 default-dns-endpoint: &default-dns-endpoint
+  <<: *default-endpoint
   group: dns
   url: "192.168.1.1"
   dns:
