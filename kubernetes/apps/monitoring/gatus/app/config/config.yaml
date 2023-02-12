@@ -23,6 +23,15 @@ default-authelia-endpoint: &default-authelia-endpoint
     - "[RESPONSE_TIME] < 500"
     - "[BODY] == pat(*auth.${CLUSTER_DOMAIN}*)"
 
+default-dns-endpoint: &default-dns-endpoint
+  group: dns
+  url: 192.168.1.1
+  dns:
+    query-type: "A"
+  conditions:
+    - "[BODY] == 192.168.1.230"
+    - "[DNS_RCODE] == NOERROR"
+
 alerting:
   pushover:
     application-token: "${PUSHOVER_GATUS_TOKEN}"
@@ -187,3 +196,9 @@ endpoints:
   - name: zWave
     <<: *default-authelia-endpoint
     url: https://zwave-js-ui.${CLUSTER_DOMAIN}
+
+  # DNS Endpoints
+  - name: Internal DNS
+    <<: *default-dns-endpoint
+    dns:
+      query-name: home.${CLUSTER_DOMAIN}
