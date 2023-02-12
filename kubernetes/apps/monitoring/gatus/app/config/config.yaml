@@ -105,6 +105,9 @@ endpoints:
   - name: Obsidian Sync
     <<: *default-endpoint
     url: https://obsidian-sync.${CLUSTER_DOMAIN}
+    conditions:
+      - "[STATUS] == 401"
+      - "[RESPONSE_TIME] < 500"
 
   - name: Overseerr
     <<: *default-endpoint
