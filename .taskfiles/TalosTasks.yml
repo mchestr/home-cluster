@@ -9,7 +9,7 @@ vars:
   # renovate: datasource=github-releases depName=siderolabs/talos
   TALOS_VERSION: "v1.3.4"
   # renovate: datasource=github-releases depName=budimanjojo/talhelper
-  TALHELPER_VERSION: "v1.5.9"
+  TALHELPER_VERSION: "v1.6.0"
   # renovate: datasource=github-releases depName=kubernetes/kubernetes
   KUBERNETES_VERSION: "v1.26.1"
 
