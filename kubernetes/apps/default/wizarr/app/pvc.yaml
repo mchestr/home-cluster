@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: wizarr-config-v1
+  namespace: default
+  labels:
+    app.kubernetes.io/name: &name wizarr
+    app.kubernetes.io/instance: *name
+    snapshot.home.arpa/enabled: "true"
+spec:
+  accessModes:
+    - ReadWriteOnce
+
+  resources:
+    requests:
+      storage: 1Gi
+
+  storageClassName: ceph-block
