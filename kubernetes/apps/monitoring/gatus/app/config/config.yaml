@@ -50,6 +50,10 @@ endpoints:
     <<: *default-authelia-endpoint
     url: https://bazarr.${CLUSTER_DOMAIN}
 
+  - name: Change Detection
+    <<: *default-authelia-endpoint
+    url: https://change-detection.${CLUSTER_DOMAIN}
+
   - name: EMQX
     <<: *default-authelia-endpoint
     url: https://emqx.${CLUSTER_DOMAIN}
@@ -78,6 +82,10 @@ endpoints:
     <<: *default-endpoint
     url: https://jellyfin.${CLUSTER_DOMAIN}
 
+  - name: LibReddit
+    <<: *default-authelia-endpoint
+    url: https://libreddit.${CLUSTER_DOMAIN}
+
   - name: Lidarr
     <<: *default-authelia-endpoint
     url: https://lidarr.${CLUSTER_DOMAIN}
@@ -94,6 +102,10 @@ endpoints:
     <<: *default-endpoint
     url: https://minio.${CLUSTER_DOMAIN}
 
+  - name: Obsidian Sync
+    <<: *default-endpoint
+    url: https://obsidian-sync.${CLUSTER_DOMAIN}
+
   - name: Overseerr
     <<: *default-endpoint
     url: https://overseerr.${CLUSTER_DOMAIN}
@@ -105,12 +117,14 @@ endpoints:
   - name: Immich
     <<: *default-endpoint
     url: https://photos.${CLUSTER_DOMAIN}
+
   - name: Plex
     <<: *default-endpoint
     url: https://plex.${CLUSTER_DOMAIN}
     conditions:
       - "[STATUS] == 401"
       - "[RESPONSE_TIME] < 500"
+
   - name: Prometheus
     <<: *default-authelia-endpoint
     url: https://prometheus.${CLUSTER_DOMAIN}
@@ -123,6 +137,10 @@ endpoints:
     <<: *default-authelia-endpoint
     url: https://qbittorrent.${CLUSTER_DOMAIN}
 
+  - name: Radicale
+    <<: *default-endpoint
+    url: https://cal.${CLUSTER_DOMAIN}
+
   - name: Rook Ceph
     <<: *default-endpoint
     url: https://rook.${CLUSTER_DOMAIN}
@@ -130,6 +148,14 @@ endpoints:
   - name: SabNZBD
     <<: *default-authelia-endpoint
     url: https://sabnzbd.${CLUSTER_DOMAIN}
+
+  - name: Shlink
+    <<: *default-endpoint
+    url: https://shlink.${CLUSTER_DOMAIN}
+
+  - name: Shlink API
+    <<: *default-endpoint
+    url: https://shlink-api.${CLUSTER_DOMAIN}
 
   - name: Sonarr
     <<: *default-authelia-endpoint
@@ -142,6 +168,10 @@ endpoints:
   - name: Thanos
     <<: *default-authelia-endpoint
     url: https://thanos.${CLUSTER_DOMAIN}
+
+  - name: Theme Park
+    <<: *default-endpoint
+    url: https://theme-park.${CLUSTER_DOMAIN}
 
   - name: Unifi
     <<: *default-endpoint
