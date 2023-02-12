@@ -25,14 +25,18 @@ spec:
     env:
       TZ: "${TZ}"
 
+    envFrom:
+      - secretRef:
+          name: *app
+
     persistence:
       data:
         enabled: true
         existingClaim: gatus-data-v1
       config:
         enabled: true
-        type: secret
-        name: *app
+        type: configMap
+        name: gatus-configmap
 
     service:
       main:
