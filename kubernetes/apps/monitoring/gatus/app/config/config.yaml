@@ -153,7 +153,7 @@ endpoints:
     url: https://sabnzbd.${CLUSTER_DOMAIN}
 
   - name: Shlink
-    <<: *default-endpoint
+    <<: *default-authelia-endpoint
     url: https://shlink.${CLUSTER_DOMAIN}
 
   - name: Shlink API
