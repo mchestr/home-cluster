@@ -28,6 +28,11 @@ alerting:
     application-token: "${PUSHOVER_GATUS_TOKEN}"
     user-key: "${PUSHOVER_USER_KEY}"
 
+storage:
+  path: /data/data.db
+  type: sqlite
+  caching: true
+
 endpoints:
   - name: Alert Manager
     <<: *default-authelia-endpoint
