@@ -188,6 +188,10 @@ endpoints:
     <<: *default-endpoint
     url: https://unifi.${CLUSTER_DOMAIN}
 
+  - name: Wizarr
+    <<: *default-endpoint
+    url: https://join.${CLUSTER_DOMAIN}
+
   - name: Zigbee
     <<: *default-authelia-endpoint
     url: https://zigbee2mqtt.${CLUSTER_DOMAIN}
