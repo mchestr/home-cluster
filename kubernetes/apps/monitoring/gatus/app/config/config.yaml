@@ -27,8 +27,6 @@ default-dns-endpoint: &default-dns-endpoint
   <<: *default-endpoint
   group: dns
   url: "192.168.1.1"
-  dns:
-    query-type: "A"
   conditions:
     - "[BODY] == 192.168.1.230"
     - "[DNS_RCODE] == NOERROR"
@@ -203,3 +201,4 @@ endpoints:
     <<: *default-dns-endpoint
     dns:
       query-name: home.${CLUSTER_DOMAIN}
+      query-type: "A"
