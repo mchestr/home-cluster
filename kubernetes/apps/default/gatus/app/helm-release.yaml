@@ -1,0 +1,56 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app gatus
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.3.1
+      interval: 15m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  values:
+    image:
+      repository: docker.io/twinproduction/gatus
+      tag: v5.3.0@sha256:aa8409bf20d2bb4779703c60ef849abfdcc86680bbd0137671c03579973d3a33
+
+    env:
+      TZ: "${TZ}"
+
+    persistence:
+      data:
+        enabled: true
+        existingClaim: gatus-data-v1
+      config:
+        enabled: true
+        type: secret
+        name: *app
+
+    service:
+      main:
+        ports:
+          http:
+            port: 8080
+
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          hajimari.io/icon: mdi:connection
+          hajimari.io/info: Service Status Monitor
+          hajimari.io/group: system management
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+
+    podAnnotations:
+      reloader.stakater.com/auto: "true"
