@@ -25,7 +25,7 @@ default-authelia-endpoint: &default-authelia-endpoint
 
 default-dns-endpoint: &default-dns-endpoint
   group: dns
-  url: 192.168.1.1
+  url: "192.168.1.1"
   dns:
     query-type: "A"
   conditions:
