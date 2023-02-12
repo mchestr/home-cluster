@@ -29,8 +29,8 @@ alerting:
     user-key: "${PUSHOVER_USER_KEY}"
 
 storage:
-  path: /data/data.db
-  type: sqlite
+  path: "${GATUS_POSTGRES_URL}"
+  type: postgres
   caching: true
 
 endpoints:
