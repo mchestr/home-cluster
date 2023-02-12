@@ -158,7 +158,7 @@ endpoints:
 
   - name: Shlink API
     <<: *default-endpoint
-    url: https://ln.${CLUSTER_DOMAIN}/health
+    url: https://ln.${CLUSTER_DOMAIN}/${SHLINK_HEALTH_TOKEN}
 
   - name: Sonarr
     <<: *default-authelia-endpoint
