@@ -52,7 +52,7 @@ endpoints:
 
   - name: Change Detection
     <<: *default-authelia-endpoint
-    url: https://change-detection.${CLUSTER_DOMAIN}
+    url: https://changedetection.${CLUSTER_DOMAIN}
 
   - name: EMQX
     <<: *default-authelia-endpoint
@@ -155,7 +155,7 @@ endpoints:
 
   - name: Shlink API
     <<: *default-endpoint
-    url: https://shlink-api.${CLUSTER_DOMAIN}
+    url: https://ln.${CLUSTER_DOMAIN}
 
   - name: Sonarr
     <<: *default-authelia-endpoint
