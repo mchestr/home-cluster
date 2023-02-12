@@ -15,8 +15,16 @@ spec:
         namespace: flux-system
   values:
     controller:
+      replicas: 3
       annotations:
         reloader.stakater.com/auto: "true"
+
+    initContainers:
+      init-db:
+        image: ghcr.io/onedr0p/postgres-initdb:14.7
+        envFrom:
+          - secretRef:
+              name: *app
 
     image:
       repository: docker.io/twinproduction/gatus
@@ -30,9 +38,6 @@ spec:
           name: *app
 
     persistence:
-      data:
-        enabled: true
-        existingClaim: gatus-data-v1
       config:
         enabled: true
         type: configMap
