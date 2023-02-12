@@ -25,16 +25,11 @@ spec:
     interval: 5m
     provider: cloudflare
     env:
-      - name: CF_API_EMAIL
+      - name: CF_API_TOKEN
         valueFrom:
           secretKeyRef:
             name: external-dns
-            key: CF_API_EMAIL
-      - name: CF_API_KEY
-        valueFrom:
-          secretKeyRef:
-            name: external-dns
-            key: CF_API_KEY
+            key: CF_API_TOKEN
     extraArgs:
       - --cloudflare-proxied
       - --annotation-filter=external-dns.home.arpa/enabled in (true)
