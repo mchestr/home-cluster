@@ -56,3 +56,4 @@ spec:
       config:
         enabled: true
         existingClaim: wizarr-config-v1
+        mountPath: /data/database
