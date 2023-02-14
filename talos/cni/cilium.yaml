@@ -481,7 +481,7 @@ spec:
               value: 192.168.1.254
             - name: KUBERNETES_SERVICE_PORT
               value: "6443"
-          image: quay.io/cilium/operator-generic:v1.12.6@sha256:eec4430d222cb2967d42d3b404d2606e66468de47ae85e0a3ca3f58f00a5e017
+          image: quay.io/cilium/operator-generic:v1.12.7@sha256:80f24810bf8484974c757382eb2c7408c9c024e5cb0719f4a56fba3f47695c72
           imagePullPolicy: IfNotPresent
           livenessProbe:
             httpGet:
