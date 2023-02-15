@@ -252,7 +252,7 @@ spec:
               - targets:
                   - lochnas.${SECRET_CLUSTER_DOMAIN}:9100
             relabel_configs:
-              - targetLabel: job
+              - target_label: job
                 replacement: node-exporter
         enableAdminAPI: true
         externalLabels:
