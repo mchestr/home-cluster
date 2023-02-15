@@ -44,8 +44,8 @@ spec:
               target:
                 - "lochnas.${SECRET_CLUSTER_DOMAIN}:3493"
             relabelings:
-              - source_labels: [__param_target]
-                target_label: target
+              - sourceLabels: [__param_target]
+                targetLabel: target
 
     resources:
       limits:
