@@ -137,8 +137,17 @@ spec:
                   storage: 1Gi
     grafana:
       enabled: false
+
+    nodeExporter:
+      enabled: true
     prometheus-node-exporter:
-      fullnameOverride: node-exporter
+      resources:
+        requests:
+          cpu: 23m
+          memory: 64M
+        limits:
+          memory: 64M
+
       prometheus:
         monitor:
           enabled: true
@@ -149,6 +158,7 @@ spec:
               sourceLabels:
                 - __meta_kubernetes_pod_node_name
               targetLabel: kubernetes_node
+
     kubelet:
       enabled: true
       serviceMonitor:
@@ -165,29 +175,52 @@ spec:
       enabled: false
     kubeApiServer:
       enabled: true
-    kubeStateMetrics:
-      enabled: true
     coreDns:
       enabled: true
-    nodeExporter:
+
+    kubeStateMetrics:
       enabled: true
-      serviceMonitor:
-        relabelings:
-          - action: replace
-            sourceLabels:
-              - __meta_kubernetes_pod_node_name
-            targetLabel: kubernetes_node
     kube-state-metrics:
-      fullnameOverride: kube-state-metrics
+      metricLabelsAllowlist:
+        - "persistentvolumeclaims=[*]"
+      prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels:
+                - __meta_kubernetes_pod_node_name
+              targetLabel: kubernetes_node
+      resources:
+        requests:
+          cpu: 15m
+          memory: 127M
+        limits:
+          memory: 153M
+
     # Setting this option to 0 disabled CPU limits
     prometheusOperator:
-      configReloaderCpu: 0
-      serviceMonitor:
-        sampleLimit: 0
+      resources:
+        requests:
+          cpu: 35m
+          memory: 273M
+        limits:
+          memory: 326M
+
+      prometheusConfigReloader:
+        # resource config for prometheusConfigReloader
+        resources:
+          requests:
+            cpu: 11m
+            memory: 32M
+          limits:
+            memory: 32M
+
     prometheus:
       ingress:
         enabled: true
-        pathType: Prefix
         ingressClassName: nginx
         annotations:
           auth.home.arpa/enabled: "true"
@@ -199,36 +232,18 @@ spec:
         tls:
           - hosts:
               - *host
-      thanosService:
-        enabled: true
-      thanosServiceMonitor:
-        enabled: true
+
       prometheusSpec:
-        replicas: 1
-        replicaExternalLabelName: "replica"
-        ruleSelectorNilUsesHelmValues: false
-        serviceMonitorSelectorNilUsesHelmValues: false
-        podMonitorSelectorNilUsesHelmValues: false
-        probeSelectorNilUsesHelmValues: false
-        retention: 6h
-        retentionSize: 6GB
-        enableAdminAPI: true
-        walCompression: true
-        storageSpec:
-          volumeClaimTemplate:
-            spec:
-              storageClassName: ceph-block
-              resources:
-                requests:
-                  storage: 40Gi
-        thanos:
-          image: quay.io/thanos/thanos:v0.30.2
-          # renovate: datasource=docker depName=quay.io/thanos/thanos
-          version: "v0.30.2"
-          objectStorageConfig:
-            name: thanos-objstore-secret
-            key: objstore.yml
+        alertingEndpoints:
+          - namespace: monitoring
+            name: alertmanager
+            port: 9093
+            apiVersion: v2
         additionalScrapeConfigs:
+          - job_name: node-exporter
+            scrape_interval: 1m
+            scrape_timeout: 10s
+            honor_timestamps: true
           - job_name: node-exporter-http
             scrape_interval: 1m
             scrape_timeout: 10s
@@ -239,16 +254,44 @@ spec:
             relabel_configs:
               - target_label: job
                 replacement: node-exporter
+        enableAdminAPI: true
+        externalLabels:
+          cluster: cluster-0
+        podMonitorSelectorNilUsesHelmValues: false
+        probeSelectorNilUsesHelmValues: false
+        replicas: 1
+        replicaExternalLabelName: "__replica__" # must match with thanos value `.query.replicaLabel[0]`
+        resources:
+          requests:
+            cpu: 587m
+            memory: 4993M
+          limits:
+            memory: 5977M
+        retention: 2d
+        retentionSize: "6GB"
+        ruleSelectorNilUsesHelmValues: false
+        serviceMonitorSelectorNilUsesHelmValues: false
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: ceph-block
+              resources:
+                requests:
+                  storage: 10Gi
+        thanos:
+          image: quay.io/thanos/thanos:v0.30.2@sha256:6b97f63c716781c487da88750850cf5a4e0a1c23af32764e97faefc1383432b1
+          objectStorageConfig:
+            name: thanos-objstore-secret
+            key: objstore.yml
+          # renovate: datasource=docker depName=quay.io/thanos/thanos
+          version: "v0.30.2"
+        walCompression: true
 
-        affinity:
-          nodeAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              nodeSelectorTerms:
-                - matchExpressions:
-                    - key: kubernetes.io/hostname
-                      operator: In
-                      values:
-                        - k8s-2
+      thanosService:
+        enabled: true
+
+      thanosServiceMonitor:
+        enabled: true
 
   valuesFrom:
     - targetPath: alertmanager.secrets.pushover_user_key
