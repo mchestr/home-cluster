@@ -31,7 +31,7 @@ spec:
       enabled: true
       replicaCount: 1
       replicaLabels:
-        - replica
+        - __replica__
       dnsDiscovery:
         sidecarsService: prometheus-thanos-discovery
         sidecarsNamespace: monitoring
