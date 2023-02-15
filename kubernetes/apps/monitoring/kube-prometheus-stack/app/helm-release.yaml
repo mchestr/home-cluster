@@ -234,11 +234,6 @@ spec:
               - *host
 
       prometheusSpec:
-        alertingEndpoints:
-          - namespace: monitoring
-            name: alertmanager
-            port: 9093
-            apiVersion: v2
         additionalScrapeConfigs:
           - job_name: node-exporter
             scrape_interval: 1m
