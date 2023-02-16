@@ -29,7 +29,7 @@ spec:
 
     image:
       repository: ghcr.io/esphome/esphome
-      tag: 2023.2.0@sha256:521e840282a1540722c0171f1c00ab4cbafa3213b1f671c42fb91a87c59032a9
+      tag: 2023.2.1@sha256:a384e83216164f1b472f14244cd7c3a7ee65668d3ea1d8b0426558bd760ad228
 
     env:
       TZ: ${TZ}
