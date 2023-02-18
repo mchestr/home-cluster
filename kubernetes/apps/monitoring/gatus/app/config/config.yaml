@@ -86,9 +86,9 @@ endpoints:
     <<: *default-authelia-endpoint
     url: https://home-assistant-code.${CLUSTER_DOMAIN}
 
-  - name: Jellyfin
-    <<: *default-endpoint
-    url: https://jellyfin.${CLUSTER_DOMAIN}
+  # - name: Jellyfin
+  #   <<: *default-endpoint
+  #   url: https://jellyfin.${CLUSTER_DOMAIN}
 
   - name: LibReddit
     <<: *default-authelia-endpoint
@@ -110,12 +110,12 @@ endpoints:
     <<: *default-endpoint
     url: https://minio.${CLUSTER_DOMAIN}
 
-  - name: Obsidian Sync
-    <<: *default-endpoint
-    url: https://obsidian-sync.${CLUSTER_DOMAIN}
-    conditions:
-      - "[STATUS] == 401"
-      - "[RESPONSE_TIME] < 500"
+  # - name: Obsidian Sync
+  #   <<: *default-endpoint
+  #   url: https://obsidian-sync.${CLUSTER_DOMAIN}
+  #   conditions:
+  #     - "[STATUS] == 401"
+  #     - "[RESPONSE_TIME] < 500"
 
   - name: Overseerr
     <<: *default-endpoint
