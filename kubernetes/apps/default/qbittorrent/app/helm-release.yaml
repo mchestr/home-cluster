@@ -83,17 +83,6 @@ spec:
         path: ${NAS_MEDIA_DIR}
         mountPath: /media
 
-    # Schedule on k8s-2 as it has better specs
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: kubernetes.io/hostname
-                  operator: In
-                  values:
-                    - k8s-2
-
     podSecurityContext:
       fsGroup: ${RUN_AS_GROUP}
       fsGroupChangePolicy: OnRootMismatch
