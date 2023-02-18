@@ -30,11 +30,9 @@ spec:
       tag: 2023.1.0-java8
     resources:
       requests:
-        memory: 6Gi
-        cpu: 1500m
+        memory: 3Gi
       limits:
         memory: 8Gi
-        cpu: 3000m
     startupProbe:
       enabled: true
       # Startup can take some time, 10 * 60 = 10 minutes
