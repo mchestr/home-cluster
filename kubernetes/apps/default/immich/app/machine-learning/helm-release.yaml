@@ -32,9 +32,9 @@ spec:
     image:
       repository: ghcr.io/immich-app/immich-machine-learning
       tag: v1.48.0
-    command: /bin/sh
+    command: python
     args:
-      - ./entrypoint.sh
+      - "src/main.py"
 
     envFrom:
       - secretRef:
