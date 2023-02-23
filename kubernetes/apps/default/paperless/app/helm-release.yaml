@@ -95,7 +95,7 @@ spec:
     additionalContainers:
       gotenburg:
         name: gotenburg
-        image: thecodingmachine/gotenberg:7.8.0
+        image: thecodingmachine/gotenberg:7.8.1
         env:
           - name: DISABLE_GOOGLE_CHROME
             value: "1"
