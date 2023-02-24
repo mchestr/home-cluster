@@ -50,7 +50,7 @@ tasks:
       - task: _wait_for_health
         vars: {TIMEOUT: 10m}
       - task: apply
-        vars: {CLI_ARGS: '-m staged'}
+        vars: {CLI_ARGS: '-m staged', NODE: '{{ .NODE }}'}
       - talosctl upgrade --nodes {{ .NODE }} --image ghcr.io/siderolabs/installer:{{ .TALOS_VERSION }}
 
   upgrade:all:
