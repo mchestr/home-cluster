@@ -49,8 +49,7 @@ tasks:
       - task: generate
       - task: _wait_for_health
         vars: {TIMEOUT: 10m}
-      - task: apply
-        vars: {CLI_ARGS: '-m staged', NODE: '{{ .NODE }}'}
+      - talosctl apply-config --nodes {{ .NODE }} --file clusterconfig/home-cluster-k8s-{{ .N }}.yaml {{ .CLI_ARGS }}
       - talosctl upgrade --nodes {{ .NODE }} --image ghcr.io/siderolabs/installer:{{ .TALOS_VERSION }}
 
   upgrade:all:
@@ -59,13 +58,13 @@ tasks:
     cmds:
       # Upgrade control-plane then workers, ensure cluster is healthy before each upgrade.
       - task: upgrade
-        vars: {NODE: 192.168.1.200}
+        vars: {NODE: 192.168.1.200, N: 0}
       - task: upgrade
-        vars: {NODE: 192.168.1.201}
+        vars: {NODE: 192.168.1.201, N: 1}
       - task: upgrade
-        vars: {NODE: 192.168.1.203}
+        vars: {NODE: 192.168.1.203, N: 3}
       - task: upgrade
-        vars: {NODE: 192.168.1.202}
+        vars: {NODE: 192.168.1.202, N: 2}
 
   memory:
     desc: Get all nodes memory
