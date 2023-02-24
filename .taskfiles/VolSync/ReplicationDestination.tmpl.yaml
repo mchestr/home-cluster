@@ -11,6 +11,12 @@ spec:
     repository: "${RSRC}-restic-secret"
     destinationPVC: "${CLAIM}"
     copyMethod: Direct
+
+    moverSecurityContext:
+      runAsUser: 0
+      runAsGroup: 0
+      fsGroup: 0
+      fsGroupChangePolicy: "OnRootMismatch"
     # IMPORTANT NOTE:
     #   On bootstrap set `restoreAsOf` to the time the old cluster was destroyed.
     #   This will essentially prevent volsync from trying to restore a backup
