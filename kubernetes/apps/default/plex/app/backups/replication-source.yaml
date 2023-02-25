@@ -15,5 +15,7 @@ spec:
     volumeSnapshotClassName: csi-ceph-blockpool
     storageClassName: ceph-block
     repository: plex-restic-secret
+    moverSecurityContext:
+      fsGroup: 0
     retain:
       daily: 10

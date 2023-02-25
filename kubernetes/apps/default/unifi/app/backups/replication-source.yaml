@@ -18,7 +18,4 @@ spec:
     retain:
       daily: 10
     moverSecurityContext:
-      runAsUser: 999
-      runAsGroup: 999
-      fsGroup: 999
-      fsGroupChangePolicy: "OnRootMismatch"
+      fsGroup: 0
