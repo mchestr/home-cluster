@@ -24,7 +24,7 @@ spec:
   values:
     image:
       repository: grafana/grafana
-      tag: 9.3.6
+      tag: 9.4.1
 
     annotations:
       reloader.stakater.com/auto: "true"
