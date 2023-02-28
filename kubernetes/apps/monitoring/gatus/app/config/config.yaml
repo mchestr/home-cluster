@@ -7,12 +7,12 @@ default-alerts: &default-alerts
       description: "healthcheck failed"
 
 default-endpoint: &default-endpoint
-  interval: 15m
+  interval: 5m
   group: core
   <<: *default-alerts
   conditions:
     - "[STATUS] == 200"
-    - "[RESPONSE_TIME] < 500"
+    - "[RESPONSE_TIME] < 2000"
     - "[BODY] != pat(*auth.${CLUSTER_DOMAIN}*)"
 
 default-authelia-endpoint: &default-authelia-endpoint
@@ -20,7 +20,7 @@ default-authelia-endpoint: &default-authelia-endpoint
   group: authelia
   conditions:
     - "[STATUS] == 200"
-    - "[RESPONSE_TIME] < 500"
+    - "[RESPONSE_TIME] < 2000"
     - "[BODY] == pat(*auth.${CLUSTER_DOMAIN}*)"
 
 default-dns-endpoint: &default-dns-endpoint
@@ -31,6 +31,7 @@ default-dns-endpoint: &default-dns-endpoint
     - "[BODY] == 192.168.1.230"
     - "[DNS_RCODE] == NOERROR"
 
+disable-monitoring-lock: true
 alerting:
   pushover:
     application-token: "${PUSHOVER_GATUS_TOKEN}"
