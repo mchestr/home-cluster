@@ -7,7 +7,7 @@ default-alerts: &default-alerts
       description: "healthcheck failed"
 
 default-endpoint: &default-endpoint
-  interval: 5m
+  interval: 1h
   group: core
   <<: *default-alerts
   conditions:
