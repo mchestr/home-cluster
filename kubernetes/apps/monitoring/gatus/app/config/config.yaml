@@ -32,6 +32,8 @@ default-dns-endpoint: &default-dns-endpoint
     - "[DNS_RCODE] == NOERROR"
 
 disable-monitoring-lock: true
+client:
+  dns-resolver: 192.168.1.1
 alerting:
   pushover:
     application-token: "${PUSHOVER_GATUS_TOKEN}"
