@@ -23,7 +23,7 @@ spec:
   values:
     image:
       repository: ghcr.io/onedr0p/plex
-      tag: 1.31.1.6733-bc0674160@sha256:13e22d890c9e1f25d17846c7e7e4c22df39daaa0f20c8d30570a2ad47ffb245c
+      tag: 1.31.1.6733-bc0674160@sha256:8621409de912a6e8c5219dbad764b501020d4637fcb57ec61b8e2c9f45d2f718
 
     env:
       TZ: ${TZ}
