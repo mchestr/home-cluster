@@ -19,7 +19,7 @@ default-authelia-endpoint: &default-authelia-endpoint
   <<: *default-endpoint
   group: authelia
   conditions:
-    - "[STATUS] == 200"
+    - "[STATUS] == 301"
     - "[RESPONSE_TIME] < 2000"
     - "[BODY] == pat(*auth.${CLUSTER_DOMAIN}*)"
 
@@ -34,6 +34,7 @@ default-dns-endpoint: &default-dns-endpoint
 disable-monitoring-lock: true
 client:
   dns-resolver: udp://192.168.1.1:53
+  ignore-redirect: true
 alerting:
   pushover:
     application-token: "${PUSHOVER_GATUS_TOKEN}"
