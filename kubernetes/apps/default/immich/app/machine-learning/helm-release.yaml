@@ -32,9 +32,6 @@ spec:
     image:
       repository: ghcr.io/immich-app/immich-machine-learning
       tag: v1.50.1
-    command: python
-    args:
-      - "src/main.py"
 
     envFrom:
       - secretRef:
