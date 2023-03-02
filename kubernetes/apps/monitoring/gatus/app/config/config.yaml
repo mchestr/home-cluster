@@ -19,7 +19,7 @@ default-authelia-endpoint: &default-authelia-endpoint
   <<: *default-endpoint
   group: authelia
   conditions:
-    - "[STATUS] == 301"
+    - "[STATUS] == 200"
     - "[RESPONSE_TIME] < 2000"
     - "[BODY] == pat(*auth.${CLUSTER_DOMAIN}*)"
 
