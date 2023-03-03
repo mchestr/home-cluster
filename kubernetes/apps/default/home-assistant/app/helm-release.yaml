@@ -28,7 +28,7 @@ spec:
 
     image:
       repository: ghcr.io/onedr0p/home-assistant
-      tag: 2023.2.5@sha256:9584044ee967e3e7f2a6eebe3fb06a41962669dea9b21ef406d1b5ce9b2ec925
+      tag: 2023.3.1@sha256:9175189567c44ae14ff1bf546e4f3c378963216e9f4ee94409da8ec84e8871f8
     initContainers:
       init-db:
         image: ghcr.io/onedr0p/postgres-initdb:14.7
