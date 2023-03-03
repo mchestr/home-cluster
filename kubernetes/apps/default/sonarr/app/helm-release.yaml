@@ -48,6 +48,8 @@ spec:
         ports:
           http:
             port: *port
+          metrics:
+            port: &metric-port 9794
 
     ingress:
       main:
@@ -98,3 +100,31 @@ spec:
     podSecurityContext:
       fsGroup: ${RUN_AS_GROUP}
       fsGroupChangePolicy: OnRootMismatch
+
+    additionalContainers:
+      metrics:
+        name: metrics
+        image: ghcr.io/onedr0p/exportarr:v1.1.0
+        imagePullPolicy: Always
+        args: ['s']
+        env:
+          PORT: *metric-port
+          ENABLE_ADDITIONAL_METRICS: true
+          ENABLE_UNKNOWN_QUEUE_ITEMS: true
+          TZ: "${TZ}"
+          URL: "http://sonarr.default.svc.cluster.local:8989"
+          APIKEY:
+            valueFrom:
+              secretKeyRef:
+                name: *app
+                key: SONARR__API_KEY
+
+    serviceMonitor:
+      main:
+        enabled: true
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
