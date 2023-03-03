@@ -6,6 +6,7 @@ resources:
   - backups
   - external-secret.yaml
   - helm-release.yaml
+  - prometheus-rule.yaml
   - pvc.yaml
 configMapGenerator:
   - name: sonarr-pushover

@@ -1,0 +1,21 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    prometheus: k8s
+    role: alert-rules
+  name: radarr-4k-rules
+  namespace: default
+spec:
+  groups:
+    - name: radarr-4k.rules
+      rules:
+        - alert: Radarr4kQueueItems
+          expr: radarr_queue_total{service="radarr-4k"} AND changes(radarr_queue_total{service="radarr-4k"}[1h]) == 0
+          for: 1h
+          labels:
+            severity: warning
+          annotations:
+            summary: "Radarr-4k may have items stuck in the queue (instance {{ $labels.instance }})"
+            description: "Radarr-4k queue hasn't changed for more than 1 hour\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
