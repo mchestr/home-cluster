@@ -13,7 +13,7 @@ spec:
       rules:
         - alert: Radarr4kQueueItems
           expr: radarr_queue_total{service="radarr-4k"} AND changes(radarr_queue_total{service="radarr-4k"}[1h]) == 0
-          for: 1m
+          for: 15m
           labels:
             severity: warning
           annotations:
