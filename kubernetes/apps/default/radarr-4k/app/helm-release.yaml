@@ -109,7 +109,6 @@ spec:
         args: ['r']
         env:
           PORT: *metric-port
-          ENABLE_ADDITIONAL_METRICS: true
           ENABLE_UNKNOWN_QUEUE_ITEMS: true
           TZ: "${TZ}"
           URL: "http://radarr-4k.default.svc.cluster.local:7878"
