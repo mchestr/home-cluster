@@ -28,7 +28,7 @@ spec:
 
     image:
       repository: acockburn/appdaemon
-      tag: 4.2.1
+      tag: 4.2.3
 
     env:
       TZ: ${TZ}
