@@ -173,9 +173,16 @@ endpoints:
     <<: *default-endpoint
     url: https://unifi.${CLUSTER_DOMAIN}
 
-  - name: Wizarr
-    <<: *default-endpoint
+  - name: Wizarr Management
+    <<: *default-authelia-endpoint
     url: https://join.${CLUSTER_DOMAIN}
+
+  - name: Wizarr Public
+    <<: *default-endpoint
+    url: https://join.${CLUSTER_DOMAIN}/j/
+    conditions:
+      - "[STATUS] == 404"
+      - "[RESPONSE_TIME] < 500"
 
   - name: Zigbee
     <<: *default-authelia-endpoint
