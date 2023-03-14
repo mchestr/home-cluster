@@ -26,6 +26,9 @@ access_control:
     - domain:
         - grafana.${CLUSTER_DOMAIN}
       policy: bypass
+    - domain: ["wizarr.${CLUSTER_DOMAIN}"]
+      resources: ["^/join.*$", "^/j/.*$", "^/setup.*$", "^/static/.*$"]
+      policy: bypass
 
 notifier:
   smtp:

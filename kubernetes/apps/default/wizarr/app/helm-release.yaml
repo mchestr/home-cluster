@@ -28,6 +28,7 @@ spec:
     env:
       TZ: ${TZ}
       APP_URL: https://join.${SECRET_CLUSTER_DOMAIN}
+      DISABLE_BUILTIN_AUTH: "true"
 
     service:
       main:
@@ -41,6 +42,7 @@ spec:
         ingressClassName: nginx
         annotations:
           external-dns.home.arpa/enabled: "true"
+          auth.home.arpa/enabled: "true"
           hajimari.io/icon: mdi:invite
           hajimari.io/group: Media Management
         hosts:
