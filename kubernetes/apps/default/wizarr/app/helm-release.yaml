@@ -23,7 +23,7 @@ spec:
   values:
     image:
       repository: ghcr.io/wizarrrr/wizarr
-      tag: 2.1.2@sha256:02fb3e07a22481e43cf498b323b082d6ba627b3a2342bbc37fa13a86d8d5811d
+      tag: 2.1.3@sha256:8d43aa6543ccde76f58188e06eaaddbf8555f8b9a1e19d894d6e6b9b4baccead
 
     env:
       TZ: ${TZ}
