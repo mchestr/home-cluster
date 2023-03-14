@@ -35,7 +35,11 @@ spec:
       [global]
       bdev_enable_discard = true
       bdev_async_discard = true
+
     cephClusterSpec:
+      network:
+        provider: host
+
       resources:
         mgr:
           limits:
