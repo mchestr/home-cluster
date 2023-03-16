@@ -5,7 +5,6 @@ resources:
   # Pre Flux-Kustomizations
   - namespace.yaml
   # Flux-Kustomizations
-  - amd-gpu-plugin/ks.yaml
   - coredns/ks.yaml
   - descheduler/ks.yaml
   - external-dns/ks.yaml
