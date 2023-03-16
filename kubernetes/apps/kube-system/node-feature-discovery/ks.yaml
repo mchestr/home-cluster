@@ -30,7 +30,7 @@ metadata:
     substitution.flux.home.arpa/enabled: "true"
 spec:
   interval: 10m
-  path: ./kubernetes/cluster-0/apps/system/node-feature-discovery/rules
+  path: ./kubernetes/apps/kube-system/node-feature-discovery/rules
   prune: true
   sourceRef:
     kind: GitRepository
