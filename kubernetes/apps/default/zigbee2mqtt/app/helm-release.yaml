@@ -65,15 +65,8 @@ spec:
         hostPath: /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_71500DDD-if01-port0
         hostPathType: CharDevice
 
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: feature.node.kubernetes.io/custom-zigbee
-                  operator: In
-                  values:
-                    - "true"
+    nodeSelector:
+      feature.node.kubernetes.io/zigbee: "true"
 
     securityContext:
       privileged: true

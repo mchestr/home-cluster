@@ -1,0 +1,17 @@
+---
+apiVersion: nfd.k8s-sigs.io/v1alpha1
+kind: NodeFeatureRule
+metadata:
+  name: zwave-device
+spec:
+  rules:
+    - # zWave Device
+      name: zwave
+      labels:
+        feature.node.kubernetes.io/zwave: "true"
+      matchFeatures:
+        - feature: usb.device
+          matchExpressions:
+            class: { op: In, value: ["ff"] }
+            vendor: { op: In, value: ["10c4"] }
+            device: { op: In, value: ["8a2a"] }
