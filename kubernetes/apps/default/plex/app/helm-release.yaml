@@ -81,31 +81,24 @@ spec:
         enabled: true
         type: emptyDir
 
-    # affinity:
-    #   nodeAffinity:
-    #     requiredDuringSchedulingIgnoredDuringExecution:
-    #       nodeSelectorTerms:
-    #         - matchExpressions:
-    #             - key: feature.node.kubernetes.io/custom-intel-gpu
-    #               operator: In
-    #               values:
-    #                 - "true"
+    nodeSelector:
+      intel.feature.node.kubernetes.io/gpu: "true"
 
     resources:
       requests:
-        # gpu.intel.com/i915: 1
+        gpu.intel.com/i915: 1
         cpu: 100m
         memory: 2000Mi
       limits:
-        # gpu.intel.com/i915: 1
+        gpu.intel.com/i915: 1
         memory: 8000Mi
 
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568
-      fsGroup: ${RUN_AS_GROUP}
+      fsGroup: 568
       fsGroupChangePolicy: OnRootMismatch
       supplementalGroups:
         - 44
         - 109
-        - 100
+        - ${RUN_AS_GROUP}
