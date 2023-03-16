@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - cyberpower-ups.yaml
   - google-coral.yaml
+  - intel-gpu.yaml
