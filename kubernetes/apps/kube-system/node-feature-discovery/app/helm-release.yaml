@@ -31,37 +31,9 @@ spec:
     keepHistory: false
   values:
     worker:
-      annotations:
-        configmap.reloader.stakater.com/reload: node-feature-discovery-worker-conf
-      config:
-        core:
-          sources:
-            - custom
-            - pci
-            - usb
-        sources:
-          usb:
-            deviceClassWhitelist:
-              - "02"
-              - "03"
-              - "0e"
-              - "ef"
-              - "fe"
-              - "ff"
-            deviceLabelFields:
-              - "class"
-              - "vendor"
-              - "device"
-          custom:
-            - name: zwave
-              matchOn:
-                - usbId:
-                    class: ["ff"]
-                    vendor: ["10c4"]
-                    device: ["8a2a"]
-            - name: zigbee
-              matchOn:
-                - usbId:
-                    class: ["ff"]
-                    vendor: ["10c4"]
-                    device: ["8a2a"]
+      resources:
+        requests:
+          cpu: 15m
+          memory: 64M
+        limits:
+          memory: 64M
