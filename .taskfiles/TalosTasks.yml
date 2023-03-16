@@ -66,7 +66,7 @@ tasks:
       - task: upgrade
         vars: {NODE: 192.168.1.202, N: 2}
       # Restart nginx, sometimes it has issues...
-      - kubectl rollout restart deployment ingress-nginx-controller
+      - kubectl -n networking rollout restart deployment ingress-nginx-controller
 
   memory:
     desc: Get all nodes memory
