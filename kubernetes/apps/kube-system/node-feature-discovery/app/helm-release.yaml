@@ -82,7 +82,3 @@ spec:
                     class: ["03"]
                     vendor: ["0764"]
                     device: ["0501"]
-            - name: "coral-tpu"
-              matchOn:
-                - usbId:
-                    vendor: ["1a6e", "18d1"]
