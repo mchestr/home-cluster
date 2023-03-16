@@ -28,8 +28,8 @@ spec:
               name: *app
 
     image:
-      repository: docker.io/twinproduction/gatus
-      tag: v5.3.1@sha256:f9e01c0f221f1eb48927438b47e4509e627f94fe33254d9460d8c5d809cb9a34
+      repository: ghcr.io/twin/gatus
+      tag: v5.3.1@sha256:efcabb605b19c9dd49eccf51a5971da43e989040dbd59d061e671e863f7ca47f
 
     env:
       TZ: "${TZ}"
