@@ -28,6 +28,7 @@ resources:
   - node-feature-discovery-charts.yaml
   - piraeus-charts.yaml
   - prometheus-community-charts.yaml
+  - radeonopencompute-charts.yaml
   - rook-ceph-charts.yaml
   - stakater-charts.yaml
   - tf-controller-charts.yaml
