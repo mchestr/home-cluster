@@ -53,11 +53,6 @@ spec:
               - "vendor"
               - "device"
           custom:
-            - name: intel-gpu
-              matchOn:
-                - pciId:
-                    class: ["0300"]
-                    vendor: ["8086"]
             - name: zwave
               matchOn:
                 - usbId:
@@ -70,15 +65,3 @@ spec:
                     class: ["ff"]
                     vendor: ["10c4"]
                     device: ["8a2a"]
-            - name: esp32
-              matchOn:
-                - usbId:
-                    class: ["ff"]
-                    vendor: ["10c4"]
-                    device: ["ea60"]
-            - name: cyberpower-ups
-              matchOn:
-                - usbId:
-                    class: ["03"]
-                    vendor: ["0764"]
-                    device: ["0501"]

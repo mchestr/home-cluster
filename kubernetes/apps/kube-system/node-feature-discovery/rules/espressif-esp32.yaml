@@ -1,0 +1,18 @@
+---
+apiVersion: nfd.k8s-sigs.io/v1alpha1
+kind: NodeFeatureRule
+metadata:
+  name: espressif-esp32-device
+
+spec:
+  rules:
+    - # Espressif ESP32
+      name: espressif.esp32
+      labels:
+        espressif.feature.node.kubernetes.io/esp32: "true"
+      matchFeatures:
+        - feature: usb.device
+          matchExpressions:
+            class: { op: In, value: ["ff"] }
+            vendor: { op: In, value: ["10c4"] }
+            device: { op: In, value: ["ea60"] }
