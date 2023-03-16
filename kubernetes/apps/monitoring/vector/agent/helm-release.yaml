@@ -17,7 +17,7 @@ spec:
       interval: 30m
   values:
     image:
-      repository: timberio/vector
+      repository: ghcr.io/onedr0p/vector
       tag: 0.28.1-debian
 
     role: "Agent"

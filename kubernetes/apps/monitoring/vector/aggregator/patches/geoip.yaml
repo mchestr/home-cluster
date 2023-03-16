@@ -8,7 +8,7 @@ spec:
   values:
     initContainers:
       init-geoip:
-        image: docker.io/maxmindinc/geoipupdate:v4.11
+        image: ghcr.io/maxmind/geoipupdate:v4.11.0
         env:
           - name: GEOIPUPDATE_EDITION_IDS
             value: GeoLite2-City
