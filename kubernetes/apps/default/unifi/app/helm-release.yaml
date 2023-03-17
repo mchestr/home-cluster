@@ -27,7 +27,7 @@ spec:
         reloader.stakater.com/auto: "true"
 
     image:
-      repository: jacobalberty/unifi
+      repository: ghcr.io/jacobalberty/unifi-docker
       tag: v7.3.83
 
     env:
