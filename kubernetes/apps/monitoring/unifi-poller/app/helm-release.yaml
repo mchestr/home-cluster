@@ -30,8 +30,8 @@ spec:
         reloader.stakater.com/auto: "true"
 
     image:
-      repository: golift/unifi-poller
-      tag: 2.1.3
+      repository: ghcr.io/unpoller/unpoller
+      tag: v2.7.11
 
     envFrom:
       - secretRef:
