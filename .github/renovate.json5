@@ -5,7 +5,6 @@
     ':disableRateLimiting',
     ':dependencyDashboard',
     ':semanticCommits',
-    ':enablePreCommit',
     ':automergeDigest',
     ':automergeBranch',
     'github>mchestr/home-cluster//.github/renovate/allowedVersions.json5',
@@ -21,8 +20,6 @@
   requireConfig: 'optional',
   dependencyDashboardTitle: 'Renovate Dashboard',
   suppressNotifications: ['prIgnoreNotification'],
-  rebaseWhen: 'conflicted',
-  commitBodyTable: true,
   'docker-compose': {
     fileMatch: ['ansible/.+/docker-compose.*\\.ya?ml(\\.j2)?$']
   },
