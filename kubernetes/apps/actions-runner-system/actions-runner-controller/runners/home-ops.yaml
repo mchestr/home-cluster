@@ -1,0 +1,45 @@
+---
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: RunnerDeployment
+metadata:
+  name: runner-home-ops
+  namespace: actions-runner-system
+spec:
+  template:
+    spec:
+      image: ghcr.io/actions/actions-runner-controller/actions-runner:v2.299.1-ubuntu-20.04@sha256:69e3b023ecdb34313935952c4375a75414db79f177353123c774290028b3bb3a
+      dockerdWithinRunnerContainer: false
+      ephemeral: true
+      repository: mchestr/home-cluster
+      containers:
+        - name: docker
+          image: docker:23.0.0-beta.1-dind@sha256:e8fe2e72b5714832e8cbfe3ecbcd830d51c6a91ad1476a322861da969eea8792
+      labels:
+        - self-hosted
+      volumeMounts:
+        - name: cache-volume
+          mountPath: /cache
+      volumes:
+        - name: cache-volume
+          persistentVolumeClaim:
+            claimName: actions-runner-controller-cache
+---
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: HorizontalRunnerAutoscaler
+metadata:
+  name: home-ops-autoscaler
+  namespace: actions-runner-system
+spec:
+  scaleTargetRef:
+    name: runner-home-ops
+  scaleUpTriggers:
+    - githubEvent:
+        workflowJob: {}
+      amount: 1
+      duration: "1m"
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+    - type: TotalNumberOfQueuedAndInProgressWorkflowRuns
+      repositoryNames:
+        - mchestr/home-cluster
