@@ -10,7 +10,7 @@ vars:
   TALOS_VERSION: "v1.3.6"
   # renovate: datasource=github-releases depName=budimanjojo/talhelper
   TALHELPER_VERSION: "v1.6.2"
-  # renovate: datasource=github-releases depName=kubernetes/kubernetes
+  # renovate: datasource=github-releases depName=siderolabs/kubelet
   KUBERNETES_VERSION: "v1.26.2"
 
 tasks:
@@ -39,6 +39,8 @@ tasks:
   upgrade:k8s:
     dir: talos
     desc: Upgrade Kubernetes to latest version
+    preconditions:
+      - docker pull ghcr.io/siderolabs/kubelet:{{ .KUBERNETES_VERSION }}
     cmds:
       - talosctl --nodes 192.168.1.200 upgrade-k8s --to {{ .KUBERNETES_VERSION }}
 
