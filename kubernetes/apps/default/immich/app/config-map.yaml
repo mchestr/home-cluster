@@ -21,6 +21,7 @@ data:
   IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning.default.svc.cluster.local:3003
   UPLOAD_LOCATION: /usr/src/app/upload
   TYPESENSE_HOST: immich-typesense.default.svc.cluster.local
+  TYPESENSE_DATA_DIR: /config
   # OAUTH_ENABLED: "true"
   # OAUTH_ISSUER_URL: https://auth.${SECRET_CLUSTER_DOMAIN}
   # OAUTH_CLIENT_ID: immich
