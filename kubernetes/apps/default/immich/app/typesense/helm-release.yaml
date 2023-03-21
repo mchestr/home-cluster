@@ -59,7 +59,7 @@ spec:
       startup:
         enabled: false
     volumeClaimTemplates:
-      - name: config
+      - name: data
         mountPath: /data
         accessMode: ReadWriteOnce
         size: 1Gi
