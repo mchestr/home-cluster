@@ -10,9 +10,8 @@ clusterPodNets:
 clusterSvcNets:
   - 10.96.0.0/12
 cniConfig:
-  name: custom
-  urls:
-    - "https://raw.githubusercontent.com/mchestr/home-cluster/main/talos/cni/cilium.yaml"
+  name: none
+
 nodes:
   - hostname: k8s-0
     ipAddress: 192.168.1.200
@@ -57,8 +56,6 @@ controlPlane:
         registries:
           service:
             disabled: true
-      extraManifests:
-        - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/v0.6.3/deploy/ha-install.yaml
       proxy:
         disabled: true
         extraArgs:
