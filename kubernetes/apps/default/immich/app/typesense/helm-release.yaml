@@ -60,7 +60,7 @@ spec:
         enabled: false
     volumeClaimTemplates:
       - name: config
-        mountPath: /config
+        mountPath: /data
         accessMode: ReadWriteOnce
         size: 1Gi
         storageClass: ceph-block
