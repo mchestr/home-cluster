@@ -4,6 +4,7 @@ resources:
   - machine-learning
   - microservices
   - server
+  - typesense
   - web
   - config-map.yaml
   - external-secret.yaml
