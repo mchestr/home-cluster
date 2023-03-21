@@ -23,6 +23,7 @@ spec:
       retries: 5
   dependsOn:
     - name: immich-typesense
+      namespace: default
 
   values:
     controller:
