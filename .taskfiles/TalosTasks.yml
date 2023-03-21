@@ -24,6 +24,11 @@ tasks:
       - task: generate
       - talosctl --talosconfig=talos/clusterconfig/talosconfig kubeconfig --nodes 192.168.1.200 $KUBECONFIG
 
+  install:cni:
+    desc: Install CNI and cert approver helm releases
+    cmds:
+      - kubectl kustomize talos --enable-helm | kubectl apply -f -
+
   generate:
     desc: Generate Talos machine configurations
     dir: talos
