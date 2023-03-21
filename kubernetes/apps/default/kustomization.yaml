@@ -37,4 +37,4 @@ resources:
   - unpackerr/ks.yaml
   - wizarr/ks.yaml
   - zigbee2mqtt/ks.yaml
-  - zwave-js-ui/ks.yam
+  - zwave-js-ui/ks.yaml
