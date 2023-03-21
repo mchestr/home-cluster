@@ -1,24 +1,30 @@
 ---
 autoDirectNodeRoutes: true
-bgp:
-  announce:
-    loadbalancerIP: true
-  enabled: false
-containerRuntime:
-  integration: containerd
-endpointRoutes:
-  enabled: true
-hubble:
-  enabled: false
-ipam:
-  mode: kubernetes
 ipv4NativeRoutingCIDR: 10.244.0.0/16
 k8sServiceHost: 192.168.1.254
 k8sServicePort: 6443
 kubeProxyReplacement: strict
+hubble:
+  enabled: false
+
+bgp:
+  announce:
+    loadbalancerIP: true
+  enabled: false
+
+containerRuntime:
+  integration: containerd
+
+endpointRoutes:
+  enabled: true
+
+ipam:
+  mode: kubernetes
+
 loadBalancer:
   algorithm: maglev
   mode: dsr
+
 localRedirectPolicy: true
 
 cgroup:
