@@ -9,7 +9,6 @@ resources:
   - appdaemon/ks.yaml
   - authelia/ks.yaml
   - bazarr/ks.yaml
-  - changedetection/ks.yaml
   - cloudnative-pg/ks.yaml
   - emqx/ks.yaml
   - esphome/ks.yaml
