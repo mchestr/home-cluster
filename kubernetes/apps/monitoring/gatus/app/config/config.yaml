@@ -62,10 +62,6 @@ endpoints:
     <<: *default-authelia-endpoint
     url: https://bazarr.${CLUSTER_DOMAIN}
 
-  - name: Change Detection
-    <<: *default-authelia-endpoint
-    url: https://changedetection.${CLUSTER_DOMAIN}
-
   - name: EMQX
     <<: *default-authelia-endpoint
     url: https://emqx.${CLUSTER_DOMAIN}
