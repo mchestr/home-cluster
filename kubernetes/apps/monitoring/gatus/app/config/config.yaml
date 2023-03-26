@@ -178,7 +178,7 @@ endpoints:
     url: https://join.${CLUSTER_DOMAIN}/j/
     conditions:
       - "[STATUS] == 404"
-      - "[RESPONSE_TIME] < 500"
+      - "[RESPONSE_TIME] < 1000"
 
   - name: Zigbee
     <<: *default-authelia-endpoint
