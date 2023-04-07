@@ -43,7 +43,6 @@
         'ghcr.io/esphome/esphome',
         'ghcr.io/onedr0p/bazarr',
         'ghcr.io/onedr0p/plex',
-        'ghcr.io/onedr0p/prowlarr-nightly',
         'ghcr.io/onedr0p/qbittorrent',
         'ghcr.io/onedr0p/radarr',
         'ghcr.io/onedr0p/recyclarr',
