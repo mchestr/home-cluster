@@ -38,7 +38,7 @@ spec:
       # TODO use tag when one available with https://github.com/authelia/authelia/pull/4515
       # renovate: datasource=github-releases depName=authelia/authelia
       # tag: "v4.37.5"
-      tag: master@sha256:d84e80b9a0a0ec99c85f43b70df0f7aeae4ee78cd2195d0dc94857b919fa3f4d
+      tag: master@sha256:4f4dbcb9244993a0106dee23aa0e68e7db99b9ea6dd78b72fe882a6d286eb37f
 
     args: ["--config", "/config/configuration.yml", "--config.experimental.filters", "expand-env"]
 
