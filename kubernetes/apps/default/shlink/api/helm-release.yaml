@@ -30,7 +30,7 @@ spec:
 
     image:
       repository: ghcr.io/shlinkio/shlink
-      tag: 3.5.3
+      tag: 3.5.4
 
     initContainers:
       init-db:
