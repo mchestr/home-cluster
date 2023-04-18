@@ -104,7 +104,7 @@ spec:
     additionalContainers:
       metrics:
         name: metrics
-        image: ghcr.io/onedr0p/exportarr:v1.3.0
+        image: ghcr.io/onedr0p/exportarr:v1.3.1
         imagePullPolicy: Always
         args: ['s']
         env:
