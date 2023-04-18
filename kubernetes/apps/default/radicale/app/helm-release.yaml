@@ -23,7 +23,7 @@ spec:
 
     image:
       repository: tomsquest/docker-radicale
-      tag: 3.1.8.1
+      tag: 3.1.8.2
 
     service:
       main:
