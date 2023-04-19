@@ -31,7 +31,7 @@ spec:
 
     image:
       repository: ghcr.io/unpoller/unpoller
-      tag: v2.7.12
+      tag: v2.7.13
 
     envFrom:
       - secretRef:
