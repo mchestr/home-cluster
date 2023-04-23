@@ -72,6 +72,12 @@ spec:
         mountPath: /config/users
         readOnly: true
 
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
+
     resources:
       requests:
         cpu: 15m
