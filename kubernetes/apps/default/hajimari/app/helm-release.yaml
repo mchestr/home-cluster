@@ -94,10 +94,10 @@ spec:
           apps:
             - name: Router
               icon: mdi:router
-              url: https://dns.${SECRET_CLUSTER_DOMAIN}:8443
-            - name: AdGuardHome
-              icon: simple-icons:adguard
               url: https://dns.${SECRET_CLUSTER_DOMAIN}
+            - name: PiKVM
+              icon: material-symbols:keyboard
+              url: https://pikvm.${SECRET_CLUSTER_DOMAIN}
         - group: home
           apps:
             - name: Mainsail
