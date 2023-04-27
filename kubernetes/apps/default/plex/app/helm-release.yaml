@@ -43,7 +43,7 @@ spec:
         ingressClassName: nginx
         annotations:
           # Override default custom-http-errors or signin redirect breaks
-          nginx.ingress.kubernetes.io/custom-http-errors: 400,403,404,500,502,503,504
+          nginx.ingress.kubernetes.io/custom-http-errors: 500,502,503,504
           external-dns.home.arpa/enabled: "true"
           hajimari.io/icon: mdi:plex
           hajimari.io/group: home
