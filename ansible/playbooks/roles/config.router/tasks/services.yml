@@ -5,7 +5,7 @@
   community.network.edgeos_config:
     lines:
       - "{{ prefix }} http-port 80"
-      - "{{ prefix }} https-port 8443"
+      - "{{ prefix }} https-port 443"
       - "{{ prefix }} listen-address 192.168.1.1"
       - "{{ prefix }} older-ciphers disable"
 - name: Configure mDNS
