@@ -18,6 +18,7 @@
     index_var: index
   community.network.edgeos_config:
     lines:
+      - "delete service dns dynamic interface eth0 service custom-cloudflare{{ index }}"
       - "{{ prefix }} custom-cloudflare{{ index }} host-name {{ item.1 }}.{{ item.0.domain }}"
       - "{{ prefix }} custom-cloudflare{{ index }} login {{ cloudflare_email }}"
       - "{{ prefix }} custom-cloudflare{{ index }} password {{ cloudflare_password }}"
@@ -28,13 +29,16 @@
     prefix: set service dns forwarding
   community.network.edgeos_config:
     lines:
+      - "delete service dns forwarding"
       - "{{ prefix }} system"
       - "{{ prefix }} cache-size 500"
       - "{{ prefix }} listen-on switch0.10"
       - "{{ prefix }} listen-on switch0.20"
       - "{{ prefix }} listen-on switch0.1"
-      - "{{ prefix }} options port=5353"
+      - "{{ prefix }} options port=53"
       - "{{ prefix }} options address=/dns.{{ cluster_domain }}/192.168.1.1"
+      - "{{ prefix }} options server=/status.{{ cluster_domain }}/1.1.1.1"
+      - "{{ prefix }} options server=/{{ cluster_domain }}/192.168.1.220"
 
 # TODO: make this better
 - name: Configure lochnas Forwarding
@@ -54,3 +58,12 @@
   community.network.edgeos_config:
     lines:
       - "{{ prefix }} options address=/mainsail.{{ cluster_domain }}/{{ item.value.ip_address }}"
+
+- name: Configure PiKVM Forwarding
+  vars:
+    prefix: set service dns forwarding
+  loop: "{{ lookup('ansible.builtin.dict', static_lan_ips) }}"
+  when: "'pikvm' in item.key"
+  community.network.edgeos_config:
+    lines:
+      - "{{ prefix }} options address=/pikvm.{{ cluster_domain }}/{{ item.value.ip_address }}"
