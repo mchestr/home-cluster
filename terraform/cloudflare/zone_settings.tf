@@ -48,7 +48,7 @@ resource "cloudflare_zone_settings_override" "wordpress_0_cloudflare_settings" {
   zone_id = lookup(data.cloudflare_zones.wordpress_0_domain.zones[0], "id")
   settings {
     # /ssl-tls
-    ssl = "full"
+    ssl = "strict"
     # /ssl-tls/edge-certificates
     always_use_https         = "on"
     min_tls_version          = "1.2"
