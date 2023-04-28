@@ -14,6 +14,7 @@ vars:
   WIPE_JOB_TEMPLATE: "{{.PROJECT_DIR}}/.taskfiles/VolSync/WipeJob.tmpl.yaml"
   WAIT_FOR_JOB_SCRIPT: "{{.PROJECT_DIR}}/.taskfiles/VolSync/wait-for-job.sh"
   LIST_JOB_TEMPLATE: "{{.PROJECT_DIR}}/.taskfiles/VolSync/ListJob.tmpl.yaml"
+  UNLOCK_JOB_TEMPLATE: "{{.PROJECT_DIR}}/.taskfiles/VolSync/UnlockJob.tmpl.yaml"
   TS: '{{now | date "150405"}}'
 
 tasks:
@@ -39,6 +40,23 @@ tasks:
     desc: list all ReplicationSource CRD objects
     cmds:
       - kubectl get replicationsource -A
+
+  unlock:
+    desc: Unlocks restic repository for a given ReplicationSource (ex. task volsync:unlock RSRC=plex [namespace=default])
+    silent: true
+    cmds:
+      - envsubst < <(cat {{.UNLOCK_JOB_TEMPLATE}}) | kubectl apply -f -
+      - bash {{.waitForJobScript}} unlock-{{.RSRC}}-{{.TS}} {{.namespace}}
+      - kubectl -n {{.NAMESPACE}} wait job/unlock-{{.RSRC}}-{{.TS}} --for condition=complete --timeout=1m
+      - kubectl -n {{.NAMESPACE}} logs job/unlock-{{.RSRC}}-{{.TS}} --container unlock
+      - kubectl -n {{.NAMESPACE}} delete job unlock-{{.RSRC}}-{{.TS}}
+    vars:
+      RSRC: '{{ or .RSRC (fail "ReplicationSource `RSRC` is required") }}'
+      NAMESPACE: '{{.NAMESPACE | default "default"}}'
+    env: *task-vars
+    preconditions:
+      - sh: test -f {{.WAIT_FOR_JOB_SCRIPT}}
+      - sh: test -f {{.UNLOCK_JOB_TEMPLATE}}
 
   # To run backup jobs in parallel for all replicationsources:
   #  - kubectl get replicationsources --all-namespaces --no-headers | awk '{print $2, $1}' | xargs --max-procs=4 -l bash -c 'task volsync:snapshot RSRC=$0 NAMESPACE=$1'
