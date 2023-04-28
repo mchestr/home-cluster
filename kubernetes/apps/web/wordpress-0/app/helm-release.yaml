@@ -40,13 +40,6 @@ spec:
       enabled: true
       ingressClassName: nginx
       hostname: &host ${SECRET_WORDPRESS_DOMAIN_0}
-      extraHosts:
-        - name: www.${SECRET_WORDPRESS_DOMAIN_0}
-          path: /
-      extraTls:
-        - hosts:
-            - www.${SECRET_WORDPRESS_DOMAIN_0}
-          secretName: ${SECRET_WORDPRESS_DOMAIN_0}-tls
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-production
         nginx.ingress.kubernetes.io/custom-http-errors: 500,502,503,504
@@ -55,6 +48,7 @@ spec:
         hajimari.io/group: web
         hajimari.io/appName: ${SECRET_WORDPRESS_DOMAIN_0}
       tls: true
+      tlsWwwPrefix: true
 
     persistence:
       enabled: true
