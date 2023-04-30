@@ -259,7 +259,7 @@ spec:
             metrics_path: /api/export/prometheus/metrics
             basic_auth:
               username: admin
-              password: 1nternalUseOnly
+              password: ${PIKVM_ADMIN_PASSWORD}
             static_configs:
               - targets:
                   - pikvm.${SECRET_CLUSTER_DOMAIN}
