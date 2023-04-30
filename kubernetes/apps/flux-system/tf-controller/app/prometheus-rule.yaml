@@ -10,7 +10,7 @@ spec:
       rules:
         - alert: TerraformNotReady
           expr: |
-            gotk_reconcile_condition{kind="Terraform",status!="True"} > 0
+            gotk_reconcile_condition{kind="Terraform",status!="True",type="Ready"} > 0
           for: 5m
           labels:
             severity: critical
