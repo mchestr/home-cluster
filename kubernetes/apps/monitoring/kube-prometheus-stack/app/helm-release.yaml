@@ -251,19 +251,15 @@ spec:
       prometheusSpec:
         additionalScrapeConfigs:
           - job_name: node-exporter
-            scrape_interval: 1m
-            scrape_timeout: 10s
-            honor_timestamps: true
-          - job_name: node-exporter-http
-            scrape_interval: 1m
-            scrape_timeout: 10s
-            honor_timestamps: true
             static_configs:
               - targets:
                   - lochnas.${SECRET_CLUSTER_DOMAIN}:9100
-            relabel_configs:
-              - target_label: job
-                replacement: node-exporter
+                  - pikvm.${SECRET_CLUSTER_DOMAIN}:9100
+          - job_name: pikvm
+            metrics_path: /api/export/prometheus/metrics
+            static_configs:
+              - targets:
+                  - pikvm.${SECRET_CLUSTER_DOMAIN}
         enableAdminAPI: true
         externalLabels:
           cluster: cluster-0
