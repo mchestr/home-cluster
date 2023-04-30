@@ -28,7 +28,7 @@ spec:
 
     image:
       repository: ghcr.io/onedr0p/unpackerr
-      tag: 0.11.1@sha256:804c1027cc8a42d392b9f0fc4a1aa364a65c1c4e1b95655ea2fba23275806f77
+      tag: 0.11.2@sha256:50ff008114e3356dd4107cf47ccbfcac1157b559170ee21393b220245f6e934e
 
     env:
       TZ: ${TZ}
