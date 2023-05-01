@@ -49,6 +49,9 @@ spec:
         hajimari.io/appName: ${SECRET_WORDPRESS_DOMAIN_0}
       tls: true
       tlsWwwPrefix: true
+      extraHosts:
+        - name: www.${SECRET_WORDPRESS_DOMAIN_0}
+          path: /
 
     persistence:
       enabled: true
