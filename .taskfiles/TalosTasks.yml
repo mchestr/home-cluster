@@ -16,7 +16,7 @@ vars:
 tasks:
 
   init:
-    desc: Init talosctl and grab kubeconfig
+    desc: Init talosctl and grab kubeconfig (task talos:init)
     cmds:
       - mkdir config || true
       - sudo curl -Lo /usr/local/bin/talosctl https://github.com/siderolabs/talos/releases/download/{{.TALOS_VERSION}}/talosctl-$(uname -s | tr "[:upper:]" "[:lower:]")-$(uname -m) && sudo chmod +x /usr/local/bin/talosctl
@@ -25,42 +25,21 @@ tasks:
       - talosctl --talosconfig=talos/clusterconfig/talosconfig kubeconfig --nodes 192.168.1.200 $KUBECONFIG
 
   install:cni:
-    desc: Install CNI and cert approver helm releases
+    desc: Install CNI and cert approver helm releases (task talos:cni)
     cmds:
       - kubectl kustomize talos --enable-helm | kubectl apply -f -
 
-  generate:
-    desc: Generate Talos machine configurations
-    dir: talos
-    cmds:
-      - talhelper genconfig
-
-  apply:
-    desc: Apply Talos config to a specific node (task talos:apply N=0)
-    dir: talos
-    cmds:
-      - talosctl apply-config --nodes {{.NODE}} --file clusterconfig/home-cluster-k8s-{{.N}}.yaml {{.CLI_ARGS}}
-
   upgrade:k8s:
     dir: talos
-    desc: Upgrade Kubernetes to latest version
+    desc: Upgrade Kubernetes to {{ .KUBERNETES_VERSION }} (task talos:upgrade:k8s)
     cmds:
       - talosctl --nodes 192.168.1.200 upgrade-k8s --to {{ .KUBERNETES_VERSION }}
 
-  upgrade:
-    desc: Stage the latest updates for the node (task talos:upgrade N=0), then do the upgrade.
+  upgrade:all:
+    desc: Upgrade all nodes to Talos version {{ .TALOS_VERSION }} (task talos:upgrade:all)
     dir: talos
     cmds:
       - task: generate
-      - task: _wait_for_health
-        vars: {TIMEOUT: 10m}
-      - talosctl apply-config --nodes {{ .NODE }} --file clusterconfig/home-cluster-k8s-{{ .N }}.yaml {{ .CLI_ARGS }}
-      - talosctl upgrade --nodes {{ .NODE }} --image ghcr.io/siderolabs/installer:{{ .TALOS_VERSION }}
-
-  upgrade:all:
-    desc: Upgrade Talos OS to latest
-    dir: talos
-    cmds:
       # Upgrade control-plane then workers, ensure cluster is healthy before each upgrade.
       - task: upgrade
         vars: {NODE: 192.168.1.203, N: 0}
@@ -73,49 +52,42 @@ tasks:
       # Restart nginx, sometimes it has issues...
       - kubectl -n networking rollout restart deployment ingress-nginx-controller
 
-  memory:
-    desc: Get all nodes memory
+  generate:
+    internal: True
+    desc: Generate Talos machine configurations (task talos:generate)
     dir: talos
     cmds:
-      - talosctl --nodes {{.NODES}} memory {{.CLI_ARGS}}
+      - talhelper genconfig
+    sources:
+      - talconfig.yaml
+      - talenv.sops.yaml
+      - talenv.yaml
+      - talsecret.sops.yaml
+    generates:
+      - clusterconfig/*.yaml
+      - clusterconfig/talosconfig
 
-  stats:
-    desc: Get all nodes stats
+  apply:
+    internal: True
+    desc: Apply Talos config to a specific node (task talos:apply N=0)
     dir: talos
     cmds:
-      - talosctl --nodes {{.NODES}} stats {{.CLI_ARGS}}
+      - task: generate
+      - talosctl apply-config --nodes {{ .NODE }} --file clusterconfig/home-cluster-k8s-{{ .N }}.yaml {{ .CLI_ARGS }}
 
-  time:
-    desc: Get all nodes time
+  upgrade:
+    internal: True
+    desc: Upgrade a single node to Talos version {{ .TALOS_VERSION }} (task talos:upgrade N=0)
     dir: talos
     cmds:
-      - talosctl --nodes {{.NODES}} time {{.CLI_ARGS}}
+      - task: wait_for_health
+        vars: {TIMEOUT: 10m}
+      - task: apply
+        vars: {NODE: "{{ .NODE }}", N: "{{ .N }}", CLI_ARGS: "-m staged"}
+      - talosctl upgrade --nodes {{ .NODE }} --image ghcr.io/siderolabs/installer:{{ .TALOS_VERSION }}
 
-  services:
-    desc: Get all nodes services
-    dir: talos
-    cmds:
-      - talosctl --nodes {{.NODES}} services {{.CLI_ARGS}}
-
-  health:
-    desc: Get cluster health
-    dir: talos
-    cmds:
-      - talosctl --nodes {{.NODE}} health {{.CLI_ARGS}}
-
-  version:
-    desc: Get cluster talos version
-    dir: talos
-    cmds:
-      - talosctl --nodes {{.NODES}} version {{.CLI_ARGS}}
-
-  dashboard:
-    desc: Get all nodes dashboard
-    dir: talos
-    cmds:
-      - talosctl --nodes {{.NODE}} dashboard {{.CLI_ARGS}}
-
-  _wait_for_health:
+  wait_for_health:
+    internal: True
     desc: Wait for services in cluster to be healthy
     cmds:
       # Ensure CephCluster is healthy
