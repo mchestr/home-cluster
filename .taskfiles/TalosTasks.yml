@@ -3,7 +3,6 @@ version: "3"
 
 vars:
   N: '{{ .N | default "0" }}'
-  NODES: '{{.NODES | default "192.168.1.200,192.168.1.201,192.168.1.202,192.168.1.203"}}'
   NODE:
     sh: 'echo ${NODE:-192.168.1.20{{ .N }}}'
   # renovate: datasource=github-releases depName=siderolabs/talos
