@@ -68,3 +68,24 @@ cameras:
           input_args: preset-rtsp-restream
           roles:
             - detect
+  doorbell:
+    ffmpeg:
+      input_args:
+        - -rtsp_transport
+        - udp
+        - -fflags
+        - nobuffer
+        - -flags
+        - low_delay
+        - -strict
+        - experimental
+        - -fflags
+        - +genpts+discardcorrupt
+        - -use_wallclock_as_timestamps
+        - 1
+      inputs:
+        - path: rtsp://nest-rtsp.default.svc.cluster.local:8554/doorbell
+          roles:
+            - detect
+            - rtmp
+            - record
