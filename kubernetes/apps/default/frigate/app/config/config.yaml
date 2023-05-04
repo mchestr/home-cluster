@@ -83,9 +83,10 @@ cameras:
         - +genpts+discardcorrupt
         - -use_wallclock_as_timestamps
         - 1
+      output_args:
+        detect: -vf transpose=1 -f rawvideo -pix_fmt yuv420p
       inputs:
         - path: rtsp://nest-rtsp.default.svc.cluster.local:8554/doorbell
           roles:
             - detect
-            - rtmp
             - record
