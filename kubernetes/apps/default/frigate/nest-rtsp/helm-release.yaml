@@ -54,6 +54,7 @@ spec:
         enabled: true
         ingressClassName: nginx
         annotations:
+          auth.home.arpa/enabled: "true"
           hajimari.io/icon: mdi:google
           hajimari.io/group: system management
         hosts:
