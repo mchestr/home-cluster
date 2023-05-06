@@ -29,7 +29,7 @@ spec:
 
     image:
       repository: ghcr.io/twin/gatus
-      tag: v5.3.2@sha256:a0afd24269f3fe880e20ecd8626e31116a021bb0bdcba94882dc4ba7eac8f438
+      tag: v5.4.0@sha256:04ef57b6e0a113b6d09f5d787efdd08e6d51f6cbc470cf1313d349a163568dc9
 
     env:
       TZ: "${TZ}"
