@@ -61,8 +61,6 @@ spec:
               url: https://github.com/mchestr/appdaemon
         - group: k8s@Home
           bookmarks:
-            - name: Organization
-              url: https://github.com/k8s-at-home
             - name: Search Charts
               url: https://nanne.dev/k8s-at-home-search/
         - group: Gaming
