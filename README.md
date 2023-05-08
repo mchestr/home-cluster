@@ -62,15 +62,19 @@ This Git repository contains the following directories under [kubernetes](./kube
 
 My mash-mash setup of random hardware I managed to acquire. I also have a few SBC RaspberryPi/ODROIDs lying around, but haven't had a lot of good luck running k3s on them, so sticking to amd64 based machines for now.
 
-| Device                                                | Count | OS Disk Size  | Data Disk Size       | Ram  | Operating System | Purpose                           |
-|-------------------------------------------------------|-------|---------------|----------------------|------|------------------|-----------------------------------|
-| HP EliteDesk 800 G1                                   | 1     | 512GB SSD     | 512GB                | 8GB  | Talos            | control-plane                     |
-| HP Elite Desk 800 G3                                  | 2     | 256/512GB SSD | 512GB                | 16GB | Talos            | control-plane                     |
-| i5-2500K/R7 370 (old repurposed gaming computer)      | 1     | 120GB SSD     | N/A                  | 24GB | Talos            | worker                            |
-| Synology DS920+                                       | 1     | N/A           | 2x8TB & 2x4TB        | 20GB | DSM 7.1.1        | NAS                               |
-| CyberPower CP1500AVRLCD                               | 1     | N/A           | N/A                  | N/A  | N/A              | UPS                               |
-| Ubiquiti EdgeRouter 10X                               | 1     | N/A           | N/A                  | 512MB| EdgeOS           | Router                            |
-| Ubiquiti UAP-AC-Lite)                                 | 1     | N/A           | N/A                  | N/A  | N/A              | WiFi AP                           |
+| Device                                                | Count | OS Disk Size  | Data Disk Size       | Ram     | Operating System | Purpose           |
+|-------------------------------------------------------|-------|---------------|----------------------|---------|------------------|-------------------|
+| HP EliteDesk 800 G1                                   | 1     | 512GB SSD     | 512GB                | 8GB     | Talos            | control-plane     |
+| HP EliteDesk 800 G3                                   | 2     | 256/512GB SSD | 512GB                | 16GB    | Talos            | control-plane     |
+| HP EliteDesk 800 G4                                   | 2     | 256 SSD       | 256GB                | 16/32GB | Talos            | worker            |
+| i5-2500K/R7 370 (old repurposed gaming computer)      | 1     | 120GB SSD     | N/A                  | 24GB    | Talos            | worker            |
+| Synology DS920+                                       | 1     | N/A           | 2x8TB & 2x4TB        | 20GB    | DSM 7.1.1        | NAS               |
+| CyberPower CP1500AVRLCD                               | 1     | N/A           | N/A                  | N/A     | N/A              | UPS               |
+| Ubiquiti EdgeRouter 10X                               | 1     | N/A           | N/A                  | 512MB   | EdgeOS           | Router            |
+| Ubiquiti UAP-AC-Lite)                                 | 1     | N/A           | N/A                  | N/A     | N/A              | WiFi AP           |
+| PiKVM V4 Mini                                         | 1     | N/A           | N/A                  | N/A     | PiKVM            | KVM               |
+| TESmart HDMI KVM Switch 8 Ports                       | 1     | N/A           | N/A                  | N/A     | N/A              | KVM Switch        |
+| TP-Link TL-SG1024D 24 Port 1Gbps Switch               | 1     | N/A           | N/A                  | N/A     | N/A              | Network Switch    |
 
 ---
 
