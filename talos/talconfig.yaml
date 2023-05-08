@@ -37,6 +37,18 @@ nodes:
     controlPlane: true
     disableSearchDomain: true
 
+  - hostname: k8s-4
+    ipAddress: 192.168.1.204
+    installDisk: /dev/sda
+    controlPlane: false
+    disableSearchDomain: true
+
+  - hostname: k8s-5
+    ipAddress: 192.168.1.205
+    installDisk: /dev/sda
+    controlPlane: false
+    disableSearchDomain: true
+
 controlPlane:
   inlinePatch:
     cluster:
