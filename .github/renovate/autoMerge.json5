@@ -59,7 +59,7 @@
         'ghcr.io/onedr0p/radarr',
         'ghcr.io/onedr0p/sonarr',
         'ghcr.io/onedr0p/sonarr-develop',
-        'ghcr.io/onedr0p/prowlarr-nightly'
+        'ghcr.io/onedr0p/prowlarr-nightly',
         'ghcr.io/onedr0p/tautulli',
         'ghcr.io/sct/overseerr',
         'ghcr.io/wizarrrr/wizarr',
