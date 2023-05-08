@@ -11,3 +11,7 @@ wake_on_lan:
     delay: 0
   - mac: 00:25:22:B2:B4:F4
     delay: 0
+  - mac: e4:e7:49:52:fc:c2
+    delay: 0
+  - mac: e4:e7:49:52:7d:bb
+    delay: 0

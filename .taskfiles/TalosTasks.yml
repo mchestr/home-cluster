@@ -49,6 +49,10 @@ tasks:
       # workers
       - task: upgrade
         vars: {NODE: 192.168.1.202, N: 2}
+      - task: upgrade
+        vars: {NODE: 192.168.1.204, N: 4}
+      - task: upgrade
+        vars: {NODE: 192.168.1.205, N: 5}
       # Restart nginx, sometimes it has issues...
       - kubectl -n networking rollout restart deployment ingress-nginx-controller
 
@@ -68,7 +72,6 @@ tasks:
       - clusterconfig/talosconfig
 
   apply:
-    internal: True
     desc: Apply Talos config to a specific node (task talos:apply N=0)
     dir: talos
     cmds:
@@ -79,6 +82,8 @@ tasks:
     internal: True
     desc: Upgrade a single node to Talos version {{ .TALOS_VERSION }} (task talos:upgrade N=0)
     dir: talos
+    status:
+      - talosctl version --nodes {{ .NODE }} --short | grep 'Tag.*{{ .TALOS_VERSION }}'
     cmds:
       - task: wait_for_health
         vars: {TIMEOUT: 10m}
