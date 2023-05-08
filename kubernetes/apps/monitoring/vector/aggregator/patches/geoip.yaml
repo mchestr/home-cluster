@@ -8,7 +8,7 @@ spec:
   values:
     initContainers:
       init-geoip:
-        image: ghcr.io/maxmind/geoipupdate:v5.1.0
+        image: ghcr.io/maxmind/geoipupdate:v5.1.1
         env:
           - name: GEOIPUPDATE_EDITION_IDS
             value: GeoLite2-City
