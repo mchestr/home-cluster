@@ -63,7 +63,7 @@ endpoints:
     url: https://bazarr.${CLUSTER_DOMAIN}
 
   - name: EMQX
-    <<: *default-authelia-endpoint
+    <<: *default-endpoint
     url: https://emqx.${CLUSTER_DOMAIN}
 
   - name: ESPHome
