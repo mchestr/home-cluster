@@ -183,6 +183,11 @@ spec:
           gnetId: 14371
           revision: 1
           datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/17446-emqx
+        emqx:
+          gnetId: 17446
+          revision: 1
+          datasource: Prometheus
 
     sidecar:
       datasources:
