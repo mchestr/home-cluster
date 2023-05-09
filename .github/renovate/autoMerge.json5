@@ -47,7 +47,7 @@
         'ghcr.io/twin/gatus',
         'ghcr.io/wizarrrr/wizarr',
       ],
-      schedule: ['before 5am'],
+      schedule: ['after 2am and before 6am'],
       stabilityDays: 1,
     },
   ]
