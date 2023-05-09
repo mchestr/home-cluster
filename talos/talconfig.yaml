@@ -171,3 +171,10 @@ worker:
           - interface: eth0
             mtu: 0
             dhcp: true
+
+  patches:
+    - |-
+      - op: add
+        path: /machine/nodeLabels
+        value:
+          kubernetes.io/role: worker
