@@ -187,7 +187,9 @@ spec:
         emqx:
           gnetId: 17446
           revision: 1
-          datasource: Prometheus
+          datasource:
+            - name: DS_EMQX_PROMETHEUS
+              value: Prometheus
 
     sidecar:
       datasources:
