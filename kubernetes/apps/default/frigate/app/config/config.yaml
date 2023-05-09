@@ -58,6 +58,9 @@ go2rtc:
 
 cameras:
   living_room:
+    detect:
+      width: 2560
+      height: 1920
     ffmpeg:
       inputs:
         - path: rtsp://127.0.0.1:8554/living_room?video=copy&audio=aac
@@ -69,6 +72,9 @@ cameras:
           roles:
             - detect
   doorbell:
+    detect:
+      width: 640
+      height: 480
     ffmpeg:
       input_args:
         - -rtsp_transport
