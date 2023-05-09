@@ -9,7 +9,7 @@ spec:
   url: oci://ghcr.io/fluxcd/flux-manifests
   ref:
     # renovate: datasource=github-releases depName=fluxcd/flux2
-    tag: "v2.0.0-rc.1"
+    tag: "v2.0.0-rc.2"
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
