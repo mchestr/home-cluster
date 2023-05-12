@@ -1,5 +1,5 @@
 resource "cloudflare_zone_settings_override" "cloudflare_settings" {
-  zone_id = lookup(data.cloudflare_zones.domain.zones[0], "id")
+  zone_id = data.cloudflare_zone.domain.id
   settings {
     # /ssl-tls
     ssl = "strict"
@@ -45,7 +45,7 @@ resource "cloudflare_zone_settings_override" "cloudflare_settings" {
   }
 }
 resource "cloudflare_zone_settings_override" "wordpress_0_cloudflare_settings" {
-  zone_id = lookup(data.cloudflare_zones.wordpress_0_domain.zones[0], "id")
+  zone_id = data.cloudflare_zone.wordpress_0_domain.id
   settings {
     # /ssl-tls
     ssl = "strict"
