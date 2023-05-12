@@ -16,6 +16,7 @@ resource "cloudflare_tunnel_config" "uptime-kuma-config" {
       no_happy_eyeballs        = false
       keep_alive_connections   = 1024
       keep_alive_timeout       = "1m0s"
+      origin_server_name       = "${var.subdomain}.${var.domain}"
     }
     ingress_rule {
       service = "http://localhost:3001"
@@ -25,13 +26,13 @@ resource "cloudflare_tunnel_config" "uptime-kuma-config" {
 
 data "cloudflare_zones" "domain" {
   filter {
-    name = "chestr.dev"
+    name = var.domain
   }
 }
 
 resource "cloudflare_record" "status" {
   zone_id = lookup(data.cloudflare_zones.domain.zones[0], "id")
-  name    = "status"
+  name    = var.subdomain
   value   = "${cloudflare_tunnel.uptime-kuma.id}.cfargotunnel.com"
   type    = "CNAME"
   proxied = true

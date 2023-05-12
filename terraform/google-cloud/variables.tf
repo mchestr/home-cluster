@@ -18,3 +18,13 @@ variable "cloudflared_tunnel_secret" {
   type        = string
   description = "Cloudflared Tunnel Secret"
 }
+variable "domain" {
+  type = string
+  description = "Domain name"
+  default = "chestr.dev"
+}
+variable "subdomain" {
+  type = string
+  description = "Subdomain of dashboard"
+  default = "status"
+}

@@ -49,6 +49,7 @@
       - set interfaces wireguard wg0 address 192.168.33.1/24
       - set interfaces wireguard wg0 listen-port 51820
       - set interfaces wireguard wg0 route-allowed-ips true
+      - set service dns forwarding listen-on wg0
 
       - set firewall name WAN_LOCAL rule 30 action accept
       - set firewall name WAN_LOCAL rule 30 protocol udp
