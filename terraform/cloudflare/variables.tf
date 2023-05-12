@@ -38,3 +38,11 @@ variable "wordpress_0_domain" {
   type        = string
   description = "Wordpress 0 domain"
 }
+variable "cloudflared_tunnel_account_id" {
+  type        = string
+  description = "Cloudflared Tunnel Account ID"
+}
+variable "cloudflared_tunnel_secret" {
+  type        = string
+  description = "Cloudflared Tunnel Secret"
+}

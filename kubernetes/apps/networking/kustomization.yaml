@@ -5,6 +5,7 @@ resources:
   # Pre Flux-Kustomizations
   - namespace.yaml
   # Flux-Kustomizations
+  - cloudflared/ks.yaml
   - ingress-nginx/ks.yaml
   - k8s-gateway/ks.yaml
   - static-routes/ks.yaml
