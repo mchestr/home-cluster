@@ -1,5 +1,5 @@
 resource "cloudflare_record" "ipv4" {
-  name    = "ipv4"
+  name    = "ingress"
   zone_id = lookup(data.cloudflare_zones.domain.zones[0], "id")
   value   = chomp(data.http.ipv4.response_body)
   proxied = true
@@ -8,16 +8,16 @@ resource "cloudflare_record" "ipv4" {
 }
 
 resource "cloudflare_record" "root" {
-  name    = var.cloudflare_domain
+  name    = "chestr.dev"
   zone_id = lookup(data.cloudflare_zones.domain.zones[0], "id")
-  value   = "ipv4.${var.cloudflare_domain}"
+  value   = "ingress.${var.cloudflare_domain}"
   proxied = true
   type    = "CNAME"
   ttl     = 1
 }
 
 resource "cloudflare_record" "wordpress-ipv4" {
-  name    = "ipv4"
+  name    = "ingress"
   zone_id = lookup(data.cloudflare_zones.wordpress_0_domain.zones[0], "id")
   value   = chomp(data.http.ipv4.response_body)
   proxied = true
@@ -26,9 +26,9 @@ resource "cloudflare_record" "wordpress-ipv4" {
 }
 
 resource "cloudflare_record" "wordpress-0-root" {
-  name    = var.wordpress_0_domain
+  name    = "stephk.co"
   zone_id = lookup(data.cloudflare_zones.wordpress_0_domain.zones[0], "id")
-  value   = "ipv4.${var.wordpress_0_domain}"
+  value   = "ingress.${var.wordpress_0_domain}"
   proxied = true
   type    = "CNAME"
   ttl     = 1

@@ -3,16 +3,9 @@
   vars:
     prefix: set service dns dynamic interface eth0 service
     services:
-      - domain: "{{ cluster_domain }}"
-        hosts:
-          - ipv4
-          - dns
       - domain: "{{ personal_domain }}"
         hosts:
           - vpn
-      - domain: "{{ wordpress_0_domain }}"
-        hosts:
-          - ipv4
   loop: "{{ services | subelements('hosts') }}"
   loop_control:
     index_var: index
