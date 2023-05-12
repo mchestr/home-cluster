@@ -2,8 +2,19 @@ variable "project_id" {
   type        = string
   description = "Google Project ID"
 }
-
-variable "cloudflared_token" {
+variable "cloudflare_api_token" {
+  type        = string
+  description = "Cloudflare Account API Token"
+}
+variable "google_cloud_credentials" {
   type = string
-  description = "Cloudflare Tunnel Token"
+  description = "Google Cloud Credentials in JSON string format"
+}
+variable "cloudflared_tunnel_account_id" {
+  type        = string
+  description = "Cloudflared Tunnel Account ID"
+}
+variable "cloudflared_tunnel_secret" {
+  type        = string
+  description = "Cloudflared Tunnel Secret"
 }

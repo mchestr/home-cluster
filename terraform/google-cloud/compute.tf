@@ -6,7 +6,7 @@ module "uptime-kuma" {
     image = "louislam/uptime-kuma:1.20.0-beta.0"
     env = [{
         name = "UPTIME_KUMA_CLOUDFLARED_TOKEN"
-        value = var.cloudflared_token
+        value = cloudflare_tunnel.uptime-kuma.tunnel_token
     }]
     volumeMounts = [{
         mountPath = "/app/data"
