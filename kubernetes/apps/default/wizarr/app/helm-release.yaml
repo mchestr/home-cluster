@@ -27,7 +27,7 @@ spec:
 
     env:
       TZ: ${TZ}
-      APP_URL: https://join.${SECRET_CLUSTER_DOMAIN}
+      APP_URL: https://join.chestr.dev
       DISABLE_BUILTIN_AUTH: "true"
 
     service:
@@ -46,7 +46,7 @@ spec:
           hajimari.io/icon: mdi:invite
           hajimari.io/group: Media Management
         hosts:
-          - host: &host "join.${SECRET_CLUSTER_DOMAIN}"
+          - host: &host "join.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix

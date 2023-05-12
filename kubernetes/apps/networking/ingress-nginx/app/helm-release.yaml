@@ -14,55 +14,48 @@ spec:
         kind: HelmRepository
         name: ingress-nginx-charts
         namespace: flux-system
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     controller:
-      replicaCount: 3
-      extraEnvs:
-        - name: TZ
-          value: ${TZ}
+      replicaCount: 2
       service:
-        type: LoadBalancer
-        loadBalancerIP: "${METALLB_NGINX_ADDR}"
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: ingress.chestr.dev
+        externalIPs: ["192.168.1.230"]
         externalTrafficPolicy: Local
-      publishService:
-        enabled: true
       ingressClassResource:
         default: true
       config:
-        client-body-buffer-size: "100M"
+        client-body-buffer-size: 100M
         client-body-timeout: 120
         client-header-timeout: 120
-        custom-http-errors: 400,401,403,404,500,502,503,504
         enable-brotli: "true"
-        forwarded-for-header: CF-Connecting-IP
-        hsts-max-age: "31449600"
+        enable-real-ip: "true"
+        hsts-max-age: 31449600
         keep-alive-requests: 10000
         keep-alive: 120
-        log-format-escape-json: "true"
-        log-format-upstream: '{"time": "$time_iso8601", "remote_addr": "$proxy_protocol_addr", "x_forwarded_for": "$proxy_add_x_forwarded_for", "request_id": "$req_id",
-          "remote_user": "$remote_user", "bytes_sent": $bytes_sent, "request_time": $request_time, "status": $status, "vhost": "$host", "request_proto": "$server_protocol",
-          "path": "$uri", "request_query": "$args", "request_length": $request_length, "duration": $request_time,"method": "$request_method", "http_referrer": "$http_referer",
-          "http_user_agent": "$http_user_agent" }'
-        proxy-body-size: "100M"
-        ssl-protocols: "TLSv1.3 TLSv1.2"
-        use-forwarded-headers: "true"
+        proxy-body-size: 0
+        proxy-buffer-size: 16k
+        ssl-protocols: TLSv1.3 TLSv1.2
       metrics:
         enabled: true
         serviceMonitor:
           enabled: true
-          namespace: default
+          namespace: networking
           namespaceSelector:
             any: true
       extraArgs:
-        default-ssl-certificate: |-
-          networking/${SECRET_CLUSTER_DOMAIN/./-}-tls
+        default-ssl-certificate: networking/chestr-dev-tls
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
@@ -71,11 +64,9 @@ spec:
             matchLabels:
               app.kubernetes.io/name: ingress-nginx
               app.kubernetes.io/component: controller
-      podAnnotations:
-        configmap.reloader.stakater.com/reload: cloudflare-networks
       resources:
         requests:
-          cpu: 10m
+          cpu: 100m
           memory: 250Mi
         limits:
           memory: 500Mi
@@ -84,30 +75,6 @@ spec:
       image:
         repository: ghcr.io/tarampampam/error-pages
         tag: 2.24.0
-      replicaCount: 3
       extraEnvs:
-        - name: TEMPLATE_NAME
-          value: lost-in-space
-        - name: SHOW_DETAILS
-          value: "false"
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              podAffinityTerm:
-                labelSelector:
-                  matchExpressions:
-                    - key: app.kubernetes.io/name
-                      operator: In
-                      values: ["ingress-nginx"]
-                    - key: app.kubernetes.io/component
-                      operator: In
-                      values: ["default-backend"]
-                topologyKey: kubernetes.io/hostname
-  valuesFrom:
-    # Cloudflare Networks
-    # https://www.cloudflare.com/ips/
-    - targetPath: controller.config.proxy-real-ip-cidr
-      kind: ConfigMap
-      name: cloudflare-networks
-      valuesKey: cloudflare-networks.txt
+        - { name: TEMPLATE_NAME, value: lost-in-space }
+        - { name: SHOW_DETAILS, value: "false" }
