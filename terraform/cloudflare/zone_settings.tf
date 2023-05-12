@@ -70,7 +70,7 @@ resource "cloudflare_zone_settings_override" "wordpress_0_cloudflare_settings" {
     }
     rocket_loader = "on"
     # /caching/configuration
-    always_online    = "off"
+    always_online    = "on"
     development_mode = "off"
     # /network
     http3               = "on"
