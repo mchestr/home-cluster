@@ -8,4 +8,12 @@ ingress:
     service: https://ingress-nginx-controller.networking.svc.cluster.local:443
     originRequest:
       originServerName: ingress.chestr.dev
+  - hostname: stephk.co
+    service: https://ingress-nginx-controller.networking.svc.cluster.local:443
+    originRequest:
+      originServerName: ingress.chestr.dev
+  - hostname: "*.stephk.co"
+    service: https://ingress-nginx-controller.networking.svc.cluster.local:443
+    originRequest:
+      originServerName: ingress.chestr.dev
   - service: http_status:404

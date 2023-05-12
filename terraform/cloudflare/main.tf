@@ -28,12 +28,12 @@ data "http" "ipv4" {
 
 data "cloudflare_zones" "domain" {
   filter {
-    name = var.cloudflare_domain
+    name = "chestr.dev"
   }
 }
 
 data "cloudflare_zones" "wordpress_0_domain" {
   filter {
-    name = var.wordpress_0_domain
+    name = "stephk.co"
   }
 }

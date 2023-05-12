@@ -39,18 +39,18 @@ spec:
     ingress:
       enabled: true
       ingressClassName: nginx
-      hostname: &host ${SECRET_WORDPRESS_DOMAIN_0}
+      hostname: &host stephk.co
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-production
         nginx.ingress.kubernetes.io/custom-http-errors: 500,502,503,504
         external-dns.home.arpa/enabled: "true"
         hajimari.io/icon: mdi:wordpress
         hajimari.io/group: web
-        hajimari.io/appName: ${SECRET_WORDPRESS_DOMAIN_0}
+        hajimari.io/appName: stephk.co
       tls: true
       tlsWwwPrefix: true
       extraHosts:
-        - name: www.${SECRET_WORDPRESS_DOMAIN_0}
+        - name: www.stephk.co
           path: /
 
     persistence:

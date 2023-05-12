@@ -6,7 +6,7 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-    email: acme@${SECRET_CLUSTER_DOMAIN}
+    email: acme@chestr.dev
     privateKeySecretRef:
       name: letsencrypt-production
     solvers:
@@ -17,5 +17,5 @@ spec:
               key: api-token
         selector:
           dnsZones:
-            - ${SECRET_CLUSTER_DOMAIN}
-            - ${SECRET_WORDPRESS_DOMAIN_0}
+            - chestr.dev
+            - stephk.co
