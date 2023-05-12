@@ -1,8 +1,8 @@
 ---
 session:
   cookies:
-    - domain: "${CLUSTER_DOMAIN}"
-      authelia_url: "https://auth.${CLUSTER_DOMAIN}"
+    - domain: chestr.dev
+      authelia_url: https://auth.chestr.dev
   redis:
     high_availability:
       sentinel_name: redis-master
@@ -23,13 +23,13 @@ access_control:
         - 172.16.0.0/12
         - 192.168.0.0/16
   rules:
-    - domain: ["join.${CLUSTER_DOMAIN}"]
+    - domain: ["join.chestr.dev"]
       resources: ["^/join.*$", "^/j/.*$", "^/setup.*$", "^/static/.*$"]
       policy: bypass
 
 notifier:
   smtp:
-    sender: "Authelia <authelia@${CLUSTER_DOMAIN}>"
+    sender: "Authelia <authelia@chestr.dev>"
 
 identity_providers:
   oidc:
@@ -53,7 +53,7 @@ identity_providers:
           - groups
           - email
         redirect_uris:
-          - https://grafana.${CLUSTER_DOMAIN}/login/generic_oauth
+          - https://grafana.chestr.dev/login/generic_oauth
         userinfo_signing_algorithm: none
       - id: immich
         description: Immich
@@ -66,7 +66,7 @@ identity_providers:
           - profile
           - email
         redirect_uris:
-          - https://photos.${CLUSTER_DOMAIN}/auth/login
+          - https://photos.chestr.dev/auth/login
           - app.immich:/
         userinfo_signing_algorithm: none
       - id: minio
@@ -81,5 +81,5 @@ identity_providers:
           - email
           - groups
         redirect_uris:
-          - https://minio.${CLUSTER_DOMAIN}/oauth_callback
+          - https://minio.chestr.dev/oauth_callback
         userinfo_signing_algorithm: none

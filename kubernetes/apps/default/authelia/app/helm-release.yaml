@@ -14,13 +14,17 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     controller:
       replicas: 2
@@ -54,6 +58,7 @@ spec:
       AUTHELIA_AUTHENTICATION_BACKEND_LDAP_USERNAME_ATTRIBUTE: uid
       AUTHELIA_AUTHENTICATION_BACKEND_LDAP_USERS_FILTER: "(&({username_attribute}={input})(objectClass=posixAccount))"
       AUTHELIA_AUTHENTICATION_BACKEND_PASSWORD_RESET_DISABLE: "true"
+      AUTHELIA_DEFAULT_REDIRECTION_URL: https://auth.chestr.dev
       AUTHELIA_DUO_API_DISABLE: "true"
       AUTHELIA_LOG_LEVEL: info
       AUTHELIA_NOTIFIER_SMTP_DISABLE_REQUIRE_TLS: "true"
@@ -104,7 +109,7 @@ spec:
             add_header X-XSS-Protection "1; mode=block";
           hajimari.io/enable: "false"
         hosts:
-          - host: &host auth.${SECRET_CLUSTER_DOMAIN}
+          - host: &host auth.chestr.dev
             paths:
               - path: /
                 pathType: Prefix

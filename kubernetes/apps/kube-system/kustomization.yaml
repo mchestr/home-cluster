@@ -6,7 +6,6 @@ resources:
   - namespace.yaml
   # Flux-Kustomizations
   - descheduler/ks.yaml
-  - external-dns/ks.yaml
   - external-secrets/ks.yaml
   - intel-device-plugin/ks.yaml
   - metrics-server/ks.yaml
