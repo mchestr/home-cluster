@@ -1,7 +1,3 @@
-variable "cloudflare_email" {
-  type        = string
-  description = "Cloudflare Email Address"
-}
 variable "cloudflare_api_token" {
   type        = string
   description = "Cloudflare Account API Token"
