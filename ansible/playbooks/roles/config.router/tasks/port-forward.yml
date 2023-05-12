@@ -26,18 +26,6 @@
           port: 32400
         original_port: 32400
         protocol: tcp_udp
-      - name: MetalLB
-        forward:
-          address: 192.168.1.230
-          port: 443
-        original_port: 443
-        protocol: tcp
-      - name: MetalLB
-        forward:
-          address: 192.168.1.230
-          port: 80
-        original_port: 80
-        protocol: tcp
   loop: "{{ rules }}"
   loop_control:
     index_var: index
