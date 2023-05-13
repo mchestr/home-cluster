@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-volsync-app
   namespace: flux-system
   labels:
-    substitution.flux.home.arpa/enabled: "true"
+    substitution.flux.home.arpa/enabled: 'true'
 spec:
   dependsOn:
     - name: cluster-apps-snapshot-controller
