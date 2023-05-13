@@ -14,15 +14,19 @@ spec:
         kind: HelmRepository
         name: minecraft-server-charts
         namespace: flux-system
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
       retries: 3
     timeout: 15m
   upgrade:
+    cleanupOnFail: true
     remediation:
       retries: 3
     timeout: 15m
+  uninstall:
+    keepHistory: false
   values:
     nameOverride: "0"
     image:
