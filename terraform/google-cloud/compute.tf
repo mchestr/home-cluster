@@ -3,6 +3,7 @@ module "uptime-kuma" {
   version = "3.1.0"
 
   container = {
+    # renovate: datasource=github-releases depName=louislam/uptime-kuma
     image = "louislam/uptime-kuma:1.20.0-beta.0"
     env = [{
         name = "UPTIME_KUMA_CLOUDFLARED_TOKEN"
