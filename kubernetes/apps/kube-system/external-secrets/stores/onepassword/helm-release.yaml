@@ -30,7 +30,7 @@ spec:
       annotations:
         reloader.stakater.com/auto: "true"
     image:
-      repository: docker.io/1password/connect-api
+      repository: ghcr.io/mchestr/onepassword-connect-api
       tag: 1.7.0
     env:
       OP_BUS_PORT: "11220"
