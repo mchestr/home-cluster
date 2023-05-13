@@ -28,3 +28,9 @@ variable "subdomain" {
   description = "Subdomain of dashboard"
   default = "status"
 }
+variable "tag" {
+  type = string
+  description = "Uptime Kuma Tag"
+  # renovate: datasource=github-releases depName=mchestr/uptime-kuma
+  default = "1.20.0-beta.0"
+}
