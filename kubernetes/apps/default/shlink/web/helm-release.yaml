@@ -36,7 +36,7 @@ spec:
       repository: ghcr.io/shlinkio/shlink-web-client
       tag: 3.10.1
     env:
-      SHLINK_SERVER_URL: https://ln.${SECRET_CLUSTER_DOMAIN}
+      SHLINK_SERVER_URL: https://ln.chestr.dev
     envFrom:
       - secretRef:
           name: *app
@@ -55,7 +55,7 @@ spec:
           hajimari.io/group: system management
           hajimari.io/appName: shlink
         hosts:
-          - host: &host shlink.${SECRET_CLUSTER_DOMAIN}
+          - host: &host shlink.chestr.dev
             paths:
               - path: /
                 pathType: Prefix

@@ -15,7 +15,17 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
-
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     controller:
       annotations:
@@ -43,7 +53,7 @@ spec:
           hajimari.io/group: home
           hajimari.io/icon: material-symbols:calendar-month
         hosts:
-          - host: &host cal.${SECRET_CLUSTER_DOMAIN}
+          - host: &host cal.chestr.dev
             paths:
               - path: /
         tls:

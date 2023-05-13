@@ -42,7 +42,7 @@ spec:
             scrapeTimeout: 10s
             params:
               target:
-                - "lochnas.${SECRET_CLUSTER_DOMAIN}:3493"
+                - "lochnas.chestr.dev:3493"
             relabelings:
               - sourceLabels: [__param_target]
                 targetLabel: target

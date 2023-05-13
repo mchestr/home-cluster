@@ -36,7 +36,7 @@ spec:
         type: LoadBalancer
         loadBalancerIP: ${METALLB_VECTOR_AGGREGATOR_ADDR}
         annotations:
-          coredns.io/hostname: vector.${SECRET_CLUSTER_DOMAIN}
+          coredns.io/hostname: vector.chestr.dev
         externalTrafficPolicy: Local
         ports:
           http:

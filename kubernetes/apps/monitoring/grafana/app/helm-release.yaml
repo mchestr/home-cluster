@@ -53,7 +53,7 @@ spec:
 
     grafana.ini:
       server:
-        root_url: https://grafana.${SECRET_CLUSTER_DOMAIN}
+        root_url: https://grafana.chestr.dev
       paths:
         data: /var/lib/grafana/data
         logs: /var/log/grafana
@@ -68,7 +68,7 @@ spec:
       panels:
         disable_sanitize_html: true
       auth:
-        signout_redirect_url: "https://auth.${SECRET_CLUSTER_DOMAIN}/logout"
+        signout_redirect_url: "https://auth.chestr.dev/logout"
         oauth_auto_login: true
       auth.generic_oauth:
         enabled: true
@@ -77,9 +77,9 @@ spec:
         client_secret: ${SECRET_GRAFANA_OAUTH_CLIENT_SECRET}
         scopes: openid profile email groups
         empty_scopes: false
-        auth_url: https://auth.${SECRET_CLUSTER_DOMAIN}/api/oidc/authorization
-        token_url: https://auth.${SECRET_CLUSTER_DOMAIN}/api/oidc/token
-        api_url: https://auth.${SECRET_CLUSTER_DOMAIN}/api/oidc/userinfo
+        auth_url: https://auth.chestr.dev/api/oidc/authorization
+        token_url: https://auth.chestr.dev/api/oidc/token
+        api_url: https://auth.chestr.dev/api/oidc/userinfo
         login_attribute_path: preferred_username
         groups_attribute_path: groups
         name_attribute_path: name
@@ -103,7 +103,7 @@ spec:
         hajimari.io/icon: cib:grafana
         hajimari.io/group: system management
       hosts:
-        - &host "grafana.${SECRET_CLUSTER_DOMAIN}"
+        - &host "grafana.chestr.dev"
       tls:
         - hosts:
             - *host

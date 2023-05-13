@@ -14,13 +14,17 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     controller:
       annotations:
@@ -49,10 +53,10 @@ spec:
       PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
       PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
       PAPERLESS_TIME_ZONE: ${TZ}
-      PAPERLESS_URL: https://{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}
+      PAPERLESS_URL: https://{{ .Release.Name }}.chestr.dev
       PAPERLESS_REDIS: redis://paperless-redis.default:6379
       PAPERLESS_ENABLE_HTTP_REMOTE_USER: 'true'
-      PAPERLESS_LOGOUT_REDIRECT_URL: https://auth.${SECRET_CLUSTER_DOMAIN}/logout
+      PAPERLESS_LOGOUT_REDIRECT_URL: https://auth.chestr.dev/logout
 
     service:
       main:
@@ -70,7 +74,7 @@ spec:
           hajimari.io/group: home
           hajimari.io/appName: Paperless
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix

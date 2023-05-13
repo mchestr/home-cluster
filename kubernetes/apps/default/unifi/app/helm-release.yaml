@@ -88,7 +88,7 @@ spec:
           hajimari.io/icon: mdi:wifi
           hajimari.io/group: system management
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix

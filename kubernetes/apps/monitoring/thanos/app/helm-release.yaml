@@ -37,7 +37,7 @@ spec:
         sidecarsNamespace: monitoring
       ingress:
         enabled: true
-        hostname: &host thanos.${SECRET_CLUSTER_DOMAIN}
+        hostname: &host thanos.chestr.dev
         ingressClassName: nginx
         annotations:
           auth.home.arpa/enabled: "true"

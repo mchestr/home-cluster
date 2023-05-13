@@ -77,7 +77,7 @@ spec:
           hajimari.io/icon: mdi:cctv
           hajimari.io/group: home
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix

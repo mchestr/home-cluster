@@ -14,13 +14,17 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     controller:
       annotations:
@@ -33,10 +37,10 @@ spec:
     env:
       TZ: ${TZ}
       PUSHOVER_DEBUG: "false"
-      PUSHOVER_APP_URL: "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
+      PUSHOVER_APP_URL: "{{ .Release.Name }}.chestr.dev"
       RADARR__INSTANCE_NAME: Radarr
       RADARR__PORT: &port 7878
-      RADARR__APPLICATION_URL: "https://{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
+      RADARR__APPLICATION_URL: "https://{{ .Release.Name }}.chestr.dev"
       RADARR__LOG_LEVEL: info
 
     envFrom:
@@ -59,12 +63,12 @@ spec:
           auth.home.arpa/enabled: "true"
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_set_header Accept-Encoding "";
-            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_CLUSTER_DOMAIN}/css/base/radarr/${THEME_PARK_ARR_THEME}.css"></head>';
+            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.chestr.dev/css/base/radarr/${THEME_PARK_ARR_THEME}.css"></head>';
             sub_filter_once on;
           hajimari.io/icon: mdi:filmstrip
           hajimari.io/group: Media Management
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix

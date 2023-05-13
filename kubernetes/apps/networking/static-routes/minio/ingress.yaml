@@ -12,10 +12,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - minio.${SECRET_CLUSTER_DOMAIN}
+        - minio.chestr.dev
 
   rules:
-    - host: minio.${SECRET_CLUSTER_DOMAIN}
+    - host: minio.chestr.dev
       http:
         paths:
           - path: /
@@ -36,10 +36,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - s3.${SECRET_CLUSTER_DOMAIN}
+        - s3.chestr.dev
 
   rules:
-    - host: s3.${SECRET_CLUSTER_DOMAIN}
+    - host: s3.chestr.dev
       http:
         paths:
           - path: /

@@ -107,7 +107,7 @@ spec:
         annotations:
           hajimari.io/enable: "false"
         hosts:
-          - host: &host "loki.${SECRET_CLUSTER_DOMAIN}"
+          - host: &host "loki.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix

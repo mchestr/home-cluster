@@ -122,7 +122,7 @@ spec:
           hajimari.io/group: storage, database, and messaging
 
         host:
-          name: &host "rook.${SECRET_CLUSTER_DOMAIN}"
+          name: &host "rook.chestr.dev"
           path: "/"
         tls:
           - hosts:

@@ -58,7 +58,7 @@ spec:
           hajimari.io/info: Service Status Monitor
           hajimari.io/group: system management
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix
