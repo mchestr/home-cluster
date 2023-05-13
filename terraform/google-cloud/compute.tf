@@ -3,7 +3,7 @@ module "uptime-kuma" {
   version = "3.1.0"
 
   container = {
-    image = "mchestr/uptime-kuma:${var.tag}"
+    image = "ghcr.io/mchestr/uptime-kuma:${var.tag}"
     env = [{
         name = "UPTIME_KUMA_CLOUDFLARED_TOKEN"
         value = cloudflare_tunnel.uptime-kuma.tunnel_token
