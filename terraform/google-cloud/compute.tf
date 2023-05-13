@@ -3,8 +3,7 @@ module "uptime-kuma" {
   version = "3.1.0"
 
   container = {
-    # renovate: datasource=github-releases depName=louislam/uptime-kuma
-    image = "louislam/uptime-kuma:1.20.0-beta.0"
+    image = "mchestr/uptime-kuma:${var.tag}"
     env = [{
         name = "UPTIME_KUMA_CLOUDFLARED_TOKEN"
         value = cloudflare_tunnel.uptime-kuma.tunnel_token
