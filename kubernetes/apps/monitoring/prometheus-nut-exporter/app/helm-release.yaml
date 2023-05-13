@@ -16,7 +16,7 @@ spec:
         namespace: flux-system
   values:
     image:
-      repository: hon95/prometheus-nut-exporter
+      repository: ghcr.io/mchestr/prometheus-nut-exporter
       tag: "1.2.1"
 
     controller:
