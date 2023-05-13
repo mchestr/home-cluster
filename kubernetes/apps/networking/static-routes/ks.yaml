@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-static-routes-minio
   namespace: flux-system
   labels:
-    substitution.flux.home.arpa/enabled: "true"
+    substitution.flux.home.arpa/enabled: 'true'
 spec:
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
