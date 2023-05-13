@@ -16,15 +16,15 @@ spec:
         name: node-feature-discovery-charts
         namespace: flux-system
       interval: 5m
-  maxHistory: 3
+  maxHistory: 2
   install:
-    createNamespace: true
     crds: CreateReplace
+    createNamespace: true
     remediation:
       retries: 3
   upgrade:
-    cleanupOnFail: true
     crds: CreateReplace
+    cleanupOnFail: true
     remediation:
       retries: 3
   uninstall:

@@ -14,14 +14,16 @@ spec:
         kind: HelmRepository
         name: piraeus-charts
         namespace: flux-system
+  maxHistory: 2
   install:
     createNamespace: true
-    crds: Skip
     remediation:
       retries: 3
   upgrade:
-    crds: Skip
+    cleanupOnFail: true
     remediation:
       retries: 3
+  uninstall:
+    keepHistory: false
   dependsOn:
     - name: snapshot-controller
