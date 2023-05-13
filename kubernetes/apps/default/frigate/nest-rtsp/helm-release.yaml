@@ -33,7 +33,7 @@ spec:
         reloader.stakater.com/auto: "true"
 
     image:
-      repository: jakguru/nest-rtsp
+      repository: ghcr.io/mchestr/nest-rtsp
       tag: v1.0.2
 
     envFrom:
