@@ -34,7 +34,7 @@ spec:
 
     env:
       DEBUG: "false"
-      SMTP_DOMAIN: ${SECRET_CLUSTER_DOMAIN}
+      SMTP_DOMAIN: chestr.dev
 
     envFrom:
       - secretRef:

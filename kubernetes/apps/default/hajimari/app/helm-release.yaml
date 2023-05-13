@@ -15,6 +15,17 @@ spec:
         kind: HelmRepository
         name: hajimari-charts
         namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     controller:
       replicas: 3
@@ -52,7 +63,7 @@ spec:
         - group: Home
           bookmarks:
             - name: Status Page
-              url: https://status.${SECRET_CLUSTER_DOMAIN}
+              url: https://status.chestr.dev
             - name: mchestr/home-cluster
               url: https://github.com/mchestr/home-cluster/issues/2
             - name: mchestr/home-assistant
@@ -87,20 +98,20 @@ spec:
           apps:
             - name: NAS
               icon: arcticons:synology-active-insight
-              url: https://lochnas.${SECRET_CLUSTER_DOMAIN}:5001
+              url: https://lochnas.chestr.dev:5001
         - group: system management
           apps:
             - name: Router
               icon: mdi:router
-              url: https://dns.${SECRET_CLUSTER_DOMAIN}
+              url: https://dns.chestr.dev
             - name: PiKVM
               icon: material-symbols:keyboard
-              url: https://pikvm.${SECRET_CLUSTER_DOMAIN}
+              url: https://pikvm.chestr.dev
         - group: home
           apps:
             - name: Mainsail
               icon: mdi:printer-3d-nozzle
-              url: https://mainsail.${SECRET_CLUSTER_DOMAIN}
+              url: https://mainsail.chestr.dev
 
     ingress:
       main:
@@ -109,7 +120,7 @@ spec:
         annotations:
           hajimari.io/enable: "false"
         hosts:
-          - host: &host "home.${SECRET_CLUSTER_DOMAIN}"
+          - host: &host "home.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix

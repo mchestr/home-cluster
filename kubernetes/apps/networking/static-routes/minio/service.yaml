@@ -13,4 +13,4 @@ spec:
     - name: http
       port: 9001
 
-  externalName: lochnas.${SECRET_CLUSTER_DOMAIN}
+  externalName: lochnas.chestr.dev

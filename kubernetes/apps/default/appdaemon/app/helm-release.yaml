@@ -14,13 +14,17 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     controller:
       annotations:
@@ -51,7 +55,7 @@ spec:
           hajimari.io/group: automation
           hajimari.io/appName: AppDaemon
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix
@@ -101,7 +105,7 @@ spec:
             hajimari.io/group: Automation Code
             hajimari.io/appName: AppDaemon
           hosts:
-            - host: &code-host "{{ .Release.Name }}-code.${SECRET_CLUSTER_DOMAIN}"
+            - host: &code-host "{{ .Release.Name }}-code.chestr.dev"
               paths:
                 - path: /
                   pathType: Prefix

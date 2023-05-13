@@ -14,13 +14,17 @@ spec:
         kind: HelmRepository
         name: emqx-charts
         namespace: flux-system
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     replicaCount: 3
     recreatePods: true
@@ -47,7 +51,7 @@ spec:
           hajimari.io/group: storage, database, and messaging
           hajimari.io/appName: EMQX
         hosts:
-          - &host emqx.${SECRET_CLUSTER_DOMAIN}
+          - &host emqx.chestr.dev
         tls:
           - hosts:
               - *host

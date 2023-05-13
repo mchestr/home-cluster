@@ -14,13 +14,17 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     controller:
       replicas: 3
@@ -45,7 +49,7 @@ spec:
 
     env:
       DB_DRIVER: postgres
-      DEFAULT_DOMAIN: &host "ln.${SECRET_CLUSTER_DOMAIN}"
+      DEFAULT_DOMAIN: &host "ln.chestr.dev"
       DISABLE_TRACKING_FROM: 10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
       ENABLE_PERIODIC_VISIT_LOCATE: "true"
       IS_HTTPS_ENABLED: "true"

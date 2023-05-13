@@ -33,10 +33,10 @@ spec:
     env:
       TZ: ${TZ}
       PUSHOVER_DEBUG: "false"
-      PUSHOVER_APP_URL: "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
+      PUSHOVER_APP_URL: "{{ .Release.Name }}.chestr.dev"
       SONARR__INSTANCE_NAME: Sonarr
       SONARR__PORT: &port 8989
-      SONARR__APPLICATION_URL: "https://{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
+      SONARR__APPLICATION_URL: "https://{{ .Release.Name }}.chestr.dev"
       SONARR__LOG_LEVEL: info
 
     envFrom:
@@ -59,12 +59,12 @@ spec:
           auth.home.arpa/enabled: "true"
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_set_header Accept-Encoding "";
-            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_CLUSTER_DOMAIN}/css/base/sonarr/${THEME_PARK_ARR_THEME}.css"></head>';
+            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.chestr.dev/css/base/sonarr/${THEME_PARK_ARR_THEME}.css"></head>';
             sub_filter_once on;
           hajimari.io/icon: mdi:television-box
           hajimari.io/group: Media Management
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix

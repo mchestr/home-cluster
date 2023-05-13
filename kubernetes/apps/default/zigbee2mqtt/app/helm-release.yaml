@@ -46,7 +46,7 @@ spec:
           hajimari.io/group: automation
           hajimari.io/appName: zigbee
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix
