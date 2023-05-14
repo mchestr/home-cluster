@@ -1,10 +1,10 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: ${SECRET_CLUSTER_DOMAIN/./-}
+  name: chestr-dev
   namespace: networking
 spec:
-  secretName: ${SECRET_CLUSTER_DOMAIN/./-}-tls
+  secretName: chestr-dev-tls
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
