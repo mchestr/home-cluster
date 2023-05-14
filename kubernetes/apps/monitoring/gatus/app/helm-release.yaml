@@ -39,8 +39,8 @@ spec:
               name: *app
 
     image:
-      repository: ghcr.io/twin/gatus
-      tag: v5.4.0@sha256:04ef57b6e0a113b6d09f5d787efdd08e6d51f6cbc470cf1313d349a163568dc9
+      repository: ghcr.io/bjw-s/gatus
+      tag: v5.4.0@sha256:2a566e43d47a3dba20602d29842d1dc6f1adee54895c47b731a593169d48951f
 
     env:
       TZ: "${TZ}"
