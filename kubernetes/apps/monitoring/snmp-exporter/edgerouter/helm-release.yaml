@@ -46,7 +46,7 @@ spec:
         - name: edgerouter
           module:
             - edgerouter
-          target: ${GATEWAY_IP}
+          target: "dns.chestr.dev"
       path: /snmp
       scrapeTimeout: 10s
       relabelings:

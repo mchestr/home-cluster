@@ -107,7 +107,7 @@ spec:
       media:
         enabled: true
         type: nfs
-        server: ${NAS_ADDR}
+        server: "lochnas.chestr.dev"
         path: /volume1/shared/frigate
         mountPath: /media
 

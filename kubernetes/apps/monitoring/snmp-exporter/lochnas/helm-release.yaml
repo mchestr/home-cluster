@@ -46,7 +46,7 @@ spec:
         - name: lochnas
           module:
             - lochnas
-          target: ${NAS_ADDR}
+          target: "lochnas.chestr.dev"
       path: /snmp
       scrapeTimeout: 10s
       relabelings:

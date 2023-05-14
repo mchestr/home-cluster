@@ -58,7 +58,7 @@ spec:
           auth.home.arpa/enabled: "true"
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_set_header Accept-Encoding "";
-            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.chestr.dev/css/base/bazarr/${THEME_PARK_ARR_THEME}.css"></head>';
+            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.chestr.dev/css/base/bazarr/organizr.css"></head>';
             sub_filter_once on;
           hajimari.io/icon: mdi:subtitles-outline
           hajimari.io/group: Media Management
@@ -78,18 +78,18 @@ spec:
       media:
         enabled: true
         type: nfs
-        server: ${NAS_ADDR}
+        server: "lochnas.chestr.dev"
         path: ${NAS_MEDIA_DIR}
         mountPath: /media
       backup:
         enabled: true
         type: nfs
-        server: ${NAS_ADDR}
+        server: "lochnas.chestr.dev"
         path: ${NAS_BACKUP_DIR}/bazarr
         mountPath: /config/backup
 
     podSecurityContext:
-      fsGroup: ${RUN_AS_GROUP}
+      fsGroup: 65539
       fsGroupChangePolicy: OnRootMismatch
 
     podAnnotations:
