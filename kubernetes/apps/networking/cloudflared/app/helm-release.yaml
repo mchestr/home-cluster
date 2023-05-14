@@ -44,7 +44,6 @@ spec:
       - --config
       - /etc/cloudflared/config/config.yaml
       - run
-      - "${CLUSTER_CLOUDFLARE_TUNNEL_ID}"
     service:
       main:
         ports:
@@ -77,8 +76,8 @@ spec:
     persistence:
       config:
         enabled: true
-        type: configMap
-        name: cloudflared-configmap # overriden by kustomizeconfig
+        type: secret
+        name: cloudflared-tunnel-secret
         subPath: config.yaml
         mountPath: /etc/cloudflared/config/config.yaml
         readOnly: true
