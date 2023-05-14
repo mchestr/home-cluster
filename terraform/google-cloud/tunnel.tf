@@ -24,14 +24,12 @@ resource "cloudflare_tunnel_config" "uptime-kuma-config" {
   }
 }
 
-data "cloudflare_zones" "domain" {
-  filter {
-    name = var.domain
-  }
+data "cloudflare_zone" "domain" {
+  name = var.domain
 }
 
 resource "cloudflare_record" "status" {
-  zone_id = lookup(data.cloudflare_zones.domain.zones[0], "id")
+  zone_id = data.cloudflare_zone.domain.id
   name    = var.subdomain
   value   = "${cloudflare_tunnel.uptime-kuma.id}.cfargotunnel.com"
   type    = "CNAME"
