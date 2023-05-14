@@ -31,6 +31,6 @@ variable "subdomain" {
 variable "tag" {
   type = string
   description = "Uptime Kuma Tag"
-  # renovate: datasource=github-releases depName=mchestr/uptime-kuma
+  # renovate: datasource=github-releases depName=louislam/uptime-kuma
   default = "1.20.0-beta.0"
 }
