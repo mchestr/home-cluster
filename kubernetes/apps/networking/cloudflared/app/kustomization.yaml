@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: networking
 resources:
   - external-secret.yaml
-  - dns-endpoint.yaml
   - helm-release.yaml
 configMapGenerator:
   - name: cloudflared-configmap
