@@ -55,10 +55,10 @@ spec:
       media:
         enabled: true
         type: nfs
-        server: ${NAS_ADDR}
+        server: "lochnas.chestr.dev"
         path: ${NAS_MEDIA_DIR}/downloads/torrents/complete
         mountPath: /complete
 
     podSecurityContext:
-      fsGroup: ${RUN_AS_GROUP}
+      fsGroup: 65539
       fsGroupChangePolicy: OnRootMismatch

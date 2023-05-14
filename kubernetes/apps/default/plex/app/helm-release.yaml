@@ -36,8 +36,8 @@ spec:
     service:
       main:
         type: LoadBalancer
-        loadBalancerIP: "${METALLB_PLEX_ADDR}"
         externalTrafficPolicy: Local
+        externalIPs: ["192.168.1.227"]
         ports:
           http:
             port: &port 32400
@@ -54,7 +54,7 @@ spec:
           hajimari.io/group: home
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_set_header Accept-Encoding "";
-            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.chestr.dev/css/base/plex/${THEME_PARK_ARR_THEME}.css"></head>';
+            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.chestr.dev/css/base/plex/organizr.css"></head>';
             sub_filter_once on;
 
         hosts:
@@ -73,13 +73,13 @@ spec:
       media:
         enabled: true
         type: nfs
-        server: ${NAS_ADDR}
+        server: "lochnas.chestr.dev"
         path: ${NAS_MEDIA_DIR}
         mountPath: /media
       backup:
         enabled: true
         type: nfs
-        server: ${NAS_ADDR}
+        server: "lochnas.chestr.dev"
         path: ${NAS_BACKUP_DIR}/plex
         mountPath: /backup
       transcode:
@@ -116,4 +116,4 @@ spec:
       supplementalGroups:
         - 44
         - 109
-        - ${RUN_AS_GROUP}
+        - 65539

@@ -93,7 +93,7 @@ spec:
             mountPath: /usr/src/paperless/media
 
     podSecurityContext:
-      fsGroup: ${RUN_AS_GROUP}
+      fsGroup: 65539
       fsGroupChangePolicy: OnRootMismatch
 
     additionalContainers:

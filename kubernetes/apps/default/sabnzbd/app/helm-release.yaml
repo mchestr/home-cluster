@@ -63,7 +63,7 @@ spec:
           auth.home.arpa/enabled: "true"
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_set_header Accept-Encoding "";
-            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.chestr.dev/css/base/sabnzbd/${THEME_PARK_ARR_THEME}.css"></head>';
+            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.chestr.dev/css/base/sabnzbd/organizr.css"></head>';
             sub_filter_once on;
           hajimari.io/icon: mdi:cloud-download
           hajimari.io/group: Download
@@ -83,7 +83,7 @@ spec:
       media:
         enabled: true
         type: nfs
-        server: ${NAS_ADDR}
+        server: "lochnas.chestr.dev"
         path: ${NAS_MEDIA_DIR}
         mountPath: /media
       incomplete:
@@ -96,5 +96,5 @@ spec:
         memory: 250Mi
 
     podSecurityContext:
-      fsGroup: ${RUN_AS_GROUP}
+      fsGroup: 65539
       fsGroupChangePolicy: OnRootMismatch

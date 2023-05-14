@@ -38,10 +38,10 @@ spec:
     service:
       main:
         type: LoadBalancer
-        loadBalancerIP: ${METALLB_VECTOR_AGGREGATOR_ADDR}
+        externalTrafficPolicy: Local
+        externalIPs: ["192.168.1.225"]
         annotations:
           coredns.io/hostname: vector.chestr.dev
-        externalTrafficPolicy: Local
         ports:
           http:
             port: 8686
