@@ -15,3 +15,13 @@ variable "onepassword_url" {
   description = "OnePassword Connect API URL"
   default = "http://localhost:8080"
 }
+variable "cluster_domain" {
+  type = string
+  description = "Cluster Domain Name"
+  default = "chestr.dev"
+}
+variable "wordpress_0_domain" {
+  type = string
+  description = "Wordpress 0 Domain Name"
+  default = "stephk.co"
+}

@@ -12,7 +12,7 @@ resource "onepassword_item" "item" {
 
     field {
       label = "CLOUDFLARED_K8S_TUNNEL_ID"
-      type  = "CONCEALED"
+      type  = "STRING"
       value = cloudflare_tunnel.k8s.id
     }
   }
