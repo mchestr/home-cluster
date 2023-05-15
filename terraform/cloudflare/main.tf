@@ -32,9 +32,9 @@ provider "onepassword" {
 }
 
 data "cloudflare_zone" "domain" {
-  name = "chestr.dev"
+  name = var.cluster_domain
 }
 
 data "cloudflare_zone" "wordpress_0_domain" {
-  name = "stephk.co"
+  name = var.wordpress_0_domain
 }
