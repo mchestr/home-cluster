@@ -81,7 +81,7 @@ spec:
       main:
         ports:
           http:
-            port: 80
+            port: &port 80
           metrics:
             enabled: true
             port: 8080
