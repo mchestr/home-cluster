@@ -12,22 +12,22 @@ resource "cloudflare_record" "aws_ses_cname1" {
   zone_id = data.cloudflare_zone.domain.id
   proxied = false
   type    = "CNAME"
-  name    = var.aws_ses_cname1
-  value   = var.aws_ses_cname1_value
+  name    = "r6aoj7vhzjzzuitmxypnvzq5om27foyc._domainkey.chestr.dev"
+  value   = "r6aoj7vhzjzzuitmxypnvzq5om27foyc.dkim.amazonses.com"
 }
 resource "cloudflare_record" "aws_ses_cname2" {
   zone_id = data.cloudflare_zone.domain.id
   proxied = false
   type    = "CNAME"
-  name    = var.aws_ses_cname2
-  value   = var.aws_ses_cname2_value
+  name    = "6ajw3icev6dwsjdcxqyfsorhtxsndc5f._domainkey.chestr.dev"
+  value   = "6ajw3icev6dwsjdcxqyfsorhtxsndc5f.dkim.amazonses.com"
 }
 resource "cloudflare_record" "aws_ses_cname3" {
   zone_id = data.cloudflare_zone.domain.id
   proxied = false
   type    = "CNAME"
-  name    = var.aws_ses_cname3
-  value   = var.aws_ses_cname3_value
+  name    = "dclakzwyzjqdkygjisjvbscqf5zxjqln._domainkey.chestr.dev"
+  value   = "dclakzwyzjqdkygjisjvbscqf5zxjqln.dkim.amazonses.com"
 }
 resource "cloudflare_record" "aws_ses_mx" {
   zone_id  = data.cloudflare_zone.domain.id
