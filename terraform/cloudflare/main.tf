@@ -15,11 +15,20 @@ terraform {
       source  = "cloudflare/cloudflare"
       version = "4.5.0"
     }
+    onepassword = {
+      source = "1Password/onepassword"
+      version = "1.1.4"
+    }
   }
 }
 
 provider "cloudflare" {
   api_token   = var.cloudflare_api_token
+}
+
+provider "onepassword" {
+  token = var.onepassword_token
+  url = var.onepassword_url
 }
 
 data "cloudflare_zone" "domain" {
