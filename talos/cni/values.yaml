@@ -1,11 +1,16 @@
 ---
+cluster:
+  name: cluster
+  id: "1"
+
 autoDirectNodeRoutes: true
 ipv4NativeRoutingCIDR: 10.244.0.0/16
-k8sServiceHost: 192.168.1.254
+k8sServiceHost: cluster.chestr.dev
 k8sServicePort: 6443
 kubeProxyReplacement: strict
-hubble:
-  enabled: false
+localRedirectPolicy: true
+rollOutCiliumPods: true
+tunnel: disabled
 
 bgp:
   announce:
@@ -25,8 +30,6 @@ loadBalancer:
   algorithm: maglev
   mode: dsr
 
-localRedirectPolicy: true
-
 cgroup:
   autoMount:
     enabled: false
@@ -35,12 +38,36 @@ cgroup:
 operator:
   rollOutPods: true
 
-rollOutCiliumPods: true
-
 securityContext:
   privileged: true
   capabilities:
     ciliumAgent: "{CHOWN,KILL,NET_ADMIN,NET_RAW,IPC_LOCK,SYS_ADMIN,SYS_RESOURCE,DAC_OVERRIDE,FOWNER,SETGID,SETUID}"
     cleanCiliumState: "{NET_ADMIN,SYS_ADMIN,SYS_RESOURCE}"
 
-tunnel: disabled
+hubble:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+  metrics:
+    enabled:
+      - dns:query;ignoreAAAA
+      - drop
+      - tcp
+      - flow
+      - port-distribution
+      - icmp
+      - http
+  relay:
+    enabled: true
+    rollOutPods: true
+  ui:
+    enabled: true
+    rollOutPods: true
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: "nginx"
+        ingress.home.arpa/type: "internal"
+        nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      hosts:
+        - hubble.chestr.dev
