@@ -38,7 +38,7 @@ spec:
 
     autoDirectNodeRoutes: true
     ipv4NativeRoutingCIDR: 10.244.0.0/16
-    k8sServiceHost: cluster.chester.dev
+    k8sServiceHost: cluster.chestr.dev
     k8sServicePort: 6443
     kubeProxyReplacement: strict
     localRedirectPolicy: true
