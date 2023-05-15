@@ -3,7 +3,7 @@ clusterName: home-cluster
 talosVersion: "v1.4.4"
 # renovate: datasource=github-releases depName=siderolabs/kubelet
 kubernetesVersion: "v1.26.4"
-endpoint: https://192.168.1.254:6443
+endpoint: https://cluster.chestr.dev:6443
 allowSchedulingOnMasters: true
 clusterPodNets:
   - 10.244.0.0/16
@@ -58,7 +58,7 @@ controlPlane:
         admissionControl: []
         certSANs:
           - ${clusterEndpointIP}
-          - cluster.${domainName}
+          - cluster.chestr.dev
         extraArgs:
           feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
       controllerManager:
@@ -78,15 +78,15 @@ controlPlane:
     machine:
       certSANs:
         - ${clusterEndpointIP}
-        - cluster.${domainName}
+        - cluster.chestr.dev
       install:
         extraKernelArgs:
-          - talos.logging.kernel=udp://vector.${domainName}:6050/
+          - talos.logging.kernel=udp://vector.chestr.dev:6050/
         extensions:
           - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.3.0
       logging:
         destinations:
-          - endpoint: udp://vector.${domainName}:6051/
+          - endpoint: udp://vector.chestr.dev:6051/
             format: json_lines
       kubelet:
         extraArgs:
@@ -111,7 +111,7 @@ controlPlane:
           permissions: 0o666
           op: create
           content: |
-            MONITOR ups@lochnas.${domainName} 1 ${upsmonUser} ${upsmonPasswd} slave
+            MONITOR ups@lochnas.chestr.dev 1 ${upsmonUser} ${upsmonPasswd} slave
             SHUTDOWNCMD "/sbin/poweroff"
       network:
         interfaces:
@@ -131,19 +131,19 @@ worker:
     machine:
       certSANs:
         - ${clusterEndpointIP}
-        - cluster.${domainName}
+        - cluster.chestr.dev
       time:
         disabled: false
         servers:
           - time.cloudflare.com
       install:
         extraKernelArgs:
-          - talos.logging.kernel=udp://vector.${domainName}:6050/
+          - talos.logging.kernel=udp://vector.chestr.dev:6050/
         extensions:
           - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.3.0
       logging:
         destinations:
-          - endpoint: udp://vector.${domainName}:6051/
+          - endpoint: udp://vector.chestr.dev:6051/
             format: json_lines
       kubelet:
         extraArgs:
@@ -164,7 +164,7 @@ worker:
           permissions: 0o666
           op: create
           content: |
-            MONITOR ups@lochnas.${domainName} 1 ${upsmonUser} ${upsmonPasswd} slave
+            MONITOR ups@lochnas.chestr.dev 1 ${upsmonUser} ${upsmonPasswd} slave
             SHUTDOWNCMD "/sbin/poweroff"
       network:
         interfaces:
