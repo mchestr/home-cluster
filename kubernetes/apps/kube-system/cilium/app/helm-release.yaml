@@ -108,9 +108,12 @@ spec:
         rollOutPods: true
         ingress:
           enabled: true
+          className: nginx
           annotations:
-            kubernetes.io/ingress.class: nginx
-            ingress.home.arpa/type: internal
             nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+            auth.home.arpa/enabled: "true"
+            hajimari.io/group: system management
+            hajimari.io/appName: cilium
+            hajimari.io/icon: simple-icons:cilium
           hosts:
             - hubble.chestr.dev
