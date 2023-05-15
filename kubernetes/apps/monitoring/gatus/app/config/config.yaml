@@ -114,6 +114,10 @@ endpoints:
     <<: *default-authelia-endpoint
     url: https://paperless.${CLUSTER_DOMAIN}
 
+  - name: PiKVM
+    <<: *default-endpoint
+    url: https://pikvm.${CLUSTER_DOMAIN}
+
   - name: Immich
     <<: *default-endpoint
     url: https://photos.${CLUSTER_DOMAIN}
