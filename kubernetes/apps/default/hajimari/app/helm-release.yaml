@@ -54,11 +54,7 @@ spec:
       showBookmarkGroups: true
       title: Home
       namespaceSelector:
-        matchNames:
-          - default
-          - monitoring
-          - rook-ceph
-          - web
+        any: true
       globalBookmarks:
         - group: Home
           bookmarks:
