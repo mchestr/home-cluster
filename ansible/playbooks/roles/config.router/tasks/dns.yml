@@ -34,6 +34,13 @@
       - "{{ prefix }} options server=/{{ cluster_domain }}/192.168.1.220"
 
 # TODO: make this better
+- name: Configure Cluster Forwarding
+  vars:
+    prefix: set service dns forwarding
+  community.network.edgeos_config:
+    lines:
+      - "{{ prefix }} options address=/cluster.chestr.dev/192.168.1.254"
+
 - name: Configure lochnas Forwarding
   vars:
     prefix: set service dns forwarding
