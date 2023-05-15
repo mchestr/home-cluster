@@ -1,13 +1,21 @@
+locals {
+  envs = [{
+    name = "UPTIME_KUMA_CLOUDFLARED_TOKEN"
+    value = cloudflare_tunnel.uptime-kuma.tunnel_token
+  }]
+
+  config_sha = sha1("${join("", local.envs.*.value)}-${local.image}")
+  image    = "ghcr.io/mchestr/uptime-kuma:${var.tag}"
+  zone     = "us-west1-b"
+}
+
 module "uptime-kuma" {
   source  = "terraform-google-modules/container-vm/google"
   version = "3.1.0"
 
   container = {
-    image = "ghcr.io/mchestr/uptime-kuma:${var.tag}"
-    env = [{
-        name = "UPTIME_KUMA_CLOUDFLARED_TOKEN"
-        value = cloudflare_tunnel.uptime-kuma.tunnel_token
-    }]
+    image = local.image
+    env = local.envs
     volumeMounts = [{
         mountPath = "/app/data"
         name      = "data-disk-0"
@@ -34,7 +42,7 @@ resource "google_service_account" "default" {
 resource "google_compute_disk" "pd" {
   project = var.project_id
   name    = "uptime-kuma-data-disk"
-  zone    = "us-west1-b"
+  zone    = local.zone
   size    = 10
 }
 
@@ -42,7 +50,8 @@ resource "google_compute_instance" "uptime-kuma" {
   project      = var.project_id
   name         = "uptime-kuma"
   machine_type = "e2-micro"
-  zone         = "us-west1-b"
+  zone         = local.zone
+  description  = local.config_sha
 
   boot_disk {
     initialize_params {
