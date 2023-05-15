@@ -53,7 +53,7 @@ spec:
 
       # Get latest GTNH release, Only needed for bootstrap.
       # Could leave as is if you want the keep anticheat JourneyMap enabled, but I remove it manually.
-      GENERIC_PACKS: GT_New_Horizons_2.3.3
+      GENERIC_PACKS: GT_New_Horizons_2.3.3_Server
       GENERIC_PACKS_PREFIX: http://downloads.gtnewhorizons.com/ServerPacks/
       GENERIC_PACKS_SUFFIX: .zip
       REMOVE_OLD_MODS: "TRUE"
