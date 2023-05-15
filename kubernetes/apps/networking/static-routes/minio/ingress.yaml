@@ -31,6 +31,8 @@ kind: Ingress
 metadata:
   name: s3
   namespace: networking
+  annotations:
+    hajimari.io/enable: "false"
 
 spec:
   ingressClassName: nginx
