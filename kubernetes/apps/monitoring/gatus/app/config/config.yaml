@@ -62,6 +62,10 @@ endpoints:
     <<: *default-authelia-endpoint
     url: https://bazarr.${CLUSTER_DOMAIN}
 
+  - name: Cilium
+    <<: *default-authelia-endpoint
+    url: https://hubble.${CLUSTER_DOMAIN}
+
   - name: EMQX
     <<: *default-endpoint
     url: https://emqx.${CLUSTER_DOMAIN}
@@ -69,6 +73,10 @@ endpoints:
   - name: ESPHome
     <<: *default-authelia-endpoint
     url: https://esphome.${CLUSTER_DOMAIN}
+
+  - name: Frigate
+    <<: *default-authelia-endpoint
+    url: https://frigate.${CLUSTER_DOMAIN}
 
   - name: Grafana
     <<: *default-authelia-endpoint
@@ -97,6 +105,10 @@ endpoints:
   - name: Minio
     <<: *default-endpoint
     url: https://minio.${CLUSTER_DOMAIN}
+
+  - name: Nest RTSP
+    <<: *default-authelia-endpoint
+    url: https://nest-rtsp.${CLUSTER_DOMAIN}
 
   - name: Overseerr
     <<: *default-endpoint
