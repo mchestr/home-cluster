@@ -26,6 +26,10 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    controller:
+      annotations:
+        reloader.stakater.com/auto: "true"
+
     image:
       repository: ghcr.io/nwithan8/tauticord
       tag: 3.6.0@sha256:682331b0e0e984fa230b69d4d2fae6ed5e5ac1f8f59459c04b7af0ba5ce5ac78
