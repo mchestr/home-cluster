@@ -32,7 +32,7 @@ spec:
 
     image:
       repository: ghcr.io/nwithan8/tauticord
-      tag: 3.6.0@sha256:682331b0e0e984fa230b69d4d2fae6ed5e5ac1f8f59459c04b7af0ba5ce5ac78
+      tag: 3.6.1@sha256:6af019b32e5581f0fc81564e5f7930daf4afc8dad192b7f1e5828597cf1de2bc
 
     envFrom:
       - secretRef:
