@@ -51,6 +51,7 @@ spec:
       TC_VC_TV_SERIES_COUNT: "True"
       TC_VC_TV_EPISODE_COUNT: "True"
       TC_ALLOW_ANALYTICS: "False"
+      TC_REFRESH_SECONDS: "120"
       TZ: "${TZ}"
 
     service:
