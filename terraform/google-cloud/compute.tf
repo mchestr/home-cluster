@@ -3,10 +3,6 @@ locals {
     {
       name = "UPTIME_KUMA_CLOUDFLARED_TOKEN"
       value = cloudflare_tunnel.uptime-kuma.tunnel_token
-    },
-    {
-      name = "push"
-      value = "push"
     }
   ]
 
