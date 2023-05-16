@@ -1,0 +1,65 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app tauticord
+  namespace: default
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    image:
+      repository: ghcr.io/nwithan8/tauticord
+      tag: 3.6.0@sha256:682331b0e0e984fa230b69d4d2fae6ed5e5ac1f8f59459c04b7af0ba5ce5ac78
+
+    envFrom:
+      - secretRef:
+          name: *app
+
+    env:
+      TC_TAUTULLI_URL: http://tautulli.default.svc.cluster.local:8181
+      TC_PLEX_PASS: "True"
+      TC_ANON_USERS: "True"
+      TC_VC_STREAM_COUNT: "True"
+      TC_VC_TRANSCODE_COUNT: "True"
+      TC_VC_BANDWIDTH: "True"
+      TC_VC_PLEX_STATUS: "True"
+      TC_VC_LIBRARY_STATS: "True"
+      TC_VC_TV_SERIES_COUNT: "True"
+      TC_VC_TV_EPISODE_COUNT: "True"
+      TC_ALLOW_ANALYTICS: "False"
+      TZ: "${TZ}"
+
+    service:
+      main:
+        enabled: false
+
+    ingress:
+      main:
+        enabled: false
+
+    persistence:
+      logs:
+        enabled: true
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 500Mi
+        mountPath: /logs

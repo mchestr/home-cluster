@@ -31,6 +31,7 @@ resources:
   - shlink/ks.yaml
   - smtp-relay/ks.yaml
   - sonarr/ks.yaml
+  - tauticord/ks.yaml
   - tautulli/ks.yaml
   - theme-park/ks.yaml
   - unifi/ks.yaml
