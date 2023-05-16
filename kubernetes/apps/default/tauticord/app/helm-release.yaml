@@ -47,6 +47,7 @@ spec:
       TC_VC_BANDWIDTH: "True"
       TC_VC_PLEX_STATUS: "True"
       TC_VC_LIBRARY_STATS: "True"
+      TC_VC_LIBRARY_NAMES: "Movies,TV Shows"
       TC_VC_TV_SERIES_COUNT: "True"
       TC_VC_TV_EPISODE_COUNT: "True"
       TC_ALLOW_ANALYTICS: "False"
