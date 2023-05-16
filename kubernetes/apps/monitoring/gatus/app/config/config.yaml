@@ -165,6 +165,10 @@ endpoints:
     <<: *default-authelia-endpoint
     url: https://sonarr.${CLUSTER_DOMAIN}
 
+  - name: Status
+    <<: *default-endpoint
+    url: https://status.${CLUSTER_DOMAIN}
+
   - name: Tautulli
     <<: *default-endpoint
     url: https://tautulli.${CLUSTER_DOMAIN}
