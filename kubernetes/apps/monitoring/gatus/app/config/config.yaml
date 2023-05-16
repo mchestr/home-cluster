@@ -1,8 +1,8 @@
 default-alerts: &default-alerts
   alerts:
     - type: pushover
-      failure-threshold: 1
-      success-threshold: 5
+      failure-threshold: 3
+      success-threshold: 2
       send-on-resolved: true
       description: "healthcheck failed"
 
