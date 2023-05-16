@@ -1,8 +1,14 @@
 locals {
-  envs = [{
-    name = "UPTIME_KUMA_CLOUDFLARED_TOKEN"
-    value = cloudflare_tunnel.uptime-kuma.tunnel_token
-  }]
+  envs = [
+    {
+      name = "UPTIME_KUMA_CLOUDFLARED_TOKEN"
+      value = cloudflare_tunnel.uptime-kuma.tunnel_token
+    },
+    {
+      name = "push"
+      value = "push"
+    }
+  ]
 
   config_sha = sha1("${join("", local.envs.*.value)}-${local.image}")
   image    = "ghcr.io/mchestr/uptime-kuma:${var.tag}"
