@@ -17,7 +17,7 @@ terraform {
     }
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "4.5.0"
+      version = "4.6.0"
     }
     random = {
         source = "hashicorp/random"
