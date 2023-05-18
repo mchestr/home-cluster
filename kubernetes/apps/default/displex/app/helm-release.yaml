@@ -1,0 +1,66 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app displex
+  namespace: default
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controller:
+      annotations:
+        reloader.stakater.com/auto: "true"
+
+    image:
+      repository: ghcr.io/mchestr/displex
+      tag: v0.2.0@sha256:b62523228c4ccb16d5d4d37ed92f7c2e336a6c947cb1363f6665766d7c61c218
+
+    envFrom:
+      - secretRef:
+          name: *app
+
+    env:
+      DISPLEX_HOSTNAME: displex.chestr.dev
+      DISPLEX_PLEX_CLIENT_ID: MikeFlix
+      DISPLEX_PORT: &port 8080
+
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          external-dns.home.arpa/enabled: "true"
+          hajimari.io/enalbed: "false"
+        hosts:
+          - host: &host "{{ .Release.Name }}.chestr.dev"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
