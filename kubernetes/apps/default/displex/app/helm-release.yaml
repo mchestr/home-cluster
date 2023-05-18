@@ -27,6 +27,8 @@ spec:
     keepHistory: false
   values:
     controller:
+      replicas: 2
+      strategy: RollingUpdate
       annotations:
         reloader.stakater.com/auto: "true"
 
