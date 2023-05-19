@@ -41,7 +41,7 @@ spec:
 
     image:
       repository: ghcr.io/mchestr/displex
-      tag: v0.4.0@sha256:6955ed26d3c021f1cee9a1feb3cb70355b02c532389ea23659e86d499299f728
+      tag: v0.4.3
 
     envFrom:
       - secretRef:
@@ -51,6 +51,7 @@ spec:
       DISPLEX_HOSTNAME: displex.chestr.dev
       DISPLEX_APPLICATION_NAME: MikeFlix
       DISPLEX_TAUTULLI_URL: https://tautulli.default.svc.cluster.local:8181
+      DISPLEX_HOST: "0.0.0.0"
       DISPLEX_PORT: &port 8080
       RUST_LOG: debug
 
