@@ -40,6 +40,9 @@ spec:
 
     env:
       TC_SERVER_NAME: MikeFlix
+      TC_VC_STATS_CATEGORY_NAME: MikeFlix Stats
+      TC_VC_LIBRARIES_CATEGORY_NAME: MikeFlix Libraries
+      TC_DISCORD_CHANNEL_NAME: mikeflix-status
       TC_TAUTULLI_URL: http://tautulli.default.svc.cluster.local:8181
       TC_PLEX_PASS: "True"
       TC_ANON_USERS: "True"
