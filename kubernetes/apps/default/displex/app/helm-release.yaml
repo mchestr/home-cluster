@@ -32,9 +32,16 @@ spec:
       annotations:
         reloader.stakater.com/auto: "true"
 
+    initContainers:
+      init-db:
+        image: ghcr.io/onedr0p/postgres-initdb:14.8
+        envFrom:
+          - secretRef:
+              name: *app
+
     image:
       repository: ghcr.io/mchestr/displex
-      tag: v0.2.0@sha256:b62523228c4ccb16d5d4d37ed92f7c2e336a6c947cb1363f6665766d7c61c218
+      tag: v0.4.0@sha256:6955ed26d3c021f1cee9a1feb3cb70355b02c532389ea23659e86d499299f728
 
     envFrom:
       - secretRef:
@@ -42,8 +49,10 @@ spec:
 
     env:
       DISPLEX_HOSTNAME: displex.chestr.dev
-      DISPLEX_PLEX_CLIENT_ID: MikeFlix
+      DISPLEX_APPLICATION_NAME: MikeFlix
+      DISPLEX_TAUTULLI_URL: https://tautulli.default.svc.cluster.local:8181
       DISPLEX_PORT: &port 8080
+      RUST_LOG: debug
 
     service:
       main:
