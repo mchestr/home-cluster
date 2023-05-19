@@ -1,0 +1,22 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: displex-stat-refresh
+  namespace: default
+spec:
+  schedule: "0 */3 * * *"
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 86400
+      template:
+        spec:
+          automountServiceAccountToken: false
+          restartPolicy: OnFailure
+          containers:
+            - name: main
+              image: ghcr.io/mchestr/displex:v0.5.0
+              command: ["/usr/local/bin/stat-refresh"]
+              envFrom:
+                - secretRef:
+                    name: displex
