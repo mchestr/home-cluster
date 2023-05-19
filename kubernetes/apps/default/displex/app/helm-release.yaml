@@ -50,7 +50,7 @@ spec:
     env:
       DISPLEX_HOSTNAME: displex.chestr.dev
       DISPLEX_APPLICATION_NAME: MikeFlix
-      DISPLEX_TAUTULLI_URL: https://tautulli.default.svc.cluster.local:8181
+      DISPLEX_TAUTULLI_URL: http://tautulli.default.svc.cluster.local:8181
       DISPLEX_HOST: "0.0.0.0"
       DISPLEX_PORT: &port 8080
       RUST_LOG: debug
