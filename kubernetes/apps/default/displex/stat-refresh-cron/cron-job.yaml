@@ -22,4 +22,5 @@ spec:
                     name: displex
               env:
                 # TODO: figure out wtf
-                DISPLEX_PORT: "8080"
+                - name: DISPLEX_PORT
+                  value: "8080"
