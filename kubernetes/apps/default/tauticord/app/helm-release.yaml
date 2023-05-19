@@ -39,6 +39,7 @@ spec:
           name: *app
 
     env:
+      TC_SERVER_NAME: MikeFlix
       TC_TAUTULLI_URL: http://tautulli.default.svc.cluster.local:8181
       TC_PLEX_PASS: "True"
       TC_ANON_USERS: "True"
