@@ -41,21 +41,17 @@ spec:
 
     image:
       repository: ghcr.io/mchestr/displex
-      tag: v0.6.3
+      tag: v0.6.4
 
     envFrom:
       - secretRef:
           name: *app
 
-    env:
-      DISPLEX_HOST: "0.0.0.0"
-      DISPLEX_PORT: &port 8080
-
     service:
       main:
         ports:
           http:
-            port: *port
+            port: 8080
 
     ingress:
       main:
