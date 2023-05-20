@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app displex
+  name: displex
   namespace: default
 spec:
   interval: 15m
@@ -37,7 +37,7 @@ spec:
         image: ghcr.io/onedr0p/postgres-initdb:14.8
         envFrom:
           - secretRef:
-              name: *app
+              name: &secret displex-secret
 
     image:
       repository: ghcr.io/mchestr/displex
@@ -45,7 +45,7 @@ spec:
 
     envFrom:
       - secretRef:
-          name: *app
+          name: *secret
 
     service:
       main:
