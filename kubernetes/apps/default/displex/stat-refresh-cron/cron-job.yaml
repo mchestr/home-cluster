@@ -15,7 +15,8 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: main
-              image: ghcr.io/mchestr/displex:main@sha256:e82d5c0eaed713772228d251081c31e52c098cd56714d8ad69feca078a4ad852
+              image: ghcr.io/mchestr/displex:main@sha256:d79a6ecb02b77201aa572706f9c68f9df3bd3184ce5a6ad74de075bab1181eee
+
               command: ["/usr/local/bin/displex", "refresh"]
               envFrom:
                 - secretRef:
