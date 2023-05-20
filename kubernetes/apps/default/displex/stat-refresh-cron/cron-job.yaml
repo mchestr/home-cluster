@@ -5,7 +5,7 @@ metadata:
   name: displex-stat-refresh
   namespace: default
 spec:
-  schedule: "0 */3 * * *"
+  schedule: "@hourly"
   jobTemplate:
     spec:
       ttlSecondsAfterFinished: 86400
