@@ -59,7 +59,7 @@ spec:
         ingressClassName: nginx
         annotations:
           external-dns.home.arpa/enabled: "true"
-          hajimari.io/enalbed: "false"
+          hajimari.io/enabled: "false"
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
