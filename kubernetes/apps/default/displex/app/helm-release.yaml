@@ -47,11 +47,15 @@ spec:
       - secretRef:
           name: *app
 
+    env:
+      DISPLEX_HOST: "0.0.0.0"
+      DISPLEX_PORT: &port 8080
+
     service:
       main:
         ports:
           http:
-            port: 8080
+            port: *port
 
     ingress:
       main:
