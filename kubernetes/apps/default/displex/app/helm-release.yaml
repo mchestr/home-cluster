@@ -41,7 +41,7 @@ spec:
 
     image:
       repository: ghcr.io/mchestr/displex
-      tag: main@sha256:00c4d5ff3dafe2ffa2e844f2bf4f2e9816d6e84b224ebbf9a85ba9bee4924439
+      tag: main@sha256:52ac718deb37dac8ad416dac736d4d725874b9f0d7bde7e31a45926fc69c4168
 
     envFrom:
       - secretRef:
