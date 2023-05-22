@@ -41,7 +41,7 @@ spec:
 
     image:
       repository: ghcr.io/mchestr/displex
-      tag: v0.7.2
+      tag: v0.8.0
 
     envFrom:
       - secretRef:
