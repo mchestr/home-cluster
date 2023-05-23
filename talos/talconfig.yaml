@@ -60,10 +60,10 @@ controlPlane:
           - ${clusterEndpointIP}
           - cluster.chestr.dev
         extraArgs:
-          feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
+          feature-gates: MixedProtocolLBService=true
       controllerManager:
         extraArgs:
-          feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
+          feature-gates: MixedProtocolLBService=true
       discovery:
         registries:
           service:
@@ -71,10 +71,10 @@ controlPlane:
       proxy:
         disabled: true
         extraArgs:
-          feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
+          feature-gates: MixedProtocolLBService=true
       scheduler:
         extraArgs:
-          feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
+          feature-gates: MixedProtocolLBService=true
     machine:
       certSANs:
         - ${clusterEndpointIP}
