@@ -32,20 +32,27 @@ spec:
       annotations:
         reloader.stakater.com/auto: "true"
 
-    initContainers:
-      init-db:
-        image: ghcr.io/onedr0p/postgres-initdb:14.8
-        envFrom:
-          - secretRef:
-              name: &secret displex-secret
-
     image:
       repository: ghcr.io/mchestr/displex
       tag: v0.9.0
 
+    command: ["/usr/local/bin/displex", "discord-bot"]
+
     envFrom:
       - secretRef:
           name: *secret
+
+    env:
+      DISPLEX_DISCORD_BOT: serenity
+      DISPLEX_DISCORD_BOT_STAT_CATEGORY_NAME: MikeFlix Stats
+      DISPLEX_DISCORD_BOT_STAT_STATUS_NAME: Status
+      DISPLEX_DISCORD_BOT_STAT_STREAM_NAME: Current Streams
+      DISPLEX_DISCORD_BOT_STAT_TRANSCODE_NAME: Current Transcodes
+      DISPLEX_DISCORD_BOT_STAT_BANDWIDTH_NAME: Bandwidth
+      DISPLEX_DISCORD_BOT_LIB_CATEGORY_NAME: MikeFlix Library
+      DISPLEX_DISCORD_BOT_LIB_MOVIES_NAME: 🎥 Movies
+      DISPLEX_DISCORD_BOT_LIB_TV_SHOWS_NAME: 📺 TV Shows
+      DISPLEX_DISCORD_BOT_LIB_TV_EPISODES_NAME: 🧩 Episodes
 
     service:
       main:
