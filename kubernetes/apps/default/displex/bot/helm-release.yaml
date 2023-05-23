@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: displex
+  name: displex-bot
   namespace: default
 spec:
   interval: 15m
@@ -27,8 +27,6 @@ spec:
     keepHistory: false
   values:
     controller:
-      replicas: 2
-      strategy: RollingUpdate
       annotations:
         reloader.stakater.com/auto: "true"
 
@@ -40,9 +38,10 @@ spec:
 
     envFrom:
       - secretRef:
-          name: *secret
+          name: displex-secret
 
     env:
+      DISPLEX_DISCORD_BOT_STATUS: MikeFlix
       DISPLEX_DISCORD_BOT: serenity
       DISPLEX_DISCORD_BOT_STAT_CATEGORY_NAME: MikeFlix Stats
       DISPLEX_DISCORD_BOT_STAT_STATUS_NAME: Status
@@ -56,22 +55,8 @@ spec:
 
     service:
       main:
-        ports:
-          http:
-            port: 8080
+        enabled: false
 
     ingress:
       main:
-        enabled: true
-        ingressClassName: nginx
-        annotations:
-          external-dns.home.arpa/enabled: "true"
-          hajimari.io/enable: "false"
-        hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
-            paths:
-              - path: /
-                pathType: Prefix
-        tls:
-          - hosts:
-              - *host
+        enabled: false
