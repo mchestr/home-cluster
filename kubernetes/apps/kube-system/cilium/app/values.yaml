@@ -121,7 +121,7 @@ ipam:
 ipv4NativeRoutingCIDR: 10.244.0.0/16
 
 # -- (string) Kubernetes service host
-k8sServiceHost: cluster.chestr.dev
+k8sServiceHost: 192.168.1.254
 # -- (string) Kubernetes service port
 k8sServicePort: 6443
 
