@@ -17,3 +17,7 @@ spec:
     repository: radarr-restic-secret
     retain:
       daily: 10
+    moverSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
