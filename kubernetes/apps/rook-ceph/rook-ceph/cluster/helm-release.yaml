@@ -43,6 +43,14 @@ spec:
       network:
         provider: host
 
+      crashCollector:
+        disable: false
+
+      dashboard:
+        enabled: true
+        urlPrefix: /
+        ssl: false
+
       resources:
         mgr:
           limits:
@@ -92,13 +100,6 @@ spec:
             cpu: "100m"
             memory: "100Mi"
 
-      crashCollector:
-        disable: false
-
-      dashboard:
-        enabled: true
-        urlPrefix: /
-
       storage:
         useAllNodes: false
         useAllDevices: false
@@ -119,7 +120,6 @@ spec:
       dashboard:
         ingressClassName: nginx
         annotations:
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
           hajimari.io/icon: mdi:chess-rook
           hajimari.io/appName: Rook Ceph
           hajimari.io/group: storage, database, and messaging
@@ -157,39 +157,6 @@ spec:
             csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
             csi.storage.k8s.io/fstype: ext4
 
-    cephFileSystems:
-      - name: ceph-filesystem
-        spec:
-          metadataPool:
-            replicated:
-              size: 3
-          dataPools:
-            - failureDomain: host
-              replicated:
-                size: 3
-          metadataServer:
-            activeCount: 1
-            activeStandby: true
-            resources:
-              requests:
-                cpu: "35m"
-                memory: "64M"
-              limits:
-                memory: "144M"
-        storageClass:
-          enabled: true
-          isDefault: false
-          name: ceph-filesystem
-          reclaimPolicy: Delete
-          allowVolumeExpansion: true
-          mountOptions: []
-          parameters:
-            csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
-            csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
-            csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
-            csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
-            csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
-            csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
-            csi.storage.k8s.io/fstype: ext4
+    cephFileSystems: []
 
     cephObjectStores: []
