@@ -21,7 +21,7 @@ spec:
       namespace: monitoring
   interval: 30m
   retryInterval: 1m
-  timeout: 3m
+  timeout: 15m
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -45,4 +45,4 @@ spec:
       namespace: monitoring
   interval: 30m
   retryInterval: 1m
-  timeout: 3m
+  timeout: 15m
