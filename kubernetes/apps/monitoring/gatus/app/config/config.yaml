@@ -148,6 +148,8 @@ endpoints:
   - name: Rook Ceph
     <<: *default-endpoint
     url: https://rook.${CLUSTER_DOMAIN}
+    client:
+      insecure: true
 
   - name: SabNZBD
     <<: *default-authelia-endpoint
