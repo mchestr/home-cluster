@@ -49,7 +49,7 @@ spec:
       dashboard:
         enabled: true
         urlPrefix: /
-        ssl: true
+        ssl: false
 
       resources:
         mgr:
@@ -123,7 +123,6 @@ spec:
           hajimari.io/icon: mdi:chess-rook
           hajimari.io/appName: Rook Ceph
           hajimari.io/group: storage, database, and messaging
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 
         host:
           name: &host "rook.chestr.dev"
