@@ -32,7 +32,7 @@ spec:
 
     image:
       repository: ghcr.io/mchestr/displex
-      tag: main@sha256:07524b595a3da8bff1e43bdfb93db17e9228d1df648bfcf965225009a154db6d
+      tag: main@sha256:49a9fdea76b1683a417054d91d7193b184e3302e2ff4fd10531adb40bf2ba497
 
     command: ["/usr/local/bin/displex", "discord-bot"]
 
