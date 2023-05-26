@@ -138,8 +138,16 @@ endpoints:
     url: https://prowlarr.${CLUSTER_DOMAIN}
 
   - name: qBittorrent
-    <<: *default-authelia-endpoint
+    <<: *default-endpoint
     url: https://qbittorrent.${CLUSTER_DOMAIN}
+
+  - name: Radarr
+    <<: *default-endpoint
+    url: https://radarr.${CLUSTER_DOMAIN}
+
+  - name: Radarr 4K
+    <<: *default-endpoint
+    url: https://radarr-4k.${CLUSTER_DOMAIN}
 
   - name: Radicale
     <<: *default-endpoint
@@ -152,7 +160,7 @@ endpoints:
       insecure: true
 
   - name: SabNZBD
-    <<: *default-authelia-endpoint
+    <<: *default-endpoint
     url: https://sabnzbd.${CLUSTER_DOMAIN}
 
   - name: Shlink
@@ -164,7 +172,7 @@ endpoints:
     url: https://ln.${CLUSTER_DOMAIN}/${SHLINK_HEALTH_TOKEN}
 
   - name: Sonarr
-    <<: *default-authelia-endpoint
+    <<: *default-endpoint
     url: https://sonarr.${CLUSTER_DOMAIN}
 
   - name: Tautulli
