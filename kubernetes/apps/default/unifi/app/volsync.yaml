@@ -1,0 +1,47 @@
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: unifi-restic
+  namespace: default
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: unifi-restic-secret
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        RESTIC_REPOSITORY: '{{ .RESTIC_REPOSITORY_BUCKET }}/unifi'
+        RESTIC_PASSWORD: '{{ .RESTIC_PASSWORD }}'
+        AWS_ACCESS_KEY_ID: '{{ .AWS_ACCESS_KEY_ID }}'
+        AWS_SECRET_ACCESS_KEY: '{{ .AWS_SECRET_ACCESS_KEY }}'
+  dataFrom:
+    - extract:
+        key: volsync-restic
+    - extract:
+        key: backblaze
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: unifi
+  namespace: default
+spec:
+  sourcePVC: unifi-data-v1
+  trigger:
+    schedule: "0 9 * * *"
+  restic:
+    repository: unifi-restic-secret
+    copyMethod: Snapshot
+    pruneIntervalDays: 10
+    cacheCapacity: 1Gi
+    volumeSnapshotClassName: csi-ceph-blockpool
+    storageClassName: ceph-block
+    moverSecurityContext:
+      fsGroup: 0
+    retain:
+      daily: 7
+      within: 3d
