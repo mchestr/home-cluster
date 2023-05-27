@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: default
 resources:
   - helm-release.yaml
+  - volsync.yaml
 configMapGenerator:
   - name: autobrr-configmap
     files:
