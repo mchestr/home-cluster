@@ -25,7 +25,6 @@ resources:
   - prowlarr/ks.yaml
   - qbittorrent/ks.yaml
   - radarr/ks.yaml
-  - radarr-4k/ks.yaml
   - radicale/ks.yaml
   - recyclarr/ks.yaml
   - redis/ks.yaml
