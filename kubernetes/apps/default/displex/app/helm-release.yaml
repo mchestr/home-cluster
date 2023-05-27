@@ -67,6 +67,8 @@ spec:
     env:
       DISPLEX_APPLICATION_NAME: MikeFlix
       DISPLEX_HTTP__HOSTNAME: *host
+      DISPLEX_HTTP__HOST: 0.0.0.0
+      DISPLEX_HTTP__PORT: &port 8080
       DISPLEX_DISCORD_BOT__STATUS_TEXT: MikeFlix
       DISPLEX_DISCORD_BOT__STAT_UPDATE__STATS_CATEGORY__NAME: MikeFlix Status
       DISPLEX_DISCORD_BOT__STAT_UPDATE__STATS_CATEGORY__STREAM_NAME: Current Streams
@@ -84,4 +86,4 @@ spec:
       main:
         ports:
           http:
-            port: 8080
+            port: *port
