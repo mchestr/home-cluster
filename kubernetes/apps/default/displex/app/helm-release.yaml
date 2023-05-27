@@ -27,8 +27,6 @@ spec:
     keepHistory: false
   values:
     controller:
-      replicas: 2
-      strategy: RollingUpdate
       annotations:
         reloader.stakater.com/auto: "true"
 
@@ -41,17 +39,10 @@ spec:
 
     image:
       repository: ghcr.io/mchestr/displex
-      tag: main@sha256:060b4240f9aab1ef1977650da60c65eeae938b64b41a3a77eea1b612cc607df1
+      tag: main@sha256:f5b33cfd4bf92b315409a1d33c64fee5c3727b26b4e4b1e1d7ba811955f3c854
 
-    envFrom:
-      - secretRef:
-          name: *secret
-
-    service:
-      main:
-        ports:
-          http:
-            port: 8080
+    command:
+      - "/usr/local/bin/displex"
 
     ingress:
       main:
@@ -68,3 +59,29 @@ spec:
         tls:
           - hosts:
               - *host
+
+    envFrom:
+      - secretRef:
+          name: *secret
+
+    env:
+      DISPLEX_APPLICATION_NAME: MikeFlix
+      DISPLEX_HTTP__HOSTNAME: *host
+      DISPLEX_DISCORD_BOT__STATUS_TEXT: MikeFlix
+      DISPLEX_DISCORD_BOT__STAT_UPDATE__STATS_CATEGORY__NAME: MikeFlix Status
+      DISPLEX_DISCORD_BOT__STAT_UPDATE__STATS_CATEGORY__STREAM_NAME: Current Streams
+      DISPLEX_DISCORD_BOT__STAT_UPDATE__STATS_CATEGORY__TRANSCODE_NAME: Current Transcodes
+      DISPLEX_DISCORD_BOT__STAT_UPDATE__STATS_CATEGORY__BANDWIDTH_TOTAL_NAME: Bandwidth
+      DISPLEX_DISCORD_BOT__STAT_UPDATE__STATS_CATEGORY__BANDWIDTH_REMOTE_NAME: Data Out
+      DISPLEX_DISCORD_BOT__STAT_UPDATE__LIBRARY_CATEGORY__NAME: MikeFlix Library
+      DISPLEX_DISCORD_BOT__STAT_UPDATE__LIBRARY_CATEGORY__MOVIES_NAME: 🎥 Movies
+      DISPLEX_DISCORD_BOT__STAT_UPDATE__LIBRARY_CATEGORY__TV_SHOWS_NAME: 📺 TV Shows
+      DISPLEX_DISCORD_BOT__STAT_UPDATE__LIBRARY_CATEGORY__TV_EPISODES_NAME: 🧩 Episodes
+      DISPLEX_DISCORD_BOT__USER_UPDATE__INTERVAL: 3600s
+      DISPLEX_TAUTULLI__URL: http://tautulli.default.svc.cluster.local:8181
+
+    service:
+      main:
+        ports:
+          http:
+            port: 8080
