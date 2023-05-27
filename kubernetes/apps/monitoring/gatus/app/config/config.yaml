@@ -59,7 +59,7 @@ endpoints:
     url: https://appdaemon-code.${CLUSTER_DOMAIN}
 
   - name: Bazarr
-    <<: *default-authelia-endpoint
+    <<: *default-endpoint
     url: https://bazarr.${CLUSTER_DOMAIN}
 
   - name: EMQX
