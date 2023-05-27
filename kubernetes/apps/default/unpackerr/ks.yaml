@@ -9,7 +9,6 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-radarr-app
-    - name: cluster-apps-radarr-4k-app
     - name: cluster-apps-sonarr-app
     - name: cluster-apps-external-secrets-stores
   path: ./kubernetes/apps/default/unpackerr/app

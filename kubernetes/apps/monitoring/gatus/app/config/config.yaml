@@ -145,10 +145,6 @@ endpoints:
     <<: *default-endpoint
     url: https://radarr.${CLUSTER_DOMAIN}
 
-  - name: Radarr 4K
-    <<: *default-endpoint
-    url: https://radarr-4k.${CLUSTER_DOMAIN}
-
   - name: Radicale
     <<: *default-endpoint
     url: https://cal.${CLUSTER_DOMAIN}
