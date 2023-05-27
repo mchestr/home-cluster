@@ -39,7 +39,7 @@ spec:
 
     image:
       repository: ghcr.io/mchestr/displex
-      tag: main@sha256:0ea5e030fc4d6732576048dc9a05d010d415ae35755888f8549b63b1440fcfc8
+      tag: main@sha256:dc4a8bc61a7b70e3485b03f74e482de163996d37677d03062e31e8ef1816174e
 
     command:
       - "/usr/local/bin/displex"
