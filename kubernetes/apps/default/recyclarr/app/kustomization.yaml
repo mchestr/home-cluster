@@ -5,7 +5,7 @@ resources:
   - external-secret.yaml
   - helm-release.yaml
 configMapGenerator:
-  - name: recyclarr
+  - name: recyclarr-configmap
     files:
       - recyclarr.yml
 generatorOptions:
