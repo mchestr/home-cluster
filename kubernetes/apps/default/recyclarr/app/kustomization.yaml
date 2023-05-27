@@ -4,6 +4,7 @@ namespace: default
 resources:
   - external-secret.yaml
   - helm-release.yaml
+  - volsync.yaml
 configMapGenerator:
   - name: recyclarr-configmap
     files:
