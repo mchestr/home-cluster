@@ -30,7 +30,7 @@ metadata:
   name: esphome
   namespace: default
 spec:
-  sourcePVC: esphome-config-v1
+  sourcePVC: config-esphome-0
   trigger:
     schedule: "0 9 * * *"
   restic:
