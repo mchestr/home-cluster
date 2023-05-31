@@ -27,6 +27,7 @@ spec:
     keepHistory: false
   values:
     controller:
+      type: statefulset
       annotations:
         reloader.stakater.com/auto: "true"
 
@@ -116,3 +117,10 @@ spec:
         volumeMounts:
           - name: config
             mountPath: /config
+
+    volumeClaimTemplates:
+      - name: config
+        mountPath: /config
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: ceph-block
