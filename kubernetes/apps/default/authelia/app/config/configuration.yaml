@@ -29,6 +29,9 @@ access_control:
     - domain: ["join.chestr.dev"]
       resources: ["^/join.*$", "^/j/.*$", "^/setup.*$", "^/static/.*$"]
       policy: bypass
+    - domain: ["displex.chestr.dev"]
+      resources: ["^/discord.*$", "^/plex.*$"]
+      policy: bypass
 
 notifier:
   smtp:
