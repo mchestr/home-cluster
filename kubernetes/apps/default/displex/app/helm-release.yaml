@@ -27,22 +27,13 @@ spec:
     keepHistory: false
   values:
     controller:
+      type: statefulset
       annotations:
         reloader.stakater.com/auto: "true"
 
-    initContainers:
-      init-db:
-        image: ghcr.io/onedr0p/postgres-initdb:14.8
-        envFrom:
-          - secretRef:
-              name: &secret displex-secret
-
     image:
       repository: ghcr.io/mchestr/displex
-      tag: main@sha256:dc4a8bc61a7b70e3485b03f74e482de163996d37677d03062e31e8ef1816174e
-
-    command:
-      - "/usr/local/bin/displex"
+      tag: v0.11.0
 
     ingress:
       main:
@@ -65,6 +56,7 @@ spec:
           name: *secret
 
     env:
+      DATABASE_URL: sqlite:///data/displexi.db?mode=rwc
       DISPLEX_APPLICATION_NAME: MikeFlix
       DISPLEX_HTTP__HOSTNAME: *host
       DISPLEX_HTTP__HOST: 0.0.0.0
@@ -87,3 +79,10 @@ spec:
         ports:
           http:
             port: *port
+
+    volumeClaimTemplates:
+      - name: config
+        mountPath: /data
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: ceph-block

@@ -2,19 +2,19 @@
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
-  name: autobrr-restic
+  name: displex-restic
   namespace: default
 spec:
   secretStoreRef:
     kind: ClusterSecretStore
     name: onepassword-connect
   target:
-    name: autobrr-restic-secret
+    name: displex-restic-secret
     creationPolicy: Owner
     template:
       engineVersion: v2
       data:
-        RESTIC_REPOSITORY: '{{ .RESTIC_REPOSITORY_BUCKET }}/autobrr'
+        RESTIC_REPOSITORY: '{{ .RESTIC_REPOSITORY_BUCKET }}/displex'
         RESTIC_PASSWORD: '{{ .RESTIC_PASSWORD }}'
         AWS_ACCESS_KEY_ID: '{{ .AWS_ACCESS_KEY_ID }}'
         AWS_SECRET_ACCESS_KEY: '{{ .AWS_SECRET_ACCESS_KEY }}'
@@ -27,14 +27,14 @@ spec:
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: autobrr
+  name: displex
   namespace: default
 spec:
-  sourcePVC: config-autobrr-0
+  sourcePVC: config-displex-0
   trigger:
     schedule: "0 9 * * *"
   restic:
-    repository: autobrr-restic-secret
+    repository: displex-restic-secret
     copyMethod: Snapshot
     pruneIntervalDays: 10
     cacheCapacity: 1Gi
