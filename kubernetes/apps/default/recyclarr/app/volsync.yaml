@@ -32,7 +32,7 @@ metadata:
 spec:
   sourcePVC: config-recyclarr-0
   trigger:
-    schedule: "0 0 * * *"
+    schedule: "0 9 * * *"
   restic:
     repository: recyclarr-restic-secret
     copyMethod: Snapshot
