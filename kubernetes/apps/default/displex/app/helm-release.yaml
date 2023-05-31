@@ -56,11 +56,9 @@ spec:
           name: displex-secret
 
     env:
-      DATABASE_URL: sqlite:///data/displexi.db?mode=rwc
+      DATABASE_URL: sqlite:///data/displex.db?mode=rwc
       DISPLEX_APPLICATION_NAME: MikeFlix
       DISPLEX_HTTP__HOSTNAME: *host
-      DISPLEX_HTTP__HOST: 0.0.0.0
-      DISPLEX_HTTP__PORT: &port 8080
       DISPLEX_DISCORD_BOT__STATUS_TEXT: MikeFlix
       DISPLEX_DISCORD_BOT__STAT_UPDATE__STATS_CATEGORY__NAME: MikeFlix Status
       DISPLEX_DISCORD_BOT__STAT_UPDATE__STATS_CATEGORY__STREAM_NAME: Current Streams
@@ -71,14 +69,13 @@ spec:
       DISPLEX_DISCORD_BOT__STAT_UPDATE__LIBRARY_CATEGORY__MOVIES_NAME: 🎥 Movies
       DISPLEX_DISCORD_BOT__STAT_UPDATE__LIBRARY_CATEGORY__TV_SHOWS_NAME: 📺 TV Shows
       DISPLEX_DISCORD_BOT__STAT_UPDATE__LIBRARY_CATEGORY__TV_EPISODES_NAME: 🧩 Episodes
-      DISPLEX_DISCORD_BOT__USER_UPDATE__INTERVAL: 3600s
       DISPLEX_TAUTULLI__URL: http://tautulli.default.svc.cluster.local:8181
 
     service:
       main:
         ports:
           http:
-            port: *port
+            port: 8080
 
     volumeClaimTemplates:
       - name: config
