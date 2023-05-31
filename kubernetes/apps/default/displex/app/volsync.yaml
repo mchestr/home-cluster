@@ -30,7 +30,7 @@ metadata:
   name: displex
   namespace: default
 spec:
-  sourcePVC: config-displex-0
+  sourcePVC: data-displex-0
   trigger:
     schedule: "0 9 * * *"
   restic:

@@ -30,7 +30,7 @@ metadata:
   name: appdaemon
   namespace: default
 spec:
-  sourcePVC: appdaemon-config-v1
+  sourcePVC: config-appdaemon-0
   trigger:
     schedule: "0 9 * * *"
   restic:
