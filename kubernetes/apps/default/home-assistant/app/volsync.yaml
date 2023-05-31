@@ -30,7 +30,7 @@ metadata:
   name: home-assistant
   namespace: default
 spec:
-  sourcePVC: home-assistant-config-v1
+  sourcePVC: config-home-assistant-0
   trigger:
     schedule: "0 9 * * *"
   restic:
