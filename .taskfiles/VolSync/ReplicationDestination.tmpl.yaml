@@ -2,25 +2,24 @@
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
-  name: "${RSRC}-${CLAIM}-${TS}"
-  namespace: "${NAMESPACE}"
+  name: "${rsrc}-${claim}-${ts}"
+  namespace: "${namespace}"
 spec:
   trigger:
     manual: restore-once
   restic:
-    repository: "${RSRC}-restic-secret"
-    destinationPVC: "${CLAIM}"
+    repository: "${rsrc}-restic-secret"
+    destinationPVC: "${claim}"
     copyMethod: Direct
-
-    moverSecurityContext:
-      runAsUser: 999
-      runAsGroup: 999
-      fsGroup: 999
-      fsGroupChangePolicy: "OnRootMismatch"
+    storageClassName: ceph-block
+    # IMPORTANT NOTE:
+    #   Set to the last X number of snapshots to restore from
+    previous: 2
+    # OR;
     # IMPORTANT NOTE:
     #   On bootstrap set `restoreAsOf` to the time the old cluster was destroyed.
     #   This will essentially prevent volsync from trying to restore a backup
     #   from a application that started with default data in the PVC.
     #   Do not restore snapshots made after the following RFC3339 Timestamp.
     #   date --rfc-3339=seconds (--utc)
-    restoreAsOf: "2023-05-30T20:00:00-08:00"
+    # restoreAsOf: "2022-12-10T16:00:00-05:00"
