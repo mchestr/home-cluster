@@ -53,7 +53,7 @@ spec:
 
     envFrom:
       - secretRef:
-          name: *secret
+          name: displex-secret
 
     env:
       DATABASE_URL: sqlite:///data/displexi.db?mode=rwc
