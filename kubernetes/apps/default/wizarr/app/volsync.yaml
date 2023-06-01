@@ -30,7 +30,7 @@ metadata:
   name: wizarr
   namespace: default
 spec:
-  sourcePVC: wizarr-config-v1
+  sourcePVC: data-wizarr-0
   trigger:
     schedule: "0 9 * * *"
   restic:
