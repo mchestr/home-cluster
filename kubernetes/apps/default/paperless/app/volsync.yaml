@@ -30,7 +30,7 @@ metadata:
   name: paperless
   namespace: default
 spec:
-  sourcePVC: data-paperless-0
+  sourcePVC: paperless-config-v1
   trigger:
     schedule: "0 9 * * *"
   restic:
