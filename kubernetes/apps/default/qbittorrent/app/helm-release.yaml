@@ -95,6 +95,14 @@ spec:
         server: "lochnas.chestr.dev"
         path: ${NAS_MEDIA_DIR}
         mountPath: /media
+      scripts:
+        enabled: true
+        type: configMap
+        name: qbittorrent-scripts
+        mountPath: /scripts/cross-seed.sh
+        subPath: cross-seed.sh
+        defaultMode: 0775
+        readOnly: true
 
     podSecurityContext:
       fsGroup: 65539
