@@ -27,6 +27,7 @@ spec:
     keepHistory: false
   values:
     controller:
+      type: statefulset
       annotations:
         reloader.stakater.com/auto: "true"
 
@@ -71,10 +72,14 @@ spec:
           http:
             port: *port
 
+    volumeClaimTemplates:
+      - name: config
+        mountPath: /app/config
+        accessMode: ReadWriteOnce
+        size: 5Gi
+        storageClass: ceph-block
+
     persistence:
-      config:
-        enabled: true
-        existingClaim: prowlarr-config-v1
       backup:
         enabled: true
         type: nfs
