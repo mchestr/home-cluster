@@ -78,7 +78,7 @@ spec:
 
     volumeClaimTemplates:
       - name: config
-        mountPath: /app/config
+        mountPath: /config
         accessMode: ReadWriteOnce
         size: 2Gi
         storageClass: ceph-block
