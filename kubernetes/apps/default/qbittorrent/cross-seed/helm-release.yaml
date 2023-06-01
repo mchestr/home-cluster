@@ -1,0 +1,75 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: cross-seed
+  namespace: default
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controller:
+      type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
+    image:
+      repository: ghcr.io/cross-seed/cross-seed
+      tag: latest@sha256:7c8f6c0b8fe825ca510e033148bd88d18b9bb2df0748dca5586d222fea2ca51b
+    args:
+      - daemon
+    env:
+      TZ: "${TZ}"
+    service:
+      main:
+        ports:
+          http:
+            port: 2468
+
+    volumeClaimTemplates:
+      - name: config
+        mountPath: /config
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: ceph-block
+
+    persistence:
+      config-config:
+        enabled: true
+        type: secret
+        name: cross-seed-secret
+        mountPath: /config/config.js
+        subPath: config.js
+        readOnly: true
+      config-qbittorrent:
+        enabled: true
+        existingClaim: qbittorrent-config-v1
+        mountPath: /config/qBittorrent/BT_backup
+        subPath: qBittorrent/BT_backup
+        readOnly: true
+      cross-seeds:
+        enabled: true
+        type: emptyDir
+    resources:
+      requests:
+        cpu: 10m
+        memory: 250Mi
+      limits:
+        memory: 2000Mi
