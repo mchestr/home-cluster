@@ -26,6 +26,11 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    controller:
+      type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
+
     image:
       repository: ghcr.io/wizarrrr/wizarr
       tag: 2.2.0@sha256:c7f4b05a3bd3b2232ea93aa41018e637954b3f4bcba44be90aa9622e1ed062f7
@@ -59,8 +64,9 @@ spec:
           - hosts:
               - *host
 
-    persistence:
-      config:
-        enabled: true
-        existingClaim: wizarr-config-v1
+    volumeClaimTemplates:
+      - name: data
         mountPath: /data/database
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: ceph-block
