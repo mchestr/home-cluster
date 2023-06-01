@@ -32,7 +32,7 @@ spec:
     - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-qbittorrent-app
     - name: cluster-apps-prowlarr-app
-  path: ./kubernetes/apps/media/qbittorrent/cross-seed
+  path: ./kubernetes/apps/default/qbittorrent/cross-seed
   prune: true
   sourceRef:
     kind: GitRepository
