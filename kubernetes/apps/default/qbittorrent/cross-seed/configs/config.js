@@ -1,4 +1,4 @@
-odule.exports = {
+module.exports = {
     delay: 30,
 
     torznab: [
