@@ -28,6 +28,7 @@ spec:
     keepHistory: false
   values:
     controller:
+      type: statefulset
       annotations:
         reloader.stakater.com/auto: "true"
 
@@ -60,6 +61,13 @@ spec:
           - hosts:
               - *host
 
+    volumeClaimTemplates:
+      - name: data
+        mountPath: /data
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: ceph-block
+
     persistence:
       config:
         enabled: true
@@ -68,11 +76,6 @@ spec:
         subPath: config.cfg
         mountPath: /config/config
         readOnly: true
-
-      data:
-        enabled: true
-        existingClaim: radicale-data-v1
-        mountPath: /data
 
       auth:
         enabled: true
