@@ -30,7 +30,7 @@ metadata:
   name: zwave-js-ui
   namespace: default
 spec:
-  sourcePVC: zwave-js-ui-config-v1
+  sourcePVC: data-zwave-js-ui-0
   trigger:
     schedule: "0 9 * * *"
   restic:
