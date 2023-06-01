@@ -30,7 +30,7 @@ metadata:
   name: radicale
   namespace: default
 spec:
-  sourcePVC: radicale-data-v1
+  sourcePVC: data-radicale-0
   trigger:
     schedule: "0 9 * * *"
   restic:
