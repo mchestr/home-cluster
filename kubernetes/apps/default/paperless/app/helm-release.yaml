@@ -27,7 +27,6 @@ spec:
     keepHistory: false
   values:
     controller:
-      type: statefulset
       annotations:
         reloader.stakater.com/auto: "true"
 
@@ -83,11 +82,10 @@ spec:
           - hosts:
               - *host
 
-    volumeClaimTemplates:
-      - name: data
-        accessMode: ReadWriteOnce
-        size: 8Gi
-        storageClass: ceph-block
+    persistence:
+      data:
+        enabled: true
+        existingClaim: paperless-config-v1
         subPath:
           - path: data
             mountPath: /usr/src/paperless/data
