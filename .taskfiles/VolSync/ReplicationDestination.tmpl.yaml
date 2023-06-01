@@ -14,7 +14,7 @@ spec:
     storageClassName: ceph-block
     # IMPORTANT NOTE:
     #   Set to the last X number of snapshots to restore from
-    # previous: 2
+    previous: 0
     # OR;
     # IMPORTANT NOTE:
     #   On bootstrap set `restoreAsOf` to the time the old cluster was destroyed.
@@ -22,7 +22,7 @@ spec:
     #   from a application that started with default data in the PVC.
     #   Do not restore snapshots made after the following RFC3339 Timestamp.
     #   date --rfc-3339=seconds (--utc)
-    restoreAsOf: "2023-05-30T16:00:00-07:00"
+    # restoreAsOf: "2023-05-30T16:00:00-07:00"
     moverSecurityContext:
       runAsUser: 568
       runAsGroup: 568

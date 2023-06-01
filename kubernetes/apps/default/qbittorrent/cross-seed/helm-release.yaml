@@ -60,7 +60,7 @@ spec:
         readOnly: true
       config-qbittorrent:
         enabled: true
-        existingClaim: qbittorrent-config-v1
+        existingClaim: config-qbittorrent-0
         mountPath: /config/qBittorrent/BT_backup
         subPath: qBittorrent/BT_backup
         readOnly: true
