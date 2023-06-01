@@ -6,6 +6,7 @@ metadata:
   namespace: monitoring
 spec:
   interval: 15m
+  timeout: 15m
   chart:
     spec:
       chart: loki
@@ -25,8 +26,6 @@ spec:
       retries: 2
   uninstall:
     keepHistory: false
-  reconcile:
-    timeout: 30m
   values:
     loki:
       structuredConfig:
