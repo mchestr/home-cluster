@@ -25,6 +25,8 @@ spec:
       retries: 2
   uninstall:
     keepHistory: false
+  reconcile:
+    timeout: 30m
   values:
     loki:
       structuredConfig:
