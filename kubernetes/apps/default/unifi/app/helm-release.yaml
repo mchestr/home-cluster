@@ -27,6 +27,7 @@ spec:
     keepHistory: false
   values:
     controller:
+      type: statefulset
       annotations:
         reloader.stakater.com/auto: "true"
 
@@ -100,8 +101,9 @@ spec:
           - hosts:
               - *host
 
-    persistence:
-      data:
-        enabled: true
-        existingClaim: unifi-data-v1
+    volumeClaimTemplates:
+      - name: data
         mountPath: /unifi
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: ceph-block
