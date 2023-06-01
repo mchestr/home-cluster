@@ -26,6 +26,11 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    controller:
+      type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
+
     image:
       repository: ghcr.io/zwave-js/zwave-js-ui
       tag: 8.17.1
@@ -56,11 +61,14 @@ spec:
           - hosts:
               - *host
 
-    persistence:
-      config:
-        enabled: true
-        existingClaim: zwave-js-ui-config-v1
+    volumeClaimTemplates:
+      - name: data
         mountPath: /usr/src/app/store
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: ceph-block
+
+    persistence:
       usb:
         enabled: true
         type: hostPath
