@@ -59,10 +59,14 @@ spec:
           - hosts:
               - *host
 
+    volumeClaimTemplates:
+      - name: config
+        mountPath: /config
+        accessMode: ReadWriteOnce
+        size: 2Gi
+        storageClass: ceph-block
+
     persistence:
-      config:
-        enabled: true
-        existingClaim: tautulli-config-v1
       backup:
         enabled: true
         type: nfs

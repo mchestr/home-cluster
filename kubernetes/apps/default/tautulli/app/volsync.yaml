@@ -30,7 +30,7 @@ metadata:
   name: tautulli
   namespace: default
 spec:
-  sourcePVC: tautulli-config-v1
+  sourcePVC: config-tautulli-0
   trigger:
     schedule: "0 9 * * *"
   restic:
