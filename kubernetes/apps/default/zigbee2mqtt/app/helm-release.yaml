@@ -26,6 +26,11 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    controller:
+      type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
+
     image:
       repository: ghcr.io/koenkk/zigbee2mqtt
       tag: latest-dev@sha256:70acef7e81b1522dca57da30135720c4a49af79d6c0e6b018810b05cbe510948
@@ -58,11 +63,14 @@ spec:
           - hosts:
               - *host
 
-    persistence:
-      config:
-        enabled: true
-        existingClaim: zigbee2mqtt-config-v1
+    volumeClaimTemplates:
+      - name: data
         mountPath: /data
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: ceph-block
+
+    persistence:
       usb:
         enabled: true
         type: hostPath
