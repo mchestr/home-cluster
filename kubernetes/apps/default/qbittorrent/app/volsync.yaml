@@ -39,7 +39,7 @@ spec:
     pruneIntervalDays: 10
     cacheCapacity: 2Gi
     volumeSnapshotClassName: csi-ceph-blockpool
-    storageClassName: ceph-block
+    storageClassName: ceph-filesystem
     moverSecurityContext:
       runAsUser: 568
       runAsGroup: 568
