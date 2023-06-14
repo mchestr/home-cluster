@@ -13,7 +13,7 @@ terraform {
   required_providers {
     google = {
         source = "hashicorp/google"
-        version = "4.68.0"
+        version = "4.69.1"
     }
     cloudflare = {
       source  = "cloudflare/cloudflare"
