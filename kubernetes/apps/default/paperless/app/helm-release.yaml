@@ -32,7 +32,7 @@ spec:
 
     image:
       repository: ghcr.io/paperless-ngx/paperless-ngx
-      tag: 1.15.1
+      tag: 1.16.0
 
     initContainers:
       init-db:
