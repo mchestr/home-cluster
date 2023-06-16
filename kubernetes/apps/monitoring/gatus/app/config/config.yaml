@@ -27,7 +27,7 @@ endpoints:
   - name: status
     group: external
     url: https://status.chestr.dev
-    interval: 1m
+    interval: 10m
     client:
       dns-resolver: tcp://1.1.1.1:53
     conditions:
