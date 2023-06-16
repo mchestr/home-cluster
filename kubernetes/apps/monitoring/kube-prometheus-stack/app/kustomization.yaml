@@ -4,5 +4,6 @@ kind: Kustomization
 resources:
   - datasource.yaml
   - external-secret.yaml
+  - gatus.yaml
   - helm-release.yaml
   - prometheus-rules.yaml

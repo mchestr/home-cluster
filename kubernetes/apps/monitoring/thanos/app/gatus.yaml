@@ -2,39 +2,28 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: home-assistant-gatus-ep
+  name: thanos-gatus-ep
   namespace: default
   labels:
     gatus.io/enabled: "true"
 data:
   config.yaml: |
     endpoints:
-      - name: home-assistant
-        group: external
-        url: https://home-assistant.chestr.dev
-        interval: 1m
-        client:
-          dns-resolver: tcp://1.1.1.1:53
-        conditions:
-          - "[STATUS] == 200"
-        alerts:
-          - type: pushover
-
-      - name: home-assistant-code
+      - name: thanos
         group: internal
         interval: 1h
-        url: https://home-assistant-code.chestr.dev
+        url: https://thanos.chestr.dev
         conditions:
           - "[STATUS] == 200"
           - "[BODY] == pat(*auth.chestr.dev*)"
         alerts:
           - type: pushover
-      - name: home-assistant-code
+      - name: thanos
         group: guarded
         interval: 1h
         url: 1.1.1.1
         dns:
-          query-name: home-assistant-code.chestr.dev
+          query-name: thanos.chestr.dev
           query-type: A
         conditions:
           - "len([BODY]) == 0"
