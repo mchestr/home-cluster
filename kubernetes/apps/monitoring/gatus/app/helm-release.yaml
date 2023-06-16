@@ -45,6 +45,7 @@ spec:
     envFrom: *envFrom
     env:
       TZ: "${TZ}"
+      GATUS_CONFIG_PATH: /config
       CLUSTER_DOMAIN: chestr.dev
 
     persistence:
@@ -64,6 +65,16 @@ spec:
         ports:
           http:
             port: 8080
+
+    serviceMonitor:
+      main:
+        enabled: true
+        endpoints:
+          - port: http
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
 
     ingress:
       main:
