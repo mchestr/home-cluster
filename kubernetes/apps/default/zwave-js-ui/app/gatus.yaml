@@ -9,6 +9,14 @@ metadata:
 data:
   config.yaml: |
     endpoints:
-      - name: zWave
-        <<: *default-authelia-endpoint
-        url: https://zwave-js-ui.chestr.dev
+      - name: zwave-js-ui
+        interval: 15m
+        url: 1.1.1.1
+        group: internal
+        dns:
+          query-name: zwave-js-ui.chestr.dev
+          query-type: A
+        conditions:
+          - "len([BODY]) == 0"
+        alerts:
+          - type: pushover
