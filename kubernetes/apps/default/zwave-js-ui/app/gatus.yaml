@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zwave-js-ui-gatus-ep
+  namespace: default
+  labels:
+    gatus.io/enabled: "true"
+data:
+  config.yaml: |
+    endpoints:
+      - name: zWave
+        <<: *default-authelia-endpoint
+        url: https://zwave-js-ui.chestr.dev

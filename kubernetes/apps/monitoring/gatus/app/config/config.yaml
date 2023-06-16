@@ -212,10 +212,6 @@ endpoints:
     <<: *default-authelia-endpoint
     url: https://zigbee2mqtt.${CLUSTER_DOMAIN}
 
-  - name: zWave
-    <<: *default-authelia-endpoint
-    url: https://zwave-js-ui.${CLUSTER_DOMAIN}
-
   # DNS Endpoints
   - name: Internal DNS
     <<: *default-dns-endpoint
