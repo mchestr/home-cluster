@@ -10,9 +10,18 @@ data:
   config.yaml: |
     endpoints:
       - name: zwave-js-ui
-        interval: 15m
-        url: 1.1.1.1
+        interval: 1h
+        url: https://zwave-js-ui.chestr.dev
         group: internal
+        conditions:
+          - "[STATUS] == 200"
+          - "[BODY] == pat(*auth.chestr.dev*)"
+        alerts:
+          - type: pushover
+      - name: zwave-js-ui
+        interval: 1h
+        url: 1.1.1.1
+        group: guarded
         dns:
           query-name: zwave-js-ui.chestr.dev
           query-type: A
