@@ -2,28 +2,28 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: zwave-js-ui-gatus-ep
+  name: qbittorrent-gatus-ep
   namespace: default
   labels:
     gatus.io/enabled: "true"
 data:
   config.yaml: |
     endpoints:
-      - name: zwave-js-ui
+      - name: qbittorrent
         group: internal
         interval: 1h
-        url: https://zwave-js-ui.chestr.dev
+        url: https://qbittorrent.chestr.dev
         conditions:
           - "[STATUS] == 200"
-          - "[BODY] == pat(*auth.chestr.dev*)"
+          - "[BODY] != pat(*auth.chestr.dev*)"
         alerts:
           - type: pushover
-      - name: zwave-js-ui
+      - name: qbittorrent
         group: guarded
         interval: 1h
         url: 1.1.1.1
         dns:
-          query-name: zwave-js-ui.chestr.dev
+          query-name: qbittorrent.chestr.dev
           query-type: A
         conditions:
           - "len([BODY]) == 0"

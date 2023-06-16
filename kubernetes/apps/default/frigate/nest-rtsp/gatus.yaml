@@ -2,28 +2,28 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: zwave-js-ui-gatus-ep
+  name: nest-rtsp-gatus-ep
   namespace: default
   labels:
     gatus.io/enabled: "true"
 data:
   config.yaml: |
     endpoints:
-      - name: zwave-js-ui
+      - name: nest-rtsp
         group: internal
         interval: 1h
-        url: https://zwave-js-ui.chestr.dev
+        url: https://nest-rtsp.chestr.dev
         conditions:
           - "[STATUS] == 200"
           - "[BODY] == pat(*auth.chestr.dev*)"
         alerts:
           - type: pushover
-      - name: zwave-js-ui
+      - name: nest-rtsp
         group: guarded
         interval: 1h
         url: 1.1.1.1
         dns:
-          query-name: zwave-js-ui.chestr.dev
+          query-name: nest-rtsp.chestr.dev
           query-type: A
         conditions:
           - "len([BODY]) == 0"

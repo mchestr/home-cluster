@@ -2,30 +2,29 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: zwave-js-ui-gatus-ep
+  name: wizarr-gatus-ep
   namespace: default
   labels:
     gatus.io/enabled: "true"
 data:
   config.yaml: |
     endpoints:
-      - name: zwave-js-ui
-        group: internal
+      - name: wizarr
+        group: external
         interval: 1h
-        url: https://zwave-js-ui.chestr.dev
+        url: https://join.chestr.dev
         conditions:
           - "[STATUS] == 200"
           - "[BODY] == pat(*auth.chestr.dev*)"
         alerts:
           - type: pushover
-      - name: zwave-js-ui
-        group: guarded
+      - name: join
+        group: external
         interval: 1h
-        url: 1.1.1.1
-        dns:
-          query-name: zwave-js-ui.chestr.dev
-          query-type: A
+        url: https://join.chestr.dev/j/
+        client:
+          dns-resolver: tcp://1.1.1.1:53
         conditions:
-          - "len([BODY]) == 0"
+          - "[STATUS] == 404"
         alerts:
           - type: pushover
