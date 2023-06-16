@@ -30,11 +30,21 @@ spec:
       type: statefulset
       annotations:
         reloader.stakater.com/auto: "true"
+
+    initContainers:
+      01-init-db:
+        image: ghcr.io/onedr0p/postgres-init:14.8
+        imagePullPolicy: IfNotPresent
+        envFrom: &envFrom
+          - secretRef:
+              name: autobrr-secret
+
     image:
       repository: ghcr.io/autobrr/autobrr
       tag: v1.27.1
     env:
       TZ: ${TZ}
+    envFrom: *envFrom
     service:
       main:
         ports:
@@ -62,13 +72,6 @@ spec:
       fsGroup: 568
       fsGroupChangePolicy: OnRootMismatch
       supplementalGroups: [10000]
-
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 2Gi
-        storageClass: ceph-block
 
     persistence:
       config-file:
