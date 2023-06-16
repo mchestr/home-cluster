@@ -50,8 +50,14 @@ spec:
     persistence:
       config:
         enabled: true
+        type: emptyDir
+      config-file:
+        enabled: true
         type: configMap
         name: gatus-configmap
+        mountPath: /config/config.yaml
+        subPath: config.yaml
+        readOnly: true
 
     service:
       main:
