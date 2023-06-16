@@ -3,12 +3,16 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: default
 resources:
+  - external-secret.yaml
   - helm-release.yaml
   - volsync.yaml
 configMapGenerator:
   - name: qbittorrent-scripts
     files:
       - ./scripts/cross-seed.sh
+  - name: cross-seed-config-tpl
+    files:
+      - ./config/config.js
 generatorOptions:
   disableNameSuffixHash: true
 labels:
