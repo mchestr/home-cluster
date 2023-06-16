@@ -2,28 +2,28 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: zigbee2mqtt-gatus-ep
+  name: rook-ceph-gatus-ep
   namespace: default
   labels:
     gatus.io/enabled: "true"
 data:
   config.yaml: |
     endpoints:
-      - name: zigbee2mqtt
+      - name: rook-ceph
         group: internal
         interval: 1h
-        url: https://zigbee2mqtt.chestr.dev
+        url: https://rook.chestr.dev
         conditions:
           - "[STATUS] == 200"
-          - "[BODY] == pat(*auth.chestr.dev*)"
+          - "[BODY] != pat(*auth.chestr.dev*)"
         alerts:
           - type: pushover
-      - name: zigbee2mqtt
+      - name: rook-ceph
         group: guarded
         interval: 1h
         url: 1.1.1.1
         dns:
-          query-name: zigbee2mqtt.chestr.dev
+          query-name: rook.chestr.dev
           query-type: A
         conditions:
           - "len([BODY]) == 0"

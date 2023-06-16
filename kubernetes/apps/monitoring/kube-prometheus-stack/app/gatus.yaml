@@ -2,39 +2,49 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: home-assistant-gatus-ep
+  name: kps-gatus-ep
   namespace: default
   labels:
     gatus.io/enabled: "true"
 data:
   config.yaml: |
     endpoints:
-      - name: home-assistant
-        group: external
-        url: https://home-assistant.chestr.dev
-        interval: 1m
-        client:
-          dns-resolver: tcp://1.1.1.1:53
-        conditions:
-          - "[STATUS] == 200"
-        alerts:
-          - type: pushover
-
-      - name: home-assistant-code
+      - name: prometheus
         group: internal
         interval: 1h
-        url: https://home-assistant-code.chestr.dev
+        url: https://prometheus.chestr.dev
         conditions:
           - "[STATUS] == 200"
           - "[BODY] == pat(*auth.chestr.dev*)"
         alerts:
           - type: pushover
-      - name: home-assistant-code
+      - name: prometheus
         group: guarded
         interval: 1h
         url: 1.1.1.1
         dns:
-          query-name: home-assistant-code.chestr.dev
+          query-name: prometheus.chestr.dev
+          query-type: A
+        conditions:
+          - "len([BODY]) == 0"
+        alerts:
+          - type: pushover
+
+      - name: alert-manager
+        group: internal
+        interval: 1h
+        url: https://alert-manager.chestr.dev
+        conditions:
+          - "[STATUS] == 200"
+          - "[BODY] == pat(*auth.chestr.dev*)"
+        alerts:
+          - type: pushover
+      - name: alert-manager
+        group: guarded
+        interval: 1h
+        url: 1.1.1.1
+        dns:
+          query-name: alert-manager.chestr.dev
           query-type: A
         conditions:
           - "len([BODY]) == 0"

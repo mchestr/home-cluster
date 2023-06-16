@@ -23,39 +23,6 @@ alerting:
       failure-threshold: 3
       success-threshold: 5
 
-# default-alerts: &default-alerts
-#   alerts:
-#     - type: pushover
-#       failure-threshold: 3
-#       success-threshold: 2
-#       send-on-resolved: true
-#       description: "healthcheck failed"
-
-# default-endpoint: &default-endpoint
-#   interval: 30m
-#   group: core
-#   <<: *default-alerts
-#   conditions:
-#     - "[STATUS] == 200"
-#     - "[RESPONSE_TIME] < 2000"
-#     - "[BODY] != pat(*auth.${CLUSTER_DOMAIN}*)"
-
-# default-authelia-endpoint: &default-authelia-endpoint
-#   <<: *default-endpoint
-#   group: authelia
-#   conditions:
-#     - "[STATUS] == 200"
-#     - "[RESPONSE_TIME] < 2000"
-#     - "[BODY] == pat(*auth.${CLUSTER_DOMAIN}*)"
-
-# default-dns-endpoint: &default-dns-endpoint
-#   <<: *default-endpoint
-#   group: dns
-#   url: "192.168.1.1"
-#   conditions:
-#     - "[BODY] == 192.168.1.230"
-#     - "[DNS_RCODE] == NOERROR"
-
 endpoints:
   - name: status
     group: external
@@ -68,165 +35,86 @@ endpoints:
     alerts:
       - type: pushover
 
-#   - name: Alert Manager
-#     <<: *default-authelia-endpoint
-#     url: https://alert-manager.${CLUSTER_DOMAIN}
+  - name: lochnas
+    group: internal
+    interval: 1h
+    url: https://lochnas.chestr.dev
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY] != pat(*auth.chestr.dev*)"
+    alerts:
+      - type: pushover
+  - name: lochnas
+    group: guarded
+    interval: 1h
+    url: 1.1.1.1
+    dns:
+      query-name: lochnas.chestr.dev
+      query-type: A
+    conditions:
+      - "len([BODY]) == 0"
+    alerts:
+      - type: pushover
 
-#   - name: AppDaemon
-#     <<: *default-authelia-endpoint
-#     url: https://appdaemon.${CLUSTER_DOMAIN}
+  - name: mainsail
+    group: internal
+    interval: 1h
+    url: https://mainsail.chestr.dev
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY] != pat(*auth.chestr.dev*)"
+    alerts:
+      - type: pushover
+  - name: mainsail
+    group: guarded
+    interval: 1h
+    url: 1.1.1.1
+    dns:
+      query-name: mainsail.chestr.dev
+      query-type: A
+    conditions:
+      - "len([BODY]) == 0"
+    alerts:
+      - type: pushover
 
-#   - name: AppDaemon Code
-#     <<: *default-authelia-endpoint
-#     url: https://appdaemon-code.${CLUSTER_DOMAIN}
+  - name: pikvm
+    group: internal
+    interval: 1h
+    url: https://pikvm.chestr.dev
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY] != pat(*auth.chestr.dev*)"
+    alerts:
+      - type: pushover
+  - name: pikvm
+    group: guarded
+    interval: 1h
+    url: 1.1.1.1
+    dns:
+      query-name: pikvm.chestr.dev
+      query-type: A
+    conditions:
+      - "len([BODY]) == 0"
+    alerts:
+      - type: pushover
 
-#   - name: Bazarr
-#     <<: *default-endpoint
-#     url: https://bazarr.${CLUSTER_DOMAIN}
-
-#   - name: EMQX
-#     <<: *default-endpoint
-#     url: https://emqx.${CLUSTER_DOMAIN}
-
-#   - name: ESPHome
-#     <<: *default-authelia-endpoint
-#     url: https://esphome.${CLUSTER_DOMAIN}
-
-#   - name: Frigate
-#     <<: *default-authelia-endpoint
-#     url: https://frigate.${CLUSTER_DOMAIN}
-
-#   - name: Grafana
-#     <<: *default-authelia-endpoint
-#     url: https://grafana.${CLUSTER_DOMAIN}
-
-#   - name: Home
-#     <<: *default-endpoint
-#     url: https://home.${CLUSTER_DOMAIN}
-
-#   - name: Home Assistant
-#     <<: *default-endpoint
-#     url: https://home-assistant.${CLUSTER_DOMAIN}
-
-#   - name: Home Assistant Code
-#     <<: *default-authelia-endpoint
-#     url: https://home-assistant-code.${CLUSTER_DOMAIN}
-
-#   - name: LochNAS
-#     <<: *default-endpoint
-#     url: https://lochnas.${CLUSTER_DOMAIN}
-
-#   - name: Mainsail
-#     <<: *default-endpoint
-#     url: https://mainsail.${CLUSTER_DOMAIN}
-
-#   - name: Minio
-#     <<: *default-endpoint
-#     url: https://minio.${CLUSTER_DOMAIN}
-
-#   - name: Nest RTSP
-#     <<: *default-authelia-endpoint
-#     url: https://nest-rtsp.${CLUSTER_DOMAIN}
-
-#   - name: Overseerr
-#     <<: *default-endpoint
-#     url: https://overseerr.${CLUSTER_DOMAIN}
-
-#   - name: Paperless
-#     <<: *default-authelia-endpoint
-#     url: https://paperless.${CLUSTER_DOMAIN}
-
-#   - name: PiKVM
-#     <<: *default-endpoint
-#     url: https://pikvm.${CLUSTER_DOMAIN}
-
-#   - name: Immich
-#     <<: *default-endpoint
-#     url: https://photos.${CLUSTER_DOMAIN}
-
-#   - name: Plex
-#     <<: *default-endpoint
-#     url: https://plex.${CLUSTER_DOMAIN}
-#     conditions:
-#       - "[STATUS] == 401"
-#       - "[RESPONSE_TIME] < 500"
-
-#   - name: Prometheus
-#     <<: *default-authelia-endpoint
-#     url: https://prometheus.${CLUSTER_DOMAIN}
-
-#   - name: Prowlarr
-#     <<: *default-authelia-endpoint
-#     url: https://prowlarr.${CLUSTER_DOMAIN}
-
-#   - name: qBittorrent
-#     <<: *default-endpoint
-#     url: https://qbittorrent.${CLUSTER_DOMAIN}
-
-#   - name: Radarr
-#     <<: *default-endpoint
-#     url: https://radarr.${CLUSTER_DOMAIN}
-
-#   - name: Radicale
-#     <<: *default-endpoint
-#     url: https://cal.${CLUSTER_DOMAIN}
-
-#   - name: Rook Ceph
-#     <<: *default-endpoint
-#     url: https://rook.${CLUSTER_DOMAIN}
-#     client:
-#       insecure: true
-
-#   - name: SabNZBD
-#     <<: *default-endpoint
-#     url: https://sabnzbd.${CLUSTER_DOMAIN}
-
-#   - name: Shlink
-#     <<: *default-authelia-endpoint
-#     url: https://shlink.${CLUSTER_DOMAIN}
-
-#   - name: Shlink API
-#     <<: *default-endpoint
-#     url: https://ln.${CLUSTER_DOMAIN}/${SHLINK_HEALTH_TOKEN}
-
-#   - name: Sonarr
-#     <<: *default-endpoint
-#     url: https://sonarr.${CLUSTER_DOMAIN}
-
-#   - name: Tautulli
-#     <<: *default-endpoint
-#     url: https://tautulli.${CLUSTER_DOMAIN}
-
-#   - name: Thanos
-#     <<: *default-authelia-endpoint
-#     url: https://thanos.${CLUSTER_DOMAIN}
-
-#   - name: Theme Park
-#     <<: *default-endpoint
-#     url: https://theme-park.${CLUSTER_DOMAIN}
-
-#   - name: Unifi
-#     <<: *default-endpoint
-#     url: https://unifi.${CLUSTER_DOMAIN}
-
-#   - name: Wizarr Management
-#     <<: *default-authelia-endpoint
-#     url: https://join.${CLUSTER_DOMAIN}
-
-#   - name: Wizarr Public
-#     <<: *default-endpoint
-#     url: https://join.${CLUSTER_DOMAIN}/j/
-#     conditions:
-#       - "[STATUS] == 404"
-#       - "[RESPONSE_TIME] < 5000"
-
-#   - name: Zigbee
-#     <<: *default-authelia-endpoint
-#     url: https://zigbee2mqtt.${CLUSTER_DOMAIN}
-
-#   # DNS Endpoints
-#   - name: Internal DNS
-#     <<: *default-dns-endpoint
-#     dns:
-#       query-name: home.${CLUSTER_DOMAIN}
-#       query-type: "A"
+  - name: minio
+    group: internal
+    interval: 1h
+    url: https://minio.chestr.dev
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY] != pat(*auth.chestr.dev*)"
+    alerts:
+      - type: pushover
+  - name: minio
+    group: guarded
+    interval: 1h
+    url: 1.1.1.1
+    dns:
+      query-name: minio.chestr.dev
+      query-type: A
+    conditions:
+      - "len([BODY]) == 0"
+    alerts:
+      - type: pushover
