@@ -12,7 +12,7 @@ data:
       - name: authelia
         group: external
         url: https://auth.chestr.dev
-        interval: 1m
+        interval: 30m
         client:
           dns-resolver: tcp://1.1.1.1:53
         conditions:

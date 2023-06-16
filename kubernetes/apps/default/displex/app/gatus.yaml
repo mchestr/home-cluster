@@ -12,7 +12,7 @@ data:
       - name: displex
         group: external
         url: https://displex.chestr.dev
-        interval: 1m
+        interval: 30m
         client:
           dns-resolver: tcp://1.1.1.1:53
         conditions:

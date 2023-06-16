@@ -20,7 +20,7 @@ data:
           - type: pushover
       - name: join
         group: external
-        interval: 1h
+        interval: 30m
         url: https://join.chestr.dev/j/
         client:
           dns-resolver: tcp://1.1.1.1:53
