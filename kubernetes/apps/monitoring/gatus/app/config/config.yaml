@@ -1,3 +1,18 @@
+---
+storage:
+  type: postgres
+  path: postgres://${POSTGRES_USER}:${POSTGRES_PASS}@${POSTGRES_HOST}:5432/${POSTGRES_DBNAME}?sslmode=disable
+  caching: true
+metrics: true
+debug: false
+ui:
+  title: Status | Gatus
+  header: Status
+connectivity:
+  checker:
+    target: 1.1.1.1:53
+    interval: 1m
+
 default-alerts: &default-alerts
   alerts:
     - type: pushover
@@ -39,11 +54,6 @@ alerting:
   pushover:
     application-token: "${PUSHOVER_GATUS_TOKEN}"
     user-key: "${PUSHOVER_USER_KEY}"
-
-storage:
-  path: "${GATUS_POSTGRES_URL}"
-  type: postgres
-  caching: true
 
 endpoints:
   - name: Alert Manager
