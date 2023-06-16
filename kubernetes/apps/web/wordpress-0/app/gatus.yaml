@@ -12,7 +12,7 @@ data:
       - name: stephk.co
         group: external
         url: https://stephk.co
-        interval: 1m
+        interval: 10m
         client:
           dns-resolver: tcp://1.1.1.1:53
         conditions:
