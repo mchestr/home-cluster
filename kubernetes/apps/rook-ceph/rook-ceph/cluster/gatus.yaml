@@ -10,15 +10,6 @@ data:
   config.yaml: |
     endpoints:
       - name: rook-ceph
-        group: internal
-        interval: 1h
-        url: https://rook.chestr.dev
-        conditions:
-          - "[STATUS] == 200"
-          - "[BODY] != pat(*auth.chestr.dev*)"
-        alerts:
-          - type: pushover
-      - name: rook-ceph
         group: guarded
         interval: 1h
         url: 1.1.1.1
