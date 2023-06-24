@@ -84,3 +84,7 @@ spec:
         accessMode: ReadWriteOnce
         size: 1Gi
         storageClass: ceph-block
+
+    podSecurityContext:
+      runAsUser: 1001
+      fsGroupChangePolicy: OnRootMismatch
