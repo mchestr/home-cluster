@@ -57,7 +57,6 @@ spec:
           name: displex-secret
 
     env:
-      DATABASE_URL: sqlite://displex.db?mode=rwc
       DISPLEX_APPLICATION_NAME: MikeFlix
       DISPLEX_HTTP__HOSTNAME: *host
       DISPLEX_DISCORD_BOT__STATUS_TEXT: MikeFlix
@@ -87,4 +86,5 @@ spec:
 
     podSecurityContext:
       runAsUser: 1001
+      runAsGroup: 1001
       fsGroupChangePolicy: OnRootMismatch
