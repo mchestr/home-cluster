@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: wordpress
-      version: 16.1.18
+      version: 16.1.19
       sourceRef:
         kind: HelmRepository
         name: bitnami-charts
