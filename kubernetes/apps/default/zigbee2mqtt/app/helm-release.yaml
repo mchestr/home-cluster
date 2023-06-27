@@ -33,7 +33,7 @@ spec:
 
     image:
       repository: ghcr.io/koenkk/zigbee2mqtt
-      tag: latest-dev@sha256:60bbee56855dce34a6ca8bd89ece9329d49ee386fbccbfc4be1a8bffef6100e7
+      tag: latest-dev@sha256:1005f19823ee35d122dbdcfc141f06b066b72fe39878ba26d1ce3fc3e37fb0f2
 
     env:
       TZ: ${TZ}
