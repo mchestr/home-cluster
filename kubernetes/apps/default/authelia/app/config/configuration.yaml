@@ -38,9 +38,6 @@ access_control:
     - domain: ["radarr.chestr.dev"]
       resources: ["^/api.*$"]
       policy: bypass
-    - domain: ["sabnzbd.chestr.dev"]
-      resources: ["^/sabnzbd/api.*$"]
-      policy: bypass
 
 notifier:
   smtp:
