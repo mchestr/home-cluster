@@ -32,6 +32,12 @@ access_control:
     - domain: ["displex.chestr.dev"]
       resources: ["^/auth.*$"]
       policy: bypass
+    - domain: ["sonarr.chestr.dev"]
+      resources: ["^/api.*$"]
+      policy: bypass
+    - domain: ["radarr.chestr.dev"]
+      resources: ["^/api.*$"]
+      policy: bypass
 
 notifier:
   smtp:
