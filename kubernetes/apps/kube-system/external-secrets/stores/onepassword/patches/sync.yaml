@@ -9,7 +9,7 @@ spec:
     additionalContainers:
       sync:
         name: sync
-        image: ghcr.io/mchestr/onepassword-sync:1.7.0
+        image: ghcr.io/mchestr/onepassword-sync:1.7.1
         env:
           - name: OP_SESSION
             valueFrom:
