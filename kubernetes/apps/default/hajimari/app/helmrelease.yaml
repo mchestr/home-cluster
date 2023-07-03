@@ -61,7 +61,7 @@ spec:
             - name: Status Page
               url: https://status.chestr.dev
             - name: mchestr/home-cluster
-              url: https://github.com/mchestr/home-cluster/issues/2
+              url: https://github.com/mchestr/home-cluster/issues/1922
             - name: mchestr/home-assistant
               url: https://github.com/mchestr/home-assistant
             - name: mchestr/appdaemon
