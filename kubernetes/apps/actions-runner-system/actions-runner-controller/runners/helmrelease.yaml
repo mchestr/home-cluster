@@ -17,7 +17,7 @@ spec:
       interval: 30m
 
   values:
-    runnerScaleSetName: arc-runner-set-home-ops
+    runnerScaleSetName: arc-runner-set-home-cluster
 
     githubConfigUrl: https://github.com/mchestr/home-cluster
 
