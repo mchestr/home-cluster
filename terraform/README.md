@@ -6,5 +6,3 @@ To initialize TF Cloud run the following in each module.
 ```
 terraform init
 ```
-
-The TF Controller which periodically applies this infrastructure can be found in [tf-controller](../../kubernetes/apps/flux-system/tf-controller/) directory, along with all the secrets.
