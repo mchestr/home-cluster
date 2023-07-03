@@ -2,8 +2,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - config-map.yaml
+  - configmap.yaml
   - datasource.yaml
-  - external-secret.yaml
-  - helm-release.yaml
-  - prometheus-rule.yaml
+  - externalsecret.yaml
+  - helmrelease.yaml
+  - prometheusrule.yaml
