@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: kube-system
 resources:
   - secret.sops.yaml
-  - helm-release.yaml
+  - helmrelease.yaml
   - cluster-secret-store.yaml
 patchesStrategicMerge:
   - patches/sync.yaml
