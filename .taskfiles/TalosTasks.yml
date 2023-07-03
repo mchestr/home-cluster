@@ -56,6 +56,13 @@ tasks:
       # Restart nginx, sometimes it has issues...
       - kubectl -n networking rollout restart deployment ingress-nginx-controller
 
+  apply:
+    desc: Apply Talos config to a specific node (task talos:apply N=0)
+    dir: talos
+    cmds:
+      - task: generate
+      - talosctl apply-config --nodes {{ .NODE }} --file clusterconfig/home-cluster-k8s-{{ .N }}.yaml {{ .CLI_ARGS }}
+
   generate:
     internal: True
     desc: Generate Talos machine configurations (task talos:generate)
@@ -70,13 +77,6 @@ tasks:
     generates:
       - clusterconfig/*.yaml
       - clusterconfig/talosconfig
-
-  apply:
-    desc: Apply Talos config to a specific node (task talos:apply N=0)
-    dir: talos
-    cmds:
-      - task: generate
-      - talosctl apply-config --nodes {{ .NODE }} --file clusterconfig/home-cluster-k8s-{{ .N }}.yaml {{ .CLI_ARGS }}
 
   upgrade:
     internal: True
