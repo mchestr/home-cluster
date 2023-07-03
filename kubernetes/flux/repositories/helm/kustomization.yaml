@@ -6,13 +6,10 @@ resources:
   - backube-charts.yaml
   - bitnami-charts.yaml
   - bjw-s-charts.yaml
-  - botkube-charts.yaml
   - cilium-charts.yaml
   - cloudnative-pg-charts.yaml
   - deliveryhero-charts.yaml
-  - dysnix-charts.yaml
   - descheduler-charts.yaml
-  - emberstack-charts.yaml
   - emqx-charts.yaml
   - external-dns-charts.yaml
   - external-secrets-charts.yaml
@@ -22,7 +19,6 @@ resources:
   - intel-charts.yaml
   - jetstack-charts.yaml
   - k8s-gateway-charts.yaml
-  - kubernetes-dashboard-charts.yaml
   - kyverno-charts.yaml
   - metallb-charts.yaml
   - metrics-server-charts.yaml
@@ -30,7 +26,6 @@ resources:
   - node-feature-discovery-charts.yaml
   - piraeus-charts.yaml
   - prometheus-community-charts.yaml
-  - radeonopencompute-charts.yaml
   - rook-ceph-charts.yaml
   - stakater-charts.yaml
   - tf-controller-charts.yaml
