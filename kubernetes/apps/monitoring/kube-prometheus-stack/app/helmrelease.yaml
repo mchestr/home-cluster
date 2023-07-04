@@ -125,7 +125,7 @@ spec:
         replicas: 3
         containers:
           - name: uptime-kuma-proxy
-            image: ghcr.io/mchestr/alertmanager-uptime-kuma-proxy:v0.1.5
+            image: ghcr.io/mchestr/alertmanager-uptime-kuma-proxy:v0.1.6
             env:
               - name: UPTIME_KUMA_BASE_URL
                 value: https://status.chestr.dev
