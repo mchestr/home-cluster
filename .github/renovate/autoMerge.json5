@@ -30,7 +30,7 @@
       automergeType: 'branch',
       requiredStatusChecks: null,
       matchUpdateTypes: ['minor', 'patch', 'digest'],
-      matchPackageNames: [
+      matchDepNames: [
         'ghcr.io/esphome/esphome',
         'ghcr.io/koenkk/zigbee2mqtt',
         'ghcr.io/onedr0p/plex',

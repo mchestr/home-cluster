@@ -43,7 +43,7 @@
     {
       description: 'External Snapshotter charts',
       groupName: 'External Snapshotter',
-      matchPackageNames: ['snapshot-controller', 'snapshot-validation-webhook'],
+      matchDepNames: ['snapshot-controller', 'snapshot-validation-webhook'],
       matchDatasources: ['helm'],
       group: {
         commitMessageTopic: '{{{groupName}}} group'
