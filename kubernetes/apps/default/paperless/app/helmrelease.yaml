@@ -111,5 +111,5 @@ spec:
 
       redis:
         name: redis
-        image: public.ecr.aws/docker/library/redis:7.0.11@sha256:6ccde0cb87c24c09b1970802b10e702ab4491ac932b79f69682609787379fa42
+        image: public.ecr.aws/docker/library/redis:7.0.11@sha256:00a2ca95cde7ca2cbd3e44b9e13ce955dc42af95513c89163954524ff60769f6
         imagePullPolicy: IfNotPresent
