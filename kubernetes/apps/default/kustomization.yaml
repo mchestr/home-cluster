@@ -33,6 +33,7 @@ resources:
   - smtp-relay/ks.yaml
   - sonarr/ks.yaml
   - tautulli/ks.yaml
+  - thelounge/ks.yaml
   - theme-park/ks.yaml
   - unifi/ks.yaml
   - unpackerr/ks.yaml
