@@ -65,6 +65,13 @@ spec:
         accessMode: ReadWriteOnce
         size: 1Gi
         storageClass: ceph-block
+    persistence:
+      config:
+        enabled: true
+        type: secret
+        name: thelounge-secret
+        mountPath: /config/config.js
+        subPath: config.js
     resources:
       requests:
         cpu: 10m
