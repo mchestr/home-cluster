@@ -35,7 +35,7 @@ tasks:
 
   volume:
     desc: |-
-      Create a container for debugging a PVC (ex. task PVC=plex-config-v1 cluster:volume)
+      Create a container for debugging a PVC (ex. task PVC=plex-config-v1 ku:volume)
     interactive: true
     cmds:
       - |
