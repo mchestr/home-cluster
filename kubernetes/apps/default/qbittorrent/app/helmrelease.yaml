@@ -69,6 +69,14 @@ spec:
         ports:
           http:
             port: *port
+      crossseed:
+        enabled: true
+        ports:
+          crossseed:
+            enabled: true
+            port: 2468
+            protocol: TCP
+            targetPort: 2468
       bittorrent:
         enabled: true
         type: LoadBalancer
