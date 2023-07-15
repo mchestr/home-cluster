@@ -9,7 +9,7 @@ metadata:
 data:
   config.yaml: |
     endpoints:
-      - name: qbittorrent
+      - name: thelounge
         group: guarded
         interval: 1h
         url: 1.1.1.1
