@@ -76,19 +76,7 @@ cameras:
       width: 640
       height: 480
     ffmpeg:
-      input_args:
-        - -rtsp_transport
-        - udp
-        - -fflags
-        - nobuffer
-        - -flags
-        - low_delay
-        - -strict
-        - experimental
-        - -fflags
-        - +genpts+discardcorrupt
-        - -use_wallclock_as_timestamps
-        - 1
+      input_args: preset-rtsp-restream
       output_args:
         detect: -vf transpose=1 -f rawvideo -pix_fmt yuv420p
       inputs:
