@@ -74,19 +74,6 @@ cameras:
           input_args: preset-rtsp-restream
           roles:
             - detect
-  doorbellold:
-    detect:
-      width: 640
-      height: 480
-    ffmpeg:
-      input_args: preset-rtsp-restream
-      output_args:
-        detect: -vf transpose=1 -f rawvideo -pix_fmt yuv420p
-      inputs:
-        - path: rtsp://scrypted-rtsp.default.svc.cluster.local:33103/8a28d76eaa33ddc5
-          roles:
-            - detect
-            - record
   doorbell:
     ffmpeg:
       inputs:
