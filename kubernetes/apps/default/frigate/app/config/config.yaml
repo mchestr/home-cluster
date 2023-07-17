@@ -92,7 +92,7 @@ cameras:
       output_args:
         detect: -vf transpose=1 -f rawvideo -pix_fmt yuv420p
       inputs:
-        - path: rtsp://nest-rtsp.default.svc.cluster.local:8554/doorbell
+        - path: rtsp://scrypted.default.svc.cluster.local:33103/8a28d76eaa33ddc5
           roles:
             - detect
             - record

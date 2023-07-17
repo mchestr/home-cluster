@@ -38,6 +38,10 @@ spec:
         ports:
           http:
             port: 11080
+      rtsp:
+        ports:
+          rtsp:
+            port: 33103
     ingress:
       main:
         enabled: true
