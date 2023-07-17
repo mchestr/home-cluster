@@ -78,6 +78,16 @@ spec:
         size: 2Gi
         storageClass: ceph-block
 
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values: ["frigate"]
+            topologyKey: kubernetes.io/hostname
+
     addons:
       codeserver:
         enabled: true
