@@ -54,7 +54,10 @@ go2rtc:
       - "ffmpeg:reolink#audio=opus"
     living_room_sub:
       - http://10.0.10.164/flv?port=1935&app=bcs&stream=channel0_ext.bcs&user={FRIGATE_LIVING_ROOM_CAMERA_USERNAME}&password={FRIGATE_LIVING_ROOM_CAMERA_PASSWORD}
-
+    doorbell_high:
+      - rtsp://{FRIGATE_DOORBELL_CAMERA_USERNAME}:{FRIGATE_DOORBELL_CAMERA_PASSWORD}@10.0.10.144:554/cam/realmonitor?channel=1&subtype=0
+    doorbell_low:
+      - rtsp://{FRIGATE_DOORBELL_CAMERA_USERNAME}:{FRIGATE_DOORBELL_CAMERA_PASSWORD}@10.0.10.144:554/cam/realmonitor?channel=1&subtype=1
 
 cameras:
   living_room:
@@ -71,7 +74,7 @@ cameras:
           input_args: preset-rtsp-restream
           roles:
             - detect
-  doorbell:
+  doorbellold:
     detect:
       width: 640
       height: 480
@@ -83,4 +86,15 @@ cameras:
         - path: rtsp://scrypted-rtsp.default.svc.cluster.local:33103/8a28d76eaa33ddc5
           roles:
             - detect
+            - record
+  doorbell:
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/doorbell_low
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+        - path: rtsp://127.0.0.1:8554/doorbell_high
+          input_args: preset-rtsp-restream
+          roles:
             - record
