@@ -62,11 +62,11 @@ go2rtc:
 cameras:
   living_room:
     ffmpeg:
+      output_args:
+        record: preset-record-generic-audio-aac
       inputs:
         - path: rtsp://127.0.0.1:8554/living_room_high?video=copy&audio=aac
           input_args: preset-rtsp-restream
-          output_args:
-            record: preset-record-generic-audio-aac
           roles:
             - record
         - path: rtsp://127.0.0.1:8554/living_room_low?video=copy
@@ -75,11 +75,11 @@ cameras:
             - detect
   doorbell:
     ffmpeg:
+      output_args:
+        record: preset-record-generic-audio-aac
       inputs:
         - path: rtsp://127.0.0.1:8554/doorbell_high?video=copy&audio=aac
           input_args: preset-rtsp-restream
-          output_args:
-            record: preset-record-generic-audio-aac
           roles:
             - record
         - path: rtsp://127.0.0.1:8554/doorbell_low?video=copy
