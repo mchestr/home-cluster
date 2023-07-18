@@ -45,7 +45,7 @@ ffmpeg:
 
 snapshots:
   enabled: true
-  timestamp: false
+  timestamp: true
   bounding_box: true
   retain:
     default: 2
