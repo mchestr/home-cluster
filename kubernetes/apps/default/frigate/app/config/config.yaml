@@ -36,7 +36,7 @@ record:
     mode: all
   events:
     retain:
-      default: 2
+      default: 14
       mode: active_objects
 
 objects:
@@ -61,6 +61,14 @@ go2rtc:
 
 cameras:
   living_room:
+    record:
+      retain:
+        days: 2
+        mode: motion
+      events:
+        retain:
+          default: 7
+          mode: active_objects
     ffmpeg:
       output_args:
         record: preset-record-generic-audio-aac
@@ -76,6 +84,16 @@ cameras:
     live:
       stream_name: living_room_high
   doorbell:
+    record:
+      retain:
+        days: 7
+        mode: motion
+      events:
+        retain:
+          default: 30
+          mode: active_objects
+          objects:
+            car: 2
     ffmpeg:
       output_args:
         record: preset-record-generic-audio-aac
