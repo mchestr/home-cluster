@@ -18,6 +18,27 @@ detectors:
     type: edgetpu
     device: usb
 
+model:
+  labelmap:
+    1: vehicle  # bicycle
+    2: vehicle  # car
+    3: vehicle  # motorcycle
+    4: vehicle  # airplane
+    5: vehicle  # bus
+    6: vehicle  # train
+    7: vehicle  # car
+    8: vehicle  # boat
+    15: animal  # bird
+    16: animal  # cat
+    17: animal  # dog
+    18: animal  # horse
+    19: animal  # sheep
+    20: animal  # cow
+    21: animal  # elephant
+    22: animal  # bear
+    23: animal  # zebra
+    24: animal  # giraffe
+
 ffmpeg:
   global_args: ["-hide_banner", "-loglevel", "warning"]
   hwaccel_args: ["-hwaccel", "vaapi", "-hwaccel_device", "/dev/dri/renderD128", "-hwaccel_output_format", "yuv420p"]
@@ -40,7 +61,7 @@ record:
       mode: active_objects
 
 objects:
-  track: ["person", "car", "cat"]
+  track: ["person", "vehicle", "animal"]
   filters:
     person:
       min_area: 5000
