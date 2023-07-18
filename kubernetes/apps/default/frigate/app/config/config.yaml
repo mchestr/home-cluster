@@ -81,6 +81,8 @@ cameras:
           input_args: preset-rtsp-restream
           roles:
             - detect
+    live:
+      stream_name: living_room_high
   doorbell:
     record:
       retain:
@@ -104,3 +106,5 @@ cameras:
           input_args: preset-rtsp-restream
           roles:
             - detect
+    live:
+      stream_name: doorbell_high
