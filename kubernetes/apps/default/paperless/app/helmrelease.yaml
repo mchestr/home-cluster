@@ -105,7 +105,7 @@ spec:
             value: "1"
 
       tika:
-        image: ghcr.io/paperless-ngx/tika:2.7.0-full
+        image: ghcr.io/paperless-ngx/tika:2.8.0-full
         name: tika
         imagePullPolicy: Always
 
