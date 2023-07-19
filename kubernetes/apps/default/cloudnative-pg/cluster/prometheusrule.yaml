@@ -29,6 +29,13 @@ spec:
           for: 1m
           labels:
             severity: warning
+        # This alarm seems to go off due sometimes when theres no real problem. To debug
+        # > SELECT datname, age(datfrozenxid), current_setting('autovacuum_freeze_max_age') FROM pg_database ORDER BY 2 DESC;
+        # > vacuum full; on databases
+        # if template0
+        # > UPDATE pg_database SET datallowconn = TRUE where datname = 'template0';
+        # > vacuum full;
+        # > UPDATE pg_database SET datallowconn = FALSE where datname = 'template0';
         - alert: PGDatabase
           annotations:
             description: Over 150,000,000 transactions from frozen xid on pod {{ $labels.pod  }}
