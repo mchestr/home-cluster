@@ -99,7 +99,7 @@ spec:
     additionalContainers:
       gotenburg:
         name: gotenburg
-        image: ghcr.io/mchestr/gotenberg:7.8.3
+        image: ghcr.io/mchestr/gotenberg:7.9.1
         env:
           - name: DISABLE_GOOGLE_CHROME
             value: "1"
