@@ -35,6 +35,9 @@ static_iot_ips:
   doorbell:
     ip_address: 10.0.10.144
     mac_address: 9c:8e:cd:37:db:70
+  livingroom_camera:
+    ip_address: 10.0.10.164
+    mac_address: 9c:95:61:90:a3:bb
   wled-WLED:
     ip_address: 10.0.10.54
     mac_address: 40:22:d8:7b:63:a4
