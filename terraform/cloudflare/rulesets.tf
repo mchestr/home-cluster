@@ -4,7 +4,7 @@ resource "cloudflare_record" "overseerr" {
   name    = "overseerr"
   value   = "192.0.2.1"
   type    = "A"
-  ttl     = 3600
+  ttl     = 1
   proxied = true
 }
 
