@@ -59,13 +59,28 @@ spec:
           hajimari.io/icon: mdi:eye-circle
           hajimari.io/group: home
         hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
+          - host: &host requests.chestr.dev
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - hosts:
               - *host
+      old:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          external-dns.home.arpa/enabled: "true"
+          nginx.ingress.kubernetes.io/permanent-redirect: https://requests.chestr.dev
+          hajimari.io/enable: "false"
+        hosts:
+          - host: &host-old "{{ .Release.Name }}.chestr.dev"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host-old
 
     volumeClaimTemplates:
       - name: config
