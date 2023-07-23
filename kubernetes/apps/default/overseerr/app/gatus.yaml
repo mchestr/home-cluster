@@ -11,17 +11,6 @@ data:
     endpoints:
       - name: overseerr
         group: external
-        url: https://overseerr.chestr.dev
-        interval: 10m
-        client:
-          dns-resolver: tcp://1.1.1.1:53
-        conditions:
-          - "[STATUS] == 200"
-        alerts:
-          - type: pushover
-    endpoints:
-      - name: overseerr
-        group: external
         url: https://requests.chestr.dev
         interval: 10m
         client:
