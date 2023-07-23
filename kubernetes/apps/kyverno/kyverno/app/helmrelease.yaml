@@ -26,6 +26,8 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    upgrade:
+      fromV2: true
     crds:
       install: true
 
