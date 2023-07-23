@@ -25,27 +25,27 @@ resource "cloudflare_firewall_rule" "bots" {
 }
 
 # Block Countries
-resource "cloudflare_filter" "block_countries" {
+resource "cloudflare_filter" "block_countries_wp0" {
   zone_id     = data.cloudflare_zone.wordpress_0_domain.id
   description = "Expression to block countries"
   expression  = "(not ip.geoip.country in {\"CA\" \"US\"})"
 }
-resource "cloudflare_firewall_rule" "block_countries" {
+resource "cloudflare_firewall_rule" "block_countries_wp0" {
   zone_id     = data.cloudflare_zone.wordpress_0_domain.id
   description = "Firewall rule to block countries"
-  filter_id   = cloudflare_filter.block_countries.id
+  filter_id   = cloudflare_filter.block_countries_wp0.id
   action      = "block"
 }
 
 # Block Bots
-resource "cloudflare_filter" "bots" {
+resource "cloudflare_filter" "bots_wp0" {
   zone_id     = data.cloudflare_zone.wordpress_0_domain.id
   description = "Expression to block bots determined by CF"
   expression  = "(cf.client.bot) or (cf.threat_score gt 14)"
 }
-resource "cloudflare_firewall_rule" "bots" {
+resource "cloudflare_firewall_rule" "bots_wp0" {
   zone_id     = data.cloudflare_zone.wordpress_0_domain.id
   description = "Firewall rule to block bots determined by CF"
-  filter_id   = cloudflare_filter.bots.id
+  filter_id   = cloudflare_filter.bots_wp0.id
   action      = "block"
 }
