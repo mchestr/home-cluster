@@ -1,4 +1,13 @@
-# Single Redirects resource
+# Single Redirects resource, Add dummy record so page rule works.
+resource "cloudflare_record" "overseerr" {
+  zone_id = data.cloudflare_zone.domain.id
+  name    = "overseerr"
+  value   = "192.0.2.1"
+  type    = "A"
+  ttl     = 3600
+  proxied = true
+}
+
 resource "cloudflare_ruleset" "redirect_overseerr" {
   zone_id     = data.cloudflare_zone.domain.id
   name        = "redirects"
