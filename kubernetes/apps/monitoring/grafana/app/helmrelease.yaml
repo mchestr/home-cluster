@@ -134,66 +134,235 @@ spec:
       dashboardproviders.yaml:
         apiVersion: 1
         providers:
-          - name: "default"
+          - name: default
             orgId: 1
             folder: ""
             type: file
             disableDeletion: false
-            allowUiUpdates: true
+            editable: true
             options:
               path: /var/lib/grafana/dashboards/default
+          - name: ceph
+            orgId: 1
+            folder: Ceph
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/ceph
+          - name: flux
+            orgId: 1
+            folder: Flux
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/flux
+          - name: kubernetes
+            orgId: 1
+            folder: Kubernetes
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/kubernetes
+          - name: nginx
+            orgId: 1
+            folder: Nginx
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/nginx
+          - name: thanos
+            orgId: 1
+            folder: Thanos
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/thanos
+          - name: unifi
+            orgId: 1
+            folder: Unifi
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/unifi
+    datasources:
+      datasources.yaml:
+        apiVersion: 1
+        deleteDatasources:
+          - { name: Alertmanager, orgId: 1 }
+          - { name: Loki, orgId: 1 }
+          - { name: Prometheus, orgId: 1 }
+        datasources:
+          - name: Prometheus
+            type: prometheus
+            uid: prometheus
+            access: proxy
+            url: http://thanos-query.monitoring.svc.cluster.local:9090
+            jsonData:
+              prometheusType: Thanos # Prometheus for victoria-metrics
+            isDefault: true
+          - name: Loki
+            type: loki
+            uid: loki
+            access: proxy
+            url: http://loki-gateway.monitoring.svc.cluster.local
+            jsonData:
+              maxLines: 250
+          - name: Alertmanager
+            type: alertmanager
+            uid: alertmanager
+            access: proxy
+            url: http://prometheus-alertmanager.monitoring.svc.cluster.local:9093
+            jsonData:
+              implementation: prometheus
 
     dashboards:
-      default:
-        1-node-exporter:
-          url: https://grafana.com/api/dashboards/11074/revisions/9/download
-          datasource: Prometheus
-        node-exporter-full:
-          gnetId: 1860
-          revision: 23
-          datasource: Prometheus
-        flux-cluster:
-          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/cluster.json
-          datasource: Prometheus
-        flux-control-plane:
-          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/control-plane.json
-          datasource: Prometheus
-        synology-nas-details:
-          gnetId: 14284
-          revision: 9
-          datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/11315
-        unifi-client-insights:
-          gnetId: 11315
-          revision: 8
-          datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/11311
-        unifi-network-sites:
-          gnetId: 11311
-          revision: 4
-          datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/11314
-        unifi-uap-insights:
-          gnetId: 11314
-          revision: 9
-          datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/11312
-        unifi-usw-insights:
-          gnetId: 11312
-          revision: 8
-          datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/14371
-        nut:
-          gnetId: 14371
-          revision: 1
-          datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/17446-emqx
-        emqx:
-          gnetId: 17446
-          revision: 1
-          datasource:
-            - name: DS_EMQX_PROMETHEUS
-              value: Prometheus
+      cloudflared:
+        gnetId: 17457 # https://grafana.com/grafana/dashboards/17457?tab=revisions
+        revision: 6
+        datasource:
+          - { name: DS_PROMETHEUS, value: Prometheus }
+      external-dns:
+        gnetId: 15038 # https://grafana.com/grafana/dashboards/15038?tab=revisions
+        revision: 1
+        datasource: Prometheus
+      node-exporter-full:
+        gnetId: 1860 # https://grafana.com/grafana/dashboards/1860?tab=revisions
+        revision: 31
+        datasource: Prometheus
+      redis:
+        gnetId: 763 # https://grafana.com/grafana/dashboards/763?tab=revisions
+        revision: 5
+        datasource: Prometheus
+      cloudnative-pg:
+        url: https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/docs/src/samples/monitoring/grafana-dashboard.json
+        datasource: Prometheus
+      cert-manager:
+        url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/cert-manager/dashboards/cert-manager.json
+        datasource: Prometheus
+      external-secrets:
+        url: https://raw.githubusercontent.com/external-secrets/external-secrets/main/docs/snippets/dashboard.json
+        datasource: Prometheus
+    ceph:
+      ceph-cluster:
+        gnetId: 2842 # https://grafana.com/grafana/dashboards/2842?tab=revisions
+        revision: 17
+        datasource: Prometheus
+      ceph-osd:
+        gnetId: 5336 # https://grafana.com/grafana/dashboards/5336?tab=revisions
+        revision: 9
+        datasource: Prometheus
+      ceph-pools:
+        gnetId: 5342 # https://grafana.com/grafana/dashboards/5342?tab=revisions
+        revision: 9
+        datasource: Prometheus
+    flux:
+      flux-cluster:
+        url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/cluster.json
+        datasource: Prometheus
+      flux-control-plane:
+        url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/control-plane.json
+        datasource: Prometheus
+      flux-logs:
+        url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/logs.json
+        datasource: Prometheus
+    kubernetes:
+      kubernetes-api-server:
+        url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-system-api-server.json
+        datasource: Prometheus
+      kubernetes-coredns:
+        url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-system-coredns.json
+        datasource: Prometheus
+      kubernetes-global:
+        url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-global.json
+        datasource: Prometheus
+      kubernetes-namespaces:
+        url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-namespaces.json
+        datasource: Prometheus
+      kubernetes-nodes:
+        url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-nodes.json
+        datasource: Prometheus
+      kubernetes-pods:
+        url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-pods.json
+        datasource: Prometheus
+    nginx:
+      nginx:
+        url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
+        datasource: Prometheus
+      nginx-request-handling-performance:
+        url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/request-handling-performance.json
+        datasource: Prometheus
+    thanos:
+      thanos-bucket-replicate:
+        url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/bucket-replicate.json
+        datasource: Prometheus
+      thanos-compact:
+        url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/compact.json
+        datasource: Prometheus
+      thanos-overview:
+        url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/overview.json
+        datasource: Prometheus
+      thanos-query:
+        url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/query.json
+        datasource: Prometheus
+      thanos-query-frontend:
+        url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/query-frontend.json
+        datasource: Prometheus
+      thanos-receieve:
+        url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/receive.json
+        datasource: Prometheus
+      thanos-rule:
+        url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/rule.json
+        datasource: Prometheus
+      thanos-sidecar:
+        url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/sidecar.json
+        datasource: Prometheus
+      thanos-store:
+        url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/thanos/dashboards/store.json
+        datasource: Prometheus
+    unifi:
+      unifi-insights:
+        gnetId: 11315 # https://grafana.com/grafana/dashboards/11315?tab=revisions
+        revision: 9
+        datasource: Prometheus
+      unifi-network-sites:
+        gnetId: 11311 # https://grafana.com/grafana/dashboards/11311?tab=revisions
+        revision: 5
+        datasource: Prometheus
+      unifi-uap:
+        gnetId: 11314 # https://grafana.com/grafana/dashboards/11314?tab=revisions
+        revision: 10
+        datasource: Prometheus
+      unifi-usw:
+        gnetId: 11312 # https://grafana.com/grafana/dashboards/11312?tab=revisions
+        revision: 9
+        datasource: Prometheus
+    default:
+      node-exporter-full:
+        gnetId: 1860
+        revision: 23
+        datasource: Prometheus
+      synology-nas-details:
+        gnetId: 14284
+        revision: 9
+        datasource: Prometheus
+      # Ref: https://grafana.com/grafana/dashboards/14371
+      nut:
+        gnetId: 14371
+        revision: 1
+        datasource: Prometheus
+      # Ref: https://grafana.com/grafana/dashboards/17446-emqx
+      emqx:
+        gnetId: 17446
+        revision: 1
+        datasource:
+          - name: DS_EMQX_PROMETHEUS
+            value: Prometheus
 
     sidecar:
       datasources:
