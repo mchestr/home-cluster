@@ -34,6 +34,15 @@ endpoints:
       - "[STATUS] == 200"
     alerts:
       - type: pushover
+  - name: status.chestr.dev
+    group: certificates
+    url: "tls://status.chestr.dev:443"
+    interval: 1d
+    client:
+      dns-resolver: tcp://1.1.1.1:53
+    conditions:
+      - "[CONNECTED] == true"
+      - "[CERTIFICATE_EXPIRATION] > 336h"
 
   - name: lochnas
     group: internal
@@ -55,6 +64,13 @@ endpoints:
       - "len([BODY]) == 0"
     alerts:
       - type: pushover
+  - name: lochnas.chestr.dev
+    group: certificates
+    url: "tls://lochnas.chestr.dev:443"
+    interval: 1d
+    conditions:
+      - "[CONNECTED] == true"
+      - "[CERTIFICATE_EXPIRATION] > 336h"
 
   - name: mainsail
     group: internal
@@ -76,6 +92,13 @@ endpoints:
       - "len([BODY]) == 0"
     alerts:
       - type: pushover
+  - name: mainsail.chestr.dev
+    group: certificates
+    url: "tls://mainsail.chestr.dev:443"
+    interval: 1d
+    conditions:
+      - "[CONNECTED] == true"
+      - "[CERTIFICATE_EXPIRATION] > 336h"
 
   - name: pikvm
     group: internal
@@ -97,6 +120,13 @@ endpoints:
       - "len([BODY]) == 0"
     alerts:
       - type: pushover
+  - name: pikvm.chestr.dev
+    group: certificates
+    url: "tls://pikvm.chestr.dev:443"
+    interval: 1d
+    conditions:
+      - "[CONNECTED] == true"
+      - "[CERTIFICATE_EXPIRATION] > 336h"
 
   - name: minio
     group: internal
@@ -118,3 +148,18 @@ endpoints:
       - "len([BODY]) == 0"
     alerts:
       - type: pushover
+  - name: minio.chestr.dev
+    group: certificates
+    url: "tls://minio.chestr.dev:443"
+    interval: 1d
+    conditions:
+      - "[CONNECTED] == true"
+      - "[CERTIFICATE_EXPIRATION] > 336h"
+
+  - name: dns.chestr.dev
+    group: certificates
+    url: "tls://dns.chestr.dev:443"
+    interval: 1d
+    conditions:
+      - "[CONNECTED] == true"
+      - "[CERTIFICATE_EXPIRATION] > 336h"
