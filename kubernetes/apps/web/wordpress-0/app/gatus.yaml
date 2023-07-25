@@ -19,3 +19,10 @@ data:
           - "[STATUS] == 200"
         alerts:
           - type: pushover
+      - name: stephk.co
+        group: certificates
+        url: "tls://stephk.co:443"
+        interval: 24h
+        conditions:
+          - "[CONNECTED] == true"
+          - "[CERTIFICATE_EXPIRATION] > 336h"
