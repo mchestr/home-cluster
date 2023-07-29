@@ -61,7 +61,7 @@ spec:
       replicaCount: 3
       replicaLabel: ["__replica__"]
       dnsDiscovery:
-        sidecarsService: kube-prometheus-stack-thanos-discovery
+        sidecarsService: prometheus-thanos-discovery
         sidecarsNamespace: monitoring
     bucketweb:
       enabled: true
