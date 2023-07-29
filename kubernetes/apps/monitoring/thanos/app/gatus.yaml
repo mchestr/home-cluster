@@ -12,7 +12,7 @@ data:
       - name: thanos
         group: internal
         interval: 1h
-        url: https://thanos.chestr.dev
+        url: https://thanos-query-frontend.chestr.dev
         conditions:
           - "[STATUS] == 200"
           - "[BODY] == pat(*auth.chestr.dev*)"
@@ -23,7 +23,7 @@ data:
         interval: 1h
         url: 1.1.1.1
         dns:
-          query-name: thanos.chestr.dev
+          query-name: thanos-query-frontend.chestr.dev
           query-type: A
         conditions:
           - "len([BODY]) == 0"
