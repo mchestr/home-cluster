@@ -2,7 +2,7 @@
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
-  name: wordpress-0-data-restic
+  name: wordpress-0-restic
   namespace: web
 spec:
   secretStoreRef:
