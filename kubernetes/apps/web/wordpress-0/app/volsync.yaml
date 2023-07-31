@@ -66,7 +66,8 @@ spec:
     volumeSnapshotClassName: csi-ceph-blockpool
     storageClassName: ceph-block
     moverSecurityContext:
-      fsGroup: 0
+      runAsUser: 1001
+      runAsGroup: 1001
     retain:
       daily: 5
       weekly: 4
@@ -90,7 +91,8 @@ spec:
     volumeSnapshotClassName: csi-ceph-blockpool
     storageClassName: ceph-block
     moverSecurityContext:
-      fsGroup: 0
+      runAsUser: 1001
+      runAsGroup: 1001
     retain:
       daily: 5
       weekly: 4
