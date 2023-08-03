@@ -265,6 +265,11 @@ spec:
           datasource:
             - name: DS_EMQX_PROMETHEUS
               value: Prometheus
+        unpackerr:
+          gnetId: 18817 # https://grafana.com/grafana/dashboards/18817?tab=revisions
+          revision: 1
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
       ceph:
         ceph-cluster:
           gnetId: 2842 # https://grafana.com/grafana/dashboards/2842?tab=revisions

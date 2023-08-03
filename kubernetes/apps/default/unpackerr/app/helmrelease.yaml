@@ -31,14 +31,15 @@ spec:
         reloader.stakater.com/auto: "true"
 
     image:
-      repository: ghcr.io/onedr0p/unpackerr
-      tag: 0.12.0@sha256:05425c80a4e6682d098e29d8f1c2ba79bdf8bffd79c3fe139d3f16cfe6f90c7b
+      repository: docker.io/golift/unpackerr
+      tag: 0.12.0
 
     env:
       TZ: ${TZ}
-      UN_SONARR_0_URL: http://sonarr:8989
+      UN_WEBSERVER_METRICS: "true"
+      UN_SONARR_0_URL: http://sonarr.default.svc.cluster.local:8989
       UN_SONARR_0_PATHS_0: /complete
-      UN_RADARR_0_URL: http://radarr:7878
+      UN_RADARR_0_URL: http://radarr.default.svc.cluster.local:7878
       UN_RADARR_0_PATHS_0: /complete
 
     envFrom:
@@ -53,10 +54,13 @@ spec:
       media:
         enabled: true
         type: nfs
-        server: "lochnas.chestr.dev"
+        server: lochnas.chestr.dev
         path: ${NAS_MEDIA_DIR}/downloads/torrents/complete
         mountPath: /complete
 
     podSecurityContext:
-      fsGroup: 65539
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
       fsGroupChangePolicy: OnRootMismatch
+      supplementalGroups: [65539]
