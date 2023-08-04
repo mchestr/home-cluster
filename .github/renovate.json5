@@ -17,7 +17,6 @@
   platform: 'github',
   username: 'mchesterbot[bot]',
   gitAuthor: 'mchesterbot <202745+mchesterbot[bot]@users.noreply.github.com>',
-  repositories: ['mchestr/home-cluster'],
   timezone: 'America/Vancouver',
   onboarding: false,
   requireConfig: 'optional',
