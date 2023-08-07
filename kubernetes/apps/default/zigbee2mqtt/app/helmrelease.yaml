@@ -33,17 +33,62 @@ spec:
 
     image:
       repository: ghcr.io/koenkk/zigbee2mqtt
-      tag: latest-dev@sha256:ffb8a756dbc6c69f29f14fe24dfd1f82aa379ee2a07cbb3f12521e78b402cfa0
+      tag: 1.32.2
+
+    envFrom:
+      - secretRef:
+          name: zigbee2mqtt-secret
 
     env:
       TZ: ${TZ}
       ZIGBEE2MQTT_DATA: /data
+      ZIGBEE2MQTT_CONFIG_ADVANCED_HOMEASSISTANT_DISCOVERY_TOPIC: homeassistant
+      ZIGBEE2MQTT_CONFIG_ADVANCED_HOMEASSISTANT_LEGACY_ENTITY_ATTRIBUTES: "true"
+      ZIGBEE2MQTT_CONFIG_ADVANCED_HOMEASSISTANT_LEGACY_TRIGGERS: "true"
+      ZIGBEE2MQTT_CONFIG_ADVANCED_HOMEASSISTANT_STATUS_TOPIC: homeassistant/status
+      ZIGBEE2MQTT_CONFIG_ADVANCED_LAST_SEEN: ISO_8601
+      ZIGBEE2MQTT_CONFIG_ADVANCED_LEGACY_API: "false"
+      ZIGBEE2MQTT_CONFIG_ADVANCED_LEGACY_AVAILABILITY_PAYLOAD: "false"
+      ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_LEVEL: info
+      ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_OUTPUT: '["console"]'
+      ZIGBEE2MQTT_CONFIG_ADVANCED_BAUDRATE: 57600
+      ZIGBEE2MQTT_CONFIG_ADVANCED_PAN_ID: 6754
+      ZIGBEE2MQTT_CONFIG_ADVANCED_CHANNEL: 11
+      ZIGBEE2MQTT_CONFIG_AVAILABILITY_ACTIVE_TIMEOUT: 60
+      ZIGBEE2MQTT_CONFIG_AVAILABILITY_PASSIVE_TIMEOUT: 2000
+      ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_LEGACY: "false"
+      ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_RETAIN: "true"
+      ZIGBEE2MQTT_CONFIG_EXPERIMENTAL_NEW_API: "true"
+      ZIGBEE2MQTT_CONFIG_FRONTEND_PORT: 8080
+      ZIGBEE2MQTT_CONFIG_FRONTEND_URL: https://zigbee.chestr.dev
+      ZIGBEE2MQTT_CONFIG_HOMEASSISTANT: "true"
+      ZIGBEE2MQTT_CONFIG_MQTT_INCLUDE_DEVICE_INFORMATION: "true"
+      ZIGBEE2MQTT_CONFIG_MQTT_KEEPALIVE: 60
+      ZIGBEE2MQTT_CONFIG_MQTT_REJECT_UNAUTHORIZED: "true"
+      ZIGBEE2MQTT_CONFIG_MQTT_SERVER: mqtt://emqx.default.svc.cluster.local:1883
+      ZIGBEE2MQTT_CONFIG_MQTT_VERSION: 5
+      ZIGBEE2MQTT_CONFIG_PERMIT_JOIN: "false"
+      ZIGBEE2MQTT_CONFIG_SERIAL_PORT: &usb /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_71500DDD-if01-port0
+      ZIGBEE2MQTT_CONFIG_SERIAL_ADAPTER: ezsp
 
     service:
       main:
         ports:
           http:
             port: 8080
+          metrics:
+            enabled: true
+            port: 80
+
+    serviceMonitor:
+      main:
+        enabled: true
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
 
     ingress:
       main:
@@ -74,7 +119,7 @@ spec:
       usb:
         enabled: true
         type: hostPath
-        hostPath: /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_71500DDD-if01-port0
+        hostPath: *usb
         hostPathType: CharDevice
 
     nodeSelector:
