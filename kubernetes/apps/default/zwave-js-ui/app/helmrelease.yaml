@@ -33,7 +33,7 @@ spec:
 
     image:
       repository: ghcr.io/zwave-js/zwave-js-ui
-      tag: 8.22.0
+      tag: 8.22.2
     env:
       TZ: ${TZ}
 
