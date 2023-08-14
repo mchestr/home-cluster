@@ -2,5 +2,5 @@
 
 UP=$(show interfaces wireguard | grep 'u/u' | wc -l)
 if [[ "${UP}" -eq 1 ]]; then
-  curl --connect-timeout 10 --max-time 30 -I -s -o /dev/null -w '%{http_code}' {{ uptime_kuma_wg_ping_url }}
+  curl --connect-timeout 10 --max-time 30 -I -s -o /dev/null -w '%{http_code}' {{ uptime_kuma_ping_wg_url }}
 fi;
