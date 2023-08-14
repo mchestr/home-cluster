@@ -3,7 +3,7 @@
   hosts:
     - edgerouter
   become: true
-  gather_facts: false
+  gather_facts: true
   any_errors_fatal: true
 
   roles:
