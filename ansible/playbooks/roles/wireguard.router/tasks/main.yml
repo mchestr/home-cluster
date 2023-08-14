@@ -73,9 +73,8 @@
   vars:
     ansible_network_os: edgeos
     ansible_connection: network_cli
-  community.network.edgeos_config:
-    save: true
-    lines:
+  vyos_command:
+    commands:
       - set interfaces wireguard wg0 route-allowed-ips false
       - commit
 
