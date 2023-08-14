@@ -15,6 +15,12 @@
     dest: /config/scripts/ping.sh
     mode: 0755
 
+- name: Copy Uptime Kuma wg ping script
+  ansible.builtin.template:
+    src: wg-ping.sh.j2
+    dest: /config/scripts/wg-ping.sh
+    mode: 0755
+
 - name: Configure Uptime Kuma Ping Scheduler
   vars:
     ansible_network_os: edgeos
@@ -27,3 +33,5 @@
         lines:
           - set system task-scheduler task uptime-kuma interval 1m
           - set system task-scheduler task uptime-kuma executable path /config/scripts/ping.sh
+          - set system task-scheduler task uptime-kuma-wg interval 1m
+          - set system task-scheduler task uptime-kuma-wg executable path /config/scripts/wg-ping.sh
