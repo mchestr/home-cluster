@@ -48,7 +48,9 @@ spec:
 
     service:
       main:
-        enabled: false
+        ports:
+          http:
+            port: 5656
 
     serviceMonitor:
       main:
