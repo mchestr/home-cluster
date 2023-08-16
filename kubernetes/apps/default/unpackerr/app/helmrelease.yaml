@@ -50,6 +50,10 @@ spec:
       main:
         enabled: false
 
+    serviceMonitor:
+      main:
+        enabled: true
+
     persistence:
       media:
         enabled: true
