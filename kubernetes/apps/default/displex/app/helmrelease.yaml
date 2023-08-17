@@ -33,7 +33,7 @@ spec:
 
     image:
       repository: ghcr.io/mchestr/displex
-      tag: main@sha256:7fd8dc44eda732e06ae0c46fecc582cf6b054d0267aa43de1cd7cb7e6d574320
+      tag: main@sha256:e3be2ef2c6c523756b2765d72fda07ec3bd10b50c30564e03794f7200e4022e1
 
     ingress:
       main:
@@ -70,6 +70,7 @@ spec:
       DISPLEX_DISCORD_BOT__STAT_UPDATE__LIBRARY_CATEGORY__TV_SHOWS_NAME: 📺 TV Shows
       DISPLEX_DISCORD_BOT__STAT_UPDATE__LIBRARY_CATEGORY__TV_EPISODES_NAME: 🧩 Episodes
       DISPLEX_TAUTULLI__URL: http://tautulli.default.svc.cluster.local:8181
+      DISPLEX_OVERSEERR__URL: http://overseerr.default.svc.cluster.local:5055
 
     service:
       main:
