@@ -34,15 +34,10 @@ spec:
       repository: ghcr.io/buroa/qbittools
       tag: v0.2.0@sha256:c77b4e263ff9da9a5054d9f1720f934e68ab202e00891da230b63c4c8c8e5d42
     args:
-      - tagging
-      - --not-working
-      - --unregistered
-      - --added-on
-      - --last-activity
-      - --trackers
-      - --tracker-down
+      - reannounce
+      - --process-seeding
       - -s
-      - "qbittorrent.default.svc.cluster.local"
+      - qbittorrent.media.svc.cluster.local
       - -p
       - "8080"
     service:
