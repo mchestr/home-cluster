@@ -35,7 +35,7 @@ tasks:
       - talosctl --nodes 192.168.1.200 upgrade-k8s --to {{ .KUBERNETES_VERSION }}
 
   upgrade:all:
-    desc: Upgrade all nodes to Talos version {{ .TALOS_VERSION }} (task talos:upgrade:all)
+    desc: Upgrade all nodes to Talos version {{ .TALOS_VERSION }} (task talos:upgrade:all [SKIP_APPLY=1])
     dir: talos
     cmds:
       - task: generate
@@ -59,6 +59,8 @@ tasks:
   apply:
     desc: Apply Talos config to a specific node (task talos:apply N=0)
     dir: talos
+    status:
+      - test -n "{{ .SKIP_APPLY }}"
     cmds:
       - task: generate
       - talosctl apply-config --nodes {{ .NODE }} --file clusterconfig/home-cluster-k8s-{{ .N }}.yaml {{ .CLI_ARGS }}
@@ -80,15 +82,15 @@ tasks:
 
   upgrade:
     internal: True
-    desc: Upgrade a single node to Talos version {{ .TALOS_VERSION }} (task talos:upgrade N=0)
+    desc: Upgrade a single node to Talos version {{ .TALOS_VERSION }} (task talos:upgrade N=0 [SKIP_APPLY=1])
     dir: talos
     status:
       - talosctl version --nodes {{ .NODE }} --short | grep 'Tag.*{{ .TALOS_VERSION }}'
     cmds:
       - task: wait_for_health
         vars: {TIMEOUT: 10m}
-      # - task: apply
-      #   vars: {NODE: "{{ .NODE }}", N: "{{ .N }}", CLI_ARGS: "-m staged"}
+      - task: apply
+        vars: {NODE: "{{ .NODE }}", N: "{{ .N }}", CLI_ARGS: "-m staged", SKIP_APPLY: "{{ .SKIP_APPLY }}"}
       - talosctl upgrade --nodes {{ .NODE }} --image ghcr.io/siderolabs/installer:{{ .TALOS_VERSION }}
 
   wait_for_health:
