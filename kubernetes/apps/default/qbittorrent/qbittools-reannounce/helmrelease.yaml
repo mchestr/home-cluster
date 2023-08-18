@@ -32,7 +32,7 @@ spec:
       - reannounce
       - --process-seeding
       - -s
-      - qbittorrent.media.svc.cluster.local
+      - qbittorrent.default.svc.cluster.local
       - -p
       - "8080"
     service:
