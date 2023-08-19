@@ -1,0 +1,76 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: matrix-synapse
+  namespace: default
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: matrix-synapse
+      version: 3.6.0
+      sourceRef:
+        kind: HelmRepository
+        name: ananace-charts
+        namespace: flux-system
+      interval: 15m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    synapse:
+      strategy:
+        type: Recreate
+      extraVolumes:
+        - name: matrix-synapse-oidc-secret
+          secret:
+            secretName: matrix-synapse-oidc-secret
+            optional: false
+      extraVolumeMounts:
+        - mountPath: /synapse/config/conf.d/oidc_providers.yaml
+          name: matrix-synapse-oidc-secret
+          subPath: oidc_providers.yaml
+    config:
+      enableRegistration: true
+      trustedKeyServers:
+        - server_name: ""
+    extraConfig:
+      email:
+        smtp_host: smtp-relay.default.svc.cluster.local
+        smtp_port: 25
+        notif_from: "Your Friendly %(app)s homeserver <matrix.chestr.dev>"
+        enable_tls: false
+      registration_requires_token: true
+      suppress_key_server_warning: true
+    image:
+      repository: ghcr.io/matrix-org/synapse
+      tag: v1.88.0@sha256:3c81deceeee138911c7410f8faf79e942bdde79f25146a314c7002d003d634c1
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: nginx
+        hosts:
+          - host: &host matrix.chestr.dev
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+    persistence:
+      enabled: true
+    postgresql:
+      enabled: true
+    redis:
+      enabled: true
+    serverName: *host
+    signingkey:
+      job:
+        enabled: false
+      existingSecret: matrix-synapse-secret
+      existingSecretKey: signing.key

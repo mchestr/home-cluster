@@ -109,3 +109,16 @@ identity_providers:
         redirect_uris:
           - https://miniflux.chestr.dev/oauth2/oidc/callback
         userinfo_signing_algorithm: none
+      - id: matrix
+        description: Matrix
+        secret: "${MATRIX_OAUTH_CLIENT_SECRET}"
+        public: false
+        authorization_policy: one_factor
+        pre_configured_consent_duration: 1y
+        scopes:
+          - openid
+          - profile
+          - email
+        redirect_uris:
+          - https://matrix.chestr.dev/_synapse/client/oidc/callback
+        userinfo_signing_algorithm: none
