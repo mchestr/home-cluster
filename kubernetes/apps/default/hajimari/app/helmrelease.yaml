@@ -88,8 +88,6 @@ spec:
               url: https://app.terraform.io
             - name: Pushover
               url: https://client.pushover.net/
-            - name: Renovate Dashboard
-              url: https://app.renovatebot.com/dashboard
 
       customApps:
         - group: storage, database, and messaging
