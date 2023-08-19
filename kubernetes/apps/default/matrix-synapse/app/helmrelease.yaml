@@ -36,7 +36,7 @@ spec:
           name: matrix-synapse-oidc-secret
           subPath: oidc_providers.yaml
     config:
-      enableRegistration: true
+      enableRegistration: false
       trustedKeyServers:
         - server_name: ""
     extraConfig:
