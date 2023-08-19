@@ -49,7 +49,7 @@ spec:
       suppress_key_server_warning: true
     image:
       repository: ghcr.io/matrix-org/synapse
-      tag: v1.88.0@sha256:3c81deceeee138911c7410f8faf79e942bdde79f25146a314c7002d003d634c1
+      tag: v1.90.0@sha256:330c2201e19231fe641e7edbb8824fa3181f6323eca49d2b9f9cec12a1e7f1b4
     ingress:
       main:
         enabled: true
