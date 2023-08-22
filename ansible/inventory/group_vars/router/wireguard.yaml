@@ -19,3 +19,6 @@ wireguard_public_keys:
   - peer: S5775sFCwpBbGRtXRkptRumfnb3nl7Kz/PCA0AcT82I=
     ip_address: 192.168.33.12/32
     name: laptop
+  - peer: d6wX+iwVxo7bwgDMWgZemCfmO2VgjyMsDtS7Ei8k6is=
+    ip_address: 192.168.33.13/32
+    name: mom
