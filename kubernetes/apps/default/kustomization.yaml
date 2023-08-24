@@ -12,7 +12,6 @@ resources:
   - bazarr/ks.yaml
   - cloudnative-pg/ks.yaml
   - displex/ks.yaml
-  - emqx/ks.yaml
   - esphome/ks.yaml
   - flaresolverr/ks.yaml
   - frigate/ks.yaml
@@ -21,6 +20,7 @@ resources:
   - home-assistant/ks.yaml
   - immich/ks.yaml
   - miniflux/ks.yaml
+  - mosquitto/ks.yaml
   - overseerr/ks.yaml
   - paperless/ks.yaml
   - plex/ks.yaml
