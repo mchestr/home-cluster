@@ -258,13 +258,6 @@ spec:
           gnetId: 14371
           revision: 1
           datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/17446-emqx
-        emqx:
-          gnetId: 17446
-          revision: 1
-          datasource:
-            - name: DS_EMQX_PROMETHEUS
-              value: Prometheus
         unpackerr:
           gnetId: 18817 # https://grafana.com/grafana/dashboards/18817?tab=revisions
           revision: 1
