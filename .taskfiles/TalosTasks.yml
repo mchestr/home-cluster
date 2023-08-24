@@ -10,7 +10,7 @@ vars:
   # renovate: datasource=github-releases depName=budimanjojo/talhelper
   TALHELPER_VERSION: "v1.9.3"
   # renovate: datasource=github-releases depName=siderolabs/kubelet
-  KUBERNETES_VERSION: "v1.27.4"
+  KUBERNETES_VERSION: "v1.28.1"
 
 tasks:
 
