@@ -35,12 +35,10 @@ spec:
       tag: v0.6.1@sha256:626c7795c9701589248a4c78f7bc7e0455fd1d3d65a9c9edbfbc1154acc0ecf9
     args:
       - tagging
-      - --not-working
-      - --unregistered
       - --added-on
       - --last-activity
-      - --trackers
-      - --tracker-down
+      - --sites
+      - --unregistered
       - -s
       - "qbittorrent.default.svc.cluster.local"
       - -p
