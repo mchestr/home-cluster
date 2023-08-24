@@ -78,12 +78,18 @@ spec:
         enabled: true
         storageClass: ceph-block
         size: 20Gi
+      resources:
+        limits:
+          memory: 4096M
     storegateway:
       enabled: true
       persistence:
         enabled: true
         size: 10Gi
         storageClass: ceph-block
+      resources:
+        limits:
+          memory: 4096M
     ruler:
       enabled: true
       replicaCount: 3
