@@ -27,7 +27,7 @@ access_control:
         - 192.168.0.0/16
   rules:
     - domain: ["invite.chestr.dev"]
-      resources: ["^/join.*$", "^/j/.*$", "^/setup.*$", "^/static/.*$"]
+      resources: ["^/j/", "^/join/", "^/setup/*", "^/static/"]
       policy: bypass
     - domain: ["displex.chestr.dev"]
       resources: ["^/auth.*$"]
