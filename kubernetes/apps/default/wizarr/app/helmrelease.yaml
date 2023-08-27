@@ -37,7 +37,7 @@ spec:
 
     env:
       TZ: ${TZ}
-      APP_URL: https://join.chestr.dev
+      APP_URL: https://invite.chestr.dev
       DISABLE_BUILTIN_AUTH: "true"
 
     service:
@@ -56,7 +56,7 @@ spec:
           hajimari.io/icon: mdi:invite
           hajimari.io/group: Media Management
         hosts:
-          - host: &host "join.chestr.dev"
+          - host: &host "invite.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix

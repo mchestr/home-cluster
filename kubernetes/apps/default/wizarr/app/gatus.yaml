@@ -12,7 +12,7 @@ data:
       - name: wizarr
         group: external
         interval: 1h
-        url: https://join.chestr.dev
+        url: https://invite.chestr.dev
         conditions:
           - "[STATUS] == 200"
           - "[BODY] == pat(*auth.chestr.dev*)"
@@ -21,7 +21,7 @@ data:
       - name: join
         group: external
         interval: 30m
-        url: https://join.chestr.dev/j/
+        url: https://invite.chestr.dev/j/
         client:
           dns-resolver: tcp://1.1.1.1:53
         conditions:
