@@ -27,7 +27,7 @@ spec:
   values:
     image:
       repository: ghcr.io/buroa/qbittools
-      tag: v0.9.0@sha256:6b988edc2fbebb79c09ea74680159405202cebd162cd47003da0bb31e68dcf3e
+      tag: v0.9.1@sha256:a3ce629626ce468e3f5034f0b4733da592fb85940219038fd1cbed73ce2167f2
     args:
       - reannounce
       - --process-seeding
