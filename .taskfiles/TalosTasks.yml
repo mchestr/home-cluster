@@ -39,20 +39,11 @@ tasks:
     dir: talos
     cmds:
       - task: generate
-      # control-plane
-      - task: upgrade
-        vars: {NODE: 192.168.1.203, N: 3}
-      - task: upgrade
-        vars: {NODE: 192.168.1.201, N: 1}
-      - task: upgrade
-        vars: {NODE: 192.168.1.200, N: 0}
-      # workers
-      - task: upgrade
-        vars: {NODE: 192.168.1.202, N: 2}
-      - task: upgrade
-        vars: {NODE: 192.168.1.204, N: 4}
-      - task: upgrade
-        vars: {NODE: 192.168.1.205, N: 5}
+      - for: [3, 1, 0, 2, 4, 5]
+        task: upgrade
+        vars:
+          NODE: 'k8s-{{ .N }}'
+          N: '{{ .N }}'
       # Restart nginx, sometimes it has issues...
       - kubectl -n networking rollout restart deployment ingress-nginx-controller
 
