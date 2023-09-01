@@ -79,6 +79,14 @@ tasks:
       - clusterconfig/*.yaml
       - clusterconfig/talosconfig
 
+  version:
+    desc: Apply Talos config to a specific node (task talos:version [N=0])
+    dir: talos
+    vars:
+      NODES: 192.168.1.200,192.168.1.201,192.168.1.202,192.168.1.203,192.168.1.204,192.168.1.205
+    cmds:
+      - talosctl version --nodes {{ .NODES }}
+
   upgrade:
     internal: True
     desc: Upgrade a single node to Talos version {{ .TALOS_VERSION }} (task talos:upgrade N=0 [SKIP_APPLY=1])
