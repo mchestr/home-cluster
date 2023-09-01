@@ -59,22 +59,12 @@ controlPlane:
         certSANs:
           - ${clusterEndpointIP}
           - cluster.chestr.dev
-        extraArgs:
-          feature-gates: MixedProtocolLBService=true
-      controllerManager:
-        extraArgs:
-          feature-gates: MixedProtocolLBService=true
       discovery:
         registries:
           service:
             disabled: true
       proxy:
         disabled: true
-        extraArgs:
-          feature-gates: MixedProtocolLBService=true
-      scheduler:
-        extraArgs:
-          feature-gates: MixedProtocolLBService=true
     machine:
       certSANs:
         - ${clusterEndpointIP}
@@ -90,7 +80,7 @@ controlPlane:
             format: json_lines
       kubelet:
         extraArgs:
-          feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
+          feature-gates: GracefulNodeShutdown=true
           rotate-server-certificates: "true"
       sysctls:
         fs.inotify.max_user_watches: "1048576"
@@ -147,7 +137,7 @@ worker:
             format: json_lines
       kubelet:
         extraArgs:
-          feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
+          feature-gates: GracefulNodeShutdown=true
           rotate-server-certificates: "true"
       sysctls:
         fs.inotify.max_user_watches: "1048576"
