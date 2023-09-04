@@ -127,10 +127,13 @@ spec:
 
     nodeSelector:
       google.feature.node.kubernetes.io/coral: "true"
-      # intel.feature.node.kubernetes.io/gpu: "true"
+      intel.feature.node.kubernetes.io/gpu: "true"
 
-    # resources:
-    #   requests:
-    #     gpu.intel.com/i915: "1"
-    #   limits:
-    #     gpu.intel.com/i915: "1"
+    resources:
+      requests:
+        cpu: 10m
+        memory: 1000Mi
+        gpu.intel.com/i915: "1"
+      limits:
+        memory: 6000Mi
+        gpu.intel.com/i915: "1"
