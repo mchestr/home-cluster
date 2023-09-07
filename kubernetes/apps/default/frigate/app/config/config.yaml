@@ -53,12 +53,14 @@ snapshots:
 record:
   enabled: true
   retain:
-    days: 2
+    days: 7
     mode: all
   events:
     retain:
-      default: 14
+      default: 180
       mode: active_objects
+      objects:
+        vehicle: 7
 
 objects:
   track: ["person", "vehicle", "animal"]
@@ -82,14 +84,6 @@ go2rtc:
 
 cameras:
   living_room:
-    record:
-      retain:
-        days: 2
-        mode: motion
-      events:
-        retain:
-          default: 7
-          mode: active_objects
     ffmpeg:
       output_args:
         record: preset-record-generic-audio-aac
@@ -104,17 +98,8 @@ cameras:
             - detect
     live:
       stream_name: living_room_high
+
   doorbell:
-    record:
-      retain:
-        days: 7
-        mode: motion
-      events:
-        retain:
-          default: 30
-          mode: active_objects
-          objects:
-            car: 2
     ffmpeg:
       output_args:
         record: preset-record-generic-audio-aac
