@@ -38,7 +38,7 @@ spec:
     env:
       TZ: ${TZ}
       APP_URL: https://invite.chestr.dev
-      DISABLE_BUILTIN_AUTH: "True"
+      DISABLE_BUILTIN_AUTH: "true"
 
     service:
       main:
