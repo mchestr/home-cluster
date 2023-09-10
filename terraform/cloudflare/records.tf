@@ -1,7 +1,7 @@
 # Tunnel CNAME
 resource "cloudflare_record" "status" {
   zone_id = data.cloudflare_zone.domain.id
-  name    = "ingress"
+  name    = "external"
   value   = "${cloudflare_tunnel.k8s.id}.cfargotunnel.com"
   type    = "CNAME"
   proxied = true
