@@ -56,9 +56,9 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: nginx
+        ingressClassName: external
         annotations:
-          external-dns.home.arpa/enabled: "true"
+          external-dns.alpha.kubernetes.io/target: external.chestr.dev
           hajimari.io/icon: mdi:home-assistant
           hajimari.io/appName: Home Assistant
           hajimari.io/group: home
@@ -111,7 +111,7 @@ spec:
 
         ingress:
           enabled: true
-          ingressClassName: nginx
+          ingressClassName: internal
           annotations:
             auth.home.arpa/enabled: "true"
             hajimari.io/icon: cib:visual-studio-code

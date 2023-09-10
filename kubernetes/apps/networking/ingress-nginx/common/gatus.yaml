@@ -11,7 +11,7 @@ data:
     endpoints:
       - name: ingress.chestr.dev
         group: certificates
-        url: "tls://ingress.chestr.dev:443"
+        url: "tls://internal.chestr.dev:443"
         interval: 24h
         conditions:
           - "[CONNECTED] == true"

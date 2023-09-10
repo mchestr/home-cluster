@@ -45,11 +45,9 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: nginx
+        ingressClassName: external
         annotations:
-          external-dns.home.arpa/enabled: "true"
-          # doesn't seem to work without
-          nginx.ingress.kubernetes.io/custom-http-errors: 500,502,503,504
+          external-dns.alpha.kubernetes.io/target: external.chestr.dev
           hajimari.io/appName: Cal
           hajimari.io/group: home
           hajimari.io/icon: material-symbols:calendar-month

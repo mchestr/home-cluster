@@ -45,7 +45,7 @@ spec:
       replicaCount: 3
       ingress:
         enabled: true
-        ingressClassName: nginx
+        ingressClassName: internal
         hostname: &host thanos-query-frontend.chestr.dev
         annotations:
           auth.home.arpa/enabled: "true"

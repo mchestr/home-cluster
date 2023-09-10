@@ -9,7 +9,7 @@ metadata:
     hajimari.io/group: storage, database, and messaging
 
 spec:
-  ingressClassName: nginx
+  ingressClassName: internal
   tls:
     - hosts:
         - minio.chestr.dev
@@ -35,7 +35,7 @@ metadata:
     hajimari.io/enable: "false"
 
 spec:
-  ingressClassName: nginx
+  ingressClassName: internal
   tls:
     - hosts:
         - s3.chestr.dev
