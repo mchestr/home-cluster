@@ -33,7 +33,7 @@ spec:
 
     image:
       repository: ghcr.io/jacobalberty/unifi-docker
-      tag: v7.4.162
+      tag: v7.5.174
 
     env:
       TZ: ${TZ}
