@@ -9,7 +9,7 @@ metadata:
 data:
   config.yaml: |
     endpoints:
-      - name: *.chestr.dev
+      - name: "*.chestr.dev"
         group: certificates
         url: "tls://internal.chestr.dev:443"
         interval: 24h
