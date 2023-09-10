@@ -114,7 +114,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: internal
+        ingressClassName: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
           nginx.ingress.kubernetes.io/configuration-snippet: |
