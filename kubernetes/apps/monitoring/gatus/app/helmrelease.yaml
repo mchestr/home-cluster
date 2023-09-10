@@ -91,6 +91,7 @@ spec:
     ingress:
       main:
         enabled: true
+        ingressClassName: internal
         annotations:
           hajimari.io/icon: mdi:connection
           hajimari.io/info: Service Status Monitor
