@@ -2,14 +2,14 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: ingress-gatus-ep
+  name: chestr-dev-cert-gatus-ep
   namespace: default
   labels:
     gatus.io/enabled: "true"
 data:
   config.yaml: |
     endpoints:
-      - name: ingress.chestr.dev
+      - name: *.chestr.dev
         group: certificates
         url: "tls://internal.chestr.dev:443"
         interval: 24h
