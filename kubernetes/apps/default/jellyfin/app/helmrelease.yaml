@@ -34,14 +34,13 @@ spec:
       DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
       JELLYFIN_FFmpeg__probesize: 50000000
       JELLYFIN_FFmpeg__analyzeduration: 50000000
-      JELLYFIN_PublishedServerUrl: &loadBalancerIP 192.168.42.203
+      JELLYFIN_PublishedServerUrl: &loadBalancerIP 192.168.1.232
       TZ: ${TZ}
     service:
       main:
         type: LoadBalancer
         externalTrafficPolicy: Local
-        externalIPs:
-          - *loadBalancerIP
+        loadBalancerIP: *loadBalancerIP
         ports:
           http:
             port: &port 8096
