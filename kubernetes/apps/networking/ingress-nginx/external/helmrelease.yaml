@@ -30,7 +30,7 @@ spec:
       service:
         annotations:
           external-dns.alpha.kubernetes.io/hostname: external.chestr.dev
-        externalIPs: ["192.168.1.231"]
+        loadBalancerIP: 192.168.1.231
         externalTrafficPolicy: Local
       ingressClassResource:
         name: external

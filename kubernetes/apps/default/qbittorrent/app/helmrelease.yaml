@@ -83,7 +83,7 @@ spec:
         enabled: true
         type: LoadBalancer
         externalTrafficPolicy: Local
-        externalIPs: ["192.168.1.224"]
+        loadBalancerIP: 192.168.1.224
         ports:
           bittorrent:
             enabled: true
