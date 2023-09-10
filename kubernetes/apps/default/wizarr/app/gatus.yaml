@@ -18,7 +18,7 @@ data:
           - "[BODY] == pat(*auth.chestr.dev*)"
         alerts:
           - type: pushover
-      - name: join
+      - name: invite
         group: external
         interval: 30m
         url: https://invite.chestr.dev/j/
