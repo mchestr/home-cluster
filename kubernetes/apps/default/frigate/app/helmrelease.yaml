@@ -71,7 +71,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: nginx
+        ingressClassName: internal
         annotations:
           auth.home.arpa/enabled: "true"
           hajimari.io/icon: mdi:cctv

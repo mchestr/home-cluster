@@ -110,7 +110,7 @@ spec:
       ingress:
         enabled: true
         pathType: Prefix
-        ingressClassName: nginx
+        ingressClassName: internal
         annotations:
           auth.home.arpa/enabled: "true"
           hajimari.io/icon: akar-icons:circle-alert
@@ -241,7 +241,7 @@ spec:
     prometheus:
       ingress:
         enabled: true
-        ingressClassName: nginx
+        ingressClassName: internal
         annotations:
           auth.home.arpa/enabled: "true"
           hajimari.io/icon: simple-icons:prometheus

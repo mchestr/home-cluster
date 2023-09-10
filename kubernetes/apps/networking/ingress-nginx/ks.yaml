@@ -2,14 +2,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-ingress-nginx-certificates
+  name: cluster-apps-ingress-nginx-common
   namespace: flux-system
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
   dependsOn:
     - name: cluster-apps-cert-manager-issuers
-  path: ./kubernetes/apps/networking/ingress-nginx/certificates
+    - name: cluster-apps-kyverno
+  path: ./kubernetes/apps/networking/ingress-nginx/common
   prune: true
   sourceRef:
     kind: GitRepository
@@ -22,25 +23,41 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-ingress-nginx
+  name: cluster-apps-ingress-nginx-internal
   namespace: flux-system
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
   dependsOn:
-    - name: cluster-apps-ingress-nginx-certificates
-    - name: cluster-apps-kyverno
+    - name: cluster-apps-ingress-nginx-common
     - name: cluster-apps-metallb
-  path: ./kubernetes/apps/networking/ingress-nginx/app
+  path: ./kubernetes/apps/networking/ingress-nginx/internal
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
-  healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
-      kind: HelmRelease
-      name: ingress-nginx
-      namespace: networking
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 3m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-ingress-nginx-external
+  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/enabled: "true"
+spec:
+  dependsOn:
+    - name: cluster-apps-ingress-nginx-common
+    - name: cluster-apps-metallb
+  path: ./kubernetes/apps/networking/ingress-nginx/external
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops-kubernetes
+  wait: true
   interval: 30m
   retryInterval: 1m
   timeout: 3m

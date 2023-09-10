@@ -38,12 +38,12 @@ spec:
 
     ingress:
       enabled: true
-      ingressClassName: nginx
+      ingressClassName: internal
       hostname: &host stephk.co
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-production
         nginx.ingress.kubernetes.io/custom-http-errors: 500,502,503,504
-        external-dns.home.arpa/enabled: "true"
+        external-dns.alpha.kubernetes.io/target: external.chestr.dev
         hajimari.io/icon: mdi:wordpress
         hajimari.io/group: web
         hajimari.io/appName: stephk.co

@@ -118,7 +118,7 @@ spec:
 
     ingress:
       dashboard:
-        ingressClassName: nginx
+        ingressClassName: internal
         annotations:
           hajimari.io/icon: mdi:chess-rook
           hajimari.io/appName: Rook Ceph

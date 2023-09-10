@@ -49,7 +49,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: nginx
+        ingressClassName: internal
         annotations:
           auth.home.arpa/enabled: "true"
           hajimari.io/icon: home-automation
@@ -99,7 +99,7 @@ spec:
 
         ingress:
           enabled: true
-          ingressClassName: nginx
+          ingressClassName: internal
           annotations:
             auth.home.arpa/enabled: "true"
             hajimari.io/icon: cib:visual-studio-code
