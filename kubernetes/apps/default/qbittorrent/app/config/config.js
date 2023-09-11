@@ -6,6 +6,7 @@ module.exports = {
       "http://prowlarr.default.svc.cluster.local:9696/30/api?apikey={{ .PROWLARR_API_KEY }}",
       "http://prowlarr.default.svc.cluster.local:9696/31/api?apikey={{ .PROWLARR_API_KEY }}",
       "http://prowlarr.default.svc.cluster.local:9696/33/api?apikey={{ .PROWLARR_API_KEY }}",
+      "http://prowlarr.default.svc.cluster.local:9696/34/api?apikey={{ .PROWLARR_API_KEY }}",
     ],
 
     action: "inject",
