@@ -66,7 +66,7 @@ identity_providers:
           - email
         redirect_uris:
           - https://grafana.chestr.dev/login/generic_oauth
-        userinfo_signing_alg: none
+        userinfo_signed_response_alg: none
       - id: immich
         description: Immich
         secret: "${IMMICH_OAUTH_CLIENT_SECRET}"
@@ -80,7 +80,7 @@ identity_providers:
         redirect_uris:
           - https://photos.chestr.dev/auth/login
           - app.immich:/
-        userinfo_signing_alg: none
+        userinfo_signed_response_alg: none
       - id: minio
         description: Minio
         secret: "${MINIO_OAUTH_CLIENT_SECRET}"
@@ -94,7 +94,7 @@ identity_providers:
           - groups
         redirect_uris:
           - https://minio.chestr.dev/oauth_callback
-        userinfo_signing_alg: none
+        userinfo_signed_response_alg: none
       - id: miniflux
         description: Miniflux
         secret: "${MINIFLUX_OAUTH_CLIENT_SECRET}"
@@ -108,4 +108,4 @@ identity_providers:
           - email
         redirect_uris:
           - https://miniflux.chestr.dev/oauth2/oidc/callback
-        userinfo_signing_algorithm: none
+        userinfo_signed_response_alg: none
