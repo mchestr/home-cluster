@@ -67,16 +67,3 @@ spec:
         accessMode: ReadWriteOnce
         size: 1Gi
         storageClass: ceph-block
-
-    persistence:
-      usb:
-        enabled: true
-        type: hostPath
-        hostPath: /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_71500DDD-if00-port0
-        hostPathType: CharDevice
-
-    nodeSelector:
-      feature.node.kubernetes.io/zigbee: "true"
-
-    securityContext:
-      privileged: true
