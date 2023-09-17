@@ -68,7 +68,7 @@ spec:
       ZIGBEE2MQTT_CONFIG_MQTT_SERVER: mqtt://mosquitto.default.svc.cluster.local:1883
       ZIGBEE2MQTT_CONFIG_MQTT_VERSION: 5
       ZIGBEE2MQTT_CONFIG_PERMIT_JOIN: "false"
-      ZIGBEE2MQTT_CONFIG_SERIAL_PORT: &usb /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_71500DDD-if01-port0
+      ZIGBEE2MQTT_CONFIG_SERIAL_PORT: tcp://192.168.1.199:2001
       ZIGBEE2MQTT_CONFIG_SERIAL_ADAPTER: ezsp
 
     service:
@@ -114,16 +114,3 @@ spec:
         accessMode: ReadWriteOnce
         size: 1Gi
         storageClass: ceph-block
-
-    persistence:
-      usb:
-        enabled: true
-        type: hostPath
-        hostPath: *usb
-        hostPathType: CharDevice
-
-    nodeSelector:
-      feature.node.kubernetes.io/zigbee: "true"
-
-    securityContext:
-      privileged: true
