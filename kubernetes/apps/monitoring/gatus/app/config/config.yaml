@@ -163,3 +163,14 @@ endpoints:
     conditions:
       - "[CONNECTED] == true"
       - "[CERTIFICATE_EXPIRATION] > 336h"
+
+  - name: zwave-controller
+    url: "tcp://home-controller.chestr.dev:2000"
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+  - name: zigbee-controller
+    url: "tcp://home-controller.chestr.dev:2001"
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"

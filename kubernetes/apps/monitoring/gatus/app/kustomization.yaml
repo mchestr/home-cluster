@@ -6,6 +6,7 @@ resources:
   - externalsecret.yaml
   - helmrelease.yaml
   - rbac.yaml
+  - endpoints
 configMapGenerator:
   - name: gatus-configmap
     files:
