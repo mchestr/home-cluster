@@ -36,7 +36,7 @@ spec:
         image: ghcr.io/onedr0p/postgres-initdb:14.8
         envFrom:
           - secretRef:
-              name: *app
+              name: authelia-secret
     image:
       repository: ghcr.io/authelia/authelia
       # TODO use tag when one available with https://github.com/authelia/authelia/pull/4515
@@ -47,24 +47,34 @@ spec:
     args: ["--config", "/config/configuration.yml", "--config.experimental.filters", "expand-env"]
 
     env:
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ADDITIONAL_USERS_DN: ou=users
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ATTRIBUTES_DISPLAY_NAME: givenName
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ATTRIBUTES_GROUP_NAME: cn
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ATTRIBUTES_MAIL: mail
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ATTRIBUTES_USERNAME: uid
+      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ADDITIONAL_GROUPS_DN: ou=groups
+      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ADDITIONAL_USERS_DN: ou=people
       AUTHELIA_AUTHENTICATION_BACKEND_LDAP_BASE_DN: dc=home,dc=arpa
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_GROUPS_FILTER: "(&(memberUid={username})(objectClass=posixGroup))"
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ADDRESS: "ldap://glauth.default.svc.cluster.local:3389"
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_USER: cn=search,ou=svcaccts,dc=home,dc=arpa
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_USERS_FILTER: "(&({username_attribute}={input})(objectClass=posixAccount))"
+      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ATTRIBUTES_DISPLAY_NAME: displayName
+      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_GROUPS_FILTER: (member={dn})
+      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ATTRIBUTES_GROUP_NAME: cn
+      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_IMPLEMENTATION: custom
+      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ATTRIBUTES_MAIL: mail
+      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_START_TLS: "false"
+      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_TIMEOUT: 5s
+      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ADDRESS: ldap://lldap.default.svc.cluster.local:389
+      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_USER: uid=admin,ou=people,dc=home,dc=arpa
+      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ATTRIBUTES_USERNAME: uid
+      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_USERS_FILTER: (&({username_attribute}={input})(objectClass=person))
       AUTHELIA_AUTHENTICATION_BACKEND_PASSWORD_RESET_DISABLE: "true"
+      AUTHELIA_AUTHENTICATION_BACKEND_REFRESH_INTERVAL: 1m
+      AUTHELIA_SERVER_ADDRESS: tcp://0.0.0.0:80
       AUTHELIA_DEFAULT_REDIRECTION_URL: https://auth.chestr.dev
       AUTHELIA_DUO_API_DISABLE: "true"
+      AUTHELIA_NOTIFIER_DISABLE_STARTUP_CHECK: "true"
       AUTHELIA_NOTIFIER_SMTP_DISABLE_REQUIRE_TLS: "true"
       AUTHELIA_NOTIFIER_SMTP_ADDRESS: smtp-relay.default.svc.cluster.local:2525
       AUTHELIA_SERVER_DISABLE_HEALTHCHECK: "true"
-      AUTHELIA_SERVER_ADDRESS: 0.0.0.0:80
-      AUTHELIA_TELEMETRY_METRICS_ADDRESS: "tcp://0.0.0.0:8080"
+      AUTHELIA_SESSION_DOMAIN: chestr.dev
+      AUTHELIA_SESSION_NAME: authelia-home-ops
+      AUTHELIA_SESSION_REDIS_DATABASE_INDEX: 14
+      AUTHELIA_SESSION_REDIS_HOST: redis.default.svc.cluster.local
+      AUTHELIA_TELEMETRY_METRICS_ADDRESS: tcp://0.0.0.0:8080
       AUTHELIA_TELEMETRY_METRICS_ENABLED: "true"
       AUTHELIA_THEME: auto
       AUTHELIA_TOTP_ISSUER: authelia.com
@@ -72,7 +82,7 @@ spec:
 
     envFrom:
       - secretRef:
-          name: *app
+          name: authelia-secret
 
     enableServiceLinks: false
     service:
