@@ -18,6 +18,13 @@
       - "{{ prefix }} subnet 10.0.10.0/24 lease 86400"
       - "{{ prefix }} subnet 10.0.10.0/24 start 10.0.10.2 stop 10.0.10.254"
 
+- name: Clean DHCP IoT Static IPs
+  vars:
+    prefix:
+  community.network.edgeos_config:
+    lines:
+      - delete service dhcp-server shared-network-name IoT subnet 10.0.10.0/24 static-mapping
+
 - name: Configure DHCP IoT Static IPs
   vars:
     prefix: set service dhcp-server shared-network-name IoT subnet 10.0.10.0/24 static-mapping
@@ -48,6 +55,13 @@
       - "{{ prefix }} subnet 192.168.1.0/24 dns-server 192.168.1.1"
       - "{{ prefix }} subnet 192.168.1.0/24 lease 86400"
       - "{{ prefix }} subnet 192.168.1.0/24 start 192.168.1.38 stop 192.168.1.191"
+
+- name: Clean DHCP LAN Static IPs
+  vars:
+    prefix:
+  community.network.edgeos_config:
+    lines:
+      - delete service dhcp-server shared-network-name LAN subnet 192.168.1.0/24 static-mapping
 
 - name: Configure DHCP LAN Static IPs
   vars:
