@@ -1,0 +1,52 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: certificates-gatus-ep
+  namespace: monitoring
+  labels:
+    gatus.io/enabled: "true"
+data:
+  config.yaml: |
+    endpoints:
+      - name: status.chestr.dev
+        group: certificates
+        url: "tls://status.chestr.dev:443"
+        interval: 24h
+        client:
+          dns-resolver: tcp://1.1.1.1:53
+        conditions:
+          - "[CONNECTED] == true"
+          - "[CERTIFICATE_EXPIRATION] > 336h"
+
+      - name: lochnas.chestr.dev
+        group: certificates
+        url: "tls://lochnas.chestr.dev:443"
+        interval: 24h
+        conditions:
+          - "[CONNECTED] == true"
+          - "[CERTIFICATE_EXPIRATION] > 336h"
+
+      - name: mainsail.chestr.dev
+        group: certificates
+        url: "tls://mainsail.chestr.dev:443"
+        interval: 24h
+        conditions:
+          - "[CONNECTED] == true"
+          - "[CERTIFICATE_EXPIRATION] > 336h"
+
+      - name: pikvm.chestr.dev
+        group: certificates
+        url: "tls://pikvm.chestr.dev:443"
+        interval: 24h
+        conditions:
+          - "[CONNECTED] == true"
+          - "[CERTIFICATE_EXPIRATION] > 336h"
+
+      - name: dns.chestr.dev
+        group: certificates
+        url: "tls://dns.chestr.dev:443"
+        interval: 24h
+        conditions:
+          - "[CONNECTED] == true"
+          - "[CERTIFICATE_EXPIRATION] > 336h"
