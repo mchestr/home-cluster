@@ -42,7 +42,7 @@
       - "{{ prefix }} eth7 duplex auto"
       - "{{ prefix }} eth7 speed auto"
 
-      - "{{ prefix }} eth8 description 'Local'"
+      - "{{ prefix }} eth8 description 'home-controller'"
       - "{{ prefix }} eth8 duplex auto"
       - "{{ prefix }} eth8 speed auto"
 
