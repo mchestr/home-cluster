@@ -17,6 +17,7 @@
       - "{{ prefix }} custom-cloudflare{{ index }} password {{ cloudflare_password }}"
       - "{{ prefix }} custom-cloudflare{{ index }} options 'zone={{ item.0.domain }} use=web ssl=yes ttl=1'"
       - "{{ prefix }} custom-cloudflare{{ index }} protocol cloudflare"
+
 - name: Configure DNS Forwarding
   vars:
     prefix: set service dns forwarding
@@ -33,7 +34,6 @@
       - "{{ prefix }} options server=/status.{{ cluster_domain }}/1.1.1.1"
       - "{{ prefix }} options server=/{{ cluster_domain }}/192.168.1.220"
 
-# TODO: make this better
 - name: Configure Cluster Forwarding
   vars:
     prefix: set service dns forwarding
@@ -41,29 +41,13 @@
     lines:
       - "{{ prefix }} options address=/cluster.chestr.dev/192.168.1.254"
 
-- name: Configure lochnas Forwarding
+- name: Configure Cluster Domain Forwarding
   vars:
     prefix: set service dns forwarding
-  loop: "{{ lookup('ansible.builtin.dict', static_lan_ips) }}"
-  when: "'LochNas' in item.key"
+  with_dict:
+    - "{{ static_lan_ips }}"
+    - "{{ static_iot_ips }}"
+  when: "'host' in item.value"
   community.network.edgeos_config:
     lines:
-      - "{{ prefix }} options address=/lochnas.{{ cluster_domain }}/{{ item.value.ip_address }}"
-
-- name: Configure Mainsail Forwarding
-  vars:
-    prefix: set service dns forwarding
-  loop: "{{ lookup('ansible.builtin.dict', static_lan_ips) }}"
-  when: "'mainsail' in item.key"
-  community.network.edgeos_config:
-    lines:
-      - "{{ prefix }} options address=/mainsail.{{ cluster_domain }}/{{ item.value.ip_address }}"
-
-- name: Configure PiKVM Forwarding
-  vars:
-    prefix: set service dns forwarding
-  loop: "{{ lookup('ansible.builtin.dict', static_lan_ips) }}"
-  when: "'pikvm' in item.key"
-  community.network.edgeos_config:
-    lines:
-      - "{{ prefix }} options address=/pikvm.{{ cluster_domain }}/{{ item.value.ip_address }}"
+      - "{{ prefix }} options address=/{{ item.value.host }}/{{ item.value.ip_address }}"

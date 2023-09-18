@@ -68,7 +68,7 @@ spec:
       ZIGBEE2MQTT_CONFIG_MQTT_SERVER: mqtt://mosquitto.default.svc.cluster.local:1883
       ZIGBEE2MQTT_CONFIG_MQTT_VERSION: 5
       ZIGBEE2MQTT_CONFIG_PERMIT_JOIN: "false"
-      ZIGBEE2MQTT_CONFIG_SERIAL_PORT: tcp://192.168.1.199:2001
+      ZIGBEE2MQTT_CONFIG_SERIAL_PORT: tcp://home-controller.chestr.dev:2001
       ZIGBEE2MQTT_CONFIG_SERIAL_ADAPTER: ezsp
 
     service:

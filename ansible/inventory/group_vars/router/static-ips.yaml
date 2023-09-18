@@ -3,12 +3,14 @@ static_lan_ips:
   LochNas:
     ip_address: 192.168.1.128
     mac_address: 90:09:d0:03:83:ad
+    host: lochnas.chestr.dev
   WiFi-AP:
     ip_address: 192.168.1.174
     mac_address: f4:92:bf:16:25:40
   mainsail:
     ip_address: 192.168.1.190
     mac_address: 00:1e:06:39:b3:13
+    host: mainsail.chestr.dev
   k8s-0:
     ip_address: 192.168.1.200
     mac_address: 18:60:24:26:58:6d
@@ -30,6 +32,7 @@ static_lan_ips:
   pikvm:
     ip_address: 192.168.1.47
     mac_address: e4:5f:01:e1:58:4a
+    host: pikvm.chestr.dev
 
 static_iot_ips:
   doorbell:
@@ -44,3 +47,7 @@ static_iot_ips:
   wled-WLED-Office:
     ip_address: 10.0.10.138
     mac_address: 40:22:d8:7b:56:ac
+  home-controller:
+    ip_address: 10.0.10.150
+    mac_address: de:61:f6:ba:e3:98
+    host: home-controller.chestr.dev
