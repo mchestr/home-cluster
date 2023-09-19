@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-snmp-exporter-edgerouter-app
+  name: cluster-apps-snmp-exporter-edgerouter
   namespace: flux-system
   labels:
     substitution.flux.home.arpa/enabled: "true"
@@ -12,19 +12,15 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
-  healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
-      kind: HelmRelease
-      name: snmp-exporter-edgerouter
-      namespace: monitoring
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  wait: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-snmp-exporter-lochnas-app
+  name: cluster-apps-snmp-exporter-lochnas
   namespace: flux-system
   labels:
     substitution.flux.home.arpa/enabled: "true"
@@ -34,11 +30,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
-  healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
-      kind: HelmRelease
-      name: snmp-exporter-lochnas
-      namespace: monitoring
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  wait: true

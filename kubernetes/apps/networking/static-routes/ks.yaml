@@ -7,8 +7,6 @@ metadata:
   labels:
     substitution.flux.home.arpa/enabled: 'true'
 spec:
-  dependsOn:
-    - name: cluster-apps-rook-ceph-cluster
   path: ./kubernetes/apps/networking/static-routes/minio
   prune: true
   sourceRef:

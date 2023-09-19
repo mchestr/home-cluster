@@ -30,7 +30,6 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-ingress-nginx-common
-    - name: cluster-apps-metallb
   path: ./kubernetes/apps/networking/ingress-nginx/internal
   prune: true
   sourceRef:
@@ -51,7 +50,6 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-ingress-nginx-common
-    - name: cluster-apps-metallb
   path: ./kubernetes/apps/networking/ingress-nginx/external
   prune: true
   sourceRef:
