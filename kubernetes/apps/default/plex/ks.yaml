@@ -9,7 +9,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-rook-ceph-cluster
-    - name: cluster-apps-volsync-app
+    - name: cluster-apps-volsync
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-intel-device-plugin-gpu
   path: ./kubernetes/apps/default/plex/app
