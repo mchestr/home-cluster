@@ -9,8 +9,11 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-volsync
+    - name: cluster-apps-sonarr-app
+    - name: cluster-apps-radarr-app
     - name: cluster-apps-sabnzbd-app
     - name: cluster-apps-qbittorrent-app
+    - name: cluster-apps-cloudnative-pg-cluster
   path: ./kubernetes/apps/default/autobrr/app
   prune: true
   sourceRef:
