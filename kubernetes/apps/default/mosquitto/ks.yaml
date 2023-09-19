@@ -5,13 +5,12 @@ metadata:
   name: cluster-apps-mosquitto
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: cluster-apps-external-secrets-stores
   interval: 10m
-  path: "./kubernetes/apps/default/mosquitto/app"
+  path: ./kubernetes/apps/default/mosquitto/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
   wait: true
-  dependsOn:
-    - name: cluster-apps-external-secrets-stores
-    - name: cluster-apps-rook-ceph-cluster

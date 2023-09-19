@@ -10,8 +10,8 @@ spec:
   path: ./kubernetes/apps/default/displex/app
   prune: true
   dependsOn:
-    - name: cluster-apps-cloudnative-pg-app
     - name: cluster-apps-external-secrets-stores
+    - name: cluster-apps-volsync
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes

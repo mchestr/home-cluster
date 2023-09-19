@@ -8,8 +8,8 @@ metadata:
     substitution.flux.home.arpa/enabled: 'true'
 spec:
   dependsOn:
-    - name: cluster-apps-kube-prometheus-stack-app
     - name: cluster-apps-external-secrets-stores
+    - name: cluster-apps-kube-prometheus-stack-app
   path: ./kubernetes/apps/monitoring/thanos/app
   prune: true
   sourceRef:

@@ -9,8 +9,6 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-external-secrets-stores
-    - name: cluster-apps-external-dns
-    - name: cluster-apps-tf-controller-terraforms
   path: ./kubernetes/apps/networking/cloudflared/app
   prune: true
   sourceRef:

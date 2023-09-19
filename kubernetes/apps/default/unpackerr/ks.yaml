@@ -8,9 +8,9 @@ metadata:
     substitution.flux.home.arpa/enabled: 'true'
 spec:
   dependsOn:
+    - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-radarr-app
     - name: cluster-apps-sonarr-app
-    - name: cluster-apps-external-secrets-stores
   path: ./kubernetes/apps/default/unpackerr/app
   prune: true
   sourceRef:
