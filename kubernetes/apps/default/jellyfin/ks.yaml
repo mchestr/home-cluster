@@ -12,6 +12,7 @@ spec:
     - name: cluster-apps-volsync-app
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-intel-device-plugin-gpu
+    - name: cluster-apps-lldap
   path: ./kubernetes/apps/default/jellyfin/app
   prune: true
   sourceRef:

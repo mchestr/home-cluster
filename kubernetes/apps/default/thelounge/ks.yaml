@@ -11,6 +11,7 @@ spec:
     - name: cluster-apps-rook-ceph-cluster
     - name: cluster-apps-volsync-app
     - name: cluster-apps-external-secrets-stores
+    - name: cluster-apps-lldap
   path: ./kubernetes/apps/default/thelounge/app
   prune: true
   sourceRef:
