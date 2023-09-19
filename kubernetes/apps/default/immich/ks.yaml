@@ -9,7 +9,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-immich-redis-app
-    - name: cluster-apps-cloudnative-pg-app
+    - name: cluster-apps-cloudnative-pg-cluster
     - name: cluster-apps-volsync
     - name: cluster-apps-external-secrets-stores
   path: ./kubernetes/apps/default/immich/app
