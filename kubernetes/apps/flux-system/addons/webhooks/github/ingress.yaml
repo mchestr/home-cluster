@@ -6,7 +6,6 @@ metadata:
   namespace: flux-system
   annotations:
     external-dns.alpha.kubernetes.io/target: external.chestr.dev
-    hajimari.io/enable: "false"
 spec:
   ingressClassName: external
   rules:

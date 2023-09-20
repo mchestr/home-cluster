@@ -72,7 +72,6 @@ spec:
         ingressClassName: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
-          hajimari.io/enable: "false"
         hosts:
           - host: *host
             paths:
