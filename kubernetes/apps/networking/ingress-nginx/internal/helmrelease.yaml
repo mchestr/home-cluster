@@ -31,8 +31,8 @@ spec:
       service:
         annotations:
           external-dns.alpha.kubernetes.io/hostname: internal.chestr.dev
-        loadBalancerIP: 192.168.1.230
-        externalTrafficPolicy: Local
+          io.cilium/lb-ipam-ips: 192.168.1.230
+        externalTrafficPolicy: Cluster
       ingressClassResource:
         name: internal
         default: true
