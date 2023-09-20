@@ -105,7 +105,6 @@ spec:
       ingressClassName: internal
       annotations:
         hajimari.io/icon: cib:grafana
-        hajimari.io/group: system management
       hosts:
         - &host "grafana.chestr.dev"
       tls:

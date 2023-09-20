@@ -53,7 +53,6 @@ spec:
         annotations:
           auth.home.arpa/enabled: "true"
           hajimari.io/icon: home-automation
-          hajimari.io/group: automation
           hajimari.io/appName: AppDaemon
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
@@ -103,7 +102,6 @@ spec:
           annotations:
             auth.home.arpa/enabled: "true"
             hajimari.io/icon: cib:visual-studio-code
-            hajimari.io/group: Automation Code
             hajimari.io/appName: AppDaemon
           hosts:
             - host: &code-host "{{ .Release.Name }}-code.chestr.dev"

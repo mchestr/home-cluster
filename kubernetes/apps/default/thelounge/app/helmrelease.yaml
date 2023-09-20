@@ -46,7 +46,6 @@ spec:
         enabled: true
         ingressClassName: internal
         annotations:
-          hajimari.io/group: home
           hajimari.io/icon: mdi:forum
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"

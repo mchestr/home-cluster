@@ -62,7 +62,6 @@ spec:
           nignx.ingress.kubernetes.io/force-ssl-redirect: "true"
           nginx.ingress.kubernetes.io/proxy-body-size: "0"
           hajimari.io/icon: heroicons:photo
-          hajimari.io/group: home
           hajimari.io/appName: Photos
         hosts:
           - host: &host photos.chestr.dev

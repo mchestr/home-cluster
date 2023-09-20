@@ -71,7 +71,6 @@ spec:
         annotations:
           auth.home.arpa/enabled: "true"
           hajimari.io/icon: file-outline
-          hajimari.io/group: home
           hajimari.io/appName: Paperless
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"

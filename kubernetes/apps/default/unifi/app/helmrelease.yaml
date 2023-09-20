@@ -92,7 +92,6 @@ spec:
         annotations:
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
           hajimari.io/icon: mdi:wifi
-          hajimari.io/group: system management
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:

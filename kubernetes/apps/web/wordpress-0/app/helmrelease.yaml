@@ -44,7 +44,6 @@ spec:
         cert-manager.io/cluster-issuer: letsencrypt-production
         external-dns.alpha.kubernetes.io/target: external.chestr.dev
         hajimari.io/icon: mdi:wordpress
-        hajimari.io/group: web
         hajimari.io/appName: stephk.co
       tls: true
       tlsWwwPrefix: true

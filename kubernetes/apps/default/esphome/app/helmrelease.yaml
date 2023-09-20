@@ -53,7 +53,6 @@ spec:
         annotations:
           auth.home.arpa/enabled: "true"
           hajimari.io/icon: simple-icons:esphome
-          hajimari.io/group: automation
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:

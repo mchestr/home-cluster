@@ -69,7 +69,6 @@ spec:
         ingressClassName: internal
         annotations:
           hajimari.io/icon: simple-icons:jellyfin
-          hajimari.io/group: home
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:

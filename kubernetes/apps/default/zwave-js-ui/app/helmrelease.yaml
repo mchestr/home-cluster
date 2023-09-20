@@ -51,7 +51,6 @@ spec:
           auth.home.arpa/enabled: "true"
           hajimari.io/icon: mdi:z-wave
           hajimari.io/appName: z-wave
-          hajimari.io/group: automation
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:

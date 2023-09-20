@@ -53,7 +53,6 @@ spec:
         ingressClassName: internal
         annotations:
           hajimari.io/icon: mdi:bunny
-          hajimari.io/group: Download
         hosts:
           - host: &host autobrr.chestr.dev
             paths:
