@@ -95,7 +95,6 @@ spec:
         annotations:
           hajimari.io/icon: mdi:connection
           hajimari.io/info: Service Status Monitor
-          hajimari.io/group: system management
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:

@@ -54,7 +54,6 @@ spec:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
           auth.home.arpa/enabled: "true"
           hajimari.io/icon: mdi:invite
-          hajimari.io/group: Media Management
         hosts:
           - host: &host "invite.chestr.dev"
             paths:

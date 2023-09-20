@@ -61,7 +61,6 @@ spec:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
           hajimari.io/icon: mdi:home-assistant
           hajimari.io/appName: Home Assistant
-          hajimari.io/group: home
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
@@ -115,7 +114,6 @@ spec:
           annotations:
             auth.home.arpa/enabled: "true"
             hajimari.io/icon: cib:visual-studio-code
-            hajimari.io/group: Automation Code
             hajimari.io/appName: Home Assistant
           hosts:
             - host: &code-host "{{ .Release.Name }}-code.chestr.dev"

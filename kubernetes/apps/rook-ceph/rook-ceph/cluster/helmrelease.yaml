@@ -122,7 +122,6 @@ spec:
         annotations:
           hajimari.io/icon: mdi:chess-rook
           hajimari.io/appName: Rook Ceph
-          hajimari.io/group: storage, database, and messaging
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 
         host:

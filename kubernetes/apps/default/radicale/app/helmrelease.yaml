@@ -49,7 +49,6 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
           hajimari.io/appName: Cal
-          hajimari.io/group: home
           hajimari.io/icon: material-symbols:calendar-month
         hosts:
           - host: &host cal.chestr.dev

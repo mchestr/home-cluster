@@ -46,7 +46,6 @@ spec:
             sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.chestr.dev/css/base/prowlarr/organizr.css"></head>';
             sub_filter_once on;
           hajimari.io/icon: mdi:cloud-search
-          hajimari.io/group: Media Management
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:

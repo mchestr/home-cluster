@@ -75,7 +75,6 @@ spec:
         annotations:
           auth.home.arpa/enabled: "true"
           hajimari.io/icon: mdi:cctv
-          hajimari.io/group: home
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:

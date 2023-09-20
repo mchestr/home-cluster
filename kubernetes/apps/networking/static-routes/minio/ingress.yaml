@@ -6,7 +6,6 @@ metadata:
   namespace: networking
   annotations:
     hajimari.io/icon: carbon:object-storage
-    hajimari.io/group: storage, database, and messaging
 
 spec:
   ingressClassName: internal
