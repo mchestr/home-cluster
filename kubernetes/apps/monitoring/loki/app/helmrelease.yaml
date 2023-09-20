@@ -113,8 +113,6 @@ spec:
       ingress:
         enabled: true
         ingressClassName: internal
-        annotations:
-          hajimari.io/enable: "false"
         hosts:
           - host: &host "loki.chestr.dev"
             paths:

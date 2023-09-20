@@ -32,7 +32,6 @@ spec:
       strategy: RollingUpdate
       annotations:
         reloader.stakater.com/auto: "true"
-        hajimari.io/enable: "false"
 
     image:
       repository: ghcr.io/toboshii/hajimari
