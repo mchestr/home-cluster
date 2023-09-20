@@ -50,6 +50,7 @@ spec:
         externalTrafficPolicy: Local
         loadBalancerIP: 192.168.1.222
         annotations:
+          # Need https://github.com/cilium/cilium/issues/21776 to swap probably
           metallb.universe.tf/allow-shared-ip: unifi
         ports:
           http:
