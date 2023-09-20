@@ -52,39 +52,29 @@ endpointRoutes:
   enabled: true
 
 hubble:
-  # -- Enable Hubble (true by default).
-  enabled: false
+  enabled: true
   metrics:
-    # -- Configures the list of metrics to collect. If empty or null, metrics
-    # are disabled.
-    # Example:
-    #
-    #   enabled:
-    #   - dns:query;ignoreAAAA
-    #   - drop
-    #   - tcp
-    #   - flow
-    #   - icmp
-    #   - http
-    #
-    # You can specify the list of metrics from the helm CLI:
-    #
-    #   --set metrics.enabled="{dns:query;ignoreAAAA,drop,tcp,flow,icmp,http}"
-    #
     enabled:
-      - dns:query;ignoreAAAA,
+      - dns:query
       - drop
       - tcp
       - flow
-      - http
-      - icmp
       - port-distribution
+      - icmp
+      - http
+    serviceMonitor:
+      enabled: true
+    dashboards:
+      enabled: true
+      annotations:
+        grafana_folder: Cilium
 
   relay:
-    # -- Enable Hubble Relay (requires hubble.enabled=true)
-    enabled: false
-    # -- Roll out Hubble Relay pods automatically when configmap is updated.
+    enabled: true
     rollOutPods: true
+    prometheus:
+      serviceMonitor:
+        enabled: true
 
   serviceMonitor:
     # -- Create ServiceMonitor resources for Prometheus Operator.
@@ -93,15 +83,16 @@ hubble:
     enabled: false
 
   ui:
-    # -- Whether to enable the Hubble UI.
-    enabled: false
-
-    # -- hubble-ui ingress configuration.
-    ingress:
-      enabled: false
-
-    # -- Roll out Hubble-ui pods automatically when configmap is updated.
+    enabled: true
     rollOutPods: true
+    ingress:
+      enabled: true
+      className: internal
+      hosts:
+        - &host hubble.chestr.dev
+      tls:
+        - hosts:
+            - *host
 
 ipam:
   # -- Configure IP Address Management mode.
