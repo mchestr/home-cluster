@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: kube-system
 resources:
   - cilium-l2.yaml
+  - gatus.yaml
   - helmrelease.yaml
 
 configMapGenerator:
