@@ -29,10 +29,9 @@ access_control:
     - domain: displex.chestr.dev
       resources: ["^/auth.*$"]
       policy: bypass
-    - domain: sonarr.chestr.dev
-      resources: ["^/api.*$"]
-      policy: bypass
-    - domain: radarr.chestr.dev
+    - domain:
+        - sonarr.chestr.dev
+        - radarr.chestr.dev
       resources: ["^/api.*$"]
       policy: bypass
     - domain: "*.chestr.dev"
