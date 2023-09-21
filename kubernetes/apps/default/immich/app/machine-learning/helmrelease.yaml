@@ -58,7 +58,17 @@ spec:
         server: "lochnas.chestr.dev"
         path: ${NAS_MEDIA_DIR}/photos
         mountPath: /usr/src/app/upload
+      cache:
+        enabled: true
+        type: emptyDir
 
     podSecurityContext:
       fsGroup: 65539
       fsGroupChangePolicy: OnRootMismatch
+
+    resources:
+      requests:
+        cpu: 100m
+        memory: 250Mi
+      limits:
+        memory: 4Gi
