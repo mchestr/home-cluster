@@ -113,8 +113,10 @@ spec:
         ingressClassName: internal
         annotations:
           auth.home.arpa/enabled: "true"
-          hajimari.io/icon: akar-icons:circle-alert
-          hajimari.io/appName: alertmanager
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: alertmanager.png
+          gethomepage.dev/name: Alert-Manager
+          gethomepage.dev/group: System
         hosts:
           - &am-host alert-manager.chestr.dev
         tls:
@@ -243,8 +245,10 @@ spec:
         ingressClassName: internal
         annotations:
           auth.home.arpa/enabled: "true"
-          hajimari.io/icon: simple-icons:prometheus
-          hajimari.io/appName: prometheus
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: prometheus.png
+          gethomepage.dev/name: Prometheus
+          gethomepage.dev/group: Storage
         hosts:
           - &host prometheus.chestr.dev
         tls:

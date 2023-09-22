@@ -59,8 +59,10 @@ spec:
         ingressClassName: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
-          hajimari.io/icon: mdi:home-assistant
-          hajimari.io/appName: Home Assistant
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Home
+          gethomepage.dev/name: Home-Assistant
+          gethomepage.dev/icon: home-assistant.png
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
@@ -113,8 +115,10 @@ spec:
           ingressClassName: internal
           annotations:
             auth.home.arpa/enabled: "true"
-            hajimari.io/icon: cib:visual-studio-code
-            hajimari.io/appName: Home Assistant
+            gethomepage.dev/enabled: "true"
+            gethomepage.dev/group: Automation
+            gethomepage.dev/name: Home-Assistant Code
+            gethomepage.dev/icon: vscode.png
           hosts:
             - host: &code-host "{{ .Release.Name }}-code.chestr.dev"
               paths:

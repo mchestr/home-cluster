@@ -55,7 +55,12 @@ spec:
             proxy_set_header Accept-Encoding "";
             sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.chestr.dev/css/base/qbittorrent/organizr.css"></head>';
             sub_filter_once on;
-          hajimari.io/icon: mdi:cloud-download
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: qbittorrent.png
+          gethomepage.dev/name: qBittorrent
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/widget.type: qbittorrent
+          gethomepage.dev/widget.url: http://qbittorrent.default.svc.cluster.local:8080
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:

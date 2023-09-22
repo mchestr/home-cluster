@@ -52,7 +52,10 @@ spec:
         ingressClassName: internal
         annotations:
           auth.home.arpa/enabled: "true"
-          hajimari.io/icon: simple-icons:esphome
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Automation
+          gethomepage.dev/name: ESPHome
+          gethomepage.dev/icon: esphome.png
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:

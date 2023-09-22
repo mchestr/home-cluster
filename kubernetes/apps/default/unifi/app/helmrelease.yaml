@@ -89,7 +89,10 @@ spec:
         ingressClassName: internal
         annotations:
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-          hajimari.io/icon: mdi:wifi
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: unifi.png
+          gethomepage.dev/name: Unifi
+          gethomepage.dev/group: System
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:

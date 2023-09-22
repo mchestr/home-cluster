@@ -120,9 +120,11 @@ spec:
       dashboard:
         ingressClassName: internal
         annotations:
-          hajimari.io/icon: mdi:chess-rook
-          hajimari.io/appName: Rook Ceph
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: ceph.png
+          gethomepage.dev/name: Rook-Ceph
+          gethomepage.dev/group: Storage
 
         host:
           name: &host "rook.chestr.dev"

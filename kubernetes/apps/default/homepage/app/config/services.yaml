@@ -1,0 +1,37 @@
+---
+- System:
+    - Cloudflared:
+        href: https://dash.cloudflare.com/
+        icon: cloudflare-zero-trust.png
+        description: Cloudflared Tunnel
+        widget:
+          type: cloudflared
+          accountid: {{HOMEPAGE_VAR_CLOUDFLARED_ACCOUNTID}}
+          tunnelid: {{HOMEPAGE_VAR_CLOUDFLARED_TUNNELID}}
+          key: {{HOMEPAGE_VAR_CLOUDFLARED_API_TOKEN}}
+    - Status:
+        href: https://status.chestr.dev
+        icon: uptime-kuma.png
+        widget:
+          type: uptimekuma
+          url: http://status.chestr.dev
+          slug: chesterlab
+    - PiKVM:
+        href: https://pikvm.chestr.dev
+        icon: pikvm.png
+    - Router:
+        href: https://dns.chestr.dev
+        icon: edgeos.png
+- Storage:
+    - LochNAS:
+        href: https://lochnas.chestr.dev
+        icon: synology-dsm.png
+        widget:
+          type: diskstation
+          url: https://lochnas.chestr.dev:5001
+          username: {{HOMEPAGE_VAR_DSM_USER}}
+          password: {{HOMEPAGE_VAR_DSM_PASSWORD}}
+- Home:
+    - Mainsail:
+        href: https://mainsail.chestr.dev
+        icon: mdi-printer-3d-nozzle

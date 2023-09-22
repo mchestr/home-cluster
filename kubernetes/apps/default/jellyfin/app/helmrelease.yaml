@@ -68,7 +68,13 @@ spec:
         enabled: true
         ingressClassName: internal
         annotations:
-          hajimari.io/icon: simple-icons:jellyfin
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: jellyfin.png
+          gethomepage.dev/name: Jellyfin
+          gethomepage.dev/group: Media
+          gethomepage.dev/widget.type: jellyfin
+          gethomepage.dev/widget.url: http://jellyfin.default.svc.cluster.local:8096
+          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}"
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:

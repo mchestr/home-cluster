@@ -49,8 +49,10 @@ spec:
         hostname: &host thanos-query-frontend.chestr.dev
         annotations:
           auth.home.arpa/enabled: "true"
-          hajimari.io/icon: fluent-mdl2:promoted-database
-          hajimari.io/appName: thanos
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: thanos.png
+          gethomepage.dev/name: Thanos
+          gethomepage.dev/group: Storage
         tls: true
         extraTls:
           - hosts:

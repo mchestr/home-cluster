@@ -104,7 +104,10 @@ spec:
       enabled: true
       ingressClassName: internal
       annotations:
-        hajimari.io/icon: cib:grafana
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/icon: grafana.png
+        gethomepage.dev/name: Grafana
+        gethomepage.dev/group: System
       hosts:
         - &host "grafana.chestr.dev"
       tls:

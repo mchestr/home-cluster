@@ -66,7 +66,13 @@ spec:
             proxy_set_header Accept-Encoding "";
             sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.chestr.dev/css/base/sonarr/organizr.css"></head>';
             sub_filter_once on;
-          hajimari.io/icon: mdi:television-box
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: sonarr.png
+          gethomepage.dev/name: Sonarr
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/widget.type: sonarr
+          gethomepage.dev/widget.url: http://sonarr.default.svc.cluster.local:8989
+          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_SONARR_API_KEY}}"
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:

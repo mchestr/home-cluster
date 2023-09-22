@@ -2,12 +2,12 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-hajimari-app
+  name: cluster-apps-homepage-app
   namespace: flux-system
   labels:
     substitution.flux.home.arpa/enabled: 'true'
 spec:
-  path: ./kubernetes/apps/default/hajimari/app
+  path: ./kubernetes/apps/default/homepage/app
   prune: true
   sourceRef:
     kind: GitRepository

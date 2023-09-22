@@ -96,8 +96,10 @@ spec:
         ingressClassName: internal
         annotations:
           auth.home.arpa/enabled: "true"
-          hajimari.io/icon: mdi:zigbee
-          hajimari.io/appName: zigbee
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: zigbee2mqtt.png
+          gethomepage.dev/name: Zigbee
+          gethomepage.dev/group: System
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:

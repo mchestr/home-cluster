@@ -2,28 +2,28 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: hajimari-gatus-ep
+  name: homepage-gatus-ep
   namespace: default
   labels:
     gatus.io/enabled: "true"
 data:
   config.yaml: |
     endpoints:
-      - name: hajimari
+      - name: homepage
         group: internal
         interval: 1h
-        url: https://home.chestr.dev
+        url: https://homepage.chestr.dev
         conditions:
           - "[STATUS] == 200"
           - "[BODY] != pat(*auth.chestr.dev*)"
         alerts:
           - type: pushover
-      - name: hajimari
+      - name: homepage
         group: guarded
         interval: 1h
         url: 1.1.1.1
         dns:
-          query-name: home.chestr.dev
+          query-name: homepage.chestr.dev
           query-type: A
         conditions:
           - "len([BODY]) == 0"

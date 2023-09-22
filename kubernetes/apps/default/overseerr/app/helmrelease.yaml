@@ -52,7 +52,13 @@ spec:
         ingressClassName: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
-          hajimari.io/icon: mdi:eye-circle
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: overseerr.png
+          gethomepage.dev/name: Overseerr
+          gethomepage.dev/group: Media
+          gethomepage.dev/widget.type: overseerr
+          gethomepage.dev/widget.url: http://overseerr.default.svc.cluster.local:5055
+          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_OVERSEERR_API_KEY}}"
         hosts:
           - host: &host requests.chestr.dev
             paths:

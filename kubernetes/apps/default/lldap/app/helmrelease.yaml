@@ -59,6 +59,11 @@ spec:
       main:
         enabled: true
         ingressClassName: internal
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: System
+          gethomepage.dev/name: LLDAP
+          gethomepage.dev/icon: mdi-account-key
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
