@@ -40,7 +40,7 @@ spec:
 
     image:
       repository: ghcr.io/autobrr/autobrr
-      tag: v1.29.0
+      tag: v1.30.0
     envFrom: *envFrom
     service:
       main:
