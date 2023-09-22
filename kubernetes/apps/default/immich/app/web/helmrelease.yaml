@@ -61,8 +61,13 @@ spec:
             rewrite /api/(.*) /$1 break;
           nignx.ingress.kubernetes.io/force-ssl-redirect: "true"
           nginx.ingress.kubernetes.io/proxy-body-size: "0"
-          hajimari.io/icon: heroicons:photo
-          hajimari.io/appName: Photos
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: immich.png
+          gethomepage.dev/name: Photos
+          gethomepage.dev/group: Home
+          gethomepage.dev/widget.type: immich
+          gethomepage.dev/widget.url: https://photos.chestr.dev
+          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_IMMICH_API_KEY}}"
         hosts:
           - host: &host photos.chestr.dev
             paths:

@@ -61,7 +61,13 @@ spec:
             proxy_set_header Accept-Encoding "";
             sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.chestr.dev/css/base/bazarr/organizr.css"></head>';
             sub_filter_once on;
-          hajimari.io/icon: mdi:subtitles-outline
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: bazarr.png
+          gethomepage.dev/name: Bazarr
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/widget.type: bazarr
+          gethomepage.dev/widget.url: http://bazarr.default.svc.cluster.local:6767
+          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_BAZARR_API_KEY}}"
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:

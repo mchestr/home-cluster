@@ -49,11 +49,17 @@ spec:
         ingressClassName: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
-          hajimari.io/icon: mdi:plex
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_set_header Accept-Encoding "";
             sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.chestr.dev/css/base/plex/organizr.css"></head>';
             sub_filter_once on;
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: plex.png
+          gethomepage.dev/name: Plex
+          gethomepage.dev/group: Media
+          gethomepage.dev/widget.type: plex
+          gethomepage.dev/widget.url: http://plex.default.svc.cluster.local:32400
+          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_PLEX_API_KEY}}"
 
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"

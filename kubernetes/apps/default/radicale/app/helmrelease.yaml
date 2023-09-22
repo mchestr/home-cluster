@@ -48,8 +48,10 @@ spec:
         ingressClassName: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
-          hajimari.io/appName: Cal
-          hajimari.io/icon: material-symbols:calendar-month
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: radicale.png
+          gethomepage.dev/name: Calendar
+          gethomepage.dev/group: Home
         hosts:
           - host: &host cal.chestr.dev
             paths:

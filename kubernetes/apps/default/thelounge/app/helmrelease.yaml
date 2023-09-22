@@ -46,7 +46,10 @@ spec:
         enabled: true
         ingressClassName: internal
         annotations:
-          hajimari.io/icon: mdi:forum
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Home
+          gethomepage.dev/name: The Lounge
+          gethomepage.dev/icon: thelounge.png
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:

@@ -1,0 +1,36 @@
+---
+- search:
+    provider: [google]
+    focus: false
+    target: _blank
+- greeting:
+    text_size: xl
+    text: "Howdy Hey!"
+- kubernetes:
+    cluster:
+      cpu: true
+      label: cluster
+      memory: true
+      show: true
+      showLabel: true
+    nodes:
+      cpu: true
+      memory: true
+      show: false
+      showLabel: true
+- openmeteo:
+    label: Home
+    latitude: {{HOMEPAGE_VAR_LATITUDE}}
+    longitude: {{HOMEPAGE_VAR_LONGITUDE}}
+    units: metric
+    cache: 5
+- datetime:
+    text_size: l
+    format:
+      dateStyle: long
+      timeStyle: short
+      hourCycle: h23
+- unifi_console:
+    url: http://unifi.chestr.dev
+    username: {{HOMEPAGE_VAR_UNIFI_USER}}
+    password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}

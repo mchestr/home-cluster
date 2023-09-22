@@ -74,7 +74,10 @@ spec:
         ingressClassName: internal
         annotations:
           auth.home.arpa/enabled: "true"
-          hajimari.io/icon: mdi:cctv
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Home
+          gethomepage.dev/name: Frigate
+          gethomepage.dev/icon: frigate.png
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:

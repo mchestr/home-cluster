@@ -70,7 +70,10 @@ spec:
         ingressClassName: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
-          hajimari.io/icon: mdi:rss
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Home
+          gethomepage.dev/name: MiniFlux
+          gethomepage.dev/icon: miniflux.png
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:

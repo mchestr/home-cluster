@@ -49,8 +49,10 @@ spec:
         ingressClassName: internal
         annotations:
           auth.home.arpa/enabled: "true"
-          hajimari.io/icon: mdi:z-wave
-          hajimari.io/appName: z-wave
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: zwavejs2mqtt.png
+          gethomepage.dev/name: zWave
+          gethomepage.dev/group: System
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:

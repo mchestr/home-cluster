@@ -70,8 +70,13 @@ spec:
         ingressClassName: internal
         annotations:
           auth.home.arpa/enabled: "true"
-          hajimari.io/icon: file-outline
-          hajimari.io/appName: Paperless
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: paperless.png
+          gethomepage.dev/name: Paperless
+          gethomepage.dev/group: Home
+          gethomepage.dev/widget.type: paperlessngx
+          gethomepage.dev/widget.url: http://paperless.default.svc.cluster.local:8000
+          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_PAPERLESS_API_TOKEN}}"
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:

@@ -66,7 +66,13 @@ spec:
             proxy_set_header Accept-Encoding "";
             sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.chestr.dev/css/base/sabnzbd/organizr.css"></head>';
             sub_filter_once on;
-          hajimari.io/icon: mdi:cloud-download
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: sabnzbd.png
+          gethomepage.dev/name: SABnzbd
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/widget.type: sabnzbd
+          gethomepage.dev/widget.url: http://sabnzbd.default.svc.cluster.local:8080
+          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_SABNZBD_API_KEY}}"
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:

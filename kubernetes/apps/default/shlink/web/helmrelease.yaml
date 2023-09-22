@@ -51,8 +51,10 @@ spec:
         ingressClassName: internal
         annotations:
           auth.home.arpa/enabled: "true"
-          hajimari.io/icon: mdi:link
-          hajimari.io/appName: shlink
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: shlink.png
+          gethomepage.dev/name: Shlink
+          gethomepage.dev/group: System
         hosts:
           - host: &host shlink.chestr.dev
             paths:

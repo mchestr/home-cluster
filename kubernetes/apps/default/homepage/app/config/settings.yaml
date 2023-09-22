@@ -1,0 +1,36 @@
+---
+# https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/ICONS.md
+# https://pictogrammers.com/library/mdi/
+# https://simpleicons.org/
+title: Dashboard
+favicon: https://github.com/walkxcode/dashboard-icons/blob/main/png/heimdall.png
+theme: dark
+color: slate
+headerStyle: clean
+quicklaunch:
+  searchDescriptions: true
+layout:
+  Home:
+    style: row
+    columns: 2
+    icon: mdi-home-analytics
+  Media:
+    style: row
+    columns: 2
+    icon: mdi-play-circle
+  Downloads:
+    style: row
+    columns: 3
+    icon: mdi-download-circle
+  Storage:
+    style: row
+    columns: 2
+    icon: mdi-database
+  System:
+    style: row
+    columns: 2
+    icon: mdi-server
+  Automation:
+    style: row
+    columns: 3
+    icon: mdi-home-automation

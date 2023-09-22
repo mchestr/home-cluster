@@ -5,7 +5,10 @@ metadata:
   name: minio
   namespace: networking
   annotations:
-    hajimari.io/icon: carbon:object-storage
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/icon: minio.png
+    gethomepage.dev/name: Minio
+    gethomepage.dev/group: Storage
 
 spec:
   ingressClassName: internal
