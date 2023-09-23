@@ -47,7 +47,7 @@ spec:
         ingressClassName: internal
         annotations:
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Home
+          gethomepage.dev/group: System
           gethomepage.dev/name: The Lounge
           gethomepage.dev/icon: thelounge.png
         hosts:

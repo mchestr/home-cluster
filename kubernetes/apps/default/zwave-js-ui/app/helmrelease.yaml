@@ -52,7 +52,7 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: zwavejs2mqtt.png
           gethomepage.dev/name: zWave
-          gethomepage.dev/group: System
+          gethomepage.dev/group: Automation
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:

@@ -7,30 +7,48 @@ favicon: https://github.com/walkxcode/dashboard-icons/blob/main/png/heimdall.png
 theme: dark
 color: slate
 headerStyle: clean
+hideVersion: true
 quicklaunch:
   searchDescriptions: true
+  hideInternetSearch: true
 layout:
   Home:
+    tab: Overview
     style: row
     columns: 2
     icon: mdi-home-analytics
   Media:
+    tab: Overview
     style: row
     columns: 2
     icon: mdi-play-circle
   Downloads:
+    tab: Overview
     style: row
     columns: 3
     icon: mdi-download-circle
+  Monitoring:
+    tab: Management
+    style: row
+    columns: 4
+    icon: mdi-monitor-eye
+  Infrastructure:
+    tab: Management
+    style: row
+    columns: 4
+    icon: mdi-server-network
   Storage:
+    tab: Management
     style: row
     columns: 2
     icon: mdi-database
   System:
+    tab: Management
     style: row
-    columns: 2
-    icon: mdi-server
+    columns: 3
+    icon: mdi-application
   Automation:
+    tab: Management
     style: row
     columns: 3
     icon: mdi-home-automation

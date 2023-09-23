@@ -116,7 +116,7 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: alertmanager.png
           gethomepage.dev/name: Alert-Manager
-          gethomepage.dev/group: System
+          gethomepage.dev/group: Monitoring
         hosts:
           - &am-host alert-manager.chestr.dev
         tls:
