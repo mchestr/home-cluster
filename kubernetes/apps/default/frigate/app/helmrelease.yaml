@@ -75,7 +75,7 @@ spec:
         annotations:
           auth.home.arpa/enabled: "true"
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Home
+          gethomepage.dev/group: Security
           gethomepage.dev/name: Frigate
           gethomepage.dev/icon: frigate.png
         hosts:

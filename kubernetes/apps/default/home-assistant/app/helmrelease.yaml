@@ -60,8 +60,8 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Home
-          gethomepage.dev/name: Home-Assistant
+          gethomepage.dev/group: Security
+          gethomepage.dev/name: Home Assistant
           gethomepage.dev/icon: home-assistant.png
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"

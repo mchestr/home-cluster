@@ -57,7 +57,13 @@ spec:
         enabled: true
         ingressClassName: internal
         annotations:
-          hajimari.io/icon: mdi:cash-multiple
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: ghostfolio.png
+          gethomepage.dev/name: Ghostfolio
+          gethomepage.dev/group: Home
+          gethomepage.dev/widget.type: ghostfolio
+          gethomepage.dev/widget.url: http://ghostfolio.default.svc.cluster.local:3333
+          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_GHOSTFOLIO_API_KEY}}"
         hosts:
           - host: &host portfolio.chestr.dev
             paths:
