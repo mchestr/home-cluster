@@ -99,7 +99,7 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: zigbee2mqtt.png
           gethomepage.dev/name: Zigbee
-          gethomepage.dev/group: System
+          gethomepage.dev/group: Automation
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:

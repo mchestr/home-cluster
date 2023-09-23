@@ -96,7 +96,7 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: gatus.png
           gethomepage.dev/name: Gatus
-          gethomepage.dev/group: System
+          gethomepage.dev/group: Monitoring
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:

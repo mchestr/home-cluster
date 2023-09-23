@@ -51,7 +51,7 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: radicale.png
           gethomepage.dev/name: Calendar
-          gethomepage.dev/group: Home
+          gethomepage.dev/group: System
         hosts:
           - host: &host cal.chestr.dev
             paths:
