@@ -13,43 +13,34 @@ quicklaunch:
   hideInternetSearch: true
 layout:
   Security:
-    tab: Overview
     style: row
     columns: 2
     icon: mdi-shield-home
   Home:
-    tab: Overview
     style: row
     columns: 2
     icon: mdi-home-analytics
   Media:
-    tab: Overview
     style: row
     columns: 2
     icon: mdi-play-circle
   Downloads:
-    tab: Overview
     style: row
     columns: 3
     icon: mdi-download-circle
-  Monitoring:
-    tab: Management
-    style: column
-    icon: mdi-monitor-eye
-  Infrastructure:
-    tab: Management
-    style: column
-    icon: mdi-server-network
-  Storage:
-    tab: Management
-    style: column
-    icon: mdi-database
-  System:
-    tab: Management
-    style: column
-    icon: mdi-application
   Automation:
-    tab: Management
     style: row
     columns: 3
     icon: mdi-home-automation
+  Monitoring:
+    style: column
+    icon: mdi-monitor-eye
+  Infrastructure:
+    style: column
+    icon: mdi-server-network
+  Storage:
+    style: column
+    icon: mdi-database
+  System:
+    style: column
+    icon: mdi-application
