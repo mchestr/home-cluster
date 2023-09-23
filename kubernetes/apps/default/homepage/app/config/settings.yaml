@@ -12,6 +12,11 @@ quicklaunch:
   searchDescriptions: true
   hideInternetSearch: true
 layout:
+  Security:
+    tab: Overview
+    style: row
+    columns: 2
+    icon: mdi-shield-home
   Home:
     tab: Overview
     style: row
@@ -29,23 +34,19 @@ layout:
     icon: mdi-download-circle
   Monitoring:
     tab: Management
-    style: row
-    columns: 4
+    style: column
     icon: mdi-monitor-eye
   Infrastructure:
     tab: Management
-    style: row
-    columns: 4
+    style: column
     icon: mdi-server-network
   Storage:
     tab: Management
-    style: row
-    columns: 2
+    style: column
     icon: mdi-database
   System:
     tab: Management
-    style: row
-    columns: 3
+    style: column
     icon: mdi-application
   Automation:
     tab: Management

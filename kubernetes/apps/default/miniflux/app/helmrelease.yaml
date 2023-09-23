@@ -71,7 +71,7 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Media
+          gethomepage.dev/group: Home
           gethomepage.dev/name: MiniFlux
           gethomepage.dev/icon: miniflux.png
           gethomepage.dev/widget.type: miniflux
