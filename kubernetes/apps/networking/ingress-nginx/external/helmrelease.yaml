@@ -32,6 +32,7 @@ spec:
           external-dns.alpha.kubernetes.io/hostname: external.chestr.dev
           io.cilium/lb-ipam-ips: 192.168.1.231
         externalTrafficPolicy: Cluster
+      allowSnippetAnnotations: true
       ingressClassResource:
         name: external
         default: false

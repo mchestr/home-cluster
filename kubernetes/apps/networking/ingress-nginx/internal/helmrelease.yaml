@@ -28,6 +28,7 @@ spec:
     fullnameOverride: nginx-internal
     controller:
       replicaCount: 2
+      allowSnippetAnnotations: true
       service:
         annotations:
           external-dns.alpha.kubernetes.io/hostname: internal.chestr.dev
