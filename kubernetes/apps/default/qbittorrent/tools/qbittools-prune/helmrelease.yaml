@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: qbittools-reannounce
+  name: qbittools-prune
   namespace: default
 spec:
   interval: 30m
@@ -10,40 +10,49 @@ spec:
     spec:
       chart: app-template
       version: 1.5.1
+      interval: 30m
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
-  maxHistory: 2
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  uninstall:
-    keepHistory: false
+  dependsOn:
+    - name: qbittorrent
+
   values:
+    controller:
+      type: cronjob
+      cronjob:
+        schedule: "5 * * * *"
+
+    restartPolicy: OnFailure
+
     image:
       repository: ghcr.io/buroa/qbittools
-      tag: v0.9.3@sha256:98d5443a744dca1f2a3e6df8d6ab9ca7e0b7a3f0c26180319481b784cc005e31
+      tag: v0.9.3
+
     args:
-      - reannounce
-      - --process-seeding
-      - -s
+      - prune
+      - --exclude-category
+      - manual
+      - --include-tag
+      - unregistered
+      - --dry-run
+      - --server
       - qbittorrent.default.svc.cluster.local
-      - -p
+      - --port
       - "8080"
-    service:
-      main:
-        enabled: false
+
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568
+
     resources:
       requests:
-        memory: 250Mi
-        cpu: 25m
+        memory: 64Mi
+        cpu: 5m
       limits:
-        memory: 500Mi
+        memory: 128Mi
+
+    service:
+      main:
+        enabled: false

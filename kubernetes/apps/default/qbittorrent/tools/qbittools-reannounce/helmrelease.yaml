@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: qbittools-tagging
+  name: qbittools-reannounce
   namespace: default
 spec:
   interval: 30m
@@ -10,47 +10,35 @@ spec:
     spec:
       chart: app-template
       version: 1.5.1
+      interval: 30m
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
-  maxHistory: 3
-  install:
-    createNamespace: true
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  uninstall:
-    keepHistory: false
+  dependsOn:
+    - name: qbittorrent
+
   values:
-    controller:
-      type: cronjob
-      cronjob:
-        schedule: "@hourly"
     image:
       repository: ghcr.io/buroa/qbittools
       tag: v0.9.3
+
     args:
-      - tagging
-      - --added-on
-      - --expired
-      - --last-activity
-      - --not-working
-      - --sites
-      - --unregistered
+      - reannounce
+      - --process-seeding
       - -s
-      - "qbittorrent.default.svc.cluster.local"
+      - qbittorrent.default.svc.cluster.local
       - -p
       - "8080"
+
     service:
       main:
         enabled: false
+
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568
+
     resources:
       requests:
         memory: 250Mi
