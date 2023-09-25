@@ -20,12 +20,8 @@ spec:
 
   postgresql:
     parameters:
-      max_connections: "300"
+      max_connections: "600"
       shared_buffers: 512MB
-
-  bootstrap:
-    recovery:
-      source: postgres-v0
 
   backup:
     retentionPolicy: 30d
@@ -33,7 +29,7 @@ spec:
       wal:
         compression: bzip2
         maxParallel: 8
-      destinationPath: s3://cnpg-bttmrhc/
+      destinationPath: s3://postgresql/
       endpointURL: http://minio.networking.svc.cluster.local:9000
       serverName: cnpg-bttmrhc
       s3Credentials:
@@ -43,6 +39,11 @@ spec:
         secretAccessKey:
           name: cloudnative-pg
           key: s3-secret-access-key
+
+  bootstrap:
+    recovery:
+      # Should match name in externalClusters
+      source: postgres-v0
 
   externalClusters:
     - name: postgres-v0
