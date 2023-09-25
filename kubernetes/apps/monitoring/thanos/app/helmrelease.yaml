@@ -78,10 +78,11 @@ spec:
       persistence:
         enabled: true
         storageClass: local-path
-        size: 20Gi
+        size: 10Gi
       resources:
         limits:
           memory: 2048M
+
     storegateway:
       enabled: true
       persistence:
@@ -91,6 +92,7 @@ spec:
       resources:
         limits:
           memory: 4096M
+
     ruler:
       enabled: true
       replicaCount: 3
