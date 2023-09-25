@@ -26,6 +26,14 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    initContainers:
+      01-init-db:
+        image: ghcr.io/onedr0p/postgres-init:14.9
+        imagePullPolicy: IfNotPresent
+        envFrom: &envFrom
+          - secretRef:
+              name: radarr-secret
+
     controller:
       type: statefulset
       annotations:
@@ -38,15 +46,14 @@ spec:
     env:
       TZ: ${TZ}
       PUSHOVER_DEBUG: "false"
-      PUSHOVER_APP_URL: "{{ .Release.Name }}.chestr.dev"
+      RADARR__AUTHENTICATION_METHOD: External
+      RADARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
       RADARR__INSTANCE_NAME: Radarr
       RADARR__PORT: &port 7878
-      RADARR__APPLICATION_URL: "https://{{ .Release.Name }}.chestr.dev"
       RADARR__LOG_LEVEL: info
+      RADARR__THEME: dark
 
-    envFrom:
-      - secretRef:
-          name: *app
+    envFrom: *envFrom
 
     service:
       main:
@@ -62,10 +69,6 @@ spec:
         ingressClassName: internal
         annotations:
           auth.home.arpa/enabled: "true"
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            proxy_set_header Accept-Encoding "";
-            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.chestr.dev/css/base/radarr/organizr.css"></head>';
-            sub_filter_once on;
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: radarr.png
           gethomepage.dev/name: Radarr
