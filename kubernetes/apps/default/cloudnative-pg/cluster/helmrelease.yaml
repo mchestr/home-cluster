@@ -25,7 +25,7 @@ spec:
 
   bootstrap:
     recovery:
-      source: postgres-v2
+      source: postgres-v0
 
   backup:
     retentionPolicy: 30d
@@ -33,9 +33,9 @@ spec:
       wal:
         compression: bzip2
         maxParallel: 8
-      destinationPath: s3://postgresql/
+      destinationPath: s3://cnpg-bttmrhc/
       endpointURL: http://minio.networking.svc.cluster.local:9000
-      serverName: postgres-v0
+      serverName: cnpg-bttmrhc
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg
@@ -45,9 +45,9 @@ spec:
           key: s3-secret-access-key
 
   externalClusters:
-    - name: postgres-v2
+    - name: postgres-v0
       barmanObjectStore:
-        serverName: postgres-v1
+        serverName: postgres-v0
         wal:
           compression: bzip2
           maxParallel: 8
