@@ -26,6 +26,13 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    initContainers:
+      01-init-db:
+        image: ghcr.io/onedr0p/postgres-init:14.8
+        imagePullPolicy: IfNotPresent
+        envFrom: &envFrom
+          - secretRef:
+              name: sonarr-secret
     controller:
       type: statefulset
       annotations:
@@ -38,15 +45,14 @@ spec:
     env:
       TZ: ${TZ}
       PUSHOVER_DEBUG: "false"
-      PUSHOVER_APP_URL: "{{ .Release.Name }}.chestr.dev"
+      SONARR__AUTHENTICATION_METHOD: External
+      SONARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
       SONARR__INSTANCE_NAME: Sonarr
       SONARR__PORT: &port 8989
-      SONARR__APPLICATION_URL: "https://{{ .Release.Name }}.chestr.dev"
       SONARR__LOG_LEVEL: info
+      SONARR__THEME: dark
 
-    envFrom:
-      - secretRef:
-          name: *app
+    envFrom: *envFrom
 
     service:
       main:
@@ -62,10 +68,6 @@ spec:
         ingressClassName: internal
         annotations:
           auth.home.arpa/enabled: "true"
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            proxy_set_header Accept-Encoding "";
-            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.chestr.dev/css/base/sonarr/organizr.css"></head>';
-            sub_filter_once on;
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: sonarr.png
           gethomepage.dev/name: Sonarr
@@ -129,7 +131,7 @@ spec:
           APIKEY:
             valueFrom:
               secretKeyRef:
-                name: *app
+                name: sonarr-secret
                 key: SONARR__API_KEY
 
     serviceMonitor:
