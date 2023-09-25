@@ -21,7 +21,7 @@ spec:
       namespace: flux-system
   interval: 30m
   retryInterval: 1m
-  timeout: 3m
+  timeout: 5m
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -41,4 +41,4 @@ spec:
     name: home-ops-kubernetes
   interval: 30m
   retryInterval: 1m
-  timeout: 3m
+  timeout: 5m
