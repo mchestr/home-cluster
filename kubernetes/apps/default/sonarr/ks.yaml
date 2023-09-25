@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-sonarr-app
+  name: cluster-apps-sonarr
   namespace: flux-system
   labels:
     substitution.flux.home.arpa/enabled: 'true'
