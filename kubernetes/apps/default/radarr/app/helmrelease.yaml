@@ -132,7 +132,7 @@ spec:
           APIKEY:
             valueFrom:
               secretKeyRef:
-                name: radarr
+                name: radarr-secret
                 key: RADARR__API_KEY
 
     serviceMonitor:
