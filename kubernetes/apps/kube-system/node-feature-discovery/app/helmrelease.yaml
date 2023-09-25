@@ -5,7 +5,7 @@ metadata:
   name: node-feature-discovery
   namespace: kube-system
 spec:
-  interval: 5m
+  interval: 30m
   chart:
     spec:
       # renovate: registryUrl=https://kubernetes-sigs.github.io/node-feature-discovery/charts

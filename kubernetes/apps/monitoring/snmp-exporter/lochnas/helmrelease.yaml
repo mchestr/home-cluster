@@ -5,7 +5,7 @@ metadata:
   name: &release snmp-exporter-lochnas
   namespace: monitoring
 spec:
-  interval: 5m
+  interval: 30m
   chart:
     spec:
       chart: prometheus-snmp-exporter

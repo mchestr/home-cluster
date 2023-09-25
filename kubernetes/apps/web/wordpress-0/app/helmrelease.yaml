@@ -5,7 +5,7 @@ metadata:
   name: &app wordpress-0
   namespace: web
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: wordpress

@@ -10,7 +10,7 @@ metadata:
   labels:
     app.kubernetes.io/managed-by: Helm
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: cilium
