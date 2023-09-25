@@ -7,7 +7,6 @@ resources:
   - gatus.yaml
   - helmrelease.yaml
   - prometheusrule.yaml
-  - volsync.yaml
 configMapGenerator:
   - name: radarr-pushover
     files:

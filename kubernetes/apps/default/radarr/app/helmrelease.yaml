@@ -35,7 +35,6 @@ spec:
               name: radarr-secret
 
     controller:
-      type: statefulset
       annotations:
         reloader.stakater.com/auto: "true"
 
@@ -85,14 +84,12 @@ spec:
           - hosts:
               - *host
 
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 2Gi
-        storageClass: ceph-block
-
     persistence:
+      config:
+        enabled: true
+        retain: true
+        size: 1Gi
+        storageClass: local-path
       media:
         enabled: true
         type: nfs
