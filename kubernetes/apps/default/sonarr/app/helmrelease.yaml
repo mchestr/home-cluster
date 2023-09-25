@@ -98,12 +98,6 @@ spec:
         server: "lochnas.chestr.dev"
         path: ${NAS_MEDIA_DIR}
         mountPath: /media
-      backup:
-        enabled: true
-        type: nfs
-        server: "lochnas.chestr.dev"
-        path: ${NAS_BACKUP_DIR}/sonarr
-        mountPath: /config/Backups
       scripts:
         enabled: true
         type: configMap
