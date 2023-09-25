@@ -82,4 +82,4 @@ spec:
         mountPath: /data
         accessMode: ReadWriteOnce
         size: 512Mi
-        storageClass: ceph-block
+        storageClass: local-path

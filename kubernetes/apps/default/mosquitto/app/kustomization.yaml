@@ -5,7 +5,6 @@ namespace: default
 resources:
   - helmrelease.yaml
   - externalsecret.yaml
-  - volsync.yaml
 commonLabels:
   app.kubernetes.io/name: mosquitto
   app.kubernetes.io/instance: mosquitto
