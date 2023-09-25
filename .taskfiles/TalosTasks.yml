@@ -89,7 +89,7 @@ tasks:
         vars: {TIMEOUT: 10m}
       - task: apply
         vars: {NODE: "{{ .NODE }}", N: "{{ .N }}", CLI_ARGS: "-m staged", SKIP_APPLY: "{{ .SKIP_APPLY }}"}
-      - talosctl upgrade --nodes {{ .NODE }} --image ghcr.io/siderolabs/installer:{{ .TALOS_VERSION }}
+      - talosctl upgrade --nodes {{ .NODE }} --image ghcr.io/siderolabs/installer:{{ .TALOS_VERSION }} --preserve
 
   wait_for_health:
     internal: True

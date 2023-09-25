@@ -106,10 +106,23 @@ controlPlane:
       network:
         interfaces:
           - interface: eth0
-            mtu: 0
+            mtu: 1500
             dhcp: true
             vip:
               ip: 192.168.1.254
+  patches:
+    - |-
+      machine:
+        kubelet:
+          extraMounts:
+            - destination: /var/localpath
+              type: bind
+              source: /var/localpath
+              options:
+                - rbind
+                - rshared
+                - rw
+
 worker:
   inlinePatch:
     cluster:
@@ -159,7 +172,7 @@ worker:
       network:
         interfaces:
           - interface: eth0
-            mtu: 0
+            mtu: 1500
             dhcp: true
 
   patches:
@@ -168,3 +181,14 @@ worker:
         path: /machine/nodeLabels
         value:
           kubernetes.io/role: worker
+    - |-
+      machine:
+        kubelet:
+          extraMounts:
+            - destination: /var/localpath
+              type: bind
+              source: /var/localpath
+              options:
+                - rbind
+                - rshared
+                - rw
