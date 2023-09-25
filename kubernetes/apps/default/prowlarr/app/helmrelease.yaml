@@ -26,8 +26,15 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    initContainers:
+      01-init-db:
+        image: ghcr.io/onedr0p/postgres-init:14.9
+        imagePullPolicy: IfNotPresent
+        envFrom: &envFrom
+          - secretRef:
+              name: prowlarr-secret
+
     controller:
-      type: statefulset
       annotations:
         reloader.stakater.com/auto: "true"
 
@@ -41,10 +48,6 @@ spec:
         ingressClassName: internal
         annotations:
           auth.home.arpa/enabled: "true"
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            proxy_set_header Accept-Encoding "";
-            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.chestr.dev/css/base/prowlarr/organizr.css"></head>';
-            sub_filter_once on;
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: prowlarr.png
           gethomepage.dev/name: Prowlarr
@@ -66,10 +69,10 @@ spec:
       PROWLARR__INSTANCE_NAME: Prowlarr
       PROWLARR__PORT: &port 9696
       PROWLARR__LOG_LEVEL: info
+      PROWLARR__AUTHENTICATION_METHOD: External
+      PROWLARR__THEME: dark
 
-    envFrom:
-      - secretRef:
-          name: *app
+    envFrom: *envFrom
 
     service:
       main:
@@ -77,21 +80,13 @@ spec:
           http:
             port: *port
 
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 5Gi
-        storageClass: ceph-block
-
     persistence:
-      backup:
+      config:
         enabled: true
-        type: nfs
-        server: "lochnas.chestr.dev"
-        path: ${NAS_BACKUP_DIR}/prowlarr
-        mountPath: /config/Backups
+        type: emptyDir
 
     podSecurityContext:
-      fsGroup: 65539
-      fsGroupChangePolicy: "OnRootMismatch"
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: OnRootMismatch
