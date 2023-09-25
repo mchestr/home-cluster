@@ -10,8 +10,8 @@ spec:
   dependsOn:
     - name: cluster-apps-cloudnative-pg-cluster
     - name: cluster-apps-qbittorrent-app
-    - name: cluster-apps-radarr-app
-    - name: cluster-apps-sonarr-app
+    - name: cluster-apps-radarr
+    - name: cluster-apps-sonarr
     - name: cluster-apps-sabnzbd-app
     - name: cluster-apps-volsync
   path: ./kubernetes/apps/default/autobrr/app
