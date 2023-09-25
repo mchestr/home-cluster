@@ -78,7 +78,7 @@ spec:
           whenUnsatisfiable: DoNotSchedule
           labelSelector:
             matchLabels:
-              app.kubernetes.io/name: nginx-external
+              app.kubernetes.io/instance: nginx-external
               app.kubernetes.io/component: controller
       resources:
         requests:
