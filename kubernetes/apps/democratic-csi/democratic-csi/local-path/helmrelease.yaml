@@ -3,7 +3,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: local-path-provisioner
-  namespace: democratic-csi-charts
+  namespace: democratic-csi
 spec:
   interval: 30m
   chart:
@@ -11,7 +11,7 @@ spec:
       chart: democratic-csi
       version: 0.14.1
       sourceRef:
-        name: democratic-csi
+        name: democratic-csi-charts
         kind: HelmRepository
         namespace: flux-system
   values:
