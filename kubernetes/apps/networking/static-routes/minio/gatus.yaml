@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: zwave-js-ui-gatus-ep
+  name: minio-gatus-ep
   namespace: default
   labels:
     gatus.io/enabled: "true"
