@@ -5,5 +5,5 @@ metadata:
   name: backube-charts
   namespace: flux-system
 spec:
-  interval: 15m
+  interval: 30m
   url: https://backube.github.io/helm-charts/

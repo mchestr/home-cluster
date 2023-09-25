@@ -5,7 +5,7 @@ metadata:
   name: terraform-google-cloud-oci
   namespace: flux-system
 spec:
-  interval: 1m
+  interval: 30m
   url: oci://ghcr.io/mchestr/terraform-google-cloud-oci
   ref:
     tag: main

@@ -5,7 +5,7 @@ metadata:
   name: terraform-cloudflare-oci
   namespace: flux-system
 spec:
-  interval: 1m
+  interval: 30m
   url: oci://ghcr.io/mchestr/terraform-cloudflare-oci
   ref:
     tag: main

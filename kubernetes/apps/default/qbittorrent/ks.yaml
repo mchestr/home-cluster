@@ -26,7 +26,7 @@ metadata:
   name: cluster-apps-qbittorrent-tools
   namespace: flux-system
 spec:
-  interval: 10m
+  interval: 30m
   path: ./kubernetes/apps/default/qbittorrent/tools
   prune: true
   sourceRef:

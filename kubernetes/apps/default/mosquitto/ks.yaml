@@ -7,7 +7,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-external-secrets-stores
-  interval: 10m
+  interval: 30m
   path: ./kubernetes/apps/default/mosquitto/app
   prune: true
   sourceRef:
