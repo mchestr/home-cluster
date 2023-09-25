@@ -87,9 +87,8 @@ spec:
     persistence:
       config:
         enabled: true
-        retain: true
-        size: 1Gi
-        storageClass: local-path
+        size: 10Gi
+        storageClass: ceph-block
       media:
         enabled: true
         type: nfs
