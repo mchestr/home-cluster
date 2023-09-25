@@ -77,7 +77,7 @@ spec:
       retentionResolution1h: 90d
       persistence:
         enabled: true
-        storageClass: ceph-block
+        storageClass: local-path
         size: 20Gi
       resources:
         limits:
@@ -87,7 +87,7 @@ spec:
       persistence:
         enabled: true
         size: 10Gi
-        storageClass: ceph-block
+        storageClass: local-path
       resources:
         limits:
           memory: 4096M
@@ -111,7 +111,7 @@ spec:
                   severity: critical
       persistence:
         enabled: true
-        storageClass: ceph-block
+        storageClass: local-path
         size: 10Gi
     metrics:
       enabled: true
