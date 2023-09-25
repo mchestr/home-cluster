@@ -12,7 +12,7 @@ data:
       - name: ghostfolio
         group: internal
         interval: 1h
-        url: https://ghostfolio.chestr.dev
+        url: https://portfolio.chestr.dev
         conditions:
           - "[STATUS] == 200"
           - "[BODY] != pat(*auth.chestr.dev*)"
@@ -23,7 +23,7 @@ data:
         interval: 1h
         url: 1.1.1.1
         dns:
-          query-name: ghostfolio.chestr.dev
+          query-name: portfolio.chestr.dev
           query-type: A
         conditions:
           - "len([BODY]) == 0"

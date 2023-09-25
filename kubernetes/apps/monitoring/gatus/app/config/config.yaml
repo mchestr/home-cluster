@@ -15,13 +15,13 @@ connectivity:
 
 alerting:
   pushover:
-    application-token: "${PUSHOVER_GATUS_TOKEN}"
-    user-key: "${PUSHOVER_USER_KEY}"
+    application-token: ${CUSTOM_PUSHOVER_GATUS_TOKEN}
+    user-key: ${CUSTOM_PUSHOVER_USER_KEY}
     default-alert:
       description: healthcheck failed
       send-on-resolved: true
-      failure-threshold: 3
-      success-threshold: 5
+      failure-threshold: 5
+      success-threshold: 2
 
 endpoints:
   - name: status
