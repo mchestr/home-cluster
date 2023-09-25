@@ -38,6 +38,7 @@ spec:
     copyMethod: Snapshot
     pruneIntervalDays: 10
     cacheCapacity: 8Gi
+    cacheStorageClassName: local-path
     volumeSnapshotClassName: csi-ceph-blockpool
     storageClassName: ceph-block
     retain:
