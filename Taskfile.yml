@@ -14,12 +14,12 @@ env:
   KUBECONFIG: "{{.PROJECT_DIR}}/kubeconfig"
 
 includes:
-  as: .taskfiles/AnsibleTasks.yml
-  ku: .taskfiles/KuberneteTasks.yml
-  pc: .taskfiles/PrecommitTasks.yml
+  ansible: .taskfiles/AnsibleTasks.yml
+  kube: .taskfiles/KuberneteTasks.yml
+  precommit: .taskfiles/PrecommitTasks.yml
   talos: .taskfiles/TalosTasks.yml
-  tf: .taskfiles/TerraformTasks.yml
-  vs: .taskfiles/VolSync/Tasks.yml
+  terraform: .taskfiles/TerraformTasks.yml
+  volsync: .taskfiles/VolSync/Tasks.yml
 
 tasks:
 
