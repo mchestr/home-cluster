@@ -5,7 +5,6 @@
 title: Dashboard
 favicon: https://github.com/walkxcode/dashboard-icons/blob/main/png/heimdall.png
 theme: dark
-color: slate
 headerStyle: clean
 hideVersion: true
 quicklaunch:
