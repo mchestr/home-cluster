@@ -57,8 +57,8 @@ snapshots:
 record:
   enabled: true
   retain:
-    days: 7
-    mode: all
+    days: 30
+    mode: motion
   events:
     retain:
       default: 180
