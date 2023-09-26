@@ -27,7 +27,7 @@ spec:
 
     image:
       repository: ghcr.io/buroa/qbittools
-      tag: v0.9.3
+      tag: v0.9.4
     args:
       - prune
       - --exclude-category
