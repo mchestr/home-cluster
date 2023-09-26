@@ -70,6 +70,11 @@ trackers:
     required_seed_ratio: 1.05
     required_seed_days: 2.5
 
+  - name: milkie
+    urls: ["cow.milkie.cc"]
+    required_seed_ratio: 0
+    required_seed_days: 0
+
   - name: morethantv
     urls: ["morethantv.me"]
     required_seed_ratio: 1.05

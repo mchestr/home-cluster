@@ -1,0 +1,57 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: qbittools-prune-expired
+  namespace: default
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  dependsOn:
+    - name: qbittorrent
+
+  values:
+    controller:
+      type: cronjob
+      cronjob:
+        # Every 4 Hours
+        schedule: "0 */4 * * *"
+
+    image:
+      repository: ghcr.io/buroa/qbittools
+      tag: v0.9.3
+    args:
+      - prune
+      - --exclude-category
+      - manual
+      - --include-tag
+      - expired
+      - --exclude-tag
+      - activity:24h
+      - --server
+      - qbittorrent.default.svc.cluster.local
+      - --port
+      - "8080"
+
+    service:
+      main:
+        enabled: false
+
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+
+    resources:
+      requests:
+        memory: 250Mi
+        cpu: 25m
+      limits:
+        memory: 500Mi
