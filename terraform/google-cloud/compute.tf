@@ -53,6 +53,7 @@ resource "google_compute_instance" "uptime-kuma" {
   name         = "uptime-kuma"
   machine_type = "e2-micro"
   zone         = local.zone
+  description  = local.config_sha
 
   boot_disk {
     initialize_params {
@@ -87,20 +88,4 @@ resource "google_compute_instance" "uptime-kuma" {
       "https://www.googleapis.com/auth/cloud-platform",
     ]
   }
-}
-
-# Hack to make image change apply
-# https://github.com/terraform-google-modules/terraform-google-container-vm/issues/29
-resource "null_resource" "gce_null_instance" {
-  triggers = {
-    config_sha = local.config_sha
-  }
-
-  provisioner "local-exec" {
-    command = "gcloud compute ssh --project=${var.project_id} --zone=${local.zone} ${google_compute_instance.uptime-kuma.name} --command 'sudo systemctl start konlet-startup'"
-  }
-
-  depends_on = [
-    google_compute_instance.uptime-kuma
-  ]
 }
