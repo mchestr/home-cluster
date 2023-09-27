@@ -22,7 +22,7 @@ spec:
     controller:
       type: cronjob
       cronjob:
-        schedule: "55 * * * *"
+        schedule: "@hourly"
 
     image:
       repository: ghcr.io/buroa/qbittools
