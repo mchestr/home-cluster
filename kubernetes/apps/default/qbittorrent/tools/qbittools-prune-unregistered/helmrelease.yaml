@@ -23,7 +23,7 @@ spec:
       type: cronjob
       cronjob:
         # Every 4 Hours
-        schedule: "0 */4 * * *"
+        schedule: "57 */4 * * *"
 
     image:
       repository: ghcr.io/buroa/qbittools
