@@ -34,7 +34,7 @@ spec:
 
     image:
       repository: docker.io/prodrigestivill/postgres-backup-local
-      tag: "15@sha256:4320120c71ae700745ce388752df870ed0652ea50c5b42971ec24282c9e760f7"
+      tag: "16@sha256:62660b05433c607f19d1c263b6548dacafc8a6dcdee738dfae054edd949fc1f5"
 
     service:
       main:
