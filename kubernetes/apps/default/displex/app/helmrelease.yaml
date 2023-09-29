@@ -26,8 +26,14 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    initContainers:
+      init-db:
+        image: ghcr.io/onedr0p/postgres-initdb:14.8
+        envFrom:
+          - secretRef:
+              name: displex-secret
+
     controller:
-      type: statefulset
       annotations:
         reloader.stakater.com/auto: "true"
 
@@ -76,13 +82,6 @@ spec:
         ports:
           http:
             port: 8080
-
-    volumeClaimTemplates:
-      - name: data
-        mountPath: /data
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
 
     podSecurityContext:
       runAsUser: 1001
