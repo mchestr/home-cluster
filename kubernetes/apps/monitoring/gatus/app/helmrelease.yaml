@@ -52,7 +52,7 @@ spec:
 
     image:
       repository: ghcr.io/twin/gatus
-      tag: v5.5.1@sha256:13ceb22f98e9d6779d57aac25ce8e805a70360cc23dbde0de5e1fd2080441a4d
+      tag: v5.6.0@sha256:140f28f5bfdf6429cfc0408e4a5820f7b25b23b9becdd9cf22d1f5adcd0e8cd4
 
     envFrom: *envFrom
     env:
