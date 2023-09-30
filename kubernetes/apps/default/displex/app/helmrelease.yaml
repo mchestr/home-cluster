@@ -39,7 +39,7 @@ spec:
 
     image:
       repository: ghcr.io/mchestr/displex
-      tag: v0.11.12
+      tag: v0.11.15
 
     ingress:
       main:
