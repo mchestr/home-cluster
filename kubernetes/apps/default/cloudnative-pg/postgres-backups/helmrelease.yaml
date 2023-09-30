@@ -26,7 +26,7 @@ spec:
 
     env:
       POSTGRES_HOST: postgres-rw.default.svc.cluster.local
-      POSTGRES_DB: "authelia,autobrr,gatus,ghostfolio,home-assistant,immich,lldap,miniflux,paperless,prowlarr_log,prowlarr_main,radarr_log,radarr_main,shlink,sonarr_log,sonarr_main"
+      POSTGRES_DB: "authelia,autobrr,displex,gatus,ghostfolio,home-assistant,immich,lldap,miniflux,paperless,prowlarr_log,prowlarr_main,radarr_log,radarr_main,shlink,sonarr_log,sonarr_main"
 
     envFrom:
       - secretRef:
