@@ -11,7 +11,7 @@ spec:
   prune: true
   dependsOn:
     - name: cluster-apps-external-secrets-stores
-    - name: cluster-apps-volsync
+    - name: cluster-apps-cloudnative-pg-cluster
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
