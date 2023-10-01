@@ -76,14 +76,6 @@ spec:
         size: 2Gi
         storageClass: ceph-block
 
-    persistence:
-      backup:
-        enabled: true
-        type: nfs
-        server: "lochnas.chestr.dev"
-        path: ${NAS_BACKUP_DIR}/tautulli
-        mountPath: /config/backups
-
     podSecurityContext:
       fsGroup: 65539
       fsGroupChangePolicy: OnRootMismatch
