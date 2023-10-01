@@ -33,7 +33,7 @@ spec:
 
     image:
       repository: ghcr.io/mchestr/displex
-      tag: main@sha256:0d9b358ba24328f7844ae0c2948b9719370440c6c0a513dd63bf33c9ca7990d0
+      tag: main@sha256:cd035f4e43c96b48fa1fd90e41a76347adb17a8f106458e7209f805429e75776
     args:
       - channel-refresh
 
