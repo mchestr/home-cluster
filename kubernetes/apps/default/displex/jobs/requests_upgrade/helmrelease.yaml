@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: displex-bot
+  name: displex-requests-upgrade-job
   namespace: default
 spec:
   interval: 30m
@@ -27,14 +27,15 @@ spec:
     keepHistory: false
   values:
     controller:
-      annotations:
-        reloader.stakater.com/auto: "true"
+      type: cronjob
+      cronjob:
+        schedule: "@daily"
 
     image:
       repository: ghcr.io/mchestr/displex
       tag: main@sha256:0a44841c55590e5f73249465cde60561fa370882cca746cbb2f71f22289c2082
     args:
-      - bot
+      - requests-upgrade
 
     ingress:
       main:
@@ -53,10 +54,3 @@ spec:
       runAsGroup: 1001
       fsGroup: 1001
       fsGroupChangePolicy: OnRootMismatch
-
-    resources:
-      requests:
-        cpu: 5m
-        memory: 10Mi
-      limits:
-        memory: 20Mi
