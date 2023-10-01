@@ -41,6 +41,10 @@ spec:
       main:
         enabled: false
 
+    env:
+      DISPLEX_DATABASE__READ_ONLY: "true"
+      DISPLEX_DATABASE__HOST: postgres-ro.default.svc.cluster.local
+
     envFrom:
       - secretRef:
           name: displex-secret
