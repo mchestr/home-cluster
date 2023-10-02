@@ -33,7 +33,7 @@ spec:
 
     image:
       repository: ghcr.io/mchestr/displex
-      tag: main@sha256:20473fecc9d2ad758e594a55c53784af1a9fbb9aa6c05005627daec9dda9dd12
+      tag: main@sha256:82c338771aa763c7bd8872b9da3f90f0e50daf128a4d30c3d1db42a5771fd19b
     args:
       - requests-upgrade
 
