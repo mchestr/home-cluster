@@ -33,7 +33,7 @@ spec:
 
     image:
       repository: ghcr.io/koenkk/zigbee2mqtt
-      tag: 1.33.0
+      tag: 1.33.1
 
     envFrom:
       - secretRef:
