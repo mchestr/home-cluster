@@ -18,6 +18,8 @@ data:
         conditions:
           - "[CONNECTED] == true"
           - "[CERTIFICATE_EXPIRATION] > 336h"
+        alerts:
+          - type: pushover
 
       - name: lochnas.chestr.dev
         group: certificates
@@ -26,6 +28,8 @@ data:
         conditions:
           - "[CONNECTED] == true"
           - "[CERTIFICATE_EXPIRATION] > 336h"
+        alerts:
+          - type: pushover
 
       - name: mainsail.chestr.dev
         group: certificates
@@ -34,6 +38,8 @@ data:
         conditions:
           - "[CONNECTED] == true"
           - "[CERTIFICATE_EXPIRATION] > 336h"
+        alerts:
+          - type: pushover
 
       - name: pikvm.chestr.dev
         group: certificates
@@ -42,6 +48,8 @@ data:
         conditions:
           - "[CONNECTED] == true"
           - "[CERTIFICATE_EXPIRATION] > 336h"
+        alerts:
+          - type: pushover
 
       - name: dns.chestr.dev
         group: certificates
@@ -50,3 +58,5 @@ data:
         conditions:
           - "[CONNECTED] == true"
           - "[CERTIFICATE_EXPIRATION] > 336h"
+        alerts:
+          - type: pushover
