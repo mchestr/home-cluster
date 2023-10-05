@@ -76,6 +76,8 @@ data:
         interval: 1m
         conditions:
           - "[CONNECTED] == true"
+        alerts:
+          - type: pushover
 
       - name: zigbee-controller
         group: internal
@@ -83,3 +85,5 @@ data:
         interval: 1m
         conditions:
           - "[CONNECTED] == true"
+        alerts:
+          - type: pushover
