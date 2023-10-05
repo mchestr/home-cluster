@@ -59,6 +59,7 @@ spec:
               - /conf/.vscode
               - --extensions-dir
               - /conf/.vscode
+              - --disable-telemetry
               - /conf
 
         statefulset:
