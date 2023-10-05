@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,30 +26,62 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
 
-    image:
-      repository: ghcr.io/mchestr/appdaemon
-      tag: 4.4.2
+    controllers:
+      main:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: "true"
 
-    env:
-      TZ: ${TZ}
-      DASH_URL: http://$HOSTNAME:5050
-      HA_URL: http://home-assistant:8123
+        containers:
+          main:
+            image:
+              repository: ghcr.io/mchestr/appdaemon
+              tag: 4.4.2
+            env:
+              TZ: America/Vancouver
+              DASH_URL: http://$HOSTNAME:5050
+              HA_URL: http://home-assistant.default.svc.cluster.local:8123
+          code-server:
+            image:
+              repository: ghcr.io/coder/code-server
+              tag: 4.17.1
+            args:
+              - --auth
+              - "none"
+              - --user-data-dir
+              - /conf/.vscode
+              - --extensions-dir
+              - /conf/.vscode
+              - /conf
+
+        statefulset:
+          volumeClaimTemplates:
+            - name: config
+              globalMounts:
+                - path: /conf
+              accessMode: ReadWriteOnce
+              size: 1Gi
+              storageClass: ceph-block
 
     service:
       main:
         ports:
           http:
             port: 5050
+          code-server:
+            port: 8080
 
     ingress:
       main:
         enabled: true
-        ingressClassName: internal
+        className: internal
         annotations:
           auth.home.arpa/enabled: "true"
           gethomepage.dev/enabled: "true"
@@ -61,68 +93,31 @@ spec:
             paths:
               - path: /
                 pathType: Prefix
+                service:
+                  name: main
+                  port: http
+          - host: "{{ .Release.Name }}-code.chestr.dev"
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: main
+                  port: code-server
         tls:
           - hosts:
               - *host
 
     persistence:
-      config:
-        enabled: true
-        existingClaim: appdaemon-config-v1
-        mountPath: /conf
       secrets:
         enabled: true
         type: secret
-        name: *app
-        mountPath: /conf/secrets.yaml
-        subPath: secrets.yaml
-
-    addons:
-      codeserver:
+        name: appdaemon-secret
+        globalMounts:
+          - path: /conf/secrets.yaml
+            subPath: secrets.yaml
+      deploykey:
         enabled: true
-        image:
-          repository: ghcr.io/coder/code-server
-          tag: 4.17.1
-
-        workingDir: /config
-
-        git:
-          deployKeySecret: appdaemon-deploykey
-
-        args:
-          - --auth
-          - "none"
-          - --user-data-dir
-          - /config/.vscode
-          - --extensions-dir
-          - /config/.vscode
-          - /config
-
-        ingress:
-          enabled: true
-          ingressClassName: internal
-          annotations:
-            auth.home.arpa/enabled: "true"
-            gethomepage.dev/enabled: "true"
-            gethomepage.dev/group: Automation
-            gethomepage.dev/name: AppDaemon Code
-            gethomepage.dev/icon: vscode.png
-          hosts:
-            - host: &code-host "{{ .Release.Name }}-code.chestr.dev"
-              paths:
-                - path: /
-                  pathType: Prefix
-          tls:
-            - hosts:
-                - *code-host
-
-        volumeMounts:
-          - name: config
-            mountPath: /config
-
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
+        type: secret
+        name: appdaemon-deploykey-secret
+        globalMounts:
+          - path: /home/coder/.ssh
