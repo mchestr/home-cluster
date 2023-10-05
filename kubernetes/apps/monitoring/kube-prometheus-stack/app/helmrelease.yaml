@@ -256,12 +256,6 @@ spec:
               - *host
 
       prometheusSpec:
-        additionalScrapeConfigs:
-          - job_name: node-exporter
-            static_configs:
-              - targets:
-                  - lochnas.chestr.dev:9100
-                  - pikvm.chestr.dev:9100
         enableAdminAPI: true
         externalLabels:
           cluster: cluster-0
