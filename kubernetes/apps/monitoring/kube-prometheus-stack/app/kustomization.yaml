@@ -7,4 +7,4 @@ resources:
   - gatus.yaml
   - helmrelease.yaml
   - prometheusrule.yaml
-  - scapeconfigs
+  - scrapeconfigs
