@@ -2,14 +2,14 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: k8s-gateway
+  name: &app k8s-gateway
   namespace: networking
 spec:
   interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.2
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -27,48 +27,45 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      replicas: 2
-      strategy: RollingUpdate
-      annotations:
-        reloader.stakater.com/auto: "true"
-
-    image:
-      repository: quay.io/oriedge/k8s_gateway
-      tag: v0.3.4
-      pullPolicy: IfNotPresent
-
-    args: ["-conf", "/etc/coredns/Corefile"]
-
-    configMaps:
-      config:
-        enabled: true
-        data:
-          Corefile: |
-            .:1053 {
-              errors
-              log
-              health {
-                lameduck 5s
-              }
-              ready
-
-              k8s_gateway chestr.dev {
-                apex  k8s-gateway.network
-                resources Ingress Service
-                ttl 300
-              }
-
-              prometheus 0.0.0.0:9153
-              loop
-              reload
-              loadbalance
-            }
-
-    serviceAccount:
-      create: true
-      name: k8s-gateway
-
+    defaultPodOptions:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: *app
+    controllers:
+      main:
+        replicas: 2
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: 'true'
+        containers:
+          main:
+            image:
+              repository: quay.io/oriedge/k8s_gateway
+              tag: v0.3.4
+              pullPolicy: IfNotPresent
+            args:
+              - -conf
+              - /etc/coredns/Corefile
+            probes:
+              readiness: &readiness
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ready
+                    port: 8181
+                    scheme: HTTP
+              liveness:
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8080
+                    scheme: HTTP
+              startup: *readiness
     service:
       main:
         type: LoadBalancer
@@ -83,36 +80,15 @@ spec:
             port: 53
             targetPort: 1053
             protocol: UDP
-
     persistence:
       config:
         enabled: true
         type: configMap
-        name: k8s-gateway-config
-        mountPath: /etc/coredns
+        name: k8s-gateway-configmap
         readOnly: true
-
-    probes:
-      readiness:
-        custom: true
-        spec:
-          httpGet:
-            path: /ready
-            port: 8181
-            scheme: HTTP
-      liveness:
-        custom: true
-        spec:
-          httpGet:
-            path: /health
-            port: 8080
-            scheme: HTTP
-      startup:
-        custom: true
-        spec:
-          httpGet:
-            path: /ready
-            port: 8181
-            scheme: HTTP
-
-    resources: {}
+        globalMounts:
+          - path: /etc/coredns/Corefile
+            subPath: Corefile
+    serviceAccount:
+      create: true
+      name: k8s-gateway
