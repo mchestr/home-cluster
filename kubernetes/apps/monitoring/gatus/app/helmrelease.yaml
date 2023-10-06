@@ -1,14 +1,15 @@
+---
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app gatus
+  name: gatus
   namespace: monitoring
 spec:
   interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.2
       interval: 15m
       sourceRef:
         kind: HelmRepository
@@ -26,40 +27,96 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      replicas: 1
+    defaultPodOptions:
       annotations:
-        reloader.stakater.com/auto: "true"
+        reloader.stakater.com/auto: 'true'
 
-    initContainers:
-      01-init-db:
-        image: ghcr.io/onedr0p/postgres-initdb:14.8
-        envFrom: &envFrom
-          - secretRef:
-              name: gatus-secret
-      02-config-sync:
-        image: ghcr.io/kiwigrid/k8s-sidecar:1.25.1
-        imagePullPolicy: IfNotPresent
-        env:
-          - { name: FOLDER, value: /config }
-          - { name: LABEL, value: gatus.io/enabled }
-          - { name: NAMESPACE, value: ALL }
-          - { name: RESOURCE, value: both }
-          - { name: UNIQUE_FILENAMES, value: "true" }
-          - { name: METHOD, value: LIST }
-        volumeMounts:
-          - { name: config, mountPath: /config }
-
-    image:
-      repository: ghcr.io/twin/gatus
-      tag: v5.6.0@sha256:140f28f5bfdf6429cfc0408e4a5820f7b25b23b9becdd9cf22d1f5adcd0e8cd4
-
-    envFrom: *envFrom
-    env:
-      TZ: "${TZ}"
-      GATUS_CONFIG_PATH: /config
-      CLUSTER_DOMAIN: chestr.dev
-
+    controllers:
+      main:
+        replicas: 1
+        annotations:
+          reloader.stakater.com/auto: 'true'
+        initContainers:
+          01-init-db:
+            envFrom: &envFrom
+              - secretRef:
+                  name: gatus-secret
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: '14.9'
+          02-config-sync:
+            imagePullPolicy: IfNotPresent
+            env:
+              - name: FOLDER
+                value: /config
+              - name: LABEL
+                value: gatus.io/enabled
+              - name: NAMESPACE
+                value: ALL
+              - name: RESOURCE
+                value: both
+              - name: UNIQUE_FILENAMES
+                value: 'true'
+              - name: METHOD
+                value: LIST
+            volumeMounts:
+              - name: config
+                mountPath: /config
+            image:
+              repository: ghcr.io/kiwigrid/k8s-sidecar
+              tag: 1.25.1
+        containers:
+          main:
+            image:
+              repository: ghcr.io/twin/gatus
+              tag: v5.6.0@sha256:140f28f5bfdf6429cfc0408e4a5820f7b25b23b9becdd9cf22d1f5adcd0e8cd4
+            envFrom: *envFrom
+            env:
+              TZ: ${TZ}
+              GATUS_CONFIG_PATH: /config
+              CLUSTER_DOMAIN: chestr.dev
+          config-sync:
+            image:
+              repository: ghcr.io/kiwigrid/k8s-sidecar
+              tag: 1.25.1
+            env:
+              - name: FOLDER
+                value: /config
+              - name: LABEL
+                value: gatus.io/enabled
+              - name: NAMESPACE
+                value: ALL
+              - name: RESOURCE
+                value: both
+              - name: UNIQUE_FILENAMES
+                value: 'true'
+              - name: METHOD
+                value: WATCH
+    service:
+      main:
+        ports:
+          http:
+            port: 8080
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          gethomepage.dev/enabled: 'true'
+          gethomepage.dev/icon: gatus.png
+          gethomepage.dev/name: Gatus
+          gethomepage.dev/group: Monitoring
+        hosts:
+          - host: &host '{{ .Release.Name }}.chestr.dev'
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: main
+                  port: http
+        tls:
+          - hosts:
+              - *host
+        className: internal
     persistence:
       config:
         enabled: true
@@ -68,16 +125,10 @@ spec:
         enabled: true
         type: configMap
         name: gatus-configmap
-        mountPath: /config/config.yaml
-        subPath: config.yaml
         readOnly: true
-
-    service:
-      main:
-        ports:
-          http:
-            port: 8080
-
+        globalMounts:
+          - path: /config/config.yaml
+            subPath: config.yaml
     serviceMonitor:
       main:
         enabled: true
@@ -87,42 +138,6 @@ spec:
             path: /metrics
             interval: 1m
             scrapeTimeout: 10s
-
-    ingress:
-      main:
-        enabled: true
-        ingressClassName: internal
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/icon: gatus.png
-          gethomepage.dev/name: Gatus
-          gethomepage.dev/group: Monitoring
-        hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
-            paths:
-              - path: /
-                pathType: Prefix
-        tls:
-          - hosts:
-              - *host
-
-    podAnnotations:
-      reloader.stakater.com/auto: "true"
-
     serviceAccount:
       create: true
       name: gatus
-
-    sidecars:
-      config-sync:
-        image: ghcr.io/kiwigrid/k8s-sidecar:1.25.1
-        imagePullPolicy: IfNotPresent
-        env:
-          - { name: FOLDER, value: /config }
-          - { name: LABEL, value: gatus.io/enabled }
-          - { name: NAMESPACE, value: ALL }
-          - { name: RESOURCE, value: both }
-          - { name: UNIQUE_FILENAMES, value: "true" }
-          - { name: METHOD, value: WATCH }
-        volumeMounts:
-          - { name: config, mountPath: /config }
