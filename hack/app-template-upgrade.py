@@ -29,7 +29,7 @@ def main() :
     parser = argparse.ArgumentParser('app-template-upgrade')
     parser.add_argument('d', help='Directory to scan')
     parser.add_argument('-s', '--skip-version-check', action='store_true', help='Skip app-template version check, checks if key "controllers" exists')
-    parser.add_argument('-y', '--yeet', help='YOLO the upgrade and process eveery template')
+    parser.add_argument('-y', '--yeet', help='YOLO the upgrade and process eveery template', action='store_true')
     args = parser.parse_args()
 
     for root, _, files in os.walk(args.d):
@@ -44,7 +44,13 @@ def main() :
 
 
             if should_process_template(args, filepath, data):
-                process(filepath, data)
+                try:
+                    process(filepath, data)
+                except Exception as exc:
+                    print(exc)
+                    print(f'failed to process {filepath}, script not good enough will need manual intervention')
+                    continue
+
                 if not args.yeet:
                   # Just process one file at a time, once its upgraded can run script again and onto the next.
                   return
