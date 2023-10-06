@@ -43,8 +43,8 @@ spec:
               - secretRef:
                   name: immich
             image:
-              repository: ghcr.io/onedr0p/postgres-initdb
-              tag: '14.8'
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: '14.9'
         containers:
           main:
             image:
