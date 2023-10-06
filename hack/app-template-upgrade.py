@@ -86,6 +86,15 @@ def process(filepath, data):
     if values := new_helm_values.pop('args', None):
         new_helm_values['controllers']['main']['containers']['main']['args'] = values
 
+    if values := new_helm_values.pop('volumeClaimTemplates', None):
+        volume_claim_templates = []
+        if not load_key(new_helm_values, 'controllers.main.statefulset'):
+            new_helm_values['controllers']['main']['statefulset'] = {}
+
+        new_helm_values['controllers']['main']['statefulset']['volumeClaimTemplates'] = volume_claim_templates
+        for volume_claim in values:
+            volume_claim_templates.append(process_persistence(volume_claim))
+
     if persistence := load_key(helm_values, 'persistence'):
         for key in persistence:
             old_values = new_helm_values['persistence'].pop(key)
