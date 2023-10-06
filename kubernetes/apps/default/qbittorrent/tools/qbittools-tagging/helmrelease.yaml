@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.2
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -17,51 +17,50 @@ spec:
         namespace: flux-system
   dependsOn:
     - name: qbittorrent
-
   values:
-    controller:
-      type: cronjob
-      cronjob:
-        schedule: "@hourly"
-
-    image:
-      repository: ghcr.io/buroa/qbittools
-      tag: v0.9.5
-    args:
-      - tagging
-      - --added-on
-      - --expired
-      - --last-activity
-      - --not-working
-      - --sites
-      - --unregistered
-      - --server
-      - qbittorrent.default.svc.cluster.local
-      - --port
-      - "8080"
-      - --config
-      - /config/config.yaml
-
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+    controllers:
+      main:
+        type: cronjob
+        cronjob:
+          schedule: '@hourly'
+        containers:
+          main:
+            image:
+              repository: ghcr.io/buroa/qbittools
+              tag: v0.9.5
+            resources:
+              requests:
+                memory: 250Mi
+                cpu: 25m
+              limits:
+                memory: 500Mi
+            args:
+              - tagging
+              - --added-on
+              - --expired
+              - --last-activity
+              - --not-working
+              - --sites
+              - --unregistered
+              - --server
+              - qbittorrent.default.svc.cluster.local
+              - --port
+              - '8080'
+              - --config
+              - /config/config.yaml
+    service:
+      main:
+        enabled: false
     persistence:
       config-file:
         enabled: true
         type: configMap
         name: qbittools-configmap
-        mountPath: /config/config.yaml
-        subPath: config.yaml
         readOnly: true
-
-    service:
-      main:
-        enabled: false
-
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-
-    resources:
-      requests:
-        memory: 250Mi
-        cpu: 25m
-      limits:
-        memory: 500Mi
+        globalMounts:
+          - path: /config/config.yaml
+            subPath: config.yaml
