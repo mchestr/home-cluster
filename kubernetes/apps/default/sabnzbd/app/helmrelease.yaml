@@ -2,14 +2,14 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app sabnzbd
+  name: sabnzbd
   namespace: default
 spec:
   interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,40 +26,53 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
-
-    image:
-      repository: ghcr.io/onedr0p/sabnzbd
-      tag: 4.1.0@sha256:d7eabae44168417a6acbc8f6e8510b0187a3f26d648941b3cf61b4c04a904da2
-
-    env:
-      TZ: "${TZ}"
-      SABNZBD__PORT: &port 8080
-      SABNZBD__HOST_WHITELIST_ENTRIES: >-
-        sabnzbd,
-        sabnzbd.default,
-        sabnzbd.default.svc,
-        sabnzbd.default.svc.cluster,
-        sabnzbd.default.svc.cluster.local,
-        sabnzbd.chestr.dev
-
-    envFrom:
-      - secretRef:
-          name: *app
-
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 65539
+        fsGroupChangePolicy: OnRootMismatch
+    controllers:
+      main:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: 'true'
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/sabnzbd
+              tag: 4.1.0@sha256:d7eabae44168417a6acbc8f6e8510b0187a3f26d648941b3cf61b4c04a904da2
+            envFrom:
+              - secretRef:
+                  name: sabnzbd-secret
+            env:
+              TZ: ${TZ}
+              SABNZBD__PORT: 8080
+              SABNZBD__HOST_WHITELIST_ENTRIES: >-
+                sabnzbd,
+                sabnzbd.default,
+                sabnzbd.default.svc,
+                sabnzbd.default.svc.cluster,
+                sabnzbd.default.svc.cluster.local,
+                sabnzbd.chestr.dev
+            resources:
+              requests:
+                cpu: 100m
+                memory: 250Mi
+        statefulset:
+          volumeClaimTemplates:
+            - name: config
+              accessMode: ReadWriteOnce
+              size: 1Gi
+              storageClass: ceph-block
+              globalMounts:
+                - path: /config
     service:
       main:
         ports:
           http:
-            port: *port
-
+            port: 8080
     ingress:
       main:
         enabled: true
-        ingressClassName: internal
         annotations:
           auth.home.arpa/enabled: "true"
           nginx.ingress.kubernetes.io/configuration-snippet: |
@@ -72,39 +85,27 @@ spec:
           gethomepage.dev/group: Downloads
           gethomepage.dev/widget.type: sabnzbd
           gethomepage.dev/widget.url: http://sabnzbd.default.svc.cluster.local:8080
-          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_SABNZBD_API_KEY}}"
+          gethomepage.dev/widget.key: '{{HOMEPAGE_VAR_SABNZBD_API_KEY}}'
         hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
+          - host: &host '{{ .Release.Name }}.chestr.dev'
             paths:
               - path: /
                 pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
-
+        className: internal
     persistence:
       media:
         enabled: true
         type: nfs
-        server: "lochnas.chestr.dev"
+        server: lochnas.chestr.dev
         path: ${NAS_MEDIA_DIR}
-        mountPath: /media
+        globalMounts:
+          - path: /media
       incomplete:
         enabled: true
         type: emptyDir
-
-    resources:
-      requests:
-        cpu: 100m
-        memory: 250Mi
-
-    podSecurityContext:
-      fsGroup: 65539
-      fsGroupChangePolicy: OnRootMismatch
