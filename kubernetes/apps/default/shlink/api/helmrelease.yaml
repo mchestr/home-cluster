@@ -2,14 +2,14 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app shlink-api
+  name: shlink-api
   namespace: default
 spec:
   interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,64 +26,66 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      replicas: 3
-      strategy: RollingUpdate
-      annotations:
-        reloader.stakater.com/auto: "true"
-
-    image:
-      repository: ghcr.io/shlinkio/shlink
-      tag: 3.6.4
-
-    initContainers:
-      init-db:
-        image: ghcr.io/onedr0p/postgres-initdb:14.8
-        envFrom:
-          - secretRef:
-              name: *app
-
-    envFrom:
-      - secretRef:
-          name: *app
-
-    env:
-      DB_DRIVER: postgres
-      DEFAULT_DOMAIN: &host "ln.chestr.dev"
-      DISABLE_TRACKING_FROM: 10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
-      ENABLE_PERIODIC_VISIT_LOCATE: "true"
-      IS_HTTPS_ENABLED: "true"
-      PORT: &port 80
-      REDIS_PUB_SUB_ENABLED: "true"
-      REDIS_SENTINEL_SERVICE: redis-master
-      REDIS_SERVERS: >-
-        redis-node-0.redis-headless.default.svc.cluster.local:26379,
-        redis-node-1.redis-headless.default.svc.cluster.local:26379,
-        redis-node-2.redis-headless.default.svc.cluster.local:26379
-      TIMEZONE: ${TZ}
+    defaultPodOptions:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: shlink-api
+    controllers:
+      main:
+        replicas: 3
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: 'true'
+        initContainers:
+          01-init-db:
+            envFrom:
+              - secretRef:
+                  name: shlink-api
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: '14.8'
+        containers:
+          main:
+            image:
+              repository: ghcr.io/shlinkio/shlink
+              tag: 3.6.4
+            envFrom:
+              - secretRef:
+                  name: shlink-api
+            env:
+              DB_DRIVER: postgres
+              DEFAULT_DOMAIN: ln.chestr.dev
+              DISABLE_TRACKING_FROM: 10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
+              ENABLE_PERIODIC_VISIT_LOCATE: 'true'
+              IS_HTTPS_ENABLED: 'true'
+              PORT: 80
+              REDIS_PUB_SUB_ENABLED: 'true'
+              REDIS_SENTINEL_SERVICE: redis-master
+              REDIS_SERVERS: redis-node-0.redis-headless.default.svc.cluster.local:26379,redis-node-1.redis-headless.default.svc.cluster.local:26379, redis-node-2.redis-headless.default.svc.cluster.local:26379
+              TIMEZONE: ${TZ}
     service:
       main:
         ports:
           http:
-            port: *port
+            port: 80
     ingress:
       main:
         enabled: true
-        ingressClassName: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
         hosts:
-          - host: *host
+          - host: &host ln.chestr.dev
             paths:
               - path: /
                 pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-    topologySpreadConstraints:
-      - maxSkew: 1
-        topologyKey: kubernetes.io/hostname
-        whenUnsatisfiable: DoNotSchedule
-        labelSelector:
-          matchLabels:
-            app.kubernetes.io/name: *app
+        className: external
