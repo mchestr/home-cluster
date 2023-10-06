@@ -9,37 +9,41 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.2
       interval: 30m
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
-
   values:
-    controller:
-      type: cronjob
-      cronjob:
-        schedule: "0 12 * * *"
-
-    command: /backup.sh
-
-    env:
-      POSTGRES_HOST: postgres-rw.default.svc.cluster.local
-      POSTGRES_DB: "authelia,autobrr,displex,gatus,ghostfolio,home-assistant,immich,lldap,miniflux,paperless,prowlarr_log,prowlarr_main,radarr_log,radarr_main,shlink,sonarr_log,sonarr_main"
-
-    envFrom:
-      - secretRef:
-          name: postgres-backups-secret
-
-    image:
-      repository: docker.io/prodrigestivill/postgres-backup-local
-      tag: "15@sha256:4320120c71ae700745ce388752df870ed0652ea50c5b42971ec24282c9e760f7"
-
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 65539
+    controllers:
+      main:
+        type: cronjob
+        cronjob:
+          schedule: 0 12 * * *
+        containers:
+          main:
+            image:
+              repository: docker.io/prodrigestivill/postgres-backup-local
+              tag: 15@sha256:4320120c71ae700745ce388752df870ed0652ea50c5b42971ec24282c9e760f7
+            envFrom:
+              - secretRef:
+                  name: postgres-backups-secret
+            env:
+              POSTGRES_HOST: postgres-rw.default.svc.cluster.local
+              POSTGRES_DB: authelia,autobrr,displex,gatus,ghostfolio,home-assistant,immich,lldap,miniflux,paperless,prowlarr_log,prowlarr_main,radarr_log,radarr_main,shlink,sonarr_log,sonarr_main
+          command: /backup.sh
     service:
       main:
         enabled: false
-
     persistence:
       config:
         enabled: false
@@ -48,12 +52,5 @@ spec:
         type: nfs
         server: lochnas.chestr.dev
         path: ${NAS_BACKUP_DIR}/postgres
-        mountPath: /backups
-
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups:
-        - 65539
+        globalMounts:
+          - path: /backups
