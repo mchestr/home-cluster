@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,24 +26,37 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      replicas: 3
-      strategy: RollingUpdate
-      annotations:
-        reloader.stakater.com/auto: "true"
-
-    image:
-      repository: ghcr.io/foxcpp/maddy
-      tag: 0.7.0
-
-    env:
-      DEBUG: "false"
-      SMTP_DOMAIN: chestr.dev
-
-    envFrom:
-      - secretRef:
-          name: *app
-
+    defaultPodOptions:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: *app
+    controllers:
+      main:
+        replicas: 3
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: 'true'
+        containers:
+          main:
+            image:
+              repository: ghcr.io/foxcpp/maddy
+              tag: 0.7.0
+            envFrom:
+              - secretRef:
+                  name: smtp-relay-secret
+            env:
+              DEBUG: 'false'
+              SMTP_DOMAIN: chestr.dev
+            resources:
+              requests:
+                cpu: 10m
+                memory: 10Mi
+              limits:
+                memory: 50Mi
     service:
       main:
         ports:
@@ -52,7 +65,22 @@ spec:
           metrics:
             enabled: true
             port: 9749
-
+    persistence:
+      config:
+        enabled: true
+        type: configMap
+        name: smtp-relay
+        readOnly: true
+        globalMounts:
+          - path: /data/maddy.conf
+            subPath: maddy.conf
+      data:
+        enabled: true
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 1Gi
+        globalMounts:
+          - path: /dev/shm
     serviceMonitor:
       main:
         enabled: true
@@ -62,33 +90,3 @@ spec:
             path: /metrics
             interval: 1m
             scrapeTimeout: 10s
-
-    persistence:
-      config:
-        enabled: true
-        type: configMap
-        name: *app
-        subPath: maddy.conf
-        mountPath: /data/maddy.conf
-        readOnly: true
-      data:
-        enabled: true
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 1Gi
-        mountPath: /dev/shm
-
-    topologySpreadConstraints:
-      - maxSkew: 1
-        topologyKey: kubernetes.io/hostname
-        whenUnsatisfiable: DoNotSchedule
-        labelSelector:
-          matchLabels:
-            app.kubernetes.io/name: *app
-
-    resources:
-      requests:
-        cpu: 10m
-        memory: 10Mi
-      limits:
-        memory: 50Mi
