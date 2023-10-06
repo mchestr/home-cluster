@@ -96,7 +96,7 @@ def process(filepath, data):
             volume_claim_templates.append(process_persistence(volume_claim))
 
     if values := new_helm_values.pop('command', None):
-        new_helm_values['controllers']['main']['containers']['command'] = values
+        new_helm_values['controllers']['main']['containers']['main']['command'] = values
 
     if persistence := load_key(helm_values, 'persistence'):
         for key in persistence:
