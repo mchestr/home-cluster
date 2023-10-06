@@ -2,14 +2,14 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app unpackerr
+  name: unpackerr
   namespace: default
 spec:
   interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,47 +26,46 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      annotations:
-        reloader.stakater.com/auto: "true"
-
-    image:
-      repository: docker.io/golift/unpackerr
-      tag: 0.12.0
-
-    env:
-      TZ: ${TZ}
-      UN_WEBSERVER_METRICS: "true"
-      UN_SONARR_0_URL: http://sonarr.default.svc.cluster.local:8989
-      UN_SONARR_0_PATHS_0: /complete
-      UN_RADARR_0_URL: http://radarr.default.svc.cluster.local:7878
-      UN_RADARR_0_PATHS_0: /complete
-
-    envFrom:
-      - secretRef:
-          name: *app
-
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 65539
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: 'true'
+        containers:
+          main:
+            image:
+              repository: docker.io/golift/unpackerr
+              tag: 0.12.0
+            envFrom:
+              - secretRef:
+                  name: unpackerr
+            env:
+              TZ: ${TZ}
+              UN_WEBSERVER_METRICS: 'true'
+              UN_SONARR_0_URL: http://sonarr.default.svc.cluster.local:8989
+              UN_SONARR_0_PATHS_0: /complete
+              UN_RADARR_0_URL: http://radarr.default.svc.cluster.local:7878
+              UN_RADARR_0_PATHS_0: /complete
     service:
       main:
         ports:
           http:
             port: 5656
-
-    serviceMonitor:
-      main:
-        enabled: true
-
     persistence:
       media:
         enabled: true
         type: nfs
         server: lochnas.chestr.dev
         path: ${NAS_MEDIA_DIR}/downloads/torrents/complete
-        mountPath: /complete
-
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups: [65539]
+        globalMounts:
+          - path: /complete
+    serviceMonitor:
+      main:
+        enabled: true
