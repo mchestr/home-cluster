@@ -18,9 +18,18 @@ def load_key(data, path):
     return value
 
 
+def should_process_template(args, filepath, data):
+    if args.skip_version_check and load_key(data, 'spec.values.controllers'):
+        print(f'Probably already upgraded as "controllers" key exists, skipping {filepath}')
+        return False
+    return load_key(data, 'spec.chart.spec.chart') == 'app-template' and load_key(data, 'spec.chart.spec.version') < '2.0.2'
+
+
 def main() :
     parser = argparse.ArgumentParser('app-template-upgrade')
     parser.add_argument('d', help='Directory to scan')
+    parser.add_argument('-s', '--skip-version-check', action='store_true', help='Skip app-template version check, checks if key "controllers" exists')
+    parser.add_argument('-y', '--yeet', help='YOLO the upgrade and process eveery template')
     args = parser.parse_args()
 
     for root, _, files in os.walk(args.d):
@@ -33,10 +42,12 @@ def main() :
             if data['kind'] != 'HelmRelease':
                 continue
 
-            if load_key(data, 'spec.chart.spec.chart') == 'app-template' and load_key(data, 'spec.chart.spec.version') < '2.0.2':
+
+            if should_process_template(args, filepath, data):
                 process(filepath, data)
-                # Just process one file at a time, once its upgraded can run script again and onto the next.
-                return
+                if not args.yeet:
+                  # Just process one file at a time, once its upgraded can run script again and onto the next.
+                  return
 
 
 def process(filepath, data):
