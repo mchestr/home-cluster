@@ -44,7 +44,7 @@ spec:
           01-init-db:
             envFrom:
               - secretRef:
-                  name: shlink-api
+                  name: shlink-api-secret
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: '14.8'
@@ -55,7 +55,7 @@ spec:
               tag: 3.6.4
             envFrom:
               - secretRef:
-                  name: shlink-api
+                  name: shlink-api-secret
             env:
               DB_DRIVER: postgres
               DEFAULT_DOMAIN: ln.chestr.dev
