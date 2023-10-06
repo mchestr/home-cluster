@@ -102,9 +102,10 @@ def process(filepath, data):
 
     new['spec']['values'] = set_key_order(new_helm_values)
 
-    print(f"# Original file: {filepath}")
-    print('---')
-    print(yaml.dump(new, Dumper=MyDumper, sort_keys=False))
+    print(f"Replacing Original file: {filepath}")
+    with open(filepath, 'w+') as f:
+      f.write('---\n')
+      f.write(yaml.dump(new, Dumper=MyDumper, sort_keys=False))
 
 
 def process_controllers(data):
