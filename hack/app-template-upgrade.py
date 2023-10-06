@@ -199,6 +199,6 @@ def set_key_order(data):
 
 if __name__ == "__main__":
     setup_logging()
-    LOG.warning('This script will break your YAML anchors, and most likely any multiline YAML strings you have. BEWARE and audit the results!')
-    LOG.warning('Use at your own risk')
+    LOG.warning('💣 WARNING! This script will break your YAML anchors, and most likely any multiline YAML strings you have. BEWARE and audit the results!')
+    LOG.warning('💣 WARNING! Use at your own risk')
     main()
