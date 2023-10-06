@@ -45,43 +45,38 @@ def process(filepath, data):
     helm_values = new['spec'].pop('values')
     new_helm_values = deepcopy(helm_values)
 
-    if load_key(helm_values, 'controller'):
-        old_values = new_helm_values.pop('controller')
-        new_helm_values['controllers'] = process_controllers(old_values)
+    if values := helm_values.pop('controller', None):
+        new_helm_values['controllers'] = process_controllers(values)
 
-    if load_key(helm_values, 'initContainers'):
-        old_values = new_helm_values.pop('initContainers')
+    if values := helm_values.pop('initContainers', None):
         new_helm_values['controllers']['main']['initContainers'] = {}
-        for init_container in old_values:
-            new_helm_values['controllers']['main']['initContainers'][init_container] = process_init_container(old_values[init_container])
+        for init_container in values:
+            new_helm_values['controllers']['main']['initContainers'][init_container] = process_init_container(values[init_container])
 
-    if load_key(helm_values, 'image'):
-        old_values = new_helm_values.pop('image')
+    if values := helm_values.pop('image', None):
         if not load_key(new_helm_values, 'controllers.main.containers'):
             new_helm_values['controllers']['main']['containers'] = {'main': {}}
-        new_helm_values['controllers']['main']['containers']['main']['image'] = old_values
+        new_helm_values['controllers']['main']['containers']['main']['image'] = values
 
-    if load_key(helm_values, 'envFrom'):
-        old_values = new_helm_values.pop('envFrom')
-        new_helm_values['controllers']['main']['containers']['main']['envFrom'] = old_values
+    if values := helm_values.pop('envFrom', None):
+        new_helm_values['controllers']['main']['containers']['main']['envFrom'] = values
 
-    if load_key(helm_values, 'env'):
-        old_values = new_helm_values.pop('env')
-        new_helm_values['controllers']['main']['containers']['main']['env'] = old_values
+    if values := helm_values.pop('env', None):
+        new_helm_values['controllers']['main']['containers']['main']['env'] = values
 
-    if load_key(helm_values, 'resources'):
-        old_values = new_helm_values.pop('resources')
-        new_helm_values['controllers']['main']['containers']['main']['resources'] = old_values
+    if values := helm_values.pop('resources', None):
+        new_helm_values['controllers']['main']['containers']['main']['resources'] = values
 
-    if load_key(helm_values, 'ingress'):
-        old_values = new_helm_values.pop('ingress')
-        new_helm_values['ingress'] = process_ingress(load_key(helm_values, 'service'), old_values)
+    if values := helm_values.pop('ingress', None):
+        new_helm_values['ingress'] = process_ingress(load_key(helm_values, 'service'), values)
 
-    if load_key(helm_values, 'podSecurityContext'):
-        old_values = new_helm_values.pop('podSecurityContext')
+    if values := helm_values.pop('podSecurityContext', None):
         if not new_helm_values.get('defaultPodOptions'):
             new_helm_values['defaultPodOptions'] = {}
-        new_helm_values['defaultPodOptions']['securityContext'] = old_values
+        new_helm_values['defaultPodOptions']['securityContext'] = values
+
+    if values := helm_values.pop('probes', None):
+        new_helm_values['controllers']['main']['containers']['main']['probes'] = values
 
     if persistence := load_key(helm_values, 'persistence'):
         for key in persistence:
@@ -89,6 +84,9 @@ def process(filepath, data):
             new_helm_values['persistence'][key] = process_persistence(old_values)
 
     new['spec']['values'] = set_key_order(new_helm_values)
+
+    print(f"# Original file: {filepath}")
+    print('---')
     print(yaml.dump(new, Dumper=MyDumper, sort_keys=False))
 
 
