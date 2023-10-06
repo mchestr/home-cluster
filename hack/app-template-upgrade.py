@@ -127,6 +127,10 @@ def process(filepath, data):
     if values := new_helm_values.pop('args', None):
         set_key(new_helm_values, 'controllers.main.containers.main.args', values)
 
+    if values := new_helm_values.pop('additionalContainers', None):
+        for container in values:
+          set_key(new_helm_values, f'controllers.main.containers.{container}', process_init_container(values[container]))
+
     if values := new_helm_values.pop('volumeClaimTemplates', None):
         volume_claim_templates = []
         for volume_claim in values:
@@ -195,4 +199,6 @@ def set_key_order(data):
 
 if __name__ == "__main__":
     setup_logging()
+    LOG.warning('This script will break your YAML anchors, and most likely any multiline YAML strings you have. BEWARE and audit the results!')
+    LOG.warning('Use at your own risk')
     main()
