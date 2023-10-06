@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,39 +26,40 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      repository: ghcr.io/onedr0p/theme-park
-      tag: 1.13.11@sha256:c561b03451c8c536371d6d347a4e9c95c227671d69e31dd16c401fee1dc8cdbe
-
-    nameOverride: "theme-park"
-
-    env:
-      TZ: "${TZ}"
-
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/theme-park
+              tag: 1.13.11@sha256:c561b03451c8c536371d6d347a4e9c95c227671d69e31dd16c401fee1dc8cdbe
+            env:
+              TZ: ${TZ}
+            resources:
+              requests:
+                cpu: 10m
+                memory: 50Mi
+              limits:
+                memory: 200Mi
     service:
       main:
         ports:
           http:
             port: 8080
-
     ingress:
       main:
         enabled: true
-        ingressClassName: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
         hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
+          - host: &host '{{ .Release.Name }}.chestr.dev'
             paths:
               - path: /
                 pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-
-    resources:
-      requests:
-        cpu: 10m
-        memory: 50Mi
-      limits:
-        memory: 200Mi
+        className: external
