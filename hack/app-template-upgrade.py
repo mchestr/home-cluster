@@ -200,5 +200,6 @@ def set_key_order(data):
 if __name__ == "__main__":
     setup_logging()
     LOG.warning('💣 WARNING! This script will break your YAML anchors, and most likely any multiline YAML strings you have. BEWARE and audit the results!')
+    LOG.warning('💣 WARNING! This script may not work for everything, but will put keys into the right spot for the most part...')
     LOG.warning('💣 WARNING! Use at your own risk')
     main()
