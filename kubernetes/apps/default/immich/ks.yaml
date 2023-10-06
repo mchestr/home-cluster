@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-immich-app
+  name: cluster-apps-immich
   namespace: flux-system
   labels:
     substitution.flux.home.arpa/enabled: "true"
@@ -10,7 +10,7 @@ spec:
   dependsOn:
     - name: cluster-apps-cloudnative-pg-cluster
     - name: cluster-apps-external-secrets-stores
-    - name: cluster-apps-immich-redis-app
+    - name: cluster-apps-immich-redis
     - name: cluster-apps-volsync
   path: ./kubernetes/apps/default/immich/app
   prune: true
@@ -25,7 +25,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-immich-redis-app
+  name: cluster-apps-immich-redis
   namespace: flux-system
   labels:
     substitution.flux.home.arpa/enabled: "true"
