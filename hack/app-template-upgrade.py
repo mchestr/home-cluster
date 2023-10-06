@@ -3,12 +3,25 @@ import argparse
 import yaml
 import os
 from copy import deepcopy
+import logging
+
+LOG = logging.getLogger('app-template-upgrade')
 
 
 class MyDumper(yaml.Dumper):
 
     def increase_indent(self, flow=False, indentless=False):
         return super(MyDumper, self).increase_indent(flow, False)
+
+
+def setup_logging():
+    LOG.setLevel(logging.DEBUG)
+
+    # create console handler with a higher log level
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.DEBUG)
+
+    LOG.addHandler(ch)
 
 
 def load_key(data, path):
@@ -20,7 +33,7 @@ def load_key(data, path):
 
 def should_process_template(args, filepath, data):
     if args.skip_version_check and load_key(data, 'spec.values.controllers'):
-        print(f'Probably already upgraded as "controllers" key exists, skipping {filepath}')
+        LOG.info(f'Probably already upgraded as "controllers" key exists, skipping {filepath}')
         return False
     return load_key(data, 'spec.chart.spec.chart') == 'app-template' and load_key(data, 'spec.chart.spec.version') < '2.0.2'
 
@@ -47,8 +60,7 @@ def main() :
                 try:
                     process(filepath, data)
                 except Exception as exc:
-                    print(exc)
-                    print(f'failed to process {filepath}, script not good enough will need manual intervention')
+                    LOG.error(f'failed to process: {filepath}, script is not good enough - will need manual intervention', exc_info=exc)
                     continue
 
                 if not args.yeet:
@@ -127,7 +139,7 @@ def process(filepath, data):
 
     new['spec']['values'] = set_key_order(new_helm_values)
 
-    print(f"Replacing Original file: {filepath}")
+    LOG.info(f"Replacing Original file: {filepath}")
     with open(filepath, 'w+') as f:
       f.write('---\n')
       f.write(yaml.dump(new, Dumper=MyDumper, sort_keys=False))
@@ -183,4 +195,5 @@ def set_key_order(data):
     return new_data
 
 if __name__ == "__main__":
+    setup_logging()
     main()
