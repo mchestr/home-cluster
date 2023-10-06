@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,24 +26,32 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
-
-    image:
-      repository: ghcr.io/jacobalberty/unifi-docker
-      tag: v7.5.174
-
-    env:
-      TZ: ${TZ}
-      RUNAS_UID0: "false"
-      UNIFI_UID: "999"
-      UNIFI_GID: "999"
-      UNIFI_STDOUT: "true"
-      JVM_INIT_HEAP_SIZE:
-      JVM_MAX_HEAP_SIZE: 1024M
-
+    controllers:
+      main:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: 'true'
+        containers:
+          main:
+            image:
+              repository: ghcr.io/jacobalberty/unifi-docker
+              tag: v7.5.174
+            env:
+              TZ: America/Vancouver
+              RUNAS_UID0: 'false'
+              UNIFI_UID: '999'
+              UNIFI_GID: '999'
+              UNIFI_STDOUT: 'true'
+              JVM_INIT_HEAP_SIZE: null
+              JVM_MAX_HEAP_SIZE: 1024M
+        statefulset:
+          volumeClaimTemplates:
+            - name: data
+              accessMode: ReadWriteOnce
+              size: 1Gi
+              storageClass: ceph-block
+              globalMounts:
+                - path: /unifi
     service:
       main:
         type: LoadBalancer
@@ -82,29 +90,24 @@ spec:
             enabled: true
             port: 10001
             protocol: UDP
-
     ingress:
       main:
         enabled: true
-        ingressClassName: internal
         annotations:
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-          gethomepage.dev/enabled: "true"
+          nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+          gethomepage.dev/enabled: 'true'
           gethomepage.dev/icon: unifi.png
           gethomepage.dev/name: Unifi
           gethomepage.dev/group: Infrastructure
         hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
+          - host: &host '{{ .Release.Name }}.chestr.dev'
             paths:
               - path: /
                 pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-
-    volumeClaimTemplates:
-      - name: data
-        mountPath: /unifi
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
+        className: internal
