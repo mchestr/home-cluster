@@ -78,6 +78,9 @@ def process(filepath, data):
     if values := new_helm_values.pop('probes', None):
         new_helm_values['controllers']['main']['containers']['main']['probes'] = values
 
+    if values := new_helm_values.pop('args', None):
+        new_helm_values['controllers']['main']['containers']['main']['args'] = values
+
     if persistence := load_key(helm_values, 'persistence'):
         for key in persistence:
             old_values = new_helm_values['persistence'].pop(key)
