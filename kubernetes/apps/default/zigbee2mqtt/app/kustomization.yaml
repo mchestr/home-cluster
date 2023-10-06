@@ -8,5 +8,3 @@ resources:
   - helmrelease.yaml
   - prometheusrule.yaml
   - volsync.yaml
-patchesStrategicMerge:
-  - patches/exporter.yaml

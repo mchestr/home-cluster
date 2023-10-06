@@ -70,6 +70,38 @@ spec:
               ZIGBEE2MQTT_CONFIG_PERMIT_JOIN: 'false'
               ZIGBEE2MQTT_CONFIG_SERIAL_PORT: tcp://home-controller.chestr.dev:2001
               ZIGBEE2MQTT_CONFIG_SERIAL_ADAPTER: ezsp
+          exporter:
+            name: exporter
+            image:
+              repository: docker.io/kpetrem/mqtt-exporter
+              tag: latest@sha256:fbff8472a18239297e699955b43695f714e4fa6fdd7a36875a65375e2dfa8e67
+            env:
+              - name: LOG_LEVEL
+                value: DEBUG
+              - name: LOG_MQTT_MESSAGE
+                value: "True"
+              - name: MQTT_ADDRESS
+                value: mosquitto.default.svc.cluster.local
+              - name: MQTT_TOPIC
+                value: "zigbee2mqtt/#"
+              - name: MQTT_V5_PROTOCOL
+                value: "True"
+              - name: MQTT_USERNAME
+                valueFrom:
+                  secretKeyRef:
+                    name: zigbee2mqtt-secret
+                    key: ZIGBEE2MQTT_CONFIG_MQTT_USER
+              - name: MQTT_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: zigbee2mqtt-secret
+                    key: ZIGBEE2MQTT_CONFIG_MQTT_PASSWORD
+              - name: PROMETHEUS_PORT
+                value: &port 80
+              - name: PROMETHEUS_PREFIX
+                value: zigbee2mqtt_
+              - name: ZIGBEE2MQTT_AVAILABILITY
+                value: "True"
         statefulset:
           volumeClaimTemplates:
             - name: data
