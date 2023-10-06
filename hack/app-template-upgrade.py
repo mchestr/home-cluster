@@ -118,6 +118,9 @@ def process(filepath, data):
     if values := new_helm_values.pop('podSecurityContext', None):
         set_key(new_helm_values, 'defaultPodOptions.securityContext', values)
 
+    if values := new_helm_values.pop('securityContext', None):
+        set_key(new_helm_values, 'controllers.main.containers.main.securityContext', values)
+
     if values := new_helm_values.pop('topologySpreadConstraints', None):
         set_key(new_helm_values, 'defaultPodOptions.topologySpreadConstraints', values)
 
