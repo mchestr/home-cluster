@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,28 +26,38 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
-
-    image:
-      repository: ghcr.io/onedr0p/tautulli
-      tag: 2.13.1@sha256:0a995c25a9c56b609c80dedfd9432c006b0d4835bd4fa2ba911ed112b50c5034
-
-    env:
-      TZ: ${TZ}
-
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 65539
+        fsGroupChangePolicy: OnRootMismatch
+    controllers:
+      main:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: 'true'
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/tautulli
+              tag: 2.13.1@sha256:0a995c25a9c56b609c80dedfd9432c006b0d4835bd4fa2ba911ed112b50c5034
+            env:
+              TZ: ${TZ}
+        statefulset:
+          volumeClaimTemplates:
+            - name: config
+              accessMode: ReadWriteOnce
+              size: 2Gi
+              storageClass: ceph-block
+              globalMounts:
+                - path: /config
     service:
       main:
         ports:
           http:
             port: 8181
-
     ingress:
       main:
         enabled: true
-        ingressClassName: internal
         annotations:
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_set_header Accept-Encoding "";
@@ -59,23 +69,16 @@ spec:
           gethomepage.dev/group: Media
           gethomepage.dev/widget.type: tautulli
           gethomepage.dev/widget.url: http://tautulli.default.svc.cluster.local:8181
-          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_TAUTULLI_API_KEY}}"
+          gethomepage.dev/widget.key: '{{HOMEPAGE_VAR_TAUTULLI_API_KEY}}'
         hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
+          - host: &host '{{ .Release.Name }}.chestr.dev'
             paths:
               - path: /
                 pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 2Gi
-        storageClass: ceph-block
-
-    podSecurityContext:
-      fsGroup: 65539
-      fsGroupChangePolicy: OnRootMismatch
+        className: internal
