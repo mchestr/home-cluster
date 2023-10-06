@@ -139,7 +139,7 @@ def process_persistence(data):
 
 def process_init_container(data):
     if 'image' in data:
-        old_value = data.pop('image').split(':')
+        old_value = data.pop('image').split(':', 1)
         data['image'] = {
             'repository': old_value[0],
             'tag': old_value[1],
