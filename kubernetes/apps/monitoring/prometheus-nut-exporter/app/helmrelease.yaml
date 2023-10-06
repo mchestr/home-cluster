@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,24 +26,30 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      repository: ghcr.io/mchestr/prometheus-nut-exporter
-      tag: "1.2.1"
-
-    controller:
-      strategy: RollingUpdate
-
-    env:
-      TZ: ${TZ}
-      HTTP_PATH: /metrics
-
+    controllers:
+      main:
+        strategy: RollingUpdate
+        containers:
+          main:
+            image:
+              repository: ghcr.io/mchestr/prometheus-nut-exporter
+              tag: 1.2.1
+            env:
+              TZ: ${TZ}
+              HTTP_PATH: /metrics
+            resources:
+              limits:
+                cpu: 10m
+                memory: 16Mi
+              requests:
+                cpu: 1m
+                memory: 8Mi
     service:
       main:
         ports:
           http:
             protocol: TCP
             port: 9995
-
     serviceMonitor:
       main:
         enabled: true
@@ -53,15 +59,8 @@ spec:
             scrapeTimeout: 10s
             params:
               target:
-                - "lochnas.chestr.dev:3493"
+                - lochnas.chestr.dev:3493
             relabelings:
-              - sourceLabels: [__param_target]
+              - sourceLabels:
+                  - __param_target
                 targetLabel: target
-
-    resources:
-      limits:
-        cpu: "10m"
-        memory: "16Mi"
-      requests:
-        cpu: "1m"
-        memory: "8Mi"
