@@ -2,14 +2,14 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app shlink-web
+  name: shlink-web
   namespace: default
 spec:
   interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,20 +26,36 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      replicas: 3
-      strategy: RollingUpdate
-      annotations:
-        reloader.stakater.com/auto: "true"
-
-    image:
-      repository: ghcr.io/shlinkio/shlink-web-client
-      tag: 3.10.2
-    env:
-      SHLINK_SERVER_URL: https://ln.chestr.dev
-    envFrom:
-      - secretRef:
-          name: *app
+    defaultPodOptions:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: shlink-web
+    controllers:
+      main:
+        replicas: 3
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: 'true'
+        containers:
+          main:
+            image:
+              repository: ghcr.io/shlinkio/shlink-web-client
+              tag: 3.10.2
+            envFrom:
+              - secretRef:
+                  name: shlink-web
+            env:
+              SHLINK_SERVER_URL: https://ln.chestr.dev
+            resources:
+              requests:
+                cpu: 10m
+                memory: 100Mi
+              limits:
+                memory: 250Mi
     service:
       main:
         ports:
@@ -48,32 +64,21 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: internal
         annotations:
-          auth.home.arpa/enabled: "true"
-          gethomepage.dev/enabled: "true"
+          auth.home.arpa/enabled: 'true'
+          gethomepage.dev/enabled: 'true'
           gethomepage.dev/icon: shlink.png
           gethomepage.dev/name: Shlink
           gethomepage.dev/group: System
         hosts:
-          - host: &host shlink.chestr.dev
+          - host: shlink.chestr.dev
             paths:
               - path: /
                 pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
-              - *host
-
-    topologySpreadConstraints:
-      - maxSkew: 1
-        topologyKey: kubernetes.io/hostname
-        whenUnsatisfiable: DoNotSchedule
-        labelSelector:
-          matchLabels:
-            app.kubernetes.io/name: *app
-    resources:
-      requests:
-        cpu: 10m
-        memory: 100Mi
-      limits:
-        memory: 250Mi
+              - shlink.chestr.dev
+        className: internal
