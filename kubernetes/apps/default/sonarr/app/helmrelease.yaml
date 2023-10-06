@@ -2,14 +2,14 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app sonarr
+  name: sonarr
   namespace: default
 spec:
   interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,63 +26,91 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    initContainers:
-      01-init-db:
-        image: ghcr.io/onedr0p/postgres-init:14.9
-        imagePullPolicy: IfNotPresent
-        envFrom: &envFrom
-          - secretRef:
-              name: sonarr-secret
-    controller:
-      annotations:
-        reloader.stakater.com/auto: "true"
-
-    image:
-      repository: ghcr.io/onedr0p/sonarr-develop
-      tag: 4.0.0.688@sha256:651261e5fdcc5399edda1bff312a50cad131a36d6a8f8dc39e43a352f4f2e0c3
-
-    env:
-      TZ: ${TZ}
-      PUSHOVER_DEBUG: "false"
-      SONARR__AUTHENTICATION_METHOD: External
-      SONARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
-      SONARR__INSTANCE_NAME: Sonarr
-      SONARR__PORT: &port 8989
-      SONARR__LOG_LEVEL: info
-      SONARR__THEME: dark
-
-    envFrom: *envFrom
-
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 65539
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: 'true'
+        initContainers:
+          01-init-db:
+            imagePullPolicy: IfNotPresent
+            envFrom: &envFrom
+              - secretRef:
+                  name: sonarr-secret
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: '14.9'
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/sonarr-develop
+              tag: 4.0.0.688@sha256:651261e5fdcc5399edda1bff312a50cad131a36d6a8f8dc39e43a352f4f2e0c3
+            envFrom: *envFrom
+            env:
+              TZ: ${TZ}
+              PUSHOVER_DEBUG: 'false'
+              SONARR__AUTHENTICATION_METHOD: External
+              SONARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
+              SONARR__INSTANCE_NAME: Sonarr
+              SONARR__PORT: 8989
+              SONARR__LOG_LEVEL: info
+              SONARR__THEME: dark
+          metrics:
+            name: metrics
+            imagePullPolicy: Always
+            args:
+              - s
+            env:
+              PORT: 9794
+              ENABLE_UNKNOWN_QUEUE_ITEMS: true
+              TZ: ${TZ}
+              URL: http://sonarr.default.svc.cluster.local:8989
+              APIKEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: sonarr-secret
+                    key: SONARR__API_KEY
+            image:
+              repository: ghcr.io/onedr0p/exportarr
+              tag: v1.5.5
     service:
       main:
         ports:
           http:
-            port: *port
+            port: 8989
           metrics:
-            port: &metric-port 9794
-
+            port: 9794
     ingress:
       main:
         enabled: true
-        ingressClassName: internal
         annotations:
-          auth.home.arpa/enabled: "true"
-          gethomepage.dev/enabled: "true"
+          auth.home.arpa/enabled: 'true'
+          gethomepage.dev/enabled: 'true'
           gethomepage.dev/icon: sonarr.png
           gethomepage.dev/name: Sonarr
           gethomepage.dev/group: Downloads
           gethomepage.dev/widget.type: sonarr
           gethomepage.dev/widget.url: http://sonarr.default.svc.cluster.local:8989
-          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_SONARR_API_KEY}}"
+          gethomepage.dev/widget.key: '{{HOMEPAGE_VAR_SONARR_API_KEY}}'
         hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
+          - host: &host '{{ .Release.Name }}.chestr.dev'
             paths:
               - path: /
                 pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-
+        className: internal
     persistence:
       config:
         enabled: true
@@ -91,42 +119,19 @@ spec:
       media:
         enabled: true
         type: nfs
-        server: "lochnas.chestr.dev"
+        server: lochnas.chestr.dev
         path: ${NAS_MEDIA_DIR}
-        mountPath: /media
+        globalMounts:
+          - path: /media
       scripts:
         enabled: true
         type: configMap
         name: sonarr-pushover
-        subPath: pushover-notify.sh
-        mountPath: /scripts/pushover-notify.sh
         defaultMode: 0775
         readOnly: true
-
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups: [65539]
-
-    additionalContainers:
-      metrics:
-        name: metrics
-        image: ghcr.io/onedr0p/exportarr:v1.5.5
-        imagePullPolicy: Always
-        args: ['s']
-        env:
-          PORT: *metric-port
-          ENABLE_UNKNOWN_QUEUE_ITEMS: true
-          TZ: "${TZ}"
-          URL: "http://sonarr.default.svc.cluster.local:8989"
-          APIKEY:
-            valueFrom:
-              secretKeyRef:
-                name: sonarr-secret
-                key: SONARR__API_KEY
-
+        globalMounts:
+          - path: /scripts/pushover-notify.sh
+            subPath: pushover-notify.sh
     serviceMonitor:
       main:
         enabled: true
