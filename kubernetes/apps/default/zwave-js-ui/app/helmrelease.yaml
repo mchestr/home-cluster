@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,45 +26,49 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
-
-    image:
-      repository: ghcr.io/zwave-js/zwave-js-ui
-      tag: 9.0.3
-    env:
-      TZ: ${TZ}
-
+    controllers:
+      main:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: 'true'
+        containers:
+          main:
+            image:
+              repository: ghcr.io/zwave-js/zwave-js-ui
+              tag: 9.0.3
+            env:
+              TZ: America/Vancouver
+        statefulset:
+          volumeClaimTemplates:
+            - name: data
+              accessMode: ReadWriteOnce
+              size: 1Gi
+              storageClass: ceph-block
+              globalMounts:
+                - path: /usr/src/app/store
     service:
       main:
         ports:
           http:
             port: 8091
-
     ingress:
       main:
         enabled: true
-        ingressClassName: internal
         annotations:
-          auth.home.arpa/enabled: "true"
-          gethomepage.dev/enabled: "true"
+          auth.home.arpa/enabled: 'true'
+          gethomepage.dev/enabled: 'true'
           gethomepage.dev/icon: zwavejs2mqtt.png
           gethomepage.dev/name: zWave
           gethomepage.dev/group: Automation
         hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
+          - host: &host '{{ .Release.Name }}.chestr.dev'
             paths:
               - path: /
                 pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-
-    volumeClaimTemplates:
-      - name: data
-        mountPath: /usr/src/app/store
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
+        className: internal
