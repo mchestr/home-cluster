@@ -65,7 +65,11 @@ def main() :
                 continue
             filepath = os.path.join(root, file)
             with open(filepath) as f:
-                data = yaml.load(f, Loader=yaml.FullLoader)
+                try:
+                  data = yaml.load(f, Loader=yaml.FullLoader)
+                except Exception as exc:
+                    LOG.error(f'failed to process: {filepath}, script is not good enough - will need manual intervention')
+                    continue
             if data['kind'] != 'HelmRelease':
                 continue
 
