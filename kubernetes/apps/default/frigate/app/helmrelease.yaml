@@ -2,14 +2,14 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app frigate
+  name: frigate
   namespace: default
 spec:
   interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,116 +26,115 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
-
-    image:
-      repository: ghcr.io/blakeblackshear/frigate
-      tag: 0.12.1
-
-    env:
-      TZ: ${TZ}
-      LIBVA_DRIVER_NAME: i965
-
-    envFrom:
-      - secretRef:
-          name: *app
-
+    defaultPodOptions:
+      nodeSelector:
+        google.feature.node.kubernetes.io/coral: 'true'
+        intel.feature.node.kubernetes.io/gpu: 'true'
+    controllers:
+      main:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: 'true'
+        containers:
+          main:
+            image:
+              repository: ghcr.io/blakeblackshear/frigate
+              tag: 0.12.1
+            envFrom:
+              - secretRef:
+                  name: frigate-secret
+            env:
+              TZ: ${TZ}
+              LIBVA_DRIVER_NAME: i965
+            securityContext:
+              privileged: true
+            resources:
+              requests:
+                cpu: 600m
+                memory: 1000Mi
+                gpu.intel.com/i915: '1'
+              limits:
+                memory: 6000Mi
+                gpu.intel.com/i915: '1'
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/version
+                    port: 5000
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probe
+              startup:
+                enabled: false
+        statefulset:
+          volumeClaimTemplates:
+            - name: config
+              accessMode: ReadWriteOnce
+              size: 5Gi
+              storageClass: ceph-block
+              globalMounts:
+                - path: /data
     service:
       main:
         ports:
           http:
-            port: &port 5000
+            port: 5000
           rtsp:
             enabled: true
             port: 8554
-
-    probes:
-      liveness: &probes
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /api/version
-            port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-      readiness: *probes
-      startup:
-        enabled: false
-
     ingress:
       main:
         enabled: true
-        ingressClassName: internal
         annotations:
-          auth.home.arpa/enabled: "true"
-          gethomepage.dev/enabled: "true"
+          auth.home.arpa/enabled: 'true'
+          gethomepage.dev/enabled: 'true'
           gethomepage.dev/group: Security
           gethomepage.dev/name: Frigate
           gethomepage.dev/icon: frigate.png
         hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
+          - host: &host '{{ .Release.Name }}.chestr.dev'
             paths:
               - path: /
                 pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-
-    securityContext:
-      privileged: true
-
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /data
-        accessMode: ReadWriteOnce
-        size: 5Gi
-        storageClass: ceph-block
-
+        className: internal
     persistence:
       config-file:
         enabled: true
         type: configMap
         name: frigate-configmap
-        subPath: config.yaml
-        mountPath: /config/config.yml
         readOnly: true
-
+        globalMounts:
+          - path: /config/config.yml
+            subPath: config.yaml
       media:
         enabled: true
         type: nfs
-        server: "lochnas.chestr.dev"
+        server: lochnas.chestr.dev
         path: /volume1/shared/frigate
-        mountPath: /media
-
+        globalMounts:
+          - path: /media
       cache:
         enabled: true
         type: emptyDir
         medium: Memory
         sizeLimit: 4Gi
-        mountPath: /dev/shm
-
+        globalMounts:
+          - path: /dev/shm
       usb:
         enabled: true
         type: hostPath
         hostPath: /dev/bus/usb
         hostPathType: Directory
-        mountPath: /dev/bus/usb
-
-    nodeSelector:
-      google.feature.node.kubernetes.io/coral: "true"
-      intel.feature.node.kubernetes.io/gpu: "true"
-
-    resources:
-      requests:
-        cpu: 600m
-        memory: 1000Mi
-        gpu.intel.com/i915: "1"
-      limits:
-        memory: 6000Mi
-        gpu.intel.com/i915: "1"
+        globalMounts:
+          - path: /dev/bus/usb
