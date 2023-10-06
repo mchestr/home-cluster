@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,63 +26,64 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    initContainers:
-      init-db:
-        image: ghcr.io/onedr0p/postgres-initdb:14.8
-        envFrom:
-          - secretRef:
-              name: displex-secret
-
-    controller:
-      replicas: 2
-      strategy: RollingUpdate
-      annotations:
-        reloader.stakater.com/auto: "true"
-
-    image:
-      repository: ghcr.io/mchestr/displex
-      tag: main@sha256:a0429d430c9a6464a302b81296a581f5179cd97a56510a86225c5e5e7493344f
-    args:
-      - server
-
-    ingress:
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+        fsGroupChangePolicy: OnRootMismatch
+    controllers:
       main:
-        enabled: true
-        ingressClassName: external
+        replicas: 2
+        strategy: RollingUpdate
         annotations:
-          auth.home.arpa/enabled: "true"
-          external-dns.alpha.kubernetes.io/target: external.chestr.dev
-        hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
-            paths:
-              - path: /
-                pathType: Prefix
-        tls:
-          - hosts:
-              - *host
-
-    env:
-      DISPLEX_DATABASE__HOST: postgres-rw.default.svc.cluster.local
-
-    envFrom:
-      - secretRef:
-          name: displex-secret
-
+          reloader.stakater.com/auto: 'true'
+        initContainers:
+          init-db:
+            envFrom:
+              - secretRef:
+                  name: displex-secret
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: '14.9'
+        containers:
+          main:
+            image:
+              repository: ghcr.io/mchestr/displex
+              tag: main@sha256:a0429d430c9a6464a302b81296a581f5179cd97a56510a86225c5e5e7493344f
+            envFrom:
+              - secretRef:
+                  name: displex-secret
+            env:
+              DISPLEX_DATABASE__HOST: postgres-rw.default.svc.cluster.local
+            resources:
+              requests:
+                cpu: 5m
+                memory: 10Mi
+              limits:
+                memory: 20Mi
+            args:
+              - server
     service:
       main:
         ports:
           http:
             port: 8080
-
-    podSecurityContext:
-      runAsUser: 1001
-      runAsGroup: 1001
-      fsGroup: 1001
-      fsGroupChangePolicy: OnRootMismatch
-
-    resources:
-      requests:
-        cpu: 5m
-        memory: 10Mi
-      limits:
-        memory: 20Mi
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          auth.home.arpa/enabled: 'true'
+          external-dns.alpha.kubernetes.io/target: external.chestr.dev
+        hosts:
+          - host: &host '{{ .Release.Name }}.chestr.dev'
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: main
+                  port: http
+        tls:
+          - hosts:
+              - *host
+        className: external
