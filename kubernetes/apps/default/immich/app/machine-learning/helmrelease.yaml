@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -31,44 +31,43 @@ spec:
     - name: immich-typesense
       namespace: default
   values:
-    controller:
-      annotations:
-        reloader.stakater.com/auto: "true"
-
-    image:
-      repository: ghcr.io/immich-app/immich-machine-learning
-      tag: v1.81.1
-
-    envFrom:
-      - secretRef:
-          name: immich
-      - configMapRef:
-          name: immich
-
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 65539
+        fsGroupChangePolicy: OnRootMismatch
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: 'true'
+        containers:
+          main:
+            image:
+              repository: ghcr.io/immich-app/immich-machine-learning
+              tag: v1.81.1
+            envFrom:
+              - secretRef:
+                  name: immich
+              - configMapRef:
+                  name: immich
+            resources:
+              requests:
+                cpu: 100m
+                memory: 250Mi
+              limits:
+                memory: 4Gi
     service:
       main:
         ports:
           http:
             port: 3003
-
     persistence:
       data:
         enabled: true
         type: nfs
-        server: "lochnas.chestr.dev"
+        server: lochnas.chestr.dev
         path: ${NAS_MEDIA_DIR}/photos
-        mountPath: /usr/src/app/upload
+        globalMounts:
+          - path: /usr/src/app/upload
       cache:
         enabled: true
         type: emptyDir
-
-    podSecurityContext:
-      fsGroup: 65539
-      fsGroupChangePolicy: OnRootMismatch
-
-    resources:
-      requests:
-        cpu: 100m
-        memory: 250Mi
-      limits:
-        memory: 4Gi
