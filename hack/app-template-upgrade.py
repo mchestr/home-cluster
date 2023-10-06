@@ -1,9 +1,9 @@
 import argparse
-
-import yaml
-import os
-from copy import deepcopy
 import logging
+import os
+import yaml
+from copy import deepcopy
+from yaml.representer import Representer
 
 LOG = logging.getLogger('app-template-upgrade')
 
@@ -31,6 +31,20 @@ def load_key(data, path):
     return value
 
 
+def set_key(data, path, value):
+    node = data
+    split_path = path.split('.')
+    index = 0
+    while index < len(split_path) - 1:
+        key = split_path[index]
+        if not node.get(key, None):
+            node[key] = {}
+        node = node[key]
+        index += 1
+
+    node[split_path[index]] = value
+
+
 def should_process_template(args, filepath, data):
     if args.skip_version_check and load_key(data, 'spec.values.controllers'):
         LOG.info(f'Probably already upgraded as "controllers" key exists, skipping {filepath}')
@@ -55,7 +69,6 @@ def main() :
             if data['kind'] != 'HelmRelease':
                 continue
 
-
             if should_process_template(args, filepath, data):
                 try:
                     process(filepath, data)
@@ -75,70 +88,57 @@ def process(filepath, data):
     new_helm_values = deepcopy(helm_values)
 
     if values := new_helm_values.pop('controller', None):
-        new_helm_values['controllers'] = process_controllers(values)
+        set_key(new_helm_values, 'controllers', process_controllers(values))
 
     if values := new_helm_values.pop('initContainers', None):
-        new_helm_values['controllers']['main']['initContainers'] = {}
         for init_container in values:
-            new_helm_values['controllers']['main']['initContainers'][init_container] = process_init_container(values[init_container])
+            set_key(new_helm_values, f'controllers.main.initContainers.{init_container}', process_init_container(values[init_container]))
 
     if values := new_helm_values.pop('image', None):
-        if not load_key(new_helm_values, 'controllers.main.containers'):
-            new_helm_values['controllers']['main']['containers'] = {'main': {}}
-        new_helm_values['controllers']['main']['containers']['main']['image'] = values
+        set_key(new_helm_values, 'controllers.main.containers.main.image', values)
 
     if values := new_helm_values.pop('envFrom', None):
-        new_helm_values['controllers']['main']['containers']['main']['envFrom'] = values
+        set_key(new_helm_values, 'controllers.main.containers.main.envFrom', values)
 
     if values := new_helm_values.pop('env', None):
-        new_helm_values['controllers']['main']['containers']['main']['env'] = values
+        set_key(new_helm_values, 'controllers.main.containers.main.env', values)
 
     if values := new_helm_values.pop('resources', None):
-        new_helm_values['controllers']['main']['containers']['main']['resources'] = values
-
-    if values := new_helm_values.pop('ingress', None):
-        new_helm_values['ingress'] = process_ingress(load_key(helm_values, 'service'), values)
-
-    if values := new_helm_values.pop('podSecurityContext', None):
-        if not new_helm_values.get('defaultPodOptions'):
-            new_helm_values['defaultPodOptions'] = {}
-        new_helm_values['defaultPodOptions']['securityContext'] = values
-
-    if values := new_helm_values.pop('topologySpreadConstraints', None):
-        if not new_helm_values.get('defaultPodOptions'):
-            new_helm_values['defaultPodOptions'] = {}
-        new_helm_values['defaultPodOptions']['topologySpreadConstraints'] = values
-
-    if values := new_helm_values.pop('nodeSelector', None):
-        if not new_helm_values.get('defaultPodOptions'):
-            new_helm_values['defaultPodOptions'] = {}
-        new_helm_values['defaultPodOptions']['nodeSelector'] = values
+        set_key(new_helm_values, 'controllers.main.containers.main.resources', values)
 
     if values := new_helm_values.pop('probes', None):
-        new_helm_values['controllers']['main']['containers']['main']['probes'] = values
+        set_key(new_helm_values, 'controllers.main.containers.main.probes', values)
+
+    if values := new_helm_values.pop('command', None):
+        set_key(new_helm_values, 'controllers.main.containers.main.command', values)
+
+    if values := new_helm_values.pop('ingress', None):
+        set_key(new_helm_values, 'ingress', process_ingress(load_key(helm_values, 'service'), values))
+
+    if values := new_helm_values.pop('podSecurityContext', None):
+        set_key(new_helm_values, 'defaultPodOptions.securityContext', values)
+
+    if values := new_helm_values.pop('topologySpreadConstraints', None):
+        set_key(new_helm_values, 'defaultPodOptions.topologySpreadConstraints', values)
+
+    if values := new_helm_values.pop('nodeSelector', None):
+        set_key(new_helm_values, 'defaultPodOptions.nodeSelector', values)
 
     if values := new_helm_values.pop('args', None):
-        new_helm_values['controllers']['main']['containers']['main']['args'] = values
+        set_key(new_helm_values, 'controllers.main.containers.main.args', values)
 
     if values := new_helm_values.pop('volumeClaimTemplates', None):
         volume_claim_templates = []
-        if not load_key(new_helm_values, 'controllers.main.statefulset'):
-            new_helm_values['controllers']['main']['statefulset'] = {}
-
-        new_helm_values['controllers']['main']['statefulset']['volumeClaimTemplates'] = volume_claim_templates
         for volume_claim in values:
             volume_claim_templates.append(process_persistence(volume_claim))
-
-    if values := new_helm_values.pop('command', None):
-        new_helm_values['controllers']['main']['containers']['main']['command'] = values
+        set_key(new_helm_values, 'controllers.main.statefulset.volumeClaimTemplates', volume_claim_templates)
 
     if persistence := load_key(helm_values, 'persistence'):
         for key in persistence:
             old_values = new_helm_values['persistence'].pop(key)
-            new_helm_values['persistence'][key] = process_persistence(old_values)
+            set_key(new_helm_values, f'persistence.{key}', process_persistence(old_values))
 
     new['spec']['values'] = set_key_order(new_helm_values)
-
     LOG.info(f"Replacing Original file: {filepath}")
     with open(filepath, 'w+') as f:
       f.write('---\n')
@@ -152,9 +152,8 @@ def process_controllers(data):
 
 
 def process_ingress(services, data):
-    if load_key(data, 'main.ingressClassName'):
-        value = data['main'].pop('ingressClassName')
-        data['main']['className'] = value
+    if class_name := data['main'].pop('ingressClassName', None):
+        set_key(data, 'main.className', class_name)
 
     first_service = next(s for s in services)
     first_port_name = next(p for p in services[first_service]['ports'])
@@ -166,21 +165,21 @@ def process_ingress(services, data):
 
 
 def process_persistence(data):
-    if data.get('mountPath'):
+    if mount_path := data.pop('mountPath', None):
         data['globalMounts'] = [{
-            'path': data.pop('mountPath')
+            'path': mount_path
         }]
-        if data.get('subPath'):
-            data['globalMounts'][0]['subPath'] = data.pop('subPath')
+        if sub_path := data.pop('subPath', None):
+            data['globalMounts'][0]['subPath'] = sub_path
     return data
 
 
 def process_init_container(data):
-    if 'image' in data:
-        old_value = data.pop('image').split(':', 1)
+    if image := data.pop('image', None):
+        image_split = image.split(':', 1)
         data['image'] = {
-            'repository': old_value[0],
-            'tag': old_value[1],
+            'repository': image_split[0],
+            'tag': image_split[1],
         }
     return data
 
