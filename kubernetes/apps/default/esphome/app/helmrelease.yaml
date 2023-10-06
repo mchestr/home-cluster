@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.2
       interval: 15m
       sourceRef:
         kind: HelmRepository
@@ -27,47 +27,50 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
-
-    image:
-      repository: ghcr.io/esphome/esphome
-      tag: 2023.9.3@sha256:07cbbe0cc9d82d505dedbd40238fd9b800be6f1683d71e1a637456c474f2857e
-
-    env:
-      TZ: ${TZ}
-      ESPHOME_DASHBOARD_USE_PING: true
-
+    controllers:
+      main:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: 'true'
+        containers:
+          main:
+            image:
+              repository: ghcr.io/esphome/esphome
+              tag: 2023.9.3@sha256:07cbbe0cc9d82d505dedbd40238fd9b800be6f1683d71e1a637456c474f2857e
+            env:
+              TZ: ${TZ}
+              ESPHOME_DASHBOARD_USE_PING: true
+        statefulset:
+          volumeClaimTemplates:
+            - name: config
+              accessMode: ReadWriteOnce
+              size: 1Gi
+              storageClass: ceph-block
+              globalMounts:
+                - path: /config
     service:
       main:
         ports:
           http:
             port: 6052
-
     ingress:
       main:
         enabled: true
-        ingressClassName: internal
         annotations:
-          auth.home.arpa/enabled: "true"
-          gethomepage.dev/enabled: "true"
+          auth.home.arpa/enabled: 'true'
+          gethomepage.dev/enabled: 'true'
           gethomepage.dev/group: Automation
           gethomepage.dev/name: ESPHome
           gethomepage.dev/icon: esphome.png
         hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
+          - host: &host '{{ .Release.Name }}.chestr.dev'
             paths:
               - path: /
                 pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
+        className: internal
