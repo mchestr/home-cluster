@@ -30,7 +30,7 @@ metadata:
   name: plex
   namespace: default
 spec:
-  sourcePVC: plex-config-v1
+  sourcePVC: config-plex-0
   trigger:
     schedule: "0 9 * * *"
   restic:
