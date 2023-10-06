@@ -134,6 +134,9 @@ def process(filepath, data):
         for container in values:
           set_key(new_helm_values, f'controllers.main.containers.{container}', process_init_container(values[container]))
 
+    if values := new_helm_values.pop('affinity', None):
+        set_key(new_helm_values, 'defaultPodOptions.affinity', values)
+
     if values := new_helm_values.pop('volumeClaimTemplates', None):
         volume_claim_templates = []
         for volume_claim in values:
