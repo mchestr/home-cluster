@@ -162,6 +162,9 @@ def process_ingress(services, data):
     if class_name := data['main'].pop('ingressClassName', None):
         set_key(data, 'main.className', class_name)
 
+    if data['main'].get('enabled') is False:
+        return data
+
     first_service = next(s for s in services)
     first_port_name = next(p for p in services[first_service]['ports'])
     data['main']['hosts'][0]['paths'][0]['service'] = {
