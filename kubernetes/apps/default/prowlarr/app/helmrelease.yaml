@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,67 +26,68 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    initContainers:
-      01-init-db:
-        image: ghcr.io/onedr0p/postgres-init:14.9
-        imagePullPolicy: IfNotPresent
-        envFrom: &envFrom
-          - secretRef:
-              name: prowlarr-secret
-
-    controller:
-      annotations:
-        reloader.stakater.com/auto: "true"
-
-    image:
-      repository: ghcr.io/onedr0p/prowlarr-nightly
-      tag: 1.9.3.4010@sha256:692201bed229c4dd9228361875b4c3e59559b0d62310b58464e8c9f8f1eee48d
-
-    ingress:
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+    controllers:
       main:
-        enabled: true
-        ingressClassName: internal
         annotations:
-          auth.home.arpa/enabled: "true"
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/icon: prowlarr.png
-          gethomepage.dev/name: Prowlarr
-          gethomepage.dev/group: Downloads
-          gethomepage.dev/widget.type: prowlarr
-          gethomepage.dev/widget.url: http://prowlarr.default.svc.cluster.local:9696
-          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}"
-        hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
-            paths:
-              - path: /
-                pathType: Prefix
-        tls:
-          - hosts:
-              - *host
-
-    env:
-      TZ: ${TZ}
-      PROWLARR__INSTANCE_NAME: Prowlarr
-      PROWLARR__PORT: &port 9696
-      PROWLARR__LOG_LEVEL: info
-      PROWLARR__AUTHENTICATION_METHOD: External
-      PROWLARR__THEME: dark
-
-    envFrom: *envFrom
-
+          reloader.stakater.com/auto: 'true'
+        initContainers:
+          01-init-db:
+            imagePullPolicy: IfNotPresent
+            envFrom: &envFrom
+              - secretRef:
+                  name: prowlarr-secret
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: '14.9'
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/prowlarr-nightly
+              tag: 1.9.3.4010@sha256:692201bed229c4dd9228361875b4c3e59559b0d62310b58464e8c9f8f1eee48d
+            envFrom: *envFrom
+            env:
+              TZ: ${TZ}
+              PROWLARR__INSTANCE_NAME: Prowlarr
+              PROWLARR__PORT: &port 9696
+              PROWLARR__LOG_LEVEL: info
+              PROWLARR__AUTHENTICATION_METHOD: External
+              PROWLARR__THEME: dark
     service:
       main:
         ports:
           http:
             port: *port
-
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          auth.home.arpa/enabled: 'true'
+          gethomepage.dev/enabled: 'true'
+          gethomepage.dev/icon: prowlarr.png
+          gethomepage.dev/name: Prowlarr
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/widget.type: *app
+          gethomepage.dev/widget.url: http://prowlarr.default.svc.cluster.local:9696
+          gethomepage.dev/widget.key: '{{HOMEPAGE_VAR_PROWLARR_API_KEY}}'
+        hosts:
+          - host: &host '{{ .Release.Name }}.chestr.dev'
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: main
+                  port: http
+        tls:
+          - hosts:
+              - *host
+        className: internal
     persistence:
       config:
         enabled: true
         type: emptyDir
-
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
