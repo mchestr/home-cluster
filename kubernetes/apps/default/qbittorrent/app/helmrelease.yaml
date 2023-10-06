@@ -2,14 +2,14 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app qbittorrent
+  name: qbittorrent
   namespace: default
 spec:
   interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,57 +26,48 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
-        configmap.reloader.stakater.com/reload: qbittorrent-scripts
-        secret.reloader.stakater.com/reload: cross-seed-secret
-
-    image:
-      repository: ghcr.io/onedr0p/qbittorrent
-      tag: 4.5.5@sha256:30dffe7ad04ea0e39db0b50c0bd5e79362f99f7ff6b250526d2f389b58d96f14
-
-    env:
-      TZ: "${TZ}"
-      QBITTORRENT__PORT: &port 8080
-      QBITTORRENT__BT_PORT: &port-bt 50413
-
-    ingress:
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 65539
+        fsGroupChangePolicy: OnRootMismatch
+    controllers:
       main:
-        enabled: true
-        ingressClassName: internal
+        type: statefulset
         annotations:
-          auth.home.arpa/enabled: "true"
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            proxy_hide_header "x-webkit-csp";
-            proxy_hide_header "content-security-policy";
-            proxy_hide_header "X-Frame-Options";
-            proxy_set_header Accept-Encoding "";
-            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.chestr.dev/css/base/qbittorrent/organizr.css"></head>';
-            sub_filter_once on;
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/icon: qbittorrent.png
-          gethomepage.dev/name: qBittorrent
-          gethomepage.dev/group: Downloads
-          gethomepage.dev/widget.type: qbittorrent
-          gethomepage.dev/widget.url: http://qbittorrent.default.svc.cluster.local:8080
-        hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
-            paths:
-              - path: /
-                pathType: Prefix
-        tls:
-          - hosts:
-              - *host
-
+          reloader.stakater.com/auto: 'true'
+          configmap.reloader.stakater.com/reload: qbittorrent-scripts
+          secret.reloader.stakater.com/reload: cross-seed-secret
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/qbittorrent
+              tag: 4.5.5@sha256:30dffe7ad04ea0e39db0b50c0bd5e79362f99f7ff6b250526d2f389b58d96f14
+            env:
+              TZ: America/Vancouver
+              QBITTORRENT__PORT: 8080
+              QBITTORRENT__BT_PORT: 50413
+          cross-seed:
+            image:
+              repository: ghcr.io/cross-seed/cross-seed
+              tag: version-5.2.0
+            args:
+              - daemon
+        statefulset:
+          volumeClaimTemplates:
+            - name: config
+              accessMode: ReadWriteOnce
+              size: 2Gi
+              storageClass: ceph-block
+              globalMounts:
+                - path: /config
     service:
       main:
         ports:
           http:
-            port: *port
+            port: 8080
       crossseed:
         enabled: true
+        controller: main
         ports:
           crossseed:
             enabled: true
@@ -86,58 +77,68 @@ spec:
       bittorrent:
         enabled: true
         type: LoadBalancer
+        controller: main
         annotations:
           io.cilium/lb-ipam-ips: 192.168.1.224
         externalTrafficPolicy: Cluster
         ports:
           bittorrent:
             enabled: true
-            port: *port-bt
+            port: 50413
             protocol: TCP
-            targetPort: *port-bt
-
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 2Gi
-        storageClass: ceph-block
-
+            targetPort: 50413
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          auth.home.arpa/enabled: 'true'
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            proxy_hide_header "x-webkit-csp";
+            proxy_hide_header "content-security-policy";
+            proxy_hide_header "X-Frame-Options";
+            proxy_set_header Accept-Encoding "";
+            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.chestr.dev/css/base/qbittorrent/organizr.css"></head>';
+            sub_filter_once on;
+          gethomepage.dev/enabled: 'true'
+          gethomepage.dev/icon: qbittorrent.png
+          gethomepage.dev/name: qBittorrent
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/widget.type: qbittorrent
+          gethomepage.dev/widget.url: http://qbittorrent.default.svc.cluster.local:8080
+        hosts:
+          - host: &host '{{ .Release.Name }}.chestr.dev'
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: main
+                  port: http
+        tls:
+          - hosts:
+              - *host
+        className: internal
     persistence:
       media:
         enabled: true
         type: nfs
         server: lochnas.chestr.dev
         path: ${NAS_MEDIA_DIR}
-        mountPath: /media
+        globalMounts:
+          - path: /media
       completed-script:
         enabled: true
         type: configMap
         name: qbittorrent-scripts
-        mountPath: /scripts/cross-seed.sh
-        subPath: cross-seed.sh
-        defaultMode: 0775
+        defaultMode: 509
         readOnly: true
+        globalMounts:
+          - path: /scripts/cross-seed.sh
+            subPath: cross-seed.sh
       cross-seed-config:
         enabled: true
         type: secret
         name: cross-seed-secret
-        mountPath: /config/config.js
-        subPath: config.js
         readOnly: true
-
-    sidecars:
-      # TODO: cross-seed doesn't work with qBittorrent & SQLite
-      # https://github.com/cross-seed/cross-seed/issues/365
-      # Not using SQLite at the moment, but may be worth tryign in the future
-      cross-seed:
-        image: ghcr.io/cross-seed/cross-seed:version-5.2.0
-        imagePullPolicy: IfNotPresent
-        args: ["daemon"]
-        volumeMounts:
-          - { name: config, mountPath: /config }
-          - { name: cross-seed-config, mountPath: /config/config.js, subPath: config.js, readOnly: true }
-
-    podSecurityContext:
-      fsGroup: 65539
-      fsGroupChangePolicy: OnRootMismatch
+        globalMounts:
+          - path: /config/config.js
+            subPath: config.js

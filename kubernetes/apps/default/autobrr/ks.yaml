@@ -9,7 +9,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-cloudnative-pg-cluster
-    - name: cluster-apps-qbittorrent-app
+    - name: cluster-apps-qbittorrent
   path: ./kubernetes/apps/default/autobrr/app
   prune: true
   sourceRef:
