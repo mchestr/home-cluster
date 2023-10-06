@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,35 +26,33 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      type: cronjob
-      cronjob:
-        schedule: "*/3 * * * *"
-
-    image:
-      repository: ghcr.io/mchestr/displex
-      tag: main@sha256:a0429d430c9a6464a302b81296a581f5179cd97a56510a86225c5e5e7493344f
-    args:
-      - channel-refresh
-
-    ingress:
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+        fsGroupChangePolicy: OnRootMismatch
+    controllers:
       main:
-        enabled: false
-
-    env:
-      DISPLEX_DATABASE__READ_ONLY: "true"
-      DISPLEX_DATABASE__HOST: postgres-ro.default.svc.cluster.local
-
-    envFrom:
-      - secretRef:
-          name: displex-secret
-
+        type: cronjob
+        cronjob:
+          schedule: '*/3 * * * *'
+        containers:
+          main:
+            image:
+              repository: ghcr.io/mchestr/displex
+              tag: main@sha256:a0429d430c9a6464a302b81296a581f5179cd97a56510a86225c5e5e7493344f
+            envFrom:
+              - secretRef:
+                  name: displex-secret
+            env:
+              DISPLEX_DATABASE__READ_ONLY: 'true'
+              DISPLEX_DATABASE__HOST: postgres-ro.default.svc.cluster.local
+            args:
+              - channel-refresh
     service:
       main:
         enabled: false
-
-    podSecurityContext:
-      runAsUser: 1001
-      runAsGroup: 1001
-      fsGroup: 1001
-      fsGroupChangePolicy: OnRootMismatch
+    ingress:
+      main:
+        enabled: false
