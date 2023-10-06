@@ -2,14 +2,14 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app radicale
+  name: radicale
   namespace: default
 spec:
   interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.0.2
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -27,72 +27,75 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
-
-    image:
-      repository: ghcr.io/bjw-s/radicale
-      tag: 3.1.8
-
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+    controllers:
+      main:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: 'true'
+        containers:
+          main:
+            image:
+              repository: ghcr.io/bjw-s/radicale
+              tag: 3.1.8
+            resources:
+              requests:
+                cpu: 15m
+                memory: 79M
+              limits:
+                memory: 79M
+        statefulset:
+          volumeClaimTemplates:
+            - name: data
+              accessMode: ReadWriteOnce
+              size: 1Gi
+              storageClass: ceph-block
+              globalMounts:
+                - path: /data
     service:
       main:
         ports:
           http:
             port: 5232
-
     ingress:
       main:
         enabled: true
-        ingressClassName: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
-          gethomepage.dev/enabled: "true"
+          gethomepage.dev/enabled: 'true'
           gethomepage.dev/icon: radicale.png
           gethomepage.dev/name: Calendar
           gethomepage.dev/group: System
         hosts:
-          - host: &host cal.chestr.dev
+          - host: cal.chestr.dev
             paths:
               - path: /
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
-              - *host
-
-    volumeClaimTemplates:
-      - name: data
-        mountPath: /data
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
-
+              - cal.chestr.dev
+        className: external
     persistence:
       config:
         enabled: true
         type: configMap
         name: radicale-config
-        subPath: config.cfg
-        mountPath: /config/config
         readOnly: true
-
+        globalMounts:
+          - path: /config/config
+            subPath: config.cfg
       auth:
         enabled: true
         type: secret
-        name: *app
-        subPath: users
-        mountPath: /config/users
+        name: radicale
         readOnly: true
-
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
-
-    resources:
-      requests:
-        cpu: 15m
-        memory: 79M
-      limits:
-        memory: 79M
+        globalMounts:
+          - path: /config/users
+            subPath: users
