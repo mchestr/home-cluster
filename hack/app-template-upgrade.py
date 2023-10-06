@@ -75,6 +75,11 @@ def process(filepath, data):
             new_helm_values['defaultPodOptions'] = {}
         new_helm_values['defaultPodOptions']['securityContext'] = values
 
+    if values := new_helm_values.pop('topologySpreadConstraints', None):
+        if not new_helm_values.get('defaultPodOptions'):
+            new_helm_values['defaultPodOptions'] = {}
+        new_helm_values['defaultPodOptions']['topologySpreadConstraints'] = values
+
     if values := new_helm_values.pop('probes', None):
         new_helm_values['controllers']['main']['containers']['main']['probes'] = values
 
