@@ -122,7 +122,7 @@ spec:
         enabled: true
         type: nfs
         server: lochnas.chestr.dev
-        path: ${NAS_MEDIA_DIR}
+        path: /volume1/shared/media
         globalMounts:
           - path: /media
       completed-script:

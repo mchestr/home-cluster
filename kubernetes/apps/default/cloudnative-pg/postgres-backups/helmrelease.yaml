@@ -24,6 +24,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
           - 65539
+
     controllers:
       main:
         type: cronjob
@@ -51,6 +52,6 @@ spec:
         enabled: true
         type: nfs
         server: lochnas.chestr.dev
-        path: ${NAS_BACKUP_DIR}/postgres
+        path: /volume1/backups/kubernetes/apps/postgres
         globalMounts:
           - path: /backups

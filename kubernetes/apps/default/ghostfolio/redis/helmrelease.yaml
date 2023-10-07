@@ -31,6 +31,7 @@ spec:
                 memory: 256M
               limits:
                 memory: 256M
+
     service:
       main:
         ports:

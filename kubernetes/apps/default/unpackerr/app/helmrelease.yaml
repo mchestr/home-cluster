@@ -47,7 +47,7 @@ spec:
               - secretRef:
                   name: unpackerr
             env:
-              TZ: ${TZ}
+              TZ: America/Vancouver
               UN_WEBSERVER_METRICS: "true"
               UN_SONARR_0_URL: http://sonarr.default.svc.cluster.local:8989
               UN_SONARR_0_PATHS_0: /complete
@@ -63,7 +63,7 @@ spec:
         enabled: true
         type: nfs
         server: lochnas.chestr.dev
-        path: ${NAS_MEDIA_DIR}/downloads/torrents/complete
+        path: /volume1/shared/media/downloads/torrents/complete
         globalMounts:
           - path: /complete
     serviceMonitor:

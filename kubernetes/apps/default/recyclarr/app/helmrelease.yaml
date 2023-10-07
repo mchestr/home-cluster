@@ -46,7 +46,7 @@ spec:
               - secretRef:
                   name: recyclarr-secret
             env:
-              TZ: ${TZ}
+              TZ: America/Vancouver
             resources:
               requests:
                 cpu: 10m

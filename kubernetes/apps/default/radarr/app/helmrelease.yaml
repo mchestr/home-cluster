@@ -54,7 +54,7 @@ spec:
               tag: 5.0.3.8107@sha256:2c4fca668420dfa87b286da9b0a43f6dc64fd26329f9e914bc2de58887091eaf
             envFrom: *envFrom
             env:
-              TZ: ${TZ}
+              TZ: America/Vancouver
               PUSHOVER_DEBUG: "false"
               RADARR__AUTHENTICATION_METHOD: External
               RADARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
@@ -70,7 +70,7 @@ spec:
             env:
               PORT: 9794
               ENABLE_UNKNOWN_QUEUE_ITEMS: true
-              TZ: ${TZ}
+              TZ: America/Vancouver
               URL: http://radarr.default.svc.cluster.local:7878
               APIKEY:
                 valueFrom:
@@ -120,7 +120,7 @@ spec:
         enabled: true
         type: nfs
         server: lochnas.chestr.dev
-        path: ${NAS_MEDIA_DIR}
+        path: /volume1/shared/media
         globalMounts:
           - path: /media
       scripts:

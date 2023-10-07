@@ -30,22 +30,24 @@ spec:
       nodeSelector:
         google.feature.node.kubernetes.io/coral: "true"
         intel.feature.node.kubernetes.io/gpu: "true"
+
     controllers:
       main:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
+
         containers:
           main:
             image:
               repository: ghcr.io/blakeblackshear/frigate
               tag: 0.12.1
+            env:
+              TZ: America/Vancouver
+              LIBVA_DRIVER_NAME: i965
             envFrom:
               - secretRef:
                   name: frigate-secret
-            env:
-              TZ: ${TZ}
-              LIBVA_DRIVER_NAME: i965
             securityContext:
               privileged: true
             resources:
@@ -71,6 +73,7 @@ spec:
               readiness: *probe
               startup:
                 enabled: false
+
         statefulset:
           volumeClaimTemplates:
             - name: config
@@ -79,6 +82,7 @@ spec:
               storageClass: ceph-block
               globalMounts:
                 - path: /data
+
     service:
       main:
         ports:
@@ -87,9 +91,11 @@ spec:
           rtsp:
             enabled: true
             port: 8554
+
     ingress:
       main:
         enabled: true
+        className: internal
         annotations:
           auth.home.arpa/enabled: "true"
           gethomepage.dev/enabled: "true"
@@ -107,7 +113,7 @@ spec:
         tls:
           - hosts:
               - *host
-        className: internal
+
     persistence:
       config-file:
         enabled: true

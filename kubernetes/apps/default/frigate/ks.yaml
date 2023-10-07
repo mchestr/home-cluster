@@ -4,8 +4,6 @@ kind: Kustomization
 metadata:
   name: cluster-apps-frigate
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   dependsOn:
     - name: cluster-apps-external-secrets-stores
@@ -15,7 +13,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
-  healthChecks:
   wait: true
   interval: 30m
   retryInterval: 1m

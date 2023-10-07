@@ -21,16 +21,18 @@ spec:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
+
         initContainers:
           copy-config:
+            image:
+              repository: public.ecr.aws/docker/library/eclipse-mosquitto
+              tag: 2.0.18@sha256:9f24f0560e13b8d8983757472770b404f270210f88b4ce0efcd547458f05e817
             command:
               - /bin/sh
               - -c
             args:
               - cp /data/mosquitto_secret/* /mosquitto/external_config/ && mosquitto_passwd -U /mosquitto/external_config/mosquitto_pwd
-            image:
-              repository: public.ecr.aws/docker/library/eclipse-mosquitto
-              tag: 2.0.18@sha256:9f24f0560e13b8d8983757472770b404f270210f88b4ce0efcd547458f05e817
+
         containers:
           main:
             image:
@@ -42,6 +44,7 @@ spec:
                 memory: 10M
               limits:
                 memory: 10M
+
         statefulset:
           volumeClaimTemplates:
             - name: data
@@ -50,6 +53,7 @@ spec:
               storageClass: local-path
               globalMounts:
                 - path: /data
+
     service:
       main:
         type: LoadBalancer
@@ -62,6 +66,7 @@ spec:
           mqtt:
             enabled: true
             port: 1883
+
     persistence:
       mosquitto-config:
         enabled: true

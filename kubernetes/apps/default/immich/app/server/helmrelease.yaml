@@ -33,47 +33,50 @@ spec:
       securityContext:
         fsGroup: 65539
         fsGroupChangePolicy: OnRootMismatch
+
     controllers:
       main:
         annotations:
           reloader.stakater.com/auto: "true"
+
         initContainers:
           init-db:
-            envFrom:
+            envFrom: &envFrom
               - secretRef:
+                  name: immich
+              - configMapRef:
                   name: immich
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: "14.9"
+
         containers:
           main:
             image:
               repository: ghcr.io/immich-app/immich-server
               tag: v1.81.1
-            envFrom:
-              - secretRef:
-                  name: immich
-              - configMapRef:
-                  name: immich
+            command: /bin/sh
+            args:
+              - ./start-server.sh
+            envFrom: *envFrom
             resources:
               requests:
                 cpu: 100m
                 memory: 250Mi
               limits:
                 memory: 1Gi
-            command: /bin/sh
-            args:
-              - ./start-server.sh
+
     service:
       main:
         ports:
           http:
             port: 3001
+
     persistence:
       data:
         enabled: true
         type: nfs
         server: lochnas.chestr.dev
-        path: ${NAS_MEDIA_DIR}/photos
+        path: /volume1/shared/media/photos
         globalMounts:
           - path: /usr/src/app/upload

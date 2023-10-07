@@ -58,7 +58,7 @@ spec:
               repository: ghcr.io/onedr0p/plex
               tag: 1.32.6.7557-1cf77d501@sha256:438cb453d60d3b5c5843d47cd5bfeb61c0500d2e18ad5d016b9b525d2cc95fea
             env:
-              TZ: ${TZ}
+              TZ: America/Vancouver
             resources:
               requests:
                 cpu: 100m
@@ -76,6 +76,7 @@ spec:
               storageClass: ceph-block
               globalMounts:
                 - path: /config
+
     service:
       main:
         type: LoadBalancer
@@ -85,9 +86,11 @@ spec:
         ports:
           http:
             port: 32400
+
     ingress:
       main:
         enabled: true
+        className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
           nginx.ingress.kubernetes.io/configuration-snippet: |
@@ -112,13 +115,13 @@ spec:
         tls:
           - hosts:
               - *host
-        className: external
+
     persistence:
       media:
         enabled: true
         type: nfs
         server: lochnas.chestr.dev
-        path: ${NAS_MEDIA_DIR}
+        path: /volume1/shared/media
         globalMounts:
           - path: /media
       transcode:

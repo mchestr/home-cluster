@@ -4,8 +4,6 @@ kind: Kustomization
 metadata:
   name: cluster-apps-flux-monitoring
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   path: ./kubernetes/apps/flux-system/addons/monitoring
   prune: true
@@ -22,8 +20,6 @@ kind: Kustomization
 metadata:
   name: cluster-apps-flux-notifications
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   dependsOn:
     - name: cluster-apps-external-secrets-stores
@@ -42,8 +38,6 @@ kind: Kustomization
 metadata:
   name: cluster-apps-flux-webhooks
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   dependsOn:
     - name: cluster-apps-external-secrets-stores

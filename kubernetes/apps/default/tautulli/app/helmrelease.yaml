@@ -41,7 +41,7 @@ spec:
               repository: ghcr.io/onedr0p/tautulli
               tag: 2.13.1@sha256:0a995c25a9c56b609c80dedfd9432c006b0d4835bd4fa2ba911ed112b50c5034
             env:
-              TZ: ${TZ}
+              TZ: America/Vancouver
         statefulset:
           volumeClaimTemplates:
             - name: config

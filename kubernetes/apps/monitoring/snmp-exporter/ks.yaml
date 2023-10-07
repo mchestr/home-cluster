@@ -4,8 +4,6 @@ kind: Kustomization
 metadata:
   name: cluster-apps-snmp-exporter-edgerouter
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   path: ./kubernetes/apps/monitoring/snmp-exporter/edgerouter
   prune: true
@@ -22,8 +20,6 @@ kind: Kustomization
 metadata:
   name: cluster-apps-snmp-exporter-lochnas
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   path: ./kubernetes/apps/monitoring/snmp-exporter/lochnas
   prune: true
