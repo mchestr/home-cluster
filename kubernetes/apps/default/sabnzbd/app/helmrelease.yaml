@@ -39,7 +39,7 @@ spec:
           main:
             image:
               repository: ghcr.io/onedr0p/sabnzbd
-              tag: 4.1.0@sha256:d7eabae44168417a6acbc8f6e8510b0187a3f26d648941b3cf61b4c04a904da2
+              tag: 4.1.0@sha256:0973dcf425a5283285518a3ae66b78ee72dbac63df9ffe658d09214419ec6c63
             envFrom:
               - secretRef:
                   name: sabnzbd-secret
