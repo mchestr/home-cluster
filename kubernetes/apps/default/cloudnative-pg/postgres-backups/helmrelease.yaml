@@ -41,12 +41,12 @@ spec:
               POSTGRES_HOST: postgres-rw.default.svc.cluster.local
               POSTGRES_DB: authelia,autobrr,displex,gatus,ghostfolio,home-assistant,immich,lldap,miniflux,paperless,prowlarr_log,prowlarr_main,radarr_log,radarr_main,shlink,sonarr_log,sonarr_main
             command: /backup.sh
+
     service:
       main:
         enabled: false
+
     persistence:
-      config:
-        enabled: false
       backups:
         enabled: true
         type: nfs
