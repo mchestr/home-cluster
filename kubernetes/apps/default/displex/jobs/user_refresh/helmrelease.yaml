@@ -47,7 +47,7 @@ spec:
             args:
               - user-refresh
             env:
-              DISPLEX_DATABASE__HOST: postgres-rw.default.svc.cluster.local
+              DISPLEX_DATABASE__HOST: postgres-ro.default.svc.cluster.local
             envFrom:
               - secretRef:
                   name: displex-secret

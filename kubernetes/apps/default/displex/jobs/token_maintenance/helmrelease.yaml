@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: displex-clean-tokens-job
+  name: displex-token-maintenance-job
   namespace: default
 spec:
   interval: 30m
@@ -37,7 +37,7 @@ spec:
       main:
         type: cronjob
         cronjob:
-          schedule: "@weekly"
+          schedule: "@hourly"
 
         containers:
           main:
@@ -45,7 +45,7 @@ spec:
               repository: ghcr.io/mchestr/displex
               tag: main@sha256:a0429d430c9a6464a302b81296a581f5179cd97a56510a86225c5e5e7493344f
             args:
-              - clean-tokens
+              - token-maintenance
             env:
               DISPLEX_DATABASE__HOST: postgres-rw.default.svc.cluster.local
             envFrom:
