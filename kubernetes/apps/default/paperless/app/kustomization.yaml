@@ -5,6 +5,5 @@ resources:
   - externalsecret.yaml
   - gatus.yaml
   - helmrelease.yaml
-  - network-policy.yaml
   - pvc.yaml
   - volsync.yaml
