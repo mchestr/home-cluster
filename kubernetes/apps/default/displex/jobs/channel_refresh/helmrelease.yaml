@@ -42,7 +42,7 @@ spec:
           main:
             image:
               repository: ghcr.io/mchestr/displex
-              tag: main@sha256:0b7a1cf96b33cfd79f7ead4a08d18a648d143b11d6e95f63fa16f41d8e2d04fa
+              tag: main@sha256:9e3c536aa0e237871e95ed11db38eed0268f392605120e0e9fa0156fbbabd4a3
             args:
               - channel-refresh
             env:
