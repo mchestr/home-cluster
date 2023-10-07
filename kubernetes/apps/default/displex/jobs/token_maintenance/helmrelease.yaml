@@ -43,7 +43,7 @@ spec:
           main:
             image:
               repository: ghcr.io/mchestr/displex
-              tag: main@sha256:9e3c536aa0e237871e95ed11db38eed0268f392605120e0e9fa0156fbbabd4a3
+              tag: main@sha256:af280604dca74beaa65a8a8247f04d93518ff2d14bd21d013a4c89dc976fb95b
             args:
               - token-maintenance
             env:
