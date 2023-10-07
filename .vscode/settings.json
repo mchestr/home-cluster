@@ -16,7 +16,4 @@
     "editor.hover.delay": 1500,
     "editor.stickyScroll.enabled": true,
     "explorer.autoReveal": false,
-    "yaml.schemas": {
-        "https://json.schemastore.org/stylelintrc.json": "file:///Users/mchestr/code/home-cluster/kubernetes/apps/default/cloudnative-pg/cluster/cluster.yaml"
-    }
 }

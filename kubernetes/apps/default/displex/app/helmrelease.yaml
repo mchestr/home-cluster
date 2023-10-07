@@ -32,46 +32,50 @@ spec:
         runAsGroup: 1001
         fsGroup: 1001
         fsGroupChangePolicy: OnRootMismatch
+
     controllers:
       main:
         replicas: 2
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
+
         initContainers:
           init-db:
-            envFrom:
+            envFrom: &envFrom
               - secretRef:
                   name: displex-secret
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: "14.9"
+
         containers:
           main:
             image:
               repository: ghcr.io/mchestr/displex
               tag: main@sha256:a0429d430c9a6464a302b81296a581f5179cd97a56510a86225c5e5e7493344f
-            envFrom:
-              - secretRef:
-                  name: displex-secret
+            args:
+              - server
             env:
               DISPLEX_DATABASE__HOST: postgres-rw.default.svc.cluster.local
+            envFrom: *envFrom
             resources:
               requests:
                 cpu: 5m
                 memory: 10Mi
               limits:
                 memory: 20Mi
-            args:
-              - server
+
     service:
       main:
         ports:
           http:
             port: 8080
+
     ingress:
       main:
         enabled: true
+        className: external
         annotations:
           auth.home.arpa/enabled: "true"
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
@@ -86,4 +90,3 @@ spec:
         tls:
           - hosts:
               - *host
-        className: external

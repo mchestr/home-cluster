@@ -32,40 +32,45 @@ spec:
         runAsGroup: 568
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
+
     controllers:
       main:
         annotations:
           reloader.stakater.com/auto: "true"
+
         initContainers:
           01-init-db:
-            imagePullPolicy: IfNotPresent
-            envFrom: &envFrom
-              - secretRef:
-                  name: prowlarr-secret
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: "14.9"
+            envFrom: &envFrom
+              - secretRef:
+                  name: prowlarr-secret
+
         containers:
           main:
             image:
               repository: ghcr.io/onedr0p/prowlarr-nightly
               tag: 1.9.3.4011@sha256:4a5699ad2626035e26e8f49148e01094e7d818556ca3dbbde9f0aeaded46a3e2
-            envFrom: *envFrom
             env:
-              TZ: ${TZ}
+              TZ: America/Vancouver
               PROWLARR__INSTANCE_NAME: Prowlarr
               PROWLARR__PORT: &port 9696
               PROWLARR__LOG_LEVEL: info
               PROWLARR__AUTHENTICATION_METHOD: External
               PROWLARR__THEME: dark
+            envFrom: *envFrom
+
     service:
       main:
         ports:
           http:
             port: *port
+
     ingress:
       main:
         enabled: true
+        className: internal
         annotations:
           auth.home.arpa/enabled: "true"
           gethomepage.dev/enabled: "true"
@@ -86,7 +91,7 @@ spec:
         tls:
           - hosts:
               - *host
-        className: internal
+
     persistence:
       config:
         enabled: true

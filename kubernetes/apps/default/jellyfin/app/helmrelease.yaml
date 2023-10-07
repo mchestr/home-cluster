@@ -37,6 +37,7 @@ spec:
           - 10000
       nodeSelector:
         intel.feature.node.kubernetes.io/gpu: "true"
+
     controllers:
       main:
         type: statefulset
@@ -50,7 +51,7 @@ spec:
               JELLYFIN_FFmpeg__probesize: 50000000
               JELLYFIN_FFmpeg__analyzeduration: 50000000
               JELLYFIN_PublishedServerUrl: 192.168.1.232
-              TZ: ${TZ}
+              TZ: America/Vancouver
             resources:
               requests:
                 gpu.intel.com/i915: 1
@@ -74,6 +75,7 @@ spec:
               readiness: *probe
               startup:
                 enabled: false
+
         statefulset:
           volumeClaimTemplates:
             - name: config
@@ -82,6 +84,7 @@ spec:
               storageClass: ceph-block
               globalMounts:
                 - path: /config
+
     service:
       main:
         type: LoadBalancer
@@ -91,9 +94,11 @@ spec:
         ports:
           http:
             port: 8096
+
     ingress:
       main:
         enabled: true
+        className: internal
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: jellyfin.png
@@ -113,7 +118,7 @@ spec:
         tls:
           - hosts:
               - *host
-        className: internal
+
     persistence:
       transcode:
         enabled: true
@@ -122,6 +127,6 @@ spec:
         enabled: true
         type: nfs
         server: lochnas.chestr.dev
-        path: ${NAS_MEDIA_DIR}
+        path: /volume1/shared/media
         globalMounts:
           - path: /media

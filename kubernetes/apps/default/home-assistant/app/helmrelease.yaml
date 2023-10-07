@@ -42,6 +42,7 @@ spec:
         runAsGroup: 568
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
+
     controllers:
       main:
         type: statefulset
@@ -49,12 +50,13 @@ spec:
           reloader.stakater.com/auto: "true"
         initContainers:
           init-db:
-            envFrom: &envFrom
-              - secretRef:
-                  name: home-assistant-secret
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: "14.9"
+            envFrom: &envFrom
+              - secretRef:
+                  name: home-assistant-secret
+
         containers:
           main:
             image:
@@ -62,7 +64,8 @@ spec:
               tag: 2023.10.0@sha256:80cb982c9f4c55dbf4272c22460a89f426129fc8f61e8b40d751b6fe7ace5b2f
             envFrom: *envFrom
             env:
-              TZ: ${TZ}
+              TZ: America/Vancouver
+
           code-server:
             image:
               repository: ghcr.io/coder/code-server
@@ -75,6 +78,7 @@ spec:
               - --extensions-dir
               - /config/.vscode
               - /config
+
         statefulset:
           volumeClaimTemplates:
             - name: config
@@ -90,6 +94,7 @@ spec:
             port: 8123
           code-server:
             port: 8080
+
     ingress:
       main:
         enabled: true
@@ -122,7 +127,7 @@ spec:
           gethomepage.dev/name: Home-Assistant Code
           gethomepage.dev/icon: vscode.png
         hosts:
-          - host: &host "{{ .Release.Name }}-code.chestr.dev"
+          - host: &codeHost "{{ .Release.Name }}-code.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix
@@ -131,7 +136,7 @@ spec:
                   port: code-server
         tls:
           - hosts:
-              - *host
+              - *codeHost
 
     persistence:
       deploykey:

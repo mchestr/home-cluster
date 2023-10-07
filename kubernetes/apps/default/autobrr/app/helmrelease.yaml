@@ -34,19 +34,21 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
           - 10000
+
     controllers:
       main:
         annotations:
           reloader.stakater.com/auto: "true"
+
         initContainers:
           01-init-db:
-            imagePullPolicy: IfNotPresent
-            envFrom: &envFrom
-              - secretRef:
-                  name: autobrr-secret
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: "14.9"
+            envFrom: &envFrom
+              - secretRef:
+                  name: autobrr-secret
+
         containers:
           main:
             image:
@@ -59,14 +61,17 @@ spec:
                 cpu: 10m
               limits:
                 memory: 500Mi
+
     service:
       main:
         ports:
           http:
             port: 7474
+
     ingress:
       main:
         enabled: true
+        className: internal
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: autobrr.png
@@ -86,7 +91,7 @@ spec:
         tls:
           - hosts:
               - *host
-        className: internal
+
     persistence:
       config-file:
         enabled: true

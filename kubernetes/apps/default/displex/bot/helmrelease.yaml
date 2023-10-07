@@ -32,32 +32,32 @@ spec:
         runAsGroup: 1001
         fsGroup: 1001
         fsGroupChangePolicy: OnRootMismatch
+
     controllers:
       main:
         annotations:
           reloader.stakater.com/auto: "true"
+
         containers:
           main:
             image:
               repository: ghcr.io/mchestr/displex
               tag: main@sha256:a0429d430c9a6464a302b81296a581f5179cd97a56510a86225c5e5e7493344f
-            envFrom:
-              - secretRef:
-                  name: displex-secret
+            args:
+              - bot
             env:
               DISPLEX_DATABASE__READ_ONLY: "true"
               DISPLEX_DATABASE__HOST: postgres-ro.default.svc.cluster.local
+            envFrom:
+              - secretRef:
+                  name: displex-secret
             resources:
               requests:
                 cpu: 5m
                 memory: 10Mi
               limits:
                 memory: 20Mi
-            args:
-              - bot
+
     service:
-      main:
-        enabled: false
-    ingress:
       main:
         enabled: false
