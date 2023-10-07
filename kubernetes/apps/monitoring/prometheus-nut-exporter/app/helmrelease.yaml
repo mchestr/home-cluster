@@ -35,7 +35,7 @@ spec:
               repository: ghcr.io/mchestr/prometheus-nut-exporter
               tag: 1.2.1
             env:
-              TZ: ${TZ}
+              TZ: America/Vancouver
               HTTP_PATH: /metrics
             resources:
               limits:

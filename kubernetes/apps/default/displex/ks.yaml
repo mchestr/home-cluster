@@ -4,8 +4,6 @@ kind: Kustomization
 metadata:
   name: cluster-apps-displex
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   path: ./kubernetes/apps/default/displex/app
   prune: true
@@ -25,8 +23,6 @@ kind: Kustomization
 metadata:
   name: cluster-apps-displex-bot
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   path: ./kubernetes/apps/default/displex/bot
   prune: true
@@ -45,8 +41,6 @@ kind: Kustomization
 metadata:
   name: cluster-apps-displex-jobs
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   path: ./kubernetes/apps/default/displex/jobs
   prune: true

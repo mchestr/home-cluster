@@ -33,27 +33,28 @@ spec:
           labelSelector:
             matchLabels:
               app.kubernetes.io/name: miniflux
+
     controllers:
       main:
         replicas: 2
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
+
         initContainers:
           01-init-db:
-            imagePullPolicy: IfNotPresent
-            envFrom: &envFrom
-              - secretRef:
-                  name: miniflux-secret
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: "14.9"
+            envFrom: &envFrom
+              - secretRef:
+                  name: miniflux-secret
+
         containers:
           main:
             image:
               repository: ghcr.io/miniflux/miniflux
               tag: 2.0.48
-            envFrom: *envFrom
             env:
               BASE_URL: https://miniflux.chestr.dev
               CREATE_ADMIN: "1"
@@ -69,6 +70,7 @@ spec:
               POLLING_SCHEDULER: entry_frequency
               POLLING_FREQUENCY: "15"
               RUN_MIGRATIONS: "1"
+            envFrom: *envFrom
             resources:
               requests:
                 cpu: 10m
@@ -90,14 +92,17 @@ spec:
               readiness: *probe
               startup:
                 enabled: false
+
     service:
       main:
         ports:
           http:
             port: 8080
+
     ingress:
       main:
         enabled: true
+        className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
           gethomepage.dev/enabled: "true"
@@ -118,7 +123,7 @@ spec:
         tls:
           - hosts:
               - *host
-        className: external
+
     serviceMonitor:
       main:
         enabled: true

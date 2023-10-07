@@ -34,6 +34,7 @@ spec:
                 memory: 105Mi
               limits:
                 memory: 292Mi
+
     service:
       main:
         ports:

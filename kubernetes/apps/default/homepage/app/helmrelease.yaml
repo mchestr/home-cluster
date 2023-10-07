@@ -27,30 +27,34 @@ spec:
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
+
         containers:
           main:
             image:
               repository: ghcr.io/benphelps/homepage
               tag: v0.7.1
+            env:
+              TZ: America/Vancouver
             envFrom:
               - secretRef:
                   name: homepage-secret
-            env:
-              TZ: America/Vancouver
             resources:
               requests:
                 cpu: 15m
                 memory: 200M
               limits:
                 memory: 500Mi
+
     service:
       main:
         ports:
           http:
             port: 3000
+
     ingress:
       main:
         enabled: true
+        className: internal
         hosts:
           - host: &host home.chestr.dev
             paths:
@@ -62,7 +66,7 @@ spec:
         tls:
           - hosts:
               - *host
-        className: internal
+
     persistence:
       config:
         enabled: true
@@ -81,5 +85,6 @@ spec:
             path: /app/config/settings.yaml
           - subPath: widgets.yaml
             path: /app/config/widgets.yaml
+
     serviceAccount:
       create: true

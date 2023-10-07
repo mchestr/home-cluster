@@ -4,8 +4,6 @@ kind: Kustomization
 metadata:
   name: cluster-apps-ingress-nginx-common
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   dependsOn:
     - name: cluster-apps-cert-manager-issuers
@@ -25,8 +23,6 @@ kind: Kustomization
 metadata:
   name: cluster-apps-ingress-nginx-internal
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   dependsOn:
     - name: cluster-apps-ingress-nginx-common
@@ -45,8 +41,6 @@ kind: Kustomization
 metadata:
   name: cluster-apps-ingress-nginx-external
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   dependsOn:
     - name: cluster-apps-ingress-nginx-common

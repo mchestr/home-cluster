@@ -72,7 +72,7 @@ spec:
               tag: v5.6.0@sha256:140f28f5bfdf6429cfc0408e4a5820f7b25b23b9becdd9cf22d1f5adcd0e8cd4
             envFrom: *envFrom
             env:
-              TZ: ${TZ}
+              TZ: America/Vancouver
               GATUS_CONFIG_PATH: /config
               CLUSTER_DOMAIN: chestr.dev
           config-sync:

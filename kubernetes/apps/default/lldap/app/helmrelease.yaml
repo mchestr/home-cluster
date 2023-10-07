@@ -33,6 +33,7 @@ spec:
           labelSelector:
             matchLabels:
               app.kubernetes.io/name: lldap
+
     controllers:
       main:
         replicas: 2
@@ -41,31 +42,31 @@ spec:
           reloader.stakater.com/auto: "true"
         initContainers:
           01-init-db:
-            imagePullPolicy: IfNotPresent
-            envFrom: &envFrom
-              - secretRef:
-                  name: lldap-secret
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: "14.9"
+            envFrom: &envFrom
+              - secretRef:
+                  name: lldap-secret
         containers:
           main:
             image:
               repository: ghcr.io/lldap/lldap
               tag: v0.5.0
-            envFrom: *envFrom
             env:
-              TZ: ${TZ}
+              TZ: America/Vancouver
               LLDAP_HTTP_PORT: &port 80
               LLDAP_HTTP_URL: https://lldap.chestr.dev
               LLDAP_LDAP_PORT: &ldapPort 389
               LLDAP_LDAP_BASE_DN: dc=home,dc=arpa
+            envFrom: *envFrom
             resources:
               requests:
                 cpu: 100m
                 memory: 100Mi
               limits:
                 memory: 500Mi
+
     service:
       main:
         ports:
@@ -74,9 +75,11 @@ spec:
           ldap:
             enabled: true
             port: *ldapPort
+
     ingress:
       main:
         enabled: true
+        className: internal
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: System
@@ -93,7 +96,7 @@ spec:
         tls:
           - hosts:
               - *host
-        className: internal
+
     persistence:
       data:
         enabled: true

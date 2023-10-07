@@ -5,7 +5,7 @@ metadata:
   name: immich
   namespace: default
 data:
-  TZ: ${TZ}
+  TZ: America/Vancouver
   DB_DATABASE_NAME: immich
   DB_HOSTNAME: postgres-rw.default.svc.cluster.local
   DB_PORT: "5432"
@@ -22,8 +22,3 @@ data:
   UPLOAD_LOCATION: /usr/src/app/upload
   TYPESENSE_HOST: immich-typesense.default.svc.cluster.local
   TYPESENSE_DATA_DIR: /config
-  # OAUTH_ENABLED: "true"
-  # OAUTH_ISSUER_URL: https://auth.chestr.dev
-  # OAUTH_CLIENT_ID: immich
-  # OAUTH_AUTO_REGISTER: "true"
-  # OAUTH_BUTTON_TEXT: Login with Authelia

@@ -32,26 +32,26 @@ spec:
         runAsGroup: 1001
         fsGroup: 1001
         fsGroupChangePolicy: OnRootMismatch
+
     controllers:
       main:
         type: cronjob
         cronjob:
           schedule: "@weekly"
+
         containers:
           main:
             image:
               repository: ghcr.io/mchestr/displex
               tag: main@sha256:a0429d430c9a6464a302b81296a581f5179cd97a56510a86225c5e5e7493344f
+            args:
+              - clean-tokens
+            env:
+              DISPLEX_DATABASE__HOST: postgres-rw.default.svc.cluster.local
             envFrom:
               - secretRef:
                   name: displex-secret
-            env:
-              DISPLEX_DATABASE__HOST: postgres-rw.default.svc.cluster.local
-            args:
-              - clean-tokens
+
     service:
-      main:
-        enabled: false
-    ingress:
       main:
         enabled: false

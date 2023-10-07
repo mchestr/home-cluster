@@ -44,7 +44,7 @@ spec:
               - secretRef:
                   name: sabnzbd-secret
             env:
-              TZ: ${TZ}
+              TZ: America/Vancouver
               SABNZBD__PORT: 8080
               SABNZBD__HOST_WHITELIST_ENTRIES: >-
                 sabnzbd,
@@ -103,7 +103,7 @@ spec:
         enabled: true
         type: nfs
         server: lochnas.chestr.dev
-        path: ${NAS_MEDIA_DIR}
+        path: /volume1/shared/media
         globalMounts:
           - path: /media
       incomplete:

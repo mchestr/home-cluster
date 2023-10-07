@@ -32,46 +32,50 @@ spec:
       main:
         strategy: RollingUpdate
         annotations:
-          reloader.stakater.com/auto: 'true'
+          reloader.stakater.com/auto: "true"
+
         initContainers:
           01-init-db:
-            imagePullPolicy: IfNotPresent
-            envFrom: &id001
-              - secretRef:
-                  name: ghostfolio-secret
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: '14.9'
+              tag: "14.9"
+            envFrom: &envFrom
+              - secretRef:
+                  name: ghostfolio-secret
+
         containers:
           main:
             image:
               repository: docker.io/ghostfolio/ghostfolio
               tag: 2.8.0
-            envFrom: *id001
             env:
               NODE_ENV: production
               REDIS_HOST: ghostfolio-redis.default.svc.cluster.local
               REDIS_PORT: 6379
+            envFrom: *envFrom
             resources:
               requests:
                 cpu: 100m
                 memory: 256Mi
+
     service:
       main:
         ports:
           http:
             port: 3333
+
     ingress:
       main:
         enabled: true
+        className: internal
         annotations:
-          gethomepage.dev/enabled: 'true'
+          gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: ghostfolio.png
           gethomepage.dev/name: Ghostfolio
           gethomepage.dev/group: Home
           gethomepage.dev/widget.type: ghostfolio
           gethomepage.dev/widget.url: http://ghostfolio.default.svc.cluster.local:3333
-          gethomepage.dev/widget.key: '{{HOMEPAGE_VAR_GHOSTFOLIO_API_KEY}}'
+          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_GHOSTFOLIO_API_KEY}}"
         hosts:
           - host: &host portfolio.chestr.dev
             paths:
@@ -83,4 +87,3 @@ spec:
         tls:
           - hosts:
               - *host
-        className: internal

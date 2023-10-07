@@ -40,7 +40,7 @@ spec:
               - secretRef:
                   name: unifi-poller
             env:
-              TZ: ${TZ}
+              TZ: America/Vancouver
               UP_UNIFI_DEFAULT_ROLE: homelab-controller
               UP_UNIFI_DEFAULT_URL: https://unifi.chestr.dev
               UP_UNIFI_DEFAULT_VERIFY_SSL: true

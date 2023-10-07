@@ -35,10 +35,12 @@ spec:
       securityContext:
         fsGroup: 65539
         fsGroupChangePolicy: OnRootMismatch
+
     controllers:
       main:
         annotations:
           reloader.stakater.com/auto: "true"
+
         containers:
           main:
             image:
@@ -55,17 +57,19 @@ spec:
                 memory: 250Mi
               limits:
                 memory: 4Gi
+
     service:
       main:
         ports:
           http:
             port: 3003
+
     persistence:
       data:
         enabled: true
         type: nfs
         server: lochnas.chestr.dev
-        path: ${NAS_MEDIA_DIR}/photos
+        path: /volume1/shared/media/photos
         globalMounts:
           - path: /usr/src/app/upload
       cache:

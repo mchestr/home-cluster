@@ -54,7 +54,7 @@ spec:
               tag: 4.0.0.688@sha256:651261e5fdcc5399edda1bff312a50cad131a36d6a8f8dc39e43a352f4f2e0c3
             envFrom: *envFrom
             env:
-              TZ: ${TZ}
+              TZ: America/Vancouver
               PUSHOVER_DEBUG: "false"
               SONARR__AUTHENTICATION_METHOD: External
               SONARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
@@ -70,7 +70,7 @@ spec:
             env:
               PORT: 9794
               ENABLE_UNKNOWN_QUEUE_ITEMS: true
-              TZ: ${TZ}
+              TZ: America/Vancouver
               URL: http://sonarr.default.svc.cluster.local:8989
               APIKEY:
                 valueFrom:
@@ -120,7 +120,7 @@ spec:
         enabled: true
         type: nfs
         server: lochnas.chestr.dev
-        path: ${NAS_MEDIA_DIR}
+        path: /volume1/shared/media
         globalMounts:
           - path: /media
       scripts:
