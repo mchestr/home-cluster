@@ -37,7 +37,7 @@ spec:
         replicas: 2
         strategy: RollingUpdate
         annotations:
-          reloader.stakater.com/auto: 'true'
+          reloader.stakater.com/auto: "true"
         initContainers:
           init-db:
             envFrom:
@@ -45,7 +45,7 @@ spec:
                   name: displex-secret
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: '14.9'
+              tag: "14.9"
         containers:
           main:
             image:
@@ -73,10 +73,10 @@ spec:
       main:
         enabled: true
         annotations:
-          auth.home.arpa/enabled: 'true'
+          auth.home.arpa/enabled: "true"
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
         hosts:
-          - host: &host '{{ .Release.Name }}.chestr.dev'
+          - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix

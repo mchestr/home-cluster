@@ -92,13 +92,13 @@ sinks:
     remove_label_fields: true
     remove_timestamp: true
     labels:
-      k8s_app: '{{ custom_app_name }}'
-      k8s_container: '{{ kubernetes.container_name }}'
-      k8s_filename: '{{ kubernetes.file }}'
+      k8s_app: "{{ custom_app_name }}"
+      k8s_container: "{{ kubernetes.container_name }}"
+      k8s_filename: "{{ kubernetes.file }}"
       k8s_instance: '{{ kubernetes.pod_labels."app.kubernetes.io/instance" }}'
-      k8s_namespace: '{{ kubernetes.pod_namespace }}'
-      k8s_node: '{{ kubernetes.pod_node_name }}'
-      k8s_pod: '{{ kubernetes.pod_name }}'
+      k8s_namespace: "{{ kubernetes.pod_namespace }}"
+      k8s_node: "{{ kubernetes.pod_node_name }}"
+      k8s_pod: "{{ kubernetes.pod_name }}"
 
   loki_vyos:
     type: loki
@@ -111,8 +111,8 @@ sinks:
       max_bytes: 400000
     out_of_order_action: rewrite_timestamp
     labels:
-      hostname: '{{ host }}'
-      syslog_identifier: '{{ SYSLOG_IDENTIFIER }}'
+      hostname: "{{ host }}"
+      syslog_identifier: "{{ SYSLOG_IDENTIFIER }}"
 
   loki_journal:
     type: loki
@@ -127,7 +127,7 @@ sinks:
     remove_label_fields: true
     remove_timestamp: true
     labels:
-      hostname: '{{ host }}'
+      hostname: "{{ host }}"
 
   talos_kernel:
     type: loki
@@ -142,8 +142,8 @@ sinks:
       max_bytes: 1048576
     out_of_order_action: rewrite_timestamp
     labels:
-      hostname: '{{ __host }}'
-      service: '{{ facility }}'
+      hostname: "{{ __host }}"
+      service: "{{ facility }}"
 
   talos_service:
     type: loki
@@ -158,6 +158,6 @@ sinks:
       max_bytes: 524288
     out_of_order_action: rewrite_timestamp
     labels:
-      hostname: '{{ __host }}'
+      hostname: "{{ __host }}"
       service: "talos-service"
       namespace: "talos:service"

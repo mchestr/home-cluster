@@ -30,7 +30,7 @@ spec:
       main:
         type: statefulset
         annotations:
-          reloader.stakater.com/auto: 'true'
+          reloader.stakater.com/auto: "true"
         containers:
           main:
             image:
@@ -39,7 +39,7 @@ spec:
             env:
               TZ: ${TZ}
               APP_URL: https://invite.chestr.dev
-              DISABLE_BUILTIN_AUTH: 'true'
+              DISABLE_BUILTIN_AUTH: "true"
         statefulset:
           volumeClaimTemplates:
             - name: data
@@ -58,8 +58,8 @@ spec:
         enabled: true
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
-          auth.home.arpa/enabled: 'true'
-          gethomepage.dev/enabled: 'true'
+          auth.home.arpa/enabled: "true"
+          gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: wizarr.png
           gethomepage.dev/name: Wizarr
           gethomepage.dev/group: Media

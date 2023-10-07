@@ -37,7 +37,7 @@ spec:
     controllers:
       main:
         annotations:
-          reloader.stakater.com/auto: 'true'
+          reloader.stakater.com/auto: "true"
         initContainers:
           01-init-db:
             imagePullPolicy: IfNotPresent
@@ -46,7 +46,7 @@ spec:
                   name: radarr-secret
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: '14.9'
+              tag: "14.9"
         containers:
           main:
             image:
@@ -55,7 +55,7 @@ spec:
             envFrom: *envFrom
             env:
               TZ: ${TZ}
-              PUSHOVER_DEBUG: 'false'
+              PUSHOVER_DEBUG: "false"
               RADARR__AUTHENTICATION_METHOD: External
               RADARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
               RADARR__INSTANCE_NAME: Radarr
@@ -91,16 +91,16 @@ spec:
       main:
         enabled: true
         annotations:
-          auth.home.arpa/enabled: 'true'
-          gethomepage.dev/enabled: 'true'
+          auth.home.arpa/enabled: "true"
+          gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: radarr.png
           gethomepage.dev/name: Radarr
           gethomepage.dev/group: Downloads
           gethomepage.dev/widget.type: radarr
           gethomepage.dev/widget.url: http://radarr.default.svc.cluster.local:7878
-          gethomepage.dev/widget.key: '{{HOMEPAGE_VAR_RADARR_API_KEY}}'
+          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_RADARR_API_KEY}}"
         hosts:
-          - host: &host '{{ .Release.Name }}.chestr.dev'
+          - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix

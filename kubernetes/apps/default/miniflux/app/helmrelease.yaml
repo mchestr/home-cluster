@@ -38,7 +38,7 @@ spec:
         replicas: 2
         strategy: RollingUpdate
         annotations:
-          reloader.stakater.com/auto: 'true'
+          reloader.stakater.com/auto: "true"
         initContainers:
           01-init-db:
             imagePullPolicy: IfNotPresent
@@ -47,7 +47,7 @@ spec:
                   name: miniflux-secret
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: '14.9'
+              tag: "14.9"
         containers:
           main:
             image:
@@ -56,19 +56,19 @@ spec:
             envFrom: *envFrom
             env:
               BASE_URL: https://miniflux.chestr.dev
-              CREATE_ADMIN: '1'
-              DEBUG: '1'
-              LOG_DATE_TIME: '1'
+              CREATE_ADMIN: "1"
+              DEBUG: "1"
+              LOG_DATE_TIME: "1"
               METRICS_ALLOWED_NETWORKS: 10.244.0.0/16
-              METRICS_COLLECTOR: '1'
+              METRICS_COLLECTOR: "1"
               OAUTH2_CLIENT_ID: miniflux
-              OAUTH2_USER_CREATION: '1'
+              OAUTH2_USER_CREATION: "1"
               OAUTH2_OIDC_DISCOVERY_ENDPOINT: https://auth.chestr.dev
               OAUTH2_PROVIDER: oidc
               OAUTH2_REDIRECT_URL: https://miniflux.chestr.dev/oauth2/oidc/callback
               POLLING_SCHEDULER: entry_frequency
-              POLLING_FREQUENCY: '15'
-              RUN_MIGRATIONS: '1'
+              POLLING_FREQUENCY: "15"
+              RUN_MIGRATIONS: "1"
             resources:
               requests:
                 cpu: 10m
@@ -100,15 +100,15 @@ spec:
         enabled: true
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
-          gethomepage.dev/enabled: 'true'
+          gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Home
           gethomepage.dev/name: MiniFlux
           gethomepage.dev/icon: miniflux.png
           gethomepage.dev/widget.type: miniflux
           gethomepage.dev/widget.url: http://miniflux.default.svc.cluster.local:8080
-          gethomepage.dev/widget.key: '{{HOMEPAGE_VAR_MINIFLUX_API_TOKEN}}'
+          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_MINIFLUX_API_TOKEN}}"
         hosts:
-          - host: &host '{{ .Release.Name }}.chestr.dev'
+          - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix

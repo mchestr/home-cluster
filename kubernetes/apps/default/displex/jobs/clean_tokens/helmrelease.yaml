@@ -36,7 +36,7 @@ spec:
       main:
         type: cronjob
         cronjob:
-          schedule: '@weekly'
+          schedule: "@weekly"
         containers:
           main:
             image:

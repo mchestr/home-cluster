@@ -33,7 +33,7 @@ spec:
     controllers:
       main:
         annotations:
-          reloader.stakater.com/auto: 'true'
+          reloader.stakater.com/auto: "true"
         initContainers:
           01-init-db:
             envFrom: &envFrom
@@ -41,7 +41,7 @@ spec:
                   name: paperless-secret
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: '14.9'
+              tag: "14.9"
         containers:
           main:
             image:
@@ -58,13 +58,13 @@ spec:
               PAPERLESS_TIME_ZONE: ${TZ}
               PAPERLESS_URL: https://{{ .Release.Name }}.chestr.dev
               PAPERLESS_REDIS: redis://localhost:6379
-              PAPERLESS_ENABLE_HTTP_REMOTE_USER: 'true'
+              PAPERLESS_ENABLE_HTTP_REMOTE_USER: "true"
               PAPERLESS_LOGOUT_REDIRECT_URL: https://auth.chestr.dev/logout
           gotenburg:
             name: gotenburg
             env:
               - name: DISABLE_GOOGLE_CHROME
-                value: '1'
+                value: "1"
             image:
               repository: ghcr.io/mchestr/gotenberg
               tag: 7.9.2
@@ -87,16 +87,16 @@ spec:
       main:
         enabled: true
         annotations:
-          auth.home.arpa/enabled: 'true'
-          gethomepage.dev/enabled: 'true'
+          auth.home.arpa/enabled: "true"
+          gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: paperless.png
           gethomepage.dev/name: Paperless
           gethomepage.dev/group: Home
           gethomepage.dev/widget.type: paperlessngx
           gethomepage.dev/widget.url: http://paperless.default.svc.cluster.local:8000
-          gethomepage.dev/widget.key: '{{HOMEPAGE_VAR_PAPERLESS_API_TOKEN}}'
+          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_PAPERLESS_API_TOKEN}}"
         hosts:
-          - host: &host '{{ .Release.Name }}.chestr.dev'
+          - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix

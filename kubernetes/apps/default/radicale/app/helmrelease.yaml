@@ -37,7 +37,7 @@ spec:
       main:
         type: statefulset
         annotations:
-          reloader.stakater.com/auto: 'true'
+          reloader.stakater.com/auto: "true"
         containers:
           main:
             image:
@@ -67,7 +67,7 @@ spec:
         enabled: true
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
-          gethomepage.dev/enabled: 'true'
+          gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: radicale.png
           gethomepage.dev/name: Calendar
           gethomepage.dev/group: System

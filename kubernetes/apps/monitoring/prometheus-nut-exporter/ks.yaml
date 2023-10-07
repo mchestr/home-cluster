@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-prometheus-nut-exporter
   namespace: flux-system
   labels:
-    substitution.flux.home.arpa/enabled: 'true'
+    substitution.flux.home.arpa/enabled: "true"
 spec:
   path: ./kubernetes/apps/monitoring/prometheus-nut-exporter/app
   prune: true
