@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-flaresolverr
   namespace: flux-system
   labels:
-    substitution.flux.home.arpa/enabled: 'true'
+    substitution.flux.home.arpa/enabled: "true"
 spec:
   path: ./kubernetes/apps/default/flaresolverr/app
   prune: true

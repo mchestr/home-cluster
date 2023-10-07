@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-node-problem-detector
   namespace: flux-system
   labels:
-    substitution.flux.home.arpa/enabled: 'true'
+    substitution.flux.home.arpa/enabled: "true"
 spec:
   path: ./kubernetes/apps/kube-system/node-problem-detector/app
   prune: true

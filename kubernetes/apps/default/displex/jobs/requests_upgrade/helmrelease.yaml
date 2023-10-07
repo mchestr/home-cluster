@@ -36,7 +36,7 @@ spec:
       main:
         type: cronjob
         cronjob:
-          schedule: '@daily'
+          schedule: "@daily"
         containers:
           main:
             image:
@@ -46,7 +46,7 @@ spec:
               - secretRef:
                   name: displex-secret
             env:
-              DISPLEX_DATABASE__READ_ONLY: 'true'
+              DISPLEX_DATABASE__READ_ONLY: "true"
               DISPLEX_DATABASE__HOST: postgres-ro.default.svc.cluster.local
             args:
               - requests-upgrade

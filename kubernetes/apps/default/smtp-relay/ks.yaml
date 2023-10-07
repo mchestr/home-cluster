@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-smtp-relay
   namespace: flux-system
   labels:
-    substitution.flux.home.arpa/enabled: 'true'
+    substitution.flux.home.arpa/enabled: "true"
 spec:
   path: ./kubernetes/apps/default/smtp-relay/app
   prune: true

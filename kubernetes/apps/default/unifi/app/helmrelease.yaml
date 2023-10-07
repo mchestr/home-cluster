@@ -30,7 +30,7 @@ spec:
       main:
         type: statefulset
         annotations:
-          reloader.stakater.com/auto: 'true'
+          reloader.stakater.com/auto: "true"
         containers:
           main:
             image:
@@ -38,10 +38,10 @@ spec:
               tag: v7.5.174
             env:
               TZ: America/Vancouver
-              RUNAS_UID0: 'false'
-              UNIFI_UID: '999'
-              UNIFI_GID: '999'
-              UNIFI_STDOUT: 'true'
+              RUNAS_UID0: "false"
+              UNIFI_UID: "999"
+              UNIFI_GID: "999"
+              UNIFI_STDOUT: "true"
               JVM_INIT_HEAP_SIZE: null
               JVM_MAX_HEAP_SIZE: 1024M
         statefulset:
@@ -95,12 +95,12 @@ spec:
         enabled: true
         annotations:
           nginx.ingress.kubernetes.io/backend-protocol: HTTPS
-          gethomepage.dev/enabled: 'true'
+          gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: unifi.png
           gethomepage.dev/name: Unifi
           gethomepage.dev/group: Infrastructure
         hosts:
-          - host: &host '{{ .Release.Name }}.chestr.dev'
+          - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix

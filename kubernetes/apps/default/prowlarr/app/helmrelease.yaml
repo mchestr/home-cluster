@@ -35,7 +35,7 @@ spec:
     controllers:
       main:
         annotations:
-          reloader.stakater.com/auto: 'true'
+          reloader.stakater.com/auto: "true"
         initContainers:
           01-init-db:
             imagePullPolicy: IfNotPresent
@@ -44,7 +44,7 @@ spec:
                   name: prowlarr-secret
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: '14.9'
+              tag: "14.9"
         containers:
           main:
             image:
@@ -67,16 +67,16 @@ spec:
       main:
         enabled: true
         annotations:
-          auth.home.arpa/enabled: 'true'
-          gethomepage.dev/enabled: 'true'
+          auth.home.arpa/enabled: "true"
+          gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: prowlarr.png
           gethomepage.dev/name: Prowlarr
           gethomepage.dev/group: Downloads
           gethomepage.dev/widget.type: *app
           gethomepage.dev/widget.url: http://prowlarr.default.svc.cluster.local:9696
-          gethomepage.dev/widget.key: '{{HOMEPAGE_VAR_PROWLARR_API_KEY}}'
+          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}"
         hosts:
-          - host: &host '{{ .Release.Name }}.chestr.dev'
+          - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix

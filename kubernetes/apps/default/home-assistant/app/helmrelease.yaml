@@ -46,7 +46,7 @@ spec:
       main:
         type: statefulset
         annotations:
-          reloader.stakater.com/auto: 'true'
+          reloader.stakater.com/auto: "true"
         initContainers:
           init-db:
             envFrom: &envFrom
@@ -54,7 +54,7 @@ spec:
                   name: home-assistant-secret
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: '14.9'
+              tag: "14.9"
         containers:
           main:
             image:
@@ -96,12 +96,12 @@ spec:
         className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
-          gethomepage.dev/enabled: 'true'
+          gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Security
           gethomepage.dev/name: Home Assistant
           gethomepage.dev/icon: home-assistant.png
         hosts:
-          - host: &host '{{ .Release.Name }}.chestr.dev'
+          - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix
@@ -116,13 +116,13 @@ spec:
         enabled: true
         ingressClassName: internal
         annotations:
-          auth.home.arpa/enabled: 'true'
-          gethomepage.dev/enabled: 'true'
+          auth.home.arpa/enabled: "true"
+          gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Automation
           gethomepage.dev/name: Home-Assistant Code
           gethomepage.dev/icon: vscode.png
         hosts:
-          - host: &host '{{ .Release.Name }}-code.chestr.dev'
+          - host: &host "{{ .Release.Name }}-code.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix

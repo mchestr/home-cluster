@@ -29,13 +29,13 @@ spec:
   values:
     defaultPodOptions:
       annotations:
-        reloader.stakater.com/auto: 'true'
+        reloader.stakater.com/auto: "true"
 
     controllers:
       main:
         replicas: 1
         annotations:
-          reloader.stakater.com/auto: 'true'
+          reloader.stakater.com/auto: "true"
         initContainers:
           01-init-db:
             envFrom: &envFrom
@@ -43,7 +43,7 @@ spec:
                   name: gatus-secret
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: '14.9'
+              tag: "14.9"
           02-config-sync:
             imagePullPolicy: IfNotPresent
             env:
@@ -56,7 +56,7 @@ spec:
               - name: RESOURCE
                 value: both
               - name: UNIQUE_FILENAMES
-                value: 'true'
+                value: "true"
               - name: METHOD
                 value: LIST
             volumeMounts:
@@ -89,7 +89,7 @@ spec:
               - name: RESOURCE
                 value: both
               - name: UNIQUE_FILENAMES
-                value: 'true'
+                value: "true"
               - name: METHOD
                 value: WATCH
     service:
@@ -101,12 +101,12 @@ spec:
       main:
         enabled: true
         annotations:
-          gethomepage.dev/enabled: 'true'
+          gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: gatus.png
           gethomepage.dev/name: Gatus
           gethomepage.dev/group: Monitoring
         hosts:
-          - host: &host '{{ .Release.Name }}.chestr.dev'
+          - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix

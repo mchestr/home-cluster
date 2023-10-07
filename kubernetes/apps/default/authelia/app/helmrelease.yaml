@@ -54,7 +54,13 @@ spec:
 
         containers:
           main:
-            args: ["--config", "/config/configuration.yml", "--config.experimental.filters", "expand-env"]
+            args:
+              [
+                "--config",
+                "/config/configuration.yml",
+                "--config.experimental.filters",
+                "expand-env",
+              ]
             image:
               repository: ghcr.io/authelia/authelia
               # TODO use tag when one available with https://github.com/authelia/authelia/pull/4515

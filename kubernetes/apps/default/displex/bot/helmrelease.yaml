@@ -35,7 +35,7 @@ spec:
     controllers:
       main:
         annotations:
-          reloader.stakater.com/auto: 'true'
+          reloader.stakater.com/auto: "true"
         containers:
           main:
             image:
@@ -45,7 +45,7 @@ spec:
               - secretRef:
                   name: displex-secret
             env:
-              DISPLEX_DATABASE__READ_ONLY: 'true'
+              DISPLEX_DATABASE__READ_ONLY: "true"
               DISPLEX_DATABASE__HOST: postgres-ro.default.svc.cluster.local
             resources:
               requests:
