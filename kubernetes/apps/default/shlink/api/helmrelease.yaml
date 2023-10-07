@@ -34,28 +34,27 @@ spec:
           labelSelector:
             matchLabels:
               app.kubernetes.io/name: shlink-api
+
     controllers:
       main:
         replicas: 3
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
+
         initContainers:
           01-init-db:
-            envFrom:
-              - secretRef:
-                  name: shlink-api-secret
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: "14.9"
+            envFrom: &envFrom
+              - secretRef:
+                  name: shlink-api-secret
         containers:
           main:
             image:
               repository: ghcr.io/shlinkio/shlink
               tag: 3.6.4
-            envFrom:
-              - secretRef:
-                  name: shlink-api-secret
             env:
               DB_DRIVER: postgres
               DEFAULT_DOMAIN: ln.chestr.dev
@@ -67,14 +66,18 @@ spec:
               REDIS_SENTINEL_SERVICE: redis-master
               REDIS_SERVERS: redis-node-0.redis-headless.default.svc.cluster.local:26379,redis-node-1.redis-headless.default.svc.cluster.local:26379, redis-node-2.redis-headless.default.svc.cluster.local:26379
               TIMEZONE: America/Vancouver
+            envFrom: *envFrom
+
     service:
       main:
         ports:
           http:
             port: 80
+
     ingress:
       main:
         enabled: true
+        className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
         hosts:
@@ -88,4 +91,3 @@ spec:
         tls:
           - hosts:
               - *host
-        className: external

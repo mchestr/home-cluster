@@ -32,27 +32,30 @@ spec:
         runAsGroup: 568
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
+
     controllers:
       main:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
+
         containers:
           main:
             image:
               repository: ghcr.io/recyclarr/recyclarr
               tag: 6.0.1
+            env:
+              TZ: America/Vancouver
             envFrom:
               - secretRef:
                   name: recyclarr-secret
-            env:
-              TZ: America/Vancouver
             resources:
               requests:
                 cpu: 10m
                 memory: 50Mi
               limits:
                 memory: 200Mi
+
         statefulset:
           volumeClaimTemplates:
             - name: config
@@ -61,9 +64,11 @@ spec:
               storageClass: ceph-block
               globalMounts:
                 - path: /config
+
     service:
       main:
         enabled: false
+
     persistence:
       config-file:
         enabled: true

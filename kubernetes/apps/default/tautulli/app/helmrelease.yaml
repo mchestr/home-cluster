@@ -30,11 +30,13 @@ spec:
       securityContext:
         fsGroup: 65539
         fsGroupChangePolicy: OnRootMismatch
+
     controllers:
       main:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
+
         containers:
           main:
             image:
@@ -42,6 +44,7 @@ spec:
               tag: 2.13.1@sha256:5e3ec98d2905d0ac49de46cf4bd1070c42bd5b3a8f6db50ce5c6cddc6908adb6
             env:
               TZ: America/Vancouver
+
         statefulset:
           volumeClaimTemplates:
             - name: config
@@ -50,14 +53,17 @@ spec:
               storageClass: ceph-block
               globalMounts:
                 - path: /config
+
     service:
       main:
         ports:
           http:
             port: 8181
+
     ingress:
       main:
         enabled: true
+        className: internal
         annotations:
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_set_header Accept-Encoding "";
@@ -81,4 +87,3 @@ spec:
         tls:
           - hosts:
               - *host
-        className: internal

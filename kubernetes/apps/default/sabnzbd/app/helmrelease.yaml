@@ -30,19 +30,18 @@ spec:
       securityContext:
         fsGroup: 65539
         fsGroupChangePolicy: OnRootMismatch
+
     controllers:
       main:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
+
         containers:
           main:
             image:
               repository: ghcr.io/onedr0p/sabnzbd
               tag: 4.1.0@sha256:0973dcf425a5283285518a3ae66b78ee72dbac63df9ffe658d09214419ec6c63
-            envFrom:
-              - secretRef:
-                  name: sabnzbd-secret
             env:
               TZ: America/Vancouver
               SABNZBD__PORT: 8080
@@ -53,10 +52,14 @@ spec:
                 sabnzbd.default.svc.cluster,
                 sabnzbd.default.svc.cluster.local,
                 sabnzbd.chestr.dev
+            envFrom:
+              - secretRef:
+                  name: sabnzbd-secret
             resources:
               requests:
                 cpu: 100m
                 memory: 250Mi
+
         statefulset:
           volumeClaimTemplates:
             - name: config
@@ -65,14 +68,17 @@ spec:
               storageClass: ceph-block
               globalMounts:
                 - path: /config
+
     service:
       main:
         ports:
           http:
             port: 8080
+
     ingress:
       main:
         enabled: true
+        className: internal
         annotations:
           auth.home.arpa/enabled: "true"
           nginx.ingress.kubernetes.io/configuration-snippet: |
@@ -97,7 +103,7 @@ spec:
         tls:
           - hosts:
               - *host
-        className: internal
+
     persistence:
       media:
         enabled: true
