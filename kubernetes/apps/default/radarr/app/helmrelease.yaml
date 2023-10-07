@@ -34,25 +34,26 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
           - 65539
+
     controllers:
       main:
         annotations:
           reloader.stakater.com/auto: "true"
+
         initContainers:
           01-init-db:
-            imagePullPolicy: IfNotPresent
-            envFrom: &envFrom
-              - secretRef:
-                  name: radarr-secret
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: "14.9"
+            envFrom: &envFrom
+              - secretRef:
+                  name: radarr-secret
+
         containers:
           main:
             image:
               repository: ghcr.io/onedr0p/radarr-develop
               tag: 5.0.3.8107@sha256:2c4fca668420dfa87b286da9b0a43f6dc64fd26329f9e914bc2de58887091eaf
-            envFrom: *envFrom
             env:
               TZ: America/Vancouver
               PUSHOVER_DEBUG: "false"
@@ -62,9 +63,12 @@ spec:
               RADARR__PORT: 7878
               RADARR__LOG_LEVEL: info
               RADARR__THEME: dark
+            envFrom: *envFrom
+
           metrics:
-            name: metrics
-            imagePullPolicy: Always
+            image:
+              repository: ghcr.io/onedr0p/exportarr
+              tag: v1.5.5
             args:
               - r
             env:
@@ -77,9 +81,7 @@ spec:
                   secretKeyRef:
                     name: radarr-secret
                     key: RADARR__API_KEY
-            image:
-              repository: ghcr.io/onedr0p/exportarr
-              tag: v1.5.5
+
     service:
       main:
         ports:
@@ -87,9 +89,11 @@ spec:
             port: 7878
           metrics:
             port: 9794
+
     ingress:
       main:
         enabled: true
+        className: internal
         annotations:
           auth.home.arpa/enabled: "true"
           gethomepage.dev/enabled: "true"
@@ -110,7 +114,7 @@ spec:
         tls:
           - hosts:
               - *host
-        className: internal
+
     persistence:
       config:
         enabled: true
@@ -132,6 +136,7 @@ spec:
         globalMounts:
           - path: /scripts/pushover-notify.sh
             subPath: pushover-notify.sh
+
     serviceMonitor:
       main:
         enabled: true

@@ -32,11 +32,13 @@ spec:
         runAsGroup: 568
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
+
     controllers:
       main:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
+
         containers:
           main:
             image:
@@ -51,6 +53,7 @@ spec:
                 memory: 250Mi
               limits:
                 memory: 500Mi
+
         statefulset:
           volumeClaimTemplates:
             - name: config
@@ -59,14 +62,17 @@ spec:
               storageClass: ceph-block
               globalMounts:
                 - path: /config
+
     service:
       main:
         ports:
           http:
             port: 9000
+
     ingress:
       main:
         enabled: true
+        className: internal
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: System
@@ -83,7 +89,7 @@ spec:
         tls:
           - hosts:
               - *host
-        className: internal
+
     persistence:
       config-file:
         enabled: true

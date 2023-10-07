@@ -31,6 +31,7 @@ spec:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
+
         containers:
           main:
             image:
@@ -44,6 +45,7 @@ spec:
               UNIFI_STDOUT: "true"
               JVM_INIT_HEAP_SIZE: null
               JVM_MAX_HEAP_SIZE: 1024M
+
         statefulset:
           volumeClaimTemplates:
             - name: data
@@ -52,6 +54,7 @@ spec:
               storageClass: ceph-block
               globalMounts:
                 - path: /unifi
+
     service:
       main:
         type: LoadBalancer
@@ -90,9 +93,11 @@ spec:
             enabled: true
             port: 10001
             protocol: UDP
+
     ingress:
       main:
         enabled: true
+        className: internal
         annotations:
           nginx.ingress.kubernetes.io/backend-protocol: HTTPS
           gethomepage.dev/enabled: "true"
@@ -110,4 +115,3 @@ spec:
         tls:
           - hosts:
               - *host
-        className: internal

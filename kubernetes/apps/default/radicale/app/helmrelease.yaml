@@ -33,11 +33,13 @@ spec:
         runAsGroup: 568
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
+
     controllers:
       main:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
+
         containers:
           main:
             image:
@@ -49,6 +51,7 @@ spec:
                 memory: 79M
               limits:
                 memory: 79M
+
         statefulset:
           volumeClaimTemplates:
             - name: data
@@ -57,14 +60,17 @@ spec:
               storageClass: ceph-block
               globalMounts:
                 - path: /data
+
     service:
       main:
         ports:
           http:
             port: 5232
+
     ingress:
       main:
         enabled: true
+        className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
           gethomepage.dev/enabled: "true"
@@ -81,7 +87,7 @@ spec:
         tls:
           - hosts:
               - cal.chestr.dev
-        className: external
+
     persistence:
       config:
         enabled: true

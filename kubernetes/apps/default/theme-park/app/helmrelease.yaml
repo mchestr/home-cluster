@@ -41,14 +41,17 @@ spec:
                 memory: 50Mi
               limits:
                 memory: 200Mi
+
     service:
       main:
         ports:
           http:
             port: 8080
+
     ingress:
       main:
         enabled: true
+        className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
         hosts:
@@ -62,4 +65,3 @@ spec:
         tls:
           - hosts:
               - *host
-        className: external

@@ -34,36 +34,41 @@ spec:
           labelSelector:
             matchLabels:
               app.kubernetes.io/name: shlink-web
+
     controllers:
       main:
         replicas: 3
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
+
         containers:
           main:
             image:
               repository: ghcr.io/shlinkio/shlink-web-client
               tag: 3.10.2
+            env:
+              SHLINK_SERVER_URL: https://ln.chestr.dev
             envFrom:
               - secretRef:
                   name: shlink-web
-            env:
-              SHLINK_SERVER_URL: https://ln.chestr.dev
             resources:
               requests:
                 cpu: 10m
                 memory: 100Mi
               limits:
                 memory: 250Mi
+
     service:
       main:
         ports:
           http:
             port: 80
+
     ingress:
       main:
         enabled: true
+        className: internal
         annotations:
           auth.home.arpa/enabled: "true"
           gethomepage.dev/enabled: "true"
@@ -71,7 +76,7 @@ spec:
           gethomepage.dev/name: Shlink
           gethomepage.dev/group: System
         hosts:
-          - host: shlink.chestr.dev
+          - host: &host shlink.chestr.dev
             paths:
               - path: /
                 pathType: Prefix
@@ -80,5 +85,4 @@ spec:
                   port: http
         tls:
           - hosts:
-              - shlink.chestr.dev
-        className: internal
+              - *host
