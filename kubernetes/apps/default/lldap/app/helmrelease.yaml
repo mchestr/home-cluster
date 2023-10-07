@@ -38,7 +38,7 @@ spec:
         replicas: 2
         strategy: RollingUpdate
         annotations:
-          reloader.stakater.com/auto: 'true'
+          reloader.stakater.com/auto: "true"
         initContainers:
           01-init-db:
             imagePullPolicy: IfNotPresent
@@ -47,7 +47,7 @@ spec:
                   name: lldap-secret
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: '14.9'
+              tag: "14.9"
         containers:
           main:
             image:
@@ -78,12 +78,12 @@ spec:
       main:
         enabled: true
         annotations:
-          gethomepage.dev/enabled: 'true'
+          gethomepage.dev/enabled: "true"
           gethomepage.dev/group: System
           gethomepage.dev/name: LLDAP
           gethomepage.dev/icon: mdi-account-key
         hosts:
-          - host: &host '{{ .Release.Name }}.chestr.dev'
+          - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix

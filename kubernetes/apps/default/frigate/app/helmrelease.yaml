@@ -28,13 +28,13 @@ spec:
   values:
     defaultPodOptions:
       nodeSelector:
-        google.feature.node.kubernetes.io/coral: 'true'
-        intel.feature.node.kubernetes.io/gpu: 'true'
+        google.feature.node.kubernetes.io/coral: "true"
+        intel.feature.node.kubernetes.io/gpu: "true"
     controllers:
       main:
         type: statefulset
         annotations:
-          reloader.stakater.com/auto: 'true'
+          reloader.stakater.com/auto: "true"
         containers:
           main:
             image:
@@ -52,10 +52,10 @@ spec:
               requests:
                 cpu: 600m
                 memory: 1000Mi
-                gpu.intel.com/i915: '1'
+                gpu.intel.com/i915: "1"
               limits:
                 memory: 6000Mi
-                gpu.intel.com/i915: '1'
+                gpu.intel.com/i915: "1"
             probes:
               liveness: &probe
                 enabled: true
@@ -91,13 +91,13 @@ spec:
       main:
         enabled: true
         annotations:
-          auth.home.arpa/enabled: 'true'
-          gethomepage.dev/enabled: 'true'
+          auth.home.arpa/enabled: "true"
+          gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Security
           gethomepage.dev/name: Frigate
           gethomepage.dev/icon: frigate.png
         hosts:
-          - host: &host '{{ .Release.Name }}.chestr.dev'
+          - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix

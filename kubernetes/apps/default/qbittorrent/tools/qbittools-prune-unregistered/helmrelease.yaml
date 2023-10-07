@@ -47,7 +47,7 @@ spec:
               - --server
               - qbittorrent.default.svc.cluster.local
               - --port
-              - '8080'
+              - "8080"
     service:
       main:
         enabled: false

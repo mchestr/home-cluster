@@ -37,7 +37,7 @@ spec:
           - 109
           - 65539
       nodeSelector:
-        intel.feature.node.kubernetes.io/gpu: 'true'
+        intel.feature.node.kubernetes.io/gpu: "true"
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -63,10 +63,10 @@ spec:
               requests:
                 cpu: 100m
                 memory: 2000Mi
-                gpu.intel.com/i915: '1'
+                gpu.intel.com/i915: "1"
               limits:
                 memory: 8000Mi
-                gpu.intel.com/i915: '1'
+                gpu.intel.com/i915: "1"
 
         statefulset:
           volumeClaimTemplates:
@@ -100,9 +100,9 @@ spec:
           gethomepage.dev/group: Media
           gethomepage.dev/widget.type: plex
           gethomepage.dev/widget.url: http://plex.default.svc.cluster.local:32400
-          gethomepage.dev/widget.key: '{{HOMEPAGE_VAR_PLEX_API_KEY}}'
+          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_PLEX_API_KEY}}"
         hosts:
-          - host: &host '{{ .Release.Name }}.chestr.dev'
+          - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix

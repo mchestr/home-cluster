@@ -34,7 +34,7 @@ spec:
       main:
         type: statefulset
         annotations:
-          reloader.stakater.com/auto: 'true'
+          reloader.stakater.com/auto: "true"
         containers:
           main:
             image:
@@ -62,13 +62,13 @@ spec:
         enabled: true
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
-          gethomepage.dev/enabled: 'true'
+          gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: overseerr.png
           gethomepage.dev/name: Overseerr
           gethomepage.dev/group: Media
           gethomepage.dev/widget.type: overseerr
           gethomepage.dev/widget.url: http://overseerr.default.svc.cluster.local:5055
-          gethomepage.dev/widget.key: '{{HOMEPAGE_VAR_OVERSEERR_API_KEY}}'
+          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_OVERSEERR_API_KEY}}"
         hosts:
           - host: &host requests.chestr.dev
             paths:

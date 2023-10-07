@@ -30,7 +30,7 @@ spec:
       main:
         type: statefulset
         annotations:
-          reloader.stakater.com/auto: 'true'
+          reloader.stakater.com/auto: "true"
         containers:
           main:
             image:
@@ -55,13 +55,13 @@ spec:
       main:
         enabled: true
         annotations:
-          auth.home.arpa/enabled: 'true'
-          gethomepage.dev/enabled: 'true'
+          auth.home.arpa/enabled: "true"
+          gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: zwavejs2mqtt.png
           gethomepage.dev/name: zWave
           gethomepage.dev/group: Automation
         hosts:
-          - host: &host '{{ .Release.Name }}.chestr.dev'
+          - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix
