@@ -30,6 +30,7 @@ spec:
       securityContext:
         fsGroup: 65539
         fsGroupChangePolicy: OnRootMismatch
+
     controllers:
       main:
         type: statefulset
@@ -37,6 +38,7 @@ spec:
           reloader.stakater.com/auto: "true"
           configmap.reloader.stakater.com/reload: qbittorrent-scripts
           secret.reloader.stakater.com/reload: cross-seed-secret
+
         containers:
           main:
             image:
@@ -52,6 +54,7 @@ spec:
               tag: version-5.2.0
             args:
               - daemon
+
         statefulset:
           volumeClaimTemplates:
             - name: config
@@ -60,6 +63,7 @@ spec:
               storageClass: ceph-block
               globalMounts:
                 - path: /config
+
     service:
       main:
         ports:
@@ -87,9 +91,11 @@ spec:
             port: 50413
             protocol: TCP
             targetPort: 50413
+
     ingress:
       main:
         enabled: true
+        className: internal
         annotations:
           auth.home.arpa/enabled: "true"
           nginx.ingress.kubernetes.io/configuration-snippet: |
@@ -116,7 +122,7 @@ spec:
         tls:
           - hosts:
               - *host
-        className: internal
+
     persistence:
       media:
         enabled: true

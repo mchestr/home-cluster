@@ -31,6 +31,7 @@ spec:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
+
         containers:
           main:
             image:
@@ -40,6 +41,7 @@ spec:
               TZ: America/Vancouver
               APP_URL: https://invite.chestr.dev
               DISABLE_BUILTIN_AUTH: "true"
+
         statefulset:
           volumeClaimTemplates:
             - name: data
@@ -48,14 +50,17 @@ spec:
               storageClass: ceph-block
               globalMounts:
                 - path: /data/database
+
     service:
       main:
         ports:
           http:
             port: 5690
+
     ingress:
       main:
         enabled: true
+        className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
           auth.home.arpa/enabled: "true"
@@ -74,4 +79,3 @@ spec:
         tls:
           - hosts:
               - *host
-        className: external

@@ -34,37 +34,40 @@ spec:
           labelSelector:
             matchLabels:
               app.kubernetes.io/name: *app
+
     controllers:
       main:
         replicas: 3
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
+
         containers:
           main:
             image:
               repository: ghcr.io/foxcpp/maddy
               tag: 0.7.0
-            envFrom:
-              - secretRef:
-                  name: smtp-relay-secret
             env:
               DEBUG: "false"
               SMTP_DOMAIN: chestr.dev
+            envFrom:
+              - secretRef:
+                  name: smtp-relay-secret
             resources:
               requests:
                 cpu: 10m
                 memory: 10Mi
               limits:
                 memory: 50Mi
+
     service:
       main:
         ports:
           http:
             port: 2525
           metrics:
-            enabled: true
             port: 9749
+
     persistence:
       config:
         enabled: true
@@ -81,6 +84,7 @@ spec:
         sizeLimit: 1Gi
         globalMounts:
           - path: /dev/shm
+
     serviceMonitor:
       main:
         enabled: true

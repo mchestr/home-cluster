@@ -31,14 +31,12 @@ spec:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
+
         containers:
           main:
             image:
               repository: ghcr.io/koenkk/zigbee2mqtt
               tag: 1.33.1
-            envFrom:
-              - secretRef:
-                  name: zigbee2mqtt-secret
             env:
               TZ: America/Vancouver
               ZIGBEE2MQTT_DATA: /data
@@ -70,6 +68,10 @@ spec:
               ZIGBEE2MQTT_CONFIG_PERMIT_JOIN: "false"
               ZIGBEE2MQTT_CONFIG_SERIAL_PORT: tcp://home-controller.chestr.dev:2001
               ZIGBEE2MQTT_CONFIG_SERIAL_ADAPTER: ezsp
+            envFrom:
+              - secretRef:
+                  name: zigbee2mqtt-secret
+
           exporter:
             name: exporter
             image:
@@ -97,11 +99,12 @@ spec:
                     name: zigbee2mqtt-secret
                     key: ZIGBEE2MQTT_CONFIG_MQTT_PASSWORD
               - name: PROMETHEUS_PORT
-                value: &port 80
+                value: 80
               - name: PROMETHEUS_PREFIX
                 value: zigbee2mqtt_
               - name: ZIGBEE2MQTT_AVAILABILITY
                 value: "True"
+
         statefulset:
           volumeClaimTemplates:
             - name: data
@@ -110,17 +113,19 @@ spec:
               storageClass: ceph-block
               globalMounts:
                 - path: /data
+
     service:
       main:
         ports:
           http:
             port: 8080
           metrics:
-            enabled: true
             port: 80
+
     ingress:
       main:
         enabled: true
+        className: internal
         annotations:
           auth.home.arpa/enabled: "true"
           gethomepage.dev/enabled: "true"
@@ -138,7 +143,7 @@ spec:
         tls:
           - hosts:
               - *host
-        className: internal
+
     serviceMonitor:
       main:
         enabled: true

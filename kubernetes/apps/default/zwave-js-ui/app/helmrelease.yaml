@@ -31,6 +31,7 @@ spec:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
+
         containers:
           main:
             image:
@@ -38,6 +39,7 @@ spec:
               tag: 9.1.0
             env:
               TZ: America/Vancouver
+
         statefulset:
           volumeClaimTemplates:
             - name: data
@@ -46,14 +48,17 @@ spec:
               storageClass: ceph-block
               globalMounts:
                 - path: /usr/src/app/store
+
     service:
       main:
         ports:
           http:
             port: 8091
+
     ingress:
       main:
         enabled: true
+        className: internal
         annotations:
           auth.home.arpa/enabled: "true"
           gethomepage.dev/enabled: "true"
@@ -71,4 +76,3 @@ spec:
         tls:
           - hosts:
               - *host
-        className: internal
