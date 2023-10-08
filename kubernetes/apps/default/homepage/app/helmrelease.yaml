@@ -32,7 +32,7 @@ spec:
           main:
             image:
               repository: ghcr.io/gethomepage/homepage
-              tag: v0.7.1
+              tag: v0.7.3
             env:
               TZ: America/Vancouver
             envFrom:
