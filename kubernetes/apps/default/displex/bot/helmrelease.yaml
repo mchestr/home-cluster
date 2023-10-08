@@ -42,7 +42,7 @@ spec:
           main:
             image:
               repository: ghcr.io/mchestr/displex
-              tag: main@sha256:af280604dca74beaa65a8a8247f04d93518ff2d14bd21d013a4c89dc976fb95b
+              tag: main@sha256:7fc75c3627388e1941872a887e68173b47a7782f36341c8e46074f5f15d0750b
             args:
               - bot
             env:
