@@ -42,29 +42,97 @@ spec:
 
         initContainers:
           init-db:
-            envFrom: &envFrom
-              - secretRef:
-                  name: displex-secret
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: "14.9"
+            envFrom: &envFrom
+              - secretRef:
+                  name: displex-secret
 
         containers:
           main:
-            image:
+            image: &image
               repository: ghcr.io/mchestr/displex
               tag: main@sha256:7fc75c3627388e1941872a887e68173b47a7782f36341c8e46074f5f15d0750b
             args:
               - server
-            env:
+            env: &envRw
               DISPLEX_DATABASE__HOST: postgres-rw.default.svc.cluster.local
             envFrom: *envFrom
-            resources:
+            resources: &resources
               requests:
                 cpu: 5m
                 memory: 10Mi
               limits:
                 memory: 20Mi
+
+      bot:
+        type: deployment
+        containers:
+          main:
+            args:
+              - bot
+            image: *image
+            env: &envRo
+              DISPLEX_DATABASE__READ_ONLY: "true"
+              DISPLEX_DATABASE__HOST: postgres-ro.default.svc.cluster.local
+            envFrom: *envFrom
+            resources: *resources
+
+      channel-refresh:
+        type: cronjob
+        cronjob:
+          schedule: "*/3 * * * *"
+        containers:
+          main:
+            args:
+              - channel-refresh
+            env: *envRo
+            image: *image
+            envFrom: *envFrom
+            resources: *resources
+
+      requests-upgrade:
+        type: cronjob
+        cronjob:
+          schedule: "@daily"
+
+        containers:
+          main:
+            args:
+              - requests-upgrade
+            image: *image
+            env: *envRo
+            envFrom: *envFrom
+            resources: *resources
+
+      token-maintenance:
+        type: cronjob
+        cronjob:
+          schedule: "@hourly"
+
+        containers:
+          main:
+            args:
+              - token-maintenance
+            image: *image
+            env: *envRw
+            envFrom: *envFrom
+            resources: *resources
+
+      user-refresh:
+        type: cronjob
+        cronjob:
+          schedule: "@hourly"
+
+        containers:
+          main:
+            args:
+              - user-refresh
+            image: *image
+            env: *envRo
+            envFrom: *envFrom
+            resources: *resources
 
     service:
       main:
