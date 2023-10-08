@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: displex-channel-refresh-job
+  name: displex-jobs
   namespace: default
 spec:
   interval: 30m
@@ -35,22 +35,63 @@ spec:
 
     controllers:
       main:
+        nameOverride: channel-refresh
         type: cronjob
         cronjob:
           schedule: "*/3 * * * *"
         containers:
           main:
-            image:
+            image: &image
               repository: ghcr.io/mchestr/displex
               tag: main@sha256:7fc75c3627388e1941872a887e68173b47a7782f36341c8e46074f5f15d0750b
             args:
               - channel-refresh
-            env:
+            env: &roEnv
               DISPLEX_DATABASE__READ_ONLY: "true"
               DISPLEX_DATABASE__HOST: postgres-ro.default.svc.cluster.local
-            envFrom:
+            envFrom: &envFrom
               - secretRef:
                   name: displex-secret
+
+      requests-upgrade:
+        type: cronjob
+        cronjob:
+          schedule: "@daily"
+
+        containers:
+          main:
+            image: *image
+            args:
+              - requests-upgrade
+            env: *roEnv
+            envFrom: *envFrom
+
+      token-maintenance:
+        type: cronjob
+        cronjob:
+          schedule: "@hourly"
+
+        containers:
+          main:
+            image: *image
+            args:
+              - token-maintenance
+            env: &rwEnv
+              DISPLEX_DATABASE__HOST: postgres-rw.default.svc.cluster.local
+            envFrom: *envFrom
+
+      user-refresh:
+        type: cronjob
+        cronjob:
+          schedule: "@hourly"
+
+        containers:
+          main:
+            image: *image
+            args:
+              - user-refresh
+            env: *roEnv
+            envFrom: *envFrom
 
     service:
       main:
