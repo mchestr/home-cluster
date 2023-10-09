@@ -34,3 +34,13 @@ variable "tag" {
   # renovate: datasource=github-releases depName=louislam/uptime-kuma
   default = "1.23.3"
 }
+variable "zone" {
+  type = string
+  description = "GCloud Zone"
+  default = "us-west1-b"
+}
+variable "region" {
+  type = string
+  description = "GCloud region"
+  default = "us-west1"
+}
