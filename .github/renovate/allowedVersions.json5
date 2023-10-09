@@ -5,6 +5,11 @@
       "matchDatasources": ["docker"],
       "matchPackagePatterns": ["postgresql", "postgres-backup-local"],
       "allowedVersions": "<16"
+    },
+    {
+      "matchDatasources": ["terraform"],
+      "matchPackagePatterns": ["google"],
+      "allowedVersions": "<5"
     }
   ]
 }
