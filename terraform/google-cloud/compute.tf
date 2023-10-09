@@ -8,7 +8,7 @@ locals {
 
   config_sha = sha1("${join("", local.envs.*.value)}-${local.image}")
   image    = "ghcr.io/mchestr/uptime-kuma:${var.tag}"
-  zone     = "us-west1-b"
+  zone     = var.zone
 }
 
 module "uptime-kuma" {
