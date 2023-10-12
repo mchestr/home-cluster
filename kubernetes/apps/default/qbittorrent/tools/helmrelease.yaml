@@ -29,7 +29,7 @@ spec:
           main:
             image: &image
               repository: ghcr.io/buroa/qbittools
-              tag: v0.9.5
+              tag: v0.10.0
             resources: &resources
               requests:
                 memory: 250Mi
