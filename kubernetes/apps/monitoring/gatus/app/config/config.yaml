@@ -43,3 +43,5 @@ endpoints:
     conditions:
       - "[CONNECTED] == true"
       - "[CERTIFICATE_EXPIRATION] > 336h"
+    alerts:
+      - type: pushover
