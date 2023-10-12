@@ -81,7 +81,9 @@ spec:
       channel-refresh:
         type: cronjob
         cronjob:
-          schedule: "*/3 * * * *"
+          schedule: "*/5 * * * *"
+          successfulJobsHistory: 1
+          ttlSecondsAfterFinished: 30
         containers:
           main:
             args:
@@ -95,6 +97,8 @@ spec:
         type: cronjob
         cronjob:
           schedule: "@daily"
+          successfulJobsHistory: 1
+          ttlSecondsAfterFinished: 30
 
         containers:
           main:
@@ -108,7 +112,9 @@ spec:
       token-maintenance:
         type: cronjob
         cronjob:
-          schedule: "@hourly"
+          schedule: "* */12 * * *"
+          successfulJobsHistory: 1
+          ttlSecondsAfterFinished: 30
 
         containers:
           main:
@@ -122,7 +128,9 @@ spec:
       user-refresh:
         type: cronjob
         cronjob:
-          schedule: "@hourly"
+          schedule: "@daily"
+          successfulJobsHistory: 1
+          ttlSecondsAfterFinished: 30
 
         containers:
           main:
