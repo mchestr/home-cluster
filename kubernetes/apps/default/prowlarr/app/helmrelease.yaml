@@ -51,7 +51,7 @@ spec:
           main:
             image:
               repository: ghcr.io/onedr0p/prowlarr-nightly
-              tag: 1.9.4.4028@sha256:efdeda575aedf5025e26199c8972eed0daf637642d70ea0ba3d64bd9b3b9f335
+              tag: 1.9.4.4031@sha256:3048ab68d58f1facb89ddd689d39f78aef079fecbda8f7a1738135cb6122d717
             env:
               TZ: America/Vancouver
               PROWLARR__INSTANCE_NAME: Prowlarr
