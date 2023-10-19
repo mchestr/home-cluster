@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: qbittools-reannounce
+  name: qbittorrent-tools
   namespace: default
 spec:
   interval: 30m
@@ -66,6 +66,8 @@ spec:
               - qbittorrent.default.svc.cluster.local
               - --port
               - "8080"
+              - --config
+              - /config/config.yaml
 
       prune-expired:
         type: cronjob
@@ -110,6 +112,16 @@ spec:
               - qbittorrent.default.svc.cluster.local
               - --port
               - "8080"
+
+    persistence:
+      config-file:
+        enabled: true
+        type: configMap
+        name: qbittorrent-tools-configmap
+        readOnly: true
+        globalMounts:
+          - path: /config/config.yaml
+            subPath: config.yaml
 
     service:
       main:
