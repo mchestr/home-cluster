@@ -42,10 +42,11 @@ tasks:
       - for: [3, 1, 0, 2, 4, 5]
         task: upgrade
         vars:
-          NODE: 'k8s-{{ .N }}'
-          N: '{{ .N }}'
+          NODE: 'k8s-{{ .ITEM }}'
+          N: '{{ .ITEM }}'
       # Restart nginx, sometimes it has issues...
-      - kubectl -n networking rollout restart deployment ingress-nginx-controller
+      - kubectl -n networking rollout restart deployment nginx-internal-controller
+      - kubectl -n networking rollout restart deployment nginx-external-controller
 
   apply:
     desc: Apply Talos config to a specific node (task talos:apply N=0)
@@ -73,10 +74,9 @@ tasks:
   version:
     desc: Apply Talos config to a specific node (task talos:version [N=0])
     dir: talos
-    vars:
-      NODES: 192.168.1.200,192.168.1.201,192.168.1.202,192.168.1.203,192.168.1.204,192.168.1.205
     cmds:
-      - talosctl version --nodes {{ .NODES }}
+      - for: [0, 1, 2, 3, 4, 5]
+        cmd: talosctl version --nodes 192.168.1.20{{ .ITEM }}
 
   upgrade:
     internal: True
