@@ -94,7 +94,7 @@
       - "{{ prefix }} rule 30 description 'Allow MQTT'"
       - "{{ prefix }} rule 30 log disable"
       - "{{ prefix }} rule 30 protocol tcp"
-      - "{{ prefix }} rule 30 destination address 192.168.1.226"
+      - "{{ prefix }} rule 30 destination address 192.168.100.20"
       - "{{ prefix }} rule 30 destination port 1883"
       - "{{ prefix }} rule 30 state new enable"
 
