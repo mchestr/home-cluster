@@ -2,8 +2,6 @@
 - name: Configure BGP Peers
   community.network.edgeos_config:
     lines:
-      - delete protocols bgp 64512
-
       - set protocols bgp 64512 parameters router-id 192.168.1.1
       - set protocols bgp 64512 neighbor 192.168.1.200 remote-as 64512
       - set protocols bgp 64512 neighbor 192.168.1.201 remote-as 64512

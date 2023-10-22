@@ -26,7 +26,7 @@ tasks:
   install:cni:
     desc: Install CNI and cert approver helm releases (task talos:cni)
     cmds:
-      - kubectl kustomize talos --enable-helm | kubectl apply -f -
+      - kubectl kustomize talos --enable-helm --load-restrictor LoadRestrictionsNone | kubectl apply -f -
 
   upgrade:k8s:
     dir: talos
