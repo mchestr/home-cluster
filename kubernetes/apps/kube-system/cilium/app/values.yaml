@@ -3,16 +3,12 @@
 # nodes if worker nodes share a common L2 network segment.
 autoDirectNodeRoutes: true
 
-# -- Configure BGP
+# -- MetalLB Deprecated BGP
 bgp:
-  # -- Enable BGP support inside Cilium; embeds a new ConfigMap for BGP inside
-  # cilium-agent and cilium-operator
   enabled: false
-  announce:
-    # -- Enable allocation and announcement of service LoadBalancer IPs
-    loadbalancerIP: true
-    # -- Enable announcement of node pod CIDR
-    podCIDR: false
+
+bgpControlPlane:
+  enabled: true
 
 # -- Configure cgroup related configuration
 cgroup:
@@ -190,8 +186,8 @@ securityContext:
       # Both PERFMON and BPF requires kernel 5.8, container runtime
       # cri-o >= v1.22.0 or containerd >= v1.5.0.
       # If available, SYS_ADMIN can be removed.
-      #- PERFMON
-      #- BPF
+      # - PERFMON
+      # - BPF
       # Allow discretionary access control (e.g. required for package installation)
       - DAC_OVERRIDE
       # Allow to set Access Control Lists (ACLs) on arbitrary files (e.g. required for package installation)
@@ -233,8 +229,8 @@ securityContext:
       # Both PERFMON and BPF requires kernel 5.8, container runtime
       # cri-o >= v1.22.0 or containerd >= v1.5.0.
       # If available, SYS_ADMIN can be removed.
-      #- PERFMON
-      #- BPF
+      # - PERFMON
+      # - BPF
 
 # -- Configure the encapsulation configuration for communication between nodes.
 # Possible values:

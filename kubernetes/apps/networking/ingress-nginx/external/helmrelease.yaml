@@ -1,3 +1,4 @@
+---
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -30,7 +31,7 @@ spec:
       service:
         annotations:
           external-dns.alpha.kubernetes.io/hostname: external.chestr.dev
-          io.cilium/lb-ipam-ips: 192.168.1.231
+          io.cilium/lb-ipam-ips: 192.168.100.200
         externalTrafficPolicy: Cluster
       allowSnippetAnnotations: true
       ingressClassResource:
