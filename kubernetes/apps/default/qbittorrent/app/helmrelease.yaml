@@ -48,12 +48,12 @@ spec:
               TZ: America/Vancouver
               QBITTORRENT__PORT: 8080
               QBITTORRENT__BT_PORT: 50413
-          # cross-seed:
-          #   image:
-          #     repository: ghcr.io/cross-seed/cross-seed
-          #     tag: 5.5.4
-          #   args:
-          #     - daemon
+          cross-seed:
+            image:
+              repository: ghcr.io/cross-seed/cross-seed
+              tag: 5.5.4
+            args:
+              - daemon
 
         statefulset:
           volumeClaimTemplates:
