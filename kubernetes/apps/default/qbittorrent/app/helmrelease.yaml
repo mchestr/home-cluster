@@ -83,7 +83,7 @@ spec:
         type: LoadBalancer
         controller: main
         annotations:
-          io.cilium/lb-ipam-ips: 192.168.1.224
+          io.cilium/lb-ipam-ips: 192.168.100.40
         externalTrafficPolicy: Cluster
         ports:
           bittorrent:

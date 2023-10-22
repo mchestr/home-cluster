@@ -26,3 +26,8 @@
       role: wireguard.router
       tags:
         - wireguard
+
+    - name: Configure BGP
+      role: bgp.router
+      tags:
+        - bgp

@@ -2,10 +2,28 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-cilium-app
+  name: cluster-apps-cilium
   namespace: flux-system
 spec:
   path: ./kubernetes/apps/kube-system/cilium/app
+  sourceRef:
+    kind: GitRepository
+    name: home-ops-kubernetes
+  prune: true
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-cilium-bgp
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/kube-system/cilium/bgp
+  dependsOn:
+    - name: cluster-apps-cilium
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes

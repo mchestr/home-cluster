@@ -50,7 +50,7 @@ spec:
               DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
               JELLYFIN_FFmpeg__probesize: 50000000
               JELLYFIN_FFmpeg__analyzeduration: 50000000
-              JELLYFIN_PublishedServerUrl: 192.168.1.232
+              JELLYFIN_PublishedServerUrl: &ip 192.168.100.10
               TZ: America/Vancouver
             resources:
               requests:
@@ -89,7 +89,7 @@ spec:
       main:
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: 192.168.1.232
+          io.cilium/lb-ipam-ips: *ip
         externalTrafficPolicy: Cluster
         ports:
           http:

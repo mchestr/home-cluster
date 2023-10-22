@@ -16,13 +16,13 @@
     rules:
       - name: qBittorrent
         forward:
-          address: 192.168.1.224
+          address: 192.168.100.40
           port: 50413
         original_port: 50413
         protocol: tcp_udp
       - name: Plex
         forward:
-          address: 192.168.1.227
+          address: 192.168.100.30
           port: 32400
         original_port: 32400
         protocol: tcp_udp

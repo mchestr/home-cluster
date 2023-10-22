@@ -32,7 +32,7 @@
       - "{{ prefix }} options port=53"
       - "{{ prefix }} options address=/dns.{{ cluster_domain }}/192.168.1.1"
       - "{{ prefix }} options server=/status.{{ cluster_domain }}/1.1.1.1"
-      - "{{ prefix }} options server=/{{ cluster_domain }}/192.168.1.220"
+      - "{{ prefix }} options server=/{{ cluster_domain }}/192.168.100.111"
 
 - name: Configure Cluster Forwarding
   vars:
