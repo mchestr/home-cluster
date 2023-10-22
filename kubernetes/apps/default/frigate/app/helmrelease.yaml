@@ -56,7 +56,7 @@ spec:
                 memory: 1000Mi
                 gpu.intel.com/i915: "1"
               limits:
-                memory: 6000Mi
+                memory: 3Gi
                 gpu.intel.com/i915: "1"
             probes:
               liveness: &probe
