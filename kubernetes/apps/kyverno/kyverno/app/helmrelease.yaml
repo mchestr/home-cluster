@@ -69,7 +69,7 @@ spec:
         enabled: true
 
     admissionController:
-      replicas: 3
+      replicas: 1
 
       rbac:
         clusterRole:
