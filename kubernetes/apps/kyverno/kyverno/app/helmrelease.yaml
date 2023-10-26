@@ -42,6 +42,10 @@ spec:
         grafana_folder: Kyverno
 
     backgroundController:
+      # https://github.com/kyverno/kyverno/issues/8668
+      extraEnvVars:
+        - name: BACKGROUND_SCAN_INTERVAL
+          value: 24h
       serviceMonitor:
         enabled: true
 
