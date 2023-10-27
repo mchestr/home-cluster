@@ -86,16 +86,11 @@ spec:
               AUTHELIA_AUTHENTICATION_BACKEND_PASSWORD_RESET_DISABLE: "true"
               AUTHELIA_AUTHENTICATION_BACKEND_REFRESH_INTERVAL: 1m
               AUTHELIA_SERVER_ADDRESS: tcp://0.0.0.0:80
-              AUTHELIA_DEFAULT_REDIRECTION_URL: https://auth.chestr.dev
               AUTHELIA_DUO_API_DISABLE: "true"
               AUTHELIA_NOTIFIER_DISABLE_STARTUP_CHECK: "true"
               AUTHELIA_NOTIFIER_SMTP_DISABLE_REQUIRE_TLS: "true"
               AUTHELIA_NOTIFIER_SMTP_ADDRESS: smtp-relay.default.svc.cluster.local:2525
               AUTHELIA_SERVER_DISABLE_HEALTHCHECK: "true"
-              AUTHELIA_SESSION_DOMAIN: chestr.dev
-              AUTHELIA_SESSION_NAME: authelia-home-ops
-              AUTHELIA_SESSION_REDIS_DATABASE_INDEX: 14
-              AUTHELIA_SESSION_REDIS_HOST: redis.default.svc.cluster.local
               AUTHELIA_TELEMETRY_METRICS_ADDRESS: tcp://0.0.0.0:8080
               AUTHELIA_TELEMETRY_METRICS_ENABLED: "true"
               AUTHELIA_THEME: auto
