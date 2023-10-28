@@ -36,6 +36,13 @@
       - "{{ prefix }} options server=/status.{{ cluster_domain }}/1.1.1.1"
       - "{{ prefix }} options server=/{{ cluster_domain }}/192.168.100.111"
 
+- name: Configure Cluster Forwarding
+  vars:
+    prefix: set service dns forwarding
+  community.network.edgeos_config:
+    lines:
+      - "{{ prefix }} options address=/home-cluster.chestr.dev/192.168.1.254"
+
 - name: Configure Cluster Domain Forwarding
   vars:
     prefix: set service dns forwarding
