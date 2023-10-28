@@ -48,6 +48,7 @@ spec:
         type: cronjob
         cronjob:
           schedule: "@hourly"
+          concurrencyPolicy: Forbid
           successfulJobsHistory: 1
           ttlSecondsAfterFinished: 30
         containers:
@@ -73,6 +74,7 @@ spec:
         type: cronjob
         cronjob:
           schedule: 10 */6 * * *
+          concurrencyPolicy: Forbid
           successfulJobsHistory: 1
           ttlSecondsAfterFinished: 30
         containers:
@@ -96,6 +98,7 @@ spec:
         type: cronjob
         cronjob:
           schedule: 20 */6 * * *
+          concurrencyPolicy: Forbid
           successfulJobsHistory: 1
           ttlSecondsAfterFinished: 30
         containers:
