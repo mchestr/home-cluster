@@ -118,9 +118,9 @@ ipam:
 ipv4NativeRoutingCIDR: 10.244.0.0/16
 
 # -- (string) Kubernetes service host
-k8sServiceHost: 192.168.1.254
+k8sServiceHost: localhost
 # -- (string) Kubernetes service port
-k8sServicePort: 6443
+k8sServicePort: 7445
 
 # -- Configure the kube-proxy replacement in Cilium BPF datapath
 # Valid options are "disabled", "partial", "strict".

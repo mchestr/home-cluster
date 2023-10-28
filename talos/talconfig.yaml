@@ -3,114 +3,188 @@ clusterName: home-cluster
 talosVersion: "v1.5.4"
 # renovate: datasource=github-releases depName=siderolabs/kubelet
 kubernetesVersion: "v1.28.3"
+
 endpoint: https://cluster.chestr.dev:6443
 allowSchedulingOnMasters: true
-clusterPodNets:
-  - 10.244.0.0/16
-clusterSvcNets:
-  - 10.96.0.0/12
+
+# Image URL rendered on https://factory.talos.dev
+# customization:
+#     extraKernelArgs:
+#         - net.ifnames=0
+#     systemExtensions:
+#         officialExtensions:
+#             - siderolabs/i915-ucode
+#             - siderolabs/intel-ucode
+#             - siderolabs/nut-client
+talosImageURL: factory.talos.dev/installer/dbfb6577b113acbc7da6bfcb48e7f59343283561ff938ff7c33bd4693f85c295
+
 cniConfig:
   name: none
+
+additionalApiServerCertSans:
+  - ${clusterEndpointIP}
+
+additionalMachineCertSans:
+  - ${clusterEndpointIP}
+  - cluster.chestr.dev
 
 nodes:
   - hostname: k8s-0
     ipAddress: 192.168.1.200
-    installDisk: /dev/sda
     controlPlane: true
-    disableSearchDomain: true
+    installDiskSelector:
+      busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "18:60:24:26:58:6d"
+        dhcp: true
 
   - hostname: k8s-1
     ipAddress: 192.168.1.201
-    installDisk: /dev/sda
     controlPlane: true
-    disableSearchDomain: true
+    installDiskSelector:
+      busPath: /pci0000:00/0000:00:1f.2/ata1/host0/target0:0:0/0:0:0:0/
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "ec:b1:d7:5c:55:90"
+        dhcp: true
 
   - hostname: k8s-2
     ipAddress: 192.168.1.202
-    installDisk: /dev/sdb
     controlPlane: false
-    disableSearchDomain: true
+    installDiskSelector:
+      busPath: /pci0000:00/0000:00:1f.2/ata4/host3/target3:0:0/3:0:0:0/
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "00:25:22:b2:b4:f4"
+        dhcp: true
 
   - hostname: k8s-3
     ipAddress: 192.168.1.203
-    installDisk: /dev/sda
     controlPlane: true
-    disableSearchDomain: true
+    installDiskSelector:
+      busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "18:60:24:26:fd:f5"
+        dhcp: true
 
   - hostname: k8s-4
     ipAddress: 192.168.1.204
-    installDisk: /dev/sda
     controlPlane: false
-    disableSearchDomain: true
+    installDiskSelector:
+      busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "e4:e7:49:52:fc:c2"
+        dhcp: true
 
   - hostname: k8s-5
     ipAddress: 192.168.1.205
-    installDisk: /dev/sda
     controlPlane: false
-    disableSearchDomain: true
+    installDiskSelector:
+      busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "e4:e7:49:52:7d:bb"
+        dhcp: true
 
 controlPlane:
-  inlinePatch:
-    cluster:
-      allowSchedulingOnMasters: true
-      apiServer:
-        disablePodSecurityPolicy: true
-        admissionControl: []
-        certSANs:
-          - ${clusterEndpointIP}
-          - cluster.chestr.dev
-      discovery:
-        registries:
-          service:
-            disabled: true
-      proxy:
-        disabled: true
-    machine:
-      certSANs:
-        - ${clusterEndpointIP}
-        - cluster.chestr.dev
-      install:
-        extraKernelArgs:
-          - talos.logging.kernel=udp://vector.chestr.dev:6050/
-        extensions:
-          - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.3.0
-      logging:
-        destinations:
-          - endpoint: udp://vector.chestr.dev:6051/
-            format: json_lines
-      kubelet:
-        extraArgs:
-          feature-gates: GracefulNodeShutdown=true
-          rotate-server-certificates: "true"
-      sysctls:
-        fs.inotify.max_user_watches: "1048576"
-        fs.inotify.max_user_instances: "8192"
-      time:
-        disabled: false
-        servers:
-          - time.cloudflare.com
-      files:
-        - content: |
-            [plugins]
-              [plugins."io.containerd.grpc.v1.cri"]
-                enable_unprivileged_ports = true
-                enable_unprivileged_icmp = true
-          path: /etc/cri/conf.d/20-customization.part
-          op: create
-        - path: /var/etc/nut/upsmon.conf
-          permissions: 0o666
-          op: create
-          content: |
-            MONITOR ups@lochnas.chestr.dev 1 ${upsmonUser} ${upsmonPasswd} slave
-            SHUTDOWNCMD "/sbin/poweroff"
-      network:
-        interfaces:
-          - interface: eth0
-            mtu: 0
-            dhcp: true
-            vip:
-              ip: 192.168.1.254
+
   patches:
+    # Disable search domain everywhere
+    - |-
+      machine:
+        network:
+          disableSearchDomain: true
+
+    # Configure NTP
+    - |-
+      machine:
+        time:
+          disabled: false
+          servers:
+            - time.cloudflare.com
+
+    # Enable KubePrism
+    - |-
+      machine:
+        features:
+          kubePrism:
+            enabled: true
+            port: 7445
+
+    # Configure cluster loopback
+    - |-
+      machine:
+        network:
+          extraHostEntries:
+            - ip: ${clusterEndpointIP}
+              aliases:
+                - cluster.chestr.dev
+
+    # Cluster configuration
+    - |-
+      cluster:
+        allowSchedulingOnMasters: true
+        proxy:
+          disabled: true
+
+    # ETCD configuration
+    - |-
+      cluster:
+        etcd:
+          advertisedSubnets:
+            - 192.168.1.0/24
+
+    # Configure containerd
+    - |-
+      machine:
+        files:
+          - op: create
+            path: /etc/cri/conf.d/20-customization.part
+            content: |
+              [plugins]
+                [plugins."io.containerd.grpc.v1.cri"]
+                  enable_unprivileged_ports = true
+                  enable_unprivileged_icmp = true
+
+    # Configure NUT Client
+    - |-
+      machine:
+        files:
+          - op: create
+            path: /var/etc/nut/upsmon.conf
+            content: |
+              MONITOR ups@lochnas.chestr.dev 1 ${upsmonUser} ${upsmonPasswd} slave
+              SHUTDOWNCMD "/sbin/poweroff"
+
+    # Disable default API server admission plugins.
+    - |-
+      - op: remove
+        path: /cluster/apiServer/admissionControl
+
+    # Kubelet configuration
+    - |-
+      machine:
+        kubelet:
+          extraArgs:
+            feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
+            rotate-server-certificates: "true"
+          extraConfig:
+            maxPods: 150
+          nodeIP:
+            validSubnets:
+                - 192.168.1.0/24
+
+    # Custom sysctls
+    - |-
+      machine:
+        sysctls:
+          fs.inotify.max_user_watches: "1048576"
+          fs.inotify.max_user_instances: "8192"
+
+    # Configure local-path CSI directory
     - |-
       machine:
         kubelet:
@@ -124,63 +198,60 @@ controlPlane:
                 - rw
 
 worker:
-  inlinePatch:
-    cluster:
-      discovery:
-        registries:
-          service:
-            disabled: true
-
-    machine:
-      certSANs:
-        - ${clusterEndpointIP}
-        - cluster.chestr.dev
-      time:
-        disabled: false
-        servers:
-          - time.cloudflare.com
-      install:
-        extraKernelArgs:
-          - talos.logging.kernel=udp://vector.chestr.dev:6050/
-        extensions:
-          - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.3.0
-      logging:
-        destinations:
-          - endpoint: udp://vector.chestr.dev:6051/
-            format: json_lines
-      kubelet:
-        extraArgs:
-          feature-gates: GracefulNodeShutdown=true
-          rotate-server-certificates: "true"
-      sysctls:
-        fs.inotify.max_user_watches: "1048576"
-        fs.inotify.max_user_instances: "8192"
-      files:
-        - content: |
-            [plugins]
-              [plugins."io.containerd.grpc.v1.cri"]
-                enable_unprivileged_ports = true
-                enable_unprivileged_icmp = true
-          path: /etc/cri/conf.d/20-customization.part
-          op: create
-        - path: /var/etc/nut/upsmon.conf
-          permissions: 0o666
-          op: create
-          content: |
-            MONITOR ups@lochnas.chestr.dev 1 ${upsmonUser} ${upsmonPasswd} slave
-            SHUTDOWNCMD "/sbin/poweroff"
-      network:
-        interfaces:
-          - interface: eth0
-            mtu: 0
-            dhcp: true
 
   patches:
+    # Disable search domain everywhere
     - |-
-      - op: add
-        path: /machine/nodeLabels
-        value:
-          kubernetes.io/role: worker
+      machine:
+        network:
+          disableSearchDomain: true
+
+    # Enable KubePrism
+    - |-
+      machine:
+        features:
+          kubePrism:
+            enabled: true
+            port: 7445
+
+    # Configure NTP
+    - |-
+      machine:
+        time:
+          disabled: false
+          servers:
+            - time.cloudflare.com
+
+    # Configure containerd
+    - |-
+      machine:
+        files:
+          - op: create
+            path: /etc/cri/conf.d/20-customization.part
+            content: |
+              [plugins]
+                [plugins."io.containerd.grpc.v1.cri"]
+                  enable_unprivileged_ports = true
+                  enable_unprivileged_icmp = true
+
+    # Configure NUT Client
+    - |-
+      machine:
+        files:
+          - op: create
+            path: /var/etc/nut/upsmon.conf
+            content: |
+              MONITOR ups@lochnas.chestr.dev 1 ${upsmonUser} ${upsmonPasswd} slave
+              SHUTDOWNCMD "/sbin/poweroff"
+
+    # Custom sysctls
+    - |-
+      machine:
+        sysctls:
+          fs.inotify.max_user_watches: "1048576"
+          fs.inotify.max_user_instances: "8192"
+
+    # Configure local-path CSI directory
     - |-
       machine:
         kubelet:
