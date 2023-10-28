@@ -61,7 +61,7 @@ tasks:
     desc: Generate Talos machine configurations (task talos:generate)
     dir: talos
     cmds:
-      - talhelper genconfig
+      - talhelper genconfig --env-file talenv.sops.yaml --secret-file talsecret.sops.yaml --config-file talconfig.yaml
     sources:
       - talconfig.yaml
       - talenv.sops.yaml
