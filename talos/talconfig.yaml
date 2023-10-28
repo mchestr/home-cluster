@@ -120,15 +120,6 @@ controlPlane:
             enabled: true
             port: 7445
 
-
-    - |-
-      machine:
-        network:
-          extraHostEntries:
-            - ip: ${clusterEndpointIP}
-              aliases:
-                - ${clusterName}.chestr.casa
-
     # Configure cluster loopback
     - |-
       machine:
