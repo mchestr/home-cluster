@@ -82,6 +82,7 @@ spec:
         type: cronjob
         cronjob:
           schedule: "*/5 * * * *"
+          concurrencyPolicy: Forbid
           successfulJobsHistory: 1
           ttlSecondsAfterFinished: 30
         containers:
@@ -97,6 +98,7 @@ spec:
         type: cronjob
         cronjob:
           schedule: "@daily"
+          concurrencyPolicy: Forbid
           successfulJobsHistory: 1
           ttlSecondsAfterFinished: 30
 
@@ -113,6 +115,7 @@ spec:
         type: cronjob
         cronjob:
           schedule: "* */12 * * *"
+          concurrencyPolicy: Forbid
           successfulJobsHistory: 1
           ttlSecondsAfterFinished: 30
 
@@ -129,6 +132,7 @@ spec:
         type: cronjob
         cronjob:
           schedule: "@daily"
+          concurrencyPolicy: Forbid
           successfulJobsHistory: 1
           ttlSecondsAfterFinished: 30
 
