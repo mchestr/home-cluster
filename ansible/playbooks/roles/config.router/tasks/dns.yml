@@ -24,6 +24,8 @@
   community.network.edgeos_config:
     lines:
       - "delete service dns forwarding"
+      - "{{ prefix }} name-server 1.1.1.1"
+      - "{{ prefix }} name-server 1.0.0.1"
       - "{{ prefix }} system"
       - "{{ prefix }} cache-size 500"
       - "{{ prefix }} listen-on switch0.10"
