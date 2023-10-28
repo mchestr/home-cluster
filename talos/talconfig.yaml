@@ -4,7 +4,7 @@ talosVersion: "v1.5.4"
 # renovate: datasource=github-releases depName=siderolabs/kubelet
 kubernetesVersion: "v1.28.3"
 
-endpoint: https://${clusterName}.chestr.casa:6443
+endpoint: https://${clusterName}.chestr.dev:6443
 allowSchedulingOnMasters: true
 
 # Image URL rendered on https://factory.talos.dev
@@ -26,7 +26,7 @@ additionalApiServerCertSans:
 
 additionalMachineCertSans:
   - ${clusterEndpointIP}
-  - ${clusterName}.chestr.casa
+  - ${clusterName}.chestr.dev
 
 nodes:
   - hostname: k8s-0
@@ -38,6 +38,8 @@ nodes:
       - deviceSelector:
           hardwareAddr: "18:60:24:26:58:6d"
         dhcp: true
+        vip:
+          ip: 192.168.1.254
 
   - hostname: k8s-1
     ipAddress: 192.168.1.201
@@ -48,6 +50,8 @@ nodes:
       - deviceSelector:
           hardwareAddr: "ec:b1:d7:5c:55:90"
         dhcp: true
+        vip:
+          ip: 192.168.1.254
 
   - hostname: k8s-2
     ipAddress: 192.168.1.202
@@ -68,6 +72,8 @@ nodes:
       - deviceSelector:
           hardwareAddr: "18:60:24:26:fd:f5"
         dhcp: true
+        vip:
+          ip: 192.168.1.254
 
   - hostname: k8s-4
     ipAddress: 192.168.1.204
@@ -130,7 +136,7 @@ controlPlane:
           extraHostEntries:
             - ip: ${clusterEndpointIP}
               aliases:
-                - ${clusterName}.chestr.casa
+                - ${clusterName}.chestr.dev
 
     # Cluster configuration
     - |-
