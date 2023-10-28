@@ -5,4 +5,3 @@ namespace: networking
 resources:
   - certificates.yaml
   - gatus.yaml
-  - policies

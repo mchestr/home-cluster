@@ -7,7 +7,6 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-cert-manager-issuers
-    - name: cluster-apps-kyverno
   path: ./kubernetes/apps/networking/ingress-nginx/common
   prune: true
   sourceRef:
