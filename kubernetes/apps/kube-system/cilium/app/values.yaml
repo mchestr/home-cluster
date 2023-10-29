@@ -3,12 +3,20 @@
 # nodes if worker nodes share a common L2 network segment.
 autoDirectNodeRoutes: true
 
+bandwidthManager:
+  enabled: true
+  bbr: true
+
 # -- MetalLB Deprecated BGP
 bgp:
   enabled: false
 
 bgpControlPlane:
   enabled: true
+
+bpf:
+  masquerade: true
+  tproxy: true
 
 # -- Configure cgroup related configuration
 cgroup:
@@ -41,6 +49,11 @@ containerRuntime:
   # - none
   # - auto (automatically detect the container runtime)
   integration: containerd
+
+enableCnpStatusUpdates: true
+endpointStatus:
+  enabled: true
+  status: "policy"
 
 endpointRoutes:
   # -- Enable use of per endpoint routes instead of routing via
@@ -100,6 +113,10 @@ hubble:
         - hosts:
             - *host
 
+ingressController:
+  enabled: false
+  loadbalancerMode: shared
+
 ipam:
   # -- Configure IP Address Management mode.
   # ref: https://docs.cilium.io/en/stable/concepts/networking/ipam/
@@ -148,6 +165,8 @@ l2announcements:
   leaseDuration: 120s
   leaseRenewDeadline: 60s
   leaseRetryPeriod: 1s
+
+l7Proxy: true
 
 # -- Enable Local Redirect Policy.
 localRedirectPolicy: true
