@@ -40,6 +40,9 @@ nodes:
         dhcp: true
         vip:
           ip: 192.168.1.254
+        dhcpOptions:
+          routeMetric: 1024
+          ipv6: false
 
   - hostname: k8s-1
     ipAddress: 192.168.1.201
@@ -52,6 +55,9 @@ nodes:
         dhcp: true
         vip:
           ip: 192.168.1.254
+        dhcpOptions:
+          routeMetric: 1024
+          ipv6: false
 
   - hostname: k8s-2
     ipAddress: 192.168.1.202
@@ -62,6 +68,9 @@ nodes:
       - deviceSelector:
           hardwareAddr: "00:25:22:b2:b4:f4"
         dhcp: true
+        dhcpOptions:
+          routeMetric: 1024
+          ipv6: false
 
   - hostname: k8s-3
     ipAddress: 192.168.1.203
@@ -74,6 +83,9 @@ nodes:
         dhcp: true
         vip:
           ip: 192.168.1.254
+        dhcpOptions:
+          routeMetric: 1024
+          ipv6: false
 
   - hostname: k8s-4
     ipAddress: 192.168.1.204
@@ -84,6 +96,9 @@ nodes:
       - deviceSelector:
           hardwareAddr: "e4:e7:49:52:fc:c2"
         dhcp: true
+        dhcpOptions:
+          routeMetric: 1024
+          ipv6: false
 
   - hostname: k8s-5
     ipAddress: 192.168.1.205
@@ -94,6 +109,9 @@ nodes:
       - deviceSelector:
           hardwareAddr: "e4:e7:49:52:7d:bb"
         dhcp: true
+        dhcpOptions:
+          routeMetric: 1024
+          ipv6: false
 
 controlPlane:
 
