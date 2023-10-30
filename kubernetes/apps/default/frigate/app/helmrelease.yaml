@@ -72,7 +72,15 @@ spec:
                   failureThreshold: 3
               readiness: *probe
               startup:
-                enabled: false
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/version
+                    port: 5000
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 30
 
         statefulset:
           volumeClaimTemplates:
