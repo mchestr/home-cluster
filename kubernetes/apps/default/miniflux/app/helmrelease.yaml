@@ -45,10 +45,10 @@ spec:
           01-init-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: "14.9"
-            envFrom: &envFrom
+              tag: 14.9
+            envFrom:
               - secretRef:
-                  name: miniflux-secret
+                  name: miniflux-dbinit-secret
 
         containers:
           main:
@@ -70,7 +70,9 @@ spec:
               POLLING_SCHEDULER: entry_frequency
               POLLING_FREQUENCY: "15"
               RUN_MIGRATIONS: "1"
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: miniflux-secret
             resources:
               requests:
                 cpu: 10m

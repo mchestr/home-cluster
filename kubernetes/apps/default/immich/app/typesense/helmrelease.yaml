@@ -38,9 +38,9 @@ spec:
               tag: 0.25.1
             envFrom:
               - secretRef:
-                  name: immich
+                  name: immich-secret
               - configMapRef:
-                  name: immich
+                  name: immich-configmap
             resources:
               requests:
                 cpu: 100m

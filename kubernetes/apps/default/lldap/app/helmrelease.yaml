@@ -44,10 +44,10 @@ spec:
           01-init-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: "14.9"
-            envFrom: &envFrom
+              tag: 14.9
+            envFrom:
               - secretRef:
-                  name: lldap-secret
+                  name: lldap-dbinit-secret
         containers:
           main:
             image:
@@ -59,7 +59,9 @@ spec:
               LLDAP_HTTP_URL: https://lldap.chestr.dev
               LLDAP_LDAP_PORT: &ldapPort 389
               LLDAP_LDAP_BASE_DN: dc=home,dc=arpa
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: lldap-secret
             resources:
               requests:
                 cpu: 100m

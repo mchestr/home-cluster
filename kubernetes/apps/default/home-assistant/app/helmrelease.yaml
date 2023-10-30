@@ -52,17 +52,19 @@ spec:
           init-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: "14.9"
-            envFrom: &envFrom
+              tag: 14.9
+            envFrom:
               - secretRef:
-                  name: home-assistant-secret
+                  name: home-assistant-dbinit-secret
 
         containers:
           main:
             image:
               repository: ghcr.io/onedr0p/home-assistant
               tag: 2023.10.5@sha256:24ce89830111fe19bb2df00621dfd631fd20abe07a453ea60c2027890d5b934e
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: home-assistant-secret
             env:
               TZ: America/Vancouver
 
