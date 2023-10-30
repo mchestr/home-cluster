@@ -38,10 +38,10 @@ spec:
           01-init-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: "14.9"
-            envFrom: &envFrom
+              tag: 14.9
+            envFrom:
               - secretRef:
-                  name: ghostfolio-secret
+                  name: ghostfolio-dbinit-secret
 
         containers:
           main:
@@ -52,7 +52,9 @@ spec:
               NODE_ENV: production
               REDIS_HOST: ghostfolio-redis.default.svc.cluster.local
               REDIS_PORT: 6379
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: ghostfolio-secret
             resources:
               requests:
                 cpu: 100m

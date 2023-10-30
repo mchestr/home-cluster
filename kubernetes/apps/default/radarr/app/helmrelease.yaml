@@ -44,10 +44,10 @@ spec:
           01-init-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: "14.9"
-            envFrom: &envFrom
+              tag: 14.9
+            envFrom:
               - secretRef:
-                  name: radarr-secret
+                  name: radarr-dbinit-secret
 
         containers:
           main:
@@ -63,7 +63,9 @@ spec:
               RADARR__PORT: 7878
               RADARR__LOG_LEVEL: info
               RADARR__THEME: dark
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: radarr-secret
 
           metrics:
             image:

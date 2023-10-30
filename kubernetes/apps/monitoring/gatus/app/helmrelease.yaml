@@ -38,12 +38,12 @@ spec:
           reloader.stakater.com/auto: "true"
         initContainers:
           01-init-db:
-            envFrom: &envFrom
-              - secretRef:
-                  name: gatus-secret
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: "14.9"
+              tag: 14.9
+            envFrom:
+              - secretRef:
+                  name: gatus-dbinit-secret
           02-config-sync:
             imagePullPolicy: IfNotPresent
             env:
@@ -70,7 +70,9 @@ spec:
             image:
               repository: ghcr.io/twin/gatus
               tag: v5.6.0@sha256:140f28f5bfdf6429cfc0408e4a5820f7b25b23b9becdd9cf22d1f5adcd0e8cd4
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: gatus-secret
             env:
               TZ: America/Vancouver
               GATUS_CONFIG_PATH: /config

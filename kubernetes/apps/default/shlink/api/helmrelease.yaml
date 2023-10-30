@@ -46,10 +46,10 @@ spec:
           01-init-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: "14.9"
-            envFrom: &envFrom
+              tag: 14.9
+            envFrom:
               - secretRef:
-                  name: shlink-api-secret
+                  name: shlink-dbinit-secret
         containers:
           main:
             image:
@@ -66,7 +66,9 @@ spec:
               REDIS_SENTINEL_SERVICE: redis-master
               REDIS_SERVERS: redis-node-0.redis-headless.default.svc.cluster.local:26379,redis-node-1.redis-headless.default.svc.cluster.local:26379, redis-node-2.redis-headless.default.svc.cluster.local:26379
               TIMEZONE: America/Vancouver
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: shlink-api-secret
 
     service:
       main:

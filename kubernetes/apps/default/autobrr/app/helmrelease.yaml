@@ -44,17 +44,19 @@ spec:
           01-init-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: "14.9"
-            envFrom: &envFrom
+              tag: 14.9
+            envFrom:
               - secretRef:
-                  name: autobrr-secret
+                  name: autobrr-dbinit-secret
 
         containers:
           main:
             image:
               repository: ghcr.io/autobrr/autobrr
               tag: v1.32.0
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: autobrr-secret
             resources:
               requests:
                 memory: 250Mi

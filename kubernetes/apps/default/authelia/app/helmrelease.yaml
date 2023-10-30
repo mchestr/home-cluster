@@ -50,7 +50,7 @@ spec:
               tag: 14.9
             envFrom:
               - secretRef:
-                  name: authelia-secret
+                  name: authelia-dbinit-secret
 
         containers:
           main:
