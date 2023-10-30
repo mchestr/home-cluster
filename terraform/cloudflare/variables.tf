@@ -20,8 +20,3 @@ variable "cluster_domain" {
   description = "Cluster Domain Name"
   default = "chestr.dev"
 }
-variable "wordpress_0_domain" {
-  type = string
-  description = "Wordpress 0 Domain Name"
-  default = "stephk.co"
-}
