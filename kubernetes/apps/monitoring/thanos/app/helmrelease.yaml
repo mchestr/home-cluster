@@ -42,7 +42,7 @@ spec:
         insecure: true
     queryFrontend:
       enabled: true
-      replicaCount: 3
+      replicaCount: 1
       ingress:
         enabled: true
         ingressClassName: internal
@@ -63,14 +63,14 @@ spec:
               - *host
     query:
       enabled: true
-      replicaCount: 3
+      replicaCount: 1
       replicaLabel: ["__replica__"]
       dnsDiscovery:
         sidecarsService: prometheus-thanos-discovery
         sidecarsNamespace: monitoring
     bucketweb:
       enabled: true
-      replicaCount: 3
+      replicaCount: 1
     compactor:
       enabled: true
       extraFlags:
@@ -99,7 +99,7 @@ spec:
 
     ruler:
       enabled: true
-      replicaCount: 3
+      replicaCount: 1
       replicaLabel: __replica__
       alertmanagers:
         ["http://alertmanager-operated.monitoring.svc.cluster.local:9093"]

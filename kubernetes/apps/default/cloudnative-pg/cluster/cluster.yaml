@@ -42,7 +42,7 @@ spec:
   bootstrap:
     recovery:
       # Should match name in externalClusters
-      source: &backup cnpg-agkskpl
+      source: &backup cnpg-ptgnjfg
 
   externalClusters:
     - name: *backup
