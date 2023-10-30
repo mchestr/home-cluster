@@ -30,7 +30,7 @@ spec:
         maxParallel: 8
       destinationPath: s3://postgresql/
       endpointURL: http://minio.networking.svc.cluster.local:9000
-      serverName: cnpg-agkskpl
+      serverName: cnpg-jkjktys
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg
@@ -42,7 +42,7 @@ spec:
   bootstrap:
     recovery:
       # Should match name in externalClusters
-      source: &backup cnpg-ptgnjfg
+      source: &backup cnpg-agkskpl
 
   externalClusters:
     - name: *backup
