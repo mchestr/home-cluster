@@ -89,13 +89,15 @@ nodes:
 
   - hostname: k8s-4
     ipAddress: 192.168.1.204
-    controlPlane: false
+    controlPlane: true
     installDiskSelector:
       busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "e4:e7:49:52:fc:c2"
         dhcp: true
+        vip:
+          ip: 192.168.1.254
         dhcpOptions:
           routeMetric: 1024
           ipv6: false
