@@ -133,9 +133,6 @@ spec:
           - hosts:
               - *host
 
-    cephBlockPoolsVolumeSnapshotClass:
-      enabled: false
-
     cephBlockPools:
       - name: ceph-blockpool
         spec:
