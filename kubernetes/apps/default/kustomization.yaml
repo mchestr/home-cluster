@@ -20,7 +20,6 @@ resources:
   - immich/ks.yaml
   - jellyfin/ks.yaml
   - lldap/ks.yaml
-  - miniflux/ks.yaml
   - mosquitto/ks.yaml
   - overseerr/ks.yaml
   - paperless/ks.yaml
