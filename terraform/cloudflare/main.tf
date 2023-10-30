@@ -34,7 +34,3 @@ provider "onepassword" {
 data "cloudflare_zone" "domain" {
   name = var.cluster_domain
 }
-
-data "cloudflare_zone" "wordpress_0_domain" {
-  name = var.wordpress_0_domain
-}

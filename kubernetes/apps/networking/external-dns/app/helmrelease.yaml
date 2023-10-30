@@ -47,7 +47,6 @@ spec:
     txtOwnerId: "default"
     domainFilters:
       - chestr.dev
-      - stephk.co
     serviceMonitor:
       enabled: true
     podAnnotations:
