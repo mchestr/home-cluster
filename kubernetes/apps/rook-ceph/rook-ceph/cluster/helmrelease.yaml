@@ -48,7 +48,7 @@ spec:
           requireMsgr2: true
 
       crashCollector:
-        disable: false
+        disable: true
 
       dashboard:
         enabled: true
