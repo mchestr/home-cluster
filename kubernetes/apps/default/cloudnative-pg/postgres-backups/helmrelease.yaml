@@ -41,7 +41,7 @@ spec:
                   name: postgres-backups-secret
             env:
               POSTGRES_HOST: postgres-rw.default.svc.cluster.local
-              POSTGRES_DB: authelia,autobrr,displex,gatus,ghostfolio,home-assistant,immich,lldap,miniflux,paperless,prowlarr_log,prowlarr_main,radarr_log,radarr_main,shlink,sonarr_log,sonarr_main
+              POSTGRES_DB: authelia,autobrr,displex,gatus,ghostfolio,home-assistant,immich,lldap,paperless,prowlarr_log,prowlarr_main,radarr_log,radarr_main,sonarr_log,sonarr_main
             command: /backup.sh
 
     service:
