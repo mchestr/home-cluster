@@ -12,7 +12,7 @@ spec:
     size: 8Gi
     storageClass: local-path
   superuserSecret:
-    name: cloudnative-pg
+    name: &secretName cloudnative-pg-secret
 
   monitoring:
     enablePodMonitor: true
@@ -28,15 +28,15 @@ spec:
       wal:
         compression: bzip2
         maxParallel: 8
-      destinationPath: s3://postgresql/
-      endpointURL: http://minio.networking.svc.cluster.local:9000
+      destinationPath: &dest s3://postgresql/
+      endpointURL: &minio http://minio.networking.svc.cluster.local:9000
       serverName: cnpg-jkjktys
-      s3Credentials:
+      s3Credentials: &credentials
         accessKeyId:
-          name: cloudnative-pg
+          name: *secretName
           key: s3-access-key-id
         secretAccessKey:
-          name: cloudnative-pg
+          name: *secretName
           key: s3-secret-access-key
 
   bootstrap:
@@ -51,12 +51,6 @@ spec:
         wal:
           compression: bzip2
           maxParallel: 8
-        destinationPath: s3://postgresql/
-        endpointURL: http://minio.networking.svc.cluster.local:9000
-        s3Credentials:
-          accessKeyId:
-            name: cloudnative-pg
-            key: s3-access-key-id
-          secretAccessKey:
-            name: cloudnative-pg
-            key: s3-secret-access-key
+        destinationPath: *dest
+        endpointURL: *minio
+        s3Credentials: *credentials
