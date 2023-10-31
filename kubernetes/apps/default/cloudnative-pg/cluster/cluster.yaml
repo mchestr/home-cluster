@@ -5,7 +5,7 @@ metadata:
   name: postgres
   namespace: default
 spec:
-  instances: 2
+  instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:15.3
   primaryUpdateStrategy: unsupervised
   storage:
@@ -23,14 +23,14 @@ spec:
       shared_buffers: 512MB
 
   backup:
-    retentionPolicy: 30d
+    retentionPolicy: 7d
     barmanObjectStore:
       wal:
         compression: bzip2
         maxParallel: 8
       destinationPath: &dest s3://postgresql/
       endpointURL: &minio http://minio.networking.svc.cluster.local:9000
-      serverName: cnpg-jkjktys
+      serverName: cnpg-abhyksj
       s3Credentials: &credentials
         accessKeyId:
           name: *secretName
@@ -39,18 +39,18 @@ spec:
           name: *secretName
           key: s3-secret-access-key
 
-  # bootstrap:
-  #   recovery:
-  #     # Should match name in externalClusters
-  #     source: &backup cnpg-ptgnjfg
+  bootstrap:
+    recovery:
+      # Should match name in externalClusters
+      source: &backup cnpg-jkjktys
 
-  # externalClusters:
-  #   - name: *backup
-  #     barmanObjectStore:
-  #       serverName: *backup
-  #       wal:
-  #         compression: bzip2
-  #         maxParallel: 8
-  #       destinationPath: *dest
-  #       endpointURL: *minio
-  #       s3Credentials: *credentials
+  externalClusters:
+    - name: *backup
+      barmanObjectStore:
+        serverName: *backup
+        wal:
+          compression: bzip2
+          maxParallel: 8
+        destinationPath: *dest
+        endpointURL: *minio
+        s3Credentials: *credentials
