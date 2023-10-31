@@ -39,18 +39,18 @@ spec:
           name: *secretName
           key: s3-secret-access-key
 
-  bootstrap:
-    recovery:
-      # Should match name in externalClusters
-      source: &backup cnpg-jkjktys
+  # bootstrap:
+  #   recovery:
+  #     # Should match name in externalClusters
+  #     source: &backup cnpg-jkjktys
 
-  externalClusters:
-    - name: *backup
-      barmanObjectStore:
-        serverName: *backup
-        wal:
-          compression: bzip2
-          maxParallel: 8
-        destinationPath: *dest
-        endpointURL: *minio
-        s3Credentials: *credentials
+  # externalClusters:
+  #   - name: *backup
+  #     barmanObjectStore:
+  #       serverName: *backup
+  #       wal:
+  #         compression: bzip2
+  #         maxParallel: 8
+  #       destinationPath: *dest
+  #       endpointURL: *minio
+  #       s3Credentials: *credentials
