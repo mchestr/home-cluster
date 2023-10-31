@@ -54,9 +54,11 @@ spec:
           main:
             image:
               repository: ghcr.io/shlinkio/shlink
-              tag: 3.6.4
+              tag: 3.6.4-non-root
             env:
               DB_DRIVER: postgres
+              DB_HOST: postgres-rw.default.svc.cluster.local
+              DB_NAME: shlink
               DEFAULT_DOMAIN: ln.chestr.dev
               DISABLE_TRACKING_FROM: 10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
               ENABLE_PERIODIC_VISIT_LOCATE: "true"
