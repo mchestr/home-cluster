@@ -31,6 +31,9 @@ spec:
         fsGroup: 65539
         fsGroupChangePolicy: OnRootMismatch
 
+      nodeSelector:
+        kubernetes.io/hostname: k8s-2
+
     controllers:
       main:
         type: statefulset
@@ -46,8 +49,18 @@ spec:
               tag: 4.6.0@sha256:cb6259df3be61a5108bc4f85b09a523fc4b250589ca9b315ef927cbdf779afb6
             env:
               TZ: America/Vancouver
-              QBITTORRENT__PORT: 8080
-              QBITTORRENT__BT_PORT: 50413
+              QBITTORRENT__PORT: &port 8080
+              QBITTORRENT__BT_PORT: &bittorrentPort 50413
+              QBT_Preferences__WebUI__AlternativeUIEnabled: false
+              QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
+              QBT_Preferences__WebUI__AuthSubnetWhitelist: 10.244.0.0/16
+              QBT_Preferences__WebUI__LocalHostAuth: false
+              QBT_BitTorrent__Session__Interface: eth0
+              QBT_BitTorrent__Session__InterfaceAddress:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: status.podIP
+              QBT_BitTorrent__Session__InterfaceName: eth0
           cross-seed:
             image:
               repository: ghcr.io/cross-seed/cross-seed
@@ -68,29 +81,18 @@ spec:
       main:
         ports:
           http:
-            port: 8080
-      crossseed:
-        enabled: true
-        controller: main
-        ports:
-          crossseed:
-            enabled: true
-            port: 2468
-            protocol: TCP
-            targetPort: 2468
+            port: *port
+
       bittorrent:
-        enabled: true
-        type: LoadBalancer
         controller: main
+        type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: 192.168.100.40
-        externalTrafficPolicy: Cluster
         ports:
           bittorrent:
             enabled: true
-            port: 50413
+            port: *bittorrentPort
             protocol: TCP
-            targetPort: 50413
 
     ingress:
       main:

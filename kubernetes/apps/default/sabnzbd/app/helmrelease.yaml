@@ -31,6 +31,9 @@ spec:
         fsGroup: 65539
         fsGroupChangePolicy: OnRootMismatch
 
+      nodeSelector:
+        kubernetes.io/hostname: k8s-2
+
     controllers:
       main:
         type: statefulset
