@@ -49,9 +49,9 @@ spec:
               TZ: America/Vancouver
               UN_WEBSERVER_METRICS: "true"
               UN_SONARR_0_URL: http://sonarr.default.svc.cluster.local:8989
-              UN_SONARR_0_PATHS_0: /complete
+              UN_SONARR_0_PATHS_0: /complete/sonarr
               UN_RADARR_0_URL: http://radarr.default.svc.cluster.local:7878
-              UN_RADARR_0_PATHS_0: /complete
+              UN_RADARR_0_PATHS_0: /complete/radarr
             envFrom:
               - secretRef:
                   name: unpackerr
