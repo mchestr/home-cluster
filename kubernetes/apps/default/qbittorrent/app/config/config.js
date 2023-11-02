@@ -1,6 +1,6 @@
 module.exports = {
-  delay: 30,
-
+  qbittorrentUrl: "http://localhost:8080",
+  delay: 20,
   torznab: [
     "http://prowlarr.default.svc.cluster.local:9696/25/api?apikey={{ .PROWLARR_API_KEY }}",
     "http://prowlarr.default.svc.cluster.local:9696/30/api?apikey={{ .PROWLARR_API_KEY }}",
@@ -11,13 +11,19 @@ module.exports = {
   ],
 
   action: "inject",
-  matchMode: "safe",
-  skipRecheck: true,
-  includeEpisodes: true,
+  includeEpisodes: false,
+  includeSingleEpisodes: true,
   includeNonVideos: true,
   duplicateCategories: true,
+  matchMode: "safe",
+  skipRecheck: true,
+  linkType: "hardlink",
+  linkDir: "/media/downloads/torrents/complete/cross-seed",
+  dataDirs: [
+    "/media/downloads/torrents/complete/prowlarr",
+    "/media/downloads/torrents/complete/radarr",
+    "/media/downloads/torrents/complete/sonarr",
+  ],
   outputDir: "/config/xseeds",
   torrentDir: "/config/qBittorrent/BT_backup",
-  qbittorrentUrl: "http://localhost:8080",
-  rssCadence: "15 minutes", // autobrr doesnt get every announcement
 }
