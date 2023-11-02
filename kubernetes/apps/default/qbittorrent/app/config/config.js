@@ -23,6 +23,7 @@ module.exports = {
     "/media/downloads/torrents/complete/prowlarr",
     "/media/downloads/torrents/complete/radarr",
     "/media/downloads/torrents/complete/sonarr",
+    "/media/downloads/torrents/complete/freeleech",
   ],
   outputDir: "/config/xseeds",
   torrentDir: "/config/qBittorrent/BT_backup",
