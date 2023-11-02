@@ -12,8 +12,8 @@ spec:
     - name: radarr.rules
       rules:
         - alert: RadarrQueueItems
-          expr: radarr_queue_total{service="radarr"} AND changes(radarr_queue_total{service="radarr"}[1h]) == 0
-          for: 1h
+          expr: radarr_queue_total AND changes(radarr_queue_total[1h]) == 0
+          for: 4h
           labels:
             severity: warning
           annotations:

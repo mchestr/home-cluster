@@ -13,7 +13,7 @@ spec:
       rules:
         - alert: SonarrQueueItems
           expr: sonarr_queue_total AND changes(sonarr_queue_total[1h]) == 0
-          for: 1h
+          for: 4h
           labels:
             severity: warning
           annotations:
