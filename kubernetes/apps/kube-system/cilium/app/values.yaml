@@ -160,11 +160,9 @@ loadBalancer:
   # e.g. snat, dsr, hybrid
   mode: dsr
 
+# -- Using BGP
 l2announcements:
-  enabled: true
-  leaseDuration: 120s
-  leaseRenewDeadline: 60s
-  leaseRetryPeriod: 1s
+  enabled: false
 
 l7Proxy: true
 
