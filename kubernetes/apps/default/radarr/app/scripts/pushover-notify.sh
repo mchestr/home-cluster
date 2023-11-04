@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2154
 
 PUSHOVER_DEBUG="${PUSHOVER_DEBUG:-"true"}"
 # kubectl port-forward service/radarr -n default 7878:80
@@ -9,12 +10,6 @@ PUSHOVER_DEBUG="${PUSHOVER_DEBUG:-"true"}"
 
 CONFIG_FILE="/config/config.xml" && [[ "${PUSHOVER_DEBUG}" == "true" ]] && CONFIG_FILE="config.xml"
 ERRORS=()
-
-#
-# Discoverable variables
-#
-# shellcheck disable=SC2086
-PUSHOVER_STARR_APIKEY="$(xmlstarlet sel -t -v "//ApiKey" -nl ${CONFIG_FILE})" && [[ -z "${PUSHOVER_STARR_APIKEY}" ]] && ERRORS+=("PUSHOVER_STARR_APIKEY not defined")
 
 #
 # Configurable variables
@@ -49,22 +44,23 @@ fi
 #
 if [[ "${radarr_eventtype:-}" == "Test" ]]; then
     PUSHOVER_TITLE="Test Notification"
-    PUSHOVER_MESSAGE="Howdy this is a test notification from ${PUSHOVER_STARR_INSTANCE_NAME}"
+    PUSHOVER_MESSAGE="Howdy this is a test notification from ${radarr_instancename:-Radarr}"
 fi
 
 #
 # Send notification on Download or Upgrade
 #
 if [[ "${radarr_eventtype:-}" == "Download" ]]; then
-    printf -v PUSHOVER_TITLE "New Movie %s" "${radarr_eventtype:-Download}"
-    printf -v PUSHOVER_MESSAGE "<b>%s (%s)</b><small>\n%s</small><small>\n\n<b>Quality:</b> %s</small><small>\n<b>Client:</b> %s</small><small>\n<b>Upgrade:</b> %s</small>" \
-        "${radarr_movie_title:-"The Lord of the Rings: The Return of the King"}" \
-        "${radarr_movie_year:-"2003"}" \
-        "${radarr_movie_overview:-"Movie plot summary not available"}" \
-        "${radarr_moviefile_quality:-"Bluray-1080p"}" \
-        "${radarr_download_client:-"qbittorrent"}" \
-        "${radarr_isupgrade:-"False"}"
-    printf -v PUSHOVER_URL "%s/movie/%s" "${radarr_applicationurl:-localhost}" "${radarr_movie_tmdbid:-"122"}"
+    if [[ "${radarr_isupgrade}" == "True" ]]; then pushover_title="Upgraded"; else pushover_title="Downloaded"; fi
+    printf -v PUSHOVER_TITLE "Movie %s" "${pushover_title}"
+    printf -v PUSHOVER_MESSAGE "<b>%s (%s)</b><small>\n%s</small><small>\n\n<b>Client:</b> %s</small><small>\n<b>Quality:</b> %s</small><small>\n<b>Size:</b> %s</small>" \
+        "${radarr_movie_title}" \
+        "${radarr_movie_year}" \
+        "${radarr_movie_overview}" \
+        "${radarr_download_client}" \
+        "${radarr_moviefile_quality}" \
+        "$(numfmt --to iec --format "%8.2f" "${radarr_release_size}")"
+    printf -v PUSHOVER_URL "%s/movie/%s" "${radarr_applicationurl:-localhost}" "${radarr_movie_tmdbid}"
     printf -v PUSHOVER_URL_TITLE "View movie in %s" "${radarr_instancename:-Radarr}"
 fi
 
