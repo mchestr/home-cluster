@@ -35,10 +35,11 @@ spec:
         containers:
           main:
             image:
-              repository: ghcr.io/jacobalberty/unifi-docker
-              tag: v7.5.176
+              repository: ghcr.io/goofball222/unifi
+              tag: 7.5.187
             env:
               TZ: America/Vancouver
+              DEBUG: "false"
               RUNAS_UID0: "false"
               UNIFI_UID: "999"
               UNIFI_GID: "999"
@@ -50,10 +51,10 @@ spec:
           volumeClaimTemplates:
             - name: data
               accessMode: ReadWriteOnce
-              size: 1Gi
+              size: 2Gi
               storageClass: ceph-block
               globalMounts:
-                - path: /unifi
+                - path: /usr/lib/unifi/data
 
     service:
       main:
