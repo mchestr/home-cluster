@@ -121,7 +121,7 @@ data:
             icon: uptime-kuma.png
             widget:
               type: uptimekuma
-              url: http://status.chestr.dev
+              url: https://status.chestr.dev
               slug: chesterlab
     - System:
         - Mainsail:
@@ -169,7 +169,7 @@ data:
           timeStyle: short
           hourCycle: h23
     - unifi_console:
-        url: http://unifi.chestr.dev
+        url: https://unifi.chestr.dev
         username: {{HOMEPAGE_VAR_UNIFI_USER}}
         password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
   docker.yaml: ""
