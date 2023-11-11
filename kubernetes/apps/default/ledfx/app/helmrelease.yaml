@@ -45,6 +45,22 @@ spec:
               - secretRef:
                   name: ledfx-secret
 
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/info
+                    port: &port 8888
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+
         statefulset:
           volumeClaimTemplates:
             - name: config
@@ -58,7 +74,7 @@ spec:
       main:
         ports:
           http:
-            port: 8888
+            port: *port
 
     ingress:
       main:
