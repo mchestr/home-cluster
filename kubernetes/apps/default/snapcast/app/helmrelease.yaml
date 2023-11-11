@@ -40,8 +40,8 @@ spec:
         containers:
           main:
             image:
-              repository: ivdata/snapserver
-              tag: latest@sha256:af19b28010f3c11838fa5897d41cb5f7123a6087ef4ff51784c3d6d111c1081a
+              repository: ghcr.io/mchestr/snapserver
+              tag: 0.27.0
             env:
               TZ: America/Vancouver
 
