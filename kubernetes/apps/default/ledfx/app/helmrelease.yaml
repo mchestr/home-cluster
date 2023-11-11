@@ -35,8 +35,8 @@ spec:
         containers:
           main:
             image:
-              repository: shirom/ledfx
-              tag: latest@sha256:5f8480497dfbbfa408da43f3a7a26afcc4a02171d9e104582b29d2f1a6819339
+              repository: ghcr.io/mchestr/ledfx
+              tag: 3.9-buster@sha256:e4b0378cdd4476543e5ed4491cf459aae1f158eb39d8a954818023f23ece6ae8
 
             env:
               TZ: America/Vancouver
