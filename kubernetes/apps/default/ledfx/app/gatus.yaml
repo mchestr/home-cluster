@@ -12,7 +12,7 @@ data:
       - name: ledfx
         group: guarded
         url: 1.1.1.1
-        interval: 1m
+        interval: 30m
         ui:
           hide-hostname: true
           hide-url: true
