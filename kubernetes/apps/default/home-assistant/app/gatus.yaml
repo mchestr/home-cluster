@@ -12,7 +12,7 @@ data:
       - name: home-assistant
         group: external
         url: https://home-assistant.chestr.dev
-        interval: 10m
+        interval: 30m
         client:
           dns-resolver: tcp://1.1.1.1:53
         conditions:
