@@ -68,7 +68,7 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: mdi-music
           gethomepage.dev/name: Music
-          gethomepage.dev/group: Home
+          gethomepage.dev/group: Music
         hosts:
           - host: &host music.chestr.dev
             paths:
