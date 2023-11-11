@@ -36,7 +36,7 @@ spec:
           main:
             image:
               repository: ghcr.io/mchestr/ledfx
-              tag: 3.9-buster@sha256:e4b0378cdd4476543e5ed4491cf459aae1f158eb39d8a954818023f23ece6ae8
+              tag: v2.0.74
 
             env:
               TZ: America/Vancouver
