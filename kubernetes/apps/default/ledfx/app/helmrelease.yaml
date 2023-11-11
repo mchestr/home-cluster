@@ -66,11 +66,11 @@ spec:
         className: internal
         annotations:
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/icon: mdi-music
-          gethomepage.dev/name: Music
+          gethomepage.dev/icon: mdi-led-strip-variant
+          gethomepage.dev/name: LedFx
           gethomepage.dev/group: Music
         hosts:
-          - host: &host music.chestr.dev
+          - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix
