@@ -41,7 +41,7 @@ spec:
           main:
             image:
               repository: ghcr.io/mchestr/snapserver
-              tag: 0.27.0@sha256:8ffaf345a21eec773c2c50f21c5bac6f681c0ee305651981fe0181804a01b5f4
+              tag: 0.27.0@sha256:18545075a18476fe2b2ee15147460c696ae36b7a43f57e227eb43e53b7d55b0a
             env:
               TZ: America/Vancouver
 
