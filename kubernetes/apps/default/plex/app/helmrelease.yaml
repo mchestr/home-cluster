@@ -72,16 +72,10 @@ spec:
           volumeClaimTemplates:
             - name: config
               accessMode: ReadWriteOnce
-              size: 50Gi
+              size: 70Gi
               storageClass: ceph-block
               globalMounts:
                 - path: /config
-            - name: cache
-              accessMode: ReadWriteOnce
-              size: 50Gi
-              storageClass: ceph-block
-              globalMounts:
-                - path: /config/Library/Application Support/Plex Media Server/Cache
 
     service:
       main:
