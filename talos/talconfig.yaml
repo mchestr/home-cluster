@@ -224,6 +224,13 @@ controlPlane:
 worker:
 
   patches:
+    # Add role=worker label
+    - |-
+      - op: add
+        path: /machine/nodeLabels
+        value:
+          kubernetes.io/role: worker
+
     # Disable search domain everywhere
     - |-
       machine:
