@@ -31,7 +31,7 @@ spec:
               - /bin/sh
               - -c
             args:
-              - cp /data/mosquitto_secret/* /mosquitto/external_config/ && mosquitto_passwd -U /mosquitto/external_config/mosquitto_pwd
+              - cp /data/mosquitto_secret/* /mosquitto/external_config/ && mosquitto_passwd -U /mosquitto/external_config/mosquitto_pwd && chmod 600 /mosquitto/external_config/mosquitto_pwd
 
         containers:
           main:
