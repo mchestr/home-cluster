@@ -28,7 +28,7 @@ spec:
           main:
             image:
               repository: ghcr.io/flaresolverr/flaresolverr
-              tag: v3.3.7
+              tag: v3.3.8
             resources:
               requests:
                 memory: 105Mi
