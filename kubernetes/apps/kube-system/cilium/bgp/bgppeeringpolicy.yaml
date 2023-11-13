@@ -7,7 +7,7 @@ metadata:
 spec:
   nodeSelector:
     matchLabels:
-      kubernetes.io/os: "linux" # match all Linux nodes, change this to match more granularly if more than 1 PeeringPolicy is to be used throughout cluster
+      kubernetes.io/role: worker
   virtualRouters:
     - localASN: 64512
       exportPodCIDR: false
