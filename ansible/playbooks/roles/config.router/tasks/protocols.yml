@@ -11,9 +11,3 @@
       - "{{ prefix }} interface switch0.10 alt-subnet 0.0.0.0/0"
       - "{{ prefix }} interface switch0.10 role downstream"
       - "{{ prefix }} interface switch0.10 threshold 1"
-- name: Configure Static
-  vars:
-    prefix: set protocols static
-  community.network.edgeos_config:
-    lines:
-      "{{ prefix }} interface-route 10.0.10.0/24 next-hop-interface switch0 distance 1"
