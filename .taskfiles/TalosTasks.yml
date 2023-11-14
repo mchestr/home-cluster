@@ -39,7 +39,7 @@ tasks:
     dir: talos
     cmds:
       - task: generate
-      - for: [3, 1, 0, 2, 4, 5]
+      - for: [3, 1, 0, 2, 4, 5, 6]
         task: upgrade
         vars:
           NODE: 'k8s-{{ .ITEM }}'
