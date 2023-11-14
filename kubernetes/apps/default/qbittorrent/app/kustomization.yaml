@@ -6,6 +6,7 @@ resources:
   - externalsecret.yaml
   - gatus.yaml
   - helmrelease.yaml
+  - service.yaml
   - volsync.yaml
 configMapGenerator:
   - name: qbittorrent-scripts

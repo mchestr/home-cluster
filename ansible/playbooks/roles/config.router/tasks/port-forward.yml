@@ -16,7 +16,7 @@
     rules:
       - name: qBittorrent
         forward:
-          address: 192.168.100.40
+          address: 192.168.1.220
           port: 50413
         original_port: 50413
         protocol: tcp_udp
