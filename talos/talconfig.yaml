@@ -42,7 +42,6 @@ nodes:
           ip: 192.168.1.254
         dhcpOptions:
           routeMetric: 1024
-          ipv6: false
 
   - hostname: k8s-1
     ipAddress: 192.168.1.201
@@ -55,7 +54,6 @@ nodes:
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
-          ipv6: false
 
   - hostname: k8s-2
     ipAddress: 192.168.1.202
@@ -68,7 +66,6 @@ nodes:
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
-          ipv6: false
 
   - hostname: k8s-3
     ipAddress: 192.168.1.203
@@ -83,7 +80,6 @@ nodes:
           ip: 192.168.1.254
         dhcpOptions:
           routeMetric: 1024
-          ipv6: false
 
   - hostname: k8s-4
     ipAddress: 192.168.1.204
@@ -98,7 +94,6 @@ nodes:
           ip: 192.168.1.254
         dhcpOptions:
           routeMetric: 1024
-          ipv6: false
 
   - hostname: k8s-5
     ipAddress: 192.168.1.205
@@ -111,7 +106,28 @@ nodes:
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
-          ipv6: false
+
+  - hostname: k8s-6
+    ipAddress: 192.168.1.206
+    controlPlane: false
+    # customization:
+    #     extraKernelArgs:
+    #         - net.ifnames=0
+    #     systemExtensions:
+    #         officialExtensions:
+    #             - siderolabs/bnx2-bnx2x
+    #             - siderolabs/intel-ucode
+    #             - siderolabs/nut-client
+    #             - siderolabs/nonfree-kmod-nvidia
+    talosImageURL: factory.talos.dev/installer/c1b16f176725cb50c6b910d40ed1c6901ec1844501a16638a57252cd84f799d7
+    installDiskSelector:
+      busPath: /pci0000:00/0000:00:1d.0/0000:04:00.0/nvme/nvme0/nvme0n1
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "d8:cb:8a:e6:2f:38"
+        dhcp: true
+        dhcpOptions:
+          routeMetric: 1024
 
 controlPlane:
 
