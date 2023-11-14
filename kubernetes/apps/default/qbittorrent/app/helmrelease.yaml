@@ -32,7 +32,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
 
       nodeSelector:
-        kubernetes.io/hostname: k8s-2
+        kubernetes.io/hostname: k8s-6
 
     controllers:
       main:
