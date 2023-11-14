@@ -6,5 +6,6 @@
       - set protocols bgp 64512 neighbor 192.168.1.201 remote-as 64512
       - set protocols bgp 64512 neighbor 192.168.1.202 remote-as 64512
       - set protocols bgp 64512 neighbor 192.168.1.205 remote-as 64512
+      - set protocols bgp 64512 neighbor 192.168.1.206 remote-as 64512
       - set protocols bgp 64512 redistribute static
       - set protocols bgp 64512 maximum-paths ibgp 32
