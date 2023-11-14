@@ -29,22 +29,62 @@ spec:
     keepHistory: false
   values:
     kind: Deployment
+    schedule: "*/5 * * * *"
     deschedulerPolicy:
       strategies:
         RemoveDuplicates:
-          enabled: false
+          enabled: true
+        RemovePodsViolatingNodeTaints:
+          enabled: true
         RemovePodsViolatingNodeAffinity:
           enabled: true
           params:
             nodeAffinityType:
               - requiredDuringSchedulingIgnoredDuringExecution
+        RemovePodsViolatingInterPodAntiAffinity:
+          enabled: true
         RemovePodsViolatingTopologySpreadConstraint:
           enabled: true
           params:
             includeSoftConstraints: true
-        RemovePodsViolatingInterPodAntiAffinity:
-          enabled: true
-          params:
-            nodeFit: true
         LowNodeUtilization:
           enabled: true
+          params:
+            nodeResourceUtilizationThresholds:
+              thresholds:
+                cpu: 35
+                memory: 35
+              targetThresholds:
+                cpu: 40
+                memory: 40
+        RemoveFailedPods:
+          enabled: true
+          params:
+            failedPods:
+              reasons:
+                - NodeShutdown
+                - ImagePullBackOff
+                - CreateContainerConfigError
+              includingInitContainers: true
+              excludeOwnerKinds:
+                - Job
+              minPodLifetimeSeconds: 3600
+        RemovePodsHavingTooManyRestarts:
+          enabled: true
+          params:
+            podsHavingTooManyRestarts:
+              podRestartThreshold: 10
+              includingInitContainers: true
+        PodLifeTime:
+          enabled: true
+          params:
+            podLifeTime:
+              states:
+                - Pending
+                - PodInitializing
+                - ContainerCreating
+              maxPodLifeTimeSeconds: 3600
+    service:
+      enabled: true
+    serviceMonitor:
+      enabled: true
