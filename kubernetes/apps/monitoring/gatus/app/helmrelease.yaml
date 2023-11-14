@@ -69,7 +69,7 @@ spec:
           main:
             image:
               repository: ghcr.io/twin/gatus
-              tag: v5.6.0@sha256:140f28f5bfdf6429cfc0408e4a5820f7b25b23b9becdd9cf22d1f5adcd0e8cd4
+              tag: v5.7.0@sha256:e077910eeda4c1369e20c74bd09853b141399103531d97d831d1ae58bd81537d
             envFrom:
               - secretRef:
                   name: gatus-secret
