@@ -58,43 +58,11 @@ spec:
 
     service:
       main:
-        type: LoadBalancer
-        annotations:
-          external-dns.alpha.kubernetes.io/hostname: unifi-mgmt.chestr.dev
-          io.cilium/lb-ipam-ips: 192.168.100.50
-        externalTrafficPolicy: Cluster
+        enabled: true
         ports:
           http:
             port: 8443
             protocol: HTTPS
-          controller:
-            enabled: true
-            port: 8080
-            protocol: TCP
-          portal-http:
-            enabled: false
-            port: 8880
-            protocol: HTTP
-          portal-https:
-            enabled: false
-            port: 8843
-            protocol: HTTPS
-          speedtest:
-            enabled: true
-            port: 6789
-            protocol: TCP
-          stun:
-            enabled: true
-            port: 3478
-            protocol: UDP
-          syslog:
-            enabled: true
-            port: 5514
-            protocol: UDP
-          discovery:
-            enabled: true
-            port: 10001
-            protocol: UDP
 
     ingress:
       main:
