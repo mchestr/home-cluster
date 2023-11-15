@@ -62,6 +62,8 @@ spec:
     volumeSnapshotClassName: csi-ceph-blockpool
     storageClassName: ceph-block
     moverSecurityContext:
+      runAsUser: 0
+      runAsGroup: 0
       fsGroup: 0
     retain:
       daily: 7
@@ -83,4 +85,6 @@ spec:
     capacity: 2Gi
     volumeSnapshotClassName: csi-ceph-blockpool
     moverSecurityContext:
+      runAsUser: 0
+      runAsGroup: 0
       fsGroup: 0
