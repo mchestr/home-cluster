@@ -45,7 +45,6 @@ spec:
 
     controllers:
       main:
-        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
@@ -81,14 +80,6 @@ spec:
               - /config/.vscode
               - /config
 
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              accessMode: ReadWriteOnce
-              size: 2Gi
-              storageClass: ceph-block
-              globalMounts:
-                - path: /config
     service:
       main:
         ports:
@@ -145,6 +136,11 @@ spec:
               - *codeHost
 
     persistence:
+      config:
+        enabled: true
+        existingClaim: config-home-assistant
+        globalMounts:
+          - path: /config
       deploykey:
         enabled: true
         type: secret

@@ -35,7 +35,6 @@ spec:
 
     controllers:
       main:
-        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -61,15 +60,6 @@ spec:
               - /conf/.vscode
               - --disable-telemetry
               - /conf
-
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              globalMounts:
-                - path: /conf
-              accessMode: ReadWriteOnce
-              size: 1Gi
-              storageClass: ceph-block
 
     service:
       main:
@@ -113,6 +103,11 @@ spec:
               - *host
 
     persistence:
+      config:
+        enabled: true
+        existingClaim: config-appdaemon
+        globalMounts:
+          - path: /conf
       secrets:
         enabled: true
         type: secret
