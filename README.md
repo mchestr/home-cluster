@@ -68,6 +68,7 @@ My mash-mash setup of random hardware I managed to acquire. I also have a few SB
 | HP EliteDesk 800 G3                                   | 2     | 256/512GB SSD | 512GB                | 16GB    | Talos            | control-plane     |
 | HP EliteDesk 800 G4                                   | 2     | 256 SSD       | 256GB                | 16/32GB | Talos            | worker            |
 | i5-2500K/R7 370 (old repurposed gaming computer)      | 1     | 120GB SSD     | N/A                  | 24GB    | Talos            | worker            |
+| i5-6700K/GTX1080 (repurposed gaming computer)         | 1     | 256GB SSD     | N/A                  | 32GB    | Talos            | worker            |
 | Synology DS920+                                       | 1     | N/A           | 2x8TB & 2x4TB        | 20GB    | DSM 7.1.1        | NAS               |
 | CyberPower CP1500AVRLCD                               | 1     | N/A           | N/A                  | N/A     | N/A              | UPS               |
 | Ubiquiti EdgeRouter 10X                               | 1     | N/A           | N/A                  | 512MB   | EdgeOS           | Router            |
