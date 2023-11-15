@@ -35,7 +35,6 @@ spec:
 
     controllers:
       main:
-        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -53,15 +52,6 @@ spec:
                 memory: 250Mi
               limits:
                 memory: 500Mi
-
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              accessMode: ReadWriteOnce
-              size: 1Gi
-              storageClass: ceph-block
-              globalMounts:
-                - path: /config
 
     service:
       main:
@@ -91,6 +81,9 @@ spec:
               - *host
 
     persistence:
+      config:
+        enabled: true
+        existingClaim: config-thelounge
       config-file:
         enabled: true
         type: secret

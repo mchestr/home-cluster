@@ -28,7 +28,6 @@ spec:
   values:
     controllers:
       main:
-        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -46,15 +45,6 @@ spec:
               UNIFI_STDOUT: "true"
               JVM_INIT_HEAP_SIZE: null
               JVM_MAX_HEAP_SIZE: 1024M
-
-        statefulset:
-          volumeClaimTemplates:
-            - name: data
-              accessMode: ReadWriteOnce
-              size: 2Gi
-              storageClass: ceph-block
-              globalMounts:
-                - path: /usr/lib/unifi/data
 
     service:
       main:
@@ -85,3 +75,10 @@ spec:
         tls:
           - hosts:
               - *host
+
+    persistence:
+      data:
+        enabled: true
+        existingClaim: config-unifi
+        globalMounts:
+          - path: /usr/lib/unifi/data

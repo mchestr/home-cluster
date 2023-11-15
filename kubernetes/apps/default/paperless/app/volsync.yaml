@@ -1,4 +1,24 @@
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-paperless
+  namespace: default
+  annotations:
+    kustomize.toolkit.fluxcd.io/prune: Disabled
+    kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
+spec:
+  accessModes:
+    - ReadWriteOnce
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: paperless-rd
+  resources:
+    requests:
+      storage: 8Gi
+  storageClassName: ceph-block
+---
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
@@ -30,14 +50,14 @@ metadata:
   name: paperless
   namespace: default
 spec:
-  sourcePVC: paperless-config-v1
+  sourcePVC: data-paperless
   trigger:
     schedule: "0 9 * * *"
   restic:
     repository: paperless-restic-secret
     copyMethod: Snapshot
     pruneIntervalDays: 10
-    cacheCapacity: 4Gi
+    cacheCapacity: 8Gi
     cacheStorageClassName: local-path
     volumeSnapshotClassName: csi-ceph-blockpool
     storageClassName: ceph-block
@@ -47,3 +67,24 @@ spec:
       fsGroup: 65539
     retain:
       daily: 7
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: paperless-rd
+  namespace: default
+spec:
+  trigger:
+    manual: 2023-11-14T03:55:00
+  restic:
+    repository: paperless-restic-secret
+    copyMethod: Snapshot
+    storageClassName: ceph-block
+    accessModes:
+      - ReadWriteOnce
+    capacity: 8Gi
+    volumeSnapshotClassName: csi-ceph-blockpool
+    moverSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 65539

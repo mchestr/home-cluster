@@ -28,7 +28,6 @@ spec:
   values:
     controllers:
       main:
-        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -39,15 +38,6 @@ spec:
               tag: 9.3.2
             env:
               TZ: America/Vancouver
-
-        statefulset:
-          volumeClaimTemplates:
-            - name: data
-              accessMode: ReadWriteOnce
-              size: 1Gi
-              storageClass: ceph-block
-              globalMounts:
-                - path: /usr/src/app/store
 
     service:
       main:
@@ -80,3 +70,10 @@ spec:
         tls:
           - hosts:
               - *host
+
+    persistence:
+      data:
+        enabled: true
+        existingClaim: data-zwave-js-ui
+        globalMounts:
+          - path: /usr/src/app/store
