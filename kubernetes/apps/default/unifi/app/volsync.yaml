@@ -1,4 +1,24 @@
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-unifi
+  namespace: default
+  annotations:
+    kustomize.toolkit.fluxcd.io/prune: Disabled
+    kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
+spec:
+  accessModes:
+    - ReadWriteOnce
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: unifi-rd
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: ceph-block
+---
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
@@ -30,14 +50,14 @@ metadata:
   name: unifi
   namespace: default
 spec:
-  sourcePVC: data-unifi-0
+  sourcePVC: data-unifi
   trigger:
     schedule: "0 9 * * *"
   restic:
     repository: unifi-restic-secret
     copyMethod: Snapshot
     pruneIntervalDays: 10
-    cacheCapacity: 1Gi
+    cacheCapacity: 2Gi
     cacheStorageClassName: local-path
     volumeSnapshotClassName: csi-ceph-blockpool
     storageClassName: ceph-block
@@ -45,3 +65,22 @@ spec:
       fsGroup: 0
     retain:
       daily: 7
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: unifi-rd
+  namespace: default
+spec:
+  trigger:
+    manual: 2023-11-14T03:55:00
+  restic:
+    repository: unifi-restic-secret
+    copyMethod: Snapshot
+    storageClassName: ceph-block
+    accessModes:
+      - ReadWriteOnce
+    capacity: 2Gi
+    volumeSnapshotClassName: csi-ceph-blockpool
+    moverSecurityContext:
+      fsGroup: 0

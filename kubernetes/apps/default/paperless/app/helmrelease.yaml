@@ -125,7 +125,7 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: paperless-config-v1
+        existingClaim: data-paperless
         globalMounts:
           - subPath: data
             path: /usr/src/paperless/data

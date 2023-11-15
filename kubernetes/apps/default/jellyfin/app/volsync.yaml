@@ -1,4 +1,24 @@
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: config-jellyfin
+  namespace: default
+  annotations:
+    kustomize.toolkit.fluxcd.io/prune: Disabled
+    kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
+spec:
+  accessModes:
+    - ReadWriteOnce
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: jellyfin-rd
+  resources:
+    requests:
+      storage: 25Gi
+  storageClassName: ceph-block
+---
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
@@ -30,7 +50,7 @@ metadata:
   name: jellyfin
   namespace: default
 spec:
-  sourcePVC: config-jellyfin-0
+  sourcePVC: config-jellyfin
   trigger:
     schedule: "0 9 * * *"
   restic:
@@ -43,6 +63,27 @@ spec:
     storageClassName: ceph-block
     retain:
       daily: 7
+    moverSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: jellyfin-rd
+  namespace: default
+spec:
+  trigger:
+    manual: 2023-11-14T03:55:00
+  restic:
+    repository: jellyfin-restic-secret
+    copyMethod: Snapshot
+    storageClassName: ceph-block
+    accessModes:
+      - ReadWriteOnce
+    capacity: 25Gi
+    volumeSnapshotClassName: csi-ceph-blockpool
     moverSecurityContext:
       runAsUser: 568
       runAsGroup: 568

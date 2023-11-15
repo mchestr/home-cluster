@@ -28,6 +28,8 @@ spec:
   values:
     defaultPodOptions:
       securityContext:
+        runAsUser: 568
+        runAsGroup: 568
         fsGroup: 65539
         fsGroupChangePolicy: OnRootMismatch
 
@@ -36,7 +38,6 @@ spec:
 
     controllers:
       main:
-        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -62,15 +63,6 @@ spec:
               requests:
                 cpu: 100m
                 memory: 250Mi
-
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              accessMode: ReadWriteOnce
-              size: 1Gi
-              storageClass: ceph-block
-              globalMounts:
-                - path: /config
 
     service:
       main:
@@ -112,6 +104,9 @@ spec:
               - *host
 
     persistence:
+      config:
+        enabled: true
+        existingClaim: config-sabnzbd
       media:
         enabled: true
         type: nfs

@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: data-wizarr
+  name: config-ledfx
   namespace: default
   annotations:
     kustomize.toolkit.fluxcd.io/prune: Disabled
@@ -13,7 +13,7 @@ spec:
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube
-    name: wizarr-rd
+    name: ledfx-rd
   resources:
     requests:
       storage: 1Gi
@@ -22,19 +22,19 @@ spec:
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
-  name: wizarr-restic
+  name: ledfx-restic
   namespace: default
 spec:
   secretStoreRef:
     kind: ClusterSecretStore
     name: onepassword-connect
   target:
-    name: wizarr-restic-secret
+    name: ledfx-restic-secret
     creationPolicy: Owner
     template:
       engineVersion: v2
       data:
-        RESTIC_REPOSITORY: "{{ .RESTIC_REPOSITORY_BUCKET }}/wizarr"
+        RESTIC_REPOSITORY: "{{ .RESTIC_REPOSITORY_BUCKET }}/ledfx"
         RESTIC_PASSWORD: "{{ .RESTIC_PASSWORD }}"
         AWS_ACCESS_KEY_ID: "{{ .AWS_ACCESS_KEY_ID }}"
         AWS_SECRET_ACCESS_KEY: "{{ .AWS_SECRET_ACCESS_KEY }}"
@@ -47,37 +47,37 @@ spec:
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: wizarr
+  name: ledfx
   namespace: default
 spec:
-  sourcePVC: data-wizarr
+  sourcePVC: config-ledfx
   trigger:
     schedule: "0 9 * * *"
   restic:
-    repository: wizarr-restic-secret
+    repository: ledfx-restic-secret
     copyMethod: Snapshot
     pruneIntervalDays: 10
     cacheCapacity: 1Gi
     cacheStorageClassName: local-path
     volumeSnapshotClassName: csi-ceph-blockpool
     storageClassName: ceph-block
+    retain:
+      daily: 7
     moverSecurityContext:
       runAsUser: 568
       runAsGroup: 568
       fsGroup: 568
-    retain:
-      daily: 7
 ---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
-  name: wizarr-rd
+  name: ledfx-rd
   namespace: default
 spec:
   trigger:
     manual: 2023-11-14T03:55:00
   restic:
-    repository: wizarr-restic-secret
+    repository: ledfx-restic-secret
     copyMethod: Snapshot
     storageClassName: ceph-block
     accessModes:

@@ -33,7 +33,6 @@ spec:
 
     controllers:
       main:
-        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -46,15 +45,6 @@ spec:
               TZ: America/Vancouver
               LOG_LEVEL: info
               PORT: 5055
-
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              accessMode: ReadWriteOnce
-              size: 1Gi
-              storageClass: ceph-block
-              globalMounts:
-                - path: /app/config
 
     service:
       main:
@@ -86,3 +76,10 @@ spec:
         tls:
           - hosts:
               - *host
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: config-overseerr
+        globalMounts:
+          - path: /app/config

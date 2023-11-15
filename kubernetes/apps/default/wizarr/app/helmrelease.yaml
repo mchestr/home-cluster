@@ -28,7 +28,6 @@ spec:
   values:
     controllers:
       main:
-        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -41,15 +40,6 @@ spec:
               TZ: America/Vancouver
               APP_URL: https://invite.chestr.dev
               DISABLE_BUILTIN_AUTH: "true"
-
-        statefulset:
-          volumeClaimTemplates:
-            - name: data
-              accessMode: ReadWriteOnce
-              size: 1Gi
-              storageClass: ceph-block
-              globalMounts:
-                - path: /data/database
 
     service:
       main:
@@ -83,3 +73,10 @@ spec:
         tls:
           - hosts:
               - *host
+
+    persistence:
+      data:
+        enabled: true
+        existingClaim: data-wizarr
+        globalMounts:
+          - path: /data/database

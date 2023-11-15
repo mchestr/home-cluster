@@ -36,7 +36,6 @@ spec:
 
     controllers:
       main:
-        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
           configmap.reloader.stakater.com/reload: qbittorrent-scripts
@@ -67,15 +66,6 @@ spec:
               tag: 5.8.1
             args:
               - daemon
-
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              accessMode: ReadWriteOnce
-              size: 2Gi
-              storageClass: ceph-block
-              globalMounts:
-                - path: /config
 
     service:
       main:
@@ -119,6 +109,9 @@ spec:
               - *host
 
     persistence:
+      config:
+        enabled: true
+        existingClaim: config-qbittorrent
       media:
         enabled: true
         type: nfs
