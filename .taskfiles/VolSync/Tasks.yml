@@ -107,7 +107,7 @@ tasks:
           if kubectl -n {{ .namespace }} get deployment.apps/$app >/dev/null 2>&1 ; then
             echo "deployment.apps/$app"
           else
-            echo "statefulset.apps/$app"
+            echo "deployment.apps/$app"
           fi
     env: *task-vars
     preconditions:
