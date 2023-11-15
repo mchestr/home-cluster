@@ -36,7 +36,6 @@ spec:
 
     controllers:
       main:
-        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -51,15 +50,6 @@ spec:
                 memory: 79M
               limits:
                 memory: 79M
-
-        statefulset:
-          volumeClaimTemplates:
-            - name: data
-              accessMode: ReadWriteOnce
-              size: 1Gi
-              storageClass: ceph-block
-              globalMounts:
-                - path: /data
 
     service:
       main:
@@ -89,6 +79,9 @@ spec:
               - cal.chestr.dev
 
     persistence:
+      data:
+        enabled: true
+        existingClaim: data-radicale
       config:
         enabled: true
         type: configMap

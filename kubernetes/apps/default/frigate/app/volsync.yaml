@@ -1,4 +1,24 @@
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-frigate
+  namespace: default
+  annotations:
+    kustomize.toolkit.fluxcd.io/prune: Disabled
+    kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
+spec:
+  accessModes:
+    - ReadWriteOnce
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: frigate-rd
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: ceph-block
+---
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
@@ -30,14 +50,14 @@ metadata:
   name: frigate
   namespace: default
 spec:
-  sourcePVC: config-frigate-0
+  sourcePVC: data-frigate
   trigger:
     schedule: "0 9 * * *"
   restic:
     repository: frigate-restic-secret
     copyMethod: Snapshot
     pruneIntervalDays: 10
-    cacheCapacity: 2Gi
+    cacheCapacity: 5Gi
     cacheStorageClassName: local-path
     volumeSnapshotClassName: csi-ceph-blockpool
     storageClassName: ceph-block
@@ -47,3 +67,24 @@ spec:
       fsGroup: 568
     retain:
       daily: 7
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: frigate-rd
+  namespace: default
+spec:
+  trigger:
+    manual: 2023-11-14T03:55:00
+  restic:
+    repository: frigate-restic-secret
+    copyMethod: Snapshot
+    storageClassName: ceph-block
+    accessModes:
+      - ReadWriteOnce
+    capacity: 5Gi
+    volumeSnapshotClassName: csi-ceph-blockpool
+    moverSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568

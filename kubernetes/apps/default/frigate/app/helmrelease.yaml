@@ -33,7 +33,6 @@ spec:
 
     controllers:
       main:
-        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -82,15 +81,6 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 30
 
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              accessMode: ReadWriteOnce
-              size: 5Gi
-              storageClass: ceph-block
-              globalMounts:
-                - path: /data
-
     service:
       main:
         ports:
@@ -127,6 +117,11 @@ spec:
               - *host
 
     persistence:
+      data:
+        enabled: true
+        existingClaim: data-frigate
+        globalMounts:
+          - path: /data
       config-file:
         enabled: true
         type: configMap
