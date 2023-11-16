@@ -10,5 +10,8 @@ configMapGenerator:
     files:
       - values.yaml=values.yaml
 
+generatorOptions:
+  disableNameSuffixHash: true
+
 configurations:
   - kustomizeconfig.yaml
