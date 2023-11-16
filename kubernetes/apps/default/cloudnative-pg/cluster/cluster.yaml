@@ -32,7 +32,7 @@ spec:
         maxParallel: 8
       destinationPath: &dest s3://cloudnative-pg/
       endpointURL: &s3 https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
-      serverName: cnpg-abhyksj
+      serverName: postgres15-v1
       s3Credentials: &credentials
         accessKeyId:
           name: *secretName
