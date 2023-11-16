@@ -8,10 +8,7 @@ helmCharts:
     version: 1.0.5
     releaseName: kubelet-csr-approver
     namespace: kube-system
-    valuesInline:
-      providerRegex: |
-        ^(k8s-0|k8s-1|k8s-2|k8s-3|k8s-4|k8s-5)$
-      bypassDnsResolution: true
+    valuesFile: ../../kubernetes/apps/kube-system/kubelet-csr-approver/app/values.yaml
 commonAnnotations:
   meta.helm.sh/release-name: kubelet-csr-approver
   meta.helm.sh/release-namespace: kube-system
