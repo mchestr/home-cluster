@@ -47,9 +47,6 @@ spec:
             env:
               TZ: America/Vancouver
               HOST: cast.chestr.dev
-            envFrom:
-              - secretRef:
-                  name: ledfx-secret
 
             probes:
               liveness: &probes
