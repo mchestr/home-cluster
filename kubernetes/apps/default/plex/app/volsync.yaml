@@ -48,7 +48,7 @@ metadata:
   name: plex
   namespace: default
 spec:
-  sourcePVC: config-plex-0
+  sourcePVC: config-plex
   trigger:
     schedule: 15 9 * * *
   restic:
