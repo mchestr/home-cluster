@@ -30,8 +30,8 @@ spec:
       wal:
         compression: bzip2
         maxParallel: 8
-      destinationPath: &dest s3://postgresql/
-      endpointURL: &minio http://minio.networking.svc.cluster.local:9000
+      destinationPath: &dest s3://cloudnative-pg/
+      endpointURL: &s3 https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
       serverName: cnpg-abhyksj
       s3Credentials: &credentials
         accessKeyId:
@@ -54,5 +54,5 @@ spec:
   #         compression: bzip2
   #         maxParallel: 8
   #       destinationPath: *dest
-  #       endpointURL: *minio
+  #       endpointURL: *s3
   #       s3Credentials: *credentials
