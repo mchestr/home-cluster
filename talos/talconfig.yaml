@@ -116,10 +116,11 @@ nodes:
     #     systemExtensions:
     #         officialExtensions:
     #             - siderolabs/bnx2-bnx2x
+    #             - siderolabs/i915-ucode
     #             - siderolabs/intel-ucode
     #             - siderolabs/nut-client
     #             - siderolabs/nonfree-kmod-nvidia
-    talosImageURL: factory.talos.dev/installer/c1b16f176725cb50c6b910d40ed1c6901ec1844501a16638a57252cd84f799d7
+    talosImageURL: factory.talos.dev/installer/ef80b1bced2ac37dffa2926cfc4c130e140120d7493979a41ff8a19ace7f4928
     installDiskSelector:
       busPath: /pci0000:00/0000:00:1d.0/0000:04:00.0/nvme/nvme0/nvme0n1
     networkInterfaces:
