@@ -40,9 +40,7 @@ spec:
         AWS_SECRET_ACCESS_KEY: "{{ .AWS_SECRET_ACCESS_KEY }}"
   dataFrom:
     - extract:
-        key: volsync-restic
-    - extract:
-        key: backblaze
+        key: volsync-restic-cloudflare
 ---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
