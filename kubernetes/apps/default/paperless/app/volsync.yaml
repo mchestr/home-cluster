@@ -50,7 +50,7 @@ metadata:
 spec:
   sourcePVC: data-paperless
   trigger:
-    schedule: "0 9 * * *"
+    schedule: 15 9 * * *
   restic:
     repository: paperless-restic-secret
     copyMethod: Snapshot

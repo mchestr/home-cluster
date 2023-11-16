@@ -50,7 +50,7 @@ metadata:
 spec:
   sourcePVC: data-wizarr
   trigger:
-    schedule: "0 9 * * *"
+    schedule: 45 9 * * *
   restic:
     repository: wizarr-restic-secret
     copyMethod: Snapshot

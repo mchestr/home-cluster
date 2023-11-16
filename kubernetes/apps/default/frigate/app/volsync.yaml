@@ -50,7 +50,7 @@ metadata:
 spec:
   sourcePVC: data-frigate
   trigger:
-    schedule: "0 9 * * *"
+    schedule: 0 9 * * *
   restic:
     repository: frigate-restic-secret
     copyMethod: Snapshot

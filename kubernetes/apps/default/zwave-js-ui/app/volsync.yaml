@@ -50,7 +50,7 @@ metadata:
 spec:
   sourcePVC: data-zwave-js-ui
   trigger:
-    schedule: "0 9 * * *"
+    schedule: 45 9 * * *
   restic:
     repository: zwave-js-ui-restic-secret
     copyMethod: Snapshot

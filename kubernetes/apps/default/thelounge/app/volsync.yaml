@@ -50,7 +50,7 @@ metadata:
 spec:
   sourcePVC: config-thelounge
   trigger:
-    schedule: "0 9 * * *"
+    schedule: 45 9 * * *
   restic:
     repository: thelounge-restic-secret
     copyMethod: Snapshot

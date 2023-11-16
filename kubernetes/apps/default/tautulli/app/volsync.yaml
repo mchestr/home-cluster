@@ -50,7 +50,7 @@ metadata:
 spec:
   sourcePVC: config-tautulli
   trigger:
-    schedule: "0 9 * * *"
+    schedule: 30 9 * * *
   restic:
     repository: tautulli-restic-secret
     copyMethod: Snapshot
