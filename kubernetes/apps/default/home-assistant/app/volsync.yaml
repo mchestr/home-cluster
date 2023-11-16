@@ -50,7 +50,7 @@ metadata:
 spec:
   sourcePVC: config-home-assistant
   trigger:
-    schedule: "0 9 * * *"
+    schedule: 0 9 * * *
   restic:
     repository: home-assistant-restic-secret
     copyMethod: Snapshot

@@ -50,7 +50,7 @@ metadata:
 spec:
   sourcePVC: config-appdaemon
   trigger:
-    schedule: "0 9 * * *"
+    schedule: 0 9 * * *
   restic:
     repository: appdaemon-restic-secret
     copyMethod: Snapshot

@@ -50,7 +50,7 @@ metadata:
 spec:
   sourcePVC: config-qbittorrent
   trigger:
-    schedule: "0 9 * * *"
+    schedule: 30 9 * * *
   restic:
     repository: qbittorrent-restic-secret
     copyMethod: Snapshot

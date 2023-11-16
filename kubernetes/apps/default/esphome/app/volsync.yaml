@@ -50,7 +50,7 @@ metadata:
 spec:
   sourcePVC: config-esphome
   trigger:
-    schedule: "0 9 * * *"
+    schedule: 0 9 * * *
   restic:
     repository: esphome-restic-secret
     copyMethod: Snapshot

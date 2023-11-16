@@ -50,7 +50,7 @@ metadata:
 spec:
   sourcePVC: data-radicale
   trigger:
-    schedule: "0 9 * * *"
+    schedule: 30 9 * * *
   restic:
     repository: radicale-restic-secret
     copyMethod: Snapshot
