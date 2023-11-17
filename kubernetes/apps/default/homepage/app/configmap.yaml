@@ -81,9 +81,6 @@ data:
         - CloudFlare:
             - icon: cloudflare.png
               href: https://dash.cloudflare.com
-        - BackBlaze:
-            - icon: backblaze.png
-              href: https://secure.backblaze.com/b2_buckets.htm
         - AWS Console:
             - icon: aws.png
               href: https://aws.amazon.com/console/
