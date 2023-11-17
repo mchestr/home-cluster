@@ -48,7 +48,7 @@ metadata:
   name: overseerr
   namespace: default
 spec:
-  sourcePVC: config-overseerr-0
+  sourcePVC: config-overseerr
   trigger:
     schedule: 15 9 * * *
   restic:
