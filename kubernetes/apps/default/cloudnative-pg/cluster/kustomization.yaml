@@ -4,5 +4,6 @@ kind: Kustomization
 resources:
   - dashboard
   - cluster.yaml
+  - cluster16.yaml
   - prometheusrule.yaml
   - scheduled-backup.yaml
