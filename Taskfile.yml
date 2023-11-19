@@ -16,6 +16,7 @@ env:
 includes:
   ansible: .taskfiles/AnsibleTasks.yml
   kube: .taskfiles/KuberneteTasks.yml
+  pg: .taskfiles/Postgres/Tasks.yaml
   precommit: .taskfiles/PrecommitTasks.yml
   talos: .taskfiles/TalosTasks.yml
   terraform: .taskfiles/TerraformTasks.yml
