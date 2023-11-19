@@ -63,7 +63,7 @@ spec:
           cross-seed:
             image:
               repository: ghcr.io/cross-seed/cross-seed
-              tag: 5.8.1
+              tag: 5.8.2
             args:
               - daemon
 
