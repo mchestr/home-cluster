@@ -1,0 +1,40 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: postgres-restore-${DB_ESCAPED}-${TIMESTAMP}
+  namespace: default
+spec:
+  ttlSecondsAfterFinished: 3600
+  template:
+    spec:
+      automountServiceAccountToken: false
+      restartPolicy: OnFailure
+      containers:
+        - name: restore-${DB_ESCAPED}
+          command:
+            - /bin/sh
+            - -c
+            - "zcat /backups/last/${DATABASE}-latest.sql.gz | psql --dbname=${DATABASE}"
+          env:
+            - name: PGHOST
+              value: ${HOST}
+          envFrom:
+            - secretRef:
+                name: postgres-backups-secret
+          image: "docker.io/prodrigestivill/postgres-backup-local:${VERSION}"
+          volumeMounts:
+            - mountPath: /backups
+              name: backups
+      securityContext:
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        runAsGroup: 568
+        runAsUser: 568
+        supplementalGroups:
+          - 65539
+      volumes:
+        - name: backups
+          nfs:
+            path: /volume1/backups/kubernetes/apps/postgres
+            server: lochnas.chestr.dev

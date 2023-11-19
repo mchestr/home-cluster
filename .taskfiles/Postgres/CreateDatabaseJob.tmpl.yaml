@@ -1,0 +1,28 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: postgres-createdb-${DB_ESCAPED}-${TIMESTAMP}
+  namespace: default
+spec:
+  ttlSecondsAfterFinished: 3600
+  template:
+    spec:
+      automountServiceAccountToken: false
+      restartPolicy: OnFailure
+      containers:
+        - name: createdb-${DB_ESCAPED}
+          image: ghcr.io/onedr0p/postgres-init:14.10
+          env:
+            - name: INIT_POSTGRES_HOST
+              value: ${HOST}
+          envFrom:
+            - secretRef:
+                name: ${APP}-dbinit-secret
+      securityContext:
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        runAsGroup: 568
+        runAsUser: 568
+        supplementalGroups:
+          - 65539
