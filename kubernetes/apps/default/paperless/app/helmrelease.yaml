@@ -85,7 +85,7 @@ spec:
             name: redis
             image:
               repository: public.ecr.aws/docker/library/redis
-              tag: 7.2.3@sha256:94acc4f368983e7a7a558ad09c54347f41879c7aedbdb73a91d05c1db92f0dcd
+              tag: 7.2.3@sha256:529d1db9e246240208eab2a61fbb8614b09d7505ac1329c1dec70b6aba2e1428
 
     service:
       main:
