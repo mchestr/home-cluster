@@ -2,7 +2,8 @@
 version: "3"
 
 vars:
-  all_apps: default:deployment/authelia:2:authelia default:deployment/autobrr:1:autobrr default:deployment/displex:1:displex default:deployment/home-assistant:1:home-assistant default:deployment/immich:1:immich default:deployment/lldap:2:lldap default:deployment/paperless:1:paperless default:deployment/prowlarr:1:prowlarr default:deployment/radarr:1:radarr_log,radarr_main default:deployment/sonarr:1:sonarr_log,sonarr_main monitoring:deployment/gatus:1:gatus
+  # all_apps: default:deployment/authelia:2:authelia default:deployment/autobrr:1:autobrr default:deployment/displex:1:displex default:deployment/home-assistant:1:home-assistant default:deployment/immich:1:immich default:deployment/lldap:2:lldap default:deployment/paperless:1:paperless default:deployment/prowlarr:1:prowlarr default:deployment/radarr:1:radarr_log,radarr_main default:deployment/sonarr:1:sonarr_log,sonarr_main monitoring:deployment/gatus:1:gatus
+  all_apps: default:deployment/authelia:2:authelia default:deployment/lldap:2:lldap default:deployment/paperless:1:paperless
   cron_jobs: displex-requests-upgrade displex-token-maintenance displex-user-refresh postgres-backups
   TIMESTAMP: '{{now | date "150405"}}'
   backupJobTemplate: "{{.ROOT_DIR}}/.taskfiles/Postgres/BackupJob.tmpl.yaml"
@@ -20,9 +21,10 @@ tasks:
     desc: Migrate to new PG version
     cmds:
       - task: scale-down:all
-      - sleep 30
-      - task: backup:all
+      # - sleep 30
+      # - task: backup:all
       - task: restore:all
+      - task: scale-up:all
 
   backup:all:
     desc: Backup all DBs
