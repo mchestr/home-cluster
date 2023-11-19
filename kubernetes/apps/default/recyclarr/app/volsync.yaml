@@ -50,17 +50,18 @@ metadata:
 spec:
   sourcePVC: config-recyclarr
   trigger:
-    schedule: 30 9 * * *
+    schedule: 30 */8 * * *
   restic:
     repository: recyclarr-restic-secret
     copyMethod: Snapshot
-    pruneIntervalDays: 10
+    pruneIntervalDays: 7
     cacheCapacity: 2Gi
     cacheStorageClassName: local-path
     volumeSnapshotClassName: csi-ceph-blockpool
     storageClassName: ceph-block
     retain:
-      daily: 10
+      daily: 7
+      within: 2d
     moverSecurityContext:
       runAsUser: 568
       runAsGroup: 568

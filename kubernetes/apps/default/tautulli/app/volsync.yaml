@@ -50,11 +50,11 @@ metadata:
 spec:
   sourcePVC: config-tautulli
   trigger:
-    schedule: 30 9 * * *
+    schedule: 30 */8 * * *
   restic:
     repository: tautulli-restic-secret
     copyMethod: Snapshot
-    pruneIntervalDays: 10
+    pruneIntervalDays: 7
     cacheCapacity: 2Gi
     cacheStorageClassName: local-path
     volumeSnapshotClassName: csi-ceph-blockpool
@@ -65,6 +65,7 @@ spec:
       fsGroup: 568
     retain:
       daily: 7
+      within: 2d
 ---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
