@@ -93,7 +93,7 @@ spec:
               - path: /api
                 pathType: Prefix
                 service:
-                  name: immich-server
+                  name: immich
                   port: 3001
         tls:
           - hosts:
