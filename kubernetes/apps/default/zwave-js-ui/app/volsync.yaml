@@ -50,7 +50,7 @@ metadata:
 spec:
   sourcePVC: data-zwave-js-ui
   trigger:
-    schedule: 45 9 * * *
+    schedule: 45 */8 * * *
   restic:
     repository: zwave-js-ui-restic-secret
     copyMethod: Snapshot
@@ -63,6 +63,7 @@ spec:
       fsGroup: 0
     retain:
       daily: 7
+      within: 2d
 ---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
