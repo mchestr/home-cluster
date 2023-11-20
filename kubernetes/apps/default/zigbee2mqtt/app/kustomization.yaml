@@ -6,5 +6,5 @@ resources:
   - externalsecret.yaml
   - gatus.yaml
   - helmrelease.yaml
-  - prometheusrule.yaml
+  # - prometheusrule.yaml
   - volsync.yaml
