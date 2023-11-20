@@ -44,7 +44,16 @@ spec:
   # bootstrap:
   #   recovery:
   #     # Should match name in externalClusters
-  #     source: &backup cnpg-jkjktys
+  #     source: &backup postgres16-v1
+  #
+  #   # Use for major upgrades or creating new cluster from existing
+  #   initdb:
+  #     import:
+  #       type: monolith
+  #       databases: ["*"]
+  #       roles: ["*"]
+  #       source:
+  #         externalCluster: old-cluster
 
   # externalClusters:
   #   - name: *backup
@@ -56,3 +65,11 @@ spec:
   #       destinationPath: *dest
   #       endpointURL: *s3
   #       s3Credentials: *credentials
+  #   - name: old-cluster
+  #     connectionParameters:
+  #       host: postgres16-rw.default.svc.cluster.local
+  #       user: postgres
+  #       dbname: postgres
+  #     password:
+  #       name: postgres-creds
+  #       key: password
