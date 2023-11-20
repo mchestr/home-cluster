@@ -50,7 +50,7 @@ metadata:
 spec:
   sourcePVC: data-unifi
   trigger:
-    schedule: 45 */8 * * *
+    schedule: 45 10 * * *
   restic:
     repository: unifi-restic-secret
     copyMethod: Snapshot

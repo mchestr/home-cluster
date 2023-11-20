@@ -50,7 +50,7 @@ metadata:
 spec:
   sourcePVC: config-overseerr
   trigger:
-    schedule: 15 */8 * * *
+    schedule: 15 10 * * *
   restic:
     repository: overseerr-restic-secret
     copyMethod: Snapshot

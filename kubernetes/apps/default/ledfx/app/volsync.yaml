@@ -50,7 +50,7 @@ metadata:
 spec:
   sourcePVC: config-ledfx
   trigger:
-    schedule: 15 */8 * * *
+    schedule: 15 10 * * *
   restic:
     repository: ledfx-restic-secret
     copyMethod: Snapshot
