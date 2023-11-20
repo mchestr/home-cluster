@@ -50,7 +50,7 @@ metadata:
 spec:
   sourcePVC: data-zigbee2mqtt
   trigger:
-    schedule: 45 */8 * * *
+    schedule: 45 10 * * *
   restic:
     repository: zigbee2mqtt-restic-secret
     copyMethod: Snapshot

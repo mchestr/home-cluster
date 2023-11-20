@@ -50,7 +50,7 @@ metadata:
 spec:
   sourcePVC: config-jellyfin
   trigger:
-    schedule: 0 */8 * * *
+    schedule: 0 10 * * *
   restic:
     repository: jellyfin-restic-secret
     copyMethod: Snapshot
