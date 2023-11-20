@@ -26,6 +26,10 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    defaultPodOptions:
+      nodeSelector:
+        feature.node.kubernetes.io/zigbee: "true"
+
     controllers:
       main:
         annotations:
@@ -48,28 +52,31 @@ spec:
               ZIGBEE2MQTT_CONFIG_ADVANCED_LEGACY_AVAILABILITY_PAYLOAD: "false"
               ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_LEVEL: info
               ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_OUTPUT: '["console"]'
-              ZIGBEE2MQTT_CONFIG_ADVANCED_BAUDRATE: 57600
-              ZIGBEE2MQTT_CONFIG_ADVANCED_PAN_ID: 6754
-              ZIGBEE2MQTT_CONFIG_ADVANCED_CHANNEL: 11
+              ZIGBEE2MQTT_CONFIG_ADVANCED_BAUDRATE: 115200
+              ZIGBEE2MQTT_CONFIG_ADVANCED_PAN_ID: 7777
+              ZIGBEE2MQTT_CONFIG_ADVANCED_CHANNEL: 21
               ZIGBEE2MQTT_CONFIG_AVAILABILITY_ACTIVE_TIMEOUT: 60
               ZIGBEE2MQTT_CONFIG_AVAILABILITY_PASSIVE_TIMEOUT: 2000
               ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_LEGACY: "false"
               ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_RETAIN: "true"
               ZIGBEE2MQTT_CONFIG_EXPERIMENTAL_NEW_API: "true"
+              ZIGBEE2MQTT_CONFIG_FRONTEND: "false"
               ZIGBEE2MQTT_CONFIG_FRONTEND_PORT: 8080
               ZIGBEE2MQTT_CONFIG_FRONTEND_URL: https://zigbee.chestr.dev
               ZIGBEE2MQTT_CONFIG_HOMEASSISTANT: "true"
               ZIGBEE2MQTT_CONFIG_MQTT_INCLUDE_DEVICE_INFORMATION: "true"
+              ZIGBEE2MQTT_CONFIG_MQTT_BASE_TOPIC: z2m
               ZIGBEE2MQTT_CONFIG_MQTT_KEEPALIVE: 60
               ZIGBEE2MQTT_CONFIG_MQTT_REJECT_UNAUTHORIZED: "true"
               ZIGBEE2MQTT_CONFIG_MQTT_SERVER: mqtt://mosquitto.default.svc.cluster.local:1883
               ZIGBEE2MQTT_CONFIG_MQTT_VERSION: 5
               ZIGBEE2MQTT_CONFIG_PERMIT_JOIN: "false"
-              ZIGBEE2MQTT_CONFIG_SERIAL_PORT: tcp://home-controller.chestr.dev:2001
-              ZIGBEE2MQTT_CONFIG_SERIAL_ADAPTER: ezsp
+              ZIGBEE2MQTT_CONFIG_SERIAL_PORT: /dev/ttyUSB0
             envFrom:
               - secretRef:
                   name: zigbee2mqtt-secret
+            securityContext:
+              privileged: true
 
           exporter:
             name: exporter
@@ -127,7 +134,7 @@ spec:
           gethomepage.dev/name: Zigbee
           gethomepage.dev/group: Automation
         hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
+          - host: &host zigbee.chestr.dev
             paths:
               - path: /
                 pathType: Prefix
@@ -142,6 +149,13 @@ spec:
       data:
         enabled: true
         existingClaim: data-zigbee2mqtt
+      usb:
+        enabled: true
+        type: hostPath
+        hostPath: /dev/serial/by-id/usb-ITead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_088f44f8ea9ced1189d175faa7669f5d-if00-port0
+        hostPathType: CharDevice
+        globalMounts:
+          - path: /dev/ttyUSB0
 
     serviceMonitor:
       main:
