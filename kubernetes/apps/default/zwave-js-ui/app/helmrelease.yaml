@@ -26,6 +26,10 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    defaultPodOptions:
+      nodeSelector:
+        feature.node.kubernetes.io/zwave: "true"
+
     controllers:
       main:
         annotations:
@@ -38,6 +42,8 @@ spec:
               tag: 9.3.2
             env:
               TZ: America/Vancouver
+            securityContext:
+              privileged: true
 
     service:
       main:
@@ -60,7 +66,7 @@ spec:
           gethomepage.dev/name: zWave
           gethomepage.dev/group: Automation
         hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
+          - host: &host zwave.chestr.dev
             paths:
               - path: /
                 pathType: Prefix
@@ -77,3 +83,9 @@ spec:
         existingClaim: data-zwave-js-ui
         globalMounts:
           - path: /usr/src/app/store
+      usb:
+        enabled: true
+        type: hostPath
+        hostPath: /dev/serial/by-id/usb-Zooz_800_Z-Wave_Stick_533D004242-if00
+        globalMounts:
+          - path: /dev/ttyUSB0
