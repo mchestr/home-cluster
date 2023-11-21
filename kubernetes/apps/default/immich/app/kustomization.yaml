@@ -5,6 +5,5 @@ resources:
   - microservices
   - server
   - typesense
-  - web
   - configmap.yaml
   - externalsecret.yaml
