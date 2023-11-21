@@ -12,7 +12,7 @@ data:
       - name: zwave-js-ui
         group: internal
         interval: 1h
-        url: https://zwave-js-ui.chestr.dev
+        url: https://zwave.chestr.dev
         conditions:
           - "[STATUS] == 200"
           - "[BODY] == pat(*auth.chestr.dev*)"
@@ -23,7 +23,7 @@ data:
         interval: 1h
         url: 1.1.1.1
         dns:
-          query-name: zwave-js-ui.chestr.dev
+          query-name: zwave.chestr.dev
           query-type: A
         conditions:
           - "len([BODY]) == 0"
