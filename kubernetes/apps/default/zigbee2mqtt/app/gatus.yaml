@@ -12,7 +12,7 @@ data:
       - name: zigbee2mqtt
         group: internal
         interval: 1h
-        url: https://zigbee2mqtt.chestr.dev
+        url: https://zigbee.chestr.dev
         conditions:
           - "[STATUS] == 200"
           - "[BODY] == pat(*auth.chestr.dev*)"
@@ -23,7 +23,7 @@ data:
         interval: 1h
         url: 1.1.1.1
         dns:
-          query-name: zigbee2mqtt.chestr.dev
+          query-name: zigbee.chestr.dev
           query-type: A
         conditions:
           - "len([BODY]) == 0"
