@@ -42,7 +42,7 @@ spec:
           01-init-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: "14.10"
+              tag: "15.5"
             envFrom:
               - secretRef:
                   name: prowlarr-dbinit-secret
