@@ -28,7 +28,7 @@ spec:
   values:
     defaultPodOptions:
       nodeSelector:
-        feature.node.kubernetes.io/zwave: "true"
+        kubernetes.io/hostname: k8s-4
 
     controllers:
       main:
