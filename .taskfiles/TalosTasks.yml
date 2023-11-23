@@ -39,7 +39,7 @@ tasks:
     dir: talos
     cmds:
       - task: generate
-      - for: [3, 1, 0, 2, 4, 5, 6]
+      - for: [3, 0, 4, 2, 1, 5, 6]
         task: upgrade
         vars:
           NODE: 'k8s-{{ .ITEM }}'
@@ -84,12 +84,15 @@ tasks:
     dir: talos
     status:
       - talosctl version --nodes {{ .NODE }} --short | grep 'Tag.*{{ .TALOS_VERSION }}'
+    vars:
+      INSTALLER_IMAGE:
+        sh: yq '.machine.install.image' < clusterconfig/home-cluster-k8s-{{ .N }}.yaml
     cmds:
       - task: wait_for_health
         vars: {TIMEOUT: 10m}
       - task: apply
         vars: {NODE: "{{ .NODE }}", N: "{{ .N }}", CLI_ARGS: "-m staged", SKIP_APPLY: "{{ .SKIP_APPLY }}"}
-      - talosctl upgrade --nodes {{ .NODE }} --image ghcr.io/siderolabs/installer:{{ .TALOS_VERSION }} --preserve
+      - talosctl upgrade --nodes {{ .NODE }} --image {{ .INSTALLER_IMAGE }} --preserve
 
   wait_for_health:
     internal: True
@@ -98,4 +101,4 @@ tasks:
       # Ensure CephCluster is healthy
       - kubectl -n rook-ceph wait --for jsonpath='{.status.ceph.health}'='HEALTH_OK' --timeout {{ .TIMEOUT | default "30s" }} cephcluster rook-ceph
       # Ensure CloudNative-PG cluster has 3 ready instances
-      - kubectl wait --for jsonpath='{.status.readyInstances}'='3' --timeout {{ .TIMEOUT | default "30s" }} cluster postgres
+      - kubectl wait --for jsonpath='{.status.readyInstances}'='3' --timeout {{ .TIMEOUT | default "30s" }} cluster postgres16
