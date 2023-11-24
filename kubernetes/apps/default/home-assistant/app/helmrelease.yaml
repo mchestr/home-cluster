@@ -27,6 +27,7 @@ spec:
     keepHistory: false
   values:
     defaultPodOptions:
+      hostname: home-assistant
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -67,18 +68,10 @@ spec:
             env:
               TZ: America/Vancouver
 
-          code-server:
+          vscode-tunnel:
             image:
-              repository: ghcr.io/coder/code-server
-              tag: 4.19.0
-            args:
-              - --auth
-              - none
-              - --user-data-dir
-              - /config/.vscode
-              - --extensions-dir
-              - /config/.vscode
-              - /config
+              repository: ghcr.io/mchestr/vscode-tunnel
+              tag: 1.84.2@sha256:b441008a9e737b87920a4dff205d1946948f3932337bc79c764a3b52d13d0c79
 
     service:
       main:
@@ -141,9 +134,17 @@ spec:
         existingClaim: config-home-assistant
         globalMounts:
           - path: /config
-      deploykey:
+      vscode-tunnel:
         enabled: true
-        type: secret
-        name: home-assistant-deploykey-secret
-        globalMounts:
-          - path: /home/coder/.ssh
+        size: 256Mi
+        storageClass: ceph-block
+        accessMode: ReadWriteOnce
+        advancedMounts:
+          main:
+            vscode-tunnel:
+              - path: /vscode-server
+                subPath: vscode-server
+              - path: /tmp
+                subPath: tmp
+              - path: /home/kah/.vscode
+                subPath: vscode
