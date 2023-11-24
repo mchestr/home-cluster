@@ -107,6 +107,7 @@ spec:
         existingClaim: config-home-assistant
         globalMounts:
           - path: /config
+
       deploykey:
         enabled: true
         type: secret
@@ -123,9 +124,4 @@ spec:
         advancedMounts:
           main:
             vscode-tunnel:
-              - path: /vscode-server
-                subPath: vscode-server
-              - path: /tmp
-                subPath: tmp
-              - path: /home/kah/.vscode
-                subPath: vscode
+              - path: /home/kah
