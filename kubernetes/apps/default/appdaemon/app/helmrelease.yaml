@@ -90,12 +90,16 @@ spec:
       config:
         enabled: true
         existingClaim: config-appdaemon
-        advancedMounts:
-          main:
-            main:
-              - path: /conf
-            vscode-tunnel:
-              - path: /app
+        globalMounts:
+          - path: /conf
+      secrets:
+        enabled: true
+        type: secret
+        name: appdaemon-secret
+        globalMounts:
+          - path: /conf/secrets.yaml
+            subPath: secrets.yaml
+
       deploykey:
         enabled: true
         type: secret
@@ -112,21 +116,4 @@ spec:
         advancedMounts:
           main:
             vscode-tunnel:
-              - path: /vscode-server
-                subPath: vscode-server
-              - path: /tmp
-                subPath: tmp
-              - path: /home/kah/.vscode
-                subPath: vscode
-      secrets:
-        enabled: true
-        type: secret
-        name: appdaemon-secret
-        advancedMounts:
-          main:
-            main:
-              - path: /conf/secrets.yaml
-                subPath: secrets.yaml
-            vscode-tunnel:
-              - path: /app/secrets.yaml
-                subPath: secrets.yaml
+              - path: /home/kah
