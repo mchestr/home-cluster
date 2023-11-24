@@ -27,6 +27,7 @@ spec:
     keepHistory: false
   values:
     defaultPodOptions:
+      hostname: appdaemon
       securityContext:
         runAsUser: 568
         runAsGroup: 568
@@ -47,19 +48,11 @@ spec:
               TZ: America/Vancouver
               DASH_URL: http://$HOSTNAME:5050
               HA_URL: http://home-assistant.default.svc.cluster.local:8123
-          code-server:
+
+          vscode-tunnel:
             image:
-              repository: ghcr.io/coder/code-server
-              tag: 4.19.0
-            args:
-              - --auth
-              - "none"
-              - --user-data-dir
-              - /conf/.vscode
-              - --extensions-dir
-              - /conf/.vscode
-              - --disable-telemetry
-              - /conf
+              repository: ghcr.io/mchestr/vscode-tunnel
+              tag: 1.84.2@sha256:b441008a9e737b87920a4dff205d1946948f3932337bc79c764a3b52d13d0c79
 
     service:
       main:
@@ -106,18 +99,35 @@ spec:
       config:
         enabled: true
         existingClaim: config-appdaemon
-        globalMounts:
-          - path: /conf
+        advancedMounts:
+          main:
+            main:
+              - path: /conf
+            vscode-tunnel:
+              - path: /app
+      vscode-tunnel:
+        enabled: true
+        size: 256Mi
+        storageClass: ceph-block
+        accessMode: ReadWriteOnce
+        advancedMounts:
+          main:
+            vscode-tunnel:
+              - path: /vscode-server
+                subPath: vscode-server
+              - path: /tmp
+                subPath: tmp
+              - path: /home/kah/.vscode
+                subPath: vscode
       secrets:
         enabled: true
         type: secret
         name: appdaemon-secret
-        globalMounts:
-          - path: /conf/secrets.yaml
-            subPath: secrets.yaml
-      deploykey:
-        enabled: true
-        type: secret
-        name: appdaemon-deploykey-secret
-        globalMounts:
-          - path: /home/coder/.ssh
+        advancedMounts:
+          main:
+            main:
+              - path: /conf/secrets.yaml
+                subPath: secrets.yaml
+            vscode-tunnel:
+              - path: /app/secrets.yaml
+                subPath: secrets.yaml
