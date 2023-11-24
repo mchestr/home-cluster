@@ -59,8 +59,6 @@ spec:
         ports:
           http:
             port: 5050
-          code-server:
-            port: 8080
 
     ingress:
       main:
@@ -84,13 +82,6 @@ spec:
                 service:
                   name: main
                   port: http
-          - host: "{{ .Release.Name }}-code.chestr.dev"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  name: main
-                  port: code-server
         tls:
           - hosts:
               - *host
