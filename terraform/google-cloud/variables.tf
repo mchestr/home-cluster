@@ -32,7 +32,7 @@ variable "tag" {
   type = string
   description = "Uptime Kuma Tag"
   # renovate: datasource=github-releases depName=louislam/uptime-kuma
-  default = "1.23.6"
+  default = "1.23.7"
 }
 variable "zone" {
   type = string
