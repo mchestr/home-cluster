@@ -69,7 +69,7 @@ record:
     mode: motion
   events:
     retain:
-      default: 180
+      default: 60
       mode: active_objects
       objects:
         vehicle: 7
