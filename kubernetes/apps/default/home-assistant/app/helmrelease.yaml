@@ -107,6 +107,14 @@ spec:
         existingClaim: config-home-assistant
         globalMounts:
           - path: /config
+      deploykey:
+        enabled: true
+        type: secret
+        name: home-assistant-deploykey-secret
+        advancedMounts:
+          main:
+            vscode-tunnel:
+              - path: /home/kah/.ssh
       vscode-tunnel:
         enabled: true
         size: 256Mi
