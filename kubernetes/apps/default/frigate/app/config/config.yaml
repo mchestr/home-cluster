@@ -86,7 +86,6 @@ go2rtc:
   streams:
     living_room_high:
       - http://10.0.10.164/flv?port=1935&app=bcs&stream=channel0_main.bcs&user={FRIGATE_LIVING_ROOM_CAMERA_USERNAME}&password={FRIGATE_LIVING_ROOM_CAMERA_PASSWORD}
-      - "ffmpeg:living_room_high#audio=opus"
     living_room_low:
       - http://10.0.10.164/flv?port=1935&app=bcs&stream=channel0_ext.bcs&user={FRIGATE_LIVING_ROOM_CAMERA_USERNAME}&password={FRIGATE_LIVING_ROOM_CAMERA_PASSWORD}
     doorbell_high:
