@@ -13,7 +13,7 @@ libraries:
           schedule_patrick: daily
           schedule_thanksgiving: range(10/01-10/31)
           schedule_halloween: daily
-          schedule_christmas: daily
+          schedule_christmas: range(11/01-12/31)
           schedule_years: daily
           schedule_mother: daily
           schedule_memorial: daily
