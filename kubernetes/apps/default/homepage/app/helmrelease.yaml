@@ -56,7 +56,7 @@ spec:
         enabled: true
         className: internal
         hosts:
-          - host: &host home.chestr.dev
+          - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix
