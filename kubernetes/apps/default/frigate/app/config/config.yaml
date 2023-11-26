@@ -83,6 +83,9 @@ objects:
       threshold: 0.7
 
 go2rtc:
+  webrtc:
+    candidates:
+      - stun:8555
   streams:
     living_room_high:
       - "ffmpeg:http://10.0.10.164/flv?port=1935&app=bcs&stream=channel0_main.bcs&user={FRIGATE_LIVING_ROOM_CAMERA_USERNAME}&password={FRIGATE_LIVING_ROOM_CAMERA_PASSWORD}#video=copy#audio=copy#audio=opus"
@@ -90,11 +93,10 @@ go2rtc:
       - "ffmpeg:http://10.0.10.164/flv?port=1935&app=bcs&stream=channel0_ext.bcs&user={FRIGATE_LIVING_ROOM_CAMERA_USERNAME}&password={FRIGATE_LIVING_ROOM_CAMERA_PASSWORD}"
     doorbell_high:
       - rtsp://{FRIGATE_DOORBELL_CAMERA_USERNAME}:{FRIGATE_DOORBELL_CAMERA_PASSWORD}@10.0.10.144:554/cam/realmonitor?channel=1&subtype=0#backchannel=0
+    doorbell_audio:
+      - rtsp://{FRIGATE_DOORBELL_CAMERA_USERNAME}:{FRIGATE_DOORBELL_CAMERA_PASSWORD}@10.0.10.144:554/cam/realmonitor?channel=1&subtype=0
     doorbell_low:
       - rtsp://{FRIGATE_DOORBELL_CAMERA_USERNAME}:{FRIGATE_DOORBELL_CAMERA_PASSWORD}@10.0.10.144:554/cam/realmonitor?channel=1&subtype=1#backchannel=0
-    doorbell_high_audio:
-      - rtsp://{FRIGATE_DOORBELL_CAMERA_USERNAME}:{FRIGATE_DOORBELL_CAMERA_PASSWORD}@10.0.10.144:554/cam/realmonitor?channel=1&subtype=0
-      - "ffmpeg:doorbell_high_audio#audio=opus"
 
 cameras:
   living_room:
