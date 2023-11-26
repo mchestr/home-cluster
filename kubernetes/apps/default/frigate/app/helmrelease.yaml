@@ -87,7 +87,6 @@ spec:
           http:
             port: 5000
           rtsp:
-            enabled: true
             port: 8554
 
     ingress:
