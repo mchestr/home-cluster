@@ -19,12 +19,18 @@
           address: 192.168.1.220
           port: 50413
         original_port: 50413
-        protocol: tcp_udp
+        protocol: tcp
       - name: Plex
         forward:
           address: 192.168.100.30
           port: 32400
         original_port: 32400
+        protocol: tcp_udp
+      - name: Frigate Stun
+        forward:
+          address: 192.168.1.235
+          port: 8555
+        original_port: 8555
         protocol: tcp_udp
   loop: "{{ rules }}"
   loop_control:
