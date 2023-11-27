@@ -14,8 +14,7 @@ database:
   path: /data/frigate.db
 
 birdseye:
-  enabled: True
-  mode: continuous
+  enabled: False
 
 detectors:
   coral:
@@ -65,8 +64,8 @@ snapshots:
 record:
   enabled: true
   retain:
-    days: 30
-    mode: motion
+    days: 14
+    mode: all
   events:
     retain:
       default: 60
@@ -81,6 +80,9 @@ objects:
       min_area: 5000
       max_area: 100000
       threshold: 0.7
+
+audio:
+  enabled: true
 
 go2rtc:
   webrtc:
@@ -111,10 +113,11 @@ cameras:
           input_args: preset-rtsp-restream
           roles:
             - record
-        - path: rtsp://127.0.0.1:8554/living_room_sd?video=copy
+        - path: rtsp://127.0.0.1:8554/living_room_sd?video=copy&audio=aac
           input_args: preset-rtsp-restream
           roles:
             - detect
+            - audio
     live:
       stream_name: living_room_hd
 
@@ -127,10 +130,11 @@ cameras:
           input_args: preset-rtsp-restream
           roles:
             - record
-        - path: rtsp://127.0.0.1:8554/doorbell_sd?video=copy
+        - path: rtsp://127.0.0.1:8554/doorbell_sd?video=copy&audio=aac
           input_args: preset-rtsp-restream
           roles:
             - detect
+            - audio
     live:
       stream_name: doorbell_hd
 
@@ -139,13 +143,28 @@ cameras:
       output_args:
         record: preset-record-generic-audio-aac
       inputs:
-        - path: rtsp://127.0.0.1:8554/garage_hd?video=copy&audio=aac
+        - path: rtsp://127.0.0.1:8554/garage_hd?video&audio
           input_args: preset-rtsp-restream
           roles:
             - record
-        - path: rtsp://127.0.0.1:8554/garage_sd?video=copy
+        - path: rtsp://127.0.0.1:8554/garage_sd?video&audio
           input_args: preset-rtsp-restream
           roles:
             - detect
+            - audio
+    record:
+      events:
+        required_zones:
+          - enter
+    snapshots:
+      required_zones:
+        - enter
+    zones:
+      enter:
+        coordinates: 56,360,185,360,153,21,21,24
     live:
       stream_name: garage_hd
+
+ui:
+  # Optional: Set the default live mode for cameras in the UI (default: shown below)
+  live_mode: webrtc
