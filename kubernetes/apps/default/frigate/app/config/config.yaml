@@ -87,46 +87,65 @@ go2rtc:
     candidates:
       - stun:8555
   streams:
-    living_room_high:
+    living_room_hd:
       - "ffmpeg:http://10.0.10.164/flv?port=1935&app=bcs&stream=channel0_main.bcs&user={FRIGATE_LIVING_ROOM_CAMERA_USERNAME}&password={FRIGATE_LIVING_ROOM_CAMERA_PASSWORD}#video=copy#audio=copy#audio=opus"
-    living_room_low:
+    living_room_sd:
       - "ffmpeg:http://10.0.10.164/flv?port=1935&app=bcs&stream=channel0_ext.bcs&user={FRIGATE_LIVING_ROOM_CAMERA_USERNAME}&password={FRIGATE_LIVING_ROOM_CAMERA_PASSWORD}"
-    doorbell_high:
+    doorbell_hd:
       - rtsp://{FRIGATE_DOORBELL_CAMERA_USERNAME}:{FRIGATE_DOORBELL_CAMERA_PASSWORD}@10.0.10.144:554/cam/realmonitor?channel=1&subtype=0#backchannel=0
+    doorbell_sd:
+      - rtsp://{FRIGATE_DOORBELL_CAMERA_USERNAME}:{FRIGATE_DOORBELL_CAMERA_PASSWORD}@10.0.10.144:554/cam/realmonitor?channel=1&subtype=1#backchannel=0
     doorbell_audio:
       - rtsp://{FRIGATE_DOORBELL_CAMERA_USERNAME}:{FRIGATE_DOORBELL_CAMERA_PASSWORD}@10.0.10.144:554/cam/realmonitor?channel=1&subtype=0
-    doorbell_low:
-      - rtsp://{FRIGATE_DOORBELL_CAMERA_USERNAME}:{FRIGATE_DOORBELL_CAMERA_PASSWORD}@10.0.10.144:554/cam/realmonitor?channel=1&subtype=1#backchannel=0
-
+    garage_hd:
+      - rtsp://{FRIGATE_SONOFF_CAMERA_USERNAME}:{FRIGATE_SONOFF_CAMERA_PASSWORD}@192.168.1.186:554/av_stream/ch0
+    garage_sd:
+      - rtsp://{FRIGATE_SONOFF_CAMERA_USERNAME}:{FRIGATE_SONOFF_CAMERA_PASSWORD}@192.168.1.186:554/av_stream/ch1
 cameras:
   living_room:
     ffmpeg:
       output_args:
         record: preset-record-generic-audio-aac
       inputs:
-        - path: rtsp://127.0.0.1:8554/living_room_high?video=copy&audio=aac
+        - path: rtsp://127.0.0.1:8554/living_room_hd?video=copy&audio=aac
           input_args: preset-rtsp-restream
           roles:
             - record
-        - path: rtsp://127.0.0.1:8554/living_room_low?video=copy
+        - path: rtsp://127.0.0.1:8554/living_room_sd?video=copy
           input_args: preset-rtsp-restream
           roles:
             - detect
     live:
-      stream_name: living_room_high
+      stream_name: living_room_hd
 
   doorbell:
     ffmpeg:
       output_args:
         record: preset-record-generic-audio-aac
       inputs:
-        - path: rtsp://127.0.0.1:8554/doorbell_high?video=copy&audio=aac
+        - path: rtsp://127.0.0.1:8554/doorbell_hd?video=copy&audio=aac
           input_args: preset-rtsp-restream
           roles:
             - record
-        - path: rtsp://127.0.0.1:8554/doorbell_low?video=copy
+        - path: rtsp://127.0.0.1:8554/doorbell_sd?video=copy
           input_args: preset-rtsp-restream
           roles:
             - detect
     live:
-      stream_name: doorbell_high
+      stream_name: doorbell_hd
+
+  garage:
+    ffmpeg:
+      output_args:
+        record: preset-record-generic-audio-aac
+      inputs:
+        - path: rtsp://127.0.0.1:8554/garage_hd?video=copy&audio=aac
+          input_args: preset-rtsp-restream
+          roles:
+            - record
+        - path: rtsp://127.0.0.1:8554/garage_sd?video=copy
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+    live:
+      stream_name: garage_hd
