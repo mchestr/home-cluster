@@ -23,7 +23,6 @@ detectors:
 
 model:
   labelmap:
-    1: vehicle # bicycle
     2: vehicle # car
     3: vehicle # motorcycle
     4: vehicle # airplane
