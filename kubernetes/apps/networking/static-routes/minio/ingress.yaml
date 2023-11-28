@@ -1,0 +1,29 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minio
+  namespace: networking
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/icon: minio.png
+    gethomepage.dev/name: Minio
+    gethomepage.dev/group: Storage
+
+spec:
+  ingressClassName: internal
+  tls:
+    - hosts:
+        - minio.chestr.dev
+
+  rules:
+    - host: minio.chestr.dev
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: minio
+                port:
+                  name: http
