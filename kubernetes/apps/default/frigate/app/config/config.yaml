@@ -83,6 +83,24 @@ objects:
 
 audio:
   enabled: true
+  listen:
+    - alarm
+    - ambulance
+    - bang
+    - break
+    - breaking
+    - emergency_vehicle
+    - fire_alarm
+    - glass
+    - knock
+    - noise
+    - police_car
+    - scream
+    - siren
+    - smash
+    - speech
+    - tap
+    - yell
 
 go2rtc:
   webrtc:
