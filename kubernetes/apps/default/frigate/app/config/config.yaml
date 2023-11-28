@@ -118,6 +118,9 @@ cameras:
           roles:
             - detect
             - audio
+    motion:
+      mask:
+        - 659,0,654,50,248,51,252,0
     live:
       stream_name: living_room_hd
 
@@ -135,6 +138,9 @@ cameras:
           roles:
             - detect
             - audio
+    motion:
+      mask:
+        - 720,0,720,30,497,30,493,0
     live:
       stream_name: doorbell_hd
 
@@ -159,6 +165,13 @@ cameras:
     snapshots:
       required_zones:
         - enter
+    motion:
+      mask:
+        - 164,21,166,0,0,0,0,23
+    objects:
+      filters:
+        vehicle:
+          mask: 309,360,640,360
     zones:
       enter:
         coordinates: 56,360,185,360,153,21,21,24
