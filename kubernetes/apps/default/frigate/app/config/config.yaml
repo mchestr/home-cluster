@@ -139,6 +139,7 @@ cameras:
             - detect
             - audio
     motion:
+      lightning_threshold: 1.0
       mask:
         - 720,0,720,30,497,30,493,0
     live:
