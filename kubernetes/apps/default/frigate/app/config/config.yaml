@@ -67,7 +67,7 @@ record:
     mode: all
   events:
     retain:
-      default: 60
+      default: 90
       mode: active_objects
       objects:
         vehicle: 7
