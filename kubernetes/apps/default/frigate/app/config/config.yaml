@@ -73,7 +73,11 @@ record:
         vehicle: 7
 
 objects:
-  track: ["person", "vehicle", "animal"]
+  track:
+    - person
+    - vehicle
+    - animal
+    - bike
   filters:
     person:
       min_area: 5000
