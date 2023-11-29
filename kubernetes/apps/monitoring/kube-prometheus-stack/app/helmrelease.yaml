@@ -29,8 +29,10 @@ spec:
     keepHistory: false
   values:
     crds:
-      enabled: true
+      enabled: false
+
     cleanPrometheusOperatorObjectNames: true
+
     alertmanager:
       tplConfig: true
       enabled: true
@@ -147,11 +149,19 @@ spec:
               resources:
                 requests:
                   storage: 1Gi
+
     grafana:
       enabled: false
+      forceDeployDashboards: true
+      sidecar:
+        dashboards:
+          multicluster:
+            etcd:
+              enabled: true
 
     nodeExporter:
       enabled: true
+
     prometheus-node-exporter:
       resources:
         requests:
@@ -182,12 +192,7 @@ spec:
           - sourceLabels: ["node"]
             targetLabel: instance
             action: replace
-    kubeScheduler:
-      enabled: false
-    kubeProxy:
-      enabled: false
-    kubeControllerManager:
-      enabled: false
+
     kubeApiServer:
       enabled: true
       serviceMonitor:
@@ -202,14 +207,24 @@ spec:
           - sourceLabels: ["__name__"]
             regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
             action: drop
-    coreDns:
-      enabled: true
+
+    kubeControllerManager:
+      enabled: false
+    kubeEtcd:
+      enabled: false
+    kubeScheduler:
+      enabled: false
+    kubeProxy:
+      enabled: false
 
     kubeStateMetrics:
       enabled: true
     kube-state-metrics:
+      fullnameOverride: kube-state-metrics
       metricLabelsAllowlist:
-        - "persistentvolumeclaims=[*]"
+        - pods=[*]
+        - deployments=[*]
+        - persistentvolumeclaims=[*]
       prometheus:
         monitor:
           enabled: true
@@ -297,10 +312,12 @@ spec:
           limits:
             memory: 5977M
         thanos:
-          image: quay.io/thanos/thanos:v0.32.5@sha256:3e5c47dd3a0bfc6c595036c1c49c7ca95979a89c1fb93ee4cdee3bf5d296f944
+          image: quay.io/thanos/thanos:v0.32.5
           objectStorageConfig:
             name: thanos-objstore-secret
             key: objstore.yml
+          # renovate: datasource=docker depName=quay.io/thanos/thanos
+          version: "0.32.5"
 
       thanosService:
         enabled: true
