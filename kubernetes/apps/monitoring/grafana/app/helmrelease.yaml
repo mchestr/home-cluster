@@ -26,6 +26,13 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    extraInitContainers:
+      - name: init-db
+        image: ghcr.io/onedr0p/postgres-init:15
+        imagePullPolicy: IfNotPresent
+        envFrom:
+          - secretRef:
+              name: grafana-dbinit-secret
     image:
       repository: grafana/grafana
       tag: 10.2.2
@@ -58,17 +65,12 @@ spec:
     grafana.ini:
       server:
         root_url: https://grafana.chestr.dev
-      paths:
-        data: /var/lib/grafana/data
-        logs: /var/log/grafana
-        plugins: /var/lib/grafana/plugins
-        provisioning: /etc/grafana/provisioning
       analytics:
         check_for_updates: false
+        check_for_plugin_updates: false
+        reporting_enabled: false
       log:
         mode: console
-      grafana_net:
-        url: https://grafana.net
       panels:
         disable_sanitize_html: true
       auth:
@@ -113,18 +115,6 @@ spec:
       tls:
         - hosts:
             - *host
-
-    plugins:
-      - pr0ps-trackmap-panel
-      - grafana-clock-panel
-      - vonage-status-panel
-      - grafana-piechart-panel
-      - natel-discrete-panel
-      - grafana-worldmap-panel
-      - grafana-singlestat-panel
-      - grafana-polystat-panel
-      - mxswat-separator-panel
-      - farski-blendstat-panel
 
     serviceMonitor:
       enabled: true
@@ -192,6 +182,15 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/unifi
+          - name: media
+            orgId: 1
+            folder: Media
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/media
+
     datasources:
       datasources.yaml:
         apiVersion: 1
@@ -206,22 +205,22 @@ spec:
             access: proxy
             url: http://thanos-query-frontend.monitoring.svc.cluster.local:9090
             jsonData:
-              prometheusType: Thanos # Prometheus for victoria-metrics
+              prometheusType: Thanos
             isDefault: true
-          - name: Loki
-            type: loki
-            uid: loki
-            access: proxy
-            url: http://loki-gateway.monitoring.svc.cluster.local
-            jsonData:
-              maxLines: 250
           - name: Alertmanager
             type: alertmanager
             uid: alertmanager
             access: proxy
-            url: http://prometheus-alertmanager.monitoring.svc.cluster.local:9093
+            url: http://alertmanager-operated.monitoring.svc.cluster.local:9093
             jsonData:
               implementation: prometheus
+          - name: Loki
+            type: loki
+            uid: loki
+            access: proxy
+            url: http://loki-gateway.monitoring.svc.cluster.local:80
+            jsonData:
+              maxLines: 250
 
     dashboards:
       default:
@@ -412,12 +411,24 @@ spec:
               value: Prometheus
 
     sidecar:
-      datasources:
-        enabled: true
-        searchNamespace: ALL
       dashboards:
         enabled: true
         searchNamespace: ALL
-        folderAnnotation: grafana_dashboard_folder
+        labelValue: ""
+        label: grafana_dashboard
+        folderAnnotation: grafana_folder
         provider:
+          disableDelete: true
           foldersFromFilesStructure: true
+      datasources:
+        enabled: true
+        searchNamespace: ALL
+        labelValue: ""
+        label: grafana_datasource
+    plugins:
+      - grafana-clock-panel
+      - grafana-piechart-panel
+      - grafana-worldmap-panel
+      - natel-discrete-panel
+      - pr0ps-trackmap-panel
+      - vonage-status-panel
