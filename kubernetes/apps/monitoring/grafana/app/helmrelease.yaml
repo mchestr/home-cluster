@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app grafana
+  name: grafana
   namespace: monitoring
 spec:
   interval: 30m
@@ -48,7 +48,7 @@ spec:
       existingSecret: grafana-admin
 
     envFromSecrets:
-      - name: *app
+      - name: grafana-secret
 
     persistence:
       enabled: false
@@ -63,6 +63,8 @@ spec:
       GF_DASHBOARDS_MIN_REFRESH_INTERVAL: 2s
 
     grafana.ini:
+      news:
+        news_feed_enabled: false
       server:
         root_url: https://grafana.chestr.dev
       analytics:
@@ -425,6 +427,8 @@ spec:
         searchNamespace: ALL
         labelValue: ""
         label: grafana_datasource
+    testFramework:
+      enabled: false
     plugins:
       - grafana-clock-panel
       - grafana-piechart-panel
