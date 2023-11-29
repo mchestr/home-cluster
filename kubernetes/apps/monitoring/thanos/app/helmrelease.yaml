@@ -109,7 +109,7 @@ spec:
               - alert: PrometheusDown
                 annotations:
                   summary: A Prometheus has disappeared from Prometheus target discovery
-                expr: absent(up{job="prometheus-prometheus"})
+                expr: absent(up{job="kube-prometheus-stack-prometheus"})
                 for: 5m
                 labels:
                   severity: critical
