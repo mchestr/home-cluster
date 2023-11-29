@@ -75,8 +75,8 @@ spec:
         - --compact.concurrency=4
         - --delete-delay=30m
       retentionResolutionRaw: 30d
-      retentionResolution5m: 60d
-      retentionResolution1h: 90d
+      retentionResolution5m: 90d
+      retentionResolution1h: 360d
       persistence:
         enabled: true
         storageClass: local-path
