@@ -28,7 +28,9 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    fullnameOverride: prometheus
+    crds:
+      enabled: true
+    cleanPrometheusOperatorObjectNames: true
     alertmanager:
       tplConfig: true
       enabled: true
