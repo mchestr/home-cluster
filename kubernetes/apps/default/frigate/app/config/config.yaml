@@ -192,7 +192,7 @@ cameras:
     objects:
       filters:
         vehicle:
-          mask: 309,360,640,360
+          mask: 243,360,229,0,640,0,640,360
     zones:
       enter:
         coordinates: 56,360,185,360,153,21,21,24
