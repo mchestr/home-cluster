@@ -1,12 +1,7 @@
 {
     "ansible.ansibleLint.arguments": "-c .github/linters/.ansible-lint",
     "files.associations": {
-        "*.json5": "json5",
-        "**/ansible/**/*.yml": "ansible",
-        "**/ansible/**/*.sops.yml": "yaml",
-        "**/ansible/**/inventory/**/*.yml": "yaml",
-        "**/terraform/**/*.tf": "terraform",
-        "**/cluster/**/*.sops.toml": "plaintext"
+        "*.yaml": "home-assistant"
     },
     "prettier.configPath": ".github/linters/.prettierrc.yaml",
     "prettier.ignorePath": ".github/linters/.prettierignore",
