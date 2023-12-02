@@ -32,8 +32,6 @@ spec:
         runAsGroup: 568
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups:
-          - 10000
 
     controllers:
       main:
@@ -63,12 +61,32 @@ spec:
                 cpu: 10m
               limits:
                 memory: 500Mi
+            env:
+              AUTOBRR__CHECK_FOR_UPDATES: "false"
+              AUTOBRR__HOST: 0.0.0.0
+              AUTOBRR__PORT: &port 7474
+              AUTOBRR__LOG_LEVEL: DEBUG
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/healthz/liveness
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
 
     service:
       main:
         ports:
           http:
-            port: 7474
+            port: *port
 
     ingress:
       main:
@@ -93,13 +111,3 @@ spec:
         tls:
           - hosts:
               - *host
-
-    persistence:
-      config-file:
-        enabled: true
-        type: configMap
-        name: autobrr-configmap
-        readOnly: true
-        globalMounts:
-          - path: /config/config.toml
-            subPath: config.toml
