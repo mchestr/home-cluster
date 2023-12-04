@@ -12,7 +12,7 @@ data:
       - name: homepage
         group: internal
         interval: 1h
-        url: https://home.chestr.dev
+        url: https://homepage.chestr.dev
         conditions:
           - "[STATUS] == 200"
           - "[BODY] != pat(*auth.chestr.dev*)"
@@ -23,7 +23,7 @@ data:
         interval: 1h
         url: 1.1.1.1
         dns:
-          query-name: home.chestr.dev
+          query-name: homepage.chestr.dev
           query-type: A
         conditions:
           - "len([BODY]) == 0"
