@@ -10,11 +10,6 @@
       "matchDatasources": ["terraform"],
       "matchPackagePatterns": ["google"],
       "allowedVersions": "<5"
-    },
-    {
-      "matchDatasources": ["docker"],
-      "matchPackagePatterns": ["wordpress"],
-      "allowedVersions": "<18"
     }
   ]
 }
