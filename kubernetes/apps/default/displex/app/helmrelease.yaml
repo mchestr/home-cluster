@@ -43,7 +43,7 @@ spec:
           init-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: "15.5"
+              tag: "16.1"
             envFrom:
               - secretRef:
                   name: displex-dbinit-secret
