@@ -51,7 +51,7 @@ spec:
           main:
             image:
               repository: ghcr.io/autobrr/autobrr
-              tag: v1.34.0
+              tag: v1.34.1
             envFrom:
               - secretRef:
                   name: autobrr-secret
