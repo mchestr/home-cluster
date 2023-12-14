@@ -20,6 +20,10 @@
   color: "72ccf3"
   description: >-
     Changes made in the terraform directory
+- name: area/talos
+  color: "72ccf3"
+  description: >-
+    Changes made in the talos directory
 # Renovate
 - name: renovate/container
   color: "ffc300"
