@@ -9,8 +9,6 @@ vars:
   TALOS_VERSION: "v1.5.5"
   # renovate: datasource=github-releases depName=budimanjojo/talhelper
   TALHELPER_VERSION: "v1.16.2"
-  # renovate: datasource=github-releases depName=siderolabs/kubelet
-  KUBERNETES_VERSION: "v1.28.4"
 
 tasks:
 
@@ -27,12 +25,6 @@ tasks:
     desc: Install CNI and cert approver helm releases (task talos:cni)
     cmds:
       - kubectl kustomize talos --enable-helm --load-restrictor LoadRestrictionsNone | kubectl apply -f -
-
-  upgrade:k8s:
-    dir: talos
-    desc: Upgrade Kubernetes to {{ .KUBERNETES_VERSION }} (task talos:upgrade:k8s)
-    cmds:
-      - talosctl --nodes 192.168.1.200 upgrade-k8s --to {{ .KUBERNETES_VERSION }}
 
   upgrade:all:
     desc: Upgrade all nodes to Talos version {{ .TALOS_VERSION }} (task talos:upgrade:all [SKIP_APPLY=1])
