@@ -1,13 +1,24 @@
 ---
+# Area
 area/ansible:
-  - "ansible/**/*"
+  - changed-files:
+      - any-glob-to-any-file: ansible/**/*
 area/github:
-  - ".github/**/*"
-area/hack:
-  - "hack/**/*"
+  - changed-files:
+      - any-glob-to-any-file: .github/**/*
 area/kubernetes:
-  - "kubernetes/**/*"
+  - changed-files:
+      - any-glob-to-any-file: kubernetes/**/*
+area/taskfile:
+  - changed-files:
+      - any-glob-to-any-file: .taskfiles/**/*
+      - any-glob-to-any-file: Taskfile*
 area/terraform:
-  - "terraform/**/*"
+  - changed-files:
+      - any-glob-to-any-file: terraform/**/*
 area/talos:
-  - "talos/**/*"
+  - changed-files:
+      - any-glob-to-any-file: talos/**/*
+area/hack:
+  - changed-files:
+      - any-glob-to-any-file: hack/**/*
