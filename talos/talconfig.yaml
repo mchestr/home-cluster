@@ -205,6 +205,17 @@ controlPlane:
       - op: remove
         path: /cluster/apiServer/admissionControl
 
+    # Enable K8s Talos API Access
+    - |-
+      machine:
+        features:
+          kubernetesTalosAPIAccess:
+            enabled: true
+            allowedRoles:
+              - os:admin
+            allowedKubernetesNamespaces:
+              - kube-system
+
     # Kubelet configuration
     - |-
       machine:
