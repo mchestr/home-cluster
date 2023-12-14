@@ -15,7 +15,7 @@ data:
         url: https://flux.chestr.dev
         conditions:
           - "[STATUS] == 200"
-          - "[BODY] == pat(*auth.chestr.dev*)"
+          - "[BODY] != pat(*auth.chestr.dev*)"
         alerts:
           - type: pushover
       - name: tautulli
