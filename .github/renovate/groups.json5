@@ -1,65 +1,79 @@
 {
   packageRules: [
     {
-      "description": "1Password Group",
-      "groupName": "1Password",
-      "matchPackagePatterns": ["1password"],
-      "matchDatasources": ["docker"],
-      "group": {
-        "commitMessageTopic": "{{{groupName}}} group"
-      },
-      "separateMinorPatch": true
-    },
-    {
-      "description": "Flux Group",
-      "groupName": "Flux",
-      "matchPackagePatterns": ["flux"],
-      "matchDatasources": ["docker", "github-tags"],
-      "group": {
-        "commitMessageTopic": "{{{groupName}}} group"
-      },
-      "separateMinorPatch": true
-    },
-    {
-      description: 'Immich images',
-      groupName: 'Immich',
-      matchPackagePatterns: ['immich'],
-      matchDatasources: ['docker'],
+      description: "1Password Group",
+      groupName: "1Password",
+      matchPackagePatterns: ["1password"],
+      matchDatasources: ["docker"],
       group: {
-        commitMessageTopic: '{{{groupName}}} group'
+        commitMessageTopic: "{{{groupName}}} group",
       },
-      separateMinorPatch: true
+      separateMinorPatch: true,
     },
     {
-      description: 'Rook-Ceph image and chart',
-      groupName: 'Rook-Ceph',
-      matchPackagePatterns: ['rook.ceph'],
-      matchDatasources: ['docker', 'helm'],
+      description: "Flux Group",
+      groupName: "Flux",
+      matchPackagePatterns: ["flux"],
+      matchDatasources: ["docker", "github-tags"],
       group: {
-        commitMessageTopic: '{{{groupName}}} group'
+        commitMessageTopic: "{{{groupName}}} group",
       },
-      separateMinorPatch: true
+      separateMinorPatch: true,
     },
     {
-      description: 'External Snapshotter charts',
-      groupName: 'External Snapshotter',
-      matchDepNames: ['snapshot-controller', 'snapshot-validation-webhook'],
-      matchDatasources: ['helm'],
+      description: "Immich images",
+      groupName: "Immich",
+      matchPackagePatterns: ["immich"],
+      matchDatasources: ["docker"],
       group: {
-        commitMessageTopic: '{{{groupName}}} group'
+        commitMessageTopic: "{{{groupName}}} group",
       },
-      separateMinorPatch: true
+      separateMinorPatch: true,
     },
     {
-      description: 'Thanos image and chart - mismatched versions',
-      groupName: 'Thanos',
-      matchPackagePatterns: ['thanos'],
-      matchDatasources: ['docker', 'github-releases', 'helm'],
-      matchUpdateTypes: ['minor', 'patch'],
+      description: "Rook-Ceph image and chart",
+      groupName: "Rook-Ceph",
+      matchPackagePatterns: ["rook.ceph"],
+      matchDatasources: ["docker", "helm"],
       group: {
-        commitMessageTopic: '{{{groupName}}} group'
+        commitMessageTopic: "{{{groupName}}} group",
       },
-      separateMinorPatch: false
-    }
-  ]
+      separateMinorPatch: true,
+    },
+    {
+      description: "External Snapshotter charts",
+      groupName: "External Snapshotter",
+      matchDepNames: ["snapshot-controller", "snapshot-validation-webhook"],
+      matchDatasources: ["helm"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      separateMinorPatch: true,
+    },
+    {
+      description: "Thanos image and chart - mismatched versions",
+      groupName: "Thanos",
+      matchPackagePatterns: ["thanos"],
+      matchDatasources: ["docker", "github-releases", "helm"],
+      matchUpdateTypes: ["minor", "patch"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      separateMinorPatch: false,
+    },
+    {
+      description: "System-Upgrade-Controller Group",
+      groupName: "System-Upgrade-Controller",
+      matchPackagePatterns: [
+        "rancher/system-upgrade-controller",
+        "rancher/kubectl",
+        "siderolabs/kubelet",
+      ],
+      matchDatasources: ["docker", "github-releases"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      separateMinorPatch: true,
+    },
+  ],
 }
