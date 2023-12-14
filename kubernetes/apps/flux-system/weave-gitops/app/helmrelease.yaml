@@ -32,6 +32,11 @@ spec:
     ingress:
       enabled: true
       className: internal
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: System
+        gethomepage.dev/name: Flux
+        gethomepage.dev/icon: flux-cd.png
       hosts:
         - host: &host flux.chestr.dev
           paths:
