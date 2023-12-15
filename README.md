@@ -46,6 +46,17 @@ This repository is my home Kubernetes cluster in a declarative state. [Flux](htt
 - [Github Actions](https://docs.github.com/en/actions) for checking code formatting and running periodic jobs
 - [Renovate](https://github.com/renovatebot/renovate) keeps the application charts and container images up-to-date
 
+### :cloud: Cloud Dependencies
+
+- [1Password](https://1password.com) for managing secrets via external-secrets.
+- [AWS SES](https://aws.amazon.com/ses/) for sending emails.
+- [Cloudflare](https://cloudflare.com) tunnels for exposing services & creating certificates & managing domains.
+- [Cloudflare R2](https://www.cloudflare.com/developer-platform/r2/) for daily backups.
+- [Google Cloud](https://https://cloud.google.com) to deploy [uptime-kuma](https://github.com/louislam/uptime-kuma) for external cluster monitoring.
+- [Pushover](https://pushover.net/) for sending alerts.
+
+Total cloud costs yearly is approximately ~$150/year.
+
 ### Directories
 
 This Git repository contains the following directories.
