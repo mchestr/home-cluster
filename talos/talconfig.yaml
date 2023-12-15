@@ -110,17 +110,6 @@ nodes:
   - hostname: k8s-6
     ipAddress: 192.168.1.206
     controlPlane: false
-    # customization:
-    #     extraKernelArgs:
-    #         - net.ifnames=0
-    #     systemExtensions:
-    #         officialExtensions:
-    #             - siderolabs/bnx2-bnx2x
-    #             - siderolabs/i915-ucode
-    #             - siderolabs/intel-ucode
-    #             - siderolabs/nut-client
-    #             - siderolabs/nonfree-kmod-nvidia
-    talosImageURL: factory.talos.dev/installer/ef80b1bced2ac37dffa2926cfc4c130e140120d7493979a41ff8a19ace7f4928
     installDiskSelector:
       busPath: /pci0000:00/0000:00:1d.0/0000:04:00.0/nvme/nvme0/nvme0n1
     networkInterfaces:
@@ -221,7 +210,7 @@ controlPlane:
       machine:
         kubelet:
           extraArgs:
-            feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
+            feature-gates: GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
             rotate-server-certificates: "true"
           extraConfig:
             maxPods: 150
