@@ -39,7 +39,7 @@
       description: 'Process custom dependencies',
       fileMatch: ['ansible/.+\\.ya?ml$', 'kubernetes/.+\\.ya?ml$', '\\.taskfiles/.+\\.ya?ml$', 'talos/.+\\.ya?ml$', 'terraform/.+\\.tf$'],
       matchStrings: [
-        'datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( packageName=(?<packageName>\\S+))?( versioning=(?<versioning>\\S+))?\n.*?"(?<currentValue>.*)"\n'
+        'datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( packageName=(?<packageName>\\S+))?( versioning=(?<versioning>\\S+))?(?:\\s+extractVersion=(?<extractVersion>.+?))?\n.*?"(?<currentValue>.*)"\n'
       ],
       datasourceTemplate: '{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}',
       versioningTemplate: '{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}',
