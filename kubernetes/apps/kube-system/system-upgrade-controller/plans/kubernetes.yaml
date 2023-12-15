@@ -6,7 +6,7 @@ metadata:
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
 spec:
-  # renovate: datasource=github-releases depName=siderolabs/kubelet
+  # renovate: datasource=github-releases depName=siderolabs/kubelet extractVersion=^v(?<version>.*)$
   version: "1.28.4"
   serviceAccountName: system-upgrade
   secrets:
