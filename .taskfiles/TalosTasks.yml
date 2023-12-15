@@ -21,24 +21,10 @@ tasks:
       - task: generate
       - talosctl --talosconfig=talos/clusterconfig/talosconfig kubeconfig --nodes 192.168.1.200 $KUBECONFIG
 
-  install:cni:
+  bootstrap:
     desc: Install CNI and cert approver helm releases (task talos:cni)
     cmds:
       - kubectl kustomize talos --enable-helm --load-restrictor LoadRestrictionsNone | kubectl apply -f -
-
-  upgrade:all:
-    desc: Upgrade all nodes to Talos version {{ .TALOS_VERSION }} (task talos:upgrade:all [SKIP_APPLY=1])
-    dir: talos
-    cmds:
-      - task: generate
-      - for: [3, 0, 4, 2, 1, 5, 6]
-        task: upgrade
-        vars:
-          NODE: 'k8s-{{ .ITEM }}'
-          N: '{{ .ITEM }}'
-      # Restart nginx, sometimes it has issues...
-      - kubectl -n networking rollout restart deployment nginx-internal-controller
-      - kubectl -n networking rollout restart deployment nginx-external-controller
 
   apply:
     desc: Apply Talos config to a specific node (task talos:apply N=0)
@@ -78,29 +64,4 @@ tasks:
     dir: talos
     cmds:
       - for: [0, 1, 2, 3, 4, 5]
-        cmd: talosctl version --nodes 192.168.1.20{{ .ITEM }} --short
-
-  upgrade:
-    internal: True
-    desc: Upgrade a single node to Talos version {{ .TALOS_VERSION }} (task talos:upgrade N=0 [SKIP_APPLY=1])
-    dir: talos
-    status:
-      - talosctl version --nodes {{ .NODE }} --short | grep 'Tag.*{{ .TALOS_VERSION }}'
-    vars:
-      INSTALLER_IMAGE:
-        sh: yq '.machine.install.image' < clusterconfig/home-cluster-k8s-{{ .N }}.yaml
-    cmds:
-      - task: wait_for_health
-        vars: {TIMEOUT: 10m}
-      - task: apply
-        vars: {NODE: "{{ .NODE }}", N: "{{ .N }}", CLI_ARGS: "-m staged", SKIP_APPLY: "{{ .SKIP_APPLY }}"}
-      - talosctl upgrade --nodes {{ .NODE }} --image {{ .INSTALLER_IMAGE }} --preserve
-
-  wait_for_health:
-    internal: True
-    desc: Wait for services in cluster to be healthy
-    cmds:
-      # Ensure CephCluster is healthy
-      - kubectl -n rook-ceph wait --for jsonpath='{.status.ceph.health}'='HEALTH_OK' --timeout {{ .TIMEOUT | default "30s" }} cephcluster rook-ceph
-      # Ensure CloudNative-PG cluster has 3 ready instances
-      - kubectl wait --for jsonpath='{.status.readyInstances}'='3' --timeout {{ .TIMEOUT | default "30s" }} cluster postgres16
+        cmd: talosctl version --nodes 192.168.1.20{{ .ITEM }} --short | grep Tag | awk '{print $2}'
