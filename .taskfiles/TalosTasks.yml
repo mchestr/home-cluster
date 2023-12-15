@@ -49,6 +49,16 @@ tasks:
       - task: generate
       - talosctl apply-config --nodes {{ .NODE }} --file clusterconfig/home-cluster-k8s-{{ .N }}.yaml {{ .CLI_ARGS }}
 
+  apply:all:
+    desc: Apply Talos config to all nodes
+    dir: talos
+    cmds:
+      - for: [0, 1, 2, 3, 4, 5, 6]
+        task: apply
+        vars:
+          NODE: 'k8s-{{ .ITEM }}'
+          N: '{{ .ITEM }}'
+
   generate:
     desc: Generate Talos machine configurations (task talos:generate)
     dir: talos
