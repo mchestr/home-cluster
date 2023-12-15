@@ -29,18 +29,17 @@
 
 This repository is my home Kubernetes cluster in a declarative state. [Flux](https://github.com/fluxcd/flux2) watches the [kubernetes](./kubernetes/) folder and will make the changes to the cluster based on the YAML manifests.
 
-This repository is built off the [k8s-at-home/template-cluster-k3s](https://github.com/k8s-at-home/template-cluster-k3s) repository.
-
 ### Core Components
 
-- [cilium/cilium](https://github.com/cilium/cilium): Kubernetes CNI.
-- [rook/rook](https://github.com/rook/rook): Distributed block storage for peristent storage.
-- [mozilla/sops](https://toolkit.fluxcd.io/guides/mozilla-sops/): Manages secrets for Kubernetes, Ansible and Terraform.
-- [kubernetes-sigs/external-dns](https://github.com/kubernetes-sigs/external-dns): Automatically manages DNS records from my cluster in CloudFlare.
-- [jetstack/cert-manager](https://cert-manager.io/docs/): Creates SSL certificates for services in my Kubernetes cluster.
-- [kubernetes/ingress-nginx](https://github.com/kubernetes/ingress-nginx/): Ingress controller to expose HTTP traffic to pods over DNS.
-- [siderolabs/talos](https://www.talos.dev/): The Kubernetes Operating System.
 - [backube/volsync](https://github.com/backube/volsync) and [backube/snapscheduler](https://github.com/backube/snapscheduler): Backup and recovery of persistent volume claims.
+- [cilium/cilium](https://github.com/cilium/cilium): Kubernetes CNI.
+- [jetstack/cert-manager](https://cert-manager.io/docs/): Creates SSL certificates for services in my Kubernetes cluster.
+- [kubernetes-sigs/external-dns](https://github.com/kubernetes-sigs/external-dns): Automatically manages DNS records from my cluster in CloudFlare.
+- [kubernetes/ingress-nginx](https://github.com/kubernetes/ingress-nginx/): Ingress controller to expose HTTP traffic to pods over DNS.
+- [mozilla/sops](https://toolkit.fluxcd.io/guides/mozilla-sops/): Manages secrets for Kubernetes, Ansible and Terraform.
+- [rancher/system-upgrade-controller](https://github.com/rancher/system-upgrade-controller): Handles Kubernetes and Talos upgrades automatically.
+- [rook/rook](https://github.com/rook/rook): Distributed block storage for peristent storage.
+- [siderolabs/talos](https://www.talos.dev/): The Kubernetes Operating System.
 
 ### :robot:&nbsp; Automation
 
@@ -49,13 +48,17 @@ This repository is built off the [k8s-at-home/template-cluster-k3s](https://gith
 
 ### Directories
 
-This Git repository contains the following directories under [kubernetes](./kubernetes/).
+This Git repository contains the following directories.
 
 ```sh
+📁 ansible         # Ansible playbooks for various systems managed outside the cluster
+📁 hacks           # Contains random scripts
 📁 kubernetes      # Kubernetes cluster defined as code
-├─📁 bootstrap     # Flux installation
-├─📁 flux          # Main Flux configuration of repository
+├─📁 bootstrap     # Flux installation to bootstrap cluster
+├─📁 flux           # Main Flux configuration of repository
 └─📁 apps          # Apps deployed into my cluster grouped by namespace
+📁 talos           # Contains the configuration for Talos operating system
+📁 terraform       # Contains Cloudflare & Google Compute infrastructure applied automatically by Flux tf-controller
 ```
 
 ## 🔧 Hardware
@@ -72,7 +75,7 @@ My mash-mash setup of random hardware I managed to acquire. I also have a few SB
 | Synology DS920+                                       | 1     | N/A           | 2x8TB & 2x4TB        | 20GB    | DSM 7.1.1        | NAS               |
 | CyberPower CP1500AVRLCD                               | 1     | N/A           | N/A                  | N/A     | N/A              | UPS               |
 | Ubiquiti EdgeRouter 10X                               | 1     | N/A           | N/A                  | 512MB   | EdgeOS           | Router            |
-| Ubiquiti UAP-AC-Lite)                                 | 1     | N/A           | N/A                  | N/A     | N/A              | WiFi AP           |
+| Ubiquiti UAP-AC-Lite                                  | 1     | N/A           | N/A                  | N/A     | N/A              | WiFi AP           |
 | PiKVM V4 Mini                                         | 1     | N/A           | N/A                  | N/A     | PiKVM            | KVM               |
 | TESmart HDMI KVM Switch 8 Ports                       | 1     | N/A           | N/A                  | N/A     | N/A              | KVM Switch        |
 | TP-Link TL-SG1024D 24 Port 1Gbps Switch               | 1     | N/A           | N/A                  | N/A     | N/A              | Network Switch    |
@@ -82,6 +85,8 @@ My mash-mash setup of random hardware I managed to acquire. I also have a few SB
 ## 🤝 Graditude and Thanks
 
 Thanks to all the people who donate their time to the [Kubernetes @Home](https://github.com/k8s-at-home/) community.
+
+This repository was built off the [onedr0p/template-cluster-k3s](https://github.com/onedr0p/flux-cluster-template) repository.
 
 ## 🔏 License
 
