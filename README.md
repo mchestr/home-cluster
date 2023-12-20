@@ -52,7 +52,7 @@ This repository is my home Kubernetes cluster in a declarative state. [Flux](htt
 - [AWS SES](https://aws.amazon.com/ses/) for sending emails.
 - [Cloudflare](https://cloudflare.com) tunnels for exposing services & creating certificates & managing domains.
 - [Cloudflare R2](https://www.cloudflare.com/developer-platform/r2/) for daily backups.
-- [Google Cloud](https://https://cloud.google.com) to deploy [uptime-kuma](https://github.com/louislam/uptime-kuma) for external cluster monitoring.
+- [Google Cloud](https://cloud.google.com) to deploy [uptime-kuma](https://github.com/louislam/uptime-kuma) for external cluster monitoring.
 - [Pushover](https://pushover.net/) for sending alerts.
 
 Total cloud costs yearly is approximately ~$150/year.
