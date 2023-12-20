@@ -18,6 +18,7 @@ includes:
   kube: .taskfiles/KuberneteTasks.yml
   pg: .taskfiles/Postgres/Tasks.yaml
   precommit: .taskfiles/PrecommitTasks.yml
+  repo: .taskfiles/Repo/Tasks.yml
   talos: .taskfiles/TalosTasks.yml
   terraform: .taskfiles/TerraformTasks.yml
   volsync: .taskfiles/VolSync/Tasks.yml

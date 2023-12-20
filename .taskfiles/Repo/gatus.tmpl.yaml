@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ${app}-gatus-ep
+  namespace: ${namespace}
+  labels:
+    gatus.io/enabled: "true"
+data:
+  config.yaml: |
+    endpoints:
+      - name: lldap
+        group: guarded
+        interval: 1h
+        url: 1.1.1.1
+        dns:
+          query-name: ${app}.chestr.dev
+          query-type: A
+        conditions:
+          - "len([BODY]) == 0"
+        alerts:
+          - type: pushover

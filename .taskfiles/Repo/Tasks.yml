@@ -1,0 +1,48 @@
+---
+version: "3"
+
+vars:
+  ksTemplate: "{{.ROOT_DIR}}/.taskfiles/Repo/ks.tmpl.yaml"
+  kustomizationTemplate: "{{.ROOT_DIR}}/.taskfiles/Repo/kustomization.tmpl.yaml"
+  helmreleaseTemplate: "{{.ROOT_DIR}}/.taskfiles/Repo/helmrelease.tmpl.yaml"
+  externalsecretTemplate: "{{.ROOT_DIR}}/.taskfiles/Repo/externalsecret.tmpl.yaml"
+  gatusTemplate: "{{.ROOT_DIR}}/.taskfiles/Repo/gatus.tmpl.yaml"
+
+tasks:
+  new:
+    desc: Template out a new basic app
+    dir: kubernetes/apps
+    requires:
+      vars:
+        - app
+    vars:
+      namespace: '{{ .namespace | default "default" }}'
+      app: '{{ .app }}'
+    env:
+      namespace: '{{ .namespace }}'
+      app: '{{ .app }}'
+    preconditions:
+      - sh: test -f {{ .ksTemplate }}
+      - sh: test -f {{ .helmreleaseTemplate }}
+      - sh: test -f {{ .kustomizationTemplate }}
+      - sh: test -f {{ .externalsecretTemplate }}
+      - sh: test -f {{ .gatusTemplate }}
+    cmds:
+      - mkdir {{ .namespace }}/{{ .app }}
+
+      - touch {{ .namespace }}/{{ .app }}/ks.yaml
+      - envsubst < <(cat {{ .ksTemplate }}) >> {{ .namespace }}/{{ .app }}/ks.yaml
+
+      - mkdir {{ .namespace }}/{{ .app }}/app
+
+      - touch {{ .namespace }}/{{ .app }}/app/kustomization.yaml
+      - envsubst < <(cat {{ .kustomizationTemplate }}) >> {{ .namespace }}/{{ .app }}/app/kustomization.yaml
+
+      - touch {{ .namespace }}/{{ .app }}/app/helmrelease.yaml
+      - envsubst < <(cat {{ .helmreleaseTemplate }}) >> {{ .namespace }}/{{ .app }}/app/helmrelease.yaml
+
+      - touch {{ .namespace }}/{{ .app }}/app/externalsecret.yaml
+      - envsubst < <(cat {{ .externalsecretTemplate }}) >> {{ .namespace }}/{{ .app }}/app/externalsecret.yaml
+
+      - touch {{ .namespace }}/{{ .app }}/app/gatus.yaml
+      - envsubst < <(cat {{ .gatusTemplate }}) >> {{ .namespace }}/{{ .app }}/app/gatus.yaml
