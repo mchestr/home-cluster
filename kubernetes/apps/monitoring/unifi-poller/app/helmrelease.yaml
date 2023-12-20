@@ -35,7 +35,7 @@ spec:
           main:
             image:
               repository: ghcr.io/unpoller/unpoller
-              tag: v2.9.4
+              tag: v2.9.5
             envFrom:
               - secretRef:
                   name: unifi-poller
