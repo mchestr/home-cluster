@@ -35,7 +35,7 @@ spec:
           main:
             image:
               repository: ghcr.io/goofball222/unifi
-              tag: 8.0.7
+              tag: 8.0.24
             env:
               TZ: America/Vancouver
               DEBUG: "false"
