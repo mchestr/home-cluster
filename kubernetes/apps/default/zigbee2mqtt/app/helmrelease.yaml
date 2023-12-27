@@ -82,7 +82,7 @@ spec:
             name: exporter
             image:
               repository: docker.io/kpetrem/mqtt-exporter
-              tag: latest@sha256:fbff8472a18239297e699955b43695f714e4fa6fdd7a36875a65375e2dfa8e67
+              tag: latest@sha256:e5b5a02fba296635d7c151f5c155f798e77ca2e2909992d458f9a492fbb2e02c
             env:
               - name: LOG_LEVEL
                 value: DEBUG
