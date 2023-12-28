@@ -1,4 +1,5 @@
 ---
-providerRegex: |
-  ^(k8s-0|k8s-1|k8s-2|k8s-3|k8s-4|k8s-5|k8s-6)$
+providerRegex: ^(k8s-\d+)$
 bypassDnsResolution: true
+podAnnotations:
+  configmap.reloader.stakater.com/reload: kubelet-csr-approver-values
