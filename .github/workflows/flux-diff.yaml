@@ -12,36 +12,35 @@ concurrency:
 
 jobs:
   changed-files:
-    name: Get Changed Files
+    name: Changed Files
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.changed-files.outputs.all_changed_and_modified_files }}
     steps:
       - name: Generate Token
-        uses: actions/create-github-app-token@2986852ad836768dfea7781f31828eb3e17990fa # v1
+        uses: actions/create-github-app-token@v1
         id: app-token
         with:
           app-id: "${{ secrets.BOT_APP_ID }}"
           private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
 
-      - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - name: Checkout Default Branch
+        uses: actions/checkout@v4
         with:
           token: "${{ steps.app-token.outputs.token }}"
           fetch-depth: 0
 
-      - name: Get changed files
+      - name: Get Changed Files
         id: changed-files
-        uses: tj-actions/changed-files@56284d80811fb5963a972b438f2870f175e5b7c8 # v40
+        uses: tj-actions/changed-files@v41
         with:
           files: kubernetes/**
           dir_names: true
           dir_names_max_depth: 2
           json: true
-          quotepath: false
           escape_json: false
 
-      - name: List all changed files
+      - name: List All Changed Files
         run: echo "${{ steps.changed-files.outputs.all_changed_and_modified_files }}"
 
   flux-diff:
@@ -58,66 +57,51 @@ jobs:
       fail-fast: false
     steps:
       - name: Generate Token
-        uses: actions/create-github-app-token@2986852ad836768dfea7781f31828eb3e17990fa # v1
+        uses: actions/create-github-app-token@v1
         id: app-token
         with:
           app-id: "${{ secrets.BOT_APP_ID }}"
           private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
 
-      - name: Setup System Tools
-        shell: bash
-        run: sudo apt-get -qq update && sudo apt-get -qq install --no-install-recommends -y curl git
-
-      - name: Setup Workflow Tools
-        uses: jdx/rtx-action@61c1bfbed63c70a82ff0ce3301bde41875b17844 # v1
+      - name: Checkout Default Branch
+        uses: actions/checkout@v4
         with:
-          install: true
-          cache: true
-          rtx_toml: |
-            [tools]
-            flux2 = "latest"
+          token: "${{ steps.app-token.outputs.token }}"
+          ref: "${{ github.event.repository.default_branch }}"
+          path: default
+
+      - name: Checkout Pull Request Branch
+        uses: actions/checkout@v4
+        with:
+          token: "${{ steps.app-token.outputs.token }}"
+          path: pull
 
       - name: Diff Resources
-        uses: allenporter/flux-local/action/diff@c4c5ce19ed7aa792b4ead75776597a82242866c6 # 4.2.1
-        id: diff
+        uses: docker://ghcr.io/allenporter/flux-local:main
         with:
-          sources: home-ops-kubernetes
-          path: "${{ matrix.paths }}"
-          resource: "${{ matrix.resources }}"
+          args: >-
+            --log-level DEBUG
+            diff ${{ matrix.resources }}
+            --unified 6
+            --path-orig /github/workspace/default/${{ matrix.paths }}
+            --path /github/workspace/pull/${{ matrix.paths }}
+            --strip-attrs "helm.sh/chart,checksum/config,app.kubernetes.io/version,chart"
+            --limit-bytes 10000
+            --all-namespaces
+            --sources "home-ops-kubernetes"
+            --output-file diff.patch
 
-      # - name: Checkout Live Branch
-      #   uses: actions/checkout@v4
-      #   with:
-      #     token: "${{ steps.app-token.outputs.token }}"
-      #     path: live
-
-      # - name: Checkout PR branch
-      #   uses: actions/checkout@v4
-      #   with:
-      #     token: "${{ steps.app-token.outputs.token }}"
-      #     path: pr
-
-      # - name: Setup System Tools
-      #   shell: bash
-      #   run: sudo apt-get -qq update && sudo apt-get -qq install --no-install-recommends -y curl git
-
-      # - name: Diff Resources
-      #   uses: docker://ghcr.io/allenporter/flux-local:main
-      #   with:
-      #     args: flux-local diff ${{ matrix.resources }} --unified 6 --path-orig live/${{ matrix.paths }} --path pr/${{ matrix.paths }} --strip-attrs "helm.sh/chart,checksum/config,app.kubernetes.io/version,chart" --skip-crds --skip-secrets --limit-bytes 10000 --all-namespaces --sources "home-kubernetes" > diff.txt
-
-      # - name: Generate Diff
-      #   id: diff
-      #   run: |
-      #     cat diff.txt
-      #     delimiter="$(openssl rand -hex 8)"
-      #     echo "diff<<${delimiter}" >> $GITHUB_OUTPUT
-      #     cat diff.txt >> $GITHUB_OUTPUT
-      #     echo "${delimiter}" >> $GITHUB_OUTPUT
+      - name: Generate Diff
+        id: diff
+        run: |
+          cat diff.patch
+          echo "diff<<EOF" >> $GITHUB_OUTPUT
+          cat diff.patch >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - if: ${{ steps.diff.outputs.diff != '' }}
         name: Add comment
-        uses: mshick/add-pr-comment@7c0890544fb33b0bdd2e59467fbacb62e028a096 # v2.8.1
+        uses: mshick/add-pr-comment@v2.8.1
         with:
           repo-token: "${{ steps.app-token.outputs.token }}"
           message-id: "${{ github.event.pull_request.number }}/${{ matrix.paths }}/${{ matrix.resources }}"
@@ -131,7 +115,7 @@ jobs:
   flux-diff-success:
     if: ${{ always() }}
     needs: ["flux-diff"]
-    name: Flux diff successful
+    name: Flux Diff Successful
     runs-on: ubuntu-latest
     steps:
       - if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
