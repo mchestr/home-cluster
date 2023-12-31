@@ -32,7 +32,7 @@ spec:
         maxParallel: 8
       destinationPath: &dest s3://cloudnative-pg/
       endpointURL: &s3 https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
-      serverName: postgres16-v1
+      serverName: postgres16-v2
       s3Credentials: &credentials
         accessKeyId:
           name: *secretName
@@ -41,10 +41,10 @@ spec:
           name: *secretName
           key: s3-secret-access-key
 
-  # bootstrap:
-  #   recovery:
-  #     # Should match name in externalClusters
-  #     source: &backup postgres16-v1
+  bootstrap:
+    recovery:
+      # Should match name in externalClusters
+      source: &backup postgres16-v1
   #
   #   # Use for major upgrades or creating new cluster from existing
   #   initdb:
@@ -55,21 +55,21 @@ spec:
   #       source:
   #         externalCluster: old-cluster
 
-  # externalClusters:
-  #   - name: *backup
-  #     barmanObjectStore:
-  #       serverName: *backup
-  #       wal:
-  #         compression: bzip2
-  #         maxParallel: 8
-  #       destinationPath: *dest
-  #       endpointURL: *s3
-  #       s3Credentials: *credentials
-  #   - name: old-cluster
-  #     connectionParameters:
-  #       host: postgres16-rw.default.svc.cluster.local
-  #       user: postgres
-  #       dbname: postgres
-  #     password:
-  #       name: postgres-creds
-  #       key: password
+  externalClusters:
+    - name: *backup
+      barmanObjectStore:
+        serverName: *backup
+        wal:
+          compression: bzip2
+          maxParallel: 8
+        destinationPath: *dest
+        endpointURL: *s3
+        s3Credentials: *credentials
+    # - name: old-cluster
+    #   connectionParameters:
+    #     host: postgres16-rw.default.svc.cluster.local
+    #     user: postgres
+    #     dbname: postgres
+    #   password:
+    #     name: postgres-creds
+    #     key: password
