@@ -225,19 +225,6 @@ controlPlane:
           fs.inotify.max_user_watches: "1048576"
           fs.inotify.max_user_instances: "8192"
 
-    # Configure local-path CSI directory
-    - |-
-      machine:
-        kubelet:
-          extraMounts:
-            - destination: /var/localpath
-              type: bind
-              source: /var/localpath
-              options:
-                - rbind
-                - rshared
-                - rw
-
 worker:
 
   patches:
