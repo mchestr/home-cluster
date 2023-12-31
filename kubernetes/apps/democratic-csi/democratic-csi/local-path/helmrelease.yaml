@@ -29,6 +29,7 @@ spec:
       storageCapacity: true
       attachRequired: false
       fsGroupPolicy: File
+
     storageClasses:
       - name: local-path
         defaultClass: false
@@ -39,7 +40,7 @@ spec:
       - name: local-hostpath
         deletionPolicy: Delete
         parameters:
-          dummy: {}
+          cluster: k8s
     controller:
       enabled: true
       strategy: node
