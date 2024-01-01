@@ -1,0 +1,75 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: immich-db
+  namespace: default
+spec:
+  instances: 1
+  imageName: ghcr.io/bo0tzz/cnpgvecto.rs:16.1-v0.1.11
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 8Gi
+    storageClass: local-path
+
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: &secretName cloudnative-pg-secret
+
+  monitoring:
+    enablePodMonitor: true
+
+  postgresql:
+    parameters:
+      max_connections: "600"
+      shared_buffers: 512MB
+
+  backup:
+    retentionPolicy: 7d
+    barmanObjectStore:
+      wal:
+        compression: bzip2
+        maxParallel: 8
+      destinationPath: &dest s3://cloudnative-pg/
+      endpointURL: &s3 https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
+      serverName: immich-v1
+      s3Credentials: &credentials
+        accessKeyId:
+          name: *secretName
+          key: s3-access-key-id
+        secretAccessKey:
+          name: *secretName
+          key: s3-secret-access-key
+
+  # bootstrap:
+  #   recovery:
+  #     # Should match name in externalClusters
+  #     source: &backup immich-v1
+
+  #
+  #   # Use for major upgrades or creating new cluster from existing
+  #   initdb:
+  #     import:
+  #       type: monolith
+  #       databases: ["*"]
+  #       roles: ["*"]
+  #       source:
+  #         externalCluster: old-cluster
+
+  # externalClusters:
+  #   - name: *backup
+  #     barmanObjectStore:
+  #       wal:
+  #         compression: bzip2
+  #         maxParallel: 8
+  #       destinationPath: *dest
+  #       endpointURL: *s3
+  #       s3Credentials: *credentials
+    # - name: old-cluster
+    #   connectionParameters:
+    #     host: postgres16-rw.default.svc.cluster.local
+    #     user: postgres
+    #     dbname: postgres
+    #   password:
+    #     name: postgres-creds
+    #     key: password
