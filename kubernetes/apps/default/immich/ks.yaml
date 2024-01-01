@@ -28,10 +28,13 @@ metadata:
 spec:
   path: ./kubernetes/apps/default/immich/redis
   prune: true
+  dependsOn:
+    - name: cluster-apps-cloudnative-pg-cluster
+    - name: cluster-apps-external-secrets-stores
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
   interval: 30m
   retryInterval: 1m
   timeout: 5m
-  wait: true
+  wait: false
