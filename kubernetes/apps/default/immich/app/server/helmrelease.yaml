@@ -74,8 +74,9 @@ spec:
     ingress:
       main:
         enabled: true
-        className: internal
+        className: external
         annotations:
+          external-dns.alpha.kubernetes.io/target: external.chestr.dev
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: immich.png
           gethomepage.dev/name: Photos
