@@ -10,7 +10,7 @@ vars:
 
 tasks:
   new:
-    desc: Template out a new basic app
+    desc: Template out a new basic app (task repo:new app=<name> [namespace=default])
     dir: kubernetes/apps
     requires:
       vars:
