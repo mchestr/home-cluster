@@ -28,8 +28,6 @@ spec:
   dependsOn:
     - name: immich-server
       namespace: default
-    - name: immich-typesense
-      namespace: default
   values:
     defaultPodOptions:
       securityContext:
