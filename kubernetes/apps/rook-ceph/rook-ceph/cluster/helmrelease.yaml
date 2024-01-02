@@ -38,6 +38,7 @@ spec:
       [global]
       bdev_enable_discard = true
       bdev_async_discard = true
+      mon_data_avail_warn = 15
 
     cephClusterSpec:
       network:
