@@ -19,6 +19,10 @@ spec:
   retryInterval: 1m
   timeout: 5m
   wait: true
+  postBuild:
+    substitute:
+      APP: immich
+      GATUS_SUBDOMAIN: photos
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization

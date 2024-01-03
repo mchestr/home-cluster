@@ -16,4 +16,7 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
-  wait: true
+  wait: false
+  postBuild:
+    substitute:
+      APP: tautulli

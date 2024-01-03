@@ -4,10 +4,11 @@ kind: Kustomization
 namespace: default
 resources:
   - externalsecret.yaml
-  - gatus.yaml
   - helmrelease.yaml
   - service.yaml
   - volsync.yaml
+  - ../../../../templates/gatus/guarded
+  - ../../../../templates/gatus/internal
 configMapGenerator:
   - name: frigate-configmap
     files:
