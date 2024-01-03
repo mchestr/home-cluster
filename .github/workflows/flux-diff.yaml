@@ -48,10 +48,13 @@ jobs:
     if: ${{ needs.changed-files.outputs.matrix != '[]' }}
     strategy:
       matrix:
-        paths: ${{ fromJSON(needs.changed-files.outputs.matrix) }}
+        paths:
+          - kubernetes
         resources:
           - helmrelease
           - kustomization
+      max-parallel: 4
+      fail-fast: false
     steps:
       - name: Generate Token
         uses: actions/create-github-app-token@v1
