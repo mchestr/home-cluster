@@ -3,105 +3,86 @@ name: "Flux Diff"
 
 on:
   pull_request:
-    branches: ["main"]
-    paths: ["kubernetes/**"]
+    branches:
+      - main
+    paths:
+      - kubernetes/**
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
 
 jobs:
   changed-files:
-    name: Changed Files
+    name: Get Changed Files
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.changed-files.outputs.all_changed_and_modified_files }}
     steps:
-      - name: Generate Token
-        uses: actions/create-github-app-token@2986852ad836768dfea7781f31828eb3e17990fa # v1
-        id: app-token
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          app-id: "${{ secrets.BOT_APP_ID }}"
-          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
-
-      - name: Checkout Default Branch
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-        with:
-          token: "${{ steps.app-token.outputs.token }}"
           fetch-depth: 0
 
-      - name: Get Changed Files
+      - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@716b1e13042866565e00e85fd4ec490e186c4a2f # v41
+        uses: tj-actions/changed-files@v41
         with:
           files: kubernetes/**
           dir_names: true
           dir_names_max_depth: 2
           json: true
+          quotepath: false
           escape_json: false
 
-      - name: List All Changed Files
+      - name: List all changed files
         run: echo "${{ steps.changed-files.outputs.all_changed_and_modified_files }}"
 
   flux-diff:
     name: Flux Diff
     runs-on: ubuntu-latest
-    needs: ["changed-files"]
+    needs:
+      - changed-files
     permissions:
       pull-requests: write
+    if: ${{ needs.changed-files.outputs.matrix != '[]' }}
     strategy:
       matrix:
         paths: ${{ fromJSON(needs.changed-files.outputs.matrix) }}
-        resources: ["helmrelease", "kustomization"]
-      max-parallel: 4
-      fail-fast: false
+        resources:
+          - helmrelease
+          - kustomization
     steps:
       - name: Generate Token
-        uses: actions/create-github-app-token@2986852ad836768dfea7781f31828eb3e17990fa # v1
+        uses: actions/create-github-app-token@v1
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
         id: app-token
         with:
           app-id: "${{ secrets.BOT_APP_ID }}"
           private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
 
-      - name: Checkout Default Branch
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-        with:
-          token: "${{ steps.app-token.outputs.token }}"
-          ref: "${{ github.event.repository.default_branch }}"
-          path: default
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Checkout Pull Request Branch
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - name: Install Flux
+        uses: fluxcd/flux2/action@main
         with:
-          token: "${{ steps.app-token.outputs.token }}"
-          path: pull
+          version: "latest"
+
+      - name: Setup yq
+        uses: frenck/action-setup-yq@v1
 
       - name: Diff Resources
-        uses: docker://ghcr.io/allenporter/flux-local:main
-        with:
-          args: >-
-            --log-level DEBUG
-            diff ${{ matrix.resources }}
-            --unified 6
-            --path-orig /github/workspace/default/${{ matrix.paths }}
-            --path /github/workspace/pull/${{ matrix.paths }}
-            --strip-attrs "helm.sh/chart,checksum/config,app.kubernetes.io/version,chart"
-            --limit-bytes 10000
-            --all-namespaces
-            --sources "home-ops-kubernetes"
-            --output-file diff.patch
-
-      - name: Generate Diff
+        uses: allenporter/flux-local/action/diff@4.2.1
         id: diff
-        run: |
-          cat diff.patch
-          echo "diff<<EOF" >> $GITHUB_OUTPUT
-          cat diff.patch >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+        with:
+          sources: home-ops-kubernetes
+          path: "${{ matrix.paths }}"
+          resource: "${{ matrix.resources }}"
 
-      - if: ${{ steps.diff.outputs.diff != '' }}
-        name: Add comment
-        uses: mshick/add-pr-comment@7c0890544fb33b0bdd2e59467fbacb62e028a096 # v2.8.1
+      - name: Add comment
+        if: ${{ steps.diff.outputs.diff != '' && github.event.pull_request.head.repo.full_name == github.repository }}
+        uses: mshick/add-pr-comment@v2.8.1
         with:
           repo-token: "${{ steps.app-token.outputs.token }}"
           message-id: "${{ github.event.pull_request.number }}/${{ matrix.paths }}/${{ matrix.resources }}"
@@ -111,13 +92,17 @@ jobs:
             ${{ steps.diff.outputs.diff }}
             ```
 
-  # Summarize matrix https://github.community/t/status-check-for-a-matrix-jobs/127354/7
   flux-diff-success:
+    needs:
+      - flux-diff
     if: ${{ always() }}
-    needs: ["flux-diff"]
-    name: Flux Diff Successful
+    name: Flux Diff successful
     runs-on: ubuntu-latest
     steps:
-      - if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
-        name: Check matrix status
+      - name: Check matrix status
+        if: >-
+          ${{
+               contains(needs.*.result, 'failure')
+            || contains(needs.*.result, 'cancelled')
+          }}
         run: exit 1
