@@ -73,3 +73,16 @@ spec:
     #   password:
     #     name: postgres-creds
     #     key: password
+
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: postgres
+  namespace: default
+spec:
+  schedule: "@daily"
+  immediate: true
+  backupOwnerReference: self
+  cluster:
+    name: postgres16
