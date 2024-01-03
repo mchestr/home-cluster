@@ -16,7 +16,10 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
-  wait: true
+  wait: false
+  postBuild:
+    substitute:
+      APP: qbittorrent
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -30,6 +33,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
-  wait: true
+  wait: false
   dependsOn:
     - name: cluster-apps-qbittorrent

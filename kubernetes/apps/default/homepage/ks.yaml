@@ -14,3 +14,6 @@ spec:
   retryInterval: 1m
   timeout: 5m
   wait: true
+  postBuild:
+    substitute:
+      APP: homepage

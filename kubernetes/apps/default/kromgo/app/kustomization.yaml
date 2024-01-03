@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: default
 resources:
   - helmrelease.yaml
-  - gatus.yaml
+  - ../../../../templates/gatus/external
 configMapGenerator:
   - name: kromgo-configmap
     files:

@@ -4,9 +4,9 @@ kind: Kustomization
 namespace: default
 resources:
   - externalsecret.yaml
-  - gatus.yaml
   - helmrelease.yaml
   - volsync.yaml
+  - ../../../../templates/gatus/external
 commonLabels:
   app.kubernetes.io/name: radicale
   app.kubernetes.io/instance: radicale

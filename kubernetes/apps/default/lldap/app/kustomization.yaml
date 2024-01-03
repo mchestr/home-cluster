@@ -5,4 +5,4 @@ namespace: default
 resources:
   - externalsecret.yaml
   - helmrelease.yaml
-  - gatus.yaml
+  - ../../../../templates/gatus/internal

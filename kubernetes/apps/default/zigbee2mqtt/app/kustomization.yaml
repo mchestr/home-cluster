@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: default
 resources:
   - externalsecret.yaml
-  - gatus.yaml
   - helmrelease.yaml
-  # - prometheusrule.yaml
   - volsync.yaml
+  - ../../../../templates/gatus/guarded
+  - ../../../../templates/gatus/internal
