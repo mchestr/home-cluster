@@ -5,8 +5,8 @@ namespace: default
 resources:
   - configmap.yaml
   - externalsecret.yaml
-  - gatus.yaml
   - helmrelease.yaml
   - rbac.yaml
+  - ../../../../templates/gatus/internal
 generatorOptions:
   disableNameSuffixHash: true

@@ -4,9 +4,10 @@ kind: Kustomization
 namespace: default
 resources:
   - externalsecret.yaml
-  - gatus.yaml
   - helmrelease.yaml
   - prometheusrule.yaml
+  - ../../../../templates/gatus/guarded
+  - ../../../../templates/gatus/internal
 configMapGenerator:
   - name: sonarr-pushover
     files:
