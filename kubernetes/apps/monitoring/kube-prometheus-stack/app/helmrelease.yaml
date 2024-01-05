@@ -27,6 +27,10 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  valuesFrom:
+    - kind: ConfigMap
+      name: kube-state-metrics-configmap
+      valuesKey: kube-state-metrics.yaml
   values:
     crds:
       enabled: true
@@ -34,83 +38,6 @@ spec:
     cleanPrometheusOperatorObjectNames: true
 
     alertmanager:
-      tplConfig: true
-      enabled: true
-      config:
-        global:
-          resolve_timeout: 5m
-        receivers:
-          - name: heartbeat
-            webhook_configs:
-              - url: http://localhost:3000/api/push/{{ .Values.alertmanager.secrets.uptime_kuma_token }}?status=up&msg=OK
-                send_resolved: true
-          - name: "null"
-          - name: "pushover"
-            pushover_configs:
-              - token: "{{ .Values.alertmanager.secrets.pushover_token }}"
-                user_key: "{{ .Values.alertmanager.secrets.pushover_user_key }}"
-                send_resolved: true
-                html: true
-                sound: gamelan
-                priority: |-
-                  {{- `
-                    {{ if eq .Status "firing" }}1{{ else }}0{{ end }}
-                  `}}
-                title: |-
-                  {{- `
-                    [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
-                  `}}
-                message: |-
-                  {{- `
-                    {{- range .Alerts }}
-                      {{- if ne .Labels.severity "" }}
-                        <b>Severity:</b> <i>{{ .Labels.severity }}</i>
-                      {{- else }}
-                        <b>Severity:</b> <i>N/A</i>
-                      {{- end }}
-                      {{- if ne .Annotations.description "" }}
-                        <b>Description:</b> <i>{{ .Annotations.description }}</i>
-                      {{- else if ne .Annotations.summary "" }}
-                        <b>Summary:</b> <i>{{ .Annotations.summary }}</i>
-                      {{- else if ne .Annotations.message "" }}
-                        <b>Message:</b> <i>{{ .Annotations.message }}</i>
-                      {{- else }}
-                        <b>Description:</b> <i>N/A</i>
-                      {{- end }}
-                      {{- if gt (len .Labels.SortedPairs) 0 }}
-                        <b>Details:</b>
-                        {{- range .Labels.SortedPairs }}
-                          • <b>{{ .Name }}:</b> <i>{{ .Value }}</i>
-                        {{- end }}
-                      {{- end }}
-                    {{- end }}
-                  `}}
-        route:
-          group_by: ["alertname", "job"]
-          group_wait: 30s
-          group_interval: 5m
-          repeat_interval: 12h
-          receiver: pushover
-          routes:
-            - receiver: heartbeat
-              group_wait: 0s
-              group_interval: 2m
-              repeat_interval: 2m
-              matchers:
-                - alertname =~ "Watchdog"
-            - receiver: "null"
-              matchers:
-                - alertname =~ "InfoInhibitor"
-            - receiver: pushover
-              matchers:
-                - severity = "critical"
-              continue: true
-        inhibit_rules:
-          - source_matchers:
-              - severity = "critical"
-            target_matchers:
-              - severity = "warning"
-            equal: ["alertname", "namespace"]
       ingress:
         enabled: true
         pathType: Prefix
@@ -126,12 +53,14 @@ spec:
           gethomepage.dev/name: Alert-Manager
           gethomepage.dev/group: Monitoring
         hosts:
-          - &am-host alert-manager.chestr.dev
+          - &host alert-manager.chestr.dev
         tls:
           - hosts:
-              - *am-host
+              - *host
       alertmanagerSpec:
         replicas: 2
+        useExistingSecret: true
+        configSecret: alertmanager-secret
         containers:
           - name: uptime-kuma-proxy
             image: ghcr.io/mchestr/alertmanager-uptime-kuma-proxy:v0.1.6
@@ -232,29 +161,6 @@ spec:
     kubeStateMetrics:
       enabled: true
 
-    kube-state-metrics:
-      fullnameOverride: kube-state-metrics
-      metricLabelsAllowlist:
-        - pods=[*]
-        - deployments=[*]
-        - persistentvolumeclaims=[*]
-      prometheus:
-        monitor:
-          enabled: true
-          relabelings:
-            - action: replace
-              regex: (.*)
-              replacement: $1
-              sourceLabels:
-                - __meta_kubernetes_pod_node_name
-              targetLabel: kubernetes_node
-      resources:
-        requests:
-          cpu: 15m
-          memory: 127M
-        limits:
-          memory: 153M
-
     # Setting this option to 0 disabled CPU limits
     prometheusOperator:
       resources:
@@ -338,17 +244,3 @@ spec:
 
       thanosServiceMonitor:
         enabled: true
-
-  valuesFrom:
-    - targetPath: alertmanager.secrets.pushover_user_key
-      kind: Secret
-      name: alertmanager-secret
-      valuesKey: pushover_user_key
-    - targetPath: alertmanager.secrets.pushover_token
-      kind: Secret
-      name: alertmanager-secret
-      valuesKey: pushover_token
-    - targetPath: alertmanager.secrets.uptime_kuma_token
-      kind: Secret
-      name: alertmanager-secret
-      valuesKey: uptime_kuma_token
