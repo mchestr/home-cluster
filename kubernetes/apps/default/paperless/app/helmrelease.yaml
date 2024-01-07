@@ -62,11 +62,11 @@ spec:
               PAPERLESS_OCR_LANGUAGE: eng
               PAPERLESS_PORT: 8000
               PAPERLESS_TIKA_ENABLED: 1
-              PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
-              PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
+              PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://paperless-gotenburg.default.svc.cluster.local:3000
+              PAPERLESS_TIKA_ENDPOINT: http://paperless-tika.default.svc.cluster.local:9998
               PAPERLESS_TIME_ZONE: America/Vancouver
               PAPERLESS_URL: https://{{ .Release.Name }}.chestr.dev
-              PAPERLESS_REDIS: redis://localhost:6379
+              PAPERLESS_REDIS: redis://paperless-redis.default.svc.cluster.local:6379
               PAPERLESS_ENABLE_HTTP_REMOTE_USER: "true"
               PAPERLESS_LOGOUT_REDIRECT_URL: https://auth.chestr.dev/logout
             envFrom:
@@ -80,35 +80,52 @@ spec:
                 drop:
                   - ALL
 
-          gotenburg:
-            name: gotenburg
+      gotenburg:
+        containers:
+          main:
             image:
               repository: ghcr.io/mchestr/gotenberg
               tag: 8.0.0
             env:
-              - name: DISABLE_GOOGLE_CHROME
-                value: "1"
+              DISABLE_GOOGLE_CHROME: "1"
             securityContext: *securityContext
 
-          tika:
-            name: tika
+      tika:
+        containers:
+          main:
             image:
               repository: ghcr.io/paperless-ngx/tika
               tag: 2.9.0-full
             securityContext: *securityContext
 
-          redis:
-            name: redis
+      redis:
+        containers:
+          main:
             image:
               repository: public.ecr.aws/docker/library/redis
               tag: 7.2.3@sha256:a7cee7c8178ff9b5297cb109e6240f5072cdaaafd775ce6b586c3c704b06458e
-            securityContext: *securityContext
 
     service:
       main:
+        controller: main
         ports:
           http:
             port: 8000
+      gotenburg:
+        controller: gotenburg
+        ports:
+          http:
+            port: 3000
+      tika:
+        controller: tika
+        ports:
+          http:
+            port: 9998
+      redis:
+        controller: redis
+        ports:
+          http:
+            port: 6379
 
     ingress:
       main:
@@ -143,11 +160,13 @@ spec:
       data:
         enabled: true
         existingClaim: data-paperless
-        globalMounts:
-          - subPath: data
-            path: /usr/src/paperless/data
-          - subPath: media
-            path: /usr/src/paperless/media
+        advancedMounts:
+          main:
+            main:
+              - subPath: data
+                path: /usr/src/paperless/data
+              - subPath: media
+                path: /usr/src/paperless/media
 
     networkpolicies:
       main:
