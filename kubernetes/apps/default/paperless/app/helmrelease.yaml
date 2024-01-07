@@ -27,9 +27,16 @@ spec:
     keepHistory: false
   values:
     defaultPodOptions:
+      automountServiceAccountToken: false
+      enableServiceLinks: false
       securityContext:
+        runAsNonRoot: false
+        runAsUser: &uid 1000
+        runAsGroup: *uid
         fsGroup: 65539
-        fsGroupChangePolicy: OnRootMismatch
+        fsGroupChangePolicy: "Always"
+        seccompProfile:
+          type: "RuntimeDefault"
 
     controllers:
       main:
@@ -65,6 +72,13 @@ spec:
             envFrom:
               - secretRef:
                   name: paperless-secret
+            securityContext: &securityContext
+              allowPrivilegeEscalation: false
+              seccompProfile:
+                type: RuntimeDefault
+              capabilities:
+                drop:
+                  - ALL
 
           gotenburg:
             name: gotenburg
@@ -74,18 +88,21 @@ spec:
             env:
               - name: DISABLE_GOOGLE_CHROME
                 value: "1"
+            securityContext: *securityContext
 
           tika:
             name: tika
             image:
               repository: ghcr.io/paperless-ngx/tika
               tag: 2.9.0-full
+            securityContext: *securityContext
 
           redis:
             name: redis
             image:
               repository: public.ecr.aws/docker/library/redis
               tag: 7.2.3@sha256:a7cee7c8178ff9b5297cb109e6240f5072cdaaafd775ce6b586c3c704b06458e
+            securityContext: *securityContext
 
     service:
       main:
