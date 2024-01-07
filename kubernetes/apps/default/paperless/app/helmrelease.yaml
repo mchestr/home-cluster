@@ -142,7 +142,7 @@ spec:
           gethomepage.dev/name: Paperless
           gethomepage.dev/group: Home
           gethomepage.dev/widget.type: paperlessngx
-          gethomepage.dev/widget.url: http://paperless.default.svc.cluster.local:8000
+          gethomepage.dev/widget.url: https://paperless-api.chestr.dev
           gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_PAPERLESS_API_TOKEN}}"
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
@@ -155,6 +155,22 @@ spec:
         tls:
           - hosts:
               - *host
+      api:
+        enabled: true
+        className: internal
+        annotations:
+          nginx.ingress.kubernetes.io/use-regex: "true"
+        hosts:
+          - host: &api paperless-api.chestr.dev
+            paths:
+              - path: "/api/.*"
+                pathType: ImplementationSpecific
+                service:
+                  name: main
+                  port: http
+        tls:
+          - hosts:
+              - *api
 
     persistence:
       data:
@@ -184,10 +200,3 @@ spec:
                   namespaceSelector:
                     matchLabels:
                       kubernetes.io/metadata.name: networking
-            - from:
-                - podSelector:
-                    matchLabels:
-                      app.kubernetes.io/instance: homepage
-                  namespaceSelector:
-                    matchLabels:
-                      kubernetes.io/metadata.name: default
