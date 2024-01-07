@@ -136,26 +136,22 @@ spec:
       main:
         enabled: true
 
-        podSelector:
-          matchLabels:
-            app.kubernetes.io/name: paperless
-
         policyTypes:
           - Ingress
 
         rules:
           ingress:
             - from:
-                - namespaceSelector:
+                - podSelector:
+                    matchLabels:
+                      app.kubernetes.io/instance: nginx-internal
+                  namespaceSelector:
                     matchLabels:
                       kubernetes.io/metadata.name: networking
+            - from:
                 - podSelector:
                     matchLabels:
-                      app.kubernetes.io/name: ingress-nginx
-            - from:
-                - namespaceSelector:
+                      app.kubernetes.io/instance: homepage
+                  namespaceSelector:
                     matchLabels:
                       kubernetes.io/metadata.name: default
-                - podSelector:
-                    matchLabels:
-                      app.kubernetes.io/name: homepage
