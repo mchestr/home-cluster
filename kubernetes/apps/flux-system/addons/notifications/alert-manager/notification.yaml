@@ -12,6 +12,7 @@ apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Alert
 metadata:
   name: alert-manager
+  namespace: flux-system
 spec:
   providerRef:
     name: alert-manager
