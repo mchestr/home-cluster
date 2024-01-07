@@ -8,6 +8,7 @@ resources:
   # Flux-Kustomizations
   - appdaemon/ks.yaml
   - authelia/ks.yaml
+  - authentik/ks.yaml
   - autobrr/ks.yaml
   - cloudnative-pg/ks.yaml
   - displex/ks.yaml
