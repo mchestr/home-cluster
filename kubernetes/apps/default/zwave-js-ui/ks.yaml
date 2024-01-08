@@ -22,3 +22,4 @@ spec:
     substitute:
       APP: zwave-js-ui
       GATUS_SUBDOMAIN: zwave
+      VOLSYNC_CLAIM: zwave-js-ui-data

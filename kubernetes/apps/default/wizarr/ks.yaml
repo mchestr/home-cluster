@@ -18,3 +18,4 @@ spec:
     substitute:
       APP: wizarr
       GATUS_SUBDOMAIN: invite
+      VOLSYNC_CLAIM: wizarr-data

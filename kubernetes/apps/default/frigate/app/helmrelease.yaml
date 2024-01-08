@@ -118,7 +118,7 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: data-frigate
+        existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
           - path: /data
       config-file:

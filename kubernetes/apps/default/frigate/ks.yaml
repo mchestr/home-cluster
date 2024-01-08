@@ -20,3 +20,6 @@ spec:
   postBuild:
     substitute:
       APP: frigate
+      VOLSYNC_CLAIM: frigate-data
+      VOLSYNC_CACHE_CAPACITY: 5Gi
+      VOLSYNC_CAPACITY: 5Gi

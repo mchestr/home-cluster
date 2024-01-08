@@ -76,4 +76,4 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: config-esphome
+        existingClaim: ${VOLSYNC_CLAIM}

@@ -20,3 +20,8 @@ spec:
   postBuild:
     substitute:
       APP: paperless
+      APP_UID: "1000"
+      APP_GID: "1000"
+      VOLSYNC_CLAIM: paperless-data
+      VOLSYNC_CACHE_CAPACITY: 8Gi
+      VOLSYNC_CAPACITY: 8Gi

@@ -78,46 +78,11 @@ spec:
             securityContext:
               privileged: true
 
-          exporter:
-            name: exporter
-            image:
-              repository: docker.io/kpetrem/mqtt-exporter
-              tag: latest@sha256:e5b5a02fba296635d7c151f5c155f798e77ca2e2909992d458f9a492fbb2e02c
-            env:
-              - name: LOG_LEVEL
-                value: DEBUG
-              - name: LOG_MQTT_MESSAGE
-                value: "True"
-              - name: MQTT_ADDRESS
-                value: mosquitto.default.svc.cluster.local
-              - name: MQTT_TOPIC
-                value: "zigbee2mqtt/#"
-              - name: MQTT_V5_PROTOCOL
-                value: "True"
-              - name: MQTT_USERNAME
-                valueFrom:
-                  secretKeyRef:
-                    name: zigbee2mqtt-secret
-                    key: ZIGBEE2MQTT_CONFIG_MQTT_USER
-              - name: MQTT_PASSWORD
-                valueFrom:
-                  secretKeyRef:
-                    name: zigbee2mqtt-secret
-                    key: ZIGBEE2MQTT_CONFIG_MQTT_PASSWORD
-              - name: PROMETHEUS_PORT
-                value: 80
-              - name: PROMETHEUS_PREFIX
-                value: zigbee2mqtt_
-              - name: ZIGBEE2MQTT_AVAILABILITY
-                value: "True"
-
     service:
       main:
         ports:
           http:
             port: 8080
-          metrics:
-            port: 80
 
     ingress:
       main:
@@ -148,20 +113,10 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: data-zigbee2mqtt
+        existingClaim: ${VOLSYNC_CLAIM}
       usb:
         enabled: true
         type: hostPath
         hostPath: /dev/serial/by-id/usb-ITead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_088f44f8ea9ced1189d175faa7669f5d-if00-port0
         globalMounts:
           - path: /dev/ttyUSB0
-
-    serviceMonitor:
-      main:
-        enabled: true
-        endpoints:
-          - port: metrics
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 10s

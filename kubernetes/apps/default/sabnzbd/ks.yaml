@@ -20,3 +20,4 @@ spec:
   postBuild:
     substitute:
       APP: sabnzbd
+      VOLSYNC_CLAIM: sabnzbd-config

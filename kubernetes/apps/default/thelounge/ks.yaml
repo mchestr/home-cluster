@@ -21,3 +21,4 @@ spec:
   postBuild:
     substitute:
       APP: thelounge
+      VOLSYNC_CLAIM: thelounge-config

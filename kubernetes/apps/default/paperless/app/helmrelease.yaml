@@ -29,14 +29,6 @@ spec:
     defaultPodOptions:
       automountServiceAccountToken: false
       enableServiceLinks: false
-      securityContext:
-        runAsNonRoot: false
-        runAsUser: &uid 1000
-        runAsGroup: *uid
-        fsGroup: 65539
-        fsGroupChangePolicy: "Always"
-        seccompProfile:
-          type: "RuntimeDefault"
 
     controllers:
       main:
@@ -74,6 +66,11 @@ spec:
                   name: paperless-secret
             securityContext: &securityContext
               allowPrivilegeEscalation: false
+              runAsNonRoot: false
+              runAsUser: ${APP_UID}
+              runAsGroup: ${APP_UID}
+              fsGroup: 65539
+              fsGroupChangePolicy: "Always"
               seccompProfile:
                 type: RuntimeDefault
               capabilities:
@@ -175,7 +172,7 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: data-paperless
+        existingClaim: ${VOLSYNC_CLAIM}
         advancedMounts:
           main:
             main:

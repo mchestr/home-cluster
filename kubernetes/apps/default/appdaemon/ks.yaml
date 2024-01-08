@@ -21,3 +21,4 @@ spec:
   postBuild:
     substitute:
       APP: appdaemon
+      VOLSYNC_CLAIM: appdaemon-config

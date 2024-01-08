@@ -20,3 +20,4 @@ spec:
   postBuild:
     substitute:
       APP: esphome
+      VOLSYNC_CLAIM: esphome-config

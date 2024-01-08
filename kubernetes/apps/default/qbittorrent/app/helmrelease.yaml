@@ -111,7 +111,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: config-qbittorrent
+        existingClaim: ${VOLSYNC_CLAIM}
       media:
         enabled: true
         type: nfs
