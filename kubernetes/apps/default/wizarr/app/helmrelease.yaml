@@ -61,7 +61,7 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: wizarr.png
           gethomepage.dev/name: Wizarr
-          gethomepage.dev/group: Media
+          gethomepage.dev/group: System
         hosts:
           - host: &host invite.chestr.dev
             paths:
