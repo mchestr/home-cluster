@@ -72,7 +72,7 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: mdi-cast
           gethomepage.dev/name: Cast
-          gethomepage.dev/group: Music
+          gethomepage.dev/group: Automation
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
