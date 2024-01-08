@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-snmp-exporter-edgerouter
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/monitoring/snmp-exporter/edgerouter
+  path: ./kubernetes/apps/monitoring/exporters/snmp-exporter/edgerouter
   prune: true
   sourceRef:
     kind: GitRepository
@@ -13,7 +13,7 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
-  wait: true
+  wait: false
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -21,7 +21,7 @@ metadata:
   name: cluster-apps-snmp-exporter-lochnas
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/monitoring/snmp-exporter/lochnas
+  path: ./kubernetes/apps/monitoring/exporters/snmp-exporter/lochnas
   prune: true
   sourceRef:
     kind: GitRepository
@@ -29,4 +29,4 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
-  wait: true
+  wait: false

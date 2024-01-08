@@ -9,8 +9,7 @@ resources:
   - grafana/ks.yaml
   - kube-prometheus-stack/ks.yaml
   - loki/ks.yaml
-  - prometheus-nut-exporter/ks.yaml
-  - snmp-exporter/ks.yaml
   - thanos/ks.yaml
   - unifi-poller/ks.yaml
   - vector/ks.yaml
+  - exporters
