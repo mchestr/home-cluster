@@ -39,12 +39,12 @@ data:
         columns: 3
         icon: mdi-download-circle
       Music:
-        style: row
+        style: column
         columns: 2
         icon: mdi-speaker-multiple
       Automation:
-        style: row
-        columns: 3
+        style: column
+        columns: 2
         icon: mdi-home-automation
       Monitoring:
         style: column
