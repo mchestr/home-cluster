@@ -13,7 +13,7 @@ locals {
 
 module "uptime-kuma" {
   source  = "terraform-google-modules/container-vm/google"
-  version = "3.1.0"
+  version = "3.1.1"
 
   container = {
     image = local.image
