@@ -67,30 +67,11 @@ spec:
               - secretRef:
                   name: sonarr-secret
 
-          metrics:
-            image:
-              repository: ghcr.io/onedr0p/exportarr
-              tag: v1.6.0
-            args:
-              - s
-            env:
-              PORT: 9794
-              ENABLE_UNKNOWN_QUEUE_ITEMS: true
-              TZ: America/Vancouver
-              URL: http://sonarr.default.svc.cluster.local:8989
-              APIKEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: sonarr-secret
-                    key: SONARR__API_KEY
-
     service:
       main:
         ports:
           http:
             port: 8989
-          metrics:
-            port: 9794
 
     ingress:
       main:
@@ -142,13 +123,3 @@ spec:
         globalMounts:
           - path: /scripts/pushover-notify.sh
             subPath: pushover-notify.sh
-
-    serviceMonitor:
-      main:
-        enabled: true
-        endpoints:
-          - port: metrics
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 10s

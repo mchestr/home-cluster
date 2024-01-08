@@ -1,0 +1,67 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: tautulli-exporter
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: docker.io/nwalke/tautulli_exporter
+              tag: v0.1.0@sha256:36b53431ac19d8196e2b4431b98b221b3009c9d97dc3509bc229c7b569b23350
+            env:
+              SERVE_PORT: &port 9487
+              TAUTULLI_URI: http://tautulli.default.svc.cluster.local:8181
+            envFrom:
+              - secretRef:
+                  name: tautulli-exporter-secret
+            resources:
+              requests:
+                cpu: 5m
+                memory: 36M
+              limits:
+                memory: 128M
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+
+    serviceMonitor:
+      main:
+        enabled: true

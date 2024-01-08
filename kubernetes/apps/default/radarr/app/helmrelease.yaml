@@ -67,30 +67,11 @@ spec:
               - secretRef:
                   name: radarr-secret
 
-          metrics:
-            image:
-              repository: ghcr.io/onedr0p/exportarr
-              tag: v1.6.0
-            args:
-              - r
-            env:
-              PORT: 9794
-              ENABLE_UNKNOWN_QUEUE_ITEMS: true
-              TZ: America/Vancouver
-              URL: http://radarr.default.svc.cluster.local:7878
-              APIKEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: radarr-secret
-                    key: RADARR__API_KEY
-
     service:
       main:
         ports:
           http:
             port: 7878
-          metrics:
-            port: 9794
 
     ingress:
       main:
@@ -142,13 +123,3 @@ spec:
         globalMounts:
           - path: /scripts/pushover-notify.sh
             subPath: pushover-notify.sh
-
-    serviceMonitor:
-      main:
-        enabled: true
-        endpoints:
-          - port: metrics
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 10s
