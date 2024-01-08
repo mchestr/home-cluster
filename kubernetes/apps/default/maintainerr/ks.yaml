@@ -1,0 +1,24 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-maintainerr
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/default/maintainerr/app
+  prune: true
+  dependsOn:
+    - name: cluster-apps-external-secrets-stores
+  sourceRef:
+    kind: GitRepository
+    name: home-ops-kubernetes
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  wait: false
+  postBuild:
+    substitute:
+      APP: maintainerr
+      APP_UID: "0"
+      APP_GID: "0"
+      VOLSYNC_CLAIM: maintainerr-data
