@@ -26,10 +26,6 @@ data:
         style: row
         columns: 2
         icon: mdi-shield-home
-      Music:
-        style: row
-        columns: 2
-        icon: mdi-speaker-multiple
       Home:
         style: row
         columns: 2
@@ -42,6 +38,10 @@ data:
         style: row
         columns: 3
         icon: mdi-download-circle
+      Music:
+        style: row
+        columns: 2
+        icon: mdi-speaker-multiple
       Automation:
         style: row
         columns: 3
