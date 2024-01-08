@@ -62,7 +62,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: config-recyclarr
+        existingClaim: ${VOLSYNC_CLAIM}
       config-file:
         enabled: true
         type: configMap

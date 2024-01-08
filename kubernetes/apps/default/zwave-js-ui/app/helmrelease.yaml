@@ -80,7 +80,7 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: data-zwave-js-ui
+        existingClaim: zwave-js-ui-data
         globalMounts:
           - path: /usr/src/app/store
       usb:

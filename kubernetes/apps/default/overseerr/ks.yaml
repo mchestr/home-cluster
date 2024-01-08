@@ -21,3 +21,4 @@ spec:
     substitute:
       APP: overseerr
       GATUS_SUBDOMAIN: requests
+      VOLSYNC_CLAIM: overseerr-config

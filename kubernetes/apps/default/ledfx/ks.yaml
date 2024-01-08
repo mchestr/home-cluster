@@ -20,3 +20,4 @@ spec:
   postBuild:
     substitute:
       APP: ledfx
+      VOLSYNC_CLAIM: ledfx-config

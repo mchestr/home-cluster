@@ -83,4 +83,4 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: config-tautulli
+        existingClaim: ${VOLSYNC_CLAIM}

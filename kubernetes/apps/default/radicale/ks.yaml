@@ -21,3 +21,4 @@ spec:
     substitute:
       APP: radicale
       GATUS_SUBDOMAIN: cal
+      VOLSYNC_CLAIM: radicale-config

@@ -79,6 +79,6 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: data-unifi
+        existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
           - path: /usr/lib/unifi/data

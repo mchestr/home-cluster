@@ -77,6 +77,6 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: data-wizarr
+        existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
           - path: /data/database
