@@ -22,10 +22,6 @@ data:
       searchDescriptions: true
       hideInternetSearch: true
     layout:
-      Security:
-        style: row
-        columns: 2
-        icon: mdi-shield-home
       Home:
         style: row
         columns: 2

@@ -100,7 +100,7 @@ spec:
           nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
           nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Security
+          gethomepage.dev/group: Home
           gethomepage.dev/name: Frigate
           gethomepage.dev/icon: frigate.png
         hosts:
