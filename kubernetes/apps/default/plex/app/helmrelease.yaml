@@ -108,7 +108,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: config-plex
+        existingClaim: ${VOLSYNC_CLAIM}
       media:
         enabled: true
         type: nfs

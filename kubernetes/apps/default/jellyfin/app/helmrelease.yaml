@@ -121,7 +121,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: config-jellyfin
+        existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
           - path: /config
       transcode:

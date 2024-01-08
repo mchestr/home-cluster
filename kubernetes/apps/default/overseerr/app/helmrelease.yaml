@@ -80,6 +80,6 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: config-overseerr
+        existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
           - path: /app/config

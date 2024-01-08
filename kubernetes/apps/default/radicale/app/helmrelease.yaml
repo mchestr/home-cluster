@@ -81,7 +81,7 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: data-radicale
+        existingClaim: ${VOLSYNC_CLAIM}
       config:
         enabled: true
         type: configMap

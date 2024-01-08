@@ -21,6 +21,9 @@ spec:
     substitute:
       APP: plex
       GATUS_STATUS: "401"
+      VOLSYNC_CLAIM: plex-config
+      VOLSYNC_CACHE_CAPACITY: 70Gi
+      VOLSYNC_CAPACITY: 70Gi
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization

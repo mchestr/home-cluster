@@ -87,6 +87,6 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: config-ledfx
+        existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
           - path: /app/ledfx-config

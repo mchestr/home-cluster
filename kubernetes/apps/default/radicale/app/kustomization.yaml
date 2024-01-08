@@ -5,8 +5,8 @@ namespace: default
 resources:
   - externalsecret.yaml
   - helmrelease.yaml
-  - volsync.yaml
   - ../../../../templates/gatus/external
+  - ../../../../templates/volsync
 commonLabels:
   app.kubernetes.io/name: radicale
   app.kubernetes.io/instance: radicale

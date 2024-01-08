@@ -6,9 +6,9 @@ resources:
   - externalsecret.yaml
   - helmrelease.yaml
   - service.yaml
-  - volsync.yaml
   - ../../../../templates/gatus/guarded
   - ../../../../templates/gatus/internal
+  - ../../../../templates/volsync
 configMapGenerator:
   - name: frigate-configmap
     files:
