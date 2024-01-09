@@ -40,6 +40,12 @@ access_control:
     - domain: invite.chestr.dev
       resources: ["^/j/", "^/join", "^/setup/*", "^/static/"]
       policy: bypass
+    - domain: sonarr.chestr.dev
+      resources: ["^/api/*"]
+      policy: bypass
+    - domain: radarr.chestr.dev
+      resources: ["^/api/*"]
+      policy: bypass
     - domain: displex.chestr.dev
       resources: ["^/auth.*$"]
       policy: bypass
