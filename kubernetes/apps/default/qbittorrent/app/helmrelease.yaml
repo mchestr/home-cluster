@@ -64,6 +64,8 @@ spec:
             image:
               repository: ghcr.io/cross-seed/cross-seed
               tag: 5.9.2
+            env:
+              PORT: &crossseed-port 2468
             args:
               - daemon
 
@@ -72,6 +74,8 @@ spec:
         ports:
           http:
             port: *port
+          cross-seed:
+            port: *crossseed-port
 
     ingress:
       main:
