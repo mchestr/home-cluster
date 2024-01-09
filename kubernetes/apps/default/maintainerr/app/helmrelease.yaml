@@ -41,8 +41,8 @@ spec:
         containers:
           main:
             image:
-              repository: jorenn92/maintainerr
-              tag: 1.7.1
+              repository: ghcr.io/jorenn92/maintainerr
+              tag: 1.7.1@sha256:0a826f9b33a53e7a241d0b2d8ba2533c6efb978067d149c4f6801a657853ee53
             resources:
               requests:
                 cpu: 5m
