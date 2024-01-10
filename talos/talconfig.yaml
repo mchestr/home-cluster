@@ -7,17 +7,6 @@ kubernetesVersion: "v1.29.0"
 endpoint: https://${clusterName}.chestr.dev:6443
 allowSchedulingOnMasters: true
 
-# Image URL rendered on https://factory.talos.dev
-# customization:
-#     extraKernelArgs:
-#         - net.ifnames=0
-#     systemExtensions:
-#         officialExtensions:
-#             - siderolabs/i915-ucode
-#             - siderolabs/intel-ucode
-#             - siderolabs/nut-client
-talosImageURL: factory.talos.dev/installer/dbfb6577b113acbc7da6bfcb48e7f59343283561ff938ff7c33bd4693f85c295
-
 cniConfig:
   name: none
 
@@ -42,6 +31,15 @@ nodes:
           ip: 192.168.1.254
         dhcpOptions:
           routeMetric: 1024
+    schematic:
+      customization:
+        extraKernelArgs:
+          - net.ifnames=0
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/i915-ucode
+            - siderolabs/intel-ucode
+            - siderolabs/nut-client
 
   - hostname: k8s-1
     ipAddress: 192.168.1.201
@@ -54,6 +52,15 @@ nodes:
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
+    schematic:
+      customization:
+        extraKernelArgs:
+          - net.ifnames=0
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/i915-ucode
+            - siderolabs/intel-ucode
+            - siderolabs/nut-client
 
   - hostname: k8s-2
     ipAddress: 192.168.1.202
@@ -66,6 +73,15 @@ nodes:
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
+    schematic:
+      customization:
+        extraKernelArgs:
+          - net.ifnames=0
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/i915-ucode
+            - siderolabs/intel-ucode
+            - siderolabs/nut-client
 
   - hostname: k8s-3
     ipAddress: 192.168.1.203
@@ -80,6 +96,15 @@ nodes:
           ip: 192.168.1.254
         dhcpOptions:
           routeMetric: 1024
+    schematic:
+      customization:
+        extraKernelArgs:
+          - net.ifnames=0
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/i915-ucode
+            - siderolabs/intel-ucode
+            - siderolabs/nut-client
 
   - hostname: k8s-4
     ipAddress: 192.168.1.204
@@ -94,6 +119,15 @@ nodes:
           ip: 192.168.1.254
         dhcpOptions:
           routeMetric: 1024
+    schematic:
+      customization:
+        extraKernelArgs:
+          - net.ifnames=0
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/i915-ucode
+            - siderolabs/intel-ucode
+            - siderolabs/nut-client
 
   - hostname: k8s-5
     ipAddress: 192.168.1.205
@@ -106,6 +140,15 @@ nodes:
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
+    schematic:
+      customization:
+        extraKernelArgs:
+          - net.ifnames=0
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/i915-ucode
+            - siderolabs/intel-ucode
+            - siderolabs/nut-client
 
   - hostname: k8s-6
     ipAddress: 192.168.1.206
@@ -118,9 +161,34 @@ nodes:
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
+    schematic:
+      customization:
+        extraKernelArgs:
+          - net.ifnames=0
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/i915-ucode
+            - siderolabs/intel-ucode
+            - siderolabs/nut-client
+            - siderolabs/nonfree-kmod-nvidia
+            - siderolabs/nvidia-container-toolkit
+    patches:
+      - |-
+        - op: add
+          path: /machine/kernel
+          value:
+            modules:
+              - name: nvidia
+              - name: nvidia_uvm
+              - name: nvidia_drm
+              - name: nvidia_modeset
+      - |-
+        - op: add
+          path: /machine/sysctls
+          value:
+            net.core.bpf_jit_harden: 1
 
 controlPlane:
-
   patches:
     # Disable search domain everywhere
     - |-
@@ -226,7 +294,6 @@ controlPlane:
           fs.inotify.max_user_instances: "8192"
 
 worker:
-
   patches:
     # Add role=worker label
     - |-
