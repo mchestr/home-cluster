@@ -6,7 +6,6 @@ vars:
   kustomizationTemplate: "{{.ROOT_DIR}}/.taskfiles/Repo/kustomization.tmpl.yaml"
   helmreleaseTemplate: "{{.ROOT_DIR}}/.taskfiles/Repo/helmrelease.tmpl.yaml"
   externalsecretTemplate: "{{.ROOT_DIR}}/.taskfiles/Repo/externalsecret.tmpl.yaml"
-  gatusTemplate: "{{.ROOT_DIR}}/.taskfiles/Repo/gatus.tmpl.yaml"
 
 tasks:
   new:
