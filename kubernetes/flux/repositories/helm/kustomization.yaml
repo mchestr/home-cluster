@@ -25,6 +25,7 @@ resources:
   - metrics-server-charts.yaml
   - minecraft-server-charts.yaml
   - node-feature-discovery-charts.yaml
+  - nvidia-charts.yaml
   - piraeus-charts.yaml
   - postfinance-charts.yaml
   - prometheus-community-charts.yaml

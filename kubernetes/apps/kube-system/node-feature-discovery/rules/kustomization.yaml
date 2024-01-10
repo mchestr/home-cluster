@@ -6,5 +6,6 @@ resources:
   - espressif-esp32.yaml
   - google-coral.yaml
   - intel-gpu.yaml
+  - nvidia-gpu.yaml
   - zigbee.yaml
   - zwave.yaml
