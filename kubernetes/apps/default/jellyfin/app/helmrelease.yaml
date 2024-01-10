@@ -26,6 +26,7 @@ spec:
     keepHistory: false
   values:
     defaultPodOptions:
+      runtimeClassName: nvidia
       securityContext:
         runAsUser: 568
         runAsGroup: 568
@@ -36,7 +37,7 @@ spec:
           - 105
           - 10000
       nodeSelector:
-        intel.feature.node.kubernetes.io/gpu: "true"
+        nvidia.feature.node.kubernetes.io/gpu: "true"
 
     controllers:
       main:
@@ -53,11 +54,9 @@ spec:
               TZ: America/Vancouver
             resources:
               requests:
-                gpu.intel.com/i915: 1
-                cpu: 100m
-                memory: 1000Mi
+                nvidia.com/gpu: 1
               limits:
-                gpu.intel.com/i915: 1
+                nvidia.com/gpu: 1
                 memory: 4000Mi
             probes:
               liveness: &probe
