@@ -1,0 +1,22 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-atuin
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/default/atuin/app
+  prune: true
+  dependsOn:
+    - name: cluster-apps-external-secrets-stores
+  sourceRef:
+    kind: GitRepository
+    name: home-ops-kubernetes
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  wait: false
+  postBuild:
+    substitute:
+      APP: atuin
+      GATUS_SUBDOMAIN: sh
