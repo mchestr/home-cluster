@@ -67,8 +67,6 @@ spec:
               - qbittorrent.default.svc.cluster.local
               - --port
               - "8080"
-              - --config
-              - /config/config.yaml
 
       prune-expired:
         type: cronjob
