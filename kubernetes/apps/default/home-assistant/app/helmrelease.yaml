@@ -91,19 +91,14 @@ spec:
           gethomepage.dev/icon: home-assistant.png
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
-            paths:
+            paths: &paths
               - path: /
                 pathType: Prefix
                 service:
                   name: main
                   port: http
           - host: &host2 home.chestr.dev
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  name: main
-                  port: http
+            paths: *paths
         tls:
           - hosts:
               - *host
