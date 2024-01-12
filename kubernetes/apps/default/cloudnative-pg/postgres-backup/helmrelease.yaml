@@ -39,14 +39,10 @@ spec:
                   name: postgres-backups-secret
             env:
               POSTGRES_HOST: postgres16-rw.default.svc.cluster.local
-              POSTGRES_DB: authelia,autobrr,displex,gatus,grafana,home-assistant,lldap,paperless,prowlarr_log,prowlarr_main,radarr_log,radarr_main,sonarr_log,sonarr_main
+              POSTGRES_DB: atuin,authelia,autobrr,displex,gatus,grafana,lldap,paperless,prowlarr_log,prowlarr_main,radarr_log,radarr_main,sonarr_log,sonarr_main
             command: /backup.sh
-      immich:
-        type: cronjob
-        cronjob:
-          schedule: 0 12 * * *
-        containers:
-          main:
+
+          immich:
             image:
               repository: docker.io/prodrigestivill/postgres-backup-local
               tag: 16
@@ -57,9 +53,11 @@ spec:
               POSTGRES_HOST: immich-db-rw.default.svc.cluster.local
               POSTGRES_DB: immich
             command: /backup.sh
+
     service:
       main:
         enabled: false
+
     persistence:
       config:
         enabled: false
