@@ -48,14 +48,6 @@ spec:
       main:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/onedr0p/postgres-init
-              tag: "16.1"
-            envFrom:
-              - secretRef:
-                  name: home-assistant-dbinit-secret
 
         containers:
           main:
