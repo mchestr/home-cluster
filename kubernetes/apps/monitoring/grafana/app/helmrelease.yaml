@@ -82,7 +82,6 @@ spec:
         enabled: true
         name: Authelia
         client_id: grafana
-        client_secret: ${SECRET_GRAFANA_OAUTH_CLIENT_SECRET}
         scopes: openid profile email groups
         empty_scopes: false
         auth_url: https://auth.chestr.dev/api/oidc/authorization
