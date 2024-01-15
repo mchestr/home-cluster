@@ -1,29 +1,19 @@
 ---
 libraries:
   Movies:
-    metadata_path:
-      - pmm: tautulli
-      - pmm: tmdb
-      - pmm: basic
-      - pmm: seasonal                                 # Christmas, Halloween, etc.
-        template_variables:                           # Canadian Thankgsgiving is a different date range. Otherwise, I want to ALWAYS see the seasonal
-          schedule_independence: daily
-          schedule_easter: daily
-          schedule_valentine: daily
-          schedule_patrick: daily
-          schedule_thanksgiving: range(10/01-10/31)
-          schedule_halloween: daily
-          schedule_christmas: range(11/01-12/31)
-          schedule_years: daily
-          schedule_mother: daily
-          schedule_memorial: daily
-          schedule_father: daily
-          schedule_labor: daily
-    overlay_path:
-      - remove_overlays: false
-      - pmm: streaming
-      - pmm: ratings
-      - pmm: ribbon
+    collection_files:
+      - file: config/Movies.yml
+      - file: config/Movies - Trakt (Unplayed).yml
+      - file: config/Movies - Holidays.yml
+      - file: config/Movies - Locations.yml
+    overlay_files:
+      - file: config/Movies - Overlays - Charts.yml
+      - file: config/Movies - Overlays - Streaming Services.yml
+      - file: config/Movies - Overlays - Studios.yml
+      - file: config/Movies - Overlays - Oscars.yml
+      - file: config/Movies - Overlays - Audio.yml
+      - file: config/Movies - Overlays - Ratings.yml
+      - file: config/Movies - Overlays - Stand-up.yml
     operations:
       mass_genre_update: imdb
       mass_content_rating_update: omdb
@@ -32,29 +22,14 @@ libraries:
       mass_user_rating_update: imdb
 
   TV Shows:
-    metadata_path:
-      - pmm: tautulli
-      - pmm: tmdb
-      - pmm: basic
-      - pmm: seasonal                                 # Christmas, Halloween, etc.
-        template_variables:                           # Canadian Thankgsgiving is a different date range. Otherwise, I want to ALWAYS see the seasonal
-          schedule_independence: daily
-          schedule_easter: daily
-          schedule_valentine: daily
-          schedule_patrick: daily
-          schedule_thanksgiving: range(10/01-10/31)
-          schedule_halloween: daily
-          schedule_christmas: daily
-          schedule_years: daily
-          schedule_mother: daily
-          schedule_memorial: daily
-          schedule_father: daily
-          schedule_labor: daily
-    overlay_path:
-      - remove_overlays: false
-      - pmm: streaming
-      - pmm: ratings
-      - pmm: ribbon
+    collection_files:
+      - file: config/TV Shows.yml
+    overlay_files:
+      - file: config/TV Shows - Overlays - Charts.yml
+      - file: config/TV Shows - Overlays - Streaming Services + Networks.yml
+      - file: config/TV Shows - Overlays - Studios.yml
+      - file: config/TV Shows - Overlays - Ratings.yml
+      - file: config/TV Shows - Overlays - Statuses.yml
     operations:
       mass_genre_update: tmdb
       mass_content_rating_update: omdb

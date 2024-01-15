@@ -5,7 +5,7 @@ namespace: default
 resources:
   - externalsecret.yaml
   - helmrelease.yaml
-  - pvc.yaml
+  - ../../../../templates/volsync
 configMapGenerator:
   - name: plex-meta-manager-configmap
     files:
