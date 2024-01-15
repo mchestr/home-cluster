@@ -57,7 +57,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: plex-meta-manager-config-pvc
+        existingClaim: ${VOLSYNC_CLAIM}
       config-file:
         type: configMap
         name: plex-meta-manager-configmap
@@ -65,6 +65,11 @@ spec:
           - path: /config/config.yml
             subPath: config.yml
             readOnly: true
+      logs:
+        type: emptyDir
+        globalMounts:
+          - path: /config/logs
+            subPath: logs
       scripts:
         type: configMap
         name: plex-meta-manager-configmap
