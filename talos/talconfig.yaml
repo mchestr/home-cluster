@@ -25,14 +25,15 @@ nodes:
       busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "18:60:24:26:58:6d"
+          driver: e1000e
         dhcp: true
         vip:
           ip: 192.168.1.254
         dhcpOptions:
           routeMetric: 1024
-        vlans: &vlans
-          - vlanId: 10
+        vlans:
+          - &vlan10
+            vlanId: 10
             mtu: 1500
             dhcp: true
             dhcpOptions:
@@ -54,11 +55,12 @@ nodes:
       busPath: /pci0000:00/0000:00:1f.2/ata1/host0/target0:0:0/0:0:0:0/
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "ec:b1:d7:5c:55:90"
+          driver: e1000e
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
-        vlans: *vlans
+        vlans:
+          - *vlan10
     schematic:
       customization:
         extraKernelArgs:
@@ -76,11 +78,12 @@ nodes:
       busPath: /pci0000:00/0000:00:1f.2/ata4/host3/target3:0:0/3:0:0:0/
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "00:25:22:b2:b4:f4"
+          driver: r8169
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
-        vlans: *vlans
+        vlans:
+          - *vlan10
     schematic:
       customization:
         extraKernelArgs:
@@ -98,13 +101,14 @@ nodes:
       busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "18:60:24:26:fd:f5"
+          driver: e1000e
         dhcp: true
         vip:
           ip: 192.168.1.254
         dhcpOptions:
           routeMetric: 1024
-        vlans: *vlans
+        vlans:
+          - *vlan10
     schematic:
       customization:
         extraKernelArgs:
@@ -122,13 +126,14 @@ nodes:
       busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "e4:e7:49:52:fc:c2"
+          driver: e1000e
         dhcp: true
         vip:
           ip: 192.168.1.254
         dhcpOptions:
           routeMetric: 1024
-        vlans: *vlans
+        vlans:
+          - *vlan10
     schematic:
       customization:
         extraKernelArgs:
@@ -146,11 +151,12 @@ nodes:
       busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "e4:e7:49:52:7d:bb"
+          driver: e1000e
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
-        vlans: *vlans
+        vlans:
+          - *vlan10
     schematic:
       customization:
         extraKernelArgs:
@@ -168,11 +174,12 @@ nodes:
       busPath: /pci0000:00/0000:00:1d.0/0000:04:00.0/nvme/nvme0/nvme0n1
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "d8:cb:8a:e6:2f:38"
+          driver: alx
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
-        vlans: *vlans
+        vlans:
+          - *vlan10
     schematic:
       customization:
         extraKernelArgs:
