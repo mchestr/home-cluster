@@ -38,7 +38,7 @@
       - "{{ prefix }} eth6 duplex auto"
       - "{{ prefix }} eth6 speed auto"
 
-      - "{{ prefix }} eth7 description 'Local'"
+      - "{{ prefix }} eth7 description 'Cluster'"
       - "{{ prefix }} eth7 duplex auto"
       - "{{ prefix }} eth7 speed auto"
 
@@ -68,6 +68,7 @@
       - "{{ prefix }} switch-port interface eth5 vlan pvid 20"
       - "{{ prefix }} switch-port interface eth6 vlan pvid 1"
       - "{{ prefix }} switch-port interface eth7 vlan pvid 1"
+      - "{{ prefix }} switch-port interface eth7 vlan vid 10"
       - "{{ prefix }} switch-port interface eth8 vlan pvid 10"
       - "{{ prefix }} switch-port interface eth9 vlan pvid 1"
       - "{{ prefix }} switch-port interface eth9 vlan vid 10"

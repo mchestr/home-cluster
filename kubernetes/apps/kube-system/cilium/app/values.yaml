@@ -17,6 +17,7 @@ bgpControlPlane:
 bpf:
   masquerade: true
   tproxy: true
+  vlanBypass: [0]
 
 # -- Configure cgroup related configuration
 cgroup:
@@ -177,7 +178,9 @@ operator:
   rollOutPods: true
 
 # -- Roll out cilium agent pods automatically when configmap is updated.
-rollOutCiliumPods: false
+rollOutCiliumPods: true
+
+routingMode: native
 
 securityContext:
   # -- Run the pod with elevated privileges
