@@ -17,7 +17,6 @@ bgpControlPlane:
 bpf:
   masquerade: true
   tproxy: true
-  vlanBypass: [0]
 
 # -- Configure cgroup related configuration
 cgroup:
