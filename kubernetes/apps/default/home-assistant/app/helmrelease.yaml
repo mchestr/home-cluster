@@ -46,6 +46,14 @@ spec:
 
     controllers:
       main:
+        pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"multus-iot",
+                "namespace": "networking",
+                "ips": ["10.0.10.250/24"]
+              }]
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -67,12 +75,6 @@ spec:
 
     service:
       main:
-        type: LoadBalancer
-        controller: main
-        externalTrafficPolicy: Cluster
-        annotations:
-          external-dns.alpha.kubernetes.io/hostname: hass.chestr.dev
-          io.cilium/lb-ipam-ips: 192.168.100.123
         ports:
           http:
             port: 8123
