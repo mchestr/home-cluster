@@ -18,23 +18,19 @@ spec:
   values:
     image:
       repository: ghcr.io/k8snetworkplumbingwg/multus-cni
-      tag: v4.0.2-thick
-
+      tag: v4.0.2-thick@sha256:3fbcc32bd4e4d15bd93c96def784a229cd84cca27942bf4858b581f31c97ee02
     cni:
       image:
         repository: ghcr.io/angelnu/cni-plugins
-        tag: 1.4.0
-
+        tag: 1.4.0@sha256:fea58691f3b0e7ab1dd6a449eb77e0c0ef577e90c2fb37db89b649be1d2f7684
+      logLevel: verbose
       paths:
-        config: /etc/cni/net.d
         bin: /opt/cni/bin
-
+        config: /etc/cni/net.d
     resources:
       requests:
-        cpu: 5m
-        memory: 96Mi
+        cpu: 10m
       limits:
-        memory: 96Mi
-
+        memory: 64Mi
     hostPaths:
       netns: /var/run/netns
