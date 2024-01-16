@@ -31,6 +31,12 @@ nodes:
           ip: 192.168.1.254
         dhcpOptions:
           routeMetric: 1024
+        vlans:
+          - vlanId: 10
+            dhcp: false
+            addresses:
+              - 10.0.10.200/24
+            mtu: 1500
     schematic:
       customization:
         extraKernelArgs:
@@ -52,6 +58,12 @@ nodes:
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
+        vlans:
+          - vlanId: 10
+            dhcp: false
+            addresses:
+              - 10.0.10.201/24
+            mtu: 1500
     schematic:
       customization:
         extraKernelArgs:
@@ -73,6 +85,12 @@ nodes:
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
+        vlans:
+          - vlanId: 10
+            dhcp: false
+            addresses:
+              - 10.0.10.202/24
+            mtu: 1500
     schematic:
       customization:
         extraKernelArgs:
@@ -96,6 +114,12 @@ nodes:
           ip: 192.168.1.254
         dhcpOptions:
           routeMetric: 1024
+        vlans:
+          - vlanId: 10
+            dhcp: false
+            addresses:
+              - 10.0.10.203/24
+            mtu: 1500
     schematic:
       customization:
         extraKernelArgs:
@@ -119,6 +143,12 @@ nodes:
           ip: 192.168.1.254
         dhcpOptions:
           routeMetric: 1024
+        vlans:
+          - vlanId: 10
+            dhcp: false
+            addresses:
+              - 10.0.10.204/24
+            mtu: 1500
     schematic:
       customization:
         extraKernelArgs:
@@ -140,6 +170,12 @@ nodes:
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
+        vlans:
+          - vlanId: 10
+            dhcp: false
+            addresses:
+              - 10.0.10.205/24
+            mtu: 1500
     schematic:
       customization:
         extraKernelArgs:
@@ -161,6 +197,12 @@ nodes:
         dhcp: true
         dhcpOptions:
           routeMetric: 1024
+        vlans:
+          - vlanId: 10
+            dhcp: false
+            addresses:
+              - 10.0.10.206/24
+            mtu: 1500
     schematic:
       customization:
         extraKernelArgs:
