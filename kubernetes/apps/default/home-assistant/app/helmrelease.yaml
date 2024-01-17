@@ -27,8 +27,6 @@ spec:
     keepHistory: false
   values:
     defaultPodOptions:
-      nodeSelector:
-        kubernetes.io/hostname: "k8s-5"
       hostname: home-assistant
       affinity:
         podAntiAffinity:
@@ -48,6 +46,9 @@ spec:
 
     controllers:
       main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
         pod:
           annotations:
             k8s.v1.cni.cncf.io/networks: |
@@ -55,8 +56,6 @@ spec:
                 "name":"multus-iot",
                 "namespace": "networking"
               }]
-        annotations:
-          reloader.stakater.com/auto: "true"
 
         containers:
           main:
