@@ -3,6 +3,9 @@
 # nodes if worker nodes share a common L2 network segment.
 autoDirectNodeRoutes: true
 
+cni:
+  exclusive: false
+
 bandwidthManager:
   enabled: true
   bbr: true
