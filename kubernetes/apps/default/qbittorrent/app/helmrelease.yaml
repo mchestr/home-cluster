@@ -46,7 +46,7 @@ spec:
             env:
               TZ: America/Vancouver
               QBITTORRENT__PORT: &port 8080
-              QBITTORRENT__BT_PORT: 50413
+              QBITTORRENT__BT_PORT: &qbit 50413
               QBT_Preferences__WebUI__AlternativeUIEnabled: false
               QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
               QBT_Preferences__WebUI__AuthSubnetWhitelist: 10.244.0.0/16
@@ -73,7 +73,18 @@ spec:
             port: *port
           cross-seed:
             port: *crossseed-port
-
+      bittorent:
+        enabled: true
+        controller: main
+        type: LoadBalancer
+        loadBalancerIP: 192.168.100.101
+        externalTrafficPolicy: Local
+        ports:
+          bittorrent:
+            enabled: true
+            port: *qbit
+            protocol: TCP
+            targetPort: *qbit
     ingress:
       main:
         enabled: true
