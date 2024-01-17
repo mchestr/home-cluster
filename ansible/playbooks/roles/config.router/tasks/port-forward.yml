@@ -16,7 +16,7 @@
     rules:
       - name: qBittorrent
         forward:
-          address: 192.168.1.220
+          address: 192.168.100.101
           port: 50413
         original_port: 50413
         protocol: tcp
@@ -26,17 +26,12 @@
           port: 32400
         original_port: 32400
         protocol: tcp_udp
-      - name: Frigate Stun
-        forward:
-          address: 192.168.1.235
-          port: 8555
-        original_port: 8555
-        protocol: tcp_udp
   loop: "{{ rules }}"
   loop_control:
     index_var: index
   community.network.edgeos_config:
     lines:
+      - "delete port-forward"
       - "{{ prefix }} rule {{ index }} description {{ item.name }}"
       - "{{ prefix }} rule {{ index }} forward-to address {{ item.forward.address }}"
       - "{{ prefix }} rule {{ index }} forward-to port {{ item.forward.port }}"
