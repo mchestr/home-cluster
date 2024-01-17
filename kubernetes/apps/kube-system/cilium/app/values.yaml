@@ -163,10 +163,6 @@ loadBalancer:
   # e.g. snat, dsr, hybrid
   mode: dsr
 
-# -- Using BGP
-l2announcements:
-  enabled: false
-
 l7Proxy: true
 
 # -- Enable Local Redirect Policy.
