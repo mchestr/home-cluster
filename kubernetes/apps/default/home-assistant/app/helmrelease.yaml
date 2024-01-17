@@ -27,8 +27,6 @@ spec:
     keepHistory: false
   values:
     defaultPodOptions:
-      nodeSelector:
-        kubernetes.io/hostname: "k8s-5"
       hostname: home-assistant
       affinity:
         podAntiAffinity:
