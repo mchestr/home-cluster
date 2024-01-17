@@ -13,7 +13,6 @@
     prefix: set service mdns
   community.network.edgeos_config:
     lines:
-      - "{{ prefix }} reflector"
       - "{{ prefix }} repeater interface switch0.1"
       - "{{ prefix }} repeater interface switch0.10"
 - name: Configure NAT
