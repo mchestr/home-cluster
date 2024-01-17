@@ -16,7 +16,7 @@
       - "{{ prefix }} subnet 10.0.10.0/24 default-router 10.0.10.1"
       - "{{ prefix }} subnet 10.0.10.0/24 dns-server 10.0.10.1"
       - "{{ prefix }} subnet 10.0.10.0/24 lease 86400"
-      - "{{ prefix }} subnet 10.0.10.0/24 start 10.0.10.2 stop 10.0.10.254"
+      - "{{ prefix }} subnet 10.0.10.0/24 start 10.0.10.2 stop 10.0.10.200"
 
 - name: Clean DHCP IoT Static IPs
   vars:
