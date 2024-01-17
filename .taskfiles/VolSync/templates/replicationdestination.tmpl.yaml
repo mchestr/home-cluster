@@ -8,7 +8,7 @@ spec:
   trigger:
     manual: restore-once
   restic:
-    repository: "${app}-volsync-minio"
+    repository: "${app}-volsync-r2"
     destinationPVC: "${claim}"
     copyMethod: Direct
     storageClassName: ceph-block
