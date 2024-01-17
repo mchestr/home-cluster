@@ -21,6 +21,7 @@ vars:
   scriptsDir: "{{.ROOT_DIR}}/.taskfiles/_scripts"
   templatesDir: "{{.ROOT_DIR}}/.taskfiles/VolSync/templates"
   ts: '{{now | date "150405"}}'
+  cluster: '{{.cluster | default "admin@home-cluster"}}'
 
 tasks:
   list:
@@ -144,15 +145,15 @@ tasks:
           fi
       claim:
         sh: |
-          kubectl --context {{.cluster}} -n {{.ns}} get replicationsources/{{.app}} \
+          kubectl --context {{.cluster}} -n {{.ns}} get replicationsources/{{.app}}-r2 \
             -o jsonpath="{.spec.sourcePVC}"
       app_uid:
         sh: |
-          kubectl --context {{.cluster}} -n {{.ns}} get replicationsources/{{.app}} \
+          kubectl --context {{.cluster}} -n {{.ns}} get replicationsources/{{.app}}-r2 \
             -o jsonpath="{.spec.restic.moverSecurityContext.runAsUser}"
       app_gid:
         sh: |
-          kubectl --context {{.cluster}} -n {{.ns}} get replicationsources/{{.app}} \
+          kubectl --context {{.cluster}} -n {{.ns}} get replicationsources/{{.app}}-r2 \
             -o jsonpath="{.spec.restic.moverSecurityContext.runAsGroup}"
     env: *env
     preconditions:
