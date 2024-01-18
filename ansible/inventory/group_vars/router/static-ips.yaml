@@ -54,3 +54,24 @@ static_iot_ips:
     ip_address: 10.0.10.150
     mac_address: de:61:f6:ba:e3:98
     host: home-controller.chestr.dev
+  k8s-0:
+    ip_address: 10.0.10.200
+    mac_address: 18:60:24:26:58:6d
+  k8s-1:
+    ip_address: 10.0.10.201
+    mac_address: ec:b1:d7:5c:55:90
+  k8s-2:
+    ip_address: 10.0.10.202
+    mac_address: 00:25:22:b2:b4:f4
+  k8s-3:
+    ip_address: 10.0.10.203
+    mac_address: 18:60:24:26:fd:f5
+  k8s-4:
+    ip_address: 10.0.10.204
+    mac_address: e4:e7:49:52:fc:c2
+  k8s-5:
+    ip_address: 10.0.10.205
+    mac_address: e4:e7:49:52:7d:bb
+  k8s-6:
+    ip_address: 10.0.10.206
+    mac_address: d8:cb:8a:e6:2f:38
