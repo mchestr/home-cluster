@@ -81,8 +81,8 @@
       - "{{ prefix }} vif 10 address 10.0.10.1/24"
       - "{{ prefix }} vif 10 description IoT"
       - "{{ prefix }} vif 10 mtu 1500"
-      - "{{ prefix }} vif 10 firewall in name GUEST_IN"
-      - "{{ prefix }} vif 10 firewall local name GUEST_LOCAL"
+      - "{{ prefix }} vif 10 firewall in name IOT_IN"
+      - "{{ prefix }} vif 10 firewall local name IOT_LOCAL"
 
       - "{{ prefix }} vif 20 address 10.0.20.1/24"
       - "{{ prefix }} vif 20 description Guest"
