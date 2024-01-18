@@ -51,11 +51,6 @@
       - set interfaces wireguard wg0 route-allowed-ips true
       - set service dns forwarding listen-on wg0
 
-      - set firewall name WAN_LOCAL rule 30 action accept
-      - set firewall name WAN_LOCAL rule 30 protocol udp
-      - set firewall name WAN_LOCAL rule 30 description 'WireGuard'
-      - set firewall name WAN_LOCAL rule 30 destination port 51820
-
 - name: Add WireGuard peers
   vars:
     ansible_network_os: edgeos
