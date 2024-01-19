@@ -42,8 +42,8 @@ spec:
         containers:
           main:
             image:
-              repository: docker.io/golift/unpackerr
-              tag: 0.13.0
+              repository: ghcr.io/unpackerr/unpackerr
+              tag: v0.13.0
             env:
               TZ: America/Vancouver
               UN_WEBSERVER_METRICS: "true"
