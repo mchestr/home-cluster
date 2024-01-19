@@ -29,6 +29,14 @@ spec:
   values:
     controllers:
       main:
+        pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"multus-iot",
+                "namespace": "networking",
+                "ips": ["10.0.10.245/24"]
+              }]
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -39,7 +47,6 @@ spec:
               tag: 2023.12.7@sha256:c91e4cb4ed60f88864fbf2463333d77b1c0340185e67c948289e25ce641265bd
             env:
               TZ: America/Vancouver
-              ESPHOME_DASHBOARD_USE_PING: true
 
     service:
       main:
