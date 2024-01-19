@@ -5,6 +5,7 @@ metadata:
   name: cluster-apps-tautulli-exporter
   namespace: flux-system
 spec:
+  targetNamespace: monitoring
   path: ./kubernetes/apps/monitoring/exporters/tautulli-exporter/app
   prune: true
   sourceRef:

@@ -5,6 +5,7 @@ metadata:
   name: cluster-apps-multus
   namespace: flux-system
 spec:
+  targetNamespace: networking
   commonMetadata:
     labels:
       app.kubernetes.io/name: multus
@@ -22,6 +23,7 @@ metadata:
   name: cluster-apps-multus-config
   namespace: flux-system
 spec:
+  targetNamespace: networking
   commonMetadata:
     labels:
       app.kubernetes.io/name: multus

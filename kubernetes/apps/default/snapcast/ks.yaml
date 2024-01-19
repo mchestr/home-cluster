@@ -5,6 +5,7 @@ metadata:
   name: cluster-apps-snapcast
   namespace: flux-system
 spec:
+  targetNamespace: default
   dependsOn:
     - name: cluster-apps-external-secrets-stores
   path: ./kubernetes/apps/default/snapcast/app

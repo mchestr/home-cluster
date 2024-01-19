@@ -5,6 +5,7 @@ metadata:
   name: cluster-apps-sonarr-exporter
   namespace: flux-system
 spec:
+  targetNamespace: monitoring
   path: ./kubernetes/apps/monitoring/exporters/sonarr-exporter/app
   prune: true
   sourceRef:

@@ -5,6 +5,7 @@ metadata:
   name: cluster-apps-external-secrets
   namespace: flux-system
 spec:
+  targetNamespace: kube-system
   path: ./kubernetes/apps/kube-system/external-secrets/app
   prune: true
   sourceRef:
@@ -23,6 +24,7 @@ metadata:
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
+  targetNamespace: kube-system
   dependsOn:
     - name: cluster-apps-external-secrets
   path: ./kubernetes/apps/kube-system/external-secrets/stores

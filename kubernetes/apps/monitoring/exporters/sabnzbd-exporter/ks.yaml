@@ -5,6 +5,7 @@ metadata:
   name: cluster-apps-sabnzbd-exporter
   namespace: flux-system
 spec:
+  targetNamespace: monitoring
   path: ./kubernetes/apps/monitoring/exporters/sabnzbd-exporter/app
   prune: true
   sourceRef:

@@ -3,7 +3,6 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: immich-db
-  namespace: default
 spec:
   instances: 1
   imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.1-v0.1.13
@@ -81,7 +80,6 @@ apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
   name: immich
-  namespace: default
 spec:
   schedule: "@daily"
   immediate: true

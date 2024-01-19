@@ -5,6 +5,7 @@ metadata:
   name: cluster-apps-snmp-exporter-edgerouter
   namespace: flux-system
 spec:
+  targetNamespace: monitoring
   path: ./kubernetes/apps/monitoring/exporters/snmp-exporter/edgerouter
   prune: true
   sourceRef:
@@ -21,6 +22,7 @@ metadata:
   name: cluster-apps-snmp-exporter-lochnas
   namespace: flux-system
 spec:
+  targetNamespace: monitoring
   path: ./kubernetes/apps/monitoring/exporters/snmp-exporter/lochnas
   prune: true
   sourceRef:

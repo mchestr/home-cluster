@@ -5,6 +5,7 @@ metadata:
   name: cluster-apps-nvidia-device-plugin
   namespace: flux-system
 spec:
+  targetNamespace: kube-system
   path: ./kubernetes/apps/kube-system/nvidia-device-plugin/app
   prune: true
   dependsOn:

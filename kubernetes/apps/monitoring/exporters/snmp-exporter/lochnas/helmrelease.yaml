@@ -3,7 +3,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: &release snmp-exporter-lochnas
-  namespace: monitoring
 spec:
   interval: 30m
   chart:
@@ -41,7 +40,6 @@ spec:
         defaultMode: 420
     serviceMonitor:
       enabled: true
-      namespace: monitoring
       params:
         - name: lochnas
           module:
