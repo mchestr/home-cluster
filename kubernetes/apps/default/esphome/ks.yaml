@@ -21,4 +21,4 @@ spec:
     substitute:
       APP: esphome
       VOLSYNC_CLAIM: esphome-config
-      VOLSYNC_CAPACITY: 3Gi
+      VOLSYNC_CAPACITY: 8Gi
