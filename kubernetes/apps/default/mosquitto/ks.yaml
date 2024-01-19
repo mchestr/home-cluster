@@ -5,6 +5,7 @@ metadata:
   name: cluster-apps-mosquitto
   namespace: flux-system
 spec:
+  targetNamespace: default
   dependsOn:
     - name: cluster-apps-external-secrets-stores
   interval: 30m

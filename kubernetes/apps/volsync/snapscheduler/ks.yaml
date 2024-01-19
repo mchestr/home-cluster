@@ -5,6 +5,7 @@ metadata:
   name: cluster-apps-snapscheduler
   namespace: flux-system
 spec:
+  targetNamespace: volsync
   dependsOn:
     - name: cluster-apps-snapshot-controller
   path: ./kubernetes/apps/volsync/snapscheduler/app

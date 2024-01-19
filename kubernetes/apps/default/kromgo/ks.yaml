@@ -5,6 +5,7 @@ metadata:
   name: cluster-apps-kromgo
   namespace: flux-system
 spec:
+  targetNamespace: default
   path: ./kubernetes/apps/default/kromgo/app
   prune: true
   dependsOn:

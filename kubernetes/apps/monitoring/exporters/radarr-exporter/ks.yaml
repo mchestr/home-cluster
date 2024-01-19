@@ -5,6 +5,7 @@ metadata:
   name: cluster-apps-radarr-exporter
   namespace: flux-system
 spec:
+  targetNamespace: monitoring
   path: ./kubernetes/apps/monitoring/exporters/radarr-exporter/app
   prune: true
   sourceRef:

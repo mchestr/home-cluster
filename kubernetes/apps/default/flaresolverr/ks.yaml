@@ -5,6 +5,7 @@ metadata:
   name: cluster-apps-flaresolverr
   namespace: flux-system
 spec:
+  targetNamespace: default
   path: ./kubernetes/apps/default/flaresolverr/app
   prune: true
   sourceRef:

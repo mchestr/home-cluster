@@ -10,7 +10,6 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: system-upgrade
-    namespace: kube-system
 ---
 apiVersion: v1
 kind: ServiceAccount

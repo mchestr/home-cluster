@@ -5,6 +5,7 @@ metadata:
   name: cluster-apps-prometheus-nut-exporter
   namespace: flux-system
 spec:
+  targetNamespace: monitoring
   path: ./kubernetes/apps/monitoring/exporters/prometheus-nut-exporter/app
   prune: true
   sourceRef:

@@ -5,6 +5,7 @@ metadata:
   name: cluster-apps-esphome
   namespace: flux-system
 spec:
+  targetNamespace: default
   dependsOn:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-volsync

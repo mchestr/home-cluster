@@ -6,7 +6,6 @@ metadata:
     prometheus: k8s
     role: alert-rules
   name: radarr-rules
-  namespace: default
 spec:
   groups:
     - name: radarr.rules

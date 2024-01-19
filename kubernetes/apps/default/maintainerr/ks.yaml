@@ -5,6 +5,7 @@ metadata:
   name: cluster-apps-maintainerr
   namespace: flux-system
 spec:
+  targetNamespace: default
   path: ./kubernetes/apps/default/maintainerr/app
   prune: true
   dependsOn:

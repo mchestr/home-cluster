@@ -5,6 +5,7 @@ metadata:
   name: cluster-apps-wizarr
   namespace: flux-system
 spec:
+  targetNamespace: default
   path: ./kubernetes/apps/default/wizarr/app
   prune: true
   sourceRef:
