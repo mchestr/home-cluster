@@ -41,17 +41,17 @@ spec:
               POSTGRES_DB: atuin,authelia,autobrr,displex,gatus,grafana,lldap,paperless,prowlarr_log,prowlarr_main,radarr_log,radarr_main,sonarr_log,sonarr_main
             command: /backup.sh
 
-          immich:
-            image:
-              repository: docker.io/prodrigestivill/postgres-backup-local
-              tag: 16
-            envFrom:
-              - secretRef:
-                  name: postgres-backups-secret
-            env:
-              POSTGRES_HOST: immich-db-rw.default.svc.cluster.local
-              POSTGRES_DB: immich
-            command: /backup.sh
+          # immich:
+          #   image:
+          #     repository: docker.io/prodrigestivill/postgres-backup-local
+          #     tag: 16
+          #   envFrom:
+          #     - secretRef:
+          #         name: postgres-backups-secret
+          #   env:
+          #     POSTGRES_HOST: immich-db-rw.default.svc.cluster.local
+          #     POSTGRES_DB: immich
+          #   command: /backup.sh
 
     service:
       main:
