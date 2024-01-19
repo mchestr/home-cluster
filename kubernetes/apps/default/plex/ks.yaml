@@ -5,6 +5,7 @@ metadata:
   name: cluster-apps-plex
   namespace: flux-system
 spec:
+  targetNamespace: default
   dependsOn:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-volsync
@@ -31,6 +32,7 @@ metadata:
   name: cluster-apps-plex-meta-manager
   namespace: flux-system
 spec:
+  targetNamespace: default
   dependsOn:
     - name: cluster-apps-plex
     - name: cluster-apps-radarr

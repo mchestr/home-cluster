@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
   - externalsecret.yaml
   - helmrelease.yaml
-namespace: default
 configMapGenerator:
   - name: smtp-relay
     files:

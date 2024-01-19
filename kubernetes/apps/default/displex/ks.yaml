@@ -5,6 +5,7 @@ metadata:
   name: cluster-apps-displex
   namespace: flux-system
 spec:
+  targetNamespace: default
   path: ./kubernetes/apps/default/displex/app
   prune: true
   dependsOn:

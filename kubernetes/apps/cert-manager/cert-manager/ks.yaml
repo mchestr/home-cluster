@@ -5,16 +5,13 @@ metadata:
   name: cluster-apps-cert-manager
   namespace: flux-system
 spec:
+  targetNamespace: cert-manager
   path: ./kubernetes/apps/cert-manager/cert-manager/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
-  healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
-      kind: HelmRelease
-      name: cert-manager
-      namespace: cert-manager
+  wait: true
   interval: 30m
   retryInterval: 1m
   timeout: 5m
@@ -25,6 +22,7 @@ metadata:
   name: cluster-apps-cert-manager-issuers
   namespace: flux-system
 spec:
+  targetNamespace: cert-manager
   dependsOn:
     - name: cluster-apps-cert-manager
     - name: cluster-apps-external-secrets-stores
@@ -36,3 +34,4 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  wait: false

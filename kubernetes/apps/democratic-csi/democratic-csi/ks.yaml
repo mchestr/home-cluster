@@ -5,6 +5,7 @@ metadata:
   name: cluster-apps-democratic-csi-local-path
   namespace: flux-system
 spec:
+  targetNamespace: democratic-csi
   path: ./kubernetes/apps/democratic-csi/democratic-csi/local-path
   sourceRef:
     kind: GitRepository

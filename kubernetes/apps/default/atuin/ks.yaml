@@ -5,6 +5,7 @@ metadata:
   name: cluster-apps-atuin
   namespace: flux-system
 spec:
+  targetNamespace: default
   path: ./kubernetes/apps/default/atuin/app
   prune: true
   dependsOn:

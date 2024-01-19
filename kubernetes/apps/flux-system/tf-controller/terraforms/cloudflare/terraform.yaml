@@ -3,7 +3,6 @@ apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
 metadata:
   name: terraform-cloudflare-oci
-  namespace: flux-system
 spec:
   interval: 30m
   url: oci://ghcr.io/mchestr/terraform-cloudflare-oci
@@ -14,7 +13,6 @@ apiVersion: infra.contrib.fluxcd.io/v1alpha1
 kind: Terraform
 metadata:
   name: terraform-cloudflare
-  namespace: flux-system
 spec:
   approvePlan: auto
   interval: 12h

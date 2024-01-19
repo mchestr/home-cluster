@@ -4,8 +4,8 @@ kind: Kustomization
 metadata:
   name: cluster-apps-tf-controller
   namespace: flux-system
-
 spec:
+  targetNamespace: flux-system
   dependsOn:
     - name: cluster-apps-external-secrets-stores
   path: ./kubernetes/apps/flux-system/tf-controller/app
@@ -27,8 +27,8 @@ kind: Kustomization
 metadata:
   name: cluster-apps-tf-controller-terraforms
   namespace: flux-system
-
 spec:
+  targetNamespace: flux-system
   dependsOn:
     - name: cluster-apps-tf-controller
     - name: cluster-apps-external-secrets-stores
