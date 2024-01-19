@@ -38,9 +38,6 @@ static_lan_ips:
     host: pikvm.chestr.dev
 
 static_iot_ips:
-  gdo:
-    ip_address: 10.0.10.194
-    mac_address: c8:c9:a3:18:fe:60
   doorbell:
     ip_address: 10.0.10.144
     mac_address: 9c:8e:cd:37:db:70
