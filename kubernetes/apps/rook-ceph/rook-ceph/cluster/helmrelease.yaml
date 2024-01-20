@@ -51,7 +51,7 @@ spec:
       dashboard:
         enabled: true
         urlPrefix: /
-        ssl: true
+        ssl: false
 
       resources:
         mgr:
@@ -122,7 +122,6 @@ spec:
       dashboard:
         ingressClassName: internal
         annotations:
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: ceph.png
           gethomepage.dev/name: Rook-Ceph
