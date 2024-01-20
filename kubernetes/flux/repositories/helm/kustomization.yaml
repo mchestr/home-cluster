@@ -19,6 +19,7 @@ resources:
   - hajimari-charts.yaml
   - ingress-nginx-charts.yaml
   - intel-charts.yaml
+  - itzg-minecraft-charts.yaml
   - jetstack-charts.yaml
   - k8s-gateway-charts.yaml
   - kyverno-charts.yaml

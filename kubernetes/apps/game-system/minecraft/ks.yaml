@@ -1,0 +1,76 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-minecraft-proxy
+  namespace: flux-system
+spec:
+  targetNamespace: game-system
+  dependsOn:
+    - name: cluster-apps-external-secrets-stores
+    - name: cluster-apps-volsync
+  path: ./kubernetes/apps/game-system/minecraft/proxy
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops-kubernetes
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  wait: false
+  postBuild:
+    substitute:
+      APP: minecraft-proxy
+      VOLSYNC_CLAIM: minecraft-proxy-data
+      VOLSYNC_CAPACITY: 2Gi
+      VOLSYNC_CACHE_CAPACITY: 2Gi
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-minecraft-vanilla
+  namespace: flux-system
+spec:
+  targetNamespace: game-system
+  dependsOn:
+    - name: cluster-apps-minecraft-proxy
+  path: ./kubernetes/apps/game-system/minecraft/vanilla
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops-kubernetes
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  wait: false
+  postBuild:
+    substitute:
+      APP: minecraft-vanilla
+      VOLSYNC_CLAIM: minecraft-vanilla-data
+      VOLSYNC_CAPACITY: 10Gi
+      VOLSYNC_CACHE_CAPACITY: 10Gi
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-minecraft-gtnh
+  namespace: flux-system
+spec:
+  targetNamespace: game-system
+  dependsOn:
+    - name: cluster-apps-minecraft-proxy
+  path: ./kubernetes/apps/game-system/minecraft/gtnh
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops-kubernetes
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  wait: false
+  postBuild:
+    substitute:
+      APP: minecraft-gtnh
+      VOLSYNC_CLAIM: minecraft-gtnh-data
+      VOLSYNC_CAPACITY: 10Gi
+      VOLSYNC_CACHE_CAPACITY: 10Gi
