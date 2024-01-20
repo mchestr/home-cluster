@@ -48,6 +48,14 @@ access_control:
         - radarr.chestr.dev
       resources: ["^/api.*$"]
       policy: bypass
+    - domain:
+        - sonarr.chestr.dev
+        - radarr.chestr.dev
+        - sabnzbd.chestr.dev
+        - qbittorrent.chestr.dev
+      subject:
+        - "group:media"
+      policy: two_factor
     - domain: "*.chestr.dev"
       subject:
         - "group:admin"
