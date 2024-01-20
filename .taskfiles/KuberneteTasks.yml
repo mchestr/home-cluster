@@ -61,10 +61,6 @@ tasks:
                     {
                       "name": "config",
                       "mountPath": "/data/config"
-                    },
-                    {
-                      "name": "config2",
-                      "mountPath": "/data/good"
                     }
                   ]
                 }
@@ -81,12 +77,6 @@ tasks:
                   "name": "config",
                   "persistentVolumeClaim": {
                     "claimName": "{{.PVC}}"
-                  }
-                },
-                {
-                  "name": "config2",
-                  "persistentVolumeClaim": {
-                    "claimName": "data-zigbee2mqtt"
                   }
                 }
               ],
