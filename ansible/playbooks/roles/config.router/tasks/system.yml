@@ -23,3 +23,16 @@
       - set system time-zone America/Vancouver
       - set system traffic-analysis dpi disable
       - set system traffic-analysis export enable
+      - set system static-host-mapping host-name dns.chestr.dev inet 192.168.1.1
+      - set system static-host-mapping host-name home-cluster.chestr.dev inet 192.168.1.254
+
+- name: Configure Static Host Mapping
+  vars:
+    prefix: set system static-host-mapping host-name
+  with_dict:
+    - "{{ static_lan_ips }}"
+    - "{{ static_iot_ips }}"
+  when: "'host' in item.value"
+  community.network.edgeos_config:
+    lines:
+      - "{{ prefix }} {{ item.value.host }} inet {{ item.value.ip_address }}"

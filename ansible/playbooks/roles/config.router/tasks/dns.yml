@@ -24,32 +24,13 @@
   community.network.edgeos_config:
     lines:
       - "delete service dns forwarding"
-      - "{{ prefix }} name-server 1.1.1.1"
-      - "{{ prefix }} name-server 1.0.0.1"
       - "{{ prefix }} system"
       - "{{ prefix }} cache-size 500"
       - "{{ prefix }} listen-on switch0.10"
       - "{{ prefix }} listen-on switch0.20"
       - "{{ prefix }} listen-on switch0.1"
       - "{{ prefix }} options port=53"
-      - "{{ prefix }} options address=/dns.{{ cluster_domain }}/192.168.1.1"
       - "{{ prefix }} options server=/status.{{ cluster_domain }}/1.1.1.1"
       - "{{ prefix }} options server=/{{ cluster_domain }}/192.168.100.111"
-
-- name: Configure Cluster Forwarding
-  vars:
-    prefix: set service dns forwarding
-  community.network.edgeos_config:
-    lines:
-      - "{{ prefix }} options address=/home-cluster.chestr.dev/192.168.1.254"
-
-- name: Configure Cluster Domain Forwarding
-  vars:
-    prefix: set service dns forwarding
-  with_dict:
-    - "{{ static_lan_ips }}"
-    - "{{ static_iot_ips }}"
-  when: "'host' in item.value"
-  community.network.edgeos_config:
-    lines:
-      - "{{ prefix }} options address=/{{ item.value.host }}/{{ item.value.ip_address }}"
+      - "{{ prefix }} options server=/{{ cluster_domain }}/192.168.100.111"
+      - "{{ prefix }} options server=127.0.0.1#53053"
