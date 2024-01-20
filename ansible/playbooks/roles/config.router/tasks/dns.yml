@@ -18,7 +18,7 @@
       - "{{ prefix }} custom-cloudflare{{ index }} options 'zone={{ item.0.domain }} use=web ssl=yes ttl=1'"
       - "{{ prefix }} custom-cloudflare{{ index }} protocol cloudflare"
 
-- name: Configure DNS Forwarding
+- name: Configure dnsmasq
   vars:
     prefix: set service dns forwarding
   community.network.edgeos_config:
@@ -29,6 +29,7 @@
       - "{{ prefix }} listen-on switch0.10"
       - "{{ prefix }} listen-on switch0.20"
       - "{{ prefix }} listen-on switch0.1"
+      - "{{ prefix }} listen-on wg0"
       - "{{ prefix }} options port=53"
       - "{{ prefix }} options no-resolv"
       - "{{ prefix }} options bogus-priv"
@@ -37,5 +38,9 @@
       - "{{ prefix }} options server=45.90.30.0"
       - "{{ prefix }} options server=2a07:a8c0::"
       - "{{ prefix }} options server=45.90.28.0"
+      - "{{ prefix }} options server=/status.{{ cluster_domain }}/2a07:a8c1::"
+      - "{{ prefix }} options server=/status.{{ cluster_domain }}/45.90.30.0"
+      - "{{ prefix }} options server=/status.{{ cluster_domain }}/2a07:a8c0::"
+      - "{{ prefix }} options server=/status.{{ cluster_domain }}/45.90.28.0"
       - "{{ prefix }} options server=/{{ cluster_domain }}/192.168.100.111"
       - "{{ prefix }} options add-cpe-id=362a1c"
