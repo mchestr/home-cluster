@@ -38,6 +38,7 @@
       - "{{ prefix }} listen-address 192.168.1.1"
       - "{{ prefix }} port 22"
       - "{{ prefix }} protocol-version v2"
+      - "{{ prefix }} disable-host-validation"
 - name: Configure UNMS
   vars:
     prefix: set service unms
