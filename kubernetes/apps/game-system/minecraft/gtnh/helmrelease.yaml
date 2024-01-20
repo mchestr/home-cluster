@@ -1,0 +1,86 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: minecraft-gtnh
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: minecraft
+      version: 4.3.0
+      sourceRef:
+        kind: HelmRepository
+        name: itzg-minecraft-charts
+        namespace: flux-system
+      interval: 15m
+  values:
+    image:
+      repository: docker.io/itzg/minecraft-server
+      tag: 2024.1.0-java17
+    resources:
+      requests:
+        memory: 6Gi
+        cpu: 1500m
+      limits:
+        memory: 8Gi
+        cpu: 3000m
+    livenessProbe:
+      initialDelaySeconds: 300
+      periodSeconds: 5
+      failureThreshold: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+    readinessProbe:
+      initialDelaySeconds: 180
+      periodSeconds: 5
+      failureThreshold: 30
+      successThreshold: 1
+      timeoutSeconds: 1
+    extraEnv:
+      NETWORK_COMPRESSION_THRESHOLD: "-1"
+      REPLACE_ENV_VARIABLES: "TRUE"
+      REPLACE_ENV_DURING_SYNC: "TRUE"
+      CFG_LP_SERVER: "global"
+      # Only need for initial bootstrap
+      # GENERIC_PACKS: GT_New_Horizons_2.5.1_Server_Java_17-21
+      # GENERIC_PACKS_PREFIX: http://downloads.gtnewhorizons.com/ServerPacks/
+      # GENERIC_PACKS_SUFFIX: .zip
+      # REMOVE_OLD_MODS: "TRUE"
+      # SKIP_GENERIC_PACK_UPDATE_CHECK: "TRUE"
+      # SKIP_GENERIC_PACK_CHECKSUM: "TRUE"
+      # MODS: https://mediafilez.forgecdn.net/files/2291/494/FTBUtilities-1.7.10-1.0.18.3.jar,https://mediafilez.forgecdn.net/files/2291/433/FTBLib-1.7.10-1.0.18.3.jar
+    serviceAnnotations:
+      external-dns.alpha.kubernetes.io/hostname: mc-gtnh.chestr.dev
+    minecraftServer:
+      eula: "TRUE"
+      overrideServerProperties: true
+      version: "1.7.10"
+      type: "FORGE"
+      difficulty: "hard"
+      viewDistance: 20
+      gameMode: survival
+      pvp: true
+      onlineMode: true
+      maxWorldSize: 29999983
+      maxTickTime: -1
+      memory: 6G
+      levelType: rwg
+      whitelist: mchestr
+      ops: mchestr
+      jvmOpts: "--illegal-access=warn -Djava.security.manager=allow -Dfile.encoding=UTF-8 --add-opens java.base/jdk.internal.loader=ALL-UNNAMED --add-opens java.base/java.net=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.base/java.text=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/jdk.internal.reflect=ALL-UNNAMED --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens jdk.naming.dns/com.sun.jndi.dns=ALL-UNNAMED,java.naming --add-opens java.desktop/sun.awt.image=ALL-UNNAMED --add-opens java.desktop/com.sun.imageio.plugins.png=ALL-UNNAMED --add-modules jdk.dynalink --add-opens jdk.dynalink/jdk.dynalink.beans=ALL-UNNAMED --add-modules java.sql.rowset --add-opens java.sql.rowset/javax.sql.rowset.serial=ALL-UNNAMED -jar lwjgl3ify-forgePatches.jar"
+      serviceType: LoadBalancer
+      loadBalancerIP: 192.168.100.235
+      externalTrafficPolicy: Local
+      rcon:
+        enabled: true
+      motd: "GTNH: §l§c2.5.2§r §n"
+    persistence:
+      dataDir:
+        enabled: true
+        existingClaim: ${VOLSYNC_CLAIM}
+  valuesFrom:
+    - kind: Secret
+      name: minecraft-vanilla-secret
+      valuesKey: RCON_PASSWORD
+      targetPath: minecraftServer.rcon.password
