@@ -43,7 +43,7 @@ spec:
           main:
             image:
               repository: ghcr.io/unpackerr/unpackerr
-              tag: v0.13.0
+              tag: 0.13.1
             env:
               TZ: America/Vancouver
               UN_WEBSERVER_METRICS: "true"
