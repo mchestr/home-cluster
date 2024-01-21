@@ -81,6 +81,26 @@ spec:
         - 36618
         # Dynmap
         # - 274
+      extraPorts:
+        - name: map
+          containerPort: 8123
+          protocol: TCP
+          service:
+            enabled: true
+            type: ClusterIP
+            externalTrafficPolicy: Cluster
+            port: 8123
+          ingress:
+            ingressClassName: external
+            annotations:
+              external-dns.alpha.kubernetes.io/target: external.chestr.dev
+            enabled: false
+            hosts:
+              - name: &host map-creative.chestr.dev
+                path: /
+            tls:
+              hosts:
+                - *host
     persistence:
       dataDir:
         enabled: true
