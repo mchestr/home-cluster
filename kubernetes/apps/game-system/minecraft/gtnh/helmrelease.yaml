@@ -17,7 +17,7 @@ spec:
   values:
     image:
       repository: docker.io/itzg/minecraft-server
-      tag: 2024.1.0-java17
+      tag: 2024.2.0-java17
     resources:
       requests:
         memory: 6Gi
