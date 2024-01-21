@@ -1,0 +1,95 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: syncthing
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.5.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: syncthing/syncthing
+              tag: 1.27.2
+            resources:
+              requests:
+                cpu: 15m
+                memory: 100M
+              limits:
+                cpu: 100m
+                memory: 200M
+    service:
+      main:
+        ports:
+          http:
+            port: 8384
+      listen:
+        controller: main
+        type: LoadBalancer
+        loadBalancerIP: 192.168.100.140
+        externalTrafficPolicy: Local
+        ports:
+          listen:
+            enabled: true
+            port: 22000
+            protocol: TCP
+            targetPort: 22000
+      discovery:
+        controller: main
+        type: LoadBalancer
+        externalIPs:
+        loadBalancerIP: 192.168.100.140
+        externalTrafficPolicy: Local
+        ports:
+          discovery:
+            enabled: true
+            port: 21027
+            protocol: UDP
+            targetPort: 21027
+    ingress:
+      main:
+        enabled: true
+        className: internal
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: mdi-cloud
+          gethomepage.dev/name: Sync
+          gethomepage.dev/group: System
+        hosts:
+          - host: &host sync.chestr.dev
+            paths:
+              - path: /
+                service:
+                  name: main
+                  port: http
+        tls:
+          - hosts:
+              - *host
+    persistence:
+      data:
+        enabled: true
+        type: nfs
+        server: lochnas.chestr.dev
+        path: /volume1/shared/syncthing
+        globalMounts:
+          - path: /var/syncthing
