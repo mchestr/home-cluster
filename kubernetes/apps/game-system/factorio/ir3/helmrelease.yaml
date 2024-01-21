@@ -1,0 +1,111 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app factorio-ir3
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.5.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        initContainers:
+          copy-configmap:
+            image:
+              repository: busybox
+              tag: "1.36.1"
+            command:
+              - "sh"
+              - "-c"
+              - |
+                mkdir -p /factorio/config
+                cp -vL /kubefiles/* /factorio/config/
+                mkdir -p /factorio/mods
+                cp -vL /kubefilesmods/* /factorio/mods/
+
+        containers:
+          main:
+            image:
+              repository: factoriotools/factorio
+              tag: stable
+            env:
+              UPDATE_MODS_ON_START: "true"
+              PORT: &port 34197
+              RCON_PORT: &rcon 27017
+            envFrom:
+              - secretRef:
+                  name: factorio-ir3-secret
+            startupProbe:
+              enabled: true
+              failureThreshold: 30
+              periodSeconds: 10
+            resources:
+              requests:
+                cpu: 15m
+                memory: 1555M
+              limits:
+                memory: 8006M
+
+    service:
+      main:
+        type: LoadBalancer # Setting Ip external to cluster for easy port forward
+        externalTrafficPolicy: Local
+        loadBalancerIP: 192.168.100.240
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: factorio-ir3.chestr.dev
+          io.cilium/lb-ipam-sharing-key: factorio-ir3
+        enabled: true
+        ports:
+          http:
+            enabled: false
+          server:
+            enabled: true
+            port: *port
+            protocol: UDP
+          rcon:
+            primary: true
+            enabled: true
+            port: *rcon
+            protocol: TCP
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: ${VOLSYNC_CLAIM}
+        globalMounts:
+          - path: /factorio
+      secrets:
+        enabled: true
+        type: secret
+        name: factorio-ir3-secret
+        globalMounts:
+          - path: /kubefiles/server-whitelist.json
+            subPath: server-whitelist.json
+          - path: /kubefiles/admin-whitelist.json
+            subPath: admin-whitelist.json
+      settings:
+        enabled: true
+        type: configMap
+        name: factorio-ir3-server-settings
+        globalMounts:
+          - path: /kubefiles/server-settings.json
+            subPath: server-settings.json
+          - path: /kubefilesmods/mod-list.json
+            subPath: mod-list.json
