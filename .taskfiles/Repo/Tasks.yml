@@ -42,6 +42,3 @@ tasks:
 
       - touch {{ .namespace }}/{{ .app }}/app/externalsecret.yaml
       - envsubst < <(cat {{ .externalsecretTemplate }}) >> {{ .namespace }}/{{ .app }}/app/externalsecret.yaml
-
-      - touch {{ .namespace }}/{{ .app }}/app/gatus.yaml
-      - envsubst < <(cat {{ .gatusTemplate }}) >> {{ .namespace }}/{{ .app }}/app/gatus.yaml

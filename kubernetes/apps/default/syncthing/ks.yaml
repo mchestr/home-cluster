@@ -2,11 +2,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-${app}
+  name: cluster-apps-syncthing
   namespace: flux-system
 spec:
-  targetNamespace: ${namespace}
-  path: ./kubernetes/apps/${namespace}/${app}/app
+  targetNamespace: default
+  path: ./kubernetes/apps/default/syncthing/app
   prune: true
   dependsOn:
     - name: cluster-apps-external-secrets-stores
@@ -19,4 +19,5 @@ spec:
   wait: false
   postBuild:
     substitute:
-      APP: ${app}
+      APP: syncthing
+      GATUS_SUBDOMAIN: sync
