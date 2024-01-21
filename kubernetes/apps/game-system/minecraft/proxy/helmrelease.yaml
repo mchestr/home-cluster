@@ -120,29 +120,6 @@ spec:
     # Can allow plugins access to the kubernetes api using a service account
     # https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
     serviceAccountName:
-    # extraVolumes:
-    #   - volumeMounts:
-    #       - name: minecraft-proxy-secret
-    #         mountPath: /server/forwarding.secret
-    #         subPath: forwarding.secret
-    #         readOnly: true
-    #     volumes:
-    #       - name: minecraft-proxy-secret
-    #         secret:
-    #           secretName: minecraft-proxy-secret
-    #   - volumeMounts:
-    #       - name: velocity-config
-    #         mountPath: /server/config.yml
-    #         subPath: velocity.toml
-    #         readOnly: true
-    #       - name: velocity-config
-    #         mountPath: /server/velocity.toml
-    #         subPath: velocity.toml
-    #         readOnly: true
-    #     volumes:
-    #       - name: velocity-config
-    #         configMap:
-    #           name: velocity-config
 
   valuesFrom:
     - kind: Secret
