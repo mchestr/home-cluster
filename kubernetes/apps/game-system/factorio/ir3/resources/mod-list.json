@@ -1,0 +1,63 @@
+{
+  "mods": [
+    {
+      "name": "base",
+      "enabled": true
+    },
+
+    {
+      "name": "DeadlockBlackRubberBelts",
+      "enabled": true
+    },
+
+    {
+      "name": "DeadlockLargerLamp",
+      "enabled": true
+    },
+
+    {
+      "name": "even-distribution",
+      "enabled": true
+    },
+
+    {
+      "name": "helmod",
+      "enabled": true
+    },
+
+    {
+      "name": "IndustrialRevolution3",
+      "enabled": true
+    },
+
+    {
+      "name": "IndustrialRevolution3Assets1",
+      "enabled": true
+    },
+
+    {
+      "name": "IndustrialRevolution3Assets2",
+      "enabled": true
+    },
+
+    {
+      "name": "IndustrialRevolution3Assets3",
+      "enabled": true
+    },
+
+    {
+      "name": "IndustrialRevolution3Assets4",
+      "enabled": true
+    },
+
+    {
+      "name": "IndustrialRevolution3LoadersStacking",
+      "enabled": true
+    },
+
+    {
+      "name": "IndustrialRevolution3SpaceMining",
+      "enabled": true
+    }
+  ]
+}
