@@ -95,6 +95,25 @@ spec:
         - 36618
         # Dynmap
         # - 274
+      extraPorts:
+        - name: map
+          containerPort: 8100
+          protocol: TCP
+          service:
+            enabled: true
+            type: ClusterIP
+            port: 8100
+          ingress:
+            ingressClassName: external
+            annotations:
+              external-dns.alpha.kubernetes.io/target: external.chestr.dev
+            enabled: true
+            hosts:
+              - name: &host map.chestr.dev
+                path: /
+            tls:
+              - hosts:
+                  - *host
       autoCurseForge:
         apiKey:
           existingSecret: minecraft-atm9-secret
