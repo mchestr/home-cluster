@@ -37,6 +37,7 @@ resources:
   - smtp-relay/ks.yaml
   - snapcast/ks.yaml
   - sonarr/ks.yaml
+  - syncthing/ks.yaml
   - tautulli/ks.yaml
   - thelounge/ks.yaml
   - theme-park/ks.yaml
