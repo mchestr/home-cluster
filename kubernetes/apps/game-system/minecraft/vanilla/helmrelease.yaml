@@ -45,8 +45,8 @@ spec:
       type: "PAPER"
       ftbLegacyJavaFixer: false
       difficulty: easy
-      whitelist: mchestr
-      ops: mchestr
+      whitelist: mchestr,tjfox92,pscholten
+      ops: mchestr,tjfox92,pscholten
       maxPlayers: 20
       maxWorldSize: 15000
       allowNether: true
