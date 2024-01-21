@@ -77,19 +77,20 @@ spec:
           - query_port: 25577
             motd: '&1Minecraft in K8s'
             priorities:
-              - vanilla
+              - survival
+              - creative
             bind_local_address: true
             tab_list: GLOBAL_PING
             query_enabled: false
             host: 0.0.0.0:25577
             forced_hosts:
-              mc-vanilla.chestr.dev: vanilla
+              mc-vanilla.chestr.dev: survival
             max_players: 20
             tab_size: 60
             ping_passthrough: false
             force_default_server: true
             proxy_protocol: false
-            default_server: vanilla
+            default_server: survival
         disabled_commands:
           - disabledcommandhere
         network_compression_threshold: 256
