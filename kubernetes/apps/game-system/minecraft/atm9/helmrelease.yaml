@@ -29,6 +29,18 @@ spec:
       repository: itzg/minecraft-server
       tag: java17-jdk
       pullPolicy: IfNotPresent
+    livenessProbe:
+      initialDelaySeconds: 300
+      periodSeconds: 5
+      failureThreshold: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+    readinessProbe:
+      initialDelaySeconds: 180
+      periodSeconds: 5
+      failureThreshold: 30
+      successThreshold: 1
+      timeoutSeconds: 1
     resources:
       requests:
         memory: 512Mi
