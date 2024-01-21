@@ -39,8 +39,6 @@ spec:
     securityContext:
       runAsUser: 5506
       fsGroup: 5506
-    extraEnv:
-      CF_SLUG: all-the-mods-9
     minecraftServer:
       eula: "TRUE"
       version: "LATEST"
@@ -85,6 +83,12 @@ spec:
         - 36618
         # Dynmap
         # - 274
+      autoCurseForge:
+        apiKey:
+          existingSecret: minecraft-atm9-secret
+          secretKey: cf-api-key
+        # Unique id of modpack, can be used instead of url
+        slug: all-the-mods-9
     persistence:
       dataDir:
         enabled: true
