@@ -69,16 +69,11 @@ spec:
             motd: 'MCraft - Vanilla'
             address: minecraft-vanilla-minecraft.game-system.svc.cluster.local:25565
             restricted: false
-          creative:
-            motd: 'MCraft - Vanilla'
-            address: minecraft-vanilla-creative-minecraft.game-system.svc.cluster.local:25565
-            restricted: false
         listeners:
           - query_port: 25577
             motd: '&1Minecraft in K8s'
             priorities:
               - survival
-              - creative
             bind_local_address: true
             tab_list: GLOBAL_PING
             query_enabled: false
