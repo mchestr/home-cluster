@@ -53,6 +53,8 @@ spec:
       fsGroup: 5506
     extraEnv:
       MODS: https://github.com/BlueMap-Minecraft/BlueMap/releases/download/v3.20/BlueMap-3.20-forge-1.20.jar
+    serviceAnnotations:
+      external-dns.alpha.kubernetes.io/hostname: mc.chestr.dev
     minecraftServer:
       eula: "TRUE"
       version: "LATEST"
