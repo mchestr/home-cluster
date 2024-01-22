@@ -103,13 +103,11 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-minecraft-atm9
+  name: cluster-apps-minecraft-aiocreate
   namespace: flux-system
 spec:
   targetNamespace: game-system
-  dependsOn:
-    - name: cluster-apps-minecraft-proxy
-  path: ./kubernetes/apps/game-system/minecraft/atm9
+  path: ./kubernetes/apps/game-system/minecraft/aiocreate
   prune: true
   sourceRef:
     kind: GitRepository
@@ -120,7 +118,7 @@ spec:
   wait: false
   postBuild:
     substitute:
-      APP: minecraft-atm9
-      VOLSYNC_CLAIM: minecraft-atm9-data
+      APP: minecraft-aiocreate
+      VOLSYNC_CLAIM: minecraft-aiocreate-data
       VOLSYNC_CAPACITY: 10Gi
       VOLSYNC_CACHE_CAPACITY: 10Gi
