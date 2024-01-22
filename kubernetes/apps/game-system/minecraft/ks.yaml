@@ -78,11 +78,11 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-minecraft-aiocreate
+  name: cluster-apps-minecraft-valhelsia-6
   namespace: flux-system
 spec:
   targetNamespace: game-system
-  path: ./kubernetes/apps/game-system/minecraft/aiocreate
+  path: ./kubernetes/apps/game-system/minecraft/valhelsia-6
   prune: true
   sourceRef:
     kind: GitRepository
@@ -93,7 +93,7 @@ spec:
   wait: false
   postBuild:
     substitute:
-      APP: minecraft-aiocreate
-      VOLSYNC_CLAIM: minecraft-aiocreate-data
+      APP: valhelsia-6
+      VOLSYNC_CLAIM: minecraft-valhelsia-6-data
       VOLSYNC_CAPACITY: 10Gi
       VOLSYNC_CACHE_CAPACITY: 10Gi
