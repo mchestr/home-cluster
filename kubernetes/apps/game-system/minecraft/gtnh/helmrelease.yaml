@@ -43,13 +43,13 @@ spec:
       REPLACE_ENV_DURING_SYNC: "TRUE"
       CFG_LP_SERVER: "global"
       # Only need for initial bootstrap
-      GENERIC_PACKS: GT_New_Horizons_2.5.1_Server_Java_17-21
-      GENERIC_PACKS_PREFIX: http://downloads.gtnewhorizons.com/ServerPacks/
-      GENERIC_PACKS_SUFFIX: .zip
+      # GENERIC_PACKS: GT_New_Horizons_2.5.1_Server_Java_17-21
+      # GENERIC_PACKS_PREFIX: http://downloads.gtnewhorizons.com/ServerPacks/
+      # GENERIC_PACKS_SUFFIX: .zip
+      # SKIP_GENERIC_PACK_UPDATE_CHECK: "true"
+      # SKIP_GENERIC_PACK_CHECKSUM: "true"
       REMOVE_OLD_MODS: "TRUE"
       REMOVE_OLD_MODS_INCLUDE: "journeymap-1.7.10*"
-      SKIP_GENERIC_PACK_UPDATE_CHECK: "true"
-      SKIP_GENERIC_PACK_CHECKSUM: "true"
       MODS: https://mediafilez.forgecdn.net/files/2291/494/FTBUtilities-1.7.10-1.0.18.3.jar,https://mediafilez.forgecdn.net/files/2291/433/FTBLib-1.7.10-1.0.18.3.jar,https://github.com/GTNewHorizons/GTNH-Web-Map/releases/download/0.3.17/gtnh-web-map-0.3.17.jar
       MODRINTH_PROJECTS: journeymap:1.7.10-5.1.4p6,
     serviceAnnotations:
