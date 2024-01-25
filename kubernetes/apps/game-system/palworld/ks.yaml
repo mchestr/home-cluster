@@ -1,0 +1,26 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-palworld
+  namespace: flux-system
+spec:
+  targetNamespace: game-system
+  dependsOn:
+    - name: cluster-apps-external-secrets-stores
+    - name: cluster-apps-volsync
+  path: ./kubernetes/apps/game-system/palworld/world
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops-kubernetes
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  wait: false
+  postBuild:
+    substitute:
+      APP: palworld-server
+      VOLSYNC_CLAIM: palworld-server-data
+      VOLSYNC_CAPACITY: 10Gi
+      VOLSYNC_CACHE_CAPACITY: 10Gi
