@@ -7,3 +7,4 @@ resources:
   # Flux-Kustomizations
   - factorio/ks.yaml
   - minecraft/ks.yaml
+  - palworld/ks.yaml
