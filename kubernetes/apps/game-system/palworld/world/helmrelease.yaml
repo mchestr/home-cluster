@@ -45,7 +45,7 @@ spec:
 
             resources:
               limits:
-                memory: 4Gi
+                memory: 6Gi
 
     service:
       main:
