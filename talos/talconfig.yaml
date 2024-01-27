@@ -10,12 +10,12 @@ allowSchedulingOnMasters: true
 cniConfig:
   name: none
 
-additionalApiServerCertSans:
-  - ${clusterEndpointIP}
-
-additionalMachineCertSans:
+additionalApiServerCertSans: &sans
   - ${clusterEndpointIP}
   - ${clusterName}.chestr.dev
+  - "127.0.0.1"  #kubeprism
+
+additionalMachineCertSans: *sans
 
 nodes:
   - hostname: k8s-0
