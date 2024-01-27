@@ -43,6 +43,10 @@ spec:
               - secretRef:
                   name: ${APP}-secret
 
+            resources:
+              limits:
+                memory: 4Gi
+
     service:
       main:
         type: LoadBalancer # Setting Ip external to cluster for easy port forward
