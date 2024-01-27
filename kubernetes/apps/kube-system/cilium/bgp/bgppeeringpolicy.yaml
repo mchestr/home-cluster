@@ -6,7 +6,7 @@ metadata:
 spec:
   nodeSelector:
     matchLabels:
-      kubernetes.io/role: worker
+      node-role.kubernetes.io/control-plane: ""
   virtualRouters:
     - localASN: 64512
       exportPodCIDR: false
