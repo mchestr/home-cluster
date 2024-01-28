@@ -31,6 +31,13 @@ spec:
           reloader.stakater.com/auto: "true"
 
         pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"multus-iot",
+                "namespace": "networking",
+                "ips": ["10.0.10.223/24"]
+              }]
           nodeSelector:
             intel.feature.node.kubernetes.io/gpu: "true"
           securityContext:
