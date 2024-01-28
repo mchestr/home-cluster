@@ -30,7 +30,7 @@ spec:
           main:
             image:
               repository: thijsvanloef/palworld-server-docker
-              tag: v0.16.0
+              tag: v0.17.0
             env:
               PORT: &port 8211
               RCON_PORT: &rcon 25575
