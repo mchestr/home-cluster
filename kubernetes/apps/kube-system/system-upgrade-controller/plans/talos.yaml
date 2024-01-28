@@ -15,10 +15,10 @@ spec:
   exclusive: true
   nodeSelector:
     matchExpressions:
-      - key: kubernetes.io/os
+      - key: node/operating-system
         operator: In
         values:
-          - linux
+          - talos
   prepare:
     image: &image ghcr.io/siderolabs/talosctl
     envs: &envs
@@ -36,6 +36,6 @@ spec:
     args:
       - --nodes=$(NODE_IP)
       - upgrade
-      - --image=factory.talos.dev/installer/dbfb6577b113acbc7da6bfcb48e7f59343283561ff938ff7c33bd4693f85c295:$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
+      - --image=factory.talos.dev/installer/$(talosctl --nodes=$(NODE_IP) --output=table get extensions | grep schematic | awk '{print $7}'):$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
       - --preserve=true
       - --wait=false

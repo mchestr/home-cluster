@@ -12,7 +12,6 @@ cniConfig:
 
 additionalApiServerCertSans: &sans
   - ${clusterEndpointIP}
-  - ${clusterName}.chestr.dev
   - "127.0.0.1"  #kubeprism
 
 additionalMachineCertSans: *sans
@@ -292,6 +291,13 @@ controlPlane:
             validSubnets:
                 - 192.168.1.0/24
 
+    # Add os=talos label
+    - &talosLabel |-
+      - op: add
+        path: /machine/nodeLabels
+        value:
+          node/operating-system: talos
+
     # Configure cluster loopback
     - |-
       machine:
@@ -341,6 +347,7 @@ worker:
     - *kubeletPatch
     - *nutPatch
     - *sysctlPatch
+    - *talosLabel
 
     # Add role=worker label
     - |-
