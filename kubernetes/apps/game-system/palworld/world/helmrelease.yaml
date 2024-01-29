@@ -47,7 +47,7 @@ spec:
               requests:
                 memory: 4Gi
               limits:
-                memory: 6Gi
+                memory: 10Gi
 
     service:
       main:
