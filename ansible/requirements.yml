@@ -7,7 +7,7 @@ collections:
   - name: ansible.posix
     version: 1.5.4
   - name: ansible.utils
-    version: 3.0.0
+    version: 3.1.0
 roles:
   - name: semuadmin.octoprint
     src: https://github.com/semuconsulting/ansible_octoprint
