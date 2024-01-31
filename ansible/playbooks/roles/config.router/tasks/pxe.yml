@@ -1,14 +1,11 @@
 ---
 - name: Configure DHCP Global PXE booting
   vars:
-    prefix: service dhcp-server global-parameters
+    prefix: set service dns forwarding
   community.network.edgeos_config:
     lines:
-      - "{{ prefix }} 'allow booting;'"
-      - "{{ prefix }} 'allow bootp;'"
-      - "{{ prefix }} 'option option-128 code 128 = string;'"
-      - "{{ prefix }} 'option option-129 code 129 = text;'"
-      - "{{ prefix }} 'option system-arch code 93 = unsigned integer 16;'"
+      - "{{ prefix }} options enable-tftp"
+      - "{{ prefix }} options tftp-root=/config/user-data/tftproot"
 
 - name: Configure Sidero PXE booting
   vars:
