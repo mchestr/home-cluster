@@ -25,11 +25,11 @@
     #     file: interfaces.yml
     #   tags:
     #     - interfaces
-    # - name: Configure DNS
-    #   ansible.builtin.include_tasks:
-    #     file: dns.yml
-    #   tags:
-    #     - dns
+    - name: Configure DNS
+      ansible.builtin.include_tasks:
+        file: dns.yml
+      tags:
+        - dns
     # - name: Configure Services
     #   ansible.builtin.include_tasks:
     #     file: services.yml
