@@ -5,56 +5,56 @@
     ansible_network_os: edgeos
     ansible_connection: network_cli
   block:
-    - name: Configure System
-      ansible.builtin.include_tasks:
-        file: system.yml
-      tags:
-        - system
-    - name: Configure Firewall
-      ansible.builtin.include_tasks:
-        file: firewall.yml
-      tags:
-        - firewall
-    - name: Configure DHCP
-      ansible.builtin.include_tasks:
-        file: dhcp.yml
-      tags:
-        - dhcp
-    - name: Configure Interfaces
-      ansible.builtin.include_tasks:
-        file: interfaces.yml
-      tags:
-        - interfaces
-    - name: Configure DNS
-      ansible.builtin.include_tasks:
-        file: dns.yml
-      tags:
-        - dns
-    - name: Configure Services
-      ansible.builtin.include_tasks:
-        file: services.yml
-      tags:
-        - services
-    - name: Configure Protocols
-      ansible.builtin.include_tasks:
-        file: protocols.yml
-      tags:
-        - protocols
-    - name: Configure Port Forwards
-      ansible.builtin.include_tasks:
-        file: port-forward.yml
-      tags:
-        - port-forward
+    # - name: Configure System
+    #   ansible.builtin.include_tasks:
+    #     file: system.yml
+    #   tags:
+    #     - system
+    # - name: Configure Firewall
+    #   ansible.builtin.include_tasks:
+    #     file: firewall.yml
+    #   tags:
+    #     - firewall
+    # - name: Configure DHCP
+    #   ansible.builtin.include_tasks:
+    #     file: dhcp.yml
+    #   tags:
+    #     - dhcp
+    # - name: Configure Interfaces
+    #   ansible.builtin.include_tasks:
+    #     file: interfaces.yml
+    #   tags:
+    #     - interfaces
+    # - name: Configure DNS
+    #   ansible.builtin.include_tasks:
+    #     file: dns.yml
+    #   tags:
+    #     - dns
+    # - name: Configure Services
+    #   ansible.builtin.include_tasks:
+    #     file: services.yml
+    #   tags:
+    #     - services
+    # - name: Configure Protocols
+    #   ansible.builtin.include_tasks:
+    #     file: protocols.yml
+    #   tags:
+    #     - protocols
+    # - name: Configure Port Forwards
+    #   ansible.builtin.include_tasks:
+    #     file: port-forward.yml
+    #   tags:
+    #     - port-forward
     - name: Configure PXE
       ansible.builtin.include_tasks:
         file: pxe.yml
       tags:
         - pxe
 
-- name: Configure Scripts
-  block:
-    - name: Setup wake on lan
-      ansible.builtin.template:
-        src: wake-on-lan.sh.j2
-        dest: /config/scripts/post-config.d/wake-on-lan.sh
-        mode: 0775
+# - name: Configure Scripts
+#   block:
+#     - name: Setup wake on lan
+#       ansible.builtin.template:
+#         src: wake-on-lan.sh.j2
+#         dest: /config/scripts/post-config.d/wake-on-lan.sh
+#         mode: 0775
