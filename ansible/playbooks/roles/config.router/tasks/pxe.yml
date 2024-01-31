@@ -1,16 +1,15 @@
 ---
 - name: Configure DHCP Global PXE booting
   vars:
-    prefix: set service dns forwarding
+    prefix: set service dhcp-server global-parameters
   community.network.edgeos_config:
     lines:
-      - "{{ prefix }} options enable-tftp"
-      - "{{ prefix }} options tftp-root=/config/user-data/tftproot"
+      - "{{ prefix }} \"option client-arch code 93 = unsigned integer 16;\""
 
-- name: Configure Sidero PXE booting
+- name: Configure NetBoot PXE booting
   vars:
     prefix: set service dhcp-server shared-network-name LAN subnet 192.168.1.0/24
   community.network.edgeos_config:
     lines:
-      - "{{ prefix }} bootfile-server 192.168.1.195"
-      - "{{ prefix }} bootfile-name undionly.kpxe"
+      - "{{ prefix }} bootfile-server 192.168.1.1"
+      - "{{ prefix }} bootfile-name netboot.xyz.kpxe"
