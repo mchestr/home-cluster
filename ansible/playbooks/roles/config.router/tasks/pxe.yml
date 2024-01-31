@@ -6,6 +6,7 @@
     lines:
       - "{{ prefix }} \"option client-arch code 93 = unsigned integer 16;\""
 
+
 - name: Configure NetBoot PXE booting
   vars:
     prefix: set service dhcp-server shared-network-name LAN subnet 192.168.1.0/24
