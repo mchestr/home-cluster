@@ -24,6 +24,7 @@ resources:
   - lldap/ks.yaml
   - maintainerr/ks.yaml
   - mosquitto/ks.yaml
+  - openwakeword/ks.yaml
   - overseerr/ks.yaml
   - paperless/ks.yaml
   - plex/ks.yaml
