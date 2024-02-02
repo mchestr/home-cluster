@@ -41,7 +41,7 @@ spec:
           main:
             image:
               repository: ghcr.io/jorenn92/maintainerr
-              tag: 1.7.1@sha256:0a826f9b33a53e7a241d0b2d8ba2533c6efb978067d149c4f6801a657853ee53
+              tag: 2.0.0@sha256:ad01da036b6f6d90e62ea1a5ff45c5bc1706aee624189e02c982d03dffdf7397
             resources:
               requests:
                 cpu: 5m
