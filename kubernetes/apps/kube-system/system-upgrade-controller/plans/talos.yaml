@@ -15,10 +15,15 @@ spec:
   exclusive: true
   nodeSelector:
     matchExpressions:
-      - key: node/operating-system
+      - key: kubernetes.io/hostname
         operator: In
         values:
-          - talos
+          - k8s-0
+          - k8s-1
+          - k8s-2
+          - k8s-3
+          - k8s-4
+          - k8s-5
   prepare:
     image: &image ghcr.io/siderolabs/talosctl
     envs: &envs
@@ -36,6 +41,47 @@ spec:
     args:
       - --nodes=$(NODE_IP)
       - upgrade
-      - --image=factory.talos.dev/installer/$(talosctl --nodes=$(NODE_IP) --output=table get extensions | grep schematic | awk '{print $7}'):$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
+      - --image=factory.talos.dev/installer/dbfb6577b113acbc7da6bfcb48e7f59343283561ff938ff7c33bd4693f85c295:$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
+      - --preserve=true
+      - --wait=false
+---
+apiVersion: upgrade.cattle.io/v1
+kind: Plan
+metadata:
+  name: talos-nvidia
+spec:
+  # renovate: datasource=github-releases depName=siderolabs/talos
+  version: "v1.6.4"
+  serviceAccountName: system-upgrade
+  secrets:
+    - name: talos
+      path: /var/run/secrets/talos.dev
+      ignoreUpdates: true
+  concurrency: 1
+  exclusive: true
+  nodeSelector:
+    matchExpressions:
+      - key: kubernetes.io/hostname
+        operator: In
+        values:
+          - k8s-6
+  prepare:
+    image: &image ghcr.io/siderolabs/talosctl
+    envs: &envs
+      - name: NODE_IP
+        valueFrom:
+          fieldRef:
+            fieldPath: status.hostIP
+    args:
+      - --nodes=$(NODE_IP)
+      - health
+      - --server=false
+  upgrade:
+    image: *image
+    envs: *envs
+    args:
+      - --nodes=$(NODE_IP)
+      - upgrade
+      - --image=factory.talos.dev/installer/edffc5f700740a1eeaec78c3143e97a4cbbb0627e3b5764695f42f562db85d43:$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
       - --preserve=true
       - --wait=false
