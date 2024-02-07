@@ -43,7 +43,7 @@ spec:
           main:
             image:
               repository: ghcr.io/mchestr/ledfx
-              tag: v2.0.90
+              tag: v2.0.92
 
             env:
               TZ: America/Vancouver
