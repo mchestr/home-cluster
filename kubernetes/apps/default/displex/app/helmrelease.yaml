@@ -167,10 +167,6 @@ spec:
           - hosts:
               - *host
 
-    serviceMonitor:
-      main:
-        enabled: true
-
     persistence:
       config:
         enabled: true
