@@ -51,14 +51,11 @@ spec:
           main:
             image: &image
               repository: ghcr.io/mchestr/displex
-              tag: v0.12.3
+              tag: main@sha256:034bed45c5974338542513281921a653c8388ff9ae2805eea1093ee40f173a50
             args:
               - server
             env: &envRw
               DISPLEX_DATABASE__HOST: postgres16-rw.default.svc.cluster.local
-            envFrom: &envFrom
-              - secretRef:
-                  name: displex-secret
             resources: &resources
               requests:
                 cpu: 5m
@@ -76,7 +73,6 @@ spec:
             env: &envRo
               DISPLEX_DATABASE__READ_ONLY: "true"
               DISPLEX_DATABASE__HOST: postgres16-ro.default.svc.cluster.local
-            envFrom: *envFrom
             resources: *resources
 
       channel-refresh:
@@ -92,7 +88,6 @@ spec:
               - channel-refresh
             env: *envRo
             image: *image
-            envFrom: *envFrom
             resources: *resources
 
       requests-upgrade:
@@ -109,7 +104,6 @@ spec:
               - requests-upgrade
             image: *image
             env: *envRo
-            envFrom: *envFrom
             resources: *resources
 
       token-maintenance:
@@ -126,7 +120,6 @@ spec:
               - token-maintenance
             image: *image
             env: *envRw
-            envFrom: *envFrom
             resources: *resources
 
       user-refresh:
@@ -143,7 +136,6 @@ spec:
               - user-refresh
             image: *image
             env: *envRo
-            envFrom: *envFrom
             resources: *resources
 
     service:
@@ -178,3 +170,13 @@ spec:
     serviceMonitor:
       main:
         enabled: true
+
+    persistence:
+      config:
+        enabled: true
+        type: secret
+        name: displex-secret
+        readOnly: true
+        globalMounts:
+          - path: /data/displex.toml
+            subPath: displex.toml
