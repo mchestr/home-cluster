@@ -17,10 +17,7 @@
     "github>mchestr/home-cluster//.github/renovate/regexManagers.json5",
     "github>mchestr/home-cluster//.github/renovate/semanticCommits.json5",
   ],
-  onboarding: false,
-  requireConfig: "optional",
   ignorePaths: ["**/*.sops.*", "**/.archive/**"],
-  platform: "github",
   dependencyDashboardTitle: "Renovate Dashboard",
   suppressNotifications: ["prIgnoreNotification", "prEditedNotification"],
   flux: {
