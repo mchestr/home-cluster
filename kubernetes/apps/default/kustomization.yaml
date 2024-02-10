@@ -40,6 +40,7 @@ resources:
   - sonarr/ks.yaml
   - syncthing/ks.yaml
   - tautulli/ks.yaml
+  - teslamate/ks.yaml
   - thelounge/ks.yaml
   - theme-park/ks.yaml
   - unifi/ks.yaml
