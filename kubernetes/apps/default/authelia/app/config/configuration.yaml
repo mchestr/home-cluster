@@ -56,6 +56,11 @@ access_control:
       subject:
         - "group:media"
       policy: two_factor
+    - domain:
+        - paperless.chestr.dev
+      subject:
+        - "group:documents"
+      policy: two_factor
     - domain: "*.chestr.dev"
       subject:
         - "group:admin"
