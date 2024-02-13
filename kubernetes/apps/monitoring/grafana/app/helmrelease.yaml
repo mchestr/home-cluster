@@ -232,6 +232,21 @@ spec:
             url: postgres16-rw.default.svc.cluster.local:5432
             jsonData:
               maxLines: 250
+          - name: TeslaMate
+            type: postgres
+            access: proxy
+            url: postgres16-ro.default.svc.cluster.local:5432
+            database: teslamate
+            user: teslamate
+            secureJsonData:
+              password: "$TESLAMATE_POSTGRES_PASSWORD"
+            basicAuth: false
+            withCredentials: false
+            jsonData:
+              postgresVersion: 1000
+              sslmode: disable
+            version: 1
+            editable: true
 
     dashboards:
       default:
