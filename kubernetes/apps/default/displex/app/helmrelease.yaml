@@ -56,6 +56,7 @@ spec:
               - server
             env: &envRw
               DISPLEX_DATABASE__HOST: postgres16-rw.default.svc.cluster.local
+              RUST_LOG: displex=debug,sea_orm=info,warn
             resources: &resources
               requests:
                 cpu: 5m
@@ -73,6 +74,7 @@ spec:
             env: &envRo
               DISPLEX_DATABASE__READ_ONLY: "true"
               DISPLEX_DATABASE__HOST: postgres16-ro.default.svc.cluster.local
+              RUST_LOG: displex=debug,sea_orm=info,warn
             resources: *resources
 
       channel-refresh:
