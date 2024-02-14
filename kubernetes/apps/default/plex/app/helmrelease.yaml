@@ -55,7 +55,7 @@ spec:
           main:
             image:
               repository: ghcr.io/onedr0p/plex
-              tag: 1.32.8.7639-fb6452ebf@sha256:9c15c8d0dc5fc1c734c97b38b66cdbee126c2b1d9bce8605c73bf06c17ff1e32
+              tag: 1.40.0.7998-c29d4c0c8@sha256:90ea7de9804ad72b5465417366c6e0bd8232dfc2166df86d16d790eb02e9ed7c
             env:
               TZ: America/Vancouver
             resources:
