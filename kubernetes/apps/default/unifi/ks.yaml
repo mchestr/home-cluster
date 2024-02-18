@@ -21,6 +21,7 @@ spec:
   postBuild:
     substitute:
       APP: unifi
-      VOLSYNC_CLAIM: unifi-data
       APP_UID: "999"
       APP_GID: "999"
+      VOLSYNC_CLAIM: unifi-data
+      VOLSYNC_SCHEDULE: 50 11 * * *

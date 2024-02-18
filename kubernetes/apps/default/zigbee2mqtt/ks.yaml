@@ -25,3 +25,4 @@ spec:
       APP: zigbee2mqtt
       GATUS_SUBDOMAIN: zigbee
       VOLSYNC_CLAIM: zigbee2mqtt-data
+      VOLSYNC_SCHEDULE: 10 12 * * *

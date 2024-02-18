@@ -20,3 +20,4 @@ spec:
       APP: wizarr
       GATUS_SUBDOMAIN: invite
       VOLSYNC_CLAIM: wizarr-data
+      VOLSYNC_SCHEDULE: 0 12 * * *

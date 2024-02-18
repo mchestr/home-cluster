@@ -24,3 +24,4 @@ spec:
       VOLSYNC_CLAIM: tautulli-config
       VOLSYNC_CACHE_CAPACITY: 2Gi
       VOLSYNC_CAPACITY: 2Gi
+      VOLSYNC_SCHEDULE: 30 11 * * *
