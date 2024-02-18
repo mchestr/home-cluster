@@ -76,7 +76,7 @@ spec:
       externalTrafficPolicy: Cluster
       rcon:
         enabled: true
-      motd: "GTNH: §l§c2.5.1§r §n"
+      motd: "GTNH: §l§c2.5.1§r §n fudge"
       extraPorts:
         - name: map
           containerPort: 8123
