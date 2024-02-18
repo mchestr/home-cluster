@@ -19,7 +19,21 @@ spec:
       minecraft:
         type: LoadBalancer
     minecraftRouter:
+      autoScaleUp:
+        enabled: true
       debug:
         enabled: true
-    autoScaleUp:
-      enabled: true
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Service
+              name: minecraft-router-mc-router
+            patch: |
+              apiVersion: v1
+              kind: Service
+              metadata:
+                name: ignored
+                annotations:
+                  io.cilium/lb-ipam-ips: 192.168.100.235
+                  external-dns.alpha.kubernetes.io/hostname: mc.chestr.dev,mc-gtnh.chestr.dev,mc-valhelsia.chestr.dev
