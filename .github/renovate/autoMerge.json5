@@ -16,7 +16,7 @@
       automerge: true,
       automergeType: 'branch',
       requiredStatusChecks: null,
-      matchUpdateTypes: ['minor', 'patch']
+      matchUpdateTypes: ['digest', 'minor', 'patch']
     },
     {
       matchDatasources: [
