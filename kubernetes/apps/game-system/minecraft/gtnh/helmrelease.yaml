@@ -55,7 +55,8 @@ spec:
       MODS: https://mediafilez.forgecdn.net/files/2291/494/FTBUtilities-1.7.10-1.0.18.3.jar,https://mediafilez.forgecdn.net/files/2291/433/FTBLib-1.7.10-1.0.18.3.jar,https://github.com/GTNewHorizons/GTNH-Web-Map/releases/download/0.3.17/gtnh-web-map-0.3.17.jar
       MODRINTH_PROJECTS: journeymap:1.7.10-5.1.4p6,
     serviceAnnotations:
-      mc-router.itzg.me/externalServerName: mc-gtnh.chestr.dev,mc.chestr.dev
+      mc-router.itzg.me/externalServerName: mc-gtnh.chestr.dev
+      mc-router.itzg.me/defaultServer: "true"
     minecraftServer:
       eula: "TRUE"
       overrideServerProperties: true
