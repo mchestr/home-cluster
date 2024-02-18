@@ -23,3 +23,4 @@ spec:
       APP: overseerr
       GATUS_SUBDOMAIN: requests
       VOLSYNC_CLAIM: overseerr-config
+      VOLSYNC_SCHEDULE: 10 10 * * *

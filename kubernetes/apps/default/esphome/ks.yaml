@@ -23,3 +23,4 @@ spec:
       APP: esphome
       VOLSYNC_CLAIM: esphome-config
       VOLSYNC_CAPACITY: 8Gi
+      VOLSYNC_SCHEDULE: 10 9 * * *

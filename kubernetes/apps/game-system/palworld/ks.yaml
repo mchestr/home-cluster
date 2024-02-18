@@ -24,3 +24,4 @@ spec:
       VOLSYNC_CLAIM: palworld-server-data
       VOLSYNC_CAPACITY: 10Gi
       VOLSYNC_CACHE_CAPACITY: 10Gi
+      VOLSYNC_SCHEDULE: 0 13 * * *

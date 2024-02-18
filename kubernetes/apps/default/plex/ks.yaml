@@ -25,6 +25,7 @@ spec:
       VOLSYNC_CLAIM: plex-config
       VOLSYNC_CACHE_CAPACITY: 70Gi
       VOLSYNC_CAPACITY: 70Gi
+      VOLSYNC_SCHEDULE: 30 10 * * *
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -52,3 +53,4 @@ spec:
       APP: plex-meta-manager
       VOLSYNC_CLAIM: plex-meta-manager
       VOLSYNC_CAPACITY: 5Gi
+      VOLSYNC_SCHEDULE: 40 10 * * *
