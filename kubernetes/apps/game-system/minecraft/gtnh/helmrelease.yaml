@@ -15,7 +15,8 @@ spec:
         namespace: flux-system
       interval: 15m
   values:
-    replicaCount: 0
+    workloadAsStatefulSet: true
+    strategyType: OnDelete
     image:
       repository: docker.io/itzg/minecraft-server
       tag: java17-graalvm-ce
@@ -54,7 +55,7 @@ spec:
       MODS: https://mediafilez.forgecdn.net/files/2291/494/FTBUtilities-1.7.10-1.0.18.3.jar,https://mediafilez.forgecdn.net/files/2291/433/FTBLib-1.7.10-1.0.18.3.jar,https://github.com/GTNewHorizons/GTNH-Web-Map/releases/download/0.3.17/gtnh-web-map-0.3.17.jar
       MODRINTH_PROJECTS: journeymap:1.7.10-5.1.4p6,
     serviceAnnotations:
-      external-dns.alpha.kubernetes.io/hostname: mc-gtnh.chestr.dev
+      mc-router.itzg.me/externalServerName: mc-gtnh.chestr.dev,mc.chestr.dev
     minecraftServer:
       eula: "TRUE"
       overrideServerProperties: true
@@ -72,9 +73,6 @@ spec:
       whitelist: "mchestr,"
       ops: ""
       jvmOpts: "--illegal-access=warn -Djava.security.manager=allow -Dfile.encoding=UTF-8 --add-opens java.base/jdk.internal.loader=ALL-UNNAMED --add-opens java.base/java.net=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.base/java.text=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/jdk.internal.reflect=ALL-UNNAMED --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens jdk.naming.dns/com.sun.jndi.dns=ALL-UNNAMED,java.naming --add-opens java.desktop/sun.awt.image=ALL-UNNAMED --add-opens java.desktop/com.sun.imageio.plugins.png=ALL-UNNAMED --add-modules jdk.dynalink --add-opens jdk.dynalink/jdk.dynalink.beans=ALL-UNNAMED --add-modules java.sql.rowset --add-opens java.sql.rowset/javax.sql.rowset.serial=ALL-UNNAMED -jar lwjgl3ify-forgePatches.jar"
-      serviceType: LoadBalancer
-      loadBalancerIP: 192.168.100.235
-      externalTrafficPolicy: Cluster
       rcon:
         enabled: true
       motd: "GTNH: §l§c2.5.1§r §n fudge"
