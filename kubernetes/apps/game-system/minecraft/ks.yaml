@@ -23,6 +23,7 @@ spec:
       VOLSYNC_CLAIM: minecraft-gtnh-data
       VOLSYNC_CAPACITY: 10Gi
       VOLSYNC_CACHE_CAPACITY: 10Gi
+      VOLSYNC_SCHEDULE: 40 12 * * *
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -48,3 +49,4 @@ spec:
       VOLSYNC_CLAIM: minecraft-valhelsia-6-data
       VOLSYNC_CAPACITY: 10Gi
       VOLSYNC_CACHE_CAPACITY: 10Gi
+      VOLSYNC_SCHEDULE: 50 12 * * *

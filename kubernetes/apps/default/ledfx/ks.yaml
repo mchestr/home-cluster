@@ -22,3 +22,4 @@ spec:
     substitute:
       APP: ledfx
       VOLSYNC_CLAIM: ledfx-config
+      VOLSYNC_SCHEDULE: 50 9 * * *
