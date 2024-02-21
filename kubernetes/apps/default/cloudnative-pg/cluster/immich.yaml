@@ -5,7 +5,7 @@ metadata:
   name: immich-db
 spec:
   instances: 1
-  imageName: ghcr.io/bo0tzz/cnpgvecto.rs:16.1-v0.1.11
+  imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.2-v0.2.0
   primaryUpdateStrategy: unsupervised
   storage:
     size: 8Gi
