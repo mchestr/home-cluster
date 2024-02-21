@@ -47,7 +47,7 @@ spec:
           main:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: &tag v1.95.0
+              tag: &tag v1.95.1
             command: /bin/sh
             args:
               - ./start-server.sh
@@ -79,7 +79,7 @@ spec:
           main:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v1.95.0
+              tag: v1.95.1
             command: /bin/sh
             args:
               - ./start-microservices.sh
@@ -94,7 +94,7 @@ spec:
           main:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v1.95.0
+              tag: v1.95.1
             envFrom: *envFrom
             resources:
               requests: *requests
