@@ -80,7 +80,7 @@ spec:
           main:
             image:
               repository: ghcr.io/mchestr/gotenberg
-              tag: 8.1.0
+              tag: 8.2.0
             env:
               DISABLE_GOOGLE_CHROME: "1"
             securityContext: *securityContext
