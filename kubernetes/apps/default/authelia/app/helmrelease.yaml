@@ -65,7 +65,7 @@ spec:
               # TODO use tag when one available with https://github.com/authelia/authelia/pull/4515
               # renovate: datasource=github-releases depName=authelia/authelia
               # tag: "v4.37.5"
-              tag: master@sha256:88f1f739490dcc2663516aaa1ba7071cd402d75951a4e96ac5d1517671aae202
+              tag: master@sha256:a2c7435f371d0041788eb3981c760ff4aad781992cf89dcee767bc8266bd9372
 
             env:
               AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ADDITIONAL_GROUPS_DN: ou=groups
