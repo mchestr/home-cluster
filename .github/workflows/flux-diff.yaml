@@ -57,7 +57,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Generate Token
-        uses: actions/create-github-app-token@e8e39f73bb84fdf315a015fa3104f314c0a258b4 # v1
+        uses: actions/create-github-app-token@bf627a5a4415baceb13b8feb7cdbe1f4b112dc8d # v1
         if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
         id: app-token
         with:
