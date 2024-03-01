@@ -33,6 +33,7 @@ resources:
   - prometheus-community-charts.yaml
   - rook-ceph-charts.yaml
   - stakater-charts.yaml
+  - tofu-controller-charts.yaml
   - weaveworks-charts.yaml
   - vector-charts.yaml
   - xenitab-charts.yaml
