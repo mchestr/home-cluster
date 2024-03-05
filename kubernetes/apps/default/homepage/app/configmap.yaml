@@ -26,7 +26,7 @@ data:
         header: false
       Home:
         style: row
-        columns: 3
+        columns: 2
         icon: mdi-home-analytics
       Media:
         style: row
