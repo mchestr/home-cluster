@@ -30,7 +30,7 @@ data:
         icon: mdi-home-analytics
       Media:
         style: row
-        columns: 4
+        columns: 2
         icon: mdi-play-circle
       Downloads:
         style: row
@@ -51,7 +51,7 @@ data:
         icon: mdi-database
       System:
         style: row
-        columns: 3
+        columns: 4
         icon: mdi-application
   custom.css: ""
   custom.js: ""
