@@ -22,7 +22,7 @@ data:
       hideInternetSearch: true
     layout:
       Calendar:
-        style: column
+        style: row
         header: false
       Home:
         style: row
