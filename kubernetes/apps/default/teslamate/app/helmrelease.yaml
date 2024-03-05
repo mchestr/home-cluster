@@ -68,8 +68,8 @@ spec:
           nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: teslamate.png
-          gethomepage.dev/name: Tesla
-          gethomepage.dev/group: Home
+          gethomepage.dev/name: TeslaMate
+          gethomepage.dev/group: Monitoring
         hosts:
           - host: &host teslamate.chestr.dev
             paths:
