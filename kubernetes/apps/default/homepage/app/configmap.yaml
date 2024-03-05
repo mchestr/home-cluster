@@ -24,35 +24,48 @@ data:
       Home:
         style: row
         columns: 2
+        tab: first
         icon: mdi-home-analytics
       Media:
         style: row
         columns: 2
+        tab: first
         icon: mdi-play-circle
       Downloads:
         style: row
         columns: 3
+        tab: first
         icon: mdi-download-circle
       Music:
         style: column
         columns: 2
+        tab: first
         icon: mdi-speaker-multiple
       Automation:
         style: column
         columns: 2
+        tab: first
         icon: mdi-home-automation
       Monitoring:
         style: column
         icon: mdi-monitor-eye
+        tab: first
       Infrastructure:
         style: column
         icon: mdi-server-network
+        tab: first
       Storage:
         style: column
         icon: mdi-database
+        tab: first
       System:
         style: column
         icon: mdi-application
+        tab: first
+      Calendar:
+        style: column
+        icon: mdi-application
+        tab: second
   custom.css: ""
   custom.js: ""
   bookmarks.yaml: |
@@ -135,6 +148,26 @@ data:
               url: https://lochnas.chestr.dev:5001
               username: {{HOMEPAGE_VAR_DSM_USER}}
               password: {{HOMEPAGE_VAR_DSM_PASSWORD}}
+    - Calendar:
+        - Calendar:
+            widget:
+              type: calendar
+              firstDayInWeek: sunday
+              view: monthly
+              maxEvents: 10
+              showTime: true
+              timezone: America/Vancouver
+              integrations:
+                - type: sonarr
+                  service_group: Downloads
+                  service_name: Sonarr
+                  params:
+                    unmonitored: true
+                - type: radarr
+                  service_group: Downloads
+                  service_name: Radarr
+                  params:
+                    unmonitored: true
   widgets.yaml: |
     - search:
         provider: [google]
