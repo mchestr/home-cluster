@@ -93,7 +93,7 @@ data:
         - home-cluster:
             - icon: github.png
               description: Renovate Dashboard
-              href: https://github.com/mchestr/home-cluster/issues/1922
+              href: https://github.com/mchestr/home-cluster/issues/2976
   services.yaml: |
     - Infrastructure:
         - Cloudflared:
