@@ -26,20 +26,16 @@ data:
         header: false
       Home:
         style: row
-        columns: 2
+        columns: 3
         icon: mdi-home-analytics
       Media:
         style: row
-        columns: 2
+        columns: 4
         icon: mdi-play-circle
       Downloads:
         style: row
         columns: 3
         icon: mdi-download-circle
-      Music:
-        style: column
-        columns: 2
-        icon: mdi-speaker-multiple
       Automation:
         style: column
         columns: 2
@@ -54,7 +50,8 @@ data:
         style: column
         icon: mdi-database
       System:
-        style: column
+        style: row
+        columns: 3
         icon: mdi-application
   custom.css: ""
   custom.js: ""
