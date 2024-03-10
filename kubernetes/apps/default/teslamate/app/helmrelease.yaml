@@ -43,7 +43,8 @@ spec:
               repository: teslamate/teslamate
               tag: 1.28.3
             env:
-              TZ: America/Vancouver
+              TZ: &tz America/Vancouver
+              TM_TZ: *tz
               DISABLE_MQTT: "false"
               MQTT_HOST: mosquitto.default.svc.cluster.local
             envFrom:
