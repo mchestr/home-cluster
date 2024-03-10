@@ -22,6 +22,12 @@ spec:
           reloader.stakater.com/auto: "true"
 
         pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
           annotations:
             k8s.v1.cni.cncf.io/networks: |
               [{
@@ -46,9 +52,12 @@ spec:
             image:
               repository: public.ecr.aws/docker/library/eclipse-mosquitto
               tag: 2.0.18
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 5m
                 memory: 10M
               limits:
                 memory: 10M
