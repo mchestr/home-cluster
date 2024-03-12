@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -34,12 +34,12 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
 
     controllers:
-      main:
+      appdaemon:
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/mchestr/appdaemon
               tag: 4.4.2
@@ -54,13 +54,14 @@ spec:
               tag: 1.87.1@sha256:357e0aa8b6c5305bc54b137ace115e906c2d15ba60f23688acde48fef6be4255
 
     service:
-      main:
+      app:
+        controller: appdaemon
         ports:
           http:
             port: 5050
 
     ingress:
-      main:
+      app:
         enabled: true
         className: internal
         annotations:
@@ -79,7 +80,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
@@ -87,12 +88,11 @@ spec:
 
     persistence:
       config:
-        enabled: true
         existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
           - path: /conf
+
       secrets:
-        enabled: true
         type: secret
         name: appdaemon-secret
         globalMounts:
@@ -100,15 +100,14 @@ spec:
             subPath: secrets.yaml
 
       deploykey:
-        enabled: true
         type: secret
         name: appdaemon-deploykey-secret
         advancedMounts:
-          main:
+          appdaemon:
             vscode-tunnel:
               - path: /home/kah/.ssh
+
       vscode-tunnel:
-        enabled: true
         size: 1Gi
         storageClass: ceph-block
         accessMode: ReadWriteOnce
