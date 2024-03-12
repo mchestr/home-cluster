@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,7 +26,7 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      atuin:
         replicas: 2
         strategy: RollingUpdate
         annotations:
@@ -39,8 +39,9 @@ spec:
             envFrom:
               - secretRef:
                   name: atuin-dbinit-secret
+
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/atuinsh/atuin
               tag: v18.1.0@sha256:c1245d9bbaf9ef1610a973750003d634d55e52ffb3e14caa9bb47c867e1f6c6e
@@ -72,24 +73,29 @@ spec:
             runAsNonRoot: true
             fsGroup: 568
             fsGroupChangePolicy: OnRootMismatch
+
     service:
-      main:
+      app:
+        controller: atuin
         ports:
           http:
             port: *port
           metrics:
             port: *metricsPort
+
     serviceMonitor:
-      main:
+      app:
         enabled: true
+        serviceName: atuin
         endpoints:
           - port: metrics
             scheme: http
             path: /metrics
             interval: 1m
             scrapeTimeout: 10s
+
     ingress:
-      main:
+      app:
         enabled: true
         className: internal
         hosts:
@@ -97,11 +103,12 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
               - *host
+
     persistence:
       config:
         enabled: true
