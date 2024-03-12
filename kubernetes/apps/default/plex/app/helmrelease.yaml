@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -50,9 +50,9 @@ spec:
               topologyKey: kubernetes.io/hostname
 
     controllers:
-      main:
+      plex:
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/onedr0p/plex
               tag: 1.40.0.7998-c29d4c0c8@sha256:e49a8028acf71c62b988826e79061996f1c89ef9a4e8b52daba4826d677958d6
@@ -68,8 +68,9 @@ spec:
                 nvidia.com/gpu: 1
 
     service:
-      main:
+      app:
         type: LoadBalancer
+        controller: plex
         annotations:
           io.cilium/lb-ipam-ips: 192.168.100.30
         externalTrafficPolicy: Cluster
@@ -81,7 +82,7 @@ spec:
             targetPort: 32400
 
     ingress:
-      main:
+      app:
         enabled: true
         className: external
         annotations:
@@ -99,7 +100,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
@@ -118,4 +119,15 @@ spec:
           - path: /media
       transcode:
         enabled: true
+        type: emptyDir
+      # Separate PVC for cache to avoid backing up cache files
+      cache:
+        existingClaim: plex-cache
+        globalMounts:
+          - path: /config/Library/Application Support/Plex Media Server/Cache
+      logs:
+        type: emptyDir
+        globalMounts:
+          - path: /config/Library/Application Support/Plex Media Server/Logs
+      tmp:
         type: emptyDir
