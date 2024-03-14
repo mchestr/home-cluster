@@ -62,10 +62,7 @@ spec:
               ]
             image:
               repository: ghcr.io/authelia/authelia
-              # TODO use tag when one available with https://github.com/authelia/authelia/pull/4515
-              # renovate: datasource=github-releases depName=authelia/authelia
-              # tag: "v4.37.5"
-              tag: master@sha256:34074cfbb27c9a09497fcdade515cf06782cf917d852a842e7d2c9906db92b65
+              tag: 4.38.0
 
             env:
               AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ADDITIONAL_GROUPS_DN: ou=groups
