@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,7 +26,7 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      maintainerr:
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -38,7 +38,7 @@ spec:
             fsGroupChangePolicy: OnRootMismatch
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/jorenn92/maintainerr
               tag: 2.0.2@sha256:a96ade5065464a9474e31984990f37a025da08db779940cd7dbe77a7fec55f0a
@@ -50,13 +50,14 @@ spec:
                 memory: 512Mi
 
     service:
-      main:
+      app:
+        controller: maintainerr
         ports:
           http:
             port: 6246
 
     ingress:
-      main:
+      app:
         enabled: true
         className: internal
         annotations:
@@ -70,7 +71,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
