@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -24,12 +24,12 @@ spec:
         supplementalGroups:
           - 65539
     controllers:
-      main:
+      postgres-backup:
         type: cronjob
         cronjob:
           schedule: 0 12 * * *
         containers:
-          main:
+          app:
             image:
               repository: docker.io/prodrigestivill/postgres-backup-local
               tag: 16
@@ -53,13 +53,7 @@ spec:
           #     POSTGRES_DB: immich
           #   command: /backup.sh
 
-    service:
-      main:
-        enabled: false
-
     persistence:
-      config:
-        enabled: false
       backups:
         enabled: true
         type: nfs
