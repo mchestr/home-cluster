@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -38,9 +38,9 @@ spec:
         intel.feature.node.kubernetes.io/gpu: "true"
 
     controllers:
-      main:
+      jellyfin:
         containers:
-          main:
+          app:
             image:
               repository: jellyfin/jellyfin
               tag: 10.8.13
@@ -84,7 +84,8 @@ spec:
                   failureThreshold: 30
 
     service:
-      main:
+      app:
+        controller: jellyfin
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: *ip
@@ -93,7 +94,7 @@ spec:
             port: 8096
 
     ingress:
-      main:
+      app:
         enabled: true
         className: internal
         annotations:
@@ -110,7 +111,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
