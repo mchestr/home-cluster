@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -32,7 +32,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
 
     controllers:
-      main:
+      displex:
         replicas: 2
         strategy: RollingUpdate
         annotations:
@@ -48,7 +48,7 @@ spec:
                   name: displex-dbinit-secret
 
         containers:
-          main:
+          app:
             image: &image
               repository: ghcr.io/mchestr/displex
               tag: main@sha256:e7dd9254926dc8761cf013e5fb8e3bb036fa66e0047f10376e60b43f02e991a3
@@ -67,7 +67,7 @@ spec:
       bot:
         type: deployment
         containers:
-          main:
+          app:
             args:
               - bot
             image: *image
@@ -85,7 +85,7 @@ spec:
           successfulJobsHistory: 1
           ttlSecondsAfterFinished: 30
         containers:
-          main:
+          app:
             args:
               - channel-refresh
             env: *envRo
@@ -101,7 +101,7 @@ spec:
           ttlSecondsAfterFinished: 30
 
         containers:
-          main:
+          app:
             args:
               - requests-upgrade
             image: *image
@@ -117,7 +117,7 @@ spec:
           ttlSecondsAfterFinished: 30
 
         containers:
-          main:
+          app:
             args:
               - token-maintenance
             image: *image
@@ -133,7 +133,7 @@ spec:
           ttlSecondsAfterFinished: 30
 
         containers:
-          main:
+          app:
             args:
               - user-refresh
             image: *image
@@ -141,13 +141,14 @@ spec:
             resources: *resources
 
     service:
-      main:
+      app:
+        controller: displex
         ports:
           http:
             port: 8080
 
     ingress:
-      main:
+      app:
         enabled: true
         className: external
         annotations:
@@ -163,7 +164,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
@@ -174,7 +175,6 @@ spec:
         enabled: true
         type: secret
         name: displex-secret
-        readOnly: true
         globalMounts:
           - path: /data/displex.toml
             subPath: displex.toml
