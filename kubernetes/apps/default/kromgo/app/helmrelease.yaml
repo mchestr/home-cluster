@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,13 +26,13 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      kromgo:
         replicas: 2
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/kashalls/kromgo
               tag: 0.3.0@sha256:7fa9b72f306b0970a16667f97604b4f3ebac2bdd1de29132bf81d8e6072abaf2
@@ -62,13 +62,14 @@ spec:
                 matchLabels:
                   app.kubernetes.io/name: *app
     service:
-      main:
+      app:
+        controller: kromgo
         ports:
           http:
             port: *port
 
     ingress:
-      main:
+      app:
         enabled: true
         className: external
         annotations:
@@ -78,7 +79,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
@@ -91,4 +92,3 @@ spec:
         globalMounts:
           - path: /kromgo/config.yaml
             subPath: config.yaml
-            readOnly: true
