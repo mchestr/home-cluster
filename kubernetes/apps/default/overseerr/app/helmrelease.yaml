@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -31,12 +31,12 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
 
     controllers:
-      main:
+      overseerr:
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/sct/overseerr
               tag: 1.33.2
@@ -46,13 +46,14 @@ spec:
               PORT: 5055
 
     service:
-      main:
+      app:
+        controller: overseerr
         ports:
           http:
             port: 5055
 
     ingress:
-      main:
+      app:
         enabled: true
         className: external
         annotations:
@@ -70,7 +71,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
