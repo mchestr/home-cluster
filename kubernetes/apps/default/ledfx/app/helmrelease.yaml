@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,7 +26,7 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      ledfx:
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -40,7 +40,7 @@ spec:
               }]
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/mchestr/ledfx
               tag: v2.0.94
@@ -66,13 +66,14 @@ spec:
                 enabled: false
 
     service:
-      main:
+      app:
+        controller: ledfx
         ports:
           http:
             port: *port
 
     ingress:
-      main:
+      app:
         enabled: true
         className: internal
         annotations:
@@ -86,7 +87,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
