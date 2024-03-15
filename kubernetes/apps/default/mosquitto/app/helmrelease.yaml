@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -16,7 +16,7 @@ spec:
         namespace: flux-system
   values:
     controllers:
-      main:
+      mosquitto:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
@@ -48,7 +48,7 @@ spec:
               - cp /data/mosquitto_secret/* /mosquitto/external_config/ && mosquitto_passwd -U /mosquitto/external_config/mosquitto_pwd && chmod 600 /mosquitto/external_config/mosquitto_pwd
 
         containers:
-          main:
+          app:
             image:
               repository: public.ecr.aws/docker/library/eclipse-mosquitto
               tag: 2.0.18
@@ -72,10 +72,9 @@ spec:
                 - path: /data
 
     service:
-      main:
+      app:
+        controller: mosquitto
         ports:
-          http:
-            enabled: false
           mqtt:
             enabled: true
             port: 1883
