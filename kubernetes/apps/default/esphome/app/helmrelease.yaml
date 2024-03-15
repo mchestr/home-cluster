@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       interval: 15m
       sourceRef:
         kind: HelmRepository
@@ -27,7 +27,7 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      esphome:
         pod:
           annotations:
             k8s.v1.cni.cncf.io/networks: |
@@ -40,7 +40,7 @@ spec:
           reloader.stakater.com/auto: "true"
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/esphome/esphome
               tag: 2024.2.2@sha256:96e4ea5664de466af3549f28862290bbbc2bd1cadf444393c91a97256ed51ae8
@@ -48,13 +48,14 @@ spec:
               TZ: America/Vancouver
 
     service:
-      main:
+      app:
+        controller: esphome
         ports:
           http:
             port: 6052
 
     ingress:
-      main:
+      app:
         enabled: true
         className: internal
         annotations:
@@ -73,7 +74,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
