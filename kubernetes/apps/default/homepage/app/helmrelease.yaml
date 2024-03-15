@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -21,14 +21,14 @@ spec:
       retries: 5
   values:
     controllers:
-      main:
+      homepage:
         replicas: 1
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/gethomepage/homepage
               tag: v0.8.9
@@ -45,13 +45,14 @@ spec:
                 memory: 500Mi
 
     service:
-      main:
+      app:
+        controller: homepage
         ports:
           http:
             port: 3000
 
     ingress:
-      main:
+      app:
         enabled: true
         className: internal
         hosts:
@@ -60,7 +61,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
