@@ -62,7 +62,7 @@ spec:
               ]
             image:
               repository: ghcr.io/authelia/authelia
-              tag: 4.38.1
+              tag: 4.38.3
 
             env:
               AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ADDITIONAL_GROUPS_DN: ou=groups
