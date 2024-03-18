@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -25,12 +25,12 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      system-upgrade-controller:
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             image:
               repository: docker.io/rancher/system-upgrade-controller
               tag: v0.13.4@sha256:3df6d01b9eb583a78c309ce0b2cfeed98a9af97983e4ea96bf53410dd56c6f45
@@ -73,6 +73,7 @@ spec:
             - { key: node-role.kubernetes.io/controlplane, operator: Exists, effect: NoSchedule }
             - { key: node-role.kubernetes.io/control-plane, operator: Exists, effect: NoSchedule }
             - { key: node-role.kubernetes.io/etcd, operator: Exists, effect: NoExecute }
+
     persistence:
       etc-ssl:
         type: hostPath
@@ -97,8 +98,6 @@ spec:
             readOnly: true
       tmp:
         type: emptyDir
-    service:
-      main:
-        enabled: false
+
     serviceAccount:
       name: system-upgrade
