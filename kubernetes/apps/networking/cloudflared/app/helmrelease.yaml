@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -34,14 +34,15 @@ spec:
           labelSelector:
             matchLabels:
               app.kubernetes.io/name: cloudflared
+
     controllers:
-      main:
+      cloudflared:
         replicas: 2
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             image:
               repository: docker.io/cloudflare/cloudflared
               tag: 2024.2.1
@@ -76,17 +77,19 @@ spec:
               - --config
               - /etc/cloudflared/config/config.yaml
               - run
+
     service:
-      main:
+      app:
+        controller: cloudflared
         ports:
           http:
             port: 8080
+
     persistence:
       config:
         enabled: true
         type: secret
         name: cloudflared-tunnel-secret
-        readOnly: true
         globalMounts:
           - path: /etc/cloudflared/config/config.yaml
             subPath: config.yaml
@@ -94,13 +97,13 @@ spec:
         enabled: true
         type: secret
         name: cloudflared-tunnel-secret
-        readOnly: true
         globalMounts:
           - path: /etc/cloudflared/creds/credentials.json
             subPath: credentials.json
+
     serviceMonitor:
-      main:
-        enabled: true
+      app:
+        serviceName: cloudflared
         endpoints:
           - port: http
             scheme: http
