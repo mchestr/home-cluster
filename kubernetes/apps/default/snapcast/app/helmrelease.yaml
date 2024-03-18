@@ -25,6 +25,12 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    defaultPodOptions:
+      # Needed for mDNS to work with Spotify devices
+      # Probably need to look into multus for better solution
+      # And directly attach pod to IoT VLAN
+      hostNetwork: true
+
     controllers:
       snapcast:
         annotations:
@@ -38,14 +44,6 @@ spec:
             env:
               TZ: America/Vancouver
 
-        pod:
-          annotations:
-            k8s.v1.cni.cncf.io/networks: |
-              [{
-                "name":"multus-iot",
-                "namespace": "networking",
-                "ips": ["10.0.10.217/24"]
-              }]
     service:
       app:
         controller: snapcast
