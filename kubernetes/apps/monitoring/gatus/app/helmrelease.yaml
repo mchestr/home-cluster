@@ -109,11 +109,10 @@ spec:
         controller: gatus
         ports:
           http:
-            port: 8080
+            port: *port
 
     ingress:
       app:
-        enabled: true
         className: internal
         annotations:
           gethomepage.dev/enabled: "true"
@@ -134,10 +133,8 @@ spec:
 
     persistence:
       config:
-        enabled: true
         type: emptyDir
       config-file:
-        enabled: true
         type: configMap
         name: gatus-configmap
         globalMounts:
@@ -145,9 +142,8 @@ spec:
             subPath: config.yaml
 
     serviceMonitor:
-      main:
+      app:
         serviceName: gatus
-        enabled: true
         endpoints:
           - port: http
             scheme: http
