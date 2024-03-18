@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       interval: 15m
       sourceRef:
         kind: HelmRepository
@@ -31,7 +31,7 @@ spec:
         reloader.stakater.com/auto: "true"
 
     controllers:
-      main:
+      gatus:
         replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
@@ -65,7 +65,7 @@ spec:
               repository: ghcr.io/kiwigrid/k8s-sidecar
               tag: 1.26.1
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/twin/gatus
               tag: v5.8.0@sha256:fecb4c38722df59f5e00ab4fcf2393d9b8dad9161db208d8d79386dc86da8a55
@@ -93,14 +93,18 @@ spec:
                 value: "true"
               - name: METHOD
                 value: WATCH
+
     service:
-      main:
+      app:
+        controller: gatus
         ports:
           http:
             port: 8080
+
     ingress:
-      main:
+      app:
         enabled: true
+        className: internal
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: gatus.png
@@ -112,12 +116,12 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
               - *host
-        className: internal
+
     persistence:
       config:
         enabled: true
@@ -126,12 +130,13 @@ spec:
         enabled: true
         type: configMap
         name: gatus-configmap
-        readOnly: true
         globalMounts:
           - path: /config/config.yaml
             subPath: config.yaml
+
     serviceMonitor:
       main:
+        serviceName: gatus
         enabled: true
         endpoints:
           - port: http
@@ -139,6 +144,7 @@ spec:
             path: /metrics
             interval: 1m
             scrapeTimeout: 10s
+
     serviceAccount:
       create: true
       name: gatus
