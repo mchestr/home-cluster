@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -23,9 +23,9 @@ spec:
         runAsGroup: 568
 
     controllers:
-      main:
+      qbtools:
         containers:
-          main:
+          app:
             image: &image
               repository: ghcr.io/buroa/qbtools
               tag: v0.15.0
@@ -51,7 +51,7 @@ spec:
           successfulJobsHistory: 1
           ttlSecondsAfterFinished: 30
         containers:
-          main:
+          app:
             image: *image
             resources: *resources
             args:
@@ -75,7 +75,7 @@ spec:
           successfulJobsHistory: 1
           ttlSecondsAfterFinished: 30
         containers:
-          main:
+          app:
             image: *image
             resources: *resources
             args:
@@ -99,7 +99,7 @@ spec:
           successfulJobsHistory: 1
           ttlSecondsAfterFinished: 30
         containers:
-          main:
+          app:
             image: *image
             resources: *resources
             args:
@@ -118,11 +118,6 @@ spec:
         enabled: true
         type: configMap
         name: qbittorrent-tools-configmap
-        readOnly: true
         globalMounts:
           - path: /config/config.yaml
             subPath: config.yaml
-
-    service:
-      main:
-        enabled: false
