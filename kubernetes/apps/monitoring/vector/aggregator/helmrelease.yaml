@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,7 +26,7 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      vector-aggregator:
         initContainers:
           init-geoip:
             image:
@@ -46,15 +46,17 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/mchestr/vector
               tag: 0.36.1-debian
             args:
               - --config
               - /etc/vector/vector.yaml
+
     service:
-      main:
+      app:
+        controller: vector-aggregator
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: vector.chestr.dev
@@ -78,12 +80,12 @@ spec:
           talos-service:
             enabled: true
             port: 6051
+
     persistence:
       config:
         enabled: true
         type: configMap
         name: vector-aggregator-configmap
-        readOnly: true
         globalMounts:
           - path: /etc/vector/vector.yaml
             subPath: vector.yaml
