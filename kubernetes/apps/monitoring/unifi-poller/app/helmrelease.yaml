@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -27,11 +27,11 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      unifi-poller:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/unpoller/unpoller
               tag: v2.10.0
@@ -54,14 +54,17 @@ spec:
                 memory: 79M
               limits:
                 memory: 102M
+
     service:
-      main:
+      app:
+        controller: unifi-poller
         ports:
           http:
             port: 9130
+
     serviceMonitor:
-      main:
-        enabled: true
+      app:
+        serviceName: unifi-poller
         endpoints:
           - port: http
             scheme: http
