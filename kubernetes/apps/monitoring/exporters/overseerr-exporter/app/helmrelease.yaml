@@ -67,7 +67,7 @@ spec:
 
     serviceMonitor:
       app:
-        serviceame: overseerr-exporter
+        serviceName: overseerr-exporter
         endpoints:
           - port: http
             scheme: http
