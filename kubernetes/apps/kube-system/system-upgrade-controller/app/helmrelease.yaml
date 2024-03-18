@@ -49,6 +49,12 @@ spec:
                 valueFrom:
                   fieldRef:
                     fieldPath: metadata.namespace
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+              seccompProfile:
+                type: RuntimeDefault
         pod:
           affinity:
             nodeAffinity:
@@ -61,12 +67,6 @@ spec:
             runAsNonRoot: true
             runAsUser: 65534
             runAsGroup: 65534
-            allowPrivilegeEscalation: false
-            seccompProfile:
-              type: RuntimeDefault
-            capabilities:
-              drop:
-                - ALL
           tolerations:
             - { key: CriticalAddonsOnly, operator: Exists }
             - { key: node-role.kubernetes.io/master, operator: Exists, effect: NoSchedule }
