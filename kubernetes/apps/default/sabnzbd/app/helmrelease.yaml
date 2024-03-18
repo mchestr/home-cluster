@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -36,12 +36,12 @@ spec:
         kubernetes.io/hostname: k8s-2
 
     controllers:
-      main:
+      sabnzbd:
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/onedr0p/sabnzbd
               tag: 4.2.3@sha256:fa8ddea45e56b0e36454c3c0eb30ff5521d90aeb5b35301656ae9236680be3a9
@@ -64,13 +64,14 @@ spec:
                 memory: 250Mi
 
     service:
-      main:
+      app:
+        controller: sabnzbd
         ports:
           http:
             port: 8080
 
     ingress:
-      main:
+      app:
         enabled: true
         className: internal
         annotations:
@@ -96,7 +97,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
@@ -116,3 +117,5 @@ spec:
       incomplete:
         enabled: true
         type: emptyDir
+        globalMounts:
+          - path: /incomplete
