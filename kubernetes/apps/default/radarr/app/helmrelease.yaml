@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -35,7 +35,7 @@ spec:
           - 65539
 
     controllers:
-      main:
+      radarr:
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -49,7 +49,7 @@ spec:
                   name: radarr-dbinit-secret
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/onedr0p/radarr-develop
               tag: 5.4.3.8677@sha256:5af64ec397048c9c86a306b18072aa4c1ce60cd7ce6674c111ef59517ea96ea0
@@ -67,7 +67,8 @@ spec:
                   name: radarr-secret
 
     service:
-      main:
+      app:
+        controller: radarr
         ports:
           http:
             port: 7878
@@ -95,15 +96,13 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
               - *host
 
     persistence:
-      config:
-        enabled: false
       media:
         enabled: true
         type: nfs
@@ -116,7 +115,6 @@ spec:
         type: configMap
         name: radarr-pushover
         defaultMode: 509
-        readOnly: true
         globalMounts:
           - path: /scripts/pushover-notify.sh
             subPath: pushover-notify.sh
