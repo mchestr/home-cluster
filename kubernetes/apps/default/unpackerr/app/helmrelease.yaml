@@ -53,10 +53,10 @@ spec:
               UN_RADARR_0_PATHS_0: /complete/radarr
             envFrom:
               - secretRef:
-                  name: unpackerr
+                  name: unpackerr-secret
 
     service:
-      app:
+      unpackerr:
         controller: unpackerr
         ports:
           http:
@@ -73,5 +73,10 @@ spec:
 
     serviceMonitor:
       app:
-        serviceName: app
-        enabled: true
+        serviceName: unpackerr
+        endpoints:
+          - port: http
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
