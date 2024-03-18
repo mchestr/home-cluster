@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,7 +26,7 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      teslamate:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
@@ -38,7 +38,7 @@ spec:
               - secretRef:
                   name: teslamate-dbinit-secret
         containers:
-          main:
+          app:
             image:
               repository: teslamate/teslamate
               tag: 1.28.3
@@ -51,13 +51,14 @@ spec:
                   name: teslamate-secret
 
     service:
-      main:
+      app:
+        controller: teslamate
         ports:
           http:
             port: 4000
 
     ingress:
-      main:
+      app:
         enabled: true
         className: internal
         annotations:
@@ -75,7 +76,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
