@@ -1,13 +1,19 @@
 ---
+metrics: true
+debug: false
+
 storage:
   type: postgres
   path: postgres://${INIT_POSTGRES_USER}:${INIT_POSTGRES_PASS}@${INIT_POSTGRES_HOST}:5432/${INIT_POSTGRES_DBNAME}?sslmode=disable
   caching: true
-metrics: true
-debug: false
+
 ui:
   title: Status | Gatus
   header: Status
+
+web:
+  port: ${CUSTOM_WEB_PORT}
+
 connectivity:
   checker:
     target: 1.1.1.1:53
@@ -15,13 +21,13 @@ connectivity:
 
 alerting:
   pushover:
-    application-token: ${CUSTOM_PUSHOVER_GATUS_TOKEN}
-    user-key: ${CUSTOM_PUSHOVER_USER_KEY}
+    application-token: ${GATUS_PUSHOVER_APP_TOKEN}
+    user-key: ${GATUS_PUSHOVER_USER_KEY}
     default-alert:
       description: healthcheck failed
       send-on-resolved: true
-      failure-threshold: 5
-      success-threshold: 2
+      failure-threshold: 3
+      success-threshold: 5
 
 endpoints:
   - name: status
