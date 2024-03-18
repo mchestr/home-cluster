@@ -112,6 +112,6 @@ spec:
         storageClass: ceph-block
         accessMode: ReadWriteOnce
         advancedMounts:
-          main:
+          appdaemon:
             vscode-tunnel:
               - path: /home/kah
