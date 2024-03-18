@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -22,12 +22,12 @@ spec:
       retries: 3
   values:
     controllers:
-      main:
+      palworld:
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          main:
+          app:
             image:
               repository: thijsvanloef/palworld-server-docker
               tag: v0.32.2
@@ -50,7 +50,8 @@ spec:
                 memory: 10Gi
 
     service:
-      main:
+      app:
+        controller: palworld
         type: LoadBalancer # Setting Ip external to cluster for easy port forward
         externalTrafficPolicy: Cluster
         loadBalancerIP: 192.168.100.215
