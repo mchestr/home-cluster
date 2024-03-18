@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,12 +26,12 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      wizarr:
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/wizarrrr/wizarr
               tag: dev@sha256:4961f8f7c88298db78bacc3bb0f8ab7d7de68b5cf1a3a446094f15d1920a8975
@@ -41,13 +41,14 @@ spec:
               DISABLE_BUILTIN_AUTH: "true"
 
     service:
-      main:
+      app:
+        controller: wizarr
         ports:
           http:
             port: 5690
 
     ingress:
-      main:
+      app:
         enabled: true
         className: external
         annotations:
@@ -67,7 +68,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
