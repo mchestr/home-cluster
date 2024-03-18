@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -30,7 +30,7 @@ spec:
       enableServiceLinks: false
 
     controllers:
-      main:
+      paperless:
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -44,7 +44,7 @@ spec:
                   name: paperless-dbinit-secret
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/paperless-ngx/paperless-ngx
               tag: 2.6.2
@@ -77,7 +77,7 @@ spec:
 
       gotenburg:
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/mchestr/gotenberg
               tag: 8.2.2
@@ -87,7 +87,7 @@ spec:
 
       tika:
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/paperless-ngx/tika
               tag: 2.9.1-full
@@ -95,14 +95,14 @@ spec:
 
       redis:
         containers:
-          main:
+          app:
             image:
               repository: public.ecr.aws/docker/library/redis
               tag: 7.2.4@sha256:3134997edb04277814aa51a4175a588d45eb4299272f8eff2307bbf8b39e4d43
 
     service:
-      main:
-        controller: main
+      paperless:
+        controller: paperless
         ports:
           http:
             port: 8000
@@ -142,7 +142,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
+                  identifier: paperless
                   port: http
         tls:
           - hosts:
@@ -153,16 +153,17 @@ spec:
         enabled: true
         existingClaim: ${VOLSYNC_CLAIM}
         advancedMounts:
-          main:
-            main:
+          paperless:
+            app:
               - subPath: data
                 path: /usr/src/paperless/data
               - subPath: media
                 path: /usr/src/paperless/media
 
     networkpolicies:
-      main:
+      paperless:
         enabled: true
+        controller: paperless
 
         policyTypes:
           - Ingress
