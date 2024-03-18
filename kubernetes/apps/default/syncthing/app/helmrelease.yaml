@@ -69,7 +69,6 @@ spec:
       discovery:
         controller: syncthing
         type: LoadBalancer
-        externalIPs:
         loadBalancerIP: 192.168.100.140
         externalTrafficPolicy: Local
         annotations:
