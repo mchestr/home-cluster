@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -33,12 +33,12 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
 
     controllers:
-      main:
+      recyclarr:
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/recyclarr/recyclarr
               tag: 6.0.2
@@ -54,10 +54,6 @@ spec:
               limits:
                 memory: 200Mi
 
-    service:
-      main:
-        enabled: false
-
     persistence:
       config:
         enabled: true
@@ -66,7 +62,6 @@ spec:
         enabled: true
         type: configMap
         name: recyclarr-configmap
-        readOnly: true
         globalMounts:
           - path: /config/recyclarr.yml
             subPath: recyclarr.yml
