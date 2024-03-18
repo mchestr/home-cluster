@@ -32,67 +32,81 @@ spec:
 
     controllers:
       gatus:
-        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
-          01-init-db:
+          init-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: "16.2"
-            envFrom:
+              tag: 16
+            envFrom: &envFrom
               - secretRef:
                   name: gatus-dbinit-secret
-          02-config-sync:
-            imagePullPolicy: IfNotPresent
-            env:
-              - name: FOLDER
-                value: /config
-              - name: LABEL
-                value: gatus.io/enabled
-              - name: NAMESPACE
-                value: ALL
-              - name: RESOURCE
-                value: both
-              - name: UNIQUE_FILENAMES
-                value: "true"
-              - name: METHOD
-                value: LIST
-            volumeMounts:
-              - name: config
-                mountPath: /config
-            image:
+          init-config:
+            dependsOn: init-db
+            image: &syncSyncImage
               repository: ghcr.io/kiwigrid/k8s-sidecar
-              tag: 1.26.1
+              tag: 1.26.1@sha256:b8d5067137fec093cf48670dc3a1dbb38f9e734f3a6683015c2e89a45db5fd16
+            env: &configSyncEnv
+              FOLDER: /config
+              LABEL: gatus.io/enabled
+              NAMESPACE: ALL
+              RESOURCE: both
+              UNIQUE_FILENAMES: true
+              METHOD: LIST
+            resources: &resources
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
         containers:
           app:
             image:
               repository: ghcr.io/twin/gatus
               tag: v5.8.0@sha256:fecb4c38722df59f5e00ab4fcf2393d9b8dad9161db208d8d79386dc86da8a55
-            envFrom:
-              - secretRef:
-                  name: gatus-secret
             env:
               TZ: America/Vancouver
               GATUS_CONFIG_PATH: /config
-              CLUSTER_DOMAIN: chestr.dev
+              CUSTOM_WEB_PORT: &port 80
+            envFrom: *envFrom
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: &path /health
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            resources: *resources
+            securityContext: &securityContext
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
           config-sync:
-            image:
-              repository: ghcr.io/kiwigrid/k8s-sidecar
-              tag: 1.26.1
+            image: *syncSyncImage
             env:
-              - name: FOLDER
-                value: /config
-              - name: LABEL
-                value: gatus.io/enabled
-              - name: NAMESPACE
-                value: ALL
-              - name: RESOURCE
-                value: both
-              - name: UNIQUE_FILENAMES
-                value: "true"
-              - name: METHOD
-                value: WATCH
+              <<: *configSyncEnv
+              METHOD: WATCH
+            resources: *resources
+            securityContext: *securityContext
+        pod:
+          dnsConfig:
+            options:
+              - name: ndots
+                value: "1"
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
 
     service:
       app:
