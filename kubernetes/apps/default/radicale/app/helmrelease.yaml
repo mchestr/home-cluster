@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -34,12 +34,12 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
 
     controllers:
-      main:
+      radicale:
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/bjw-s/radicale
               tag: 3.1.8
@@ -51,13 +51,14 @@ spec:
                 memory: 79M
 
     service:
-      main:
+      app:
+        controller: radicale
         ports:
           http:
             port: 5232
 
     ingress:
-      main:
+      app:
         enabled: true
         className: external
         annotations:
@@ -71,7 +72,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
@@ -85,7 +86,6 @@ spec:
         enabled: true
         type: configMap
         name: radicale-config
-        readOnly: true
         globalMounts:
           - path: /config/config
             subPath: config.cfg
@@ -93,7 +93,6 @@ spec:
         enabled: true
         type: secret
         name: radicale
-        readOnly: true
         globalMounts:
           - path: /config/users
             subPath: users
