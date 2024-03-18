@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -34,14 +34,15 @@ spec:
           labelSelector:
             matchLabels:
               app.kubernetes.io/name: *app
+
     controllers:
-      main:
+      k8s-gateway:
         replicas: 2
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             image:
               repository: quay.io/oriedge/k8s_gateway
               tag: v0.4.0
@@ -65,8 +66,10 @@ spec:
                     port: 8080
                     scheme: HTTP
               startup: *readiness
+
     service:
-      main:
+      app:
+        controller: k8s-gateway
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: 192.168.100.111
@@ -79,15 +82,15 @@ spec:
             port: 53
             targetPort: 1053
             protocol: UDP
+
     persistence:
       config:
-        enabled: true
         type: configMap
         name: k8s-gateway-configmap
-        readOnly: true
         globalMounts:
           - path: /etc/coredns/Corefile
             subPath: Corefile
+
     serviceAccount:
       create: true
       name: k8s-gateway
