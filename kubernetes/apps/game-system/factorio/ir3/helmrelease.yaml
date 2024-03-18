@@ -74,8 +74,6 @@ spec:
           io.cilium/lb-ipam-sharing-key: factorio-ir3
         enabled: true
         ports:
-          http:
-            enabled: false
           server:
             enabled: true
             port: *port
