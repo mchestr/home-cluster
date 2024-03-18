@@ -2,6 +2,13 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - configmap.yaml
   - helmrelease.yaml
   - ../../../../templates/gatus/internal
+configMapGenerator:
+  - name: snapcast-config
+    files:
+      - resources/snapserver.conf
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
