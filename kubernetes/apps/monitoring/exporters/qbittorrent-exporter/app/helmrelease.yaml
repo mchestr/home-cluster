@@ -24,9 +24,9 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      qbittorrent-exporter:
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/esanchezm/prometheus-qbittorrent-exporter
               tag: v1.5.1@sha256:3aef59197a9f14fc36a9963848d495f9a85e4f096b448a0ed4cb3aca122e793b
@@ -53,11 +53,18 @@ spec:
             runAsNonRoot: true
 
     service:
-      main:
+      app:
+        controller: qbittorrent-exporter
         ports:
           http:
             port: *port
 
     serviceMonitor:
-      main:
-        enabled: true
+      app:
+        serviceName: qbittorrent-exporter
+        endpoints:
+          - port: http
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 1m
