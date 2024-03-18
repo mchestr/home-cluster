@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -25,9 +25,9 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      syncthing:
         containers:
-          main:
+          app:
             image:
               repository: syncthing/syncthing
               tag: 1.27.4
@@ -44,13 +44,16 @@ spec:
             runAsGroup: 568
             fsGroup: 568
             fsGroupChangePolicy: OnRootMismatch
+
     service:
-      main:
+      app:
+        controller: syncthing
         ports:
           http:
             port: 8384
+
       listen:
-        controller: main
+        controller: syncthing
         type: LoadBalancer
         loadBalancerIP: 192.168.100.140
         externalTrafficPolicy: Local
@@ -62,8 +65,9 @@ spec:
             port: 22000
             protocol: TCP
             targetPort: 22000
+
       discovery:
-        controller: main
+        controller: syncthing
         type: LoadBalancer
         externalIPs:
         loadBalancerIP: 192.168.100.140
@@ -76,8 +80,9 @@ spec:
             port: 21027
             protocol: UDP
             targetPort: 21027
+
     ingress:
-      main:
+      app:
         enabled: true
         className: internal
         annotations:
@@ -90,11 +95,12 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
               - *host
+
     persistence:
       data:
         enabled: true
