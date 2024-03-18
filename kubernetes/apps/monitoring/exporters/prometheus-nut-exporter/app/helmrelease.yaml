@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,10 +26,10 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      prometheus-nut-exporter:
         strategy: RollingUpdate
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/mchestr/prometheus-nut-exporter
               tag: 1.2.1
@@ -43,15 +43,18 @@ spec:
               requests:
                 cpu: 1m
                 memory: 8Mi
+
     service:
-      main:
+      app:
+        controller: prometheus-nut-exporter
         ports:
           http:
             protocol: TCP
             port: 9995
+
     serviceMonitor:
-      main:
-        enabled: true
+      app:
+        serviceName: prometheus-nut-exporter
         endpoints:
           - port: http
             interval: 15s
