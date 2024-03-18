@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -22,7 +22,7 @@ spec:
       retries: 5
   values:
     controllers:
-      main:
+      factorio-ir3:
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -41,7 +41,7 @@ spec:
                 cp -vL /kubefilesmods/* /factorio/mods/
 
         containers:
-          main:
+          app:
             image:
               repository: factoriotools/factorio
               tag: stable
@@ -64,7 +64,8 @@ spec:
                 memory: 8006M
 
     service:
-      main:
+      app:
+        controller: factorio-ir3
         type: LoadBalancer # Setting Ip external to cluster for easy port forward
         externalTrafficPolicy: Local
         loadBalancerIP: 192.168.100.240
