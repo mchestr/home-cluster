@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,12 +26,12 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      unifi:
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/goofball222/unifi
               tag: 8.0.28
@@ -46,8 +46,8 @@ spec:
               JVM_MAX_HEAP_SIZE: 1024M
 
     service:
-      main:
-        enabled: true
+      app:
+        controller: unifi
         type: LoadBalancer
         externalTrafficPolicy: Local
         loadBalancerIP: 192.168.100.88
@@ -88,7 +88,7 @@ spec:
             protocol: UDP
 
     ingress:
-      main:
+      app:
         enabled: true
         className: internal
         annotations:
@@ -103,7 +103,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
