@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -24,11 +24,11 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      overseerr-exporter:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/willfantom/overseerr-exporter
               tag: 1.2.1@sha256:b5cbff0fcd04a118190849b1ed92f51669109f766171106fc0b87f7a8562273b
@@ -57,14 +57,17 @@ spec:
             runAsUser: 568
             runAsGroup: 568
             runAsNonRoot: true
+
     service:
-      main:
+      app:
+        controller: overseerr-exporter
         ports:
           http:
             port: 9850
+
     serviceMonitor:
-      main:
-        enabled: true
+      app:
+        serviceame: overseerr-exporter
         endpoints:
           - port: http
             scheme: http
