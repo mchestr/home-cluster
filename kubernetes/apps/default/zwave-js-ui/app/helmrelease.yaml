@@ -30,12 +30,12 @@ spec:
         feature.node.kubernetes.io/zwave: "true"
 
     controllers:
-      main:
+      zwave-js-ui:
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/zwave-js/zwave-js-ui
               tag: 9.9.1
@@ -45,13 +45,14 @@ spec:
               privileged: true
 
     service:
-      main:
+      app:
+        controller: zwave-js-ui
         ports:
           http:
             port: 8091
 
     ingress:
-      main:
+      app:
         enabled: true
         className: internal
         annotations:
@@ -70,7 +71,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
