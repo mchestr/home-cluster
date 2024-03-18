@@ -75,8 +75,6 @@ spec:
           io.cilium/lb-ipam-ips: 192.168.100.111
         externalTrafficPolicy: Cluster
         ports:
-          http:
-            enabled: false
           dns:
             enabled: true
             port: 53
