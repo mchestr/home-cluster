@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -24,11 +24,11 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      sabnzbd-exporter:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/onedr0p/exportarr
               tag: v2.0.0@sha256:760327e885a9bb5b818b56e8a6f818c9570eeaa9484bed122028adbf80bcaeb9
@@ -59,11 +59,18 @@ spec:
             runAsNonRoot: true
 
     service:
-      main:
+      app:
+        controller: sabnzbd-exporter
         ports:
           http:
             port: *port
 
     serviceMonitor:
-      main:
-        enabled: true
+      app:
+        serviceName: sabnzbd-exporter
+        endpoints:
+          - port: http
+            scheme: http
+            path: /metrics
+            interval: 3m
+            scrapeTimeout: 1m
