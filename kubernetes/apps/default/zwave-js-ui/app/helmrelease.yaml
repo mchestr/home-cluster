@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -45,7 +45,7 @@ spec:
               privileged: true
 
     service:
-      app:
+      zwave-js-ui:
         controller: zwave-js-ui
         ports:
           http:
@@ -71,7 +71,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  identifier: app
+                  identifier: zwave-js-ui
                   port: http
         tls:
           - hosts:
