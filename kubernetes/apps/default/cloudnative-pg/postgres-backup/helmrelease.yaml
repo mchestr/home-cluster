@@ -26,32 +26,32 @@ spec:
     controllers:
       postgres-backup:
         type: cronjob
-        cronjob:
+        cronjob: &cronjob
           schedule: 0 12 * * *
         containers:
-          app:
-            image:
+          postgres:
+            image: &image
               repository: docker.io/prodrigestivill/postgres-backup-local
               tag: 16
-            envFrom:
+            envFrom: &envFrom
               - secretRef:
                   name: postgres-backups-secret
             env:
               POSTGRES_HOST: postgres16-rw.default.svc.cluster.local
-              POSTGRES_DB: atuin,authelia,autobrr,displex,gatus,grafana,lldap,paperless,prowlarr_log,prowlarr_main,radarr_log,radarr_main,sonarr_log,sonarr_main
-            command: /backup.sh
+              POSTGRES_DB: atuin,authelia,autobrr,displex,gatus,grafana,lldap,paperless,prowlarr_log,prowlarr_main,radarr_log,radarr_main,sonarr_log,sonarr_main,teslamate
+            command: &command /backup.sh
 
-          # immich:
-          #   image:
-          #     repository: docker.io/prodrigestivill/postgres-backup-local
-          #     tag: 16
-          #   envFrom:
-          #     - secretRef:
-          #         name: postgres-backups-secret
-          #   env:
-          #     POSTGRES_HOST: immich-db-rw.default.svc.cluster.local
-          #     POSTGRES_DB: immich
-          #   command: /backup.sh
+      postgres-backup-immich:
+        type: cronjob
+        cronjob: *cronjob
+        containers:
+          immich:
+            image: *image
+            envFrom: *envFrom
+            env:
+              POSTGRES_HOST: immich-db-rw.default.svc.cluster.local
+              POSTGRES_DB: immich
+            command: *command
 
     persistence:
       backups:
