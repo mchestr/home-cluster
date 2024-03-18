@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -30,7 +30,7 @@ spec:
       enableServiceLinks: false
 
     controllers:
-      main:
+      immich:
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -44,7 +44,7 @@ spec:
                   name: immich-dbinit-secret
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/immich-app/immich-server
               tag: &tag v1.98.2
@@ -76,7 +76,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/immich-app/immich-server
               tag: v1.98.2
@@ -91,7 +91,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
               tag: v1.98.2
@@ -104,14 +104,14 @@ spec:
 
       redis:
         containers:
-          main:
+          app:
             image:
               repository: public.ecr.aws/docker/library/redis
               tag: 7.2.4@sha256:3134997edb04277814aa51a4175a588d45eb4299272f8eff2307bbf8b39e4d43
 
     service:
-      main:
-        controller: main
+      immich:
+        controller: immich
         ports:
           http:
             port: 3001
@@ -151,7 +151,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
+                  identifier: immich
                   port: http
         tls:
           - hosts:
