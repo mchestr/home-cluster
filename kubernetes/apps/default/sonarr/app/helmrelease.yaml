@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -35,7 +35,7 @@ spec:
           - 65539
 
     controllers:
-      main:
+      sonarr:
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -49,7 +49,7 @@ spec:
                   name: sonarr-dbinit-secret
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/onedr0p/sonarr-develop
               tag: 4.0.2.1341@sha256:e7e1a75fa1586559f91d5e26caac72f96f1e18ae01ccb2d7c7ce589a3bedaca4
@@ -67,13 +67,14 @@ spec:
                   name: sonarr-secret
 
     service:
-      main:
+      app:
+        controller: sonarr
         ports:
           http:
             port: 8989
 
     ingress:
-      main:
+      app:
         enabled: true
         className: internal
         annotations:
@@ -95,15 +96,13 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
               - *host
 
     persistence:
-      config:
-        enabled: false
       media:
         enabled: true
         type: nfs
@@ -116,7 +115,6 @@ spec:
         type: configMap
         name: sonarr-pushover
         defaultMode: 0775
-        readOnly: true
         globalMounts:
           - path: /scripts/pushover-notify.sh
             subPath: pushover-notify.sh
