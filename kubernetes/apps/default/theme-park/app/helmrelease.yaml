@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -26,9 +26,9 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      theme-park:
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/onedr0p/theme-park
               tag: 1.16.0@sha256:ea7df908833d0aa7b9b68dd74708d48ce4aef4e03b79ef32946e2188eecd6fc6
@@ -42,13 +42,14 @@ spec:
                 memory: 200Mi
 
     service:
-      main:
+      app:
+        controller: theme-park
         ports:
           http:
             port: 8080
 
     ingress:
-      main:
+      app:
         enabled: true
         className: external
         annotations:
@@ -59,7 +60,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
