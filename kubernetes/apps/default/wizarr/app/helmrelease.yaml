@@ -48,7 +48,6 @@ spec:
 
     ingress:
       app:
-        enabled: true
         className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
@@ -70,7 +69,6 @@ spec:
 
     persistence:
       data:
-        enabled: true
         existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
           - path: /data/database
