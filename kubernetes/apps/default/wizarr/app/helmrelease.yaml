@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: ghcr.io/wizarrrr/wizarr
-              tag: dev@sha256:4961f8f7c88298db78bacc3bb0f8ab7d7de68b5cf1a3a446094f15d1920a8975
+              tag: 3.5.1
             env:
               TZ: America/Vancouver
               APP_URL: https://invite.chestr.dev
