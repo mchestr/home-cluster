@@ -90,6 +90,12 @@ spec:
           http:
             port: *port
 
+    persistence:
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+
     ingress:
       app:
         enabled: true
