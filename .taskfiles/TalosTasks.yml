@@ -8,7 +8,7 @@ vars:
   # renovate: datasource=github-releases depName=siderolabs/talos
   TALOS_VERSION: "v1.6.7"
   # renovate: datasource=github-releases depName=budimanjojo/talhelper
-  TALHELPER_VERSION: "v2.3.8"
+  TALHELPER_VERSION: "v2.3.9"
   NODE_NUMBERS: 0 1 2 3 4 5 6
 
 tasks:
