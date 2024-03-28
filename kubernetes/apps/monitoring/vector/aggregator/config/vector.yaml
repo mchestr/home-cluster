@@ -30,24 +30,6 @@ sources:
   vector_metrics:
     type: internal_metrics
 
-  talos_kernel_logs:
-    address: 0.0.0.0:6050
-    type: socket
-    mode: udp
-    max_length: 102400
-    decoding:
-      codec: json
-    host_key: __host
-
-  talos_service_logs:
-    address: 0.0.0.0:6051
-    type: socket
-    mode: udp
-    max_length: 102400
-    decoding:
-      codec: json
-    host_key: __host
-
 # Transformations
 transforms:
   talos_kernel_logs_xform:
