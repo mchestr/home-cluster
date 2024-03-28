@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: vector-aggregator
+  name: &app vector-aggregator
 spec:
   interval: 30m
   chart:
@@ -27,33 +27,41 @@ spec:
   values:
     controllers:
       vector-aggregator:
+        replicas: 2
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
         initContainers:
           init-geoip:
             image:
               repository: ghcr.io/maxmind/geoipupdate
               tag: v6.1.0
             env:
-              - name: GEOIPUPDATE_EDITION_IDS
-                value: GeoLite2-City
-              - name: GEOIPUPDATE_FREQUENCY
-                value: "0"
-              - name: GEOIPUPDATE_VERBOSE
-                value: "true"
+              GEOIPUPDATE_EDITION_IDS: GeoLite2-City
+              GEOIPUPDATE_FREQUENCY: "0"
+              GEOIPUPDATE_VERBOSE: "true"
             envFrom:
               - secretRef:
                   name: vector-aggregator-secret
-        strategy: RollingUpdate
-        annotations:
-          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: ghcr.io/mchestr/vector
-              tag: 0.37.0-debian
-            args:
-              - --config
-              - /etc/vector/vector.yaml
-
+              repository: docker.io/timberio/vector
+              tag: 0.36.1-alpine@sha256:cf20f6f0adb57f561df678a70c4a68361885b861882235bfb0a808610bb1b532
+            args: ["--config", "/etc/vector/vector.yaml"]
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+        pod:
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: *app
     service:
       app:
         controller: vector-aggregator
@@ -61,41 +69,29 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/hostname: vector.chestr.dev
           io.cilium/lb-ipam-ips: 192.168.100.60
-        externalTrafficPolicy: Cluster
         ports:
           http:
+            primary: true
             port: 8686
-          kubernetes:
-            enabled: true
-            port: 6000
-          vyos-logs:
-            enabled: true
-            port: 6001
           journald:
-            enabled: true
-            port: 6002
-          talos-kernel:
-            enabled: true
-            port: 6050
-          talos-service:
-            enabled: true
-            port: 6051
-
+            port: 6000
+          kubernetes:
+            port: 6010
+          vyos:
+            port: 6020
     persistence:
       config:
-        enabled: true
         type: configMap
         name: vector-aggregator-configmap
         globalMounts:
           - path: /etc/vector/vector.yaml
             subPath: vector.yaml
+            readOnly: true
       data:
-        enabled: true
         type: emptyDir
         globalMounts:
           - path: /vector-data-dir
       geoip:
-        enabled: true
         type: emptyDir
         globalMounts:
           - path: /usr/share/GeoIP
