@@ -64,6 +64,20 @@ if [[ "${radarr_eventtype:-}" == "Download" ]]; then
     printf -v PUSHOVER_URL_TITLE "View movie in %s" "${radarr_instancename:-Radarr}"
 fi
 
+#
+# Send notification on Manual Interaction Required
+#
+if [[ "${radarr_eventtype:-}" == "ManualInteractionRequired" ]]; then
+    PUSHOVER_PRIORITY="1"
+    printf -v PUSHOVER_TITLE "Movie requires manual interaction"
+    printf -v PUSHOVER_MESSAGE "<b>%s (%s)</b><small>\n<b>Client:</b> %s</small>" \
+        "${radarr_movie_title}" \
+        "${radarr_movie_year}" \
+        "${radarr_download_client}"
+    printf -v PUSHOVER_URL "%s/activity/queue" "${radarr_applicationurl:-localhost}"
+    printf -v PUSHOVER_URL_TITLE "View queue in %s" "${radarr_instancename:-Radarr}"
+fi
+
 notification=$(jq -n \
     --arg token "${PUSHOVER_TOKEN}" \
     --arg user "${PUSHOVER_USER_KEY}" \
