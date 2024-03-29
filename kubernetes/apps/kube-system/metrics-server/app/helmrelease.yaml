@@ -13,21 +13,20 @@ spec:
         kind: HelmRepository
         name: metrics-server-charts
         namespace: flux-system
-      interval: 5m
-  maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   values:
     args:
-      - --kubelet-insecure-tls
       - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
       - --kubelet-use-node-status-port
       - --metric-resolution=15s
+    metrics:
+      enabled: true
+    serviceMonitor:
+      enabled: true
