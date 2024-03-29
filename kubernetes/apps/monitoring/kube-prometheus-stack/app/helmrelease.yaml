@@ -26,10 +26,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  valuesFrom:
-    - kind: ConfigMap
-      name: kube-state-metrics-configmap
-      valuesKey: kube-state-metrics.yaml
   values:
     crds:
       enabled: true
@@ -159,6 +155,22 @@ spec:
 
     kubeStateMetrics:
       enabled: true
+
+    kube-state-metrics:
+      fullnameOverride: kube-state-metrics
+      metricLabelsAllowlist:
+        - pods=[*]
+        - deployments=[*]
+        - persistentvolumeclaims=[*]
+      prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels: ["__meta_kubernetes_pod_node_name"]
+              targetLabel: kubernetes_node
 
     # Setting this option to 0 disabled CPU limits
     prometheusOperator:
