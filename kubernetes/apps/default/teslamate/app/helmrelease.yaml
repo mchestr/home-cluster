@@ -50,22 +50,6 @@ spec:
               - secretRef:
                   name: teslamate-secret
 
-      teslamateagile:
-        annotations:
-          reloader.stakater.com/auto: "true"
-        containers:
-          app:
-            image:
-              repository: mattjeanes/teslamateagile
-              tag: v1.13.0
-            env:
-              TeslaMate__UpdateIntervalSeconds: "300"
-              TeslaMate__GeofenceId: "1"
-              TeslaMate__EnergyProvider: FixedPrice
-              FixedPrice__TimeZone: *tz
-              FixedPrice__Prices__0: 00:00-24:00=0.0975
-            envFrom: *envFrom
-
     service:
       app:
         controller: teslamate
