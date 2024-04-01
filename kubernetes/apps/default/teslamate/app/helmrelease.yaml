@@ -43,9 +43,22 @@ spec:
               repository: teslamate/teslamate
               tag: 1.28.5
             env:
-              TZ: America/Vancouver
+              TZ: &tz America/Vancouver
               DISABLE_MQTT: "false"
               MQTT_HOST: mosquitto.default.svc.cluster.local
+            envFrom:
+              - secretRef:
+                  name: teslamate-secret
+          teslamateagile:
+            image: 
+              repository: mattjeanes/teslamateagile
+              tag: v1.13.0
+            env:
+              TeslaMate__UpdateIntervalSeconds: "300"
+              TeslaMate__GeofenceId: "1"
+              TeslaMate__EnergyProvider: FixedPrice
+              FixedPrice__TimeZone: *tz
+              FixedPrice__Prices__0: 00:00-23:59=0.0975
             envFrom:
               - secretRef:
                   name: teslamate-secret
