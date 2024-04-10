@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - externalsecret.yaml
   - helmrelease.yaml
+  - pvc.yaml
   - ../../../../templates/gatus/guarded
   - ../../../../templates/gatus/internal
 configMapGenerator:
