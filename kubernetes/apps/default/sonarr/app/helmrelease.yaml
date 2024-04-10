@@ -118,3 +118,7 @@ spec:
         globalMounts:
           - path: /scripts/pushover-notify.sh
             subPath: pushover-notify.sh
+      config:
+        type: emptyDir
+      tmp:
+        type: emptyDir
