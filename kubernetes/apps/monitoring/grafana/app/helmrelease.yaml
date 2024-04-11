@@ -34,7 +34,7 @@ spec:
               name: grafana-dbinit-secret
     image:
       repository: grafana/grafana
-      tag: 10.4.1
+      tag: 10.4.2
 
     annotations:
       reloader.stakater.com/auto: "true"
