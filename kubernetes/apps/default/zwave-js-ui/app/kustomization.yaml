@@ -6,3 +6,12 @@ resources:
   - ../../../../templates/gatus/guarded
   - ../../../../templates/gatus/internal
   - ../../../../templates/volsync
+configMapGenerator:
+  - name: zwave-js-ui-loki-rules
+    files:
+      - zwave-js-ui.yaml=./resources/lokirule.yaml
+    options:
+      labels:
+        loki_rule: "true"
+generatorOptions:
+  disableNameSuffixHash: true
