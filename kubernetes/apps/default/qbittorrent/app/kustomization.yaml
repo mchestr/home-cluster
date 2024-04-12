@@ -10,10 +10,16 @@ resources:
 configMapGenerator:
   - name: qbittorrent-scripts
     files:
-      - ./scripts/cross-seed.sh
+      - ./resources/cross-seed.sh
   - name: cross-seed-config-tpl
     files:
-      - ./config/config.js
+      - ./resources/config.js
+  - name: qbittorrent-loki-rules
+    files:
+      - qbittorrent.yaml=./resources/lokirule.yaml
+    options:
+      labels:
+        loki_rule: "true"
 generatorOptions:
   disableNameSuffixHash: true
 labels:
