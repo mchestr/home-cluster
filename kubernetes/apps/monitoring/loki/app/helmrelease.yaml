@@ -106,7 +106,7 @@ spec:
       replicas: 2
       persistence:
         size: 20Gi
-        storageClass: local-hostpath
+        storageClass: local-path
     gateway:
       replicas: 2
       image:
@@ -127,7 +127,7 @@ spec:
       replicas: 2
       persistence:
         size: 20Gi
-        storageClass: local-hostpath
+        storageClass: local-path
     sidecar:
       image:
         repository: ghcr.io/kiwigrid/k8s-sidecar
