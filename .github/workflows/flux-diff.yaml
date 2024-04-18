@@ -26,7 +26,7 @@ jobs:
 
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@4c5f5d698fbf2d763d5f13815ac7c2ccbef1ff7f # v44
+        uses: tj-actions/changed-files@0874344d6ebbaa00a27da73276ae7162fadcaf69 # v44
         with:
           files: kubernetes/**
           dir_names: true
