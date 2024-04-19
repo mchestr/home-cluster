@@ -66,8 +66,9 @@
       groupName: "System-Upgrade-Controller",
       matchPackagePatterns: [
         "rancher/system-upgrade-controller",
-        "rancher/kubectl",
         "siderolabs/kubelet",
+        "siderolabs/talosctl",
+        "registry.k8s.io/kubectl"
       ],
       matchDatasources: ["docker", "github-releases"],
       group: {
