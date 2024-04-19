@@ -7,7 +7,7 @@ metadata:
     kustomize.toolkit.fluxcd.io/substitute: disabled
 spec:
   # renovate: datasource=github-releases depName=siderolabs/kubelet extractVersion=^v(?<version>.*)$
-  version: "1.29.4"
+  version: "1.30.0"
   serviceAccountName: system-upgrade
   secrets:
     - name: talos
@@ -20,7 +20,7 @@ spec:
       - key: node-role.kubernetes.io/control-plane
         operator: Exists
   prepare:
-    image: &image ghcr.io/siderolabs/talosctl:v1.6.7
+    image: &image ghcr.io/siderolabs/talosctl:v1.7.0
     envs: &envs
       - name: NODE_IP
         valueFrom:
