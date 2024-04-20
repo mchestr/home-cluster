@@ -62,13 +62,24 @@
       separateMinorPatch: false,
     },
     {
-      description: "System-Upgrade-Controller Group",
-      groupName: "System-Upgrade-Controller",
+      description: "Kubernetes Upgrade Group",
+      groupName: "Kubernetes",
       matchPackagePatterns: [
-        "rancher/system-upgrade-controller",
         "siderolabs/kubelet",
-        "siderolabs/talosctl",
         "registry.k8s.io/kubectl"
+      ],
+      matchDatasources: ["docker", "github-releases"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      separateMinorPatch: true,
+    },
+    {
+      description: "Talos Upgrade Group",
+      groupName: "Talos",
+      matchPackagePatterns: [
+        "siderolabs/talos",
+        "siderolabs/talosctl",
       ],
       matchDatasources: ["docker", "github-releases"],
       group: {
