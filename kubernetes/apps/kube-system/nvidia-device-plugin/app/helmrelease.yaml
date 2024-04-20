@@ -26,28 +26,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    config:
-      map:
-        default: |-
-          version: v1
-          flags:
-            migStrategy: none
-        mig-single: |-
-          version: v1
-          flags:
-            migStrategy: single
-        mig-mixed: |-
-          version: v1
-          flags:
-            migStrategy: mixed
-      # Default config name within the ConfigMap
-      default: "default"
-      # List of fallback strategies to attempt if no config is selected and no default is provided
-      fallbackStrategies: ["named", "single"]
     runtimeClassName: nvidia
     nodeSelector:
       nvidia.feature.node.kubernetes.io/gpu: "true"
-    # Subcharts
-    nfd: {}
-    gfd:
-      enabled: false
