@@ -10,11 +10,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: system-upgrade
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: system-upgrade
+    namespace: kube-system
 ---
 apiVersion: talos.dev/v1alpha1
 kind: ServiceAccount
