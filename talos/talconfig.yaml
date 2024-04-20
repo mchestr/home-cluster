@@ -122,7 +122,7 @@ nodes:
     ipAddress: 192.168.1.204
     controlPlane: true
     installDiskSelector:
-      busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
+      busPath: /pci0000:00/0000:00:17.0/ata2/host2/target2:0:0/2:0:0:0/
     networkInterfaces:
       - deviceSelector:
           driver: e1000e
