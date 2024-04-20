@@ -5,8 +5,8 @@ metadata:
   name: nvidia-gpu-plugin
 spec:
   rules:
-    - # Intel GPU
-      name: intel.gpu
+    - # Nvidia GPU
+      name: nvidia.gpu
       labels:
         nvidia.feature.node.kubernetes.io/gpu: "true"
       matchFeatures:
