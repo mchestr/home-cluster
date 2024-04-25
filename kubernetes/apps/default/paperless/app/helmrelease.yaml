@@ -98,7 +98,7 @@ spec:
           app:
             image:
               repository: public.ecr.aws/docker/library/redis
-              tag: 7.2.4@sha256:8a4aaf84f31a637cb4e88b82f64d898448ed2e1eabbd8484eb202a492cc98c63
+              tag: 7.2.4@sha256:a66ca0c609b155597c1744dc9378bd5c48e0375a3d2a4b2c915dc0bc4dd700f0
 
     service:
       paperless:
