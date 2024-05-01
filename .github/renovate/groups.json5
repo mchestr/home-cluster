@@ -79,9 +79,9 @@
       groupName: "Talos",
       matchPackagePatterns: [
         "siderolabs/talos",
-        "siderolabs/talosctl",
+        "ghcr.io/siderolabs/talosctl",
       ],
-      matchDatasources: ["docker", "github-releases", "container"],
+      matchDatasources: ["docker", "github-releases"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
