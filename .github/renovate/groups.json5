@@ -81,7 +81,7 @@
         "siderolabs/talos",
         "ghcr.io/siderolabs/talosctl",
       ],
-      matchDatasources: ["docker", "github-releases"],
+      matchDatasources: ["docker", "github-releases", "container"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
