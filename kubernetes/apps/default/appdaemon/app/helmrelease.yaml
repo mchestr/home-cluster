@@ -51,7 +51,7 @@ spec:
           vscode-tunnel:
             image:
               repository: ghcr.io/mchestr/vscode-tunnel
-              tag: 1.88.1@sha256:c42177beb5f2a291b462ad0055237f63259091d0b7ce0aa2346fe70ebe2c6277
+              tag: 1.89.0@sha256:b46900eda5916a397ee989fe97af4003fd6a738dd4e74c9b725f17945c9bfd19
 
     service:
       app:
