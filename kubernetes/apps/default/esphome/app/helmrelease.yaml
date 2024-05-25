@@ -43,7 +43,7 @@ spec:
           app:
             image:
               repository: ghcr.io/esphome/esphome
-              tag: 2024.5.2@sha256:cddbf35cb644f268548328869dec7445ac9875985a89ddde069c78a4ae825288
+              tag: 2024.5.3@sha256:bbc8f3f1bbd807dbb3a44c9f454d4714cc24d4605e193fbe99524319e162ba97
             env:
               TZ: America/Vancouver
 
