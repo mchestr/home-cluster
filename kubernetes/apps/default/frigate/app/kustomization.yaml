@@ -11,6 +11,7 @@ configMapGenerator:
   - name: frigate-configmap
     files:
       - config.yaml=./resources/config.yaml
+      - version=./resources/version
   - name: frigate-loki-rules
     files:
       - frigate.yaml=./resources/lokirule.yaml
