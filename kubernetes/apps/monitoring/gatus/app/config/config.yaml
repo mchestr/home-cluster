@@ -21,13 +21,15 @@ connectivity:
 
 alerting:
   pushover:
-    application-token: ${GATUS_PUSHOVER_APP_TOKEN}
-    user-key: ${GATUS_PUSHOVER_USER_KEY}
+    title: Gatus (Kubernetes)
+    application-token: ${PUSHOVER_TOKEN}
+    user-key: ${PUSHOVER_USER_KEY}
+    priority: 1
     default-alert:
-      description: healthcheck failed
+      description: health-check failed
       send-on-resolved: true
       failure-threshold: 3
-      success-threshold: 5
+      success-threshold: 3
 
 endpoints:
   - name: status
@@ -38,16 +40,5 @@ endpoints:
       dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "[STATUS] == 200"
-    alerts:
-      - type: pushover
-  - name: status.chestr.dev
-    group: certificates
-    url: "tls://status.chestr.dev:443"
-    interval: 24h
-    client:
-      dns-resolver: tcp://1.1.1.1:53
-    conditions:
-      - "[CONNECTED] == true"
-      - "[CERTIFICATE_EXPIRATION] > 336h"
     alerts:
       - type: pushover
