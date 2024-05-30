@@ -16,10 +16,10 @@ database:
 birdseye:
   enabled: False
 
-detectors:
-  coral:
-    type: edgetpu
-    device: usb
+# detectors:
+#   coral:
+#     type: edgetpu
+#     device: usb
 
 model:
   labelmap:

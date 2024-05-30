@@ -27,7 +27,7 @@ spec:
   values:
     defaultPodOptions:
       nodeSelector:
-        google.feature.node.kubernetes.io/coral: "true"
+        # google.feature.node.kubernetes.io/coral: "true"
         intel.feature.node.kubernetes.io/gpu: "true"
 
     controllers:
@@ -142,10 +142,10 @@ spec:
         sizeLimit: 4Gi
         globalMounts:
           - path: /dev/shm
-      usb:
-        enabled: true
-        type: hostPath
-        hostPath: /dev/bus/usb
-        hostPathType: Directory
-        globalMounts:
-          - path: /dev/bus/usb
+      # usb:
+      #   enabled: true
+      #   type: hostPath
+      #   hostPath: /dev/bus/usb
+      #   hostPathType: Directory
+      #   globalMounts:
+      #     - path: /dev/bus/usb
