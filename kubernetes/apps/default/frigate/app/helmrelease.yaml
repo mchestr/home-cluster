@@ -85,7 +85,7 @@ spec:
         controller: frigate
         ports:
           http:
-            port: 5000
+            port: 8080
           rtsp:
             port: 8554
 

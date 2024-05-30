@@ -203,3 +203,8 @@ cameras:
 ui:
   # Optional: Set the default live mode for cameras in the UI (default: shown below)
   live_mode: webrtc
+
+auth:
+  mode: proxy
+  header_map:
+    user: remote-user
