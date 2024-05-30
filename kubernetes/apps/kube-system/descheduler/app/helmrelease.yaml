@@ -27,63 +27,42 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    replicas: 2
     kind: Deployment
-    schedule: "*/5 * * * *"
+    deschedulerPolicyAPIVersion: descheduler/v1alpha2
     deschedulerPolicy:
-      strategies:
-        RemoveDuplicates:
-          enabled: true
-        RemovePodsViolatingNodeTaints:
-          enabled: true
-        RemovePodsViolatingNodeAffinity:
-          enabled: true
-          params:
-            nodeAffinityType:
-              - requiredDuringSchedulingIgnoredDuringExecution
-        RemovePodsViolatingInterPodAntiAffinity:
-          enabled: true
-        RemovePodsViolatingTopologySpreadConstraint:
-          enabled: true
-          params:
-            includeSoftConstraints: true
-        LowNodeUtilization:
-          enabled: true
-          params:
-            nodeResourceUtilizationThresholds:
-              thresholds:
-                cpu: 35
-                memory: 35
-              targetThresholds:
-                cpu: 40
-                memory: 40
-        RemoveFailedPods:
-          enabled: true
-          params:
-            failedPods:
-              reasons:
-                - NodeShutdown
-                - ImagePullBackOff
-                - CreateContainerConfigError
-              includingInitContainers: true
-              excludeOwnerKinds:
-                - Job
-              minPodLifetimeSeconds: 3600
-        RemovePodsHavingTooManyRestarts:
-          enabled: true
-          params:
-            podsHavingTooManyRestarts:
-              podRestartThreshold: 10
-              includingInitContainers: true
-        PodLifeTime:
-          enabled: true
-          params:
-            podLifeTime:
-              states:
-                - Pending
-                - PodInitializing
-                - ContainerCreating
-              maxPodLifeTimeSeconds: 3600
+      profiles:
+        - name: Default
+          pluginConfig:
+            - name: DefaultEvictor
+              args:
+                evictFailedBarePods: true
+                evictLocalStoragePods: true
+                evictSystemCriticalPods: true
+                nodeFit: true
+            - name: RemovePodsViolatingInterPodAntiAffinity
+            - name: RemovePodsViolatingNodeAffinity
+              args:
+                nodeAffinityType:
+                  - requiredDuringSchedulingIgnoredDuringExecution
+            - name: RemovePodsViolatingNodeTaints
+            - name: RemovePodsViolatingTopologySpreadConstraint
+              args:
+                constraints:
+                  - DoNotSchedule
+                  - ScheduleAnyway
+          plugins:
+            balance:
+              enabled:
+                - RemovePodsViolatingTopologySpreadConstraint
+            deschedule:
+              enabled:
+                - RemovePodsViolatingInterPodAntiAffinity
+                - RemovePodsViolatingNodeAffinity
+                - RemovePodsViolatingNodeTaints
     service:
       enabled: true
     serviceMonitor:
+      enabled: true
+    leaderElection:
       enabled: true
