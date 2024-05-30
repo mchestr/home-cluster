@@ -96,6 +96,8 @@ spec:
             port: 8080
           rtsp:
             port: 8554
+          unsecure:
+            port: 5000
 
     ingress:
       app:
