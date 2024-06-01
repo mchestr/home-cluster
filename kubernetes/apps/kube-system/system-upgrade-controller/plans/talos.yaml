@@ -51,7 +51,7 @@ metadata:
   name: talos-nvidia
 spec:
   # renovate: datasource=github-releases depName=siderolabs/talos
-  version: "v1.6.7"
+  version: "v1.7.4"
   serviceAccountName: system-upgrade
   secrets:
     - name: talos
