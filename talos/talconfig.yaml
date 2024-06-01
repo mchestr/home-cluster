@@ -122,7 +122,7 @@ nodes:
     ipAddress: 192.168.1.204
     controlPlane: true
     installDiskSelector:
-      busPath: /pci0000:00/0000:00:17.0/ata2/host2/target2:0:0/2:0:0:0/
+      busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
     networkInterfaces:
       - deviceSelector:
           driver: e1000e
@@ -207,6 +207,14 @@ nodes:
             net.core.bpf_jit_harden: 1
 
 controlPlane:
+  extensionServices: &extensionServices
+    - name: nut-client
+      configFiles:
+        - mountPath: /usr/local/etc/nut/upsmon.conf
+          content: |
+            MONITOR ups@lochnas.chestr.dev 1 ${upsmonUser} ${upsmonPasswd} slave
+            SHUTDOWNCMD "/sbin/poweroff"
+
   patches:
     # Disable search domain everywhere
     - &disableSearchDomainsPatch |-
@@ -253,16 +261,6 @@ controlPlane:
                 discard_unpacked_layers = false
               [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
                 discard_unpacked_layers = false
-
-    # Configure NUT Client
-    - &nutPatch |-
-      machine:
-        files:
-          - op: create
-            path: /var/etc/nut/upsmon.conf
-            content: |
-              MONITOR ups@lochnas.chestr.dev 1 ${upsmonUser} ${upsmonPasswd} slave
-              SHUTDOWNCMD "/sbin/poweroff"
 
     - &sysctlPatch |-
       machine:
@@ -338,6 +336,7 @@ controlPlane:
               - kube-system
 
 worker:
+  extensionServices: *extensionServices
   patches:
     - *disableSearchDomainsPatch
     - *ntpPatch
@@ -345,7 +344,6 @@ worker:
     - *containerdPatch
     - *discoveryPatch
     - *kubeletPatch
-    - *nutPatch
     - *sysctlPatch
     - *talosLabel
 
