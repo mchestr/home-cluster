@@ -144,7 +144,7 @@ spec:
           gethomepage.dev/widget.type: immich
           gethomepage.dev/widget.fields: '["photos", "videos", "storage"]'
           gethomepage.dev/widget.url: https://photos.chestr.dev
-          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_IMMICH_API_KEY}}"
+          gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_IMMICH_API_KEY}}" }}'
         hosts:
           - host: &host photos.chestr.dev
             paths:

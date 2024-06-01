@@ -67,7 +67,7 @@ spec:
           gethomepage.dev/group: Media
           gethomepage.dev/widget.type: tautulli
           gethomepage.dev/widget.url: http://tautulli.default.svc.cluster.local:8181
-          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_TAUTULLI_API_KEY}}"
+          gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_TAUTULLI_API_KEY}}" }}'
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:

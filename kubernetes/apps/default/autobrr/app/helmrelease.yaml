@@ -107,7 +107,7 @@ spec:
           gethomepage.dev/group: Downloads
           gethomepage.dev/widget.type: autobrr
           gethomepage.dev/widget.url: http://autobrr.default.svc.cluster.local:7474
-          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_AUTOBRR_API_KEY}}"
+          gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_AUTOBRR_API_KEY}}" }}'
         hosts:
           - host: &host autobrr.chestr.dev
             paths:

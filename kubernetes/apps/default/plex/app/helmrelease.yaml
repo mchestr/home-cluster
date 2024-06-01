@@ -93,7 +93,7 @@ spec:
           gethomepage.dev/group: Media
           gethomepage.dev/widget.type: plex
           gethomepage.dev/widget.url: http://plex.default.svc.cluster.local:32400
-          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_PLEX_API_KEY}}"
+          gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_PLEX_API_KEY}}" }}'
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
