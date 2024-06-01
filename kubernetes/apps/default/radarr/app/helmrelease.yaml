@@ -89,7 +89,7 @@ spec:
           gethomepage.dev/group: Downloads
           gethomepage.dev/widget.type: radarr
           gethomepage.dev/widget.url: http://radarr.default.svc.cluster.local:7878
-          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_RADARR_API_KEY}}"
+          gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_RADARR_API_KEY}}" }}'
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:

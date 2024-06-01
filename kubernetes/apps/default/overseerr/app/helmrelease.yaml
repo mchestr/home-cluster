@@ -64,7 +64,7 @@ spec:
           gethomepage.dev/group: Media
           gethomepage.dev/widget.type: overseerr
           gethomepage.dev/widget.url: http://overseerr.default.svc.cluster.local:5055
-          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_OVERSEERR_API_KEY}}"
+          gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_OVERSEERR_API_KEY}}" }}'
         hosts:
           - host: &host requests.chestr.dev
             paths:

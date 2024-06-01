@@ -89,7 +89,7 @@ spec:
           gethomepage.dev/group: Downloads
           gethomepage.dev/widget.type: sonarr
           gethomepage.dev/widget.url: http://sonarr.default.svc.cluster.local:8989
-          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_SONARR_API_KEY}}"
+          gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_SONARR_API_KEY}}" }}'
         hosts:
           - host: &host "{{ .Release.Name }}.chestr.dev"
             paths:
