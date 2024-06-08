@@ -200,9 +200,6 @@ cameras:
       alerts:
         required_zones:
           - enter
-ui:
-  # Optional: Set the default live mode for cameras in the UI (default: shown below)
-  live_mode: webrtc
 
 auth:
   mode: proxy
