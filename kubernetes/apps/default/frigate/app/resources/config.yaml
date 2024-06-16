@@ -202,6 +202,8 @@ cameras:
           - enter
 
 auth:
-  mode: proxy
+  enabled: False
+
+proxy:
   header_map:
     user: remote-user
