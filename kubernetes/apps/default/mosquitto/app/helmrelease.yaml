@@ -40,7 +40,7 @@ spec:
           copy-config:
             image:
               repository: public.ecr.aws/docker/library/eclipse-mosquitto
-              tag: 2.0.18@sha256:cb3afd02611b0c58b328196ab00de0158322b4c1e014841fb182d2a0ea3a79b9
+              tag: 2.0.18@sha256:e9e2c2c234dfaa2937cc9dd79ef496df4598da0e8e1a0b506f5c34671921a54f
             command:
               - /bin/sh
               - -c
