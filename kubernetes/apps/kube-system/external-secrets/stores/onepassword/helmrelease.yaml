@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: ghcr.io/mchestr/onepassword-connect-api
-              tag: 1.7.2
+              tag: 1.7.3
             env:
               OP_BUS_PORT: "11220"
               OP_BUS_PEERS: localhost:11221
