@@ -74,7 +74,7 @@ spec:
           sync:
             image:
               repository: ghcr.io/mchestr/onepassword-sync
-              tag: 1.7.2
+              tag: 1.7.3
             env:
               - name: OP_SESSION
                 valueFrom:
