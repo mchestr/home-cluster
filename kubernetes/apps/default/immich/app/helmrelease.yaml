@@ -59,15 +59,15 @@ spec:
                 memory: 250Mi
               limits:
                 memory: 1Gi
-            securityContext: &securityContext
-              fsGroup: 65539
-              fsGroupChangePolicy: OnRootMismatch
-              allowPrivilegeEscalation: false
-              seccompProfile:
-                type: RuntimeDefault
-              capabilities:
-                drop:
-                  - ALL
+            # securityContext: &securityContext
+            #   fsGroup: 65539
+            #   fsGroupChangePolicy: OnRootMismatch
+            #   allowPrivilegeEscalation: false
+            #   seccompProfile:
+            #     type: RuntimeDefault
+            #   capabilities:
+            #     drop:
+            #       - ALL
 
       machine-learning:
         annotations:
@@ -82,7 +82,7 @@ spec:
               requests: *requests
               limits:
                 memory: 2Gi
-            securityContext: *securityContext
+            # securityContext: *securityContext
 
       redis:
         containers:
