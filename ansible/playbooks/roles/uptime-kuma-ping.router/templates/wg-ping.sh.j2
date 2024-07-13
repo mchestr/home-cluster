@@ -1,8 +1,0 @@
-#!/bin/vbash
-source /opt/vyatta/etc/functions/script-template
-
-UP=$(run show interfaces wireguard | grep 'u/u' | wc -l)
-if [[ "${UP}" -eq 1 ]]; then
-  curl --connect-timeout 10 --max-time 30 -I -s -o /dev/null -w '%{http_code}' {{ uptime_kuma_ping_wg_url }}
-fi;
-exit

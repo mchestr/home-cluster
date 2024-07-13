@@ -56,16 +56,6 @@ spec:
         replicas: 2
         useExistingSecret: true
         configSecret: alertmanager-secret
-        containers:
-          - name: uptime-kuma-proxy
-            image: ghcr.io/mchestr/alertmanager-uptime-kuma-proxy:v0.1.6
-            env:
-              - name: UPTIME_KUMA_BASE_URL
-                value: https://status.chestr.dev
-            ports:
-              - containerPort: 3000
-                name: proxy
-                protocol: TCP
         storage:
           volumeClaimTemplate:
             spec:

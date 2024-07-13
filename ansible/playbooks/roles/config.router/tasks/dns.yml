@@ -35,7 +35,6 @@
       - "{{ prefix }} options enable-tftp"
       - "{{ prefix }} options tftp-root=/config/user-data/tftproot"
       - "{{ prefix }} options port=53"
-      - "{{ prefix }} options server=/status.{{ cluster_domain }}/1.1.1.1"
       - "{{ prefix }} options server=/{{ cluster_domain }}/192.168.100.111"
       - "{{ prefix }} options dhcp-match=set:bios,60,PXEClient:Arch:00000"
       - "{{ prefix }} options dhcp-boot=tag:bios,netboot.xyz.kpxe,,192.168.1.1"

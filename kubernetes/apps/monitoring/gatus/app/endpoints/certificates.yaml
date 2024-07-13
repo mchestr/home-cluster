@@ -8,18 +8,6 @@ metadata:
 data:
   config.yaml: |
     endpoints:
-      - name: status.chestr.dev
-        group: certificates
-        url: "tls://status.chestr.dev:443"
-        interval: 24h
-        client:
-          dns-resolver: tcp://1.1.1.1:53
-        conditions:
-          - "[CONNECTED] == true"
-          - "[CERTIFICATE_EXPIRATION] > 336h"
-        alerts:
-          - type: pushover
-
       - name: lochnas.chestr.dev
         group: certificates
         url: "tls://lochnas.chestr.dev:443"
