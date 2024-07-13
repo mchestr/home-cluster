@@ -112,6 +112,10 @@ Thanks to all the people who donate their time to the [Kubernetes @Home](https:/
 
 This repository was built off the [onedr0p/template-cluster-k3s](https://github.com/onedr0p/flux-cluster-template) repository.
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=mchestr/home-cluster&type=Date)](https://star-history.com/#mchestr/home-cluster&Date)
+
 ## 🔏 License
 
 See [LICENSE](./LICENSE)
