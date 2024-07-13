@@ -31,14 +31,4 @@ alerting:
       failure-threshold: 3
       success-threshold: 3
 
-endpoints:
-  - name: status
-    group: external
-    url: https://status.chestr.dev
-    interval: 10m
-    client:
-      dns-resolver: tcp://1.1.1.1:53
-    conditions:
-      - "[STATUS] == 200"
-    alerts:
-      - type: pushover
+endpoints: []

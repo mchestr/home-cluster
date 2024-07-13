@@ -28,10 +28,6 @@ inhibit_rules:
     target_matchers:
       - severity = "warning"
 receivers:
-  - name: heartbeat
-    webhook_configs:
-      - url: http://localhost:3000/api/push/{{ .UPTIME_KUMA_ALERTMANAGER_TOKEN }}?status=up&msg=OK
-        send_resolved: true
   - name: "null"
   - name: pushover
     pushover_configs:

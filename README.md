@@ -12,11 +12,6 @@
 
 <div>
 
-[![Cluster](https://status.chestr.dev/api/badge/11/uptime/24?style=for-the-badge&color=blue)](https://status.chestr.dev "Uptime")
-
-</div>
-<div>
-
 [![Discord](https://img.shields.io/discord/673534664354430999?style=for-the-badge&label&logo=discord&logoColor=white&color=blue)](https://discord.gg/k8s-at-home)
 [![k8s](https://img.shields.io/badge/k8s-v1.30.2-blue?style=for-the-badge)](https://kubernetes.io/)
 [![Talos](https://img.shields.io/badge/Talos-v1.7.4-blue?style=for-the-badge)](https://talos.dev "Talos OS")
@@ -65,7 +60,6 @@ This repository is my home Kubernetes cluster in a declarative state. [Flux](htt
 - [AWS SES](https://aws.amazon.com/ses/) for sending emails.
 - [Cloudflare](https://cloudflare.com) tunnels for exposing services & creating certificates & managing domains.
 - [Cloudflare R2](https://www.cloudflare.com/developer-platform/r2/) for daily backups.
-- [Google Cloud](https://cloud.google.com) to deploy [uptime-kuma](https://github.com/louislam/uptime-kuma) for external cluster monitoring.
 - [Pushover](https://pushover.net/) for sending alerts.
 
 Total cloud costs yearly is approximately ~$150/year.
