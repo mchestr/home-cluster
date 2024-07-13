@@ -111,14 +111,6 @@ data:
         - PiKVM:
             href: https://pikvm.chestr.dev
             icon: pikvm.png
-    - Monitoring:
-        - Status:
-            href: https://status.chestr.dev
-            icon: uptime-kuma.png
-            widget:
-              type: uptimekuma
-              url: https://status.chestr.dev
-              slug: chesterlab
     - System:
         - Mainsail:
             href: https://mainsail.chestr.dev

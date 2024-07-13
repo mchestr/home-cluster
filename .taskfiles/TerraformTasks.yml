@@ -20,21 +20,3 @@ tasks:
     dir: terraform/cloudflare
     cmds:
       - terraform apply {{.CLI_ARGS}}
-
-  gc:init:
-    desc: Initialize terraform dependencies
-    dir: terraform/google-cloud
-    cmds:
-      - terraform init {{.CLI_ARGS}}
-
-  gc:plan:
-    desc: Show the changes terraform will make
-    dir: terraform/google-cloud
-    cmds:
-      - terraform plan {{.CLI_ARGS}}
-
-  gc:apply:
-    desc: Apply the changes to Google Cloud
-    dir: terraform/google-cloud
-    cmds:
-      - terraform apply {{.CLI_ARGS}}
