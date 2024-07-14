@@ -162,7 +162,6 @@ spec:
 
     networkpolicies:
       paperless:
-        enabled: true
         controller: paperless
 
         policyTypes:
