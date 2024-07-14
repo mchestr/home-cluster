@@ -93,11 +93,11 @@ spec:
         controller: frigate
         ports:
           http:
-            port: 8971
+            port: &secure 8971
           rtsp:
             port: 8554
           unsecure:
-            port: 5000
+            port: &unsecure 5000
 
     ingress:
       app:
@@ -181,7 +181,7 @@ spec:
                       kubernetes.io/metadata.name: networking
               ports:
                 - protocol: TCP
-                  port: 8971
+                  port: *secure
             - from:
                 - podSelector:
                     matchLabels:
@@ -191,4 +191,4 @@ spec:
                       kubernetes.io/metadata.name: default
               ports:
                 - protocol: TCP
-                  port: 5000
+                  port: *unsecure
