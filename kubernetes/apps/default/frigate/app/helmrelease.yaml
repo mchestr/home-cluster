@@ -93,7 +93,7 @@ spec:
         controller: frigate
         ports:
           http:
-            port: 8080
+            port: 8971
           rtsp:
             port: 8554
           unsecure:
