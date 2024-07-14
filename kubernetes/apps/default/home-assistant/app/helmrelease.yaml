@@ -77,7 +77,7 @@ spec:
         controller: home-assistant
         ports:
           http:
-            port: 8123
+            port: &http 8123
 
     ingress:
       app:
@@ -128,3 +128,33 @@ spec:
           home-assistant:
             vscode-tunnel:
               - path: /home/kah
+
+    networkpolicies:
+      home-assistant:
+        controller: home-assistant
+
+        policyTypes:
+          - Ingress
+
+        rules:
+          ingress:
+            - from:
+                - podSelector:
+                    matchLabels:
+                      app.kubernetes.io/instance: nginx-internal
+                  namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: networking
+              ports:
+                - protocol: TCP
+                  port: *http
+            - from:
+                - podSelector:
+                    matchLabels:
+                      app.kubernetes.io/instance: nginx-external
+                  namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: networking
+              ports:
+                - protocol: TCP
+                  port: *http
