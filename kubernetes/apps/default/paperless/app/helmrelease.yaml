@@ -177,3 +177,6 @@ spec:
                   namespaceSelector:
                     matchLabels:
                       kubernetes.io/metadata.name: networking
+              ports:
+                - protocol: TCP
+                  port: 8000

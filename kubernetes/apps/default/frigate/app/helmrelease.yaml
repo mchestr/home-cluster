@@ -179,6 +179,9 @@ spec:
                   namespaceSelector:
                     matchLabels:
                       kubernetes.io/metadata.name: networking
+              ports:
+                - protocol: TCP
+                  port: 8971
             - from:
                 - podSelector:
                     matchLabels:
@@ -186,3 +189,6 @@ spec:
                   namespaceSelector:
                     matchLabels:
                       kubernetes.io/metadata.name: default
+              ports:
+                - protocol: TCP
+                  port: 5000
