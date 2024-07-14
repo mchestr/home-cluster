@@ -161,3 +161,28 @@ spec:
         hostPathType: Directory
         globalMounts:
           - path: /dev/bus/usb
+
+    networkpolicies:
+      frigate:
+        enabled: true
+        controller: frigate
+
+        policyTypes:
+          - Ingress
+
+        rules:
+          ingress:
+            - from:
+                - podSelector:
+                    matchLabels:
+                      app.kubernetes.io/instance: nginx-internal
+                  namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: networking
+            - from:
+                - podSelector:
+                    matchLabels:
+                      app.kubernetes.io/instance: home-assistant
+                  namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: default
