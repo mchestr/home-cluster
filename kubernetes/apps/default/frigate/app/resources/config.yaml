@@ -201,9 +201,12 @@ cameras:
         required_zones:
           - enter
 
-#auth:
-#  enabled: False
+auth:
+  enabled: False
 
-#proxy:
-#  header_map:
-#    user: remote-user
+proxy:
+  header_map:
+    user: remote-user
+
+tls:
+  enabled: False
