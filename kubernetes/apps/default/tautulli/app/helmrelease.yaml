@@ -1,4 +1,5 @@
 ---
+
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -27,10 +28,12 @@ spec:
   values:
     defaultPodOptions:
       securityContext:
+        runAsNonRoot: true
         runAsUser: 568
         runAsGroup: 568
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
 
     controllers:
       tautulli:
@@ -40,27 +43,51 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/onedr0p/tautulli
-              tag: 2.13.4@sha256:633a57b2f8634feb67811064ec3fa52f40a70641be927fdfda6f5d91ebbd5d73
+              repository: ghcr.io/tautulli/tautulli
+              tag: v2.14.3@sha256:36d6a81d7d06c5aba752ce025d956a47f6008d6529f39b05ed2cf51cf22fe26b
             env:
               TZ: America/Vancouver
+            command: ["/usr/local/bin/python", "Tautulli.py"]
+            args:
+              - --config
+              - /config/config.ini
+              - --datadir
+              - /config
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /status
+                    port: &port 8181
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 1Gi
 
     service:
       app:
         controller: tautulli
         ports:
           http:
-            port: 8181
+            port: *port
 
     ingress:
       app:
         enabled: true
         className: internal
         annotations:
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            proxy_set_header Accept-Encoding "";
-            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.chestr.dev/css/base/tautulli/organizr.css"></head>';
-            sub_filter_once on;
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: tautulli.png
           gethomepage.dev/name: Tautulli
@@ -82,5 +109,14 @@ spec:
 
     persistence:
       config:
-        enabled: true
         existingClaim: ${VOLSYNC_CLAIM}
+      cache:
+        existingClaim: tautulli-cache
+        globalMounts:
+          - path: /config/cache
+      logs:
+        type: emptyDir
+        globalMounts:
+          - path: /config/logs
+      tmp:
+        type: emptyDir
