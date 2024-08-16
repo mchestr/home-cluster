@@ -127,12 +127,10 @@ spec:
 
     persistence:
       data:
-        enabled: true
         existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
           - path: /data
       config-file:
-        enabled: true
         type: configMap
         name: frigate-configmap
         globalMounts:
@@ -141,21 +139,18 @@ spec:
           - path: /config/.version
             subPath: version
       media:
-        enabled: true
         type: nfs
         server: lochnas.chestr.dev
         path: /volume1/shared/frigate
         globalMounts:
           - path: /media
       cache:
-        enabled: true
         type: emptyDir
         medium: Memory
         sizeLimit: 4Gi
         globalMounts:
           - path: /dev/shm
       usb:
-        enabled: true
         type: hostPath
         hostPath: /dev/bus/usb
         hostPathType: Directory
