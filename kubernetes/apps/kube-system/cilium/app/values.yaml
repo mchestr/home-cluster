@@ -54,9 +54,6 @@ containerRuntime:
   integration: containerd
 
 enableCnpStatusUpdates: true
-endpointStatus:
-  enabled: true
-  status: "policy"
 
 endpointRoutes:
   # -- Enable use of per endpoint routes instead of routing via
