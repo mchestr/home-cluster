@@ -74,7 +74,7 @@ nodes:
     ipAddress: 192.168.1.202
     controlPlane: false
     installDiskSelector:
-      busPath: /pci0000:00/0000:00:1f.2/ata4/host3/target3:0:0/3:0:0:0/
+      busPath: /pci0000:00/0000:00:1f.5/ata3/host2/target2:0:0/2:0:0:0/
     networkInterfaces:
       - deviceSelector:
           driver: r8169
