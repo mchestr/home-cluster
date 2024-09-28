@@ -33,6 +33,16 @@ tasks:
     cmds:
       - kubectl delete pods --field-selector status.phase=Failed -A --ignore-not-found=true
 
+  privileged:
+    desc: Run a privileged pod
+    cmd: |
+      kubectl run privileged-{{ .node }} -i --rm --image=null \
+        --overrides="$(yq .taskfiles/templates/privileged-pod.tmpl.yaml -o=json | envsubst)"
+    env:
+      node: '{{.node}}'
+    preconditions:
+      - test -f .taskfiles/templates/privileged-pod.tmpl.yaml
+
   volume:
     desc: |-
       Create a container for debugging a PVC (ex. task PVC=plex-config-v1 kube:volume)
