@@ -15,9 +15,30 @@ spec:
         namespace: flux-system
       interval: 30m
   values:
-    image:
+    image: &image
       repository: ghcr.io/k8snetworkplumbingwg/multus-cni
       tag: v4.1.1-thick@sha256:61ff0673e5a36e05c206238a01a4b7a2217e7b9ca4d23b58a4d64b296784e81c
+
+    initContainers:
+      multus-shim-installer:
+        image: *image
+        command:
+          - /bin/sh
+          - -c
+        args: |
+          set -x
+          rm -f /host/opt/cni/bin/multus-shim
+        resources:
+          requests:
+            cpu: "10m"
+            memory: "15Mi"
+        securityContext:
+          capabilities:
+            drop:
+              - ALL
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: FallbackToLogsOnError
+
     cni:
       image:
         repository: ghcr.io/angelnu/cni-plugins
