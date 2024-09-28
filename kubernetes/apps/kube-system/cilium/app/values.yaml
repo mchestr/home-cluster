@@ -42,8 +42,6 @@ cluster:
   # may be 0 if Cluster Mesh is not used.
   id: 1
 
-enableCnpStatusUpdates: true
-
 endpointRoutes:
   # -- Enable use of per endpoint routes instead of routing via
   # the cilium_host interface.
