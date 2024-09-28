@@ -44,7 +44,7 @@ spec:
       - --image=factory.talos.dev/installer/dbfb6577b113acbc7da6bfcb48e7f59343283561ff938ff7c33bd4693f85c295:$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
       - --preserve=true
       - --wait=false
-      - --reboot-mode powercycle
+      - --reboot-mode=powercycle
 ---
 apiVersion: upgrade.cattle.io/v1
 kind: Plan
