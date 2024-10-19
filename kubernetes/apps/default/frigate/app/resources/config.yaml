@@ -142,7 +142,7 @@ cameras:
             - audio
     motion:
       mask:
-        - 659,0,654,50,248,51,252,0
+        - 0.735,0,0.73,0.074,0.277,0.076,0.281,0
     live:
       stream_name: living_room_hd
 
@@ -163,7 +163,7 @@ cameras:
     motion:
       lightning_threshold: 1.0
       mask:
-        - 720,0,720,30,497,30,493,0
+        - 1,0,1,0.052,0.69,0.052,0.685,0
     live:
       stream_name: doorbell_hd
     audio:
@@ -183,6 +183,9 @@ cameras:
           roles:
             - detect
             - audio
+    motion:
+      mask:
+        - 0.025,0.039,0.263,0.039,0.265,0.087,0.023,0.086
     live:
       stream_name: catcam_hd
 
