@@ -28,7 +28,7 @@ spec:
   values:
     image:
       repository: ghcr.io/mchestr/vector
-      tag: 0.41.1-debian
+      tag: 0.42.0-debian
 
     role: "Agent"
 
