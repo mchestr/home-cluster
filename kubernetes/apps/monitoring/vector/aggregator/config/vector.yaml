@@ -45,7 +45,7 @@ sinks:
     type: loki
     inputs:
       - kubernetes_source
-    endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
+    endpoint: http://loki-headless.monitoring.svc.cluster.local:3100
     encoding:
       codec: json
     batch:
@@ -66,7 +66,7 @@ sinks:
     type: loki
     inputs:
       - vyos_logs
-    endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
+    endpoint: http://loki-headless.monitoring.svc.cluster.local:3100
     encoding:
       codec: json
     batch:
@@ -80,7 +80,7 @@ sinks:
     type: loki
     inputs:
       - journald_source
-    endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
+    endpoint: http://loki-headless.monitoring.svc.cluster.local:3100
     encoding:
       codec: json
     batch:
