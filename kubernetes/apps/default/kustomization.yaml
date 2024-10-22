@@ -19,7 +19,6 @@ resources:
   - immich/ks.yaml
   - jellyfin/ks.yaml
   - kromgo/ks.yaml
-  - ledfx/ks.yaml
   - lldap/ks.yaml
   - maintainerr/ks.yaml
   - mosquitto/ks.yaml
