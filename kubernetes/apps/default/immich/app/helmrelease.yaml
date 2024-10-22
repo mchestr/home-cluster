@@ -122,6 +122,7 @@ spec:
           gethomepage.dev/widget.fields: '["photos", "videos", "storage"]'
           gethomepage.dev/widget.url: http://immich.default.svc.cluster.local:2283
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_IMMICH_API_KEY}}" }}'
+          gethomepage.dev/widget.version: '2'
         hosts:
           - host: &host photos.chestr.dev
             paths:
