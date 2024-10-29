@@ -86,4 +86,4 @@ spec:
       - --image=factory.talos.dev/installer/edffc5f700740a1eeaec78c3143e97a4cbbb0627e3b5764695f42f562db85d43:$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
       - --preserve=true
       - --wait=false
-      - --reboot-mode powercycle
+      - --reboot-mode=powercycle
