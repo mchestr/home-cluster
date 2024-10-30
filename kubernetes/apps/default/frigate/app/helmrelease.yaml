@@ -51,6 +51,7 @@ spec:
             env:
               TZ: America/Vancouver
               LIBVA_DRIVER_NAME: i965
+              CONFIG_FILE: &configPath /config/config.yml
             envFrom:
               - secretRef:
                   name: frigate-secret
@@ -134,10 +135,9 @@ spec:
         type: configMap
         name: frigate-configmap
         globalMounts:
-          - path: /config/config.yml
+          - path: *configPath
             subPath: config.yaml
-          - path: /config/.version
-            subPath: version
+            readOnly: true
       media:
         type: nfs
         server: lochnas.chestr.dev
