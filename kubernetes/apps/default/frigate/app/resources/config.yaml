@@ -58,18 +58,16 @@ snapshots:
     default: 2
 
 record:
-  enabled: True
+  enabled: true
   retain:
-    days: 3
+    days: 14
     mode: all
-  alerts:
+  events:
     retain:
-      days: 30
-      mode: motion
-  detections:
-    retain:
-      days: 30
-      mode: motion
+      default: 90
+      mode: active_objects
+      objects:
+        vehicle: 7
 
 objects:
   track:
