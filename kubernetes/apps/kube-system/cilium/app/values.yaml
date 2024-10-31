@@ -1,118 +1,47 @@
 ---
-# -- Enable installation of PodCIDR routes between worker
-# nodes if worker nodes share a common L2 network segment.
 autoDirectNodeRoutes: true
-
-cni:
-  exclusive: false
-
 bandwidthManager:
-  enabled: true
   bbr: true
-
-# -- MetalLB Deprecated BGP
-bgp:
-  enabled: false
-
+  enabled: true
+bpf:
+  masquerade: true
+  tproxy: true
 bgpControlPlane:
   enabled: true
-
-bpf:
-  masquerade: false
-  tproxy: true
-
-# -- Configure cgroup related configuration
 cgroup:
   autoMount:
-    # -- Enable auto mount of cgroup2 filesystem.
-    # When `autoMount` is enabled, cgroup2 filesystem is mounted at
-    # `cgroup.hostRoot` path on the underlying host and inside the cilium agent pod.
-    # If users disable `autoMount`, it's expected that users have mounted
-    # cgroup2 filesystem at the specified `cgroup.hostRoot` volume, and then the
-    # volume will be mounted inside the cilium agent pod at the same path.
     enabled: false
-  # -- Configure cgroup root where cgroup2 filesystem is mounted on the host (see also: `cgroup.autoMount`)
   hostRoot: /sys/fs/cgroup
-
 cluster:
-  # -- Name of the cluster. Only required for Cluster Mesh.
-  name: cluster
-  # -- (int) Unique ID of the cluster. Must be unique across all connected
-  # clusters and in the range of 1 to 255. Only required for Cluster Mesh,
-  # may be 0 if Cluster Mesh is not used.
   id: 1
-
+  name: cluster
+cni:
+  exclusive: false
+devices: eth+
+enableRuntimeDeviceDetection: true
 endpointRoutes:
-  # -- Enable use of per endpoint routes instead of routing via
-  # the cilium_host interface.
   enabled: true
-
-hubble:
-  enabled: false
-
 envoy:
   enabled: false
-
+hubble:
+  enabled: false
 ipam:
-  # -- Configure IP Address Management mode.
-  # ref: https://docs.cilium.io/en/stable/concepts/networking/ipam/
   mode: kubernetes
-
-# -- (string) Allows to explicitly specify the IPv4 CIDR for native routing.
-# When specified, Cilium assumes networking for this CIDR is preconfigured and
-# hands traffic destined for that range to the Linux network stack without
-# applying any SNAT.
-# Generally speaking, specifying a native routing CIDR implies that Cilium can
-# depend on the underlying networking stack to route packets to their
-# destination. To offer a concrete example, if Cilium is configured to use
-# direct routing and the Kubernetes CIDR is included in the native routing CIDR,
-# the user must configure the routes to reach pods, either manually or by
-# setting the auto-direct-node-routes flag.
 ipv4NativeRoutingCIDR: 10.244.0.0/16
-
-# -- (string) Kubernetes service host
 k8sServiceHost: 127.0.0.1
-# -- (string) Kubernetes service port
 k8sServicePort: 7445
-
-# -- Configure the kube-proxy replacement in Cilium BPF datapath
-# Valid options are "disabled", "partial", "strict".
-# ref: https://docs.cilium.io/en/stable/gettingstarted/kubeproxy-free/
-kubeProxyReplacement: "true"
-
-# -- healthz server bind address for the kube-proxy replacement.
-# To enable set the value to '0.0.0.0:10256' for all ipv4
-# addresses and this '[::]:10256' for all ipv6 addresses.
-# By default it is disabled.
+kubeProxyReplacement: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
-
-# -- Configure service load balancing
-loadBalancer:
-  # -- algorithm is the name of the load balancing algorithm for backend
-  # selection e.g. random or maglev
-  algorithm: maglev
-
-  # -- mode is the operation mode of load balancing for remote backends
-  # e.g. snat, dsr, hybrid
-  mode: dsr
-
-l7Proxy: true
-
-# -- Enable Local Redirect Policy.
-localRedirectPolicy: true
-
-operator:
-  # -- Enable the cilium-operator component (required).
+l2announcements:
   enabled: true
-
-  # -- Roll out cilium-operator pods automatically when configmap is updated.
+loadBalancer:
+  algorithm: maglev
+  mode: dsr
+localRedirectPolicy: true
+operator:
   rollOutPods: true
-
-# -- Roll out cilium agent pods automatically when configmap is updated.
 rollOutCiliumPods: true
-
 routingMode: native
-
 securityContext:
   capabilities:
     ciliumAgent:
