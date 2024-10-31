@@ -122,7 +122,7 @@ ipam:
 ipv4NativeRoutingCIDR: 10.244.0.0/16
 
 # -- (string) Kubernetes service host
-k8sServiceHost: localhost
+k8sServiceHost: 127.0.0.1
 # -- (string) Kubernetes service port
 k8sServicePort: 7445
 
