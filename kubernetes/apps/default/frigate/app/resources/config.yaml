@@ -121,6 +121,8 @@ go2rtc:
       - onvif://{FRIGATE_CATCAM_CAMERA_USERNAME}:{FRIGATE_CATCAM_CAMERA_PASSWORD}@10.0.10.46:8000?subtype=PROFILE_178332
     catcam_sd:
       - onvif://{FRIGATE_CATCAM_CAMERA_USERNAME}:{FRIGATE_CATCAM_CAMERA_PASSWORD}@10.0.10.46:8000?subtype=PROFILE_178333
+    catcam_onvif:
+      - onvif://{FRIGATE_CATCAM_CAMERA_USERNAME}:{FRIGATE_CATCAM_CAMERA_PASSWORD}@10.0.10.46:8000
     # garage_hd:
     #   - rtsp://{FRIGATE_SONOFF_CAMERA_USERNAME}:{FRIGATE_SONOFF_CAMERA_PASSWORD}@192.168.1.186:554/av_stream/ch0
     # garage_sd:
@@ -187,7 +189,7 @@ cameras:
       mask:
         - 0.025,0.039,0.263,0.039,0.265,0.087,0.023,0.086
     live:
-      stream_name: catcam_hd
+      stream_name: catcam_onvif
 
   # garage:
   #   ffmpeg:
