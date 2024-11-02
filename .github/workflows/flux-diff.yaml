@@ -76,7 +76,7 @@ jobs:
         uses: frenck/action-setup-yq@c4b5be8b4a215c536a41d436757d9feb92836d4f # v1
 
       - name: Diff Resources
-        uses: allenporter/flux-local/action/diff@8d4c4054bc4cddb06fbc9a30683bdfde1806611e # 6.0.0
+        uses: allenporter/flux-local/action/diff@1b8442b12ab5a592a392f4b9e6ca5000f24e7e77 # 6.0.1
         id: diff
         with:
           sources: home-ops-kubernetes
