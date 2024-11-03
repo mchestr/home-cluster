@@ -63,7 +63,7 @@ spec:
           - --leader-election=false
           - --node-deployment=true
       nodeSelector: &nodeSelector
-        kubernetes.io/role: worker
+        topology.kubernetes.io/zone: worker
     node:
       driver:
         image: ghcr.io/democratic-csi/democratic-csi:v1.9.3
