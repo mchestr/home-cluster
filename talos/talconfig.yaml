@@ -1,17 +1,17 @@
-clusterName: home-cluster
+clusterName: &cluster ${clusterName}
 # renovate: datasource=github-releases depName=siderolabs/talos
 talosVersion: "v1.8.2"
 # renovate: datasource=github-releases depName=siderolabs/kubelet
 kubernetesVersion: "v1.31.2"
 
-endpoint: https://${clusterName}.chestr.dev:6443
+endpoint: https://${clusterEndpointIP}:6443
 allowSchedulingOnMasters: true
 
 cniConfig:
   name: none
 
 additionalApiServerCertSans: &sans
-  - ${clusterEndpointIP}
+  - ${clusterName}.chestr.dev
   - "127.0.0.1"  #kubeprism
 
 additionalMachineCertSans: *sans
@@ -27,9 +27,7 @@ nodes:
           driver: e1000e
         dhcp: true
         vip:
-          ip: 192.168.1.254
-        dhcpOptions:
-          routeMetric: 1024
+          ip: ${clusterEndpointIP}
         vlans:
           - &vlan10
             vlanId: 10
@@ -37,7 +35,7 @@ nodes:
             dhcp: true
             dhcpOptions:
               routeMetric: 4096
-    schematic:
+    schematic: &schematic
       customization:
         extraKernelArgs:
           - net.ifnames=0
@@ -56,19 +54,9 @@ nodes:
       - deviceSelector:
           driver: e1000e
         dhcp: true
-        dhcpOptions:
-          routeMetric: 1024
         vlans:
           - *vlan10
-    schematic:
-      customization:
-        extraKernelArgs:
-          - net.ifnames=0
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/i915-ucode
-            - siderolabs/intel-ucode
-            - siderolabs/nut-client
+    schematic: *schematic
 
   - hostname: k8s-2
     ipAddress: 192.168.1.202
@@ -79,19 +67,9 @@ nodes:
       - deviceSelector:
           driver: r8169
         dhcp: true
-        dhcpOptions:
-          routeMetric: 1024
         vlans:
           - *vlan10
-    schematic:
-      customization:
-        extraKernelArgs:
-          - net.ifnames=0
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/i915-ucode
-            - siderolabs/intel-ucode
-            - siderolabs/nut-client
+    schematic: *schematic
 
   - hostname: k8s-3
     ipAddress: 192.168.1.203
@@ -103,20 +81,10 @@ nodes:
           driver: e1000e
         dhcp: true
         vip:
-          ip: 192.168.1.254
-        dhcpOptions:
-          routeMetric: 1024
+          ip: ${clusterEndpointIP}
         vlans:
           - *vlan10
-    schematic:
-      customization:
-        extraKernelArgs:
-          - net.ifnames=0
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/i915-ucode
-            - siderolabs/intel-ucode
-            - siderolabs/nut-client
+    schematic: *schematic
 
   - hostname: k8s-4
     ipAddress: 192.168.1.204
@@ -128,20 +96,10 @@ nodes:
           driver: e1000e
         dhcp: true
         vip:
-          ip: 192.168.1.254
-        dhcpOptions:
-          routeMetric: 1024
+          ip: ${clusterEndpointIP}
         vlans:
           - *vlan10
-    schematic:
-      customization:
-        extraKernelArgs:
-          - net.ifnames=0
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/i915-ucode
-            - siderolabs/intel-ucode
-            - siderolabs/nut-client
+    schematic: *schematic
 
   - hostname: k8s-5
     ipAddress: 192.168.1.205
@@ -152,19 +110,9 @@ nodes:
       - deviceSelector:
           driver: e1000e
         dhcp: true
-        dhcpOptions:
-          routeMetric: 1024
         vlans:
           - *vlan10
-    schematic:
-      customization:
-        extraKernelArgs:
-          - net.ifnames=0
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/i915-ucode
-            - siderolabs/intel-ucode
-            - siderolabs/nut-client
+    schematic: *schematic
 
   - hostname: k8s-6
     ipAddress: 192.168.1.206
@@ -175,8 +123,6 @@ nodes:
       - deviceSelector:
           driver: alx
         dhcp: true
-        dhcpOptions:
-          routeMetric: 1024
         vlans:
           - *vlan10
     schematic:
@@ -188,8 +134,8 @@ nodes:
             - siderolabs/i915-ucode
             - siderolabs/intel-ucode
             - siderolabs/nut-client
-            - siderolabs/nonfree-kmod-nvidia
-            - siderolabs/nvidia-container-toolkit
+            - siderolabs/nonfree-kmod-nvidia-production
+            - siderolabs/nvidia-container-toolkit-production
     patches:
       - |-
         - op: add
@@ -207,6 +153,10 @@ nodes:
             net.core.bpf_jit_harden: 1
 
 controlPlane:
+  nodeLabels:
+    topology.kubernetes.io/region: *cluster
+    topology.kubernetes.io/zone: control-plane
+
   extensionServices: &extensionServices
     - name: nut-client
       configFiles:
@@ -221,6 +171,15 @@ controlPlane:
       machine:
         network:
           disableSearchDomain: true
+
+    # Disable Host DNS
+    - &hostDnsPatch |-
+      machine:
+        features:
+          hostDNS:
+            enabled: true
+            resolveMemberNames: true
+            forwardKubeDNSToHost: false
 
     # Configure NTP
     - &ntpPatch |-
@@ -241,11 +200,12 @@ controlPlane:
     - &discoveryPatch |-
       cluster:
         discovery:
+          enabled: true
           registries:
             kubernetes:
               disabled: false
             service:
-              disabled: false
+              disabled: true
 
     # Configure containerd
     - &containerdPatch |-
@@ -289,13 +249,6 @@ controlPlane:
             validSubnets:
                 - 192.168.1.0/24
 
-    # Add os=talos label
-    - &talosLabel |-
-      - op: add
-        path: /machine/nodeLabels
-        value:
-          node/operating-system: talos
-
     # Configure cluster loopback
     - |-
       machine:
@@ -310,6 +263,8 @@ controlPlane:
       cluster:
         allowSchedulingOnMasters: true
         proxy:
+          disabled: true
+        coreDNS:
           disabled: true
 
     # ETCD configuration
@@ -336,23 +291,20 @@ controlPlane:
               - kube-system
 
 worker:
+  nodeLabels:
+    topology.kubernetes.io/region: *cluster
+    topology.kubernetes.io/zone: worker
+
   extensionServices: *extensionServices
   patches:
     - *disableSearchDomainsPatch
+    - *hostDnsPatch
     - *ntpPatch
     - *kubePrismPatch
     - *containerdPatch
     - *discoveryPatch
     - *kubeletPatch
     - *sysctlPatch
-    - *talosLabel
-
-    # Add role=worker label
-    - |-
-      - op: add
-        path: /machine/nodeLabels
-        value:
-          kubernetes.io/role: worker
 
     # Configure local-path CSI directory
     - |-
