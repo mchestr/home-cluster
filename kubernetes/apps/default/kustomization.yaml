@@ -6,7 +6,6 @@ resources:
   - namespace.yaml
   - network-policy.yaml
   # Flux-Kustomizations
-  - appdaemon/ks.yaml
   - atuin/ks.yaml
   - authelia/ks.yaml
   - autobrr/ks.yaml
