@@ -139,7 +139,7 @@ spec:
       data:
         enabled: true
         type: nfs
-        server: lochnas.chestr.dev
+        server: 192.168.1.128
         path: /volume1/shared/media/photos
         globalMounts:
           - path: /usr/src/app/upload
