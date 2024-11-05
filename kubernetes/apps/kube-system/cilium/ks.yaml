@@ -18,7 +18,6 @@ spec:
   postBuild:
     substitute:
       APP: cilium
-      GATUS_SUBDOMAIN: hubble
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
