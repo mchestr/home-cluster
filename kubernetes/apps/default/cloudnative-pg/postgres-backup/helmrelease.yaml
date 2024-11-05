@@ -57,7 +57,7 @@ spec:
       backups:
         enabled: true
         type: nfs
-        server: lochnas.chestr.dev
+        server: 192.168.1.128
         path: /volume1/backups/kubernetes/apps/postgres
         globalMounts:
           - path: /backups
