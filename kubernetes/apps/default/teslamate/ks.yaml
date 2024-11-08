@@ -10,7 +10,7 @@ spec:
   prune: true
   dependsOn:
     - name: cluster-apps-external-secrets-stores
-    - name: cluster-apps-mosquitto
+    - name: cluster-apps-emqx-cluster
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
