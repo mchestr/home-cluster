@@ -2,7 +2,8 @@ logger:
   default: info
 
 mqtt:
-  host: mosquitto.default.svc.cluster.local
+  client_id: frigate
+  host: emqx-listeners.default.svc.cluster.local
   topic_prefix: frigate
   user: "{FRIGATE_MQTT_USERNAME}"
   password: "{FRIGATE_MQTT_PASSWORD}"

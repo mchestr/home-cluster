@@ -45,7 +45,7 @@ spec:
             env:
               TZ: &tz America/Vancouver
               DISABLE_MQTT: "false"
-              MQTT_HOST: mosquitto.default.svc.cluster.local
+              MQTT_HOST: emqx-listeners.default.svc.cluster.local
             envFrom: &envFrom
               - secretRef:
                   name: teslamate-secret

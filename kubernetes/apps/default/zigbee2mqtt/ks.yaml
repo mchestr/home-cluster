@@ -8,7 +8,7 @@ spec:
   targetNamespace: default
   dependsOn:
     - name: cluster-apps-external-secrets-stores
-    - name: cluster-apps-mosquitto
+    - name: cluster-apps-emqx-cluster
     - name: cluster-apps-node-feature-discovery-rules
     - name: cluster-apps-volsync
   path: ./kubernetes/apps/default/zigbee2mqtt/app

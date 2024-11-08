@@ -11,6 +11,7 @@ resources:
   - autobrr/ks.yaml
   - cloudnative-pg/ks.yaml
   - displex/ks.yaml
+  - emqx/ks.yaml
   - esphome/ks.yaml
   - frigate/ks.yaml
   - home-assistant/ks.yaml
