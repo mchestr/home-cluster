@@ -21,7 +21,6 @@ resources:
   - kromgo/ks.yaml
   - lldap/ks.yaml
   - maintainerr/ks.yaml
-  - mosquitto/ks.yaml
   - openwakeword/ks.yaml
   - overseerr/ks.yaml
   - paperless/ks.yaml
