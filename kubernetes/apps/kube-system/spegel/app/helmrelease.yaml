@@ -8,11 +8,12 @@ spec:
   chart:
     spec:
       chart: spegel
-      version: v0.0.18
+      version: v0.0.27
       sourceRef:
         kind: HelmRepository
-        name: xenitab-charts
+        name: spegel-charts
         namespace: flux-system
+      interval: 30m
   maxHistory: 2
   install:
     remediation:
@@ -24,9 +25,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      repository: ghcr.io/deedee-ops/spegel-hack
-      digest: sha256:7de27625da39e0524982c3075c1bc724224dedd2f6b2f3cf51535a943a3a8586
     spegel:
       appendMirrors: true
       containerdSock: /run/containerd/containerd.sock
@@ -34,3 +32,5 @@ spec:
     service:
       registry:
         hostPort: 29999
+    serviceMonitor:
+      enabled: true
