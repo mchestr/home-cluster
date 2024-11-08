@@ -29,6 +29,7 @@ resources:
   - node-feature-discovery-charts.yaml
   - nvidia-charts.yaml
   - piraeus-charts.yaml
+  - spegel-charts.yaml
   - postfinance-charts.yaml
   - prometheus-community-charts.yaml
   - rook-ceph-charts.yaml
