@@ -127,7 +127,7 @@ spec:
         advancedMounts:
           home-assistant:
             vscode-tunnel:
-              - path: /home/kah
+              - path: /.vscode
 
     networkpolicies:
       home-assistant:
