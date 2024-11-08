@@ -21,7 +21,7 @@ nodes:
     ipAddress: 192.168.1.200
     controlPlane: true
     installDiskSelector:
-      busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
+      model: KINGSTON SA400S3
     networkInterfaces:
       - deviceSelector:
           driver: e1000e
@@ -49,7 +49,7 @@ nodes:
     ipAddress: 192.168.1.201
     controlPlane: false
     installDiskSelector:
-      busPath: /pci0000:00/0000:00:1f.2/ata1/host0/target0:0:0/0:0:0:0/
+      model: SAMSUNG MZ7LN256
     networkInterfaces:
       - deviceSelector:
           driver: e1000e
@@ -62,7 +62,7 @@ nodes:
     ipAddress: 192.168.1.202
     controlPlane: false
     installDiskSelector:
-      busPath: /pci0000:00/0000:00:1f.5/ata3/host2/target2:0:0/2:0:0:0/
+      model: WDC WDS250G2B0A-
     networkInterfaces:
       - deviceSelector:
           driver: r8169
@@ -75,7 +75,7 @@ nodes:
     ipAddress: 192.168.1.203
     controlPlane: true
     installDiskSelector:
-      busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
+      model: KingFast
     networkInterfaces:
       - deviceSelector:
           driver: e1000e
@@ -88,9 +88,22 @@ nodes:
 
   - hostname: k8s-4
     ipAddress: 192.168.1.204
+    controlPlane: false
+    installDiskSelector:
+      model: CT500MX500SSD1
+    networkInterfaces:
+      - deviceSelector:
+          driver: e1000e
+        dhcp: true
+        vlans:
+          - *vlan10
+    schematic: *schematic
+
+  - hostname: k8s-5
+    ipAddress: 192.168.1.205
     controlPlane: true
     installDiskSelector:
-      busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
+      model: SanDisk SD7TB6S2
     networkInterfaces:
       - deviceSelector:
           driver: e1000e
@@ -101,24 +114,11 @@ nodes:
           - *vlan10
     schematic: *schematic
 
-  - hostname: k8s-5
-    ipAddress: 192.168.1.205
-    controlPlane: false
-    installDiskSelector:
-      busPath: /pci0000:00/0000:00:17.0/ata2/host1/target1:0:0/1:0:0:0/
-    networkInterfaces:
-      - deviceSelector:
-          driver: e1000e
-        dhcp: true
-        vlans:
-          - *vlan10
-    schematic: *schematic
-
   - hostname: k8s-6
     ipAddress: 192.168.1.206
     controlPlane: false
     installDiskSelector:
-      busPath: /pci0000:00/0000:00:1d.0/0000:04:00.0/nvme/nvme0/nvme0n1
+      model: Samsung SSD 950 PRO 256GB
     networkInterfaces:
       - deviceSelector:
           driver: alx
