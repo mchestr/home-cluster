@@ -5,5 +5,4 @@ resources:
   - cluster.yaml
   - ingress.yaml
   - podmonitor.yaml
-  - ../../../../templates/gatus/guarded
   - ../../../../templates/gatus/internal
