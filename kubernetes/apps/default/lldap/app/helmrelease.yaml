@@ -43,7 +43,7 @@ spec:
           01-init-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: "16.4"
+              tag: "16.5"
             envFrom:
               - secretRef:
                   name: lldap-dbinit-secret
