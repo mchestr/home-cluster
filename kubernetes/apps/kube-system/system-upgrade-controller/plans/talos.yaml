@@ -83,7 +83,7 @@ spec:
     args:
       - --nodes=$(NODE_IP)
       - upgrade
-      - --image=factory.talos.dev/installer/02860d3e5f839dd91319114d080c5fc9203117aae93751624092d607f83f71df:$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
+      - --image=factory.talos.dev/installer/9705207da3da8c90d4253eda75e29ef2b8bab8ebb59e918df0c4b925280dbd9c:$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
       - --preserve=true
       - --wait=false
       - --reboot-mode=powercycle
