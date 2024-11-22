@@ -156,7 +156,6 @@ controlPlane:
   nodeLabels:
     topology.kubernetes.io/region: *cluster
     topology.kubernetes.io/zone: control-plane
-    node-role.kubernetes.io/control-plane: control-plane
 
   extensionServices: &extensionServices
     - name: nut-client
@@ -295,7 +294,6 @@ worker:
   nodeLabels:
     topology.kubernetes.io/region: *cluster
     topology.kubernetes.io/zone: worker
-    node-role.kubernetes.io/worker: worker
 
   extensionServices: *extensionServices
   patches:
