@@ -121,7 +121,7 @@ spec:
               - path: /home/kah/.ssh
       vscode-tunnel:
         enabled: true
-        size: 2Gi
+        size: 4Gi
         storageClass: ceph-block
         accessMode: ReadWriteOnce
         advancedMounts:
