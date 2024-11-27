@@ -78,7 +78,7 @@ spec:
           cross-seed:
             image:
               repository: ghcr.io/cross-seed/cross-seed
-              tag: 5.9.2
+              tag: 6.1.1
             env:
               PORT: &crossseed-port 2468
             args:
