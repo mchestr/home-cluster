@@ -7,7 +7,7 @@
       automergeType: 'branch',
       requiredStatusChecks: null,
       matchUpdateTypes: ['digest'],
-      matchPackagePatterns: ['ghcr.io/onedr0p', 'ghcr.io/bjw-s', 'ghcr.io/mchestr']
+      matchPackagePatterns: ['ghcr.io/mchestr']
     },
     {
       description: 'Auto merge GitHub Actions',
