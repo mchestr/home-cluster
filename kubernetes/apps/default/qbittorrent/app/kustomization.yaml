@@ -11,9 +11,6 @@ configMapGenerator:
   - name: qbittorrent-scripts
     files:
       - ./resources/cross-seed.sh
-  - name: cross-seed-config-tpl
-    files:
-      - ./resources/config.js
   - name: qbittorrent-loki-rules
     files:
       - qbittorrent.yaml=./resources/lokirule.yaml
