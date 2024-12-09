@@ -52,6 +52,10 @@ spec:
                   fieldRef:
                     fieldPath: status.podIP
               QBT_BitTorrent__Session__InterfaceName: eth0
+              CROSS_SEED_ENABLED: true
+              CROSS_SEED_HOST: localhost
+              CROSS_SEED_PORT: &cross-seed-port 2468
+              CROSS_SEED_SLEEP_INTERVAL: 0
             probes:
               liveness: &probes
                 enabled: true
@@ -80,7 +84,7 @@ spec:
               repository: ghcr.io/cross-seed/cross-seed
               tag: 6.1.1
             env:
-              PORT: &crossseed-port 2468
+              PORT: *cross-seed-port
             args:
               - daemon
 
@@ -106,7 +110,7 @@ spec:
             port: *bittorrentPort
             protocol: TCP
           cross-seed:
-            port: *crossseed-port
+            port: *cross-seed-port
 
     ingress:
       main:
@@ -147,18 +151,16 @@ spec:
         path: /volume1/shared/media
         globalMounts:
           - path: /media
-      completed-script:
-        enabled: true
+      scripts:
         type: configMap
         name: qbittorrent-scripts
-        defaultMode: 509
+        defaultMode: 0775
         globalMounts:
-          - path: /scripts/cross-seed.sh
-            subPath: cross-seed.sh
-      cross-seed-config:
-        enabled: true
+          - readOnly: true
+      secret-file:
         type: secret
         name: cross-seed-secret
         globalMounts:
           - path: /config/config.js
             subPath: config.js
+            readOnly: true
