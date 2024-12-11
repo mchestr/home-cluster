@@ -2,7 +2,7 @@ clusterName: &cluster ${clusterName}
 # renovate: datasource=github-releases depName=siderolabs/talos
 talosVersion: "v1.8.3"
 # renovate: datasource=github-releases depName=siderolabs/kubelet
-kubernetesVersion: "v1.31.3"
+kubernetesVersion: "v1.31.4"
 
 endpoint: https://${clusterEndpointIP}:6443
 allowSchedulingOnMasters: true
