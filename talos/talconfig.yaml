@@ -162,7 +162,7 @@ controlPlane:
       configFiles:
         - mountPath: /usr/local/etc/nut/upsmon.conf
           content: |
-            MONITOR ups@lochnas.chestr.dev 1 ${upsmonUser} ${upsmonPasswd} slave
+            MONITOR ups@192.168.1.128 1 ${upsmonUser} ${upsmonPasswd} slave
             SHUTDOWNCMD "/sbin/poweroff"
 
   patches:
