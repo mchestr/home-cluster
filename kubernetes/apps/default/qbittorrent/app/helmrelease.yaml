@@ -144,6 +144,8 @@ spec:
       config:
         enabled: true
         existingClaim: ${VOLSYNC_CLAIM}
+      cross-seeds:
+        type: emptyDir
       media:
         enabled: true
         type: nfs
