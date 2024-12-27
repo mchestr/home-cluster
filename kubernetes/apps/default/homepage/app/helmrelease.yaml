@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/gethomepage/homepage
-              tag: v0.10.1
+              tag: v0.10.5
             env:
               TZ: America/Vancouver
             envFrom:
