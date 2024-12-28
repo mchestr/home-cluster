@@ -41,7 +41,7 @@ spec:
     args:
       - --nodes=$(NODE_IP)
       - upgrade
-      - --image=factory.talos.dev/installer/dbfb6577b113acbc7da6bfcb48e7f59343283561ff938ff7c33bd4693f85c295:$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
+      - --image=factory.talos.dev/installer/c511e5486ab74d9c01141aa74617318fdb49abc96c368333c01aefbc2cf80ef4:$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
       - --preserve=true
       - --wait=false
       - --reboot-mode=powercycle
@@ -83,7 +83,7 @@ spec:
     args:
       - --nodes=$(NODE_IP)
       - upgrade
-      - --image=factory.talos.dev/installer/9705207da3da8c90d4253eda75e29ef2b8bab8ebb59e918df0c4b925280dbd9c:$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
+      - --image=factory.talos.dev/installer/d1d3622610ca93b49b1c33ba03268700cf41088fd92b4bb6cac52778671c1ff9:$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
       - --preserve=true
       - --wait=false
       - --reboot-mode=powercycle

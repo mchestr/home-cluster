@@ -41,7 +41,7 @@ nodes:
           - net.ifnames=0
         systemExtensions:
           officialExtensions:
-            - siderolabs/i915-ucode
+            - siderolabs/i915
             - siderolabs/intel-ucode
             - siderolabs/nut-client
 
@@ -131,10 +131,10 @@ nodes:
           - net.ifnames=0
         systemExtensions:
           officialExtensions:
-            - siderolabs/i915-ucode
+            - siderolabs/i915
             - siderolabs/intel-ucode
-            - siderolabs/nut-client
             - siderolabs/nonfree-kmod-nvidia-production
+            - siderolabs/nut-client
             - siderolabs/nvidia-container-toolkit-production
     patches:
       - |-
