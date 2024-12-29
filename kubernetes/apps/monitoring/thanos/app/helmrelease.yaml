@@ -79,7 +79,7 @@ spec:
       persistence:
         enabled: true
         storageClass: local-path
-        size: 10Gi
+        size: 8Gi
       resources:
         limits:
           memory: 2048M
