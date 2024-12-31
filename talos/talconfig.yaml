@@ -47,12 +47,14 @@ nodes:
 
   - hostname: k8s-1
     ipAddress: 192.168.1.201
-    controlPlane: false
+    controlPlane: true
     installDiskSelector:
       model: SAMSUNG MZ7LN256
     networkInterfaces:
       - deviceSelector:
           driver: e1000e
+        vip:
+          ip: ${clusterEndpointIP}
         dhcp: true
         vlans:
           - *vlan10
@@ -101,15 +103,13 @@ nodes:
 
   - hostname: k8s-5
     ipAddress: 192.168.1.205
-    controlPlane: true
+    controlPlane: false
     installDiskSelector:
       model: SanDisk SD7TB6S2
     networkInterfaces:
       - deviceSelector:
           driver: e1000e
         dhcp: true
-        vip:
-          ip: ${clusterEndpointIP}
         vlans:
           - *vlan10
     schematic: *schematic
