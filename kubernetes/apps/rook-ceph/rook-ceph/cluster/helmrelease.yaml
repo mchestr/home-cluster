@@ -111,7 +111,7 @@ spec:
           - name: "k8s-0"
             devices:
               - name: "/dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_AA221020NV051201345"
-          - name: "k8s-5"
+          - name: "k8s-4"
             devices:
               - name: "/dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_AA221020NV051200709"
           - name: "k8s-3"
