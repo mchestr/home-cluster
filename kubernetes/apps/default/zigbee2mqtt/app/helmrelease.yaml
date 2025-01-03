@@ -38,7 +38,7 @@ spec:
           app:
             image:
               repository: ghcr.io/koenkk/zigbee2mqtt
-              tag: 1.42.0
+              tag: 2.0.0
             env:
               TZ: America/Vancouver
               ZIGBEE2MQTT_DATA: /data
