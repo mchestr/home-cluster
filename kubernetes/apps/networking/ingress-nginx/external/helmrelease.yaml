@@ -32,7 +32,6 @@ spec:
           external-dns.alpha.kubernetes.io/hostname: external.chestr.dev
           io.cilium/lb-ipam-ips: 192.168.100.200
         externalTrafficPolicy: Cluster
-      allowSnippetAnnotations: true
       ingressClassResource:
         name: external
         default: false
@@ -44,6 +43,9 @@ spec:
               operator: In
               values: ["external"]
       config:
+        allow-snippet-annotations: true
+        annotations-risk-level: Critical
+        block-user-agents: "AdsBot-Google,Amazonbot,anthropic-ai,Applebot-Extended,Bytespider,CCBot,ChatGPT-User,ClaudeBot,Claude-Web,cohere-ai,Diffbot,FacebookBot,FriendlyCrawler,Google-Extended,GoogleOther,GPTBot,img2dataset,omgili,omgilibot,peer39_crawler,peer39_crawler/1.0,PerplexityBot,YouBot," # taken from https://github.com/ai-robots-txt/ai.robots.txt
         client-body-buffer-size: 100M
         client-body-timeout: 120
         client-header-timeout: 120
