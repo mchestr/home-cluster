@@ -47,7 +47,7 @@ spec:
           app:
             image:
               repository: ghcr.io/blakeblackshear/frigate
-              tag: "0.14.1"
+              tag: "0.15.0-beta4"
             env:
               TZ: America/Vancouver
               LIBVA_DRIVER_NAME: i965
@@ -91,17 +91,21 @@ spec:
     service:
       app:
         controller: frigate
+        ports:
+          http:
+            port: &secure 8971
+          unsecure:
+            port: &unsecure 5000
+
+      go2rtc:
+        controller: frigate
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: go2rtc-streams.chestr.dev
           lbipam.cilium.io/ips: 192.168.100.124
         ports:
-          http:
-            port: &secure 8971
           rtsp:
             port: 8554
-          unsecure:
-            port: &unsecure 5000
           webrtc-tcp:
             port: 8555
             protocol: TCP
@@ -146,8 +150,6 @@ spec:
         globalMounts:
           - path: /config/config.yml
             subPath: config.yaml
-          - path: /config/.version
-            subPath: version
       media:
         type: nfs
         server: 192.168.1.128

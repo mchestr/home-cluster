@@ -12,7 +12,7 @@ database:
   path: /data/frigate.db
 
 birdseye:
-  enabled: false
+  enabled: true
 
 detectors:
   coral:
@@ -63,12 +63,14 @@ record:
   retain:
     days: 14
     mode: all
-  events:
+  alerts:
     retain:
-      default: 90
+      days: 90
       mode: active_objects
-      objects:
-        vehicle: 7
+  detections:
+    retain:
+      days: 90
+      mode: active_objects
 
 objects:
   track:
@@ -176,6 +178,8 @@ cameras:
       min_volume: 300
 
   catcam:
+    audio:
+      enabled: false
     ffmpeg:
       output_args:
         record: preset-record-generic-audio-aac
@@ -184,11 +188,7 @@ cameras:
           input_args: preset-rtsp-restream
           roles:
             - record
-        - path: rtsp://127.0.0.1:8554/catcam?video=copy&audio=aac
-          input_args: preset-rtsp-restream
-          roles:
             - detect
-            - audio
     motion:
       mask:
         - 0.025,0.039,0.263,0.039,0.265,0.087,0.023,0.086
