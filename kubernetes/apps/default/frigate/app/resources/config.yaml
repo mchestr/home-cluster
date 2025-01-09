@@ -19,6 +19,11 @@ detectors:
     type: edgetpu
     device: usb
 
+semantic_search:
+  enabled: True
+  reindex: False
+  model_size: large
+
 model:
   labelmap:
     2: vehicle # car
