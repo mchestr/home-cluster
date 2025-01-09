@@ -24,6 +24,12 @@ semantic_search:
   reindex: False
   model_size: large
 
+genai:
+  enabled: True
+  provider: gemini
+  api_key: "{FRIGATE_GOOGLE_GEMINI_API_KEY}"
+  model: gemini-1.5-flash
+
 model:
   labelmap:
     2: vehicle # car
@@ -111,16 +117,10 @@ audio:
     - yell
 
 go2rtc:
-  rtsp:
-    listen: :554
   webrtc:
-    listen: :8555
     candidates:
       - 192.168.100.124:8555
       - stun:8555
-    ice_servers:
-      - urls:
-          - stun:stun.cloudflare.com:3478
   streams:
     living_room_hd:
       - ffmpeg:http://10.0.10.164/flv?port=1935&app=bcs&stream=channel0_main.bcs&user={FRIGATE_LIVING_ROOM_CAMERA_USERNAME}&password={FRIGATE_LIVING_ROOM_CAMERA_PASSWORD}#video=copy#audio=copy#audio=opus
