@@ -91,19 +91,15 @@ spec:
     service:
       app:
         controller: frigate
-        ports:
-          http:
-            port: &secure 8971
-          unsecure:
-            port: &unsecure 5000
-
-      go2rtc:
-        controller: frigate
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: go2rtc-streams.chestr.dev
           lbipam.cilium.io/ips: 192.168.100.124
         ports:
+          http:
+            port: &secure 8971
+          unsecure:
+            port: &unsecure 5000
           rtsp:
             port: 8554
           webrtc-tcp:
