@@ -108,6 +108,9 @@ spec:
           webrtc-udp:
             port: 8555
             protocol: UDP
+          go2rtc:
+            port: 1984
+            protocol: TCP
 
     ingress:
       app:
