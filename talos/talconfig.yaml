@@ -108,7 +108,7 @@ nodes:
       model: SanDisk SD7TB6S2
     networkInterfaces:
       - deviceSelector:
-          driver: e1000e
+          driver: r8169
         dhcp: true
         vlans:
           - *vlan10

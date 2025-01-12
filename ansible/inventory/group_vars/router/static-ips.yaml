@@ -28,7 +28,7 @@ static_lan_ips:
     mac_address: e4:e7:49:52:fc:c2
   k8s-5:
     ip_address: 192.168.1.205
-    mac_address: e4:e7:49:52:7d:bb
+    mac_address: 00:0a:cd:00:03:e6
   k8s-6:
     ip_address: 192.168.1.206
     mac_address: d8:cb:8a:e6:2f:38
@@ -71,7 +71,7 @@ static_iot_ips:
     mac_address: e4:e7:49:52:fc:c2
   k8s-5:
     ip_address: 10.0.10.205
-    mac_address: e4:e7:49:52:7d:bb
+    mac_address: 00:0a:cd:00:03:e6
   k8s-6:
     ip_address: 10.0.10.206
     mac_address: d8:cb:8a:e6:2f:38
