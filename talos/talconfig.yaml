@@ -203,9 +203,9 @@ controlPlane:
           enabled: true
           registries:
             kubernetes:
-              disabled: false
-            service:
               disabled: true
+            service:
+              disabled: false
 
     # Configure containerd
     - &containerdPatch |-
