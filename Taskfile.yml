@@ -1,59 +1,36 @@
 ---
-version: "3"
+version: '3'
+
+set: [pipefail]
+shopt: [globstar]
 
 vars:
-  PROJECT_DIR:
-    sh: "git rev-parse --show-toplevel"
-  CLUSTER_DIR: "{{.PROJECT_DIR}}/cluster"
-  ANSIBLE_DIR: "{{.PROJECT_DIR}}/ansible"
-  TERRAFORM_DIR: "{{.PROJECT_DIR}}/terraform"
-
-dotenv: [".config.env"]
+  CLUSTER_DIR: '{{.ROOT_DIR}}/kubernetes'
+  BOOTSTRAP_DIR: '{{.CLUSTER_DIR}}/bootstrap'
 
 env:
-  KUBECONFIG: "{{.PROJECT_DIR}}/kubeconfig"
+  KUBECONFIG: '{{.CLUSTER_DIR}}/kubeconfig'
+  MINIJINJA_CONFIG_FILE: '{{.ROOT_DIR}}/.minijinja.toml'
+  SOPS_AGE_KEY_FILE: '{{.ROOT_DIR}}/age.key'
+  TALOSCONFIG: 'talos/clusterconfig/talosconfig'
 
 includes:
-  ansible: .taskfiles/AnsibleTasks.yml
-  kube: .taskfiles/KuberneteTasks.yml
-  pg: .taskfiles/Postgres/Tasks.yaml
-  precommit: .taskfiles/PrecommitTasks.yml
-  repo: .taskfiles/Repo/Tasks.yml
-  talos: .taskfiles/TalosTasks.yml
-  terraform: .taskfiles/TerraformTasks.yml
-  volsync: .taskfiles/VolSync/Tasks.yml
+  ansible: .taskfiles/ansible
+  bootstrap: .taskfiles/bootstrap
+  kubernetes: .taskfiles/kubernetes
+  talos: .taskfiles/talos
+  terraform: .taskfiles/terraform
+  volsync: .taskfiles/volsync
+  workstation: .taskfiles/workstation
 
 tasks:
 
-  init:
-    desc: Initialize workstation dependencies with Brew
-    cmds:
-      - brew install {{.DEPS}} {{.CLI_ARGS}}
-      - task: precommit:init
-      - task: talos:init
-    preconditions:
-      - sh: command -v brew
-        msg: |
-          Homebrew is not installed. Using MacOS, Linux or WSL?
-          Head over to https://brew.sh to get up and running.
-    vars:
-      DEPS: >-
-        age
-        ansible
-        ansible-lint
-        direnv
-        fluxcd/tap/flux
-        gitleaks
-        go-task/tap/go-task
-        helm
-        ipcalc
-        jq
-        kubernetes-cli
-        kustomize
-        pre-commit
-        prettier
-        sops
-        stern
-        terraform
-        yamllint
-        yq
+  default:
+    cmd: task --list
+    silent: true
+
+  # Ref: https://github.com/go-task/task/issues/608
+  noop:
+    internal: true
+    silent: true
+    cmd: noop() { :; }
