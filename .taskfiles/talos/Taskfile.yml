@@ -5,27 +5,9 @@ vars:
   N: '{{ .N | default "0" }}'
   NODE:
     sh: 'echo ${NODE:-192.168.1.20{{ .N }}}'
-  # renovate: datasource=github-releases depName=siderolabs/talos
-  TALOS_VERSION: "v1.9.1"
-  # renovate: datasource=github-releases depName=budimanjojo/talhelper
-  TALHELPER_VERSION: "v3.0.14"
   NODE_NUMBERS: 0 1 2 3 4 5 6
 
 tasks:
-
-  init:
-    desc: Init talosctl and grab kubeconfig (task talos:init)
-    cmds:
-      - mkdir config || true
-      - sudo curl -Lo /usr/local/bin/talosctl https://github.com/siderolabs/talos/releases/download/{{.TALOS_VERSION}}/talosctl-$(uname -s | tr "[:upper:]" "[:lower:]")-$(uname -m) && sudo chmod +x /usr/local/bin/talosctl
-      - curl -Lo /tmp/talhelper-{{.TALHELPER_VERSION}}.tar.gz https://github.com/budimanjojo/talhelper/releases/download/{{.TALHELPER_VERSION}}/talhelper_$(uname -s | tr "[:upper:]" "[:lower:]")_$(uname -m).tar.gz && tar -xzf /tmp/talhelper-{{.TALHELPER_VERSION}}.tar.gz -C /tmp && sudo mv /tmp/talhelper /usr/local/bin/talhelper
-      - task: generate
-      - talosctl --talosconfig=talos/clusterconfig/talosconfig kubeconfig --nodes 192.168.1.200 $KUBECONFIG
-
-  bootstrap:
-    desc: Install CNI and cert approver helm releases (task talos:cni)
-    cmds:
-      - kubectl kustomize talos --enable-helm --load-restrictor LoadRestrictionsNone | kubectl apply -f -
 
   apply:
     desc: Apply Talos config to a specific node (task talos:apply N=0)
