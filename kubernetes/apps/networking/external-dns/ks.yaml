@@ -9,7 +9,7 @@ spec:
   path: ./kubernetes/apps/networking/external-dns/app
   dependsOn:
     - name: cluster-apps-external-secrets-stores
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes

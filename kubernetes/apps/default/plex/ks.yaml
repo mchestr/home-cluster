@@ -10,7 +10,7 @@ spec:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-volsync
   path: ./kubernetes/apps/default/plex/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
@@ -40,7 +40,7 @@ spec:
     - name: cluster-apps-sonarr
     - name: cluster-apps-tautulli
   path: ./kubernetes/apps/default/plex/meta-manager
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes

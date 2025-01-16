@@ -8,7 +8,7 @@ spec:
   targetNamespace: kube-system
   interval: 10m
   path: ./kubernetes/apps/kube-system/kubelet-csr-approver/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes

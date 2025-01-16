@@ -9,7 +9,7 @@ spec:
   dependsOn:
     - name: cluster-apps-node-feature-discovery
   path: ./kubernetes/apps/kube-system/intel-device-plugin/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
@@ -28,7 +28,7 @@ spec:
   dependsOn:
     - name: cluster-apps-intel-device-plugin-operator
   path: ./kubernetes/apps/kube-system/intel-device-plugin/gpu
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
@@ -47,7 +47,7 @@ spec:
   dependsOn:
     - name: cluster-apps-intel-device-plugin-gpu
   path: ./kubernetes/apps/kube-system/intel-device-plugin/exporter
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes

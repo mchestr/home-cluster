@@ -12,5 +12,5 @@ spec:
     name: home-ops-kubernetes
   interval: 30m
   retryInterval: 1m
-  prune: true
+  prune: false
   wait: true

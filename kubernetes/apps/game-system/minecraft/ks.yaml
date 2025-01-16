@@ -7,7 +7,7 @@ metadata:
 spec:
   targetNamespace: game-system
   path: ./kubernetes/apps/game-system/minecraft/mc-router
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
@@ -26,7 +26,7 @@ spec:
   dependsOn:
     - name: cluster-apps-volsync
   path: ./kubernetes/apps/game-system/minecraft/gtnh
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
@@ -50,7 +50,7 @@ metadata:
 spec:
   targetNamespace: game-system
   path: ./kubernetes/apps/game-system/minecraft/valhelsia-6
-  prune: true
+  prune: false
   dependsOn:
     - name: cluster-apps-volsync
   sourceRef:
