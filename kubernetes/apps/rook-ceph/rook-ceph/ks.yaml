@@ -7,7 +7,7 @@ metadata:
 spec:
   targetNamespace: rook-ceph
   path: ./kubernetes/apps/rook-ceph/rook-ceph/app
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -26,7 +26,7 @@ spec:
   dependsOn:
     - name: cluster-apps-rook-ceph-app
   path: ./kubernetes/apps/rook-ceph/rook-ceph/cluster
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

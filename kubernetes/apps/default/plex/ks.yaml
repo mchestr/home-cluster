@@ -10,7 +10,7 @@ spec:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-volsync
   path: ./kubernetes/apps/default/plex/app
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -40,7 +40,7 @@ spec:
     - name: cluster-apps-sonarr
     - name: cluster-apps-tautulli
   path: ./kubernetes/apps/default/plex/meta-manager
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

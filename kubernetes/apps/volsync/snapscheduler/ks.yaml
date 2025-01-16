@@ -9,7 +9,7 @@ spec:
   dependsOn:
     - name: cluster-apps-snapshot-controller
   path: ./kubernetes/apps/volsync/snapscheduler/app
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

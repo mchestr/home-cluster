@@ -9,7 +9,7 @@ spec:
   dependsOn:
     - name: cluster-apps-node-feature-discovery
   path: ./kubernetes/apps/kube-system/intel-device-plugin/app
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -28,7 +28,7 @@ spec:
   dependsOn:
     - name: cluster-apps-intel-device-plugin-operator
   path: ./kubernetes/apps/kube-system/intel-device-plugin/gpu
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -47,7 +47,7 @@ spec:
   dependsOn:
     - name: cluster-apps-intel-device-plugin-gpu
   path: ./kubernetes/apps/kube-system/intel-device-plugin/exporter
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

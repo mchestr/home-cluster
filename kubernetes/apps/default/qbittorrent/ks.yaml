@@ -10,7 +10,7 @@ spec:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-volsync
   path: ./kubernetes/apps/default/qbittorrent/app
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -35,7 +35,7 @@ spec:
   targetNamespace: default
   interval: 30m
   path: ./kubernetes/apps/default/qbittorrent/tools
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
