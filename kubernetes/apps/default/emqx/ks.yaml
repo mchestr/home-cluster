@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/default/emqx/app
-  prune: true
+  prune: false
   dependsOn:
     - name: cluster-apps-external-secrets-stores
   sourceRef:
@@ -34,7 +34,7 @@ spec:
   dependsOn:
     - name: cluster-apps-emqx
   path: ./kubernetes/apps/default/emqx/cluster
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes

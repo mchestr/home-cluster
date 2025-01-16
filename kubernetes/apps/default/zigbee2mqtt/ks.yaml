@@ -12,7 +12,7 @@ spec:
     - name: cluster-apps-node-feature-discovery-rules
     - name: cluster-apps-volsync
   path: ./kubernetes/apps/default/zigbee2mqtt/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes

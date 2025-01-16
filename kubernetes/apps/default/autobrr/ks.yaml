@@ -10,7 +10,7 @@ spec:
     - name: cluster-apps-cloudnative-pg-cluster
     - name: cluster-apps-qbittorrent
   path: ./kubernetes/apps/default/autobrr/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
