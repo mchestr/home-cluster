@@ -13,7 +13,7 @@ spec:
   resources:
     - apiVersion: source.toolkit.fluxcd.io/v1beta2
       kind: GitRepository
-      name: home-ops-kubernetes
+      name: flux-system
       namespace: flux-system
     - apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
       kind: Kustomization

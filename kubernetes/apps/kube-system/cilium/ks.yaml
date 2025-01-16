@@ -9,7 +9,7 @@ spec:
   path: ./kubernetes/apps/kube-system/cilium/app
   sourceRef:
     kind: GitRepository
-    name: home-ops-kubernetes
+    name: flux-system
   prune: false
   wait: true
   interval: 30m
@@ -31,7 +31,7 @@ spec:
     - name: cluster-apps-cilium
   sourceRef:
     kind: GitRepository
-    name: home-ops-kubernetes
+    name: flux-system
   prune: false
   wait: true
   interval: 30m

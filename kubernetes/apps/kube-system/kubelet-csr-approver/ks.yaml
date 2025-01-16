@@ -11,5 +11,5 @@ spec:
   prune: false
   sourceRef:
     kind: GitRepository
-    name: home-ops-kubernetes
+    name: flux-system
   wait: true
