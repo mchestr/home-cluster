@@ -12,7 +12,7 @@ spec:
     - name: cluster-apps-lldap
     - name: cluster-apps-volsync
   path: ./kubernetes/apps/default/jellyfin/app
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

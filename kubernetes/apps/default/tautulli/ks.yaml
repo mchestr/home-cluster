@@ -10,7 +10,7 @@ spec:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-volsync
   path: ./kubernetes/apps/default/tautulli/app
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

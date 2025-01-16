@@ -9,7 +9,7 @@ spec:
   path: ./kubernetes/apps/networking/external-dns/app
   dependsOn:
     - name: cluster-apps-external-secrets-stores
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
