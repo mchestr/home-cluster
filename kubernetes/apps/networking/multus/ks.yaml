@@ -14,7 +14,7 @@ spec:
   prune: false
   sourceRef:
     kind: GitRepository
-    name: home-ops-kubernetes
+    name: flux-system
   wait: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -32,7 +32,7 @@ spec:
   prune: false
   sourceRef:
     kind: GitRepository
-    name: home-ops-kubernetes
+    name: flux-system
   wait: true
   dependsOn:
     - name: cluster-apps-multus
