@@ -1,14 +1,58 @@
 {
-    "ansible.ansibleLint.arguments": "-c .github/linters/.ansible-lint",
-    "files.associations": {
-        "*.yaml": "home-assistant"
-    },
-    "prettier.configPath": ".github/linters/.prettierrc.yaml",
-    "prettier.ignorePath": ".github/linters/.prettierignore",
-    "editor.fontLigatures": true,
-    "editor.bracketPairColorization.enabled": true,
-    "editor.guides.bracketPairs":"active",
-    "editor.hover.delay": 1500,
-    "editor.stickyScroll.enabled": true,
-    "explorer.autoReveal": false,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.fontFamily": "FiraCode Nerd Font",
+  "editor.fontLigatures": true,
+  "editor.guides.bracketPairs": true,
+  "editor.guides.bracketPairsHorizontal": true,
+  "editor.guides.highlightActiveBracketPair": true,
+  "editor.hover.delay": 1500,
+  "editor.rulers": [
+    100
+  ],
+  "editor.stickyScroll.enabled": false,
+  "explorer.autoReveal": false,
+  "files.associations": {
+    "*.yaml": "home-assistant"
+  },
+  "files.trimTrailingWhitespace": true,
+  "material-icon-theme.files.associations": {
+    // TODO: https://github.com/PKief/vscode-material-icon-theme/issues/330
+    "*.sops.env": "lock",
+    "*.sops.yaml": "lock"
+  },
+  "material-icon-theme.folders.associations": {
+      // top level
+      ".archive": "archive",
+      // .github
+      ".github/workflows": "robot",
+      // namespaces
+      "actions-runner-system": "github",
+      "cert-manager": "guard",
+      "default": "home",
+      "digester-system": "hook",
+      "external-secrets": "secure",
+      "flux-system": "pipe",
+      "hack": "scripts",
+      "kube-system": "kubernetes",
+      "monitoring": "event",
+      "network": "connection",
+      "networking": "connection",
+      "observability": "event",
+      "rook-ceph": "base",
+      "storage": "dump",
+      "system-upgrade": "update",
+      "tools": "tools",
+      "volsync": "aws"
+  },
+  "sops.defaults.ageKeyFile": "age.key",
+  "vs-kubernetes": {
+    "vs-kubernetes.kubeconfig": "./kubeconfig",
+    "vs-kubernetes.knownKubeconfigs": [
+      "./kubeconfig"
+    ]
+  },
+  "yaml.schemaStore.enable": true,
+  "yaml.schemas": {
+    "kubernetes": "./kubernetes/**/*.yaml"
+  }
 }
