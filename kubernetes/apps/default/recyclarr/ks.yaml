@@ -11,7 +11,7 @@ spec:
     - name: cluster-apps-radarr
     - name: cluster-apps-sonarr
   path: ./kubernetes/apps/default/recyclarr/app
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
