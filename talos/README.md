@@ -15,15 +15,6 @@ Using [tasks](https://github.com/go-task/task) I have defined some useful Talos 
 - [task talos:init](../.taskfiles/TalosTasks.yml)
 
 
-#### Install CNI
-
-This task is needed to bootstrap the CNI/Cert Approver initially on the cluster, or fix issues if the HelmRelease is broken when managed via Flux.
-
-- [task talos:install:cni](../.taskfiles/TalosTasks.yml)
-
-Afterwards Flux should take over and do any future upgrades as it is part of my [Flux Kustomizations](../kubernetes/apps/kube-system/cilium/ks.yaml)
-
-
 #### Upgrade Talos
 
 This task will rollout a Talos OS upgrade on each node, and wait for rook-ceph/postgres clusters to become healthy before proceeding on the next node.
