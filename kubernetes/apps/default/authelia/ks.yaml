@@ -13,7 +13,7 @@ spec:
     - name: cluster-apps-redis
     - name: cluster-apps-smtp-relay
   path: ./kubernetes/apps/default/authelia/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes

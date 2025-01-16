@@ -12,7 +12,7 @@ spec:
     - name: cluster-apps-lldap
     - name: cluster-apps-volsync
   path: ./kubernetes/apps/default/jellyfin/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes

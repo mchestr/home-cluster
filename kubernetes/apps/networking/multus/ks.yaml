@@ -11,7 +11,7 @@ spec:
       app.kubernetes.io/name: multus
   interval: 10m
   path: ./kubernetes/apps/networking/multus/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
@@ -29,7 +29,7 @@ spec:
       app.kubernetes.io/name: multus
   interval: 10m
   path: ./kubernetes/apps/networking/multus/config
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes

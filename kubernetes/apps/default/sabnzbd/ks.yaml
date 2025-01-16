@@ -10,7 +10,7 @@ spec:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-volsync
   path: ./kubernetes/apps/default/sabnzbd/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes

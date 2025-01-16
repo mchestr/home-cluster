@@ -9,7 +9,7 @@ spec:
   dependsOn:
     - name: cluster-apps-cert-manager-issuers
   path: ./kubernetes/apps/networking/ingress-nginx/common
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
@@ -28,7 +28,7 @@ spec:
   dependsOn:
     - name: cluster-apps-ingress-nginx-common
   path: ./kubernetes/apps/networking/ingress-nginx/internal
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
@@ -47,7 +47,7 @@ spec:
   dependsOn:
     - name: cluster-apps-ingress-nginx-common
   path: ./kubernetes/apps/networking/ingress-nginx/external
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
