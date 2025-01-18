@@ -18,6 +18,7 @@ resources:
   - homepage/ks.yaml
   - immich/ks.yaml
   - jellyfin/ks.yaml
+  - jellyplex-watched/ks.yaml
   - kromgo/ks.yaml
   - lldap/ks.yaml
   - maintainerr/ks.yaml
