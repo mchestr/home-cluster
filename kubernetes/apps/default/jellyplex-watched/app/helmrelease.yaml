@@ -39,7 +39,7 @@ spec:
                   name: jellyplex-watched-secret
             env:
               TZ: America/Vancouver
-              DRYRUN: "True"
+              DRYRUN: "False"
               DEBUG: "True"
               DEBUG_LEVEL: info
               RUN_ONLY_ONCE: "True"
@@ -54,6 +54,7 @@ spec:
               JELLYFIN_BASEURL: http://jellyfin.default.svc.cluster.local:8096
               ## Blacklisting/Whitelisting libraries, library types such as Movies/TV Shows, and users. Mappings apply so if the mapping for the user or library exist then both will be excluded.
               WHITELIST_LIBRARY: Movies,TV Shows,Shows
+              SYNC_FROM_JELLYFIN_TO_PLEX: "False"
 
             resources:
               requests:
