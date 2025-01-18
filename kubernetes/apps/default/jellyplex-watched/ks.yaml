@@ -1,0 +1,22 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-jellyplex-watched
+  namespace: flux-system
+spec:
+  targetNamespace: default
+  dependsOn:
+    - name: cluster-apps-external-secrets-stores
+  path: ./kubernetes/apps/default/jellyplex-watched/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  postBuild:
+    substitute:
+      APP: jellyplex-watched
