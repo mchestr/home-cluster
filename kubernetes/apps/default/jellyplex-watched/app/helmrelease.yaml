@@ -1,0 +1,63 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app jellyplex-watched
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.6.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      jellyplex-watched:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        type: cronjob
+        cronjob:
+          schedule: "@daily"
+        containers:
+          app:
+            image:
+              repository: luigi311/jellyplex-watched
+              tag: 6.1.1@sha256:0887c621a3ffd6ce46a3e94566ec0fcb8853493bd921428e0263f0444ef878ba
+            envFrom:
+              - secretRef:
+                  name: jellyplex-watched-secret
+            env:
+              TZ: America/Vancouver
+              DRYRUN: "True"
+              DEBUG: "True"
+              DEBUG_LEVEL: info
+              RUN_ONLY_ONCE: "True"
+              LOGFILE: log.log
+              ## Map libraries between plex and jellyfin in the event that they are different, order does not matter
+              #LIBRARY_MAPPING: { "Shows": "TV Shows" }
+              LIBRARY_MAPPING: '{ "Shows": "TV Shows" }'
+              PLEX_BASEURL: https://plex.default.svc.cluster.local:32400
+              SSL_BYPASS: "True"
+              ## Jellyfin server URL, use hostname or IP address if the hostname is not resolving correctly
+              ## Comma seperated list for multiple servers
+              JELLYFIN_BASEURL: http://jellyfin.default.svc.cluster.local:8096
+              ## Blacklisting/Whitelisting libraries, library types such as Movies/TV Shows, and users. Mappings apply so if the mapping for the user or library exist then both will be excluded.
+              WHITELIST_LIBRARY: Movies,TV Shows,Shows
+
+            resources:
+              requests:
+                cpu: 50m
+                memory: 100Mi
+              limits:
+                memory: 400Mi
