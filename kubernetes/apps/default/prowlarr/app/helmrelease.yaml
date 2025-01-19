@@ -59,7 +59,7 @@ spec:
               PROWLARR__AUTH__REQUIRED: DisabledForLocalAddresses
               PROWLARR__LOG__DBENABLED: "False"
               PROWLARR__LOG_LEVEL: info
-              PROWLARR__SERVER__PORT: &port 80
+              PROWLARR__SERVER__PORT: &port 9696
               PROWLARR__UPDATE__BRANCH: develop
             envFrom:
               - secretRef:
