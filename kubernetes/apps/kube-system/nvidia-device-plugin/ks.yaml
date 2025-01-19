@@ -9,7 +9,7 @@ spec:
   path: ./kubernetes/apps/kube-system/nvidia-device-plugin/app
   prune: true
   dependsOn:
-    - name: cluster-apps-external-secrets-stores
+    - name: cluster-apps
   sourceRef:
     kind: GitRepository
     name: flux-system
