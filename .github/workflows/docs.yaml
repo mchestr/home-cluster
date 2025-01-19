@@ -44,7 +44,7 @@ jobs:
           enablement: true
 
       - name: setup python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: 3.13 #install the python needed
 
