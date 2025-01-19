@@ -7,7 +7,7 @@ resources:
 configMapGenerator:
   - name: kubelet-csr-approver-values
     files:
-      - values.yaml=values.yaml
+      - values.yaml=helm-values.yaml
 
 generatorOptions:
   disableNameSuffixHash: true
