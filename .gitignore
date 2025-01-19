@@ -23,3 +23,4 @@ terraform.tfstate*
 tmpl/
 *.tfvars
 edgerouter_config**
+hack/*.html

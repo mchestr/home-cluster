@@ -11,6 +11,8 @@ spec:
       app.kubernetes.io/name: multus
   interval: 10m
   path: ./kubernetes/apps/networking/multus/app
+  dependsOn:
+    - name: cluster-apps
   prune: true
   sourceRef:
     kind: GitRepository

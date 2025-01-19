@@ -196,8 +196,8 @@ spec:
           enabled: true
           ingressClassName: internal
           host:
-            name: &host rgw.chestr.dev
+            name: &host-rgw rgw.chestr.dev
             path: /
           tls:
             - hosts:
-                - *host
+                - *host-rgw
