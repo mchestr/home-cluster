@@ -24,3 +24,5 @@ tmpl/
 *.tfvars
 edgerouter_config**
 hack/*.html
+docs/book/**
+docs/src/assets/graph.html

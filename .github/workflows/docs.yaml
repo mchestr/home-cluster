@@ -9,6 +9,7 @@ on:
       - .github/workflows/docs.yaml
       - docs/**
       - README.md
+      - kubernetes/**
 
 permissions:
   actions: write
