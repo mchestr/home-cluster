@@ -48,10 +48,10 @@ spec:
           gethomepage.dev/name: Alert-Manager
           gethomepage.dev/group: Monitoring
         hosts:
-          - &host alert-manager.chestr.dev
+          - &host-am alert-manager.chestr.dev
         tls:
           - hosts:
-              - *host
+              - *host-am
       alertmanagerSpec:
         replicas: 2
         useExistingSecret: true

@@ -7,6 +7,8 @@ metadata:
 spec:
   targetNamespace: kube-system
   path: ./kubernetes/apps/kube-system/k8s-ycl/app
+  dependsOn:
+    - name: cluster-apps
   prune: true
   sourceRef:
     kind: GitRepository

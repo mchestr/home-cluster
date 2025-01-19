@@ -7,6 +7,8 @@ metadata:
 spec:
   targetNamespace: democratic-csi
   path: ./kubernetes/apps/democratic-csi/democratic-csi/local-path
+  dependsOn:
+    - name: cluster-apps
   sourceRef:
     kind: GitRepository
     name: flux-system

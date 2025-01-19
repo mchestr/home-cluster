@@ -7,6 +7,8 @@ metadata:
 spec:
   targetNamespace: monitoring
   path: ./kubernetes/apps/monitoring/exporters/qbittorrent-exporter/app
+  dependsOn:
+    - name: cluster-apps-qbittorrent
   prune: true
   sourceRef:
     kind: GitRepository

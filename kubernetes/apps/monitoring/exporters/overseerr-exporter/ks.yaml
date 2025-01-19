@@ -7,6 +7,8 @@ metadata:
 spec:
   targetNamespace: monitoring
   path: ./kubernetes/apps/monitoring/exporters/overseerr-exporter/app
+  dependsOn:
+    - name: cluster-apps-external-secrets-stores
   prune: true
   sourceRef:
     kind: GitRepository

@@ -7,6 +7,8 @@ metadata:
 spec:
   targetNamespace: monitoring
   path: ./kubernetes/apps/monitoring/kube-prometheus-stack/app
+  dependsOn:
+    - name: cluster-apps-external-secrets-stores
   prune: true
   sourceRef:
     kind: GitRepository
