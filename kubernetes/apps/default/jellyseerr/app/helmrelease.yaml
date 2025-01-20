@@ -77,9 +77,18 @@ spec:
             port: *port
     ingress:
       app:
-        className: internal
+        className: external
+        annotations:
+          external-dns.alpha.kubernetes.io/target: external.chestr.dev
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: overseerr.png
+          gethomepage.dev/name: Overseerr
+          gethomepage.dev/group: Media
+          gethomepage.dev/widget.type: overseerr
+          gethomepage.dev/widget.url: http://jellyseerr.default.svc.cluster.local:5055
+          gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_JELLYSEERR_API_KEY}}" }}'
         hosts:
-          - host: "{{ .Release.Name }}.chestr.dev"
+          - host: requests.chestr.dev
             paths:
               - path: /
                 service:
