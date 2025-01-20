@@ -1,0 +1,31 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app cluster-apps-jellyseerr
+  namespace: flux-system
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: cluster-apps-external-secrets-stores
+    - name: cluster-apps-volsync
+  interval: 30m
+  path: ./kubernetes/apps/default/jellyseerr/app
+  postBuild:
+    substitute:
+      APP: *app
+      GATUS_PATH: /api/v1/status
+      VOLSYNC_CAPACITY: 5Gi
+      VOLSYNC_CLAIM: jellyseerr-config
+      VOLSYNC_SCHEDULE: 10 10 * * *
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: default
+  timeout: 5m
+  wait: false
