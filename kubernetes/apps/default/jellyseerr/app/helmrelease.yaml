@@ -25,6 +25,16 @@ spec:
   values:
     controllers:
       jellyseerr:
+
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: "16.6"
+            envFrom:
+              - secretRef:
+                  name: jellyseerr-dbinit-secret
+
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
