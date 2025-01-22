@@ -5,6 +5,6 @@ metadata:
   name: tofu-controller-charts
   namespace: flux-system
 spec:
-  interval: 30m
+  interval: 1h
   url: https://flux-iac.github.io/tofu-controller/
   timeout: 3m
