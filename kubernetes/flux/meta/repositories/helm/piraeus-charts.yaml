@@ -5,5 +5,5 @@ metadata:
   name: piraeus-charts
   namespace: flux-system
 spec:
-  interval: 2h
+  interval: 1h
   url: https://piraeus.io/helm-charts/

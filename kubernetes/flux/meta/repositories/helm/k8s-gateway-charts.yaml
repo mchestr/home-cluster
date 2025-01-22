@@ -5,5 +5,5 @@ metadata:
   name: k8s-gateway
   namespace: flux-system
 spec:
-  interval: 2h
+  interval: 1h
   url: https://ori-edge.github.io/k8s_gateway/

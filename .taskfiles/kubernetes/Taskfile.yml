@@ -17,7 +17,7 @@ tasks:
   reconcile:
     desc: Force update Flux to pull in changes from your Git repository
     cmds:
-      - flux reconcile source git home-ops-kubernetes {{.CLI_ARGS | default "-n flux-system"}}
+      - flux reconcile source git flux-system {{.CLI_ARGS | default "-n flux-system"}}
 
   delete-failed-pods:
     desc: Deletes failed pods
