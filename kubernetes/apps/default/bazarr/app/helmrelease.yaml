@@ -68,7 +68,7 @@ spec:
               requests:
                 cpu: 10m
               limits:
-                memory: 1Gi
+                memory: 6Gi
 
           subcleaner:
             image:
