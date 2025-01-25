@@ -9,6 +9,7 @@ resources:
   - atuin/ks.yaml
   - authelia/ks.yaml
   - autobrr/ks.yaml
+  - bazarr/ks.yaml
   - cloudnative-pg/ks.yaml
   - displex/ks.yaml
   - emqx/ks.yaml
