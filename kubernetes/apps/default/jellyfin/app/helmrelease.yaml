@@ -92,6 +92,12 @@ spec:
         ports:
           http:
             port: 8096
+          discovery-1900:
+            port: 1900
+            protocol: UDP
+          discovery-7539:
+            port: 7539
+            protocol: UDP
 
     ingress:
       app:
