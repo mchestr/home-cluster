@@ -39,14 +39,6 @@ spec:
 
     controllers:
       jellyfin:
-        pod:
-          annotations:
-            k8s.v1.cni.cncf.io/networks: |
-              [{
-                "name":"multus-iot",
-                "namespace": "networking",
-                "ips": ["10.0.10.11/24"]
-              }]
         containers:
           app:
             image:
