@@ -22,3 +22,24 @@ spec:
     substitute:
       APP: bazarr
       VOLSYNC_CAPACITY: 5Gi
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-whisper
+  namespace: flux-system
+spec:
+  targetNamespace: default
+  path: ./kubernetes/apps/default/bazarr/whisper
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  wait: false
+  postBuild:
+    substitute:
+      APP: whisper
+      VOLSYNC_CAPACITY: 5Gi
