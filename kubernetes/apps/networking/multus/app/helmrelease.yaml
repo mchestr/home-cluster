@@ -21,7 +21,7 @@ spec:
     cni:
       image:
         repository: ghcr.io/angelnu/cni-plugins
-        tag: 1.6.2@sha256:121d6527561b9dbab9ad9fa465ad6028b82ed5df7f05267b5149ee16a65601f5
+        tag: 1.6.2@sha256:2cb2ab709ac07bed968750f543d56cd1120e5950df752b7aea05550a4faef83b
       paths:
         bin: /opt/cni/bin
         config: /etc/cni/net.d
