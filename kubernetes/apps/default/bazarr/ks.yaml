@@ -31,6 +31,8 @@ metadata:
 spec:
   targetNamespace: default
   path: ./kubernetes/apps/default/bazarr/whisper
+  dependsOn:
+    - name: cluster-apps-bazarr
   prune: true
   sourceRef:
     kind: GitRepository
