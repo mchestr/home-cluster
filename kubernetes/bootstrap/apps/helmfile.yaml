@@ -8,6 +8,8 @@ helmDefaults:
 repositories:
   - name: cilium
     url: https://helm.cilium.io
+  - name: coredns
+    url: https://coredns.github.io/helm
   - name: postfinance
     url: https://postfinance.github.io/kubelet-csr-approver
 
@@ -26,6 +28,15 @@ releases:
     needs:
       - monitoring/kube-prometheus-stack-crds
 
+  - name: coredns
+    namespace: kube-system
+    chart: coredns/coredns
+    version: 1.38.1
+    values:
+      - ../apps/kube-system/coredns/app/values.yaml
+    needs:
+      - kube-system/cilium
+
   - name: kubelet-csr-approver
     namespace: kube-system
     chart: postfinance/kubelet-csr-approver
@@ -33,7 +44,7 @@ releases:
     values:
       - ../apps/kube-system/kubelet-csr-approver/app/helm-values.yaml
     needs:
-      - kube-system/cilium
+      - kube-system/coredns
 
   - name: spegel
     namespace: kube-system
@@ -42,7 +53,7 @@ releases:
     values:
       - ../apps/kube-system/spegel/app/helm-values.yaml
     needs:
-      - kube-system/cilium
+      - kube-system/coredns
 
   - name: flux-operator
     namespace: flux-system
@@ -51,7 +62,7 @@ releases:
     values:
       - ../apps/flux-system/flux-operator/app/helm-values.yaml
     needs:
-      - kube-system/cilium
+      - kube-system/coredns
 
   - name: flux-instance
     namespace: flux-system
