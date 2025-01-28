@@ -10,6 +10,7 @@ tasks:
     desc: Set up Homebrew tools
     cmds:
       - brew bundle --file {{.WORKSTATION_RESOURCES_DIR}}/Brewfile
+      - helm plugin install https://github.com/databus23/helm-diff
     sources:
       - '{{.WORKSTATION_RESOURCES_DIR}}/Brewfile'
     generates:
