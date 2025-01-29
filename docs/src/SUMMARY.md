@@ -6,3 +6,10 @@
 
 - [Introduction](introduction.md)
 - [Kustomize Graph](assets/graph.html)
+
+
+# Random Notes
+
+---
+
+- [Networking](notes/networking.md)
