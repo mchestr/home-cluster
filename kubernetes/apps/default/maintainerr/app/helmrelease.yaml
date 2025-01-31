@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: maintainerr
+  name: &app maintainerr
 spec:
   interval: 30m
   chart:
@@ -51,7 +51,7 @@ spec:
 
     service:
       app:
-        controller: maintainerr
+        controller: *app
         ports:
           http:
             port: 6246
@@ -79,7 +79,6 @@ spec:
 
     persistence:
       data:
-        enabled: true
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: *app
         globalMounts:
           - path: /opt/data

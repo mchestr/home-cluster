@@ -7,6 +7,7 @@ metadata:
 spec:
   components:
     - ../../../../flux/components/gatus/guarded
+    - ../../../../flux/components/volsync
   dependsOn:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-intel-device-plugin-gpu
@@ -19,8 +20,6 @@ spec:
       APP: jellyfin
       VOLSYNC_CACHE_CAPACITY: 25Gi
       VOLSYNC_CAPACITY: 25Gi
-      VOLSYNC_CLAIM: jellyfin-config
-      VOLSYNC_SCHEDULE: 40 9 * * *
   prune: true
   retryInterval: 1m
   sourceRef:
