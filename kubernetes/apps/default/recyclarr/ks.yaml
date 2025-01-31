@@ -5,22 +5,22 @@ metadata:
   name: cluster-apps-recyclarr
   namespace: flux-system
 spec:
-  targetNamespace: default
+  components:
+    - ../../../../flux/components/volsync
   dependsOn:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-radarr
     - name: cluster-apps-sonarr
-  path: ./kubernetes/apps/default/recyclarr/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: true
   interval: 30m
-  retryInterval: 1m
-  timeout: 5m
+  path: ./kubernetes/apps/default/recyclarr/app
   postBuild:
     substitute:
       APP: recyclarr
-      VOLSYNC_CLAIM: recyclarr-config
-      VOLSYNC_SCHEDULE: 10 11 * * *
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: default
+  timeout: 5m
+  wait: true

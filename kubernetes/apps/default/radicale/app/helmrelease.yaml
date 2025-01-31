@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: radicale
+  name: &app radicale
 spec:
   interval: 30m
   chart:
@@ -52,14 +52,13 @@ spec:
 
     service:
       app:
-        controller: radicale
+        controller: *app
         ports:
           http:
             port: 5232
 
     ingress:
       app:
-        enabled: true
         className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
@@ -74,23 +73,17 @@ spec:
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - cal.chestr.dev
 
     persistence:
       data:
-        enabled: true
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: *app
       config:
-        enabled: true
         type: configMap
         name: radicale-config
         globalMounts:
           - path: /config/config
             subPath: config.cfg
       auth:
-        enabled: true
         type: secret
         name: radicale
         globalMounts:
