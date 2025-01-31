@@ -8,7 +8,7 @@ metadata:
 spec:
   commonMetadata:
     labels:
-      app.kubernetes.io/name: cluster-apps-jellyseerr
+      app.kubernetes.io/name: jellyseerr
   components:
     - ../../../../flux/components/gatus/external
     - ../../../../flux/components/volsync
