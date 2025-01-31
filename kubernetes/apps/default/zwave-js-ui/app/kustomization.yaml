@@ -12,4 +12,3 @@ generatorOptions:
   disableNameSuffixHash: true
 resources:
   - helmrelease.yaml
-  - ../../../../templates/volsync
