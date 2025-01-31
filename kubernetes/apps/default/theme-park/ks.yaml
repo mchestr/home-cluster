@@ -5,18 +5,20 @@ metadata:
   name: cluster-apps-theme-park
   namespace: flux-system
 spec:
-  targetNamespace: default
-  path: ./kubernetes/apps/default/theme-park/app
+  components:
+    - ../../../../flux/components/gatus/external
   dependsOn:
     - name: cluster-apps
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-  wait: false
+  path: ./kubernetes/apps/default/theme-park/app
   postBuild:
     substitute:
       APP: theme-park
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: default
+  timeout: 5m
+  wait: false

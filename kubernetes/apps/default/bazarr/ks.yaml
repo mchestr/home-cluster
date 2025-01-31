@@ -5,23 +5,26 @@ metadata:
   name: cluster-apps-bazarr
   namespace: flux-system
 spec:
-  targetNamespace: default
+  components:
+    - ../../../../flux/components/gatus/guarded
   dependsOn:
     - name: cluster-apps-cloudnative-pg-cluster
     - name: cluster-apps-external-secrets-stores
-  path: ./kubernetes/apps/default/bazarr/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-  wait: false
+  path: ./kubernetes/apps/default/bazarr/app
   postBuild:
     substitute:
       APP: bazarr
       VOLSYNC_CAPACITY: 5Gi
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: default
+  timeout: 5m
+  wait: false
+
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -29,19 +32,19 @@ metadata:
   name: cluster-apps-whisper
   namespace: flux-system
 spec:
-  targetNamespace: default
-  path: ./kubernetes/apps/default/bazarr/whisper
   dependsOn:
     - name: cluster-apps-bazarr
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-  wait: false
+  path: ./kubernetes/apps/default/bazarr/whisper
   postBuild:
     substitute:
       APP: whisper
       VOLSYNC_CAPACITY: 5Gi
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: default
+  timeout: 5m
+  wait: false

@@ -1,17 +1,15 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-resources:
-  - helmrelease.yaml
-  - ../../../../templates/gatus/guarded
-  - ../../../../templates/gatus/internal
-  - ../../../../templates/volsync
 configMapGenerator:
-  - name: zwave-js-ui-loki-rules
-    files:
+  - files:
       - zwave-js-ui.yaml=./resources/lokirule.yaml
+    name: zwave-js-ui-loki-rules
     options:
       labels:
-        loki_rule: "true"
+        loki_rule: 'true'
 generatorOptions:
   disableNameSuffixHash: true
+resources:
+  - helmrelease.yaml
+  - ../../../../templates/volsync

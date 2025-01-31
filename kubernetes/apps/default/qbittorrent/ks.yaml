@@ -5,26 +5,29 @@ metadata:
   name: cluster-apps-qbittorrent
   namespace: flux-system
 spec:
-  targetNamespace: default
+  components:
+    - ../../../../flux/components/gatus/guarded
   dependsOn:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-volsync
-  path: ./kubernetes/apps/default/qbittorrent/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-  wait: false
+  path: ./kubernetes/apps/default/qbittorrent/app
   postBuild:
     substitute:
       APP: qbittorrent
-      VOLSYNC_CLAIM: qbittorrent-config
       VOLSYNC_CACHE_CAPACITY: 2Gi
       VOLSYNC_CAPACITY: 2Gi
+      VOLSYNC_CLAIM: qbittorrent-config
       VOLSYNC_SCHEDULE: 50 10 * * *
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: default
+  timeout: 5m
+  wait: false
+
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -32,13 +35,13 @@ metadata:
   name: cluster-apps-qbittorrent-tools
   namespace: flux-system
 spec:
-  targetNamespace: default
+  dependsOn:
+    - name: cluster-apps-qbittorrent
   interval: 30m
   path: ./kubernetes/apps/default/qbittorrent/tools
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
+  targetNamespace: default
   wait: false
-  dependsOn:
-    - name: cluster-apps-qbittorrent

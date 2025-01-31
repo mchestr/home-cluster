@@ -5,23 +5,25 @@ metadata:
   name: cluster-apps-authelia
   namespace: flux-system
 spec:
-  targetNamespace: default
+  components:
+    - ../../../../flux/components/gatus/external
   dependsOn:
     - name: cluster-apps-cloudnative-pg-cluster
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-lldap
     - name: cluster-apps-redis
     - name: cluster-apps-smtp-relay
-  path: ./kubernetes/apps/default/authelia/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-  wait: false
+  path: ./kubernetes/apps/default/authelia/app
   postBuild:
     substitute:
       APP: authelia
       GATUS_SUBDOMAIN: auth
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: default
+  timeout: 5m
+  wait: false

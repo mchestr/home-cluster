@@ -1,19 +1,18 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+commonLabels:
+  app.kubernetes.io/instance: radicale
+  app.kubernetes.io/name: radicale
+configMapGenerator:
+  - files:
+      - config/config.cfg
+    name: radicale-config
+generatorOptions:
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+  disableNameSuffixHash: true
 resources:
   - externalsecret.yaml
   - helmrelease.yaml
-  - ../../../../templates/gatus/external
   - ../../../../templates/volsync
-commonLabels:
-  app.kubernetes.io/name: radicale
-  app.kubernetes.io/instance: radicale
-configMapGenerator:
-  - name: radicale-config
-    files:
-      - config/config.cfg
-generatorOptions:
-  disableNameSuffixHash: true
-  annotations:
-    kustomize.toolkit.fluxcd.io/substitute: disabled

@@ -5,19 +5,21 @@ metadata:
   name: cluster-apps-thanos
   namespace: flux-system
 spec:
-  targetNamespace: monitoring
+  components:
+    - ../../../../flux/components/gatus/guarded
   dependsOn:
     - name: cluster-apps-external-secrets-stores
-  path: ./kubernetes/apps/monitoring/thanos/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   interval: 30m
-  retryInterval: 1m
-  timeout: 15m
-  wait: false
+  path: ./kubernetes/apps/monitoring/thanos/app
   postBuild:
     substitute:
       APP: thanos
       GATUS_SUBDOMAIN: thanos-query-frontend
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: monitoring
+  timeout: 15m
+  wait: false

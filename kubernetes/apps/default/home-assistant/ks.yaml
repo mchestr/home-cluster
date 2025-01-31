@@ -5,25 +5,27 @@ metadata:
   name: cluster-apps-home-assistant
   namespace: flux-system
 spec:
-  targetNamespace: default
+  components:
+    - ../../../../flux/components/gatus/external
   dependsOn:
     - name: cluster-apps-cloudnative-pg-cluster
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-volsync
-  path: ./kubernetes/apps/default/home-assistant/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-  wait: false
+  path: ./kubernetes/apps/default/home-assistant/app
   postBuild:
     substitute:
       APP: home-assistant
       GATUS_SUBDOMAIN: home
-      VOLSYNC_CLAIM: home-assistant-config
       VOLSYNC_CACHE_CAPACITY: 50Gi
       VOLSYNC_CAPACITY: 50Gi
+      VOLSYNC_CLAIM: home-assistant-config
       VOLSYNC_SCHEDULE: 30 9 * * *
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: default
+  timeout: 5m
+  wait: false

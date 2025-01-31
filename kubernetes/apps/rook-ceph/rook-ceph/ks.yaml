@@ -5,18 +5,19 @@ metadata:
   name: cluster-apps-rook-ceph-app
   namespace: flux-system
 spec:
-  targetNamespace: rook-ceph
-  path: ./kubernetes/apps/rook-ceph/rook-ceph/app
   dependsOn:
     - name: cluster-apps
+  interval: 30m
+  path: ./kubernetes/apps/rook-ceph/rook-ceph/app
   prune: true
+  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
-  interval: 30m
-  retryInterval: 1m
+  targetNamespace: rook-ceph
   timeout: 5m
   wait: true
+
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -24,18 +25,20 @@ metadata:
   name: cluster-apps-rook-ceph-cluster
   namespace: flux-system
 spec:
-  targetNamespace: rook-ceph
+  components:
+    - ../../../../flux/components/gatus/guarded
   dependsOn:
     - name: cluster-apps-rook-ceph-app
-  path: ./kubernetes/apps/rook-ceph/rook-ceph/cluster
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   interval: 30m
-  retryInterval: 1m
-  timeout: 15m
-  wait: true
+  path: ./kubernetes/apps/rook-ceph/rook-ceph/cluster
   postBuild:
     substitute:
       APP: rook
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: rook-ceph
+  timeout: 15m
+  wait: true
