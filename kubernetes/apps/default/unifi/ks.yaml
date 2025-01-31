@@ -18,8 +18,6 @@ spec:
       APP: unifi
       APP_GID: '999'
       APP_UID: '999'
-      VOLSYNC_CLAIM: unifi-data
-      VOLSYNC_SCHEDULE: 50 11 * * *
   prune: true
   retryInterval: 1m
   sourceRef:

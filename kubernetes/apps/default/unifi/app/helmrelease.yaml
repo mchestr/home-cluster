@@ -98,7 +98,7 @@ spec:
           gethomepage.dev/name: Unifi
           gethomepage.dev/group: Infrastructure
         hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
+          - host: "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix
