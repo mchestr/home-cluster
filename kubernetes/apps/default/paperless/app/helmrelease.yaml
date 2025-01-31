@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: paperless
+  name: &app paperless
 spec:
   interval: 30m
   chart:
@@ -102,7 +102,7 @@ spec:
 
     service:
       paperless:
-        controller: paperless
+        controller: *app
         ports:
           http:
             port: &http 8000
@@ -150,8 +150,7 @@ spec:
 
     persistence:
       data:
-        enabled: true
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: *app
         advancedMounts:
           paperless:
             app:
