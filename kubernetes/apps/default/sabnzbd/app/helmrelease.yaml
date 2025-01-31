@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: sabnzbd
+  name: &app sabnzbd
 spec:
   interval: 30m
   chart:
@@ -31,9 +31,6 @@ spec:
         runAsGroup: 568
         fsGroup: 65539
         fsGroupChangePolicy: OnRootMismatch
-
-      nodeSelector:
-        kubernetes.io/hostname: k8s-2
 
     controllers:
       sabnzbd:
@@ -65,14 +62,13 @@ spec:
 
     service:
       app:
-        controller: sabnzbd
+        controller: *app
         ports:
           http:
             port: 8080
 
     ingress:
       app:
-        enabled: true
         className: internal
         annotations:
           nginx.ingress.kubernetes.io/auth-method: GET
@@ -99,23 +95,17 @@ spec:
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
 
     persistence:
       config:
-        enabled: true
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: *app
       media:
-        enabled: true
         type: nfs
         server: 192.168.1.128
         path: /volume1/shared/media
         globalMounts:
           - path: /media
       incomplete:
-        enabled: true
         type: emptyDir
         globalMounts:
           - path: /incomplete
