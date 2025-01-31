@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: frigate
+  name: &app frigate
 spec:
   interval: 30m
   chart:
@@ -90,7 +90,7 @@ spec:
 
     service:
       app:
-        controller: frigate
+        controller: *app
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: go2rtc-streams.chestr.dev
@@ -140,7 +140,7 @@ spec:
 
     persistence:
       data:
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: *app
         globalMounts:
           - path: /data
       config-file:
@@ -170,7 +170,7 @@ spec:
 
     networkpolicies:
       frigate:
-        controller: frigate
+        controller: *app
 
         policyTypes:
           - Ingress

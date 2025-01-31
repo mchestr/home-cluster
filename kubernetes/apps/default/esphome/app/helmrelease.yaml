@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: esphome
+  name: &app esphome
 spec:
   interval: 30m
   chart:
@@ -49,7 +49,7 @@ spec:
 
     service:
       app:
-        controller: esphome
+        controller: *app
         ports:
           http:
             port: 6052
@@ -82,7 +82,7 @@ spec:
 
     persistence:
       config:
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: *app
       esphome-cache:
         type: emptyDir
         globalMounts:
