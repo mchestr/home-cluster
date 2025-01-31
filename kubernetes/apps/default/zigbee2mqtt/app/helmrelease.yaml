@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: zigbee2mqtt
+  name: &app zigbee2mqtt
 spec:
   interval: 30m
   chart:
@@ -76,7 +76,7 @@ spec:
 
     service:
       app:
-        controller: zigbee2mqtt
+        controller: *app
         ports:
           http:
             port: 8080
@@ -109,10 +109,8 @@ spec:
 
     persistence:
       data:
-        enabled: true
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: *app
       usb:
-        enabled: true
         type: hostPath
         hostPath: /dev/serial/by-id/usb-ITead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_088f44f8ea9ced1189d175faa7669f5d-if00-port0
         globalMounts:
