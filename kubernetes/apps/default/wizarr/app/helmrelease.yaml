@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: wizarr
+  name: &app wizarr
 spec:
   interval: 30m
   chart:
@@ -41,7 +41,7 @@ spec:
 
     service:
       app:
-        controller: wizarr
+        controller: *app
         ports:
           http:
             port: 5690
@@ -69,6 +69,6 @@ spec:
 
     persistence:
       data:
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: *app
         globalMounts:
           - path: /data/database
