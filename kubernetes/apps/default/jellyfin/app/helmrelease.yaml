@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: jellyfin
+  name: &app jellyfin
 spec:
   interval: 30m
   chart:
@@ -85,7 +85,7 @@ spec:
 
     service:
       app:
-        controller: jellyfin
+        controller: *app
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: *ip
@@ -95,7 +95,6 @@ spec:
 
     ingress:
       app:
-        enabled: true
         className: internal
         annotations:
           gethomepage.dev/enabled: "true"
@@ -119,15 +118,12 @@ spec:
 
     persistence:
       config:
-        enabled: true
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: *app
         globalMounts:
           - path: /config
       transcode:
-        enabled: true
         type: emptyDir
       media:
-        enabled: true
         type: nfs
         server: 192.168.1.128
         path: /volume1/shared/media
