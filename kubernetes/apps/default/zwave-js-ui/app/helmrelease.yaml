@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: zwave-js-ui
+  name: &app zwave-js-ui
 spec:
   interval: 30m
   chart:
@@ -46,7 +46,7 @@ spec:
 
     service:
       zwave-js-ui:
-        controller: zwave-js-ui
+        controller: *app
         ports:
           http:
             port: 8091
@@ -80,7 +80,7 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: zwave-js-ui-data
+        existingClaim: *app
         globalMounts:
           - path: /usr/src/app/store
       usb:

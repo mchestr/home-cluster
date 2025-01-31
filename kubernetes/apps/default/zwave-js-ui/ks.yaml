@@ -7,6 +7,7 @@ metadata:
 spec:
   components:
     - ../../../../flux/components/gatus/guarded
+    - ../../../../flux/components/volsync
   dependsOn:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-emqx-cluster
@@ -17,8 +18,6 @@ spec:
     substitute:
       APP: zwave-js-ui
       GATUS_SUBDOMAIN: zwave
-      VOLSYNC_CLAIM: zwave-js-ui-data
-      VOLSYNC_SCHEDULE: 20 12 * * *
   prune: true
   retryInterval: 1m
   sourceRef:
