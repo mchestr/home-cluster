@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: home-assistant
+  name: &app home-assistant
 spec:
   interval: 30m
   chart:
@@ -74,7 +74,7 @@ spec:
 
     service:
       app:
-        controller: home-assistant
+        controller: *app
         ports:
           http:
             port: &http 8123
@@ -90,29 +90,23 @@ spec:
           gethomepage.dev/name: Home Assistant
           gethomepage.dev/icon: home-assistant.png
         hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
+          - host: "{{ .Release.Name }}.chestr.dev"
             paths: &paths
               - path: /
                 pathType: Prefix
                 service:
                   identifier: app
                   port: http
-          - host: &host2 home.chestr.dev
+          - host: home.chestr.dev
             paths: *paths
-        tls:
-          - hosts:
-              - *host
-              - *host2
 
     persistence:
       config:
-        enabled: true
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: *app
         globalMounts:
           - path: /config
 
       deploykey:
-        enabled: true
         type: secret
         name: home-assistant-deploykey-secret
         advancedMounts:
@@ -120,7 +114,6 @@ spec:
             vscode-tunnel:
               - path: /home/kah/.ssh
       vscode-tunnel:
-        enabled: true
         size: 4Gi
         storageClass: ceph-block
         accessMode: ReadWriteOnce
@@ -131,7 +124,7 @@ spec:
 
     networkpolicies:
       home-assistant:
-        controller: home-assistant
+        controller: *app
 
         policyTypes:
           - Ingress

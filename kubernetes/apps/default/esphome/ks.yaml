@@ -7,6 +7,7 @@ metadata:
 spec:
   components:
     - ../../../../flux/components/gatus/guarded
+    - ../../../../flux/components/volsync
   dependsOn:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-volsync
@@ -15,9 +16,6 @@ spec:
   postBuild:
     substitute:
       APP: esphome
-      VOLSYNC_CAPACITY: 8Gi
-      VOLSYNC_CLAIM: esphome-config
-      VOLSYNC_SCHEDULE: 10 9 * * *
   prune: true
   retryInterval: 1m
   sourceRef:
