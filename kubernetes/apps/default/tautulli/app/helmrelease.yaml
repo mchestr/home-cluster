@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: tautulli
+  name: &app tautulli
 spec:
   interval: 30m
   chart:
@@ -78,14 +78,13 @@ spec:
 
     service:
       app:
-        controller: tautulli
+        controller: *app
         ports:
           http:
             port: *port
 
     ingress:
       app:
-        enabled: true
         className: internal
         annotations:
           gethomepage.dev/enabled: "true"
@@ -103,13 +102,10 @@ spec:
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
 
     persistence:
       config:
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: *app
       cache:
         existingClaim: tautulli-cache
         globalMounts:
