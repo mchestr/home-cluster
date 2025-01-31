@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: qbittorrent
+  name: &app qbittorrent
 spec:
   interval: 30m
   chart:
@@ -98,7 +98,7 @@ spec:
 
     service:
       app:
-        controller: qbittorrent
+        controller: *app
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: 192.168.100.101
@@ -114,7 +114,6 @@ spec:
 
     ingress:
       main:
-        enabled: true
         className: internal
         annotations:
           nginx.ingress.kubernetes.io/auth-method: GET
@@ -126,28 +125,23 @@ spec:
           gethomepage.dev/icon: qbittorrent.png
           gethomepage.dev/name: qBittorrent
           gethomepage.dev/group: Downloads
-          gethomepage.dev/widget.type: qbittorrent
+          gethomepage.dev/widget.type: *app
           gethomepage.dev/widget.url: http://qbittorrent.default.svc.cluster.local:8080
         hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
+          - host: "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
 
     persistence:
       config:
-        enabled: true
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: *app
       cross-seeds:
         type: emptyDir
       media:
-        enabled: true
         type: nfs
         server: 192.168.1.128
         path: /volume1/shared/media
