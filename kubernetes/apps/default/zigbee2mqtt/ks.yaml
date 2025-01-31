@@ -5,24 +5,26 @@ metadata:
   name: cluster-apps-zigbee2mqtt
   namespace: flux-system
 spec:
-  targetNamespace: default
+  components:
+    - ../../../../flux/components/gatus/guarded
   dependsOn:
-    - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-emqx-cluster
+    - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-node-feature-discovery-rules
     - name: cluster-apps-volsync
-  path: ./kubernetes/apps/default/zigbee2mqtt/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-  wait: false
+  path: ./kubernetes/apps/default/zigbee2mqtt/app
   postBuild:
     substitute:
       APP: zigbee2mqtt
       GATUS_SUBDOMAIN: zigbee
       VOLSYNC_CLAIM: zigbee2mqtt-data
       VOLSYNC_SCHEDULE: 10 12 * * *
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: default
+  timeout: 5m
+  wait: false

@@ -5,18 +5,20 @@ metadata:
   name: cluster-apps-kube-prometheus-stack
   namespace: flux-system
 spec:
-  targetNamespace: monitoring
-  path: ./kubernetes/apps/monitoring/kube-prometheus-stack/app
+  components:
+    - ../../../../flux/components/gatus/guarded
   dependsOn:
     - name: cluster-apps-external-secrets-stores
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   interval: 30m
-  retryInterval: 1m
-  timeout: 15m
-  wait: false
+  path: ./kubernetes/apps/monitoring/kube-prometheus-stack/app
   postBuild:
     substitute:
       APP: prometheus
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: monitoring
+  timeout: 15m
+  wait: false

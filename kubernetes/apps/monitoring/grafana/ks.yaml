@@ -5,18 +5,20 @@ metadata:
   name: cluster-apps-grafana
   namespace: flux-system
 spec:
-  targetNamespace: monitoring
+  components:
+    - ../../../../flux/components/gatus/guarded
   dependsOn:
     - name: cluster-apps-external-secrets-stores
-  path: ./kubernetes/apps/monitoring/grafana/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-  wait: false
+  path: ./kubernetes/apps/monitoring/grafana/app
   postBuild:
     substitute:
       APP: grafana
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: monitoring
+  timeout: 5m
+  wait: false

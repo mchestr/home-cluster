@@ -1,18 +1,16 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+configMapGenerator:
+  - files:
+      - zigbee2mqtt.yaml=./resources/lokirule.yaml
+    name: zigbee2mqtt-loki-rules
+    options:
+      labels:
+        loki_rule: 'true'
+generatorOptions:
+  disableNameSuffixHash: true
 resources:
   - externalsecret.yaml
   - helmrelease.yaml
-  - ../../../../templates/gatus/guarded
-  - ../../../../templates/gatus/internal
   - ../../../../templates/volsync
-configMapGenerator:
-  - name: zigbee2mqtt-loki-rules
-    files:
-      - zigbee2mqtt.yaml=./resources/lokirule.yaml
-    options:
-      labels:
-        loki_rule: "true"
-generatorOptions:
-  disableNameSuffixHash: true

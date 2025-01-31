@@ -5,23 +5,25 @@ metadata:
   name: cluster-apps-tautulli
   namespace: flux-system
 spec:
-  targetNamespace: default
+  components:
+    - ../../../../flux/components/gatus/guarded
   dependsOn:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-volsync
-  path: ./kubernetes/apps/default/tautulli/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-  wait: false
+  path: ./kubernetes/apps/default/tautulli/app
   postBuild:
     substitute:
       APP: tautulli
-      VOLSYNC_CLAIM: tautulli-config
       VOLSYNC_CACHE_CAPACITY: 2Gi
       VOLSYNC_CAPACITY: 4Gi
+      VOLSYNC_CLAIM: tautulli-config
       VOLSYNC_SCHEDULE: 30 11 * * *
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: default
+  timeout: 5m
+  wait: false

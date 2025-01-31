@@ -8,15 +8,6 @@ metadata:
 data:
   config.yaml: |
     endpoints:
-
-      - name: lochnas
-        group: internal
-        interval: 1h
-        url: https://lochnas.chestr.dev
-        conditions:
-          - "[STATUS] == 200"
-        alerts:
-          - type: pushover
       - name: lochnas
         group: guarded
         interval: 1h
@@ -30,14 +21,6 @@ data:
           - type: pushover
 
       - name: mainsail
-        group: internal
-        interval: 1h
-        url: https://mainsail.chestr.dev
-        conditions:
-          - "[STATUS] == 200"
-        alerts:
-          - type: pushover
-      - name: mainsail
         group: guarded
         interval: 1h
         url: 1.1.1.1
@@ -49,14 +32,6 @@ data:
         alerts:
           - type: pushover
 
-      - name: pikvm
-        group: internal
-        interval: 1h
-        url: https://pikvm.chestr.dev
-        conditions:
-          - "[STATUS] == 200"
-        alerts:
-          - type: pushover
       - name: pikvm
         group: guarded
         interval: 1h

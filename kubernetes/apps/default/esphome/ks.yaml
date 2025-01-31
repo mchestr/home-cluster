@@ -5,22 +5,24 @@ metadata:
   name: cluster-apps-esphome
   namespace: flux-system
 spec:
-  targetNamespace: default
+  components:
+    - ../../../../flux/components/gatus/guarded
   dependsOn:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-volsync
-  path: ./kubernetes/apps/default/esphome/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-  wait: false
+  path: ./kubernetes/apps/default/esphome/app
   postBuild:
     substitute:
       APP: esphome
-      VOLSYNC_CLAIM: esphome-config
       VOLSYNC_CAPACITY: 8Gi
+      VOLSYNC_CLAIM: esphome-config
       VOLSYNC_SCHEDULE: 10 9 * * *
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: default
+  timeout: 5m
+  wait: false

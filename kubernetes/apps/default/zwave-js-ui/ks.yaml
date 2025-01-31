@@ -5,23 +5,25 @@ metadata:
   name: cluster-apps-zwave-js-ui
   namespace: flux-system
 spec:
-  targetNamespace: default
+  components:
+    - ../../../../flux/components/gatus/guarded
   dependsOn:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-emqx-cluster
     - name: cluster-apps-volsync
-  path: ./kubernetes/apps/default/zwave-js-ui/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-  wait: false
+  path: ./kubernetes/apps/default/zwave-js-ui/app
   postBuild:
     substitute:
       APP: zwave-js-ui
       GATUS_SUBDOMAIN: zwave
       VOLSYNC_CLAIM: zwave-js-ui-data
       VOLSYNC_SCHEDULE: 20 12 * * *
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: default
+  timeout: 5m
+  wait: false

@@ -5,25 +5,27 @@ metadata:
   name: cluster-apps-paperless
   namespace: flux-system
 spec:
-  targetNamespace: default
+  components:
+    - ../../../../flux/components/gatus/guarded
   dependsOn:
     - name: cluster-apps-cloudnative-pg-cluster
     - name: cluster-apps-external-secrets-stores
-  path: ./kubernetes/apps/default/paperless/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-  wait: false
+  path: ./kubernetes/apps/default/paperless/app
   postBuild:
     substitute:
       APP: paperless
-      APP_UID: "1000"
-      APP_GID: "1000"
-      VOLSYNC_CLAIM: paperless-data
+      APP_GID: '1000'
+      APP_UID: '1000'
       VOLSYNC_CACHE_CAPACITY: 8Gi
       VOLSYNC_CAPACITY: 8Gi
+      VOLSYNC_CLAIM: paperless-data
       VOLSYNC_SCHEDULE: 20 10 * * *
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: default
+  timeout: 5m
+  wait: false

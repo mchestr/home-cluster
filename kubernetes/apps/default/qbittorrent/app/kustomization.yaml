@@ -1,25 +1,23 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-resources:
-  - externalsecret.yaml
-  - helmrelease.yaml
-  - ../../../../templates/gatus/guarded
-  - ../../../../templates/gatus/internal
-  - ../../../../templates/volsync
 configMapGenerator:
-  - name: qbittorrent-scripts
-    files:
+  - files:
       - ./resources/cross-seed.sh
-  - name: qbittorrent-loki-rules
-    files:
+    name: qbittorrent-scripts
+  - files:
       - qbittorrent.yaml=./resources/lokirule.yaml
+    name: qbittorrent-loki-rules
     options:
       labels:
-        loki_rule: "true"
+        loki_rule: 'true'
 generatorOptions:
   disableNameSuffixHash: true
 labels:
   - pairs:
-      app.kubernetes.io/name: qbittorrent
       app.kubernetes.io/instance: qbittorrent
+      app.kubernetes.io/name: qbittorrent
+resources:
+  - externalsecret.yaml
+  - helmrelease.yaml
+  - ../../../../templates/volsync

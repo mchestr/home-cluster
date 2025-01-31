@@ -1,0 +1,15 @@
+endpoints:
+  - alerts:
+      - type: pushover
+    conditions:
+      - len([BODY]) == 0
+    dns:
+      query-name: ${GATUS_SUBDOMAIN:=${APP}}.chestr.dev
+      query-type: A
+    group: guarded
+    interval: 1m
+    name: ${APP}
+    ui:
+      hide-hostname: true
+      hide-url: true
+    url: 1.1.1.1
