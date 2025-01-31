@@ -44,7 +44,6 @@
       "tools": "tools",
       "volsync": "aws"
   },
-  "sops.defaults.ageKeyFile": "age.key",
   "vs-kubernetes": {
     "vs-kubernetes.kubeconfig": "./kubeconfig",
     "vs-kubernetes.knownKubeconfigs": [
