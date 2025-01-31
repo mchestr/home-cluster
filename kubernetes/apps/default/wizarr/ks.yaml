@@ -7,6 +7,7 @@ metadata:
 spec:
   components:
     - ../../../../flux/components/gatus/external
+    - ../../../../flux/components/volsync
   dependsOn:
     - name: cluster-apps
   interval: 30m
@@ -15,8 +16,6 @@ spec:
     substitute:
       APP: wizarr
       GATUS_SUBDOMAIN: invite
-      VOLSYNC_CLAIM: wizarr-data
-      VOLSYNC_SCHEDULE: 0 12 * * *
   prune: true
   retryInterval: 1m
   sourceRef:
