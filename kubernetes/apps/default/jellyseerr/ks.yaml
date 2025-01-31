@@ -3,12 +3,14 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app cluster-apps-jellyseerr
+  name: cluster-apps-jellyseerr
   namespace: flux-system
 spec:
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app
+      app.kubernetes.io/name: cluster-apps-jellyseerr
+  components:
+    - ../../../../flux/components/gatus/external
   dependsOn:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-volsync
@@ -16,9 +18,9 @@ spec:
   path: ./kubernetes/apps/default/jellyseerr/app
   postBuild:
     substitute:
-      APP: *app
-      GATUS_SUBDOMAIN: requests
+      APP: cluster-apps-jellyseerr
       GATUS_PATH: /api/v1/status
+      GATUS_SUBDOMAIN: requests
       VOLSYNC_CAPACITY: 5Gi
       VOLSYNC_CLAIM: jellyseerr-config
       VOLSYNC_SCHEDULE: 10 10 * * *

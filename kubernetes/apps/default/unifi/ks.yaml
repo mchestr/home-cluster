@@ -5,23 +5,25 @@ metadata:
   name: cluster-apps-unifi
   namespace: flux-system
 spec:
-  targetNamespace: default
+  components:
+    - ../../../../flux/components/gatus/guarded
   dependsOn:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-volsync
-  path: ./kubernetes/apps/default/unifi/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-  wait: false
+  path: ./kubernetes/apps/default/unifi/app
   postBuild:
     substitute:
       APP: unifi
-      APP_UID: "999"
-      APP_GID: "999"
+      APP_GID: '999'
+      APP_UID: '999'
       VOLSYNC_CLAIM: unifi-data
       VOLSYNC_SCHEDULE: 50 11 * * *
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: default
+  timeout: 5m
+  wait: false

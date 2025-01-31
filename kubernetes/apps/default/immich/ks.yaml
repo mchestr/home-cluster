@@ -5,21 +5,23 @@ metadata:
   name: cluster-apps-immich
   namespace: flux-system
 spec:
-  targetNamespace: default
+  components:
+    - ../../../../flux/components/gatus/external
   dependsOn:
     - name: cluster-apps-cloudnative-pg-cluster
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-volsync
-  path: ./kubernetes/apps/default/immich/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-  wait: false
+  path: ./kubernetes/apps/default/immich/app
   postBuild:
     substitute:
       APP: immich
       GATUS_SUBDOMAIN: photos
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: default
+  timeout: 5m
+  wait: false

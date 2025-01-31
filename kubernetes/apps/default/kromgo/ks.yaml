@@ -5,19 +5,21 @@ metadata:
   name: cluster-apps-kromgo
   namespace: flux-system
 spec:
-  targetNamespace: default
-  path: ./kubernetes/apps/default/kromgo/app
-  prune: true
+  components:
+    - ../../../../flux/components/gatus/external
   dependsOn:
     - name: cluster-apps-external-secrets-stores
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-  wait: false
+  path: ./kubernetes/apps/default/kromgo/app
   postBuild:
     substitute:
       APP: kromgo
-      GATUS_STATUS: "404"
+      GATUS_STATUS: '404'
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: default
+  timeout: 5m
+  wait: false

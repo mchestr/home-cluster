@@ -5,22 +5,24 @@ metadata:
   name: cluster-apps-radicale
   namespace: flux-system
 spec:
-  targetNamespace: default
+  components:
+    - ../../../../flux/components/gatus/external
   dependsOn:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-volsync
-  path: ./kubernetes/apps/default/radicale/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-  wait: false
+  path: ./kubernetes/apps/default/radicale/app
   postBuild:
     substitute:
       APP: radicale
       GATUS_SUBDOMAIN: cal
       VOLSYNC_CLAIM: radicale-config
       VOLSYNC_SCHEDULE: 0 11 * * *
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: default
+  timeout: 5m
+  wait: false

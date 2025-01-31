@@ -5,25 +5,27 @@ metadata:
   name: cluster-apps-jellyfin
   namespace: flux-system
 spec:
-  targetNamespace: default
+  components:
+    - ../../../../flux/components/gatus/guarded
   dependsOn:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-intel-device-plugin-gpu
     - name: cluster-apps-lldap
     - name: cluster-apps-volsync
-  path: ./kubernetes/apps/default/jellyfin/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: false
   interval: 30m
-  retryInterval: 1m
-  timeout: 5m
+  path: ./kubernetes/apps/default/jellyfin/app
   postBuild:
     substitute:
       APP: jellyfin
-      VOLSYNC_CLAIM: jellyfin-config
       VOLSYNC_CACHE_CAPACITY: 25Gi
       VOLSYNC_CAPACITY: 25Gi
+      VOLSYNC_CLAIM: jellyfin-config
       VOLSYNC_SCHEDULE: 40 9 * * *
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: default
+  timeout: 5m
+  wait: false

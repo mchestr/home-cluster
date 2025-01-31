@@ -2,45 +2,48 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app cluster-apps-emqx
+  name: cluster-apps-emqx
   namespace: flux-system
 spec:
-  targetNamespace: default
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/default/emqx/app
-  prune: true
+      app.kubernetes.io/name: cluster-apps-emqx
   dependsOn:
     - name: cluster-apps-external-secrets-stores
+  interval: 30m
+  path: ./kubernetes/apps/default/emqx/app
+  prune: true
+  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
-  interval: 30m
-  retryInterval: 1m
+  targetNamespace: default
   timeout: 5m
   wait: false
+
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app cluster-apps-emqx-cluster
+  name: cluster-apps-emqx-cluster
   namespace: flux-system
 spec:
-  targetNamespace: default
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app
+      app.kubernetes.io/name: cluster-apps-emqx-cluster
+  components:
+    - ../../../../flux/components/gatus/guarded
   dependsOn:
     - name: cluster-apps-emqx
+  interval: 30m
   path: ./kubernetes/apps/default/emqx/cluster
+  postBuild:
+    substitute:
+      APP: emqx
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: true
-  interval: 30m
+  targetNamespace: default
   timeout: 5m
-  postBuild:
-    substitute:
-      APP: emqx
+  wait: true

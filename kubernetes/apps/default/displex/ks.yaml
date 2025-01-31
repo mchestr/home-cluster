@@ -5,19 +5,21 @@ metadata:
   name: cluster-apps-displex
   namespace: flux-system
 spec:
-  targetNamespace: default
-  path: ./kubernetes/apps/default/displex/app
-  prune: true
+  components:
+    - ../../../../flux/components/gatus/external
   dependsOn:
     - name: cluster-apps-external-secrets-stores
     - name: cluster-apps-cloudnative-pg-cluster
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-  wait: false
+  path: ./kubernetes/apps/default/displex/app
   postBuild:
     substitute:
       APP: displex
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  targetNamespace: default
+  timeout: 5m
+  wait: false

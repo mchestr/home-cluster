@@ -4,5 +4,4 @@ kind: Kustomization
 resources:
   - helmrelease.yaml
   - pvc.yaml
-  - ../../../../templates/gatus/internal
   - ../../../../templates/volsync

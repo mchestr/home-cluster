@@ -1,17 +1,16 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+configMapGenerator:
+  - files:
+      - plex.yaml=./resources/lokirule.yaml
+    name: plex-loki-rules
+    options:
+      labels:
+        loki_rule: 'true'
+generatorOptions:
+  disableNameSuffixHash: true
 resources:
   - helmrelease.yaml
   - pvc.yaml
-  - ../../../../templates/gatus/external
   - ../../../../templates/volsync
-configMapGenerator:
-  - name: plex-loki-rules
-    files:
-      - plex.yaml=./resources/lokirule.yaml
-    options:
-      labels:
-        loki_rule: "true"
-generatorOptions:
-  disableNameSuffixHash: true
