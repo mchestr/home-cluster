@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: unifi
+  name: &app unifi
 spec:
   interval: 30m
   chart:
@@ -47,7 +47,7 @@ spec:
 
     service:
       app:
-        controller: unifi
+        controller: *app
         type: LoadBalancer
         externalTrafficPolicy: Cluster
         loadBalancerIP: &ip 192.168.100.88
@@ -90,7 +90,6 @@ spec:
 
     ingress:
       app:
-        enabled: true
         className: internal
         annotations:
           nginx.ingress.kubernetes.io/backend-protocol: HTTPS
@@ -106,13 +105,9 @@ spec:
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
 
     persistence:
       data:
-        enabled: true
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: *app
         globalMounts:
           - path: /usr/lib/unifi/data
