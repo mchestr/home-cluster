@@ -19,7 +19,7 @@ spec:
   path: ./kubernetes/apps/default/jellyseerr/app
   postBuild:
     substitute:
-      APP: cluster-apps-jellyseerr
+      APP: jellyseerr
       GATUS_PATH: /api/v1/status
       GATUS_SUBDOMAIN: requests
   prune: true
