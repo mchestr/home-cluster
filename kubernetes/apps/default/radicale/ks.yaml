@@ -17,6 +17,7 @@ spec:
     substitute:
       APP: radicale
       GATUS_SUBDOMAIN: cal
+      VOLSYNC_SCHEDULE: 30 10 * * *
   prune: true
   retryInterval: 1m
   sourceRef:

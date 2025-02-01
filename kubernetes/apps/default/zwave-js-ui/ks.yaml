@@ -18,6 +18,7 @@ spec:
     substitute:
       APP: zwave-js-ui
       GATUS_SUBDOMAIN: zwave
+      VOLSYNC_SCHEDULE: 50 10 * * *
   prune: true
   retryInterval: 1m
   sourceRef:
