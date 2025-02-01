@@ -5,18 +5,19 @@ metadata:
   name: cluster-apps-minecraft-router
   namespace: flux-system
 spec:
-  targetNamespace: game-system
-  path: ./kubernetes/apps/game-system/minecraft/mc-router
   dependsOn:
     - name: cluster-apps
+  interval: 30m
+  path: ./kubernetes/apps/game-system/minecraft/mc-router
   prune: true
+  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
-  interval: 30m
-  retryInterval: 1m
+  targetNamespace: game-system
   timeout: 5m
   wait: false
+
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -24,50 +25,23 @@ metadata:
   name: cluster-apps-minecraft-gtnh
   namespace: flux-system
 spec:
-  targetNamespace: game-system
+  components:
+    - ../../../../flux/components/volsync
   dependsOn:
     - name: cluster-apps-volsync
     - name: cluster-apps-minecraft-router
-  path: ./kubernetes/apps/game-system/minecraft/gtnh
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
   interval: 30m
-  retryInterval: 1m
-  timeout: 5m
-  wait: false
+  path: ./kubernetes/apps/game-system/minecraft/gtnh
   postBuild:
     substitute:
       APP: minecraft-gtnh
-      VOLSYNC_CLAIM: minecraft-gtnh-data
-      VOLSYNC_CAPACITY: 10Gi
       VOLSYNC_CACHE_CAPACITY: 10Gi
-      VOLSYNC_SCHEDULE: 40 12 * * *
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: cluster-apps-minecraft-valhelsia-6
-  namespace: flux-system
-spec:
-  targetNamespace: game-system
-  path: ./kubernetes/apps/game-system/minecraft/valhelsia-6
+      VOLSYNC_CAPACITY: 10Gi
   prune: true
-  dependsOn:
-    - name: cluster-apps-volsync
-    - name: cluster-apps-minecraft-router
+  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
-  interval: 30m
-  retryInterval: 1m
+  targetNamespace: game-system
   timeout: 5m
   wait: false
-  postBuild:
-    substitute:
-      APP: valhelsia-6
-      VOLSYNC_CLAIM: minecraft-valhelsia-6-data
-      VOLSYNC_CAPACITY: 10Gi
-      VOLSYNC_CACHE_CAPACITY: 10Gi
-      VOLSYNC_SCHEDULE: 50 12 * * *

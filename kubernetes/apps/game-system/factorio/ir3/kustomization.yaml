@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
   - externalsecret.yaml
   - helmrelease.yaml
-  - ../../../../templates/volsync
 configMapGenerator:
   - name: factorio-ir3-server-settings
     files:
