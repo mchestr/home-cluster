@@ -17,6 +17,7 @@ spec:
   postBuild:
     substitute:
       APP: thelounge
+      VOLSYNC_SCHEDULE: 40 10 * * *
   prune: true
   retryInterval: 1m
   sourceRef:

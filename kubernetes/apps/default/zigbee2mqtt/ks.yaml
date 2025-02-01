@@ -19,6 +19,7 @@ spec:
     substitute:
       APP: zigbee2mqtt
       GATUS_SUBDOMAIN: zigbee
+      VOLSYNC_SCHEDULE: 50 10 * * *
   prune: true
   retryInterval: 1m
   sourceRef:
