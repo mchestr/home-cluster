@@ -56,11 +56,11 @@ spec:
             env:
               TZ: America/Vancouver
               PUSHOVER_DEBUG: "false"
-              RADARR__AUTHENTICATION_METHOD: External
-              RADARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
-              RADARR__INSTANCE_NAME: Radarr
+              RADARR__AUTH__METHOD: External
+              RADARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              RADARR__INSTANCENAME: Radarr
               RADARR__PORT: 7878
-              RADARR__LOG_LEVEL: info
+              RADARR__LOG__LEVEL: info
               RADARR__THEME: dark
             envFrom:
               - secretRef:
