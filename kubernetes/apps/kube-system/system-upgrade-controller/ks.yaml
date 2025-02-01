@@ -5,18 +5,19 @@ metadata:
   name: cluster-apps-system-upgrade-controller
   namespace: flux-system
 spec:
-  targetNamespace: kube-system
-  path: kubernetes/apps/kube-system/system-upgrade-controller/app
   dependsOn:
     - name: cluster-apps
+  interval: 30m
+  path: kubernetes/apps/kube-system/system-upgrade-controller/app
   prune: true
+  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: false
-  interval: 30m
-  retryInterval: 1m
+  targetNamespace: kube-system
   timeout: 5m
+  wait: false
+
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -24,15 +25,21 @@ metadata:
   name: cluster-apps-system-upgrade-controller-plans
   namespace: flux-system
 spec:
-  targetNamespace: kube-system
   dependsOn:
     - name: cluster-apps-system-upgrade-controller
+  interval: 30m
   path: kubernetes/apps/kube-system/system-upgrade-controller/plans
+  postBuild:
+    substitute:
+      # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
+      KUBERNETES_VERSION: v1.32.1
+      # renovate: depName=ghcr.io/siderolabs/installer datasource=docker
+      TALOS_VERSION: v1.9.3
   prune: true
+  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: false
-  interval: 30m
-  retryInterval: 1m
+  targetNamespace: kube-system
   timeout: 5m
+  wait: false
