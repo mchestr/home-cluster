@@ -4,86 +4,27 @@ kind: Plan
 metadata:
   name: talos
 spec:
-  # renovate: datasource=github-releases depName=siderolabs/talos
-  version: "v1.9.3"
-  serviceAccountName: system-upgrade
-  secrets:
-    - name: talos
-      path: /var/run/secrets/talos.dev
-      ignoreUpdates: true
+  version: ${TALOS_VERSION}
   concurrency: 1
   exclusive: true
+  serviceAccountName: system-upgrade
+  secrets:
+    - name: system-upgrade
+      path: /var/run/secrets/talos.dev
+      ignoreUpdates: true
   nodeSelector:
     matchExpressions:
-      - key: kubernetes.io/hostname
+      - key: kubernetes.io/os
         operator: In
-        values:
-          - k8s-0
-          - k8s-1
-          - k8s-2
-          - k8s-3
-          - k8s-4
-          - k8s-5
-  prepare:
-    image: &image ghcr.io/siderolabs/talosctl
-    envs: &envs
+        values: ["linux"]
+  upgrade:
+    image: ghcr.io/jfroy/tnu:0.3.0
+    envs:
       - name: NODE_IP
         valueFrom:
           fieldRef:
             fieldPath: status.hostIP
     args:
-      - --nodes=$(NODE_IP)
-      - health
-      - --server=false
-  upgrade:
-    image: *image
-    envs: *envs
-    args:
-      - --nodes=$(NODE_IP)
-      - upgrade
-      - --image=factory.talos.dev/installer/c511e5486ab74d9c01141aa74617318fdb49abc96c368333c01aefbc2cf80ef4:$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
-      - --preserve=true
-      - --wait=false
-      - --reboot-mode=powercycle
----
-apiVersion: upgrade.cattle.io/v1
-kind: Plan
-metadata:
-  name: talos-nvidia
-spec:
-  # renovate: datasource=github-releases depName=siderolabs/talos
-  version: "v1.9.3"
-  serviceAccountName: system-upgrade
-  secrets:
-    - name: talos
-      path: /var/run/secrets/talos.dev
-      ignoreUpdates: true
-  concurrency: 1
-  exclusive: true
-  nodeSelector:
-    matchExpressions:
-      - key: kubernetes.io/hostname
-        operator: In
-        values:
-          - k8s-6
-  prepare:
-    image: &image ghcr.io/siderolabs/talosctl
-    envs: &envs
-      - name: NODE_IP
-        valueFrom:
-          fieldRef:
-            fieldPath: status.hostIP
-    args:
-      - --nodes=$(NODE_IP)
-      - health
-      - --server=false
-  upgrade:
-    image: *image
-    envs: *envs
-    args:
-      - --nodes=$(NODE_IP)
-      - upgrade
-      - --image=factory.talos.dev/installer/d1d3622610ca93b49b1c33ba03268700cf41088fd92b4bb6cac52778671c1ff9:$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
-      - --preserve=true
-      - --wait=false
-      - --reboot-mode=powercycle
+      - --node=$(NODE_IP)
+      - --tag=$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
+      - --powercycle
