@@ -36,6 +36,8 @@ metadata:
   name: cluster-apps-plex-meta-manager
   namespace: flux-system
 spec:
+  components:
+    - ../../../../flux/components/volsync
   dependsOn:
     - name: cluster-apps-plex
     - name: cluster-apps-radarr
@@ -46,9 +48,6 @@ spec:
   postBuild:
     substitute:
       APP: plex-meta-manager
-      VOLSYNC_CAPACITY: 5Gi
-      VOLSYNC_CLAIM: plex-meta-manager
-      VOLSYNC_SCHEDULE: 40 10 * * *
   prune: true
   retryInterval: 1m
   sourceRef:
