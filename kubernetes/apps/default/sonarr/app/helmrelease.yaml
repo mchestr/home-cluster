@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: sonarr
+  name: &app sonarr
 spec:
   interval: 30m
   chart:
@@ -56,11 +56,11 @@ spec:
             env:
               TZ: America/Vancouver
               PUSHOVER_DEBUG: "false"
-              SONARR__AUTHENTICATION_METHOD: External
-              SONARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
-              SONARR__INSTANCE_NAME: Sonarr
+              SONARR__AUTH__METHOD: External
+              SONARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              SONARR__INSTANCENAME: Sonarr
               SONARR__PORT: 8989
-              SONARR__LOG_LEVEL: info
+              SONARR__LOG__LEVEL: info
               SONARR__THEME: dark
             envFrom:
               - secretRef:
@@ -68,14 +68,13 @@ spec:
 
     service:
       app:
-        controller: sonarr
+        controller: *app
         ports:
           http:
             port: 8989
 
     ingress:
       app:
-        enabled: true
         className: internal
         annotations:
           nginx.ingress.kubernetes.io/auth-method: GET
@@ -87,31 +86,26 @@ spec:
           gethomepage.dev/icon: sonarr.png
           gethomepage.dev/name: Sonarr
           gethomepage.dev/group: Downloads
-          gethomepage.dev/widget.type: sonarr
+          gethomepage.dev/widget.type: *app
           gethomepage.dev/widget.url: http://sonarr.default.svc.cluster.local:8989
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_SONARR_API_KEY}}" }}'
         hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
+          - host: "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
 
     persistence:
       media:
-        enabled: true
         type: nfs
         server: 192.168.1.128
         path: /volume1/shared/media
         globalMounts:
           - path: /media
       scripts:
-        enabled: true
         type: configMap
         name: sonarr-pushover
         defaultMode: 0775
@@ -119,6 +113,6 @@ spec:
           - path: /scripts/pushover-notify.sh
             subPath: pushover-notify.sh
       config:
-        existingClaim: sonarr
+        existingClaim: *app
       tmp:
         type: emptyDir
