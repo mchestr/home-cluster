@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: plex
+  name: &app plex
 spec:
   interval: 30m
   chart:
@@ -70,7 +70,7 @@ spec:
     service:
       app:
         type: LoadBalancer
-        controller: plex
+        controller: *app
         annotations:
           io.cilium/lb-ipam-ips: 192.168.100.30
         externalTrafficPolicy: Cluster
@@ -91,34 +91,28 @@ spec:
           gethomepage.dev/icon: plex.png
           gethomepage.dev/name: Plex
           gethomepage.dev/group: Media
-          gethomepage.dev/widget.type: plex
+          gethomepage.dev/widget.type: *app
           gethomepage.dev/widget.url: http://plex.default.svc.cluster.local:32400
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_PLEX_API_KEY}}" }}'
         hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
+          - host: "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
 
     persistence:
       config:
-        enabled: true
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: *app
       media:
-        enabled: true
         type: nfs
         server: 192.168.1.128
         path: /volume1/shared/media
         globalMounts:
           - path: /media
       transcode:
-        enabled: true
         type: emptyDir
       # Separate PVC for cache to avoid backing up cache files
       cache:
