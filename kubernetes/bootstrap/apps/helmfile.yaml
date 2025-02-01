@@ -14,62 +14,70 @@ repositories:
     url: https://postfinance.github.io/kubelet-csr-approver
 
 releases:
-  - name: kube-prometheus-stack-crds
-    namespace: monitoring
-    chart: oci://ghcr.io/prometheus-community/charts/prometheus-operator-crds
-    version: 17.0.2
+  # - name: kube-prometheus-stack-crds
+  #   namespace: monitoring
+  #   chart: oci://ghcr.io/prometheus-community/charts/prometheus-operator-crds
+  #   version: 17.0.2
 
-  - name: cilium
+  # - name: cilium
+  #   namespace: kube-system
+  #   chart: cilium/cilium
+  #   version: 1.16.6
+  #   values:
+  #     - ../../apps/kube-system/cilium/app/helm-values.yaml
+  #   needs:
+  #     - monitoring/kube-prometheus-stack-crds
+
+  # - name: coredns
+  #   namespace: kube-system
+  #   chart: coredns/coredns
+  #   version: 1.39.0
+  #   values:
+  #     - ../../apps/kube-system/coredns/app/values.yaml
+  #   needs:
+  #     - kube-system/cilium
+
+  - name: wipe-rook
     namespace: kube-system
-    chart: cilium/cilium
-    version: 1.16.6
-    values:
-      - ../../apps/kube-system/cilium/app/helm-values.yaml
-    needs:
-      - monitoring/kube-prometheus-stack-crds
+    chart: oci://ghcr.io/bjw-s/helm/app-template
+    version: 3.6.1
+    values: ["./templates/wipe-rook.yaml.gotmpl"]
+    # needs:
+    #   - kube-system/coredns
 
-  - name: coredns
-    namespace: kube-system
-    chart: coredns/coredns
-    version: 1.39.0
-    values:
-      - ../../apps/kube-system/coredns/app/values.yaml
-    needs:
-      - kube-system/cilium
+  # - name: kubelet-csr-approver
+  #   namespace: kube-system
+  #   chart: postfinance/kubelet-csr-approver
+  #   version: 1.2.5
+  #   values:
+  #     - ../../apps/kube-system/kubelet-csr-approver/app/helm-values.yaml
+  #   needs:
+  #     - kube-system/wipe-rook
 
-  - name: kubelet-csr-approver
-    namespace: kube-system
-    chart: postfinance/kubelet-csr-approver
-    version: 1.2.5
-    values:
-      - ../../apps/kube-system/kubelet-csr-approver/app/helm-values.yaml
-    needs:
-      - kube-system/coredns
+  # - name: spegel
+  #   namespace: kube-system
+  #   chart: oci://ghcr.io/spegel-org/helm-charts/spegel
+  #   version: v0.0.30
+  #   values:
+  #     - ../../apps/kube-system/spegel/app/helm-values.yaml
+  #   needs:
+  #     - kube-system/wipe-rook
 
-  - name: spegel
-    namespace: kube-system
-    chart: oci://ghcr.io/spegel-org/helm-charts/spegel
-    version: v0.0.30
-    values:
-      - ../../apps/kube-system/spegel/app/helm-values.yaml
-    needs:
-      - kube-system/coredns
+  # - name: flux-operator
+  #   namespace: flux-system
+  #   chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator
+  #   version: 0.13.0
+  #   values:
+  #     - ../../apps/flux-system/flux-operator/app/helm-values.yaml
+  #   needs:
+  #     - kube-system/wipe-rook
 
-  - name: flux-operator
-    namespace: flux-system
-    chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator
-    version: 0.13.0
-    values:
-      - ../../apps/flux-system/flux-operator/app/helm-values.yaml
-    needs:
-      - kube-system/coredns
-
-  - name: flux-instance
-    namespace: flux-system
-    chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-instance
-    version: 0.13.0
-    wait: false
-    values:
-      - ../../apps/flux-system/flux-operator/instance/helm-values.yaml
-    needs:
-      - flux-system/flux-operator
+  # - name: flux-instance
+  #   namespace: flux-system
+  #   chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-instance
+  #   version: 0.13.0
+  #   wait: false
+  #   values:
+  #     - ../../apps/flux-system/flux-operator/instance/helm-values.yaml
+  #   needs:
+  #     - flux-system/flux-operator
