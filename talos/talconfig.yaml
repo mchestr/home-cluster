@@ -249,6 +249,19 @@ controlPlane:
             validSubnets:
                 - 192.168.1.0/24
 
+    # Configure local-path CSI directory
+    - &localpathPatch |-
+      machine:
+        kubelet:
+          extraMounts:
+            - destination: /var/localpath
+              type: bind
+              source: /var/localpath
+              options:
+                - rbind
+                - rshared
+                - rw
+
     # Configure cluster loopback
     - |-
       machine:
@@ -305,16 +318,4 @@ worker:
     - *discoveryPatch
     - *kubeletPatch
     - *sysctlPatch
-
-    # Configure local-path CSI directory
-    - |-
-      machine:
-        kubelet:
-          extraMounts:
-            - destination: /var/localpath
-              type: bind
-              source: /var/localpath
-              options:
-                - rbind
-                - rshared
-                - rw
+    - *localpathPatch
