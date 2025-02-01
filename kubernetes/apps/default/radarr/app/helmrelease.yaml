@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: radarr
+  name: &app radarr
 spec:
   interval: 30m
   chart:
@@ -68,14 +68,13 @@ spec:
 
     service:
       app:
-        controller: radarr
+        controller: *app
         ports:
           http:
             port: 7878
 
     ingress:
       main:
-        enabled: true
         className: internal
         annotations:
           nginx.ingress.kubernetes.io/auth-method: GET
@@ -87,31 +86,26 @@ spec:
           gethomepage.dev/icon: radarr.png
           gethomepage.dev/name: Radarr
           gethomepage.dev/group: Downloads
-          gethomepage.dev/widget.type: radarr
+          gethomepage.dev/widget.type: *app
           gethomepage.dev/widget.url: http://radarr.default.svc.cluster.local:7878
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_RADARR_API_KEY}}" }}'
         hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
+          - host: "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
 
     persistence:
       media:
-        enabled: true
         type: nfs
         server: 192.168.1.128
         path: /volume1/shared/media
         globalMounts:
           - path: /media
       scripts:
-        enabled: true
         type: configMap
         name: radarr-pushover
         defaultMode: 509
@@ -119,6 +113,6 @@ spec:
           - path: /scripts/pushover-notify.sh
             subPath: pushover-notify.sh
       config:
-        existingClaim: radarr
+        existingClaim: *app
       tmp:
         type: emptyDir
