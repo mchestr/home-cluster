@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: displex
+  name: &app displex
 spec:
   interval: 30m
   chart:
@@ -111,7 +111,7 @@ spec:
       token-maintenance:
         type: cronjob
         cronjob:
-          schedule: "* */12 * * *"
+          schedule: "0 */12 * * *"
           concurrencyPolicy: Forbid
           successfulJobsHistory: 1
           ttlSecondsAfterFinished: 30
@@ -142,14 +142,13 @@ spec:
 
     service:
       app:
-        controller: displex
+        controller: *app
         ports:
           http:
             port: 8080
 
     ingress:
       app:
-        enabled: true
         className: external
         annotations:
           nginx.ingress.kubernetes.io/auth-method: GET
@@ -159,20 +158,16 @@ spec:
           nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
           external-dns.alpha.kubernetes.io/target: external.chestr.dev
         hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
+          - host: "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
 
     persistence:
       config:
-        enabled: true
         type: secret
         name: displex-secret
         globalMounts:
