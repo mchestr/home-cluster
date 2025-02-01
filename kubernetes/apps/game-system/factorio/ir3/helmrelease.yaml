@@ -61,33 +61,29 @@ spec:
 
     service:
       app:
-        controller: factorio-ir3
-        type: LoadBalancer # Setting Ip external to cluster for easy port forward
-        externalTrafficPolicy: Local
+        controller: *app
+        type: LoadBalancer
+        externalTrafficPolicy: Cluster
         loadBalancerIP: 192.168.100.240
         annotations:
           external-dns.alpha.kubernetes.io/hostname: factorio-ir3.chestr.dev
-          io.cilium/lb-ipam-sharing-key: factorio-ir3
+          io.cilium/lb-ipam-sharing-key: *app
         enabled: true
         ports:
           server:
-            enabled: true
             port: *port
             protocol: UDP
           rcon:
             primary: true
-            enabled: true
             port: *rcon
             protocol: TCP
 
     persistence:
       config:
-        enabled: true
-        existingClaim: ${VOLSYNC_CLAIM}
+        existingClaim: *app
         globalMounts:
           - path: /factorio
       secrets:
-        enabled: true
         type: secret
         name: factorio-ir3-secret
         globalMounts:
@@ -96,7 +92,6 @@ spec:
           - path: /kubefiles/admin-whitelist.json
             subPath: admin-whitelist.json
       settings:
-        enabled: true
         type: configMap
         name: factorio-ir3-server-settings
         globalMounts:
