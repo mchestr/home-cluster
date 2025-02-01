@@ -20,6 +20,7 @@ spec:
       APP: jellyfin
       VOLSYNC_CACHE_CAPACITY: 25Gi
       VOLSYNC_CAPACITY: 25Gi
+      VOLSYNC_SCHEDULE: 10 10 * * *
   prune: true
   retryInterval: 1m
   sourceRef:

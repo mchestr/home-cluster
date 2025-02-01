@@ -22,6 +22,7 @@ spec:
       APP: jellyseerr
       GATUS_PATH: /api/v1/status
       GATUS_SUBDOMAIN: requests
+      VOLSYNC_SCHEDULE: 10 10 * * *
   prune: true
   sourceRef:
     kind: GitRepository

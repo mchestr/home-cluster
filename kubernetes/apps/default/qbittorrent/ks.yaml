@@ -16,6 +16,7 @@ spec:
   postBuild:
     substitute:
       APP: qbittorrent
+      VOLSYNC_SCHEDULE: 20 10 * * *
   prune: true
   retryInterval: 1m
   sourceRef:
