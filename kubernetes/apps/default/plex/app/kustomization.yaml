@@ -13,4 +13,3 @@ generatorOptions:
 resources:
   - helmrelease.yaml
   - pvc.yaml
-  - ../../../../templates/volsync
