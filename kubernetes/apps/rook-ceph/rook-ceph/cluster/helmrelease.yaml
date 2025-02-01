@@ -108,13 +108,13 @@ spec:
         config:
           osdsPerDevice: "1"
         nodes:
-          - name: "k8s-0"
+          - name: k8s-0
             devices:
               - name: "/dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_AA221020NV051201345"
-          - name: "k8s-4"
+          - name: k8s-4
             devices:
               - name: "/dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_AA221020NV051200709"
-          - name: "k8s-3"
+          - name: k8s-3
             devices:
               - name: "/dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_AA221020NV051200243"
 
