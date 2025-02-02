@@ -45,9 +45,9 @@ spec:
       REPLACE_ENV_DURING_SYNC: "TRUE"
       CFG_LP_SERVER: "global"
       # Only need for initial bootstrap
-      # GENERIC_PACKS: GT_New_Horizons_2.5.1_Server_Java_17-21
-      # GENERIC_PACKS_PREFIX: http://downloads.gtnewhorizons.com/ServerPacks/
-      # GENERIC_PACKS_SUFFIX: .zip
+      GENERIC_PACKS: GT_New_Horizons_2.7.2_Server_Java_17-21
+      GENERIC_PACKS_PREFIX: http://downloads.gtnewhorizons.com/ServerPacks/
+      GENERIC_PACKS_SUFFIX: .zip
       # SKIP_GENERIC_PACK_UPDATE_CHECK: "true"
       # SKIP_GENERIC_PACK_CHECKSUM: "true"
       REMOVE_OLD_MODS: "TRUE"
@@ -73,10 +73,10 @@ spec:
       levelType: rwg
       whitelist: "mchestr,"
       ops: ""
-      jvmOpts: "--illegal-access=warn -Djava.security.manager=allow -Dfile.encoding=UTF-8 --add-opens java.base/jdk.internal.loader=ALL-UNNAMED --add-opens java.base/java.net=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.base/java.text=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/jdk.internal.reflect=ALL-UNNAMED --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens jdk.naming.dns/com.sun.jndi.dns=ALL-UNNAMED,java.naming --add-opens java.desktop/sun.awt.image=ALL-UNNAMED --add-opens java.desktop/com.sun.imageio.plugins.png=ALL-UNNAMED --add-modules jdk.dynalink --add-opens jdk.dynalink/jdk.dynalink.beans=ALL-UNNAMED --add-modules java.sql.rowset --add-opens java.sql.rowset/javax.sql.rowset.serial=ALL-UNNAMED -jar lwjgl3ify-forgePatches.jar"
+      jvmOpts: "-Dfml.readTimeout=180 @java9args.txt"
       rcon:
         enabled: true
-      motd: "GTNH: §l§c2.5.1§r §n"
+      motd: "GTNH: §l§c2.7.2§r §n"
       extraPorts:
         - name: map
           containerPort: 8123
@@ -98,6 +98,7 @@ spec:
                   - *host
     persistence:
       dataDir:
+        enabled: true
         existingClaim: *app
   valuesFrom:
     - kind: Secret
