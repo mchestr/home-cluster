@@ -6,4 +6,4 @@ resources:
   - namespace.yaml
   # Flux-Kustomizations
   # - factorio/ks.yaml
-  # - minecraft/ks.yaml
+  - minecraft/ks.yaml
