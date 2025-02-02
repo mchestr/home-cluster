@@ -35,8 +35,8 @@ spec:
   postBuild:
     substitute:
       APP: minecraft-gtnh
-      VOLSYNC_CACHE_CAPACITY: 10Gi
-      VOLSYNC_CAPACITY: 10Gi
+      VOLSYNC_CACHE_CAPACITY: 30Gi
+      VOLSYNC_CAPACITY: 30Gi
   prune: true
   retryInterval: 1m
   sourceRef:
