@@ -48,8 +48,8 @@ spec:
       GENERIC_PACKS: GT_New_Horizons_2.7.2_Server_Java_17-21
       GENERIC_PACKS_PREFIX: http://downloads.gtnewhorizons.com/ServerPacks/
       GENERIC_PACKS_SUFFIX: .zip
-      # SKIP_GENERIC_PACK_UPDATE_CHECK: "true"
-      # SKIP_GENERIC_PACK_CHECKSUM: "true"
+      SKIP_GENERIC_PACK_UPDATE_CHECK: "false"
+      SKIP_GENERIC_PACK_CHECKSUM: "false"
       REMOVE_OLD_MODS: "TRUE"
       REMOVE_OLD_MODS_INCLUDE: "journeymap-1.7.10*"
       MODRINTH_PROJECTS: journeymap:1.7.10-5.1.4p6,
