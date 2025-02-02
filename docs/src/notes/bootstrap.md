@@ -10,6 +10,8 @@ In the process of bootstrapping, or general restarting of a cluster rook ceph wi
 if the disks are not cleaned and/or there is any left over rook configuration files. It is important
 these be cleaned in order for rook and ceph to create successfully.
 
+See [Talos Docs for Rook Ceph](https://www.talos.dev/v1.9/kubernetes-guides/configuration/ceph-with-rook/).
+
 This process hasn't been fully tested, but should be automated as part of the general bootstrap
 process above, but in case of fire try following remedies:
 
