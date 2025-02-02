@@ -54,6 +54,7 @@ spec:
       REMOVE_OLD_MODS_INCLUDE: "journeymap-1.7.10*"
       MODS: https://github.com/GTNewHorizons/ServerUtilities/releases/download/2.0.27/ServerUtilities-2.0.27.jar,https://github.com/GTNewHorizons/GTNH-Web-Map/releases/download/0.3.17/gtnh-web-map-0.3.17.jar
       MODRINTH_PROJECTS: journeymap:1.7.10-5.1.4p6,
+      CUSTOM_JAR_EXEC: -jar lwjgl3ify-forgePatches.jar nogui
     serviceAnnotations:
       # mc-router.itzg.me/externalServerName: mc-gtnh.chestr.dev
       mc-router.itzg.me/defaultServer: "true"
