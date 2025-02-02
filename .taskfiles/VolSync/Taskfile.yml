@@ -7,21 +7,8 @@ version: "3"
 #   3. Applications are deployed as either a Kubernetes Deployment or StatefulSet
 #   4. Each application only has one PVC that is being replicated
 
-x-env: &env
-  app: "{{.app}}"
-  controller: "{{.controller}}"
-  ns: "{{.ns}}"
-  previous: "{{.previous}}"
-  ts: "{{.ts}}"
-  claim: "{{.claim}}"
-  app_uid: "{{.app_uid}}"
-  app_gid: "{{.app_gid}}"
-
 vars:
-  scriptsDir: "{{.ROOT_DIR}}/.taskfiles/_scripts"
-  templatesDir: "{{.ROOT_DIR}}/.taskfiles/VolSync/templates"
-  ts: '{{now | date "150405"}}'
-  cluster: '{{.cluster | default "admin@home-cluster"}}'
+  VOLSYNC_RESOURCES_DIR: "{{.ROOT_DIR}}/.taskfiles/VolSync/templates"
 
 tasks:
 
@@ -38,28 +25,29 @@ tasks:
       - which flux kubectl
 
   list:
-    desc: List all snapshots (task volsync:list cluster=admin@home-cluster app=zigbee2mqtt)
+    desc: List all snapshots (task volsync:list app=zigbee2mqtt)
     summary: |
       Args:
         cluster: Cluster to run command against (required)
         ns: Namespace the PVC is in (default: default)
         app: Application to list snapshots for (required)
     cmds:
-      - - minijinja-cli {{.VOLSYNC_RESOURCES_DIR}}/list.yaml.j2 | kubectl apply --server-side --filename -
-      - bash {{.scriptsDir}}/wait-for-k8s-job.sh {{.app}}-list-snapshots-{{.ts}} {{.ns}} {{.cluster}}
-      - kubectl --context {{.cluster}} -n {{.ns}} wait job/{{.app}}-list-snapshots-{{.ts}} --for condition=complete --timeout=1m
-      - kubectl --context {{.cluster}} -n {{.ns}} logs job/{{.app}}-list-snapshots-{{.ts}} --container list
-      - kubectl --context {{.cluster}} -n {{.ns}} delete job {{.app}}-list-snapshots-{{.ts}}
+      - minijinja-cli {{.VOLSYNC_RESOURCES_DIR}}/list.yaml.j2 | kubectl apply --server-side --filename -
+      - until kubectl --namespace {{.NS}} get job/{{.JOB}} &>/dev/null; do sleep 5; done
+      - kubectl --context {{.cluster}} -n {{.ns}} wait job/{{.JOB}} --for condition=complete --timeout=1m
+      - kubectl --context {{.cluster}} -n {{.ns}} logs job/{{.JOB}} --container list
+      - kubectl --context {{.cluster}} -n {{.ns}} delete job {{.JOB}}
     vars:
-      cluster: '{{ or .cluster (fail "Argument (cluster) is required") }}'
-      app: '{{ or .app (fail "Argument (app) is required") }}'
-      ns: '{{.ns | default "default"}}'
-    env: *env
+      NS: '{{.ns | default "default"}}'
+      JOB: '{{.APP}}-list-snapshots'
+    env:
+      APP: '{{.APP}}'
+      NS: '{{.NS}}'
     preconditions:
-      - sh: test -f {{.scriptsDir}}/wait-for-k8s-job.sh
-        msg: "Wait script not found"
-      - sh: test -f {{.templatesDir}}/list.tmpl.yaml
-        msg: "List job template not found"
+      - test -f {{.VOLSYNC_RESOURCES_DIR}}/list.yaml.j2
+      - which flux kubectl minijinja-cli
+    requires:
+      vars: [APP]
     silent: true
 
   # To run backup jobs in parallel for all replicationsources:
