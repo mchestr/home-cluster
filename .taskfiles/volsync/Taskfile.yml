@@ -8,7 +8,7 @@ version: "3"
 #   4. Each application only has one PVC that is being replicated
 
 vars:
-  VOLSYNC_RESOURCES_DIR: "{{.ROOT_DIR}}/.taskfiles/VolSync/templates"
+  VOLSYNC_RESOURCES_DIR: "{{.ROOT_DIR}}/.taskfiles/volsync/templates"
 
 tasks:
 
@@ -16,8 +16,8 @@ tasks:
     desc: Suspend or resume Volsync
     cmds:
       - flux --namespace flux-system {{.STATE}} kustomization volsync
-      - flux --namespace volsync-system {{.STATE}} helmrelease volsync
-      - kubectl --namespace volsync-system scale deployment volsync --replicas {{if eq .STATE "suspend"}}0{{else}}1{{end}}
+      - flux --namespace volsync {{.STATE}} helmrelease volsync
+      - kubectl --namespace volsync scale deployment volsync --replicas {{if eq .STATE "suspend"}}0{{else}}1{{end}}
     vars:
       STATE: '{{index .MATCH 0}}'
     preconditions:
@@ -34,9 +34,9 @@ tasks:
     cmds:
       - minijinja-cli {{.VOLSYNC_RESOURCES_DIR}}/list.yaml.j2 | kubectl apply --server-side --filename -
       - until kubectl --namespace {{.NS}} get job/{{.JOB}} &>/dev/null; do sleep 5; done
-      - kubectl --context {{.cluster}} -n {{.ns}} wait job/{{.JOB}} --for condition=complete --timeout=1m
-      - kubectl --context {{.cluster}} -n {{.ns}} logs job/{{.JOB}} --container list
-      - kubectl --context {{.cluster}} -n {{.ns}} delete job {{.JOB}}
+      - kubectl --namespace {{.NS}} wait job/{{.JOB}} --for condition=complete --timeout=1m
+      - kubectl --namespace {{.NS}} logs job/{{.JOB}} --container list
+      - kubectl --namespace {{.NS}} delete job {{.JOB}}
     vars:
       NS: '{{.ns | default "default"}}'
       JOB: '{{.APP}}-list-snapshots'
