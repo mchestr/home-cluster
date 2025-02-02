@@ -16,7 +16,7 @@ spec:
       fsGroup: ${APP_GID:-568}
       runAsGroup: ${APP_GID:-568}
       runAsUser: ${APP_UID:-568}
-    repository: ${APP}-volsync-r2
+    repository: ${APP}-volsync-secret
     storageClassName: ${VOLSYNC_STORAGECLASS:-ceph-block}
     volumeSnapshotClassName: ${VOLSYNC_SNAPSHOTCLASS:-csi-ceph-blockpool}
   trigger:
