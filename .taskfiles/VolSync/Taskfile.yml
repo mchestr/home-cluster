@@ -78,38 +78,19 @@ tasks:
   # To run backup jobs in parallel for all replicationsources:
   #  - kubectl get replicationsources --all-namespaces --no-headers | awk '{print $2, $1}' | xargs --max-procs=4 -l bash -c 'task volsync:snapshot app=$0 ns=$1'
   snapshot:
-    desc: Trigger a Restic ReplicationSource snapshot (task volsync:snapshot cluster=admin@home-cluster app=zigbee2mqtt)
-    summary: |
-      Args:
-        cluster: Cluster to run command against (required)
-        ns: Namespace the PVC is in (default: default)
-        app: Application to list snapshots for (required)
+    desc: Snapshot an app [NS=default] [APP=required]
     cmds:
-      # # TODO: Only suspend when a arg is passed to the task
-      # # https://github.com/go-task/task/issues/608
-      # - task: .suspend
-      #   vars: *env
-      - kubectl --context {{.cluster}} -n {{.ns}} patch replicationsources {{.app}} --type merge -p '{"spec":{"trigger":{"manual":"{{.ts}}"}}}'
-      - bash {{.scriptsDir}}/wait-for-k8s-job.sh volsync-src-{{.app}} {{.ns}} {{.cluster}}
-      - kubectl --context {{.cluster}} -n {{.ns}} wait job/volsync-src-{{.app}} --for condition=complete --timeout=120m
+      - kubectl --namespace {{.NS}} patch replicationsources {{.APP}} --type merge -p '{"spec":{"trigger":{"manual":"{{now | unixEpoch}}"}}}'
+      - until kubectl --namespace {{.NS}} get job/{{.JOB}} &>/dev/null; do sleep 5; done
+      - kubectl --namespace {{.NS}} wait job/{{.JOB}} --for=condition=complete --timeout=120m
     vars:
-      cluster: '{{ or .cluster (fail "Argument (cluster) is required") }}'
-      app: '{{ or .app (fail "Argument (app) is required") }}'
-      ns: '{{.ns | default "default"}}'
-      # Query to find the controller associated with the app
-      controller:
-        sh: |
-          if kubectl --context {{.cluster}} -n {{.ns}} get deployment.apps/{{.app}} >/dev/null 2>&1 ; then
-            echo "deployment.apps/{{.app}}"
-          else
-            echo "statefulset.apps/{{.app}}"
-          fi
-    env: *env
+      NS: '{{.NS | default "default"}}'
+      JOB: volsync-src-{{.APP}}
+    requires:
+      vars: [APP]
     preconditions:
-      - sh: test -f {{.scriptsDir}}/wait-for-k8s-job.sh
-        msg: "Wait script not found"
-      - sh: kubectl --context {{.cluster}} -n {{.ns}} get replicationsources {{.app}}
-        msg: "ReplicationSource '{{.app}}' not found in namespace '{{.ns}}'"
+      - kubectl --namespace {{.NS}} get replicationsources {{.APP}}
+      - which kubectl
 
   # To run restore jobs in parallel for all replicationdestinations:
   #   - kubectl get replicationsources --all-namespaces --no-headers | awk '{print $2, $1}' | xargs --max-procs=4 -l bash -c 'task volsync:restore app=$0 ns=$1'

@@ -12,4 +12,5 @@
 
 ---
 
+- [Bootstrap](notes/bootstrap.md)
 - [Networking](notes/networking.md)
