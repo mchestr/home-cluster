@@ -3,7 +3,7 @@
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: ${APP}-r2
+  name: ${APP}
 spec:
   restic:
     cacheCapacity: ${VOLSYNC_CACHE_CAPACITY:-1Gi}
