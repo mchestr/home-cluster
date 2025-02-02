@@ -74,7 +74,7 @@ spec:
       levelType: rwg
       whitelist: "mchestr,"
       ops: ""
-      jvmOpts: "-Dfml.readTimeout=180 @java9args.txt"
+      jvmOpts: "-Dfml.readTimeout=180 -Dfml.queryResult=confirm @java9args.txt"
       rcon:
         enabled: true
       motd: "GTNH: §l§c2.7.2§r §n"
