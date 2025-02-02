@@ -16,7 +16,7 @@ spec:
       runAsGroup: ${APP_GID:-568}
       runAsUser: ${APP_UID:-568}
     pruneIntervalDays: 14
-    repository: ${APP}-volsync-r2-secret
+    repository: ${APP}-volsync-secret
     retain:
       daily: 7
     storageClassName: ${VOLSYNC_STORAGECLASS:=ceph-block}
