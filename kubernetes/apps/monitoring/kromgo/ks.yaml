@@ -10,7 +10,7 @@ spec:
   dependsOn:
     - name: cluster-apps-external-secrets-stores
   interval: 30m
-  path: ./kubernetes/apps/default/kromgo/app
+  path: ./kubernetes/apps/monitoring/kromgo/app
   postBuild:
     substitute:
       APP: kromgo
