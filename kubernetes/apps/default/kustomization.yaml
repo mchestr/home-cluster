@@ -21,7 +21,6 @@ resources:
   - jellyfin/ks.yaml
   - jellyplex-watched/ks.yaml
   - jellyseerr/ks.yaml
-  - kromgo/ks.yaml
   - lldap/ks.yaml
   - maintainerr/ks.yaml
   - openwakeword/ks.yaml
