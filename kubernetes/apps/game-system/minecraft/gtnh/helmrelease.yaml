@@ -77,25 +77,6 @@ spec:
       rcon:
         enabled: true
       motd: "GTNH: §l§c2.7.2§r §n"
-      extraPorts:
-        - name: map
-          containerPort: 8123
-          protocol: TCP
-          service:
-            enabled: true
-            type: ClusterIP
-            port: 8123
-          ingress:
-            ingressClassName: external
-            annotations:
-              external-dns.alpha.kubernetes.io/target: external.chestr.dev
-            enabled: true
-            hosts:
-              - name: &host gtnhmap.chestr.dev
-                path: /
-            tls:
-              - hosts:
-                  - *host
     persistence:
       dataDir:
         enabled: true
