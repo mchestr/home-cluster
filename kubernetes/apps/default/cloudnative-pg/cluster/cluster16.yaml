@@ -12,6 +12,7 @@ spec:
     storageClass: local-path
 
   enableSuperuserAccess: true
+  primaryUpdateMethod: switchover
   superuserSecret:
     name: &secretName cloudnative-pg-secret
 
