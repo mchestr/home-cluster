@@ -17,6 +17,7 @@ env:
 includes:
   ansible: .taskfiles/ansible
   bootstrap: .taskfiles/bootstrap
+  github: .taskfiles/github
   kubernetes: .taskfiles/kubernetes
   talos: .taskfiles/talos
   terraform: .taskfiles/terraform
