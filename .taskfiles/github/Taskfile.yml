@@ -1,0 +1,27 @@
+---
+version: "3"
+
+tasks:
+
+  pr:list:
+    desc: List all open pull requests
+    cmds:
+      - gh pr list
+
+  pr:merge:
+    desc: Merge a pull request [ID=required]
+    cmds:
+      - gh pr merge {{ .ID }} --delete-branch --rebase
+
+  pr:merge:all:
+    desc: Merge all open pull requests [SKIP_IDS=]
+    vars:
+      SKIP_IDS: '{{.SKIP_IDS}}'
+      TO_MERGE:
+        sh: gh pr list --json number --state open | jq -cr '.[] | select([.number] | inside([{{ .SKIP_IDS }}]) | not) | .number'
+    prompt: Merge all open pull requests? (prs={{ .TO_MERGE | catLines }})
+    cmds:
+      - for: { var: TO_MERGE }
+        task: pr:merge
+        vars:
+          ID: '{{ .ITEM }}'
