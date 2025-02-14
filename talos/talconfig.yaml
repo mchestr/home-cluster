@@ -1,6 +1,6 @@
 clusterName: &cluster ${clusterName}
 # renovate: datasource=github-releases depName=siderolabs/talos
-talosVersion: "v1.9.3"
+talosVersion: "v1.9.4"
 # renovate: datasource=github-releases depName=siderolabs/kubelet
 kubernetesVersion: "v1.32.2"
 
