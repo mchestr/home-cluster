@@ -31,9 +31,9 @@ spec:
   path: kubernetes/apps/kube-system/system-upgrade-controller/plans
   postBuild:
     substitute:
-      # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
+      # renovate: datasource=github-releases depName=siderolabs/kubelet
       KUBERNETES_VERSION: v1.32.1
-      # renovate: depName=ghcr.io/siderolabs/installer datasource=docker
+      # renovate: datasource=github-releases depName=ghcr.io/siderolabs/installer
       TALOS_VERSION: v1.9.3
   prune: true
   retryInterval: 1m
