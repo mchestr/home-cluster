@@ -9,7 +9,10 @@ tasks:
       - gh pr list
 
   pr:merge:
-    desc: Merge a pull request [ID=required]
+    desc: Merge a pull request [ID=1234]
+    requires:
+      vars:
+        - ID
     cmds:
       - gh pr merge {{ .ID }} --delete-branch --rebase
 
