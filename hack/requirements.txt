@@ -4,7 +4,7 @@ executing==2.2.0
 ipython==8.32.0
 jedi==0.19.2
 Jinja2==3.1.5
-jsonpickle==4.0.1
+jsonpickle==4.0.2
 MarkupSafe==3.0.2
 matplotlib-inline==0.1.7
 networkx==3.4.2
