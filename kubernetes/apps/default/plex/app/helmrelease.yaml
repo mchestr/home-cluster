@@ -31,14 +31,14 @@ spec:
     defaultPodOptions:
       runtimeClassName: nvidia
       securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
-          - 44
-          - 109
-          - 65539
+          - 44    # video gid
+          - 65539 # Media NFS gid
       nodeSelector:
         nvidia.feature.node.kubernetes.io/gpu: "true"
       affinity:
