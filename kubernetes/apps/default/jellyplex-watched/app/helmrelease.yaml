@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: luigi311/jellyplex-watched
-              tag: 6.1.1@sha256:0887c621a3ffd6ce46a3e94566ec0fcb8853493bd921428e0263f0444ef878ba
+              tag: 6.1.2@sha256:f43e2f01ec31f9aa853e88516a406b988d59665b6df768a4c840fd64eaa7b6c9
             envFrom:
               - secretRef:
                   name: jellyplex-watched-secret
