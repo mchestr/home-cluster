@@ -40,7 +40,6 @@ resources:
   - teslamate/ks.yaml
   - thelounge/ks.yaml
   - theme-park/ks.yaml
-  - unifi/ks.yaml
   - unpackerr/ks.yaml
   - wizarr/ks.yaml
   - zigbee2mqtt/ks.yaml
