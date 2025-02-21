@@ -2,7 +2,7 @@
 apiVersion: cilium.io/v2alpha1
 kind: CiliumBGPPeeringPolicy
 metadata:
-  name: bgp-loadbalancer-ip-main
+  name: l3-policy
 spec:
   nodeSelector:
     matchLabels:
