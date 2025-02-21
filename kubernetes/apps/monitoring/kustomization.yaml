@@ -11,6 +11,6 @@ resources:
   - kube-prometheus-stack/ks.yaml
   - loki/ks.yaml
   - thanos/ks.yaml
-  - unifi-poller/ks.yaml
+  - unpoller/ks.yaml
   - vector/ks.yaml
   - exporters
