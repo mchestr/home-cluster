@@ -1,5 +1,5 @@
 asttokens==3.0.0
-decorator==5.1.1
+decorator==5.2.0
 executing==2.2.0
 ipython==8.32.0
 jedi==0.19.2
