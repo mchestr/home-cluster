@@ -118,6 +118,9 @@ data:
             widget:
               type: moonraker
               url: https://mainsail.chestr.dev:7130
+        - Unifi:
+            href: https://udm.chestr.dev
+            icon: unifi.png
     - Storage:
         - LochNAS:
             href: https://lochnas.chestr.dev
