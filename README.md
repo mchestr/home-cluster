@@ -82,22 +82,20 @@ This Git repository contains the following directories.
 
 ## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.gif" alt="⚙" width="16" height="16"> Hardware
 
-My mish-mash setup of random hardware I managed to acquire. I also have a few SBC RaspberryPi/ODROIDs lying around, but haven't had a lot of good luck running k3s on them, so sticking to amd64 based machines for now.
 
 | Device                                                | Count | OS Disk Size  | Data Disk Size       | Ram     | Operating System | Purpose           |
 |-------------------------------------------------------|-------|---------------|----------------------|---------|------------------|-------------------|
-| HP EliteDesk 800 G1                                   | 1     | 512GB SSD     | 512GB                | 8GB     | Talos            | control-plane     |
-| HP EliteDesk 800 G3                                   | 2     | 256/512GB SSD | 512GB                | 16GB    | Talos            | control-plane     |
-| HP EliteDesk 800 G4                                   | 2     | 256 SSD       | 256GB                | 16/32GB | Talos            | worker            |
-| i5-2500K/R7 370 (old repurposed gaming computer)      | 1     | 120GB SSD     | N/A                  | 24GB    | Talos            | worker            |
-| i5-6700K/GTX1080 (repurposed gaming computer)         | 1     | 256GB SSD     | N/A                  | 32GB    | Talos            | worker            |
-| Synology DS920+                                       | 1     | N/A           | 2x8TB & 2x4TB        | 20GB    | DSM              | NAS               |
-| CyberPower CP1500AVRLCD                               | 1     | N/A           | N/A                  | N/A     | N/A              | UPS               |
-| Ubiquiti EdgeRouter 10X                               | 1     | N/A           | N/A                  | 512MB   | EdgeOS           | Router            |
-| Ubiquiti UAP-AC-Lite                                  | 1     | N/A           | N/A                  | N/A     | N/A              | WiFi AP           |
-| PiKVM V4 Mini                                         | 1     | N/A           | N/A                  | N/A     | PiKVM            | KVM               |
-| TESmart HDMI KVM Switch 8 Ports                       | 1     | N/A           | N/A                  | N/A     | N/A              | KVM Switch        |
-| TP-Link TL-SG1024D 24 Port 1Gbps Switch               | 1     | N/A           | N/A                  | N/A     | N/A              | Network Switch    |
+| UDM-Pro-Max                                           | 1     | -             | -                    | -       | Unifi             | Router            |
+| USW-Pro-Aggregation                                   | 1     | -             | -                    | -       | Unifi             | Switch            |
+| USW-Pro-Max-24-PoE                                    | 1     | -             | -                    | -       | Unifi             | Switch            |
+| UAP-AC-Lite                                           | 1     | -             | -                    | -       | Unifi             | WiFi AP           |
+| ER-10X                                                | 1     | -             | -                    | -       | EdgeOS           | Switch            |
+| PiKVM V4 Mini                                         | 1     | -             | -                    | -       | PiKVM            | KVM               |
+| TESmart HDMI KVM Switch 8 Ports                       | 1     | -             | -                    | -       | -                | KVM Switch        |
+| CyberPower CP1500PFCRM2U                              | 1     | -             | -                    |         | -                | UPS               |
+| USP-PDU-Pro                                           | 1     | -             | -                    | -       | Unifi             | PDU               |
+| Synology DS920+                                       | 1     | -             | 2x8TB & 2x16TB       | 20GB    | DSM              | NAS               |
+| MS-01 i9-13900H                                       | 3     | 1TB           | 2TB                  | 96GB    | Talos            | Control Plane     |
 
 ---
 
