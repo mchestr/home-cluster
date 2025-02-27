@@ -8,7 +8,7 @@ spec:
   components:
     - ../../../../flux/components/volsync
   dependsOn:
-    - name: cluster-apps-external-secrets-stores
+    - name: external-secrets-stores
     - name: cluster-apps-radarr
     - name: cluster-apps-sonarr
   interval: 30m

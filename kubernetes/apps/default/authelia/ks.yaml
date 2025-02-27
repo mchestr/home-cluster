@@ -9,7 +9,7 @@ spec:
     - ../../../../flux/components/gatus/external
   dependsOn:
     - name: cluster-apps-cloudnative-pg-cluster
-    - name: cluster-apps-external-secrets-stores
+    - name: external-secrets-stores
     - name: cluster-apps-lldap
     - name: cluster-apps-redis
     - name: cluster-apps-smtp-relay

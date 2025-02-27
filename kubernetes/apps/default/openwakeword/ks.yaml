@@ -9,7 +9,7 @@ spec:
   path: ./kubernetes/apps/default/openwakeword/app
   prune: true
   dependsOn:
-    - name: cluster-apps-external-secrets-stores
+    - name: external-secrets-stores
   sourceRef:
     kind: GitRepository
     name: flux-system
