@@ -24,23 +24,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  values:
-    installCRDs: true
-    replicaCount: 1
-    webhook:
-      replicaCount: 1
-    cainjector:
-      replicaCount: 1
-    extraArgs:
-      - --dns01-recursive-nameservers=1.1.1.1:53,9.9.9.9:53
-      - --dns01-recursive-nameservers-only
-    podDnsPolicy: None
-    podDnsConfig:
-      nameservers:
-        - "1.1.1.1"
-        - "9.9.9.9"
-    prometheus:
-      enabled: true
-      servicemonitor:
-        enabled: true
-        prometheusInstance: monitoring
+  valuesFrom:
+    - kind: ConfigMap
+      name: cert-manager-helm-values

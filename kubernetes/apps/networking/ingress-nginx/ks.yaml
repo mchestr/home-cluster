@@ -2,31 +2,10 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-ingress-nginx-common
-  namespace: flux-system
+  name: ingress-nginx-internal
+  namespace: &namespace networking
 spec:
-  targetNamespace: networking
-  dependsOn:
-    - name: cluster-apps-cert-manager-issuers
-  path: ./kubernetes/apps/networking/ingress-nginx/common
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: cluster-apps-ingress-nginx-internal
-  namespace: flux-system
-spec:
-  targetNamespace: networking
-  dependsOn:
-    - name: cluster-apps-ingress-nginx-common
+  targetNamespace: *namespace
   path: ./kubernetes/apps/networking/ingress-nginx/internal
   prune: true
   sourceRef:
@@ -40,12 +19,10 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-ingress-nginx-external
-  namespace: flux-system
+  name: ingress-nginx-external
+  namespace: &namespace networking
 spec:
-  targetNamespace: networking
-  dependsOn:
-    - name: cluster-apps-ingress-nginx-common
+  targetNamespace: *namespace
   path: ./kubernetes/apps/networking/ingress-nginx/external
   prune: true
   sourceRef:

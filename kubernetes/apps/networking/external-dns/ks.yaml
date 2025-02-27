@@ -2,13 +2,14 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-external-dns
-  namespace: flux-system
+  name: external-dns-cloudflare
+  namespace: &namespace networking
 spec:
-  targetNamespace: networking
-  path: ./kubernetes/apps/networking/external-dns/app
+  targetNamespace: *namespace
+  path: ./kubernetes/apps/networking/external-dns/cloudflare
   dependsOn:
-    - name: external-secrets-stores
+    - name: onepassword-store
+      namespace: external-secrets
   prune: true
   sourceRef:
     kind: GitRepository
@@ -21,13 +22,14 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: internal-external-dns
-  namespace: flux-system
+  name: external-dns-unifi
+  namespace: &namespace networking
 spec:
-  targetNamespace: networking
-  path: ./kubernetes/apps/networking/external-dns/internal
+  targetNamespace: *namespace
+  path: ./kubernetes/apps/networking/external-dns/unifi
   dependsOn:
-    - name: external-secrets-stores
+    - name: onepassword-store
+      namespace: external-secrets
   prune: true
   sourceRef:
     kind: GitRepository

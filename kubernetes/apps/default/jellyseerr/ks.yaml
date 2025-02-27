@@ -3,23 +3,27 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-jellyseerr
-  namespace: flux-system
+  name: &app jellyseerr
+  namespace: &namespace default
 spec:
   commonMetadata:
     labels:
-      app.kubernetes.io/name: jellyseerr
+      app.kubernetes.io/name: *app
   components:
     - ../../../../flux/components/gatus/external
     - ../../../../flux/components/volsync
   dependsOn:
-    - name: external-secrets-stores
-    - name: cluster-apps-volsync
+    - name: cloudnative-pg-cluster
+      namespace: *namespace
+    - name: onepassword-store
+      namespace: external-secrets
+    - name: volsync
+      namespace: *namespace
   interval: 30m
   path: ./kubernetes/apps/default/jellyseerr/app
   postBuild:
     substitute:
-      APP: jellyseerr
+      APP: *app
       GATUS_PATH: /api/v1/status
       GATUS_SUBDOMAIN: requests
       VOLSYNC_SCHEDULE: 10 10 * * *
@@ -27,7 +31,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-    namespace: flux-system
-  targetNamespace: default
+    namespace: &namespace default
+  targetNamespace: *namespace
   timeout: 5m
   wait: false

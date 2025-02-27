@@ -97,7 +97,7 @@ spec:
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: go2rtc-streams.chestr.dev
-          lbipam.cilium.io/ips: 192.168.100.124
+          lbipam.cilium.io/ips: 10.0.20.60
         ports:
           http:
             port: &secure 8971
@@ -154,7 +154,7 @@ spec:
             subPath: config.yaml
       media:
         type: nfs
-        server: 192.168.1.128
+        server: lochnas.chestr.dev
         path: /volume1/shared/frigate
         globalMounts:
           - path: /media

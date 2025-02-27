@@ -2,13 +2,14 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-kromgo
-  namespace: flux-system
+  name: kromgo
+  namespace: &namespace monitoring
 spec:
   components:
     - ../../../../flux/components/gatus/external
   dependsOn:
-    - name: external-secrets-stores
+    - name: onepassword-store
+      namespace: external-secrets
   interval: 30m
   path: ./kubernetes/apps/monitoring/kromgo/app
   postBuild:
@@ -20,6 +21,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  targetNamespace: default
+  targetNamespace: *namespace
   timeout: 5m
   wait: false

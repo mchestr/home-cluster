@@ -51,7 +51,7 @@ spec:
               DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
               JELLYFIN_FFmpeg__probesize: 50000000
               JELLYFIN_FFmpeg__analyzeduration: 50000000
-              JELLYFIN_PublishedServerUrl: &ip 192.168.100.10
+              JELLYFIN_PublishedServerUrl: &ip 10.0.20.70
               TZ: America/Vancouver
             resources:
               requests:
@@ -128,7 +128,7 @@ spec:
         type: emptyDir
       media:
         type: nfs
-        server: 192.168.1.128
+        server: lochnas.chestr.dev
         path: /volume1/shared/media
         globalMounts:
           - path: /media

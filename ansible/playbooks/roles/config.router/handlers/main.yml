@@ -1,7 +1,0 @@
----
-- name: Save
-  vars:
-    ansible_network_os: edgeos
-    ansible_connection: network_cli
-  community.network.edgeos_config:
-    save: true

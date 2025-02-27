@@ -2,12 +2,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-cloudnative-pg-app
-  namespace: flux-system
+  name: cloudnative-pg
+  namespace: &namespace default
 spec:
-  targetNamespace: default
+  targetNamespace: *namespace
   dependsOn:
-    - name: external-secrets-stores
+    - name: onepassword-store
+      namespace: external-secrets
   path: ./kubernetes/apps/default/cloudnative-pg/app
   prune: true
   sourceRef:
@@ -21,14 +22,15 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-cloudnative-pg-cluster
-  namespace: flux-system
+  name: cloudnative-pg-cluster
+  namespace: &namespace default
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
-  targetNamespace: default
+  targetNamespace: *namespace
   dependsOn:
-    - name: cluster-apps-cloudnative-pg-app
+    - name: cloudnative-pg
+      namespace: *namespace
   path: ./kubernetes/apps/default/cloudnative-pg/cluster
   prune: true
   sourceRef:
@@ -42,12 +44,13 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-cloudnative-pg-postgres-backup
-  namespace: flux-system
+  name: cloudnative-pg-postgres-backup
+  namespace: &namespace default
 spec:
-  targetNamespace: default
+  targetNamespace: *namespace
   dependsOn:
-    - name: cluster-apps-cloudnative-pg-cluster
+    - name: cloudnative-pg-cluster
+      namespace: *namespace
   path: ./kubernetes/apps/default/cloudnative-pg/postgres-backup
   prune: true
   sourceRef:

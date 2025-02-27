@@ -2,13 +2,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-metrics-server
-  namespace: flux-system
+  name: metrics-server
+  namespace: &namespace kube-system
 spec:
-  targetNamespace: kube-system
+  targetNamespace: *namespace
   path: ./kubernetes/apps/kube-system/metrics-server/app
-  dependsOn:
-    - name: cluster-apps
   prune: true
   sourceRef:
     kind: GitRepository

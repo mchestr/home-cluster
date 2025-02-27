@@ -48,6 +48,6 @@ spec:
     metadata:
       annotations:
         external-dns.alpha.kubernetes.io/hostname: mqtt.chestr.dev
-        lbipam.cilium.io/ips: 192.168.100.129
+        lbipam.cilium.io/ips: 10.0.20.50
     spec:
       type: LoadBalancer

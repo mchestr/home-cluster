@@ -2,22 +2,28 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-jellyfin
-  namespace: flux-system
+  name: &app jellyfin
+  namespace: &namespace default
 spec:
   components:
     - ../../../../flux/components/gatus/guarded
     - ../../../../flux/components/volsync
   dependsOn:
-    - name: external-secrets-stores
-    - name: cluster-apps-intel-device-plugin-gpu
-    - name: cluster-apps-lldap
-    - name: cluster-apps-volsync
+    - name: onepassword-store
+      namespace: external-secrets
+    - name: intel-device-plugin-gpu
+      namespace: kube-system
+    - name: lldap
+      namespace: *namespace
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: volsync
+      namespace: volsync-system
   interval: 30m
   path: ./kubernetes/apps/default/jellyfin/app
   postBuild:
     substitute:
-      APP: jellyfin
+      APP: *app
       VOLSYNC_CACHE_CAPACITY: 25Gi
       VOLSYNC_CAPACITY: 25Gi
       VOLSYNC_SCHEDULE: 10 10 * * *
@@ -26,6 +32,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  targetNamespace: default
+  targetNamespace: *namespace
   timeout: 5m
   wait: false
