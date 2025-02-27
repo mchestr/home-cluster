@@ -2,21 +2,28 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-zwave-js-ui
-  namespace: flux-system
+  name: &app zwave-js-ui
+  namespace: &namespace default
 spec:
   components:
     - ../../../../flux/components/gatus/guarded
     - ../../../../flux/components/volsync
   dependsOn:
-    - name: external-secrets-stores
-    - name: cluster-apps-emqx-cluster
-    - name: cluster-apps-volsync
+    - name: onepassword-store
+      namespace: external-secrets
+    - name: emqx-cluster
+      namespace: *namespace
+    - name: node-feature-discovery-rules
+      namespace: kube-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: volsync
+      namespace: volsync-system
   interval: 30m
   path: ./kubernetes/apps/default/zwave-js-ui/app
   postBuild:
     substitute:
-      APP: zwave-js-ui
+      APP: *app
       GATUS_SUBDOMAIN: zwave
       VOLSYNC_SCHEDULE: 50 10 * * *
   prune: true
@@ -24,6 +31,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  targetNamespace: default
+  targetNamespace: *namespace
   timeout: 5m
   wait: false

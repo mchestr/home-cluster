@@ -3,12 +3,13 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: cluster-apps-prowlarr-exporter
-  namespace: flux-system
+  namespace: &namespace monitoring
 spec:
-  targetNamespace: monitoring
+  targetNamespace: *namespace
   path: ./kubernetes/apps/monitoring/exporters/prowlarr-exporter/app
   dependsOn:
-    - name: external-secrets-stores
+    - name: onepassword-store
+      namespace: external-secrets
   prune: true
   sourceRef:
     kind: GitRepository

@@ -29,7 +29,6 @@ spec:
       namespace: rook-ceph
   values:
     defaultPodOptions:
-      runtimeClassName: nvidia
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -40,7 +39,7 @@ spec:
           - 44    # video gid
           - 65539 # Media NFS gid
       nodeSelector:
-        nvidia.feature.node.kubernetes.io/gpu: "true"
+        intel.feature.node.kubernetes.io/gpu: "true"
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -61,35 +60,62 @@ spec:
               tag: 1.41.4.9463-630c9f557@sha256:a0dbab7e3f4ad3269ea1dfc502e6f5af73f7c89ed98fff093e5dab048d0d30e0
             env:
               TZ: America/Vancouver
+              PLEX_ADVERTISE_URL: https://{{ .Release.Name }}.chestr.dev:443,http://10.0.20.110:32400
+              PLEX_NO_AUTH_NETWORKS: 192.168.1.0/24
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /identity
+                    port: &port 32400
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
             resources:
               requests:
                 cpu: 100m
-                memory: 2000Mi
-                nvidia.com/gpu: 1
               limits:
-                memory: 8000Mi
-                nvidia.com/gpu: 1
+                gpu.intel.com/i915: 1
+                memory: 10Gi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
 
     service:
       app:
         type: LoadBalancer
         controller: *app
         annotations:
-          io.cilium/lb-ipam-ips: 192.168.100.30
-        externalTrafficPolicy: Cluster
+          io.cilium/lb-ipam-ips: 10.0.20.110
         ports:
           http:
             enabled: true
-            port: 32400
+            port: *port
             protocol: TCP
-            targetPort: 32400
+            targetPort: *port
 
     ingress:
       app:
         enabled: true
         className: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.chestr.dev
+          nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+          nginx.ingress.kubernetes.io/server-snippet: |
+            location ~ ^/library/streams {
+              proxy_set_header   Range "";
+              proxy_pass         http://plex.default.svc.cluster.local:32400;
+              proxy_http_version 1.1;
+            }
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: plex.png
           gethomepage.dev/name: Plex
@@ -111,7 +137,7 @@ spec:
         existingClaim: *app
       media:
         type: nfs
-        server: 192.168.1.128
+        server: lochnas.chestr.dev
         path: /volume1/shared/media
         globalMounts:
           - path: /media

@@ -2,13 +2,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-node-problem-detector
-  namespace: flux-system
+  name: node-problem-detector
+  namespace: &namespace kube-system
 spec:
-  targetNamespace: kube-system
+  targetNamespace: *namespace
   path: ./kubernetes/apps/kube-system/node-problem-detector/app
-  dependsOn:
-    - name: cluster-apps
   prune: true
   sourceRef:
     kind: GitRepository

@@ -119,7 +119,7 @@ audio:
 go2rtc:
   webrtc:
     candidates:
-      - 192.168.100.124:8555
+      - 10.0.20.60:8555
       - stun:8555
   streams:
     living_room_hd:

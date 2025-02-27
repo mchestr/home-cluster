@@ -2,28 +2,33 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-authelia
-  namespace: flux-system
+  name: &app authelia
+  namespace: &namespace default
 spec:
   components:
     - ../../../../flux/components/gatus/external
   dependsOn:
-    - name: cluster-apps-cloudnative-pg-cluster
-    - name: external-secrets-stores
-    - name: cluster-apps-lldap
-    - name: cluster-apps-redis
-    - name: cluster-apps-smtp-relay
+    - name: cloudnative-pg-cluster
+      namespace: *namespace
+    - name: onepassword-store
+      namespace: external-secrets
+    - name: lldap
+      namespace: *namespace
+    - name: redis
+      namespace: *namespace
+    - name: smtp-relay
+      namespace: *namespace
   interval: 30m
   path: ./kubernetes/apps/default/authelia/app
   postBuild:
     substitute:
-      APP: authelia
+      APP: *app
       GATUS_SUBDOMAIN: auth
   prune: true
   retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
-  targetNamespace: default
+  targetNamespace: *namespace
   timeout: 5m
   wait: false

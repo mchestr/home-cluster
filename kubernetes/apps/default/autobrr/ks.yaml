@@ -2,24 +2,28 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-autobrr
-  namespace: flux-system
+  name: &app autobrr
+  namespace: &namespace default
 spec:
   components:
     - ../../../../flux/components/gatus/guarded
   dependsOn:
-    - name: cluster-apps-cloudnative-pg-cluster
-    - name: cluster-apps-qbittorrent
+    - name: cloudnative-pg-cluster
+      namespace: *namespace
+    - name: qbittorrent
+      namespace: *namespace
+    - name: onepassword-store
+      namespace: external-secrets
   interval: 30m
   path: ./kubernetes/apps/default/autobrr/app
   postBuild:
     substitute:
-      APP: autobrr
+      APP: *app
   prune: true
   retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
-  targetNamespace: default
+  targetNamespace: *namespace
   timeout: 5m
   wait: false

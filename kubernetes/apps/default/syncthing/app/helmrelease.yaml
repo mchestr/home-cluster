@@ -54,25 +54,14 @@ spec:
       listen:
         controller: syncthing
         type: LoadBalancer
-        loadBalancerIP: 192.168.100.140
-        externalTrafficPolicy: Local
         annotations:
-          io.cilium/lb-ipam-sharing-key: syncthing
+          io.cilium/lb-ipam-ips: 10.0.20.90
         ports:
           listen:
             enabled: true
             port: 22000
             protocol: TCP
             targetPort: 22000
-
-      discovery:
-        controller: syncthing
-        type: LoadBalancer
-        loadBalancerIP: 192.168.100.140
-        externalTrafficPolicy: Local
-        annotations:
-          io.cilium/lb-ipam-sharing-key: syncthing
-        ports:
           discovery:
             enabled: true
             port: 21027
@@ -103,7 +92,7 @@ spec:
       data:
         enabled: true
         type: nfs
-        server: 192.168.1.128
+        server: lochnas.chestr.dev
         path: /volume1/shared/syncthing
         globalMounts:
           - path: /var/syncthing

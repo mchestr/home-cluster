@@ -5,9 +5,8 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
 configMapGenerator:
-  - name: coredns-values
+  - name: coredns-helm-values
     files:
-      - values.yaml=./values.yaml
-
+      - ./resources/values.yaml
 configurations:
-  - kustomizeconfig.yaml
+  - ./kustomizeconfig.yaml

@@ -104,7 +104,7 @@ spec:
     persistence:
       media:
         type: nfs
-        server: 192.168.1.128
+        server: lochnas.chestr.dev
         path: /volume1/shared/media
         globalMounts:
           - path: /media

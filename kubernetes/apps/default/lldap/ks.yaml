@@ -2,24 +2,26 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-lldap
-  namespace: flux-system
+  name: &app lldap
+  namespace: &namespace default
 spec:
   components:
     - ../../../../flux/components/gatus/guarded
   dependsOn:
-    - name: cluster-apps-cloudnative-pg-cluster
-    - name: external-secrets-stores
+    - name: cloudnative-pg-cluster
+      namespace: *namespace
+    - name: onepassword-store
+      namespace: external-secrets
   interval: 30m
   path: ./kubernetes/apps/default/lldap/app
   postBuild:
     substitute:
-      APP: lldap
+      APP: *app
   prune: true
   retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
-  targetNamespace: default
+  targetNamespace: *namespace
   timeout: 5m
   wait: false

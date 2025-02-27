@@ -2,12 +2,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-jellyplex-watched
-  namespace: flux-system
+  name: &app jellyplex-watched
+  namespace: &namespace default
 spec:
-  targetNamespace: default
+  targetNamespace: *namespace
   dependsOn:
-    - name: external-secrets-stores
+    - name: jellyfin
+      namespace: *namespace
+    - name: onepassword-store
+      namespace: external-secrets
   path: ./kubernetes/apps/default/jellyplex-watched/app
   prune: true
   sourceRef:
@@ -19,4 +22,4 @@ spec:
   timeout: 5m
   postBuild:
     substitute:
-      APP: jellyplex-watched
+      APP: *app
