@@ -9,7 +9,7 @@ spec:
     - ../../../../flux/components/gatus/guarded
     - ../../../../flux/components/volsync
   dependsOn:
-    - name: cluster-apps-external-secrets-stores
+    - name: external-secrets-stores
     - name: cluster-apps-volsync
   interval: 30m
   path: ./kubernetes/apps/default/sabnzbd/app
