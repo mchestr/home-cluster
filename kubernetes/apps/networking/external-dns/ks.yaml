@@ -8,7 +8,7 @@ spec:
   targetNamespace: networking
   path: ./kubernetes/apps/networking/external-dns/app
   dependsOn:
-    - name: cluster-apps-external-secrets-stores
+    - name: external-secrets-stores
   prune: true
   sourceRef:
     kind: GitRepository
@@ -27,7 +27,7 @@ spec:
   targetNamespace: networking
   path: ./kubernetes/apps/networking/external-dns/internal
   dependsOn:
-    - name: cluster-apps-external-secrets-stores
+    - name: external-secrets-stores
   prune: true
   sourceRef:
     kind: GitRepository
