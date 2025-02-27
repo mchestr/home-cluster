@@ -27,26 +27,16 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    crds:
-      enabled: true
-
     csi:
-      kubeletDirPath: /var/lib/kubelet
-      enableCSIHostNetwork: true
-      pluginTolerations:
-        - effect: "NoExecute"
-          operator: "Exists"
-        - effect: "NoSchedule"
-          operator: "Exists"
-
+      cephFSKernelMountOptions: ms_mode=prefer-crc
+      enableLiveness: true
+      serviceMonitor:
+        enabled: true
+    enableDiscoveryDaemon: true
     monitoring:
       enabled: true
-
-    pspEnable: false
-
     resources:
       requests:
-        cpu: 109m
-        memory: 204M
-      limits:
-        memory: 453M
+        cpu: 100m # unchangable
+        memory: 128Mi # unchangable
+      limits: {}

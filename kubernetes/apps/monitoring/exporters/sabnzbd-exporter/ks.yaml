@@ -2,13 +2,16 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-sabnzbd-exporter
-  namespace: flux-system
+  name: sabnzbd-exporter
+  namespace: &namespace monitoring
 spec:
-  targetNamespace: monitoring
+  targetNamespace: *namespace
   path: ./kubernetes/apps/monitoring/exporters/sabnzbd-exporter/app
   dependsOn:
-    - name: external-secrets-stores
+    - name: onepassword-store
+      namespace: external-secrets
+    - name: sabnzbd
+      namespace: default
   prune: true
   sourceRef:
     kind: GitRepository

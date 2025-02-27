@@ -2,11 +2,9 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-minecraft-router
-  namespace: flux-system
+  name: minecraft-router
+  namespace: &namespace game-system
 spec:
-  dependsOn:
-    - name: cluster-apps
   interval: 30m
   path: ./kubernetes/apps/game-system/minecraft/mc-router
   prune: true
@@ -14,7 +12,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  targetNamespace: game-system
+  targetNamespace: *namespace
   timeout: 5m
   wait: false
 
@@ -22,19 +20,23 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-minecraft-gtnh
-  namespace: flux-system
+  name: &app minecraft-gtnh
+  namespace: &namespace game-system
 spec:
   components:
     - ../../../../flux/components/volsync
   dependsOn:
-    - name: cluster-apps-volsync
-    - name: cluster-apps-minecraft-router
+    - name: minecraft-router
+      namespace: *namespace
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: volsync
+      namespace: volsync-system
   interval: 30m
   path: ./kubernetes/apps/game-system/minecraft/gtnh
   postBuild:
     substitute:
-      APP: minecraft-gtnh
+      APP: *app
       VOLSYNC_CACHE_CAPACITY: 30Gi
       VOLSYNC_CAPACITY: 30Gi
   prune: true
@@ -42,6 +44,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  targetNamespace: game-system
+  targetNamespace: *namespace
   timeout: 5m
   wait: false

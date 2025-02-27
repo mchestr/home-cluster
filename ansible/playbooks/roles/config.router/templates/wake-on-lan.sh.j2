@@ -1,9 +1,0 @@
-#!/bin/bash
-
-logger 'WakeOnLan started, waiting 120s...';
-sleep 120;
-{% for host in wake_on_lan %}
-sudo etherwake {{ host.mac }};
-sleep {{ host.delay }};
-{% endfor %}
-logger 'WakeOnLan complete.';

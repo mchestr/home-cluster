@@ -80,38 +80,6 @@ This Git repository contains the following directories.
 📁 terraform       # Contains Cloudflare terraform
 ```
 
-## Network
-
-```mermaid
-architecture-beta
-    group home(cloud)[Home]
-
-    service wan(cloud)[WAN]
-    service udm(internet)[UDM] in home
-    service uswa(internet)[USW Aggregate] in home
-    service usw(internet)[USW] in home
-    service ap(internet)[Wifi AP] in home
-    service n1(server)[Node1] in home
-    service n2(server)[Node2] in home
-    service n3(server)[Node3] in home
-    service nas(server)[NAS] in home
-    service clients(server)[Other Clients] in home
-    junction j1 in home
-    junction j2 in home
-
-
-    wan:R -- L:udm
-    udm:R -- L:uswa
-    usw:L -- R:uswa
-    n1:T -- R:j1
-    n2:B -- T:j1
-    n3:T -- L:j1
-    j1:B -- T:uswa
-    j2:L -- B:ap
-    j2:R -- B:clients
-    j2:T -- B:usw
-    nas:T -- B:j2
-```
 
 ## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.gif" alt="⚙" width="16" height="16"> Hardware
 

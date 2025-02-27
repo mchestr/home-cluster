@@ -2,20 +2,24 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-radicale
-  namespace: flux-system
+  name: &app radicale
+  namespace: &namespace default
 spec:
   components:
     - ../../../../flux/components/gatus/external
     - ../../../../flux/components/volsync
   dependsOn:
-    - name: external-secrets-stores
-    - name: cluster-apps-volsync
+    - name: onepassword-store
+      namespace: external-secrets
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: volsync
+      namespace: volsync-system
   interval: 30m
   path: ./kubernetes/apps/default/radicale/app
   postBuild:
     substitute:
-      APP: radicale
+      APP: *app
       GATUS_SUBDOMAIN: cal
       VOLSYNC_SCHEDULE: 30 10 * * *
   prune: true
@@ -23,6 +27,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  targetNamespace: default
+  targetNamespace: *namespace
   timeout: 5m
   wait: false

@@ -1,0 +1,25 @@
+---
+machine:
+  disks:
+    - device: /dev/disk/by-id/nvme-Samsung_SSD_990_PRO_2TB_S7KHNJ0Y119023D
+      partitions: [{ mountpoint: /var/mnt/extra }]
+  install:
+    diskSelector:
+      serial: 24274K803706
+  network:
+    hostname: m0.k8s.internal
+    interfaces:
+      - # m2
+        deviceSelector:
+          busPath: 0-1.0
+        dhcp: false
+        mtu: 65520
+        addresses: [169.254.255.10/32]
+        routes: [{ network: 169.254.255.12/32, metric: 2048 }]
+      - # m1
+        deviceSelector:
+          busPath: 1-1.0
+        dhcp: false
+        mtu: 65520
+        addresses: [169.254.255.10/32]
+        routes: [{ network: 169.254.255.11/32, metric: 2048 }]

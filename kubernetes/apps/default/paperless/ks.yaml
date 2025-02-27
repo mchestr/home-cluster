@@ -2,20 +2,22 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-paperless
-  namespace: flux-system
+  name: &app paperless
+  namespace: &namespace default
 spec:
   components:
     - ../../../../flux/components/gatus/guarded
     - ../../../../flux/components/volsync
   dependsOn:
-    - name: cluster-apps-cloudnative-pg-cluster
-    - name: external-secrets-stores
+    - name: cloudnative-pg-cluster
+      namespace: *namespace
+    - name: onepassword-store
+      namespace: external-secrets
   interval: 30m
   path: ./kubernetes/apps/default/paperless/app
   postBuild:
     substitute:
-      APP: paperless
+      APP: *app
       APP_GID: '1000'
       APP_UID: '1000'
       VOLSYNC_CACHE_CAPACITY: 8Gi
@@ -26,6 +28,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  targetNamespace: default
+  targetNamespace: *namespace
   timeout: 5m
   wait: false

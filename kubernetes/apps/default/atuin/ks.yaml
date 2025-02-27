@@ -2,24 +2,25 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-atuin
-  namespace: flux-system
+  name: &app atuin
+  namespace: &namespace default
 spec:
   components:
     - ../../../../flux/components/gatus/guarded
   dependsOn:
-    - name: external-secrets-stores
+    - name: onepassword-store
+      namespace: external-secrets
   interval: 30m
   path: ./kubernetes/apps/default/atuin/app
   postBuild:
     substitute:
-      APP: atuin
+      APP: *app
       GATUS_SUBDOMAIN: sh
   prune: true
   retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
-  targetNamespace: default
+  targetNamespace: *namespace
   timeout: 5m
   wait: false

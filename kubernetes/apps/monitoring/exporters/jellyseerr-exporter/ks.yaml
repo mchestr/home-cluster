@@ -1,0 +1,20 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: jellyseerr-exporter
+  namespace: &namespace monitoring
+spec:
+  targetNamespace: *namespace
+  path: ./kubernetes/apps/monitoring/exporters/jellyseerr-exporter/app
+  dependsOn:
+    - name: onepassword-store
+      namespace: external-secrets
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  interval: 30m
+  retryInterval: 1m
+  timeout: 3m
+  wait: false

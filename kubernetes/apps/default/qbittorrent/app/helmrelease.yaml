@@ -104,7 +104,7 @@ spec:
         controller: *app
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: 192.168.100.101
+          io.cilium/lb-ipam-ips: 10.0.20.80
         ports:
           http:
             port: *port
@@ -146,7 +146,7 @@ spec:
         type: emptyDir
       media:
         type: nfs
-        server: 192.168.1.128
+        server: lochnas.chestr.dev
         path: /volume1/shared/media
         globalMounts:
           - path: /media

@@ -2,12 +2,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-loki
-  namespace: flux-system
+  name: loki
+  namespace: &namespace monitoring
 spec:
-  targetNamespace: monitoring
+  targetNamespace: *namespace
   dependsOn:
-    - name: external-secrets-stores
+    - name: onepassword-store
+      namespace: external-secrets
   path: ./kubernetes/apps/monitoring/loki/app
   prune: true
   sourceRef:

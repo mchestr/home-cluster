@@ -9,7 +9,7 @@ spec:
   primaryUpdateStrategy: unsupervised
   storage:
     size: 8Gi
-    storageClass: local-path
+    storageClass: openebs-hostpath
 
   enableSuperuserAccess: true
   primaryUpdateMethod: switchover

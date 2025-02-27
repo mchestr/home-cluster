@@ -30,7 +30,7 @@ spec:
       service:
         annotations:
           external-dns.alpha.kubernetes.io/hostname: external.chestr.dev
-          io.cilium/lb-ipam-ips: 192.168.100.200
+          io.cilium/lb-ipam-ips: 10.0.20.200
         externalTrafficPolicy: Cluster
       ingressClassResource:
         name: external
@@ -72,7 +72,7 @@ spec:
           namespaceSelector:
             any: true
       extraArgs:
-        default-ssl-certificate: networking/chestr-dev-tls
+        default-ssl-certificate: cert-manager/chestr-dev-tls
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
