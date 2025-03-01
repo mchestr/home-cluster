@@ -62,14 +62,16 @@ spec:
         provider: host
         addressRanges:
           public: ["10.0.40.0/24"]
-          cluster: ["169.254.255.0/24"]
+          # cluster: ["169.254.255.0/24"]
+          cluster: ["10.0.40.0/24"]
         connections:
           requireMsgr2: true
       storage:
         useAllNodes: true
         useAllDevices: false
-        # TODO: update me
-        devicePathFilter: /dev/disk/by-id/nvme-SAMSUNG_MZQL23T8HCLS-00A07_.*
+        devicePathFilter: /dev/disk/by-id/nvme-Samsung_SSD_990_PRO_2TB_.*
+        config:
+          osdsPerDevice: "1"
     cephBlockPools:
       - name: ceph-blockpool
         spec:
