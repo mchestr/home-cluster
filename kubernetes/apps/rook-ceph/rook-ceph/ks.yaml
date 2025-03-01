@@ -12,6 +12,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
+    namespace: flux-system
   targetNamespace: *namespace
   timeout: 5m
   wait: true
@@ -24,7 +25,7 @@ metadata:
   namespace: &namespace rook-ceph
 spec:
   components:
-    - ../../../../flux/components/gatus/guarded
+    - ../../../../components/gatus/guarded
   dependsOn:
     - name: rook-ceph
       namespace: rook-ceph
@@ -38,6 +39,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
+    namespace: flux-system
   targetNamespace: *namespace
   timeout: 15m
   wait: true

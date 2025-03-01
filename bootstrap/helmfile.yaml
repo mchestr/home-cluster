@@ -93,6 +93,6 @@ releases:
     version: 0.16.0
     wait: false
     values:
-      - ../kubernetes/apps/flux-system/flux-operator/app/resources/values.yaml
+      - ../kubernetes/apps/flux-system/flux-instance/app/resources/values.yaml
     needs:
       - flux-system/flux-operator

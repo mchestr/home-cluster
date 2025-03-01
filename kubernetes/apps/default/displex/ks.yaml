@@ -6,7 +6,7 @@ metadata:
   namespace: &namespace default
 spec:
   components:
-    - ../../../../flux/components/gatus/external
+    - ../../../../components/gatus/external
   dependsOn:
     - name: onepassword-store
       namespace: external-secrets
@@ -22,6 +22,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
+    namespace: flux-system
   targetNamespace: *namespace
   timeout: 5m
   wait: false

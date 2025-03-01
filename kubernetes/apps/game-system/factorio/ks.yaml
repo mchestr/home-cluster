@@ -6,7 +6,7 @@ metadata:
   namespace: &namespace game-system
 spec:
   components:
-    - ../../../../flux/components/volsync
+    - ../../../../components/volsync
   dependsOn:
     - name: onepassword-store
       namespace: external-secrets
@@ -26,6 +26,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
+    namespace: flux-system
   targetNamespace: *namespace
   timeout: 5m
   wait: false
