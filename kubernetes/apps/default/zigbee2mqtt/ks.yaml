@@ -6,8 +6,8 @@ metadata:
   namespace: &namespace default
 spec:
   components:
-    - ../../../../flux/components/gatus/guarded
-    - ../../../../flux/components/volsync
+    - ../../../../components/gatus/guarded
+    - ../../../../components/volsync
   dependsOn:
     - name: emqx-cluster
       namespace: *namespace
@@ -31,6 +31,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
+    namespace: flux-system
   targetNamespace: *namespace
   timeout: 5m
   wait: false

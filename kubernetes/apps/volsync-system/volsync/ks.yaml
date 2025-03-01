@@ -9,11 +9,12 @@ spec:
   dependsOn:
     - name: snapshot-controller
       namespace: *namespace
-  path: ./kubernetes/apps/volsync/volsync/app
+  path: ./kubernetes/apps/volsync-system/volsync/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
+    namespace: flux-system
   interval: 30m
   retryInterval: 1m
   timeout: 5m

@@ -4,6 +4,6 @@ kind: Kustomization
 namespace: game-system
 components:
   - ../../components/common
-resources:
+resources: []
   # - factorio/ks.yaml
-  - minecraft/ks.yaml
+  # - minecraft/ks.yaml

@@ -30,6 +30,7 @@ resources:
   - minecraft-server-charts.yaml
   - node-feature-discovery-charts.yaml
   - nvidia-charts.yaml
+  - openebs-charts.yaml
   - piraeus-charts.yaml
   - spegel-charts.yaml
   - postfinance-charts.yaml

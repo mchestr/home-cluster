@@ -10,10 +10,13 @@ spec:
   dependsOn:
     - name: onepassword-store
       namespace: external-secrets
+    - name: jellyseerr
+      namespace: default
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
+    namespace: flux-system
   interval: 30m
   retryInterval: 1m
   timeout: 3m
