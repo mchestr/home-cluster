@@ -96,7 +96,6 @@ spec:
         type: LoadBalancer
         controller: *app
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.chestr.dev
           io.cilium/lb-ipam-ips: 10.0.20.110
         ports:
           http:
@@ -107,7 +106,6 @@ spec:
 
     ingress:
       app:
-        enabled: true
         className: external
         annotations:
           nginx.ingress.kubernetes.io/backend-protocol: HTTPS
