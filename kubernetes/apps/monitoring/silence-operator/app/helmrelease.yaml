@@ -65,13 +65,10 @@ spec:
       - apiVersion: monitoring.giantswarm.io/v1alpha1
         kind: Silence
         metadata:
-          name: expanse-memory-high-utilization
+          name: ceph-node-inconsistent-mtu
           namespace: monitoring
         spec:
           matchers:
             - name: alertname
-              value: NodeMemoryHighUtilization
-              isRegex: false
-            - name: instance
-              value: expanse.internal:9100
+              value: CephNodeInconsistentMTU
               isRegex: false
