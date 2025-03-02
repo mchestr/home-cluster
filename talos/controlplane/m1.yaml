@@ -6,15 +6,15 @@ machine:
   network:
     hostname: m1.k8s.internal
     interfaces:
-      - # m2
+      - # m0
         deviceSelector: { busPath: 0-1.0 }
         dhcp: false
         mtu: 65520
         addresses: [169.254.255.11/32]
-        routes: [{ network: 169.254.255.12/32, metric: 2048 }]
-      - # m0
+        routes: [{ network: 169.254.255.10/32, metric: 2048 }]
+      - # m2
         deviceSelector: { busPath: 1-1.0 }
         dhcp: false
         mtu: 65520
         addresses: [169.254.255.11/32]
-        routes: [{ network: 169.254.255.10/32, metric: 2048 }]
+        routes: [{ network: 169.254.255.12/32, metric: 2048 }]
