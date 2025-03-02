@@ -13,7 +13,7 @@ instance:
   sync:
     kind: GitRepository
     url: https://github.com/mchestr/home-cluster
-    ref: refs/heads/ms-01
+    ref: refs/heads/main
     path: kubernetes/flux/cluster
   commonMetadata:
     labels:
