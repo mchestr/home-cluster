@@ -62,7 +62,8 @@ spec:
         provider: host
         addressRanges:
           public: ["10.0.40.0/24"]
-          cluster: ["169.254.255.0/24"]
+          # cluster: ["169.254.255.0/24"]
+          cluster: ["10.0.40.0/24"]
         connections:
           requireMsgr2: true
       storage:
