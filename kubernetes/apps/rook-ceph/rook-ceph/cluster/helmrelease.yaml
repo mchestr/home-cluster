@@ -33,7 +33,7 @@ spec:
           name: rook.chestr.dev
           path: /
     toolbox:
-      enabled: true
+      enabled: false
     configOverride: |
       [global]
       bdev_enable_discard = true
