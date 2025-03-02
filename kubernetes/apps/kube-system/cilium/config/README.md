@@ -11,8 +11,8 @@ router bgp 64513
   neighbor k8s remote-as 64514
 
   neighbor 10.0.40.10 peer-group k8s
-  neighbor 10.0.40.20 peer-group k8s
-  neighbor 10.0.40.30 peer-group k8s
+  neighbor 10.0.40.11 peer-group k8s
+  neighbor 10.0.40.12 peer-group k8s
 
   address-family ipv4 unicast
     neighbor k8s next-hop-self
