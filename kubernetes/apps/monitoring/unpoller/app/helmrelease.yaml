@@ -23,7 +23,7 @@ spec:
       strategy: rollback
       retries: 3
   dependsOn:
-    - name: prometheus
+    - name: kube-prometheus-stack
       namespace: monitoring
   values:
     controllers:
