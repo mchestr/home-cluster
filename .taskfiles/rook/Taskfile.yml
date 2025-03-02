@@ -1,0 +1,9 @@
+---
+version: "3"
+
+tasks:
+  dashboard-password:
+    desc: Get Rook Ceph dashboard password
+    cmd: kubectl -n rook-ceph get secret rook-ceph-dashboard-password -o jsonpath="{['data']['password']}" | base64 --decode && echo
+    preconditions:
+      - which kubectl
