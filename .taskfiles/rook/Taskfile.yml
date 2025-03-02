@@ -4,6 +4,12 @@ version: "3"
 tasks:
   dashboard-password:
     desc: Get Rook Ceph dashboard password
-    cmd: kubectl -n rook-ceph get secret rook-ceph-dashboard-password -o jsonpath="{['data']['password']}" | base64 --decode && echo
+    cmd: op item edit '{{ .OP_ITEM_ID }}' 'password={{ .DASHBOARD_PASSWORD }}'
+    silent: true
+    vars:
+      OP_ITEM_ID:
+        sh: op item list --format=json | jq -r '.[] | select(.title == "rook.chestr.dev") | .id'
+      DASHBOARD_PASSWORD:
+        sh: kubectl -n rook-ceph get secret rook-ceph-dashboard-password -o jsonpath="{['data']['password']}" | base64 --decode && echo
     preconditions:
-      - which kubectl
+      - which kubectl op
