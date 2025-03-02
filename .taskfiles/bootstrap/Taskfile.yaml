@@ -10,7 +10,8 @@ tasks:
       - until talosctl --nodes {{.RANDOM_CONTROLLER}} bootstrap; do sleep 5; done
       - talosctl kubeconfig --nodes {{.RANDOM_CONTROLLER}} --force {{.KUBERNETES_DIR}}
     vars:
-      RANDOM_CONTROLLER: 10.0.40.10
+      RANDOM_CONTROLLER:
+        sh: talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
     preconditions:
       - talosctl config info
       - talosctl --nodes {{.RANDOM_CONTROLLER}} get machineconfig

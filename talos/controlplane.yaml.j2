@@ -120,7 +120,7 @@ cluster:
   id: op://{{ ENV.ONEPASSWORD_VAULT }}/talos/CLUSTER_ID
   secret: op://{{ ENV.ONEPASSWORD_VAULT }}/talos/CLUSTER_SECRET
   controlPlane:
-    endpoint: https://10.0.40.2:6443
+    endpoint: https://127.0.0.1:6443
   clusterName: k8s
   network:
     cni:
