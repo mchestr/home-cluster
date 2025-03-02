@@ -51,7 +51,7 @@ tasks:
     silent: true
 
   # To run backup jobs in parallel for all replicationsources:
-  #  - kubectl get replicationsources --all-namespaces --no-headers | awk '{print $2, $1}' | xargs --max-procs=4 -l bash -c 'task volsync:snapshot app=$0 ns=$1'
+  #  - kubectl get replicationsources --all-namespaces --no-headers | awk '{print $2, $1}' | xargs --max-procs=4 -l bash -c 'task volsync:snapshot APP=$0 NS=$1'
   snapshot:
     desc: Snapshot an app [NS=default] [APP=required]
     cmds:
