@@ -37,13 +37,3 @@ data:
           - "[CERTIFICATE_EXPIRATION] > 336h"
         alerts:
           - type: pushover
-
-      - name: dns.chestr.dev
-        group: certificates
-        url: "tls://dns.chestr.dev:443"
-        interval: 24h
-        conditions:
-          - "[CONNECTED] == true"
-          - "[CERTIFICATE_EXPIRATION] > 336h"
-        alerts:
-          - type: pushover
