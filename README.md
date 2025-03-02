@@ -45,7 +45,6 @@ This repository is my home Kubernetes cluster in a declarative state. [Flux](htt
 - [jetstack/cert-manager](https://cert-manager.io/docs/): Creates SSL certificates for services in my Kubernetes cluster.
 - [kubernetes-sigs/external-dns](https://github.com/kubernetes-sigs/external-dns): Automatically manages DNS records from my cluster in CloudFlare.
 - [kubernetes/ingress-nginx](https://github.com/kubernetes/ingress-nginx/): Ingress controller to expose HTTP traffic to pods over DNS.
-- [mozilla/sops](https://toolkit.fluxcd.io/guides/mozilla-sops/): Manages secrets for Kubernetes, Ansible and Terraform which are committed to git.
 - [rancher/system-upgrade-controller](https://github.com/rancher/system-upgrade-controller): Handles Kubernetes and Talos upgrades automatically.
 - [rook/rook](https://github.com/rook/rook): Distributed block storage for peristent storage.
 - [siderolabs/talos](https://www.talos.dev/): The Kubernetes Operating System.
