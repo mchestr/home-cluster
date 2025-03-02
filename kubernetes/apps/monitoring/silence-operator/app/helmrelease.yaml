@@ -72,3 +72,13 @@ spec:
             - name: alertname
               value: CephNodeInconsistentMTU
               isRegex: false
+      - apiVersion: monitoring.giantswarm.io/v1alpha1
+        kind: Silence
+        metadata:
+          name: ceph-node-packet-drop
+          namespace: monitoring
+        spec:
+          matchers:
+            - name: alertname
+              value: CephNodeNetworkPacketDrops
+              isRegex: false
