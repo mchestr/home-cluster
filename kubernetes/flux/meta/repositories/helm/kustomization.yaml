@@ -40,4 +40,5 @@ resources:
   - tofu-controller-charts.yaml
   - weaveworks-charts.yaml
   - vector-charts.yaml
+  - wiremind-charts.yaml
   - xenitab-charts.yaml

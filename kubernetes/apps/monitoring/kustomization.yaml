@@ -5,12 +5,13 @@ namespace: monitoring
 components:
   - ../../components/common
 resources:
+  - ./exporters
   - ./gatus/ks.yaml
   - ./grafana/ks.yaml
   - ./kromgo/ks.yaml
-  - ./prometheus/ks.yaml
   - ./loki/ks.yaml
+  - ./prometheus/ks.yaml
+  - ./silence-operator/ks.yaml
   - ./thanos/ks.yaml
   - ./unpoller/ks.yaml
   - ./vector/ks.yaml
-  - ./exporters
