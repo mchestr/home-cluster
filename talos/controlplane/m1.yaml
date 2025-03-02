@@ -1,8 +1,5 @@
 ---
 machine:
-  disks:
-    - device: /dev/disk/by-id/nvme-Samsung_SSD_990_PRO_2TB_S7KHNJ0Y120669D
-      partitions: [{ mountpoint: /var/mnt/extra }]
   install:
     diskSelector:
       serial: 24275H802484
