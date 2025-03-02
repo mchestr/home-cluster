@@ -4,10 +4,10 @@ cat <<EOF | kubectl apply -f -
 apiVersion: v1
 kind: Pod
 metadata:
-  name: disk-clean-k8s-0
+  name: disk-clean-m0
 spec:
   restartPolicy: Never
-  nodeName: k8s-0
+  nodeName: m0
   volumes:
   - name: rook-data-dir
     hostPath:
@@ -26,10 +26,10 @@ cat <<EOF | kubectl apply -f -
 apiVersion: v1
 kind: Pod
 metadata:
-  name: disk-clean-k8s-3
+  name: disk-clean-m1
 spec:
   restartPolicy: Never
-  nodeName: k8s-3
+  nodeName: m1
   volumes:
   - name: rook-data-dir
     hostPath:
@@ -48,10 +48,10 @@ cat <<EOF | kubectl apply -f -
 apiVersion: v1
 kind: Pod
 metadata:
-  name: disk-clean-k8s-4
+  name: disk-clean-m2
 spec:
   restartPolicy: Never
-  nodeName: k8s-4
+  nodeName: m2
   volumes:
   - name: rook-data-dir
     hostPath:
@@ -70,44 +70,44 @@ cat <<EOF | kubectl apply -f -
 apiVersion: v1
 kind: Pod
 metadata:
-  name: disk-wipe-k8s-0
+  name: disk-wipe-m0
 spec:
   restartPolicy: Never
-  nodeName: k8s-0
+  nodeName: m0
   containers:
   - name: disk-wipe
     image: busybox
     securityContext:
       privileged: true
-    command: ["/bin/sh", "-c", "dd if=/dev/zero bs=1M count=100 oflag=direct of=/dev/nvme0n1"]
+    command: ["/bin/sh", "-c", "dd if=/dev/zero bs=1M count=100 oflag=direct of=/dev/nvme1n1"]
 EOF
 cat <<EOF | kubectl apply -f -
 apiVersion: v1
 kind: Pod
 metadata:
-  name: disk-wipe-k8s-4
+  name: disk-wipe-m1
 spec:
   restartPolicy: Never
-  nodeName: k8s-4
+  nodeName: m1
   containers:
   - name: disk-wipe
     image: busybox
     securityContext:
       privileged: true
-    command: ["/bin/sh", "-c", "dd if=/dev/zero bs=1M count=100 oflag=direct of=/dev/nvme0n1"]
+    command: ["/bin/sh", "-c", "dd if=/dev/zero bs=1M count=100 oflag=direct of=/dev/nvme1n1"]
 EOF
 cat <<EOF | kubectl apply -f -
 apiVersion: v1
 kind: Pod
 metadata:
-  name: disk-wipe-k8s-3
+  name: disk-wipe-m2
 spec:
   restartPolicy: Never
-  nodeName: k8s-3
+  nodeName: m1
   containers:
   - name: disk-wipe
     image: busybox
     securityContext:
       privileged: true
-    command: ["/bin/sh", "-c", "dd if=/dev/zero bs=1M count=100 oflag=direct of=/dev/nvme0n1"]
+    command: ["/bin/sh", "-c", "dd if=/dev/zero bs=1M count=100 oflag=direct of=/dev/nvme1n1"]
 EOF
