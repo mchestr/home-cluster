@@ -28,6 +28,7 @@ spec:
     auth:
       enabled: false
       sentinel: false
+      usePasswordFiles: false
     master:
       persistence:
         enabled: false
