@@ -57,6 +57,7 @@ dashboards:
   enabled: true
 rollOutCiliumPods: true
 routingMode: native
+MTU: 9000
 securityContext:
   capabilities:
     ciliumAgent:
