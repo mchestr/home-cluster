@@ -36,7 +36,7 @@ spec:
               tag: v1.7.1@sha256:9c2d9b93137067377044928ebd0766b747283c7f1416a85e05b0eb97998ddfe0
             env:
               TZ: America/Vancouver
-              ASR_MODEL: turbo # tiny, base, small, medium, large, large-v1, large-v2, large-v3, and turbo
+              ASR_MODEL: small # tiny, base, small, medium, large, large-v1, large-v2, large-v3, and turbo
               ASR_ENGINEL: faster_whisper # openai_whisper, faster_whisper
             resources:
               requests:
