@@ -10,15 +10,16 @@
 
 <div align="center">
 
+[![Home-Internet](https://img.shields.io/endpoint?url=https%3A%2F%2Fhealthchecks.io%2Fbadge%2F47d5c08e-21a9-41f1-b7fd-48092e%2FpXy582uA-2.shields&style=for-the-badge&logo=ubiquiti&logoColor=white&label=Home%20Internet)](https://healthchecks.io)&nbsp;&nbsp;
+[![Alertmanager](https://img.shields.io/endpoint?url=https%3A%2F%2Fhealthchecks.io%2Fbadge%2F47d5c08e-21a9-41f1-b7fd-48092e%2FpXy582uA-2.shields&style=for-the-badge&logo=prometheus&logoColor=white&label=Alertmanager)](https://healthchecks.io)
+
+</div>
+
+<div align="center">
+
 [![Talos](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.chestr.dev%2Ftalos_version&style=for-the-badge&logo=talos&logoColor=white&color=blue)](https://talos.dev  "Talos OS")&nbsp;&nbsp;
 [![Kubernetes](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.chestr.dev%2Fkubernetes_version&style=for-the-badge&logo=kubernetes&logoColor=white&color=blue&label=k8s)](https://kubernetes.io)&nbsp;&nbsp;
 [![Flux](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.chestr.dev%2Fflux_version&style=for-the-badge&logo=flux&logoColor=white&color=blue&label=Flux)](https://fluxcd.io)&nbsp;&nbsp;
-
-</div>
-<div align="center">
-
-[![Home-Internet](https://img.shields.io/endpoint?url=https%3A%2F%2Fhealthchecks.io%2Fb%2F2%2Fe8997a34-4964-4805-ab62-3522059c6f2b.shields&style=for-the-badge&logo=ubiquiti&logoColor=white&label=Home%20Internet)](https://healthchecks.io)&nbsp;&nbsp;
-[![Alertmanager](https://img.shields.io/endpoint?url=https%3A%2F%2Fhealthchecks.io%2Fbadge%2F47d5c08e-21a9-41f1-b7fd-48092e%2FpXy582uA-2.shields&style=for-the-badge&logo=prometheus&logoColor=white&label=Alertmanager)](https://healthchecks.io)
 
 </div>
 
