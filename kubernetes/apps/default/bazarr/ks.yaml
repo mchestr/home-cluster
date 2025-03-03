@@ -35,11 +35,12 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-whisper
-  namespace: flux-system
+  name: whisper
+  namespace: &namespace default
 spec:
   dependsOn:
-    - name: cluster-apps-bazarr
+    - name: bazarr
+      namespace: *namespace
   interval: 30m
   path: ./kubernetes/apps/default/bazarr/whisper
   postBuild:
@@ -50,6 +51,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  targetNamespace: default
+    namespace: flux-system
+  targetNamespace: *namespace
   timeout: 5m
   wait: false
