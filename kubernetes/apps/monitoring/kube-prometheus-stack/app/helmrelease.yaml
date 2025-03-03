@@ -132,14 +132,15 @@ spec:
 
     prometheus-node-exporter:
       fullnameOverride: node-exporter
-      prometheus:
+      prometheus: &prometheus
         monitor:
           enabled: true
           relabelings:
             - action: replace
               regex: (.*)
               replacement: $1
-              sourceLabels: ["__meta_kubernetes_pod_node_name"]
+              sourceLabels:
+                - __meta_kubernetes_pod_node_name
               targetLabel: kubernetes_node
     kube-state-metrics:
       fullnameOverride: kube-state-metrics
@@ -148,14 +149,7 @@ spec:
         - deployments=[*]
         - persistentvolumeclaims=[*]
       prometheus:
-        monitor:
-          enabled: true
-          relabelings:
-            - action: replace
-              regex: (.*)
-              replacement: $1
-              sourceLabels: ["__meta_kubernetes_pod_node_name"]
-              targetLabel: kubernetes_node
+        <<: *prometheus
     grafana:
       enabled: false
       forceDeployDashboards: true
