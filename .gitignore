@@ -4,6 +4,7 @@ Thumbs.db
 # k8s
 kubeconfig
 talosconfig
+talos/clusterconfig/
 # task
 .task/
 # vscode-sops
