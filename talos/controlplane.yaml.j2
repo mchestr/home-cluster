@@ -8,7 +8,7 @@ machine:
   ca:
     crt: op://{{ ENV.ONEPASSWORD_VAULT }}/talos/MACHINE_CA_CRT
     key: op://{{ ENV.ONEPASSWORD_VAULT }}/talos/MACHINE_CA_KEY
-  certSANs: ["127.0.0.1", "10.0.20.2"]
+  certSANs: ["127.0.0.1"]
   kubelet:
     image: ghcr.io/siderolabs/kubelet:{{ ENV.KUBERNETES_VERSION }}
     extraArgs:
@@ -161,7 +161,7 @@ cluster:
     image: registry.k8s.io/kube-apiserver:{{ ENV.KUBERNETES_VERSION }}
     extraArgs:
       enable-aggregator-routing: true
-    certSANs: ["127.0.0.1", "10.0.40.2"]
+    certSANs: [ "10.0.40.2", "127.0.0.1"]
     disablePodSecurityPolicy: true
   controllerManager:
     image: registry.k8s.io/kube-controller-manager:{{ ENV.KUBERNETES_VERSION }}
