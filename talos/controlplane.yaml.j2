@@ -11,6 +11,8 @@ machine:
   certSANs: ["127.0.0.1", "10.0.20.2"]
   kubelet:
     image: ghcr.io/siderolabs/kubelet:{{ ENV.KUBERNETES_VERSION }}
+    extraArgs:
+      rotate-server-certificates: "true"
     extraMounts:
       - destination: /var/mnt/extra
         type: bind
