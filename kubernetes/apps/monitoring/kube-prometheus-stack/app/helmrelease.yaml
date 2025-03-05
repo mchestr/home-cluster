@@ -9,7 +9,7 @@ spec:
   chartRef:
     kind: OCIRepository
     name: kube-prometheus-stack
-    namespace: flux-system
+    namespace: monitoring
   install:
     remediation:
       retries: 3
