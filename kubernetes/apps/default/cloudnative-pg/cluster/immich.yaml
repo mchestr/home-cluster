@@ -41,7 +41,6 @@ spec:
         secretAccessKey:
           name: *secretName
           key: s3-secret-access-key
-      retentionPolicy: 14d
 
   bootstrap:
     recovery:
