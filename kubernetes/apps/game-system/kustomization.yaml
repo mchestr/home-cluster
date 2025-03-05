@@ -5,5 +5,4 @@ namespace: game-system
 components:
   - ../../components/common
 resources: []
-  # - factorio/ks.yaml
   # - minecraft/ks.yaml
