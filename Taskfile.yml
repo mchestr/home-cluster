@@ -19,7 +19,6 @@ includes:
   bootstrap: .taskfiles/bootstrap
   github: .taskfiles/github
   kubernetes: .taskfiles/kubernetes
-  rook: .taskfiles/rook
   talos: .taskfiles/talos
   terraform: .taskfiles/terraform
   volsync: .taskfiles/volsync
