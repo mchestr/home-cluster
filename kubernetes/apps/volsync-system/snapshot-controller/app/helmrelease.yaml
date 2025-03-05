@@ -11,7 +11,7 @@ spec:
       version: 4.0.1
       sourceRef:
         kind: HelmRepository
-        name: piraeus-charts
+        name: piraeus
         namespace: flux-system
   install:
     crds: CreateReplace
