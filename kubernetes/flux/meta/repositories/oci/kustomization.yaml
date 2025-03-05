@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   - ./app-template.yaml
   - ./kube-prometheus-stack.yaml
+  - ./smartctl-exporter.yaml
