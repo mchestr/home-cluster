@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC2154
-
-set -euo pipefail
+set -Eeuo pipefail
 
 # User-defined variables
 CROSS_SEED_ENABLED="${CROSS_SEED_ENABLED:-false}"
@@ -20,7 +18,7 @@ set_sab_vars() {
     RELEASE_CAT="${SAB_CAT:-}"
     RELEASE_SIZE="${SAB_BYTES:-}"
     RELEASE_STATUS="${SAB_PP_STATUS:-}"
-    RELEASE_INDEXER="${SAB_URL:-}"
+    RELEASE_INDEXER="${SAB_URL:-Unknown}"
     RELEASE_TYPE="NZB"
 }
 
@@ -90,12 +88,19 @@ search_cross_seed() {
 }
 
 main() {
-    # Determine the source and set release variables accordingly
-    if env | grep -q "^SAB_"; then
-        set_sab_vars
-    else
-        set_qb_vars "$@"
-    fi
+    # Determine the source app and set release variables accordingly
+    case $HOSTNAME in
+        qbittorrent*)
+            set_qb_vars "$@"
+            ;;
+        sabnzbd*)
+            set_sab_vars
+            ;;
+        *)
+            printf "unknown hostname %s\n" "${HOSTNAME}" >&2
+            exit 1
+            ;;
+    esac
 
     # Check if post-processing was successful
     if [[ "${RELEASE_STATUS}" -ne 0 ]]; then
@@ -113,7 +118,7 @@ main() {
     fi
 
     # Search for cross-seed
-    if [[ "${CROSS_SEED_ENABLED}" == "true" ]]; then
+    if [[ "${CROSS_SEED_ENABLED}" == "true" && "${RELEASE_CAT}" != "cross-seed" ]]; then
         search_cross_seed
     fi
 }

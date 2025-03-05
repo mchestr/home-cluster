@@ -10,6 +10,7 @@ resources:
   - autobrr/ks.yaml
   - bazarr/ks.yaml
   - cloudnative-pg/ks.yaml
+  - cross-seed/ks.yaml
   - displex/ks.yaml
   - emqx/ks.yaml
   - esphome/ks.yaml
