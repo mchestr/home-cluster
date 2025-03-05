@@ -11,7 +11,7 @@ spec:
       version: 4.24.0
       sourceRef:
         kind: HelmRepository
-        name: itzg-minecraft-charts
+        name: itzg-minecraft
         namespace: flux-system
       interval: 15m
   values:
