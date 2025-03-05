@@ -26,23 +26,23 @@
       // .github
       ".github/workflows": "robot",
       // namespaces
-      "actions-runner-system": "github",
+      "bootstrap": "generator",
       "cert-manager": "guard",
       "default": "home",
       "digester-system": "hook",
       "external-secrets": "secure",
       "flux-system": "pipe",
+      "game-system": "intellij",
       "hack": "scripts",
       "kube-system": "kubernetes",
+      "kyverno": "admin",
       "monitoring": "event",
-      "network": "connection",
       "networking": "connection",
-      "observability": "event",
+      "openebs-system": "archive",
       "rook-ceph": "base",
-      "storage": "dump",
       "system-upgrade": "update",
-      "tools": "tools",
-      "volsync": "aws"
+      "talos": "config",
+      "volsync-system": "aws"
   },
   "vs-kubernetes": {
     "vs-kubernetes.kubeconfig": "./kubeconfig",
