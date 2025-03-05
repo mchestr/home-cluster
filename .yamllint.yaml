@@ -1,11 +1,10 @@
 ---
-ignore: |
-  *.sops.*
-  gotk-components.yaml
 extends: default
 rules:
   truthy:
-    allowed-values: ["true", "false", "on"]
+    allowed-values:
+      - "true"
+      - "false"
   comments:
     min-spaces-from-content: 1
   line-length: disable
