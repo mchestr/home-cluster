@@ -21,7 +21,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      VOLSYNC_SCHEDULE: 30 10 * * *
   prune: true
   retryInterval: 1m
   sourceRef:

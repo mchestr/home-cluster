@@ -19,7 +19,6 @@ spec:
     substitute:
       APP: *app
       VOLSYNC_CACHE_CAPACITY: 5Gi
-      VOLSYNC_SCHEDULE: 0 10 * * *
   prune: true
   retryInterval: 1m
   sourceRef:

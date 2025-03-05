@@ -17,7 +17,6 @@ spec:
     substitute:
       APP: *app
       GATUS_SUBDOMAIN: invite
-      VOLSYNC_SCHEDULE: 40 10 * * *
   prune: true
   retryInterval: 1m
   sourceRef:
