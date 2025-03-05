@@ -33,7 +33,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
           configmap.reloader.stakater.com/reload: qbittorrent-scripts
-          secret.reloader.stakater.com/reload: cross-seed-secret
 
         containers:
           app:
@@ -47,7 +46,7 @@ spec:
               QBT_Preferences__WebUI__AlternativeUIEnabled: false
               QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
               QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
-                10.244.0.0/16, 192.168.0.0/16
+                10.244.0.0/16, 192.168.0.0/16, 10.0.40.0/24
               QBT_Preferences__WebUI__LocalHostAuth: false
               QBT_BitTorrent__Session__Interface: eth0
               QBT_BitTorrent__Session__InterfaceAddress:
@@ -56,7 +55,7 @@ spec:
                     fieldPath: status.podIP
               QBT_BitTorrent__Session__InterfaceName: eth0
               CROSS_SEED_ENABLED: true
-              CROSS_SEED_HOST: localhost
+              CROSS_SEED_HOST: cross-seed.default.svc.cluster.local
               CROSS_SEED_PORT: &cross-seed-port 2468
               CROSS_SEED_SLEEP_INTERVAL: 0
             probes:
@@ -81,15 +80,6 @@ spec:
                 cpu: 100m
               limits:
                 memory: 16Gi
-
-          cross-seed:
-            image:
-              repository: ghcr.io/cross-seed/cross-seed
-              tag: 6.11.2
-            env:
-              PORT: *cross-seed-port
-            args:
-              - daemon
 
         pod:
           securityContext:
