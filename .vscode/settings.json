@@ -26,6 +26,7 @@
       // .github
       ".github/workflows": "robot",
       // namespaces
+      "actions-runner-system": "github",
       "bootstrap": "generator",
       "cert-manager": "guard",
       "default": "home",
