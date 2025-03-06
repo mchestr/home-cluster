@@ -34,39 +34,3 @@ spec:
   targetNamespace: *namespace
   timeout: 5m
   wait: false
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app zigbee2mqtt-new
-  namespace: &namespace default
-spec:
-  components:
-    - ../../../../components/gatus/guarded
-    - ../../../../components/volsync
-  dependsOn:
-    - name: emqx-cluster
-      namespace: *namespace
-    - name: onepassword-store
-      namespace: external-secrets
-    - name: node-feature-discovery-rules
-      namespace: kube-system
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
-    - name: volsync
-      namespace: volsync-system
-  interval: 30m
-  path: ./kubernetes/apps/default/zigbee2mqtt/new
-  postBuild:
-    substitute:
-      APP: *app
-      VOLSYNC_SCHEDULE: 50 10 * * *
-  prune: true
-  retryInterval: 1m
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  targetNamespace: *namespace
-  timeout: 5m
-  wait: false
