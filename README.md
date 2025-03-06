@@ -74,11 +74,12 @@ Total cloud costs yearly is approximately ~$150/year.
 This Git repository contains the following directories.
 
 ```sh
-📁 ansible         # Ansible playbooks my router
+📁 bootstrap       # Flux installation to bootstrap cluster
+📁 docs            # Docs
 📁 hacks           # Contains random scripts
 📁 kubernetes      # Kubernetes cluster defined as code
-├─📁 bootstrap     # Flux installation to bootstrap cluster
-├─📁 flux           # Main Flux configuration of repository
+├─📁 flux          # Main Flux configuration of repository
+├─📁 components    # Flux components
 └─📁 apps          # Apps deployed into my cluster grouped by namespace
 📁 talos           # Contains the configuration for Talos operating system
 📁 terraform       # Contains Cloudflare terraform
