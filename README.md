@@ -88,6 +88,12 @@ This Git repository contains the following directories.
 
 ## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.gif" alt="⚙" width="16" height="16"> Hardware
 
+<details>
+  <summary>Checkout my rack</summary>
+
+  <img src="https://raw.githubusercontent.com/mchestr/home-cluster/main/docs/src/assets/myrack.jpg" align="center" alt="rack" height="900px"/>
+</details>
+
 
 | Device                                                | Count | OS Disk Size  | Data Disk Size       | Ram     | Operating System | Purpose           |
 |-------------------------------------------------------|-------|---------------|----------------------|---------|------------------|-------------------|
