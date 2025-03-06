@@ -24,10 +24,6 @@ spec:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   values:
-    defaultPodOptions:
-      nodeSelector:
-        feature.node.kubernetes.io/zigbee: "true"
-
     controllers:
       zigbee2mqtt:
         annotations:
@@ -65,8 +61,7 @@ spec:
               ZIGBEE2MQTT_CONFIG_MQTT_SERVER: mqtt://emqx-listeners.default.svc.cluster.local:1883
               ZIGBEE2MQTT_CONFIG_MQTT_VERSION: 5
               ZIGBEE2MQTT_CONFIG_PERMIT_JOIN: "false"
-              ZIGBEE2MQTT_CONFIG_SERIAL_PORT: /dev/ttyUSB0
-              ZIGBEE2MQTT_CONFIG_SERIAL_ADAPTER: zstack
+              ZIGBEE2MQTT_CONFIG_SERIAL_PORT: tcp://slzb-06.chestr.dev:6638
             envFrom:
               - secretRef:
                   name: zigbee2mqtt-secret
@@ -95,22 +90,14 @@ spec:
           gethomepage.dev/name: Zigbee
           gethomepage.dev/group: Automation
         hosts:
-          - host: &host zigbee.chestr.dev
+          - host: zigbee.chestr.dev
             paths:
               - path: /
                 pathType: Prefix
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
 
     persistence:
       data:
         existingClaim: *app
-      usb:
-        type: hostPath
-        hostPath: /dev/serial/by-id/usb-ITead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_088f44f8ea9ced1189d175faa7669f5d-if00-port0
-        globalMounts:
-          - path: /dev/ttyUSB0
