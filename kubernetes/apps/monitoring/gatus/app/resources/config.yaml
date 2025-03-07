@@ -1,0 +1,108 @@
+---
+metrics: true
+debug: false
+
+storage:
+  type: postgres
+  path: postgres://${INIT_POSTGRES_USER}:${INIT_POSTGRES_PASS}@${INIT_POSTGRES_HOST}:5432/${INIT_POSTGRES_DBNAME}?sslmode=disable
+  caching: true
+
+ui:
+  title: Status | Gatus
+  header: Status
+
+web:
+  port: ${CUSTOM_WEB_PORT}
+
+connectivity:
+  checker:
+    target: 1.1.1.1:53
+    interval: 1m
+
+endpoints:
+  - name: heartbeat
+    group: external
+    ui:
+      hide-hostname: true
+      hide-url: true
+    url: ${STATUS_PAGE_HEARTBEAT_URL}
+    interval: 1m
+    client:
+      dns-resolver: tcp://1.1.1.1:53
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: flux-webhook
+    group: external
+    url: https://flux-webhook.chestr.dev
+    interval: 1m
+    client:
+      dns-resolver: tcp://1.1.1.1:53
+    conditions:
+      - "[STATUS] == 404"
+
+  - name: lochnas.chestr.dev
+    group: certificates
+    url: "tls://lochnas.chestr.dev:443"
+    interval: 24h
+    conditions:
+      - "[CONNECTED] == true"
+      - "[CERTIFICATE_EXPIRATION] > 336h"
+    alerts:
+      - type: pushover
+
+  - name: mainsail.chestr.dev
+    group: certificates
+    url: "tls://mainsail.chestr.dev:443"
+    interval: 24h
+    conditions:
+      - "[CONNECTED] == true"
+      - "[CERTIFICATE_EXPIRATION] > 336h"
+    alerts:
+      - type: pushover
+
+  - name: pikvm.chestr.dev
+    group: certificates
+    url: "tls://pikvm.chestr.dev:443"
+    interval: 24h
+    conditions:
+      - "[CONNECTED] == true"
+      - "[CERTIFICATE_EXPIRATION] > 336h"
+    alerts:
+      - type: pushover
+
+  - name: lochnas
+    group: guarded
+    interval: 1h
+    url: 1.1.1.1
+    dns:
+      query-name: lochnas.chestr.dev
+      query-type: A
+    conditions:
+      - "len([BODY]) == 0"
+    alerts:
+      - type: pushover
+
+  - name: mainsail
+    group: guarded
+    interval: 1h
+    url: 1.1.1.1
+    dns:
+      query-name: mainsail.chestr.dev
+      query-type: A
+    conditions:
+      - "len([BODY]) == 0"
+    alerts:
+      - type: pushover
+
+  - name: pikvm
+    group: guarded
+    interval: 1h
+    url: 1.1.1.1
+    dns:
+      query-name: pikvm.chestr.dev
+      query-type: A
+    conditions:
+      - "len([BODY]) == 0"
+    alerts:
+      - type: pushover

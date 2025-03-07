@@ -1,7 +1,5 @@
 endpoints:
-  - alerts:
-      - type: pushover
-    client:
+  - client:
       dns-resolver: tcp://1.1.1.1:53
     conditions:
       - '[STATUS] == ${GATUS_STATUS:=200}'
