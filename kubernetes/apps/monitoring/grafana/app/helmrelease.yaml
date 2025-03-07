@@ -392,6 +392,11 @@ spec:
           gnetId: 11312
           revision: 9
           datasource: Prometheus
+        unifi-udp:
+          # renovate: depName="UniFi-Poller: USW Insights - Prometheus"
+          gnetId: 23027
+          revision: 9
+          datasource: Prometheus
       media:
         qbittorrent-exporter:
           url: https://raw.githubusercontent.com/esanchezm/prometheus-qbittorrent-exporter/master/grafana/dashboard.json
