@@ -1,7 +1,5 @@
 endpoints:
-  - alerts:
-      - type: pushover
-    conditions:
+  - conditions:
       - len([BODY]) == 0
     dns:
       query-name: ${GATUS_SUBDOMAIN:=${APP}}.chestr.dev
