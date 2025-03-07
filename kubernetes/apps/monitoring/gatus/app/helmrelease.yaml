@@ -1,30 +1,24 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: gatus
 spec:
-  interval: 30m
+  interval: 1h
   chartRef:
     kind: OCIRepository
     name: app-template
     namespace: flux-system
-  maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   values:
-    defaultPodOptions:
-      annotations:
-        reloader.stakater.com/auto: "true"
-
     controllers:
       gatus:
         annotations:
@@ -37,23 +31,25 @@ spec:
             envFrom:
               - secretRef:
                   name: gatus-dbinit-secret
+
           init-config:
-            dependsOn: init-db
-            image: &syncSyncImage
+            image:
               repository: ghcr.io/kiwigrid/k8s-sidecar
               tag: 1.30.1@sha256:439c5ac985827e6a85ad4490a66320b62aefd9e8c6d06fdb1d9c83d582f8a902
-            env: &configSyncEnv
+            env:
               FOLDER: /config
               LABEL: gatus.io/enabled
               NAMESPACE: ALL
               RESOURCE: both
               UNIQUE_FILENAMES: true
-              METHOD: LIST
-            resources: &resources
+              METHOD: WATCH
+            restartPolicy: Always
+            resources:
               requests:
                 cpu: 10m
               limits:
                 memory: 128Mi
+
         containers:
           app:
             image:
@@ -62,6 +58,7 @@ spec:
             env:
               TZ: America/Vancouver
               GATUS_CONFIG_PATH: /config
+              GATUS_DELAY_START_SECONDS: 5
               CUSTOM_WEB_PORT: &port 80
             envFrom:
               - secretRef:
@@ -72,34 +69,29 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: &path /health
+                    path: /health
                     port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-            resources: *resources
-            securityContext: &securityContext
+            securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
-          config-sync:
-            image: *syncSyncImage
-            env:
-              <<: *configSyncEnv
-              METHOD: WATCH
-            resources: *resources
-            securityContext: *securityContext
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            runAsNonRoot: true
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 256Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
 
     service:
       app:
@@ -108,27 +100,28 @@ spec:
           http:
             port: *port
 
+    serviceMonitor:
+      app:
+        serviceName: gatus
+        endpoints:
+          - port: http
+
     ingress:
       app:
-        className: internal
+        className: external
         annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/icon: gatus.png
-          gethomepage.dev/name: Gatus
-          gethomepage.dev/group: Monitoring
-          gethomepage.dev/widget.type: gatus
-          gethomepage.dev/widget.url: http://gatus.monitoring.svc.cluster.local
+          external-dns.alpha.kubernetes.io/target: external.chestr.dev
         hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
+          - host: status.chestr.dev
             paths:
               - path: /
-                pathType: Prefix
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
+
+    serviceAccount:
+      create: true
+      name: gatus
 
     persistence:
       config:
@@ -139,17 +132,4 @@ spec:
         globalMounts:
           - path: /config/config.yaml
             subPath: config.yaml
-
-    serviceMonitor:
-      app:
-        serviceName: gatus
-        endpoints:
-          - port: http
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 10s
-
-    serviceAccount:
-      create: true
-      name: gatus
+            readOnly: true
