@@ -55,8 +55,9 @@ spec:
       MODRINTH_PROJECTS: journeymap:1.7.10-5.1.4p6,
       CUSTOM_JAR_EXEC: -jar lwjgl3ify-forgePatches.jar nogui
     serviceAnnotations:
-      # mc-router.itzg.me/externalServerName: mc-gtnh.chestr.dev
-      mc-router.itzg.me/defaultServer: "true"
+      external-dns.alpha.kubernetes.io/target: mc.chestr.dev
+      external-dns.alpha.kubernetes.io/hostname: mc-gtnh.chestr.dev
+      mc-router.itzg.me/externalServerName: mc-gtnh.chestr.dev
     minecraftServer:
       eula: "TRUE"
       overrideServerProperties: true
