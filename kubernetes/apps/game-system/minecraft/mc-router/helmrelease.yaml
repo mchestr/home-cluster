@@ -18,6 +18,9 @@ spec:
     services:
       minecraft:
         type: LoadBalancer
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: mc.chestr.dev
+          lbipam.cilium.io/ips: 10.0.20.230
     minecraftRouter:
       autoScaleUp:
         enabled: true
@@ -30,17 +33,3 @@ spec:
       readOnlyRootFilesystem: true
       runAsNonRoot: true
       runAsUser: 1000
-  postRenderers:
-    - kustomize:
-        patches:
-          - target:
-              kind: Service
-              name: minecraft-router-mc-router
-            patch: |
-              apiVersion: v1
-              kind: Service
-              metadata:
-                name: ignored
-                annotations:
-                  io.cilium/lb-ipam-ips: 10.0.20.230
-                  external-dns.alpha.kubernetes.io/hostname: mc.chestr.dev
