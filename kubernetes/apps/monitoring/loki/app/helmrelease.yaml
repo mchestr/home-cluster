@@ -51,6 +51,16 @@ spec:
             index:
               prefix: loki_index_
               period: 24h
+      structuredConfig:
+        ruler:
+          enable_api: true
+          enable_alertmanager_v2: true
+          alertmanager_url: http://alertmanager-operated.monitoring.svc.cluster.local:9093
+          storage:
+            type: local
+            local:
+              directory: /rules
+          rule_path: /rules/fake
       server:
         log_level: info
       storage:
