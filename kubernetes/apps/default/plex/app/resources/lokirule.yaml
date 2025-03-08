@@ -4,11 +4,11 @@ groups:
     rules:
       - alert: PlexDatabaseBusy
         expr: |
-          sum by (k8s_instance) (count_over_time({k8s_instance="plex"} |~ "(?i)retry busy DB"[2m])) > 0
+          sum by (app) (count_over_time({app="plex"} |~ "(?i)retry busy DB"[2m])) > 0
         for: 2m
         labels:
           severity: critical
           category: logs
         annotations:
-          app: "{{ $labels.k8s_instance }}"
-          summary: "{{ $labels.k8s_instance }} is experiencing database issues"
+          app: "{{ $labels.app }}"
+          summary: "{{ $labels.app }} is experiencing database issues"
