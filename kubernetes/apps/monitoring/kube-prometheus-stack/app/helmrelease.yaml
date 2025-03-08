@@ -54,20 +54,10 @@ spec:
               resources:
                 requests:
                   storage: 1Gi
-    kubeApiServer:
-      serviceMonitor:
-        selector:
-          k8s-app: kube-apiserver
-    kubeScheduler:
-      service:
-        selector:
-          k8s-app: kube-scheduler
-    kubeControllerManager: &kubeControllerManager
-      service:
-        selector:
-          k8s-app: kube-controller-manager
     kubeEtcd:
-      <<: *kubeControllerManager # etcd runs on control plane nodes
+      service:
+        selector:
+          component: kube-apiserver # etcd runs on control plane nodes
     kubeProxy:
       enabled: false
     prometheus:
@@ -87,11 +77,11 @@ spec:
           gethomepage.dev/name: Prometheus
           gethomepage.dev/group: Monitoring
       prometheusSpec:
+        ruleSelectorNilUsesHelmValues: false
+        serviceMonitorSelectorNilUsesHelmValues: false
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
-        ruleSelectorNilUsesHelmValues: false
         scrapeConfigSelectorNilUsesHelmValues: false
-        serviceMonitorSelectorNilUsesHelmValues: false
         enableAdminAPI: true
         walCompression: true
         enableFeatures:
@@ -103,7 +93,7 @@ spec:
           requests:
             cpu: 100m
           limits:
-            memory: 2000Mi
+            memory: 4Gi
         storageSpec:
           volumeClaimTemplate:
             spec:
