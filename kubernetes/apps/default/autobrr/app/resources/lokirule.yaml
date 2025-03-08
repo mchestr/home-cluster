@@ -4,11 +4,23 @@ groups:
     rules:
       - alert: AutobrrNetworkUnhealthy
         expr: |
-          sum by (app) (count_over_time({app="autobrr"} |~ "(?i)network unhealthy"[2m])) > 0
+          sum by (k8s_instance) (count_over_time({k8s_instance="autobrr"} |~ "(?i)network unhealthy"[2m])) > 0
         for: 2m
         labels:
           severity: critical
           category: logs
         annotations:
-          app: "{{ $labels.app }}"
-          summary: "{{ $labels.app }} has a unhealthy network"
+          app: "{{ $labels.k8s_instance }}"
+          summary: "{{ $labels.k8s_instance }} has a unhealthy network"
+  - name: autobrr
+    rules:
+      - alert: PSQLError
+        expr: |
+          sum by (k8s_instance) (count_over_time({k8s_instance="autobrr"} |~ "(?i)transaction has already been committed or rolled back"[2m])) > 0
+        for: 2m
+        labels:
+          severity: critical
+          category: logs
+        annotations:
+          app: "{{ $labels.k8s_instance }}"
+          summary: "{{ $labels.k8s_instance }} is having database issues"
