@@ -4,20 +4,20 @@ groups:
     rules:
       - alert: CrossSeedDatabaseMalformed
         expr: |
-          sum by (app) (count_over_time({app="cross-seed"} |~ "(?i)database disk image is malformed"[5m])) > 0
+          sum by (k8s_instance) (count_over_time({k8s_instance="cross-seed"} |~ "(?i)database disk image is malformed"[5m])) > 0
         for: 5m
         annotations:
           summary: >-
-            {{ $labels.app }} is experiencing database issues
+            {{ $labels.k8s_instance }} is experiencing database issues
         labels:
           severity: critical
 
       - alert: CrossSeedFailedToInject
         expr: |
-          sum by (app) (count_over_time({app="cross-seed"} |~ "(?i)failed to inject"[5m])) > 0
+          sum by (k8s_instance) (count_over_time({k8s_instance="cross-seed"} |~ "(?i)failed to inject"[5m])) > 0
         for: 5m
         annotations:
           summary: >-
-            {{ $labels.app }} failed to inject a torrent
+            {{ $labels.k8s_instance }} failed to inject a torrent
         labels:
           severity: critical
