@@ -79,9 +79,6 @@ data:
         - AWS Console:
             - icon: aws.png
               href: https://aws.amazon.com/console/
-        - Terraform Cloud:
-            - icon: terraform.png
-              href: https://app.terraform.io
         - Pushover:
             - icon: pushover.png
               href: https://client.pushover.net/
@@ -176,8 +173,4 @@ data:
           dateStyle: long
           timeStyle: short
           hourCycle: h23
-    - unifi_console:
-        url: https://unifi.chestr.dev
-        username: {{HOMEPAGE_VAR_UNIFI_USER}}
-        password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
   docker.yaml: ""
