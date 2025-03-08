@@ -4,10 +4,10 @@ groups:
     rules:
       - alert: QbittorrentFastResumeRejected
         expr: |
-          sum by (k8s_instance) (count_over_time({k8s_instance="qbittorrent"} |~ "(?i)fast resume rejected"[5m])) > 0
+          sum by (app) (count_over_time({app="qbittorrent"} |~ "(?i)fast resume rejected"[5m])) > 0
         for: 5m
         annotations:
           summary: >-
-            {{ $labels.k8s_instance }} has a torrent with fast resume rejected
+            {{ $labels.app }} has a torrent with fast resume rejected
         labels:
           severity: critical
