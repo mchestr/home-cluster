@@ -23,6 +23,13 @@ spec:
         enabled: true
       debug:
         enabled: true
+    securityContext:
+      capabilities:
+        drop:
+          - ALL
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      runAsUser: 1000
   postRenderers:
     - kustomize:
         patches:
