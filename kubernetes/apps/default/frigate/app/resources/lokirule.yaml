@@ -4,11 +4,11 @@ groups:
     rules:
       - alert: FrigateMQTTUnreachable
         expr: |
-          sum(count_over_time({app="frigate"} |~ "(?i)unable to connect to mqtt server"[2m])) > 0
+          sum(count_over_time({k8s_instance="frigate"} |~ "(?i)unable to connect to mqtt server"[2m])) > 0
         for: 2m
         labels:
           severity: critical
           category: logs
         annotations:
-          app: "{{ $labels.app }}"
-          summary: "{{ $labels.app }} is unable to reach MQTT"
+          app: "{{ $labels.k8s_instance }}"
+          summary: "{{ $labels.k8s_instance }} is unable to reach MQTT"
