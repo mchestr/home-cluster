@@ -24,6 +24,5 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    name: intel-gpu-plugin
-    sharedDevNum: 3
-    nodeFeatureRule: true
+    name: i915
+    nodeFeatureRule: false
