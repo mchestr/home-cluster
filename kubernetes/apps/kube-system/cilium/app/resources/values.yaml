@@ -19,6 +19,8 @@ cluster:
   name: main
 cni:
   exclusive: false
+dashboards:
+  enabled: true
 enableIPv4BIGTCP: true
 endpointRoutes:
   enabled: true
@@ -39,6 +41,7 @@ loadBalancer:
   algorithm: maglev
   mode: dsr
 localRedirectPolicy: true
+MTU: 9000
 operator:
   replicas: 2
   rollOutPods: true
@@ -53,8 +56,6 @@ prometheus:
   serviceMonitor:
     enabled: true
     trustCRDsExist: true
-dashboards:
-  enabled: true
 rollOutCiliumPods: true
 routingMode: native
 securityContext:
@@ -77,3 +78,6 @@ securityContext:
       - NET_ADMIN
       - SYS_ADMIN
       - SYS_RESOURCE
+tls:
+  secretsNamespace:
+    create: false
