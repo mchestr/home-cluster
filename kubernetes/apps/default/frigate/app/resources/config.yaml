@@ -32,6 +32,7 @@ genai:
   model: gemini-1.5-flash
 
 model:
+  # https://docs.frigate.video/configuration/objects
   labelmap:
     2: vehicle # car
     3: vehicle # motorcycle
@@ -50,6 +51,9 @@ model:
     22: animal # bear
     23: animal # zebra
     24: animal # giraffe
+    26: package # backpack
+    30: package # handbag
+    32: package # suitcase
 
 ffmpeg:
   global_args: ["-hide_banner", "-loglevel", "warning"]
@@ -82,6 +86,7 @@ objects:
     - vehicle
     - animal
     - bike
+    - package
   filters:
     person:
       min_area: 5000
@@ -170,13 +175,14 @@ cameras:
       stream_name: doorbell_hd
 
   doorbell_package:
+    audio:
+      enabled: false
     ffmpeg:
       inputs:
-        - path: rtsp://127.0.0.1:8554/doorbell_package?video=copy&audio=aac
+        - path: rtsp://127.0.0.1:8554/doorbell_package?video=copy
           input_args: preset-rtsp-restream
           roles:
             - detect
-            - audio
     live:
       stream_name: doorbell_package
 
