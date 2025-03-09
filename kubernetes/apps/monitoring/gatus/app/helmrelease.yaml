@@ -109,6 +109,11 @@ spec:
     ingress:
       app:
         className: external
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: gatus.png
+          gethomepage.dev/name: Status
+          gethomepage.dev/group: System
         hosts:
           - host: status.chestr.dev
             paths:
