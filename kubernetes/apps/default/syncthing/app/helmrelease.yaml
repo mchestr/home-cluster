@@ -74,15 +74,12 @@ spec:
           gethomepage.dev/name: Sync
           gethomepage.dev/group: System
         hosts:
-          - host: &host sync.chestr.dev
+          - host: sync.chestr.dev
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
 
     persistence:
       data:

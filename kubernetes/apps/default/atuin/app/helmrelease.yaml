@@ -95,15 +95,12 @@ spec:
         enabled: true
         className: internal
         hosts:
-          - host: &host sh.chestr.dev
+          - host: sh.chestr.dev
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
 
     persistence:
       config:

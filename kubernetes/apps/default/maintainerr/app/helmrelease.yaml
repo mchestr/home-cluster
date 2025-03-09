@@ -65,16 +65,13 @@ spec:
           gethomepage.dev/name: Maintainerr
           gethomepage.dev/icon: mdi-wrench-clock
         hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
+          - host: "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
 
     persistence:
       data:

@@ -48,16 +48,11 @@ spec:
       app:
         enabled: true
         className: external
-        annotations:
-          external-dns.alpha.kubernetes.io/target: external.chestr.dev
         hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
+          - host: "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
