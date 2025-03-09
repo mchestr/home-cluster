@@ -1,3 +1,4 @@
+---
 logger:
   default: info
 
@@ -20,12 +21,12 @@ detectors:
     device: usb
 
 semantic_search:
-  enabled: True
-  reindex: False
+  enabled: true
+  reindex: false
   model_size: large
 
 genai:
-  enabled: True
+  enabled: true
   provider: gemini
   api_key: "{FRIGATE_GOOGLE_GEMINI_API_KEY}"
   model: gemini-1.5-flash
@@ -110,9 +111,13 @@ audio:
 
 go2rtc:
   webrtc:
+    listen: :8555
     candidates:
       - 10.0.20.60:8555
       - stun:8555
+    ice_servers:
+      - urls:
+          - stun:stun.cloudflare.com:3478
   streams:
     living_room_hd:
       - ffmpeg:http://192.168.200.25/flv?port=1935&app=bcs&stream=channel0_main.bcs&user={FRIGATE_LIVING_ROOM_CAMERA_USERNAME}&password={FRIGATE_LIVING_ROOM_CAMERA_PASSWORD}#video=copy#audio=copy#audio=opus
@@ -198,48 +203,12 @@ cameras:
       user: "{FRIGATE_CATCAM_CAMERA_USERNAME}"
       password: "{FRIGATE_CATCAM_CAMERA_PASSWORD}"
 
-  # garage:
-  #   ffmpeg:
-  #     output_args:
-  #       record: preset-record-generic-audio-aac
-  #     inputs:
-  #       - path: rtsp://127.0.0.1:8554/garage_hd?video&audio
-  #         input_args: preset-rtsp-restream
-  #         roles:
-  #           - record
-  #       - path: rtsp://127.0.0.1:8554/garage_sd?video&audio
-  #         input_args: preset-rtsp-restream
-  #         roles:
-  #           - detect
-  #           - audio
-  #   snapshots:
-  #     required_zones:
-  #       - enter
-  #   motion:
-  #     threshold: 128
-  #     mask:
-  #       - 164,21,166,0,0,0,0,23
-  #   objects:
-  #     filters:
-  #       vehicle:
-  #         mask: 243,360,229,0,640,0,640,360
-  #   zones:
-  #     enter:
-  #       coordinates: 56,360,185,360,153,21,21,24
-  #   live:
-  #     stream_name: garage_hd
-
-  #   review:
-  #     alerts:
-  #       required_zones:
-  #         - enter
-
 auth:
-  enabled: False
+  enabled: false
 
 proxy:
   header_map:
     user: remote-user
 
 tls:
-  enabled: False
+  enabled: false
