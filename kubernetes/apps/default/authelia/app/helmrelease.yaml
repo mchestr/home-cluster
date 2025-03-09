@@ -147,16 +147,13 @@ spec:
             add_header X-Frame-Options "SAMEORIGIN";
             add_header X-XSS-Protection "1; mode=block";
         hosts:
-          - host: &host auth.chestr.dev
+          - host: auth.chestr.dev
             paths:
               - path: /
                 pathType: Prefix
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
 
     persistence:
       config:
