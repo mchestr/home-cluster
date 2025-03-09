@@ -74,6 +74,8 @@ spec:
       extraArgs:
         default-ssl-certificate: cert-manager/chestr-dev-tls
         publish-status-address: *hostname
+      publishService:
+        enabled: false
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
