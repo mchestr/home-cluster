@@ -136,16 +136,13 @@ spec:
           gethomepage.dev/name: Paperless
           gethomepage.dev/group: Home
         hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
+          - host: "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix
                 service:
                   identifier: paperless
                   port: http
-        tls:
-          - hosts:
-              - *host
 
     persistence:
       data:

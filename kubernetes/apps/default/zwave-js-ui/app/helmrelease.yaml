@@ -65,16 +65,13 @@ spec:
           gethomepage.dev/name: zWave
           gethomepage.dev/group: Automation
         hosts:
-          - host: &host zwave.chestr.dev
+          - host: zwave.chestr.dev
             paths:
               - path: /
                 pathType: Prefix
                 service:
                   identifier: zwave-js-ui
                   port: http
-        tls:
-          - hosts:
-              - *host
 
     persistence:
       data:

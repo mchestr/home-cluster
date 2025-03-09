@@ -68,15 +68,12 @@ spec:
           gethomepage.dev/name: TeslaMate
           gethomepage.dev/group: Monitoring
         hosts:
-          - host: &host teslamate.chestr.dev
+          - host: teslamate.chestr.dev
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
 
     resources:
       requests:
