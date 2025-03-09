@@ -126,16 +126,13 @@ spec:
           gethomepage.dev/name: Frigate
           gethomepage.dev/icon: frigate.png
         hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
+          - host: "{{ .Release.Name }}.chestr.dev"
             paths:
               - path: /
                 pathType: Prefix
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
 
     persistence:
       data:

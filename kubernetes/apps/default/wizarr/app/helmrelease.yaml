@@ -49,7 +49,6 @@ spec:
       app:
         className: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.chestr.dev
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: wizarr.png
           gethomepage.dev/name: Wizarr
@@ -62,9 +61,6 @@ spec:
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
 
     persistence:
       data:

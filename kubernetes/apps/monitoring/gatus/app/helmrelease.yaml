@@ -109,8 +109,6 @@ spec:
     ingress:
       app:
         className: external
-        annotations:
-          external-dns.alpha.kubernetes.io/target: external.chestr.dev
         hosts:
           - host: status.chestr.dev
             paths:

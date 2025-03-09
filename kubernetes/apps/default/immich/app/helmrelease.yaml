@@ -109,7 +109,6 @@ spec:
         enabled: true
         className: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.chestr.dev
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: immich.png
           gethomepage.dev/name: Photos
@@ -120,16 +119,13 @@ spec:
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_IMMICH_API_KEY}}" }}'
           gethomepage.dev/widget.version: '2'
         hosts:
-          - host: &host photos.chestr.dev
+          - host: photos.chestr.dev
             paths:
               - path: /
                 pathType: Prefix
                 service:
                   identifier: immich
                   port: http
-        tls:
-          - hosts:
-              - *host
 
     persistence:
       data:

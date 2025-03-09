@@ -29,7 +29,7 @@ spec:
       replicaCount: 2
       service:
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: external.chestr.dev
+          external-dns.alpha.kubernetes.io/hostname: &hostname external.chestr.dev
           io.cilium/lb-ipam-ips: 10.0.20.200
         externalTrafficPolicy: Cluster
       ingressClassResource:
@@ -64,7 +64,7 @@ spec:
         proxy-body-size: 0
         proxy-buffer-size: 16k
         ssl-protocols: TLSv1.3 TLSv1.2
-        # use-geoip2: true
+        use-geoip2: true
       metrics:
         enabled: true
         serviceMonitor:
@@ -73,6 +73,7 @@ spec:
             any: true
       extraArgs:
         default-ssl-certificate: cert-manager/chestr-dev-tls
+        publish-status-address: *hostname
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
@@ -89,8 +90,8 @@ spec:
           memory: 500Mi
     defaultBackend:
       enabled: false
-  # valuesFrom:
-  #   - targetPath: controller.maxmindLicenseKey
-  #     kind: Secret
-  #     name: nginx-external-maxmind-secret
-  #     valuesKey: MAXMIND_LICENSE_KEY
+  valuesFrom:
+    - targetPath: controller.maxmindLicenseKey
+      kind: Secret
+      name: nginx-external-maxmind-secret
+      valuesKey: MAXMIND_LICENSE_KEY
