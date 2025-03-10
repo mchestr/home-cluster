@@ -76,7 +76,7 @@ spec:
       channel-refresh:
         type: cronjob
         cronjob:
-          schedule: "*/1 * * * *"
+          schedule: "*/5 * * * *"
           concurrencyPolicy: Forbid
           successfulJobsHistory: 1
           ttlSecondsAfterFinished: 30
