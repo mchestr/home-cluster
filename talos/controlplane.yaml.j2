@@ -50,7 +50,6 @@ machine:
       - mitigations=off         # Less security, faster puter
       - security=none           # Less security, faster puter
       - talos.auditd.disabled=1 # Less security, faster puter
-      - net.ifnames=0           # Consistent network interfaces
     # systemExtensions:
     #     officialExtensions:
     #         - siderolabs/i915
@@ -59,7 +58,7 @@ machine:
     #         - siderolabs/nut-client
     #         - siderolabs/thunderbolt
     #         - siderolabs/util-linux-tools
-    image: factory.talos.dev/installer-secureboot/1aa64052f83653caa7cb1c079175bb631584401fea6e3ba2f449d6e032bc5b96:{{ ENV.TALOS_VERSION }}
+    image: factory.talos.dev/installer-secureboot/aef34bb98f42f525c65144163f69c5bfeb6a0e130b2def44fde55e65cd0bad75:{{ ENV.TALOS_VERSION }}
     wipe: false
   files:
     - op: create
