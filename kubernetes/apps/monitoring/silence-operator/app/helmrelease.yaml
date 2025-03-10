@@ -82,3 +82,13 @@ spec:
             - name: alertname
               value: CephNodeNetworkPacketDrops
               isRegex: false
+      - apiVersion: monitoring.giantswarm.io/v1alpha1
+        kind: Silence
+        metadata:
+          name: ceph-node-packet-error
+          namespace: monitoring
+        spec:
+          matchers:
+            - name: alertname
+              value: CephNodeNetworkPacketErrors
+              isRegex: false
