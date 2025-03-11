@@ -20,8 +20,9 @@ tasks:
     desc: Merge all open pull requests [SKIP_IDS=]
     vars:
       SKIP_IDS: '{{.SKIP_IDS}}'
+      AUTHOR: app/mchesterbot
       TO_MERGE:
-        sh: gh pr list --json number --state open | jq -cr '.[] | select([.number] | inside([{{ .SKIP_IDS }}]) | not) | .number'
+        sh: gh pr list --author {{ .AUTHOR }} --json number --state open | jq -cr '.[] | select([.number] | inside([{{ .SKIP_IDS }}]) | not) | .number'
     prompt: Merge all open pull requests? (prs={{ .TO_MERGE | catLines }})
     cmds:
       - for: { var: TO_MERGE }
