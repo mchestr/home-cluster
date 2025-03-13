@@ -7,5 +7,4 @@ variable "cluster_domain" {
 variable "onepassword_account_id" {
   type = string
   description = "OnePassword Account ID"
-  default = "***REMOVED***"
 }

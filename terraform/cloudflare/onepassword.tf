@@ -17,12 +17,12 @@ resource "onepassword_item" "cloudflare-tunnel" {
     label = "secrets"
 
     field {
-      label = "CLOUDFLARED_TUNNEL_ID"
+      label = "CLOUDFLARE_TUNNEL_ID"
       value = cloudflare_zero_trust_tunnel_cloudflared.home-cluster.id
     }
 
     field {
-      label = "CLOUDFLARED_TUNNEL_SECRET"
+      label = "CLOUDFLARE_TUNNEL_SECRET"
       value = data.onepassword_item.cloudflare.section[0].field[index(data.onepassword_item.cloudflare.section[0].field.*.label, "CLOUDFLARE_HOME_CLUSTER_TUNNEL_SECRET")].value
       type  = "CONCEALED"
     }
