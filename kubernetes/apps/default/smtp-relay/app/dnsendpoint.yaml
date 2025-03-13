@@ -1,0 +1,23 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: cloudflared
+spec:
+  endpoints:
+    - dnsName: r6aoj7vhzjzzuitmxypnvzq5om27foyc._domainkey.chestr.dev
+      recordType: CNAME
+      targets: ["r6aoj7vhzjzzuitmxypnvzq5om27foyc.dkim.amazonses.com"]
+    - dnsName: 6ajw3icev6dwsjdcxqyfsorhtxsndc5f._domainkey.chestr.dev
+      recordType: CNAME
+      targets: ["6ajw3icev6dwsjdcxqyfsorhtxsndc5f.dkim.amazonses.com"]
+    - dnsName: dclakzwyzjqdkygjisjvbscqf5zxjqln._domainkey.chestr.dev
+      recordType: CNAME
+      targets: ["dclakzwyzjqdkygjisjvbscqf5zxjqln.dkim.amazonses.com"]
+    - dnsName: mail
+      recordType: MX
+      targets: ["feedback-smtp.us-west-2.amazonses.com"]
+    - dnsName: mail
+      recordType: TXT
+      targets: ["v=spf1 include:amazonses.com ~all"]
