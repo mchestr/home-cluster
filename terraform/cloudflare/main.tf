@@ -23,14 +23,21 @@ terraform {
 }
 
 provider "cloudflare" {
-  api_token   = var.cloudflare_api_token
+  api_token   = data.onepassword_item.cloudflare.section[0].field[index(data.onepassword_item.cloudflare.section[0].field.*.label, "CLOUDFLARE_TERRAFORM_TOKEN")].value
 }
 
 provider "onepassword" {
-  token = var.onepassword_token
-  url = var.onepassword_url
+  account = var.onepassword_account_id
 }
 
 data "cloudflare_zone" "domain" {
-  name = var.cluster_domain
+  filter = {
+    name = var.cluster_domain
+  }
+}
+
+data "cloudflare_account" "mchestr" {
+  filter = {
+    name = "mchestr"
+  }
 }
