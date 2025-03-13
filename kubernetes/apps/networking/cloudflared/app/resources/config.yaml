@@ -1,0 +1,10 @@
+---
+originRequest:
+  originServerName: external.chestr.dev
+
+ingress:
+  - hostname: chestr.dev
+    service: &service https://nginx-external-controller.networking.svc.cluster.local:443
+  - hostname: "*.chestr.dev"
+    service: *service
+  - service: http_status:404

@@ -1,6 +1,10 @@
 ---
 version: "3"
 
+env:
+  ONEPASSWORD_ACCOUNT_ID:
+    sh: op account list --format json | jq -r '.[].user_uuid'
+
 tasks:
 
   cf:init:
@@ -13,10 +17,10 @@ tasks:
     desc: Show the changes terraform will make
     dir: terraform/cloudflare
     cmds:
-      - terraform plan {{.CLI_ARGS}}
+      - terraform plan {{.CLI_ARGS}} -var "onepassword_account_id=${ONEPASSWORD_ACCOUNT_ID}"
 
   cf:apply:
     desc: Apply the changes to Cloudflare
     dir: terraform/cloudflare
     cmds:
-      - terraform apply {{.CLI_ARGS}}
+      - terraform apply {{.CLI_ARGS}} -var "onepassword_account_id=${ONEPASSWORD_ACCOUNT_ID}"
