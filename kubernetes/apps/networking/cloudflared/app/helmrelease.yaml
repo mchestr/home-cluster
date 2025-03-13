@@ -12,24 +12,19 @@ spec:
     namespace: flux-system
   maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   values:
     defaultPodOptions:
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: cloudflared
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
 
     controllers:
       cloudflared:
@@ -43,10 +38,12 @@ spec:
               repository: docker.io/cloudflare/cloudflared
               tag: 2025.2.1
             env:
-              NO_AUTOUPDATE: "true"
+              NO_AUTOUPDATE: true
               TUNNEL_CRED_FILE: /etc/cloudflared/creds/credentials.json
               TUNNEL_METRICS: 0.0.0.0:8080
-              TUNNEL_TRANSPORT_PROTOCOL: auto
+              TUNNEL_ORIGIN_ENABLE_HTTP2: true
+              TUNNEL_POST_QUANTUM: true
+              TUNNEL_TRANSPORT_PROTOCOL: quic
             resources:
               requests:
                 cpu: 5m
@@ -73,6 +70,10 @@ spec:
               - --config
               - /etc/cloudflared/config/config.yaml
               - run
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
 
     service:
       app:
@@ -80,6 +81,12 @@ spec:
         ports:
           http:
             port: 8080
+
+    serviceMonitor:
+      app:
+        serviceName: cloudflare-tunnel
+        endpoints:
+          - port: http
 
     persistence:
       config:
@@ -89,6 +96,7 @@ spec:
         globalMounts:
           - path: /etc/cloudflared/config/config.yaml
             subPath: config.yaml
+            readOnly: true
       creds:
         enabled: true
         type: secret
@@ -96,13 +104,4 @@ spec:
         globalMounts:
           - path: /etc/cloudflared/creds/credentials.json
             subPath: credentials.json
-
-    serviceMonitor:
-      app:
-        serviceName: cloudflared
-        endpoints:
-          - port: http
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 30s
+            readOnly: true

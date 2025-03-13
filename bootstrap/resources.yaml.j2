@@ -12,3 +12,11 @@ metadata:
 stringData:
   1password-credentials.json: op://{{ ENV.ONEPASSWORD_VAULT }}/1password/OP_CREDENTIALS_JSON
   token: op://{{ ENV.ONEPASSWORD_VAULT }}/1password/OP_CONNECT_TOKEN
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloudflare-tunnel-id-secret
+  namespace: networking
+stringData:
+  CLOUDFLARE_TUNNEL_ID: op://{{ ENV.ONEPASSWORD_VAULT }}/cloudflare/CLOUDFLARE_TUNNEL_ID
