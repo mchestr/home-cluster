@@ -8,16 +8,34 @@ spec:
   endpoints:
     - dnsName: r6aoj7vhzjzzuitmxypnvzq5om27foyc._domainkey.chestr.dev
       recordType: CNAME
-      targets: ["r6aoj7vhzjzzuitmxypnvzq5om27foyc.dkim.amazonses.com"]
+      targets:
+        - r6aoj7vhzjzzuitmxypnvzq5om27foyc.dkim.amazonses.com
+      providerSpecific:
+        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+          value: "false"
     - dnsName: 6ajw3icev6dwsjdcxqyfsorhtxsndc5f._domainkey.chestr.dev
       recordType: CNAME
-      targets: ["6ajw3icev6dwsjdcxqyfsorhtxsndc5f.dkim.amazonses.com"]
+      targets:
+        - 6ajw3icev6dwsjdcxqyfsorhtxsndc5f.dkim.amazonses.com
+      providerSpecific:
+        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+          value: "false"
     - dnsName: dclakzwyzjqdkygjisjvbscqf5zxjqln._domainkey.chestr.dev
       recordType: CNAME
-      targets: ["dclakzwyzjqdkygjisjvbscqf5zxjqln.dkim.amazonses.com"]
+      targets:
+        - dclakzwyzjqdkygjisjvbscqf5zxjqln.dkim.amazonses.com
+      providerSpecific:
+        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+          value: "false"
     - dnsName: mail
       recordType: MX
-      targets: ["feedback-smtp.us-west-2.amazonses.com"]
+      targets:
+        - feedback-smtp.us-west-2.amazonses.com
     - dnsName: mail
       recordType: TXT
-      targets: ["v=spf1 include:amazonses.com ~all"]
+      targets:
+        - v=spf1 include:amazonses.com ~all
+    - dnsName: _dmarc.chestr.dev
+      recordType: TXT
+      targets:
+        - v=DMARC1; p=none;
