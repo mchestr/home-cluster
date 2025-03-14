@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: immich
+  name: &app immich
 spec:
   interval: 30m
   chartRef:
@@ -55,15 +55,6 @@ spec:
                 memory: 250Mi
               limits:
                 memory: 1Gi
-            # securityContext: &securityContext
-            #   fsGroup: 65539
-            #   fsGroupChangePolicy: OnRootMismatch
-            #   allowPrivilegeEscalation: false
-            #   seccompProfile:
-            #     type: RuntimeDefault
-            #   capabilities:
-            #     drop:
-            #       - ALL
 
       machine-learning:
         annotations:
@@ -78,7 +69,6 @@ spec:
               requests: *requests
               limits:
                 memory: 2Gi
-            # securityContext: *securityContext
 
       redis:
         containers:
@@ -92,7 +82,7 @@ spec:
         controller: immich
         ports:
           http:
-            port: 2283
+            port: &port 2283
       machine-learning:
         controller: machine-learning
         ports:
@@ -104,28 +94,19 @@ spec:
           http:
             port: 6379
 
-    ingress:
-      main:
-        enabled: true
-        className: external
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/icon: immich.png
-          gethomepage.dev/name: Photos
-          gethomepage.dev/group: Home
-          gethomepage.dev/widget.type: immich
-          gethomepage.dev/widget.fields: '["photos", "videos", "storage"]'
-          gethomepage.dev/widget.url: http://immich.default.svc.cluster.local:2283
-          gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_IMMICH_API_KEY}}" }}'
-          gethomepage.dev/widget.version: '2'
-        hosts:
-          - host: photos.chestr.dev
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: immich
-                  port: http
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.chestr.dev"
+          - photos.chestr.dev
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       data:

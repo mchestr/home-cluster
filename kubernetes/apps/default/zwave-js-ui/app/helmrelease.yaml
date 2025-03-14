@@ -48,30 +48,21 @@ spec:
         controller: *app
         ports:
           http:
-            port: 8091
+            port: &port 8091
 
-    ingress:
+    route:
       app:
-        enabled: true
-        className: internal
-        annotations:
-          nginx.ingress.kubernetes.io/auth-method: GET
-          nginx.ingress.kubernetes.io/auth-url: http://authelia.default.svc.cluster.local/api/verify
-          nginx.ingress.kubernetes.io/auth-signin: https://auth.chestr.dev?rm=$request_method
-          nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
-          nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/icon: zwavejs2mqtt.png
-          gethomepage.dev/name: zWave
-          gethomepage.dev/group: Automation
-        hosts:
-          - host: zwave.chestr.dev
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: zwave-js-ui
-                  port: http
+        hostnames:
+          - "{{ .Release.Name }}.chestr.dev"
+          - zwave.chestr.dev
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       data:

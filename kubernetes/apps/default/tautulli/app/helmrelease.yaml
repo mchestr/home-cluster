@@ -82,25 +82,17 @@ spec:
           http:
             port: *port
 
-    ingress:
+    route:
       app:
-        className: internal
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/icon: tautulli.png
-          gethomepage.dev/name: Tautulli
-          gethomepage.dev/group: Media
-          gethomepage.dev/widget.type: tautulli
-          gethomepage.dev/widget.url: http://tautulli.default.svc.cluster.local:8181
-          gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_TAUTULLI_API_KEY}}" }}'
-        hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: http
+        hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       config:

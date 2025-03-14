@@ -95,19 +95,14 @@ spec:
       auth.anonymous:
         enabled: false
 
-    ingress:
-      enabled: true
-      ingressClassName: internal
-      annotations:
-        gethomepage.dev/enabled: "true"
-        gethomepage.dev/icon: grafana.png
-        gethomepage.dev/name: Grafana
-        gethomepage.dev/group: Monitoring
-      hosts:
-        - &host "grafana.chestr.dev"
-      tls:
-        - hosts:
-            - *host
+    route:
+      main:
+        enabled: true
+        hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
 
     serviceMonitor:
       enabled: true

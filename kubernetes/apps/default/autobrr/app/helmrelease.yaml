@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: autobrr
+  name: &app autobrr
 spec:
   interval: 30m
   chartRef:
@@ -92,23 +92,14 @@ spec:
         globalMounts:
           - path: /tmp
 
-    ingress:
+    route:
       app:
-        enabled: true
-        className: internal
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/icon: autobrr.png
-          gethomepage.dev/name: Autobrr
-          gethomepage.dev/group: Downloads
-          gethomepage.dev/widget.type: autobrr
-          gethomepage.dev/widget.url: http://autobrr.default.svc.cluster.local:7474
-          gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_AUTOBRR_API_KEY}}" }}'
-        hosts:
-          - host: "{{ .Release.Name }}.chestr.dev"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: http
+        hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port

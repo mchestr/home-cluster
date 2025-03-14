@@ -56,24 +56,19 @@ spec:
         controller: *app
         ports:
           http:
-            port: 9000
+            port: &port 9000
 
-    ingress:
+    route:
       app:
-        className: internal
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: System
-          gethomepage.dev/name: The Lounge
-          gethomepage.dev/icon: thelounge.png
-        hosts:
-          - host: &host "{{ .Release.Name }}.chestr.dev"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: http
+        hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       config:

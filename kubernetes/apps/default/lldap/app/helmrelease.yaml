@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: lldap
+  name: &app lldap
 spec:
   interval: 30m
   chartRef:
@@ -80,23 +80,17 @@ spec:
             enabled: true
             port: *ldapPort
 
-    ingress:
+    route:
       app:
-        enabled: true
-        className: internal
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: System
-          gethomepage.dev/name: LLDAP
-          gethomepage.dev/icon: mdi-account-key
-        hosts:
-          - host: "{{ .Release.Name }}.chestr.dev"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: http
+        hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       data:

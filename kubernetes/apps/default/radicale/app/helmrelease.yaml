@@ -53,23 +53,19 @@ spec:
         controller: *app
         ports:
           http:
-            port: 5232
+            port: &port 5232
 
-    ingress:
+    route:
       app:
-        className: external
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/icon: radicale.png
-          gethomepage.dev/name: Calendar
-          gethomepage.dev/group: System
-        hosts:
-          - host: cal.chestr.dev
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames: ["cal.chestr.dev"]
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       data:

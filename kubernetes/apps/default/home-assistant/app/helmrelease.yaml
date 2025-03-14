@@ -66,27 +66,21 @@ spec:
         controller: *app
         ports:
           http:
-            port: &http 8123
+            port: &port 8123
 
-    ingress:
+    route:
       app:
-        enabled: true
-        className: external
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Home
-          gethomepage.dev/name: Home Assistant
-          gethomepage.dev/icon: home-assistant.png
-        hosts:
-          - host: "{{ .Release.Name }}.chestr.dev"
-            paths: &paths
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: http
-          - host: home.chestr.dev
-            paths: *paths
+        hostnames:
+          - "{{ .Release.Name }}.chestr.dev"
+          - home.chestr.dev
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       config:
@@ -109,33 +103,3 @@ spec:
           home-assistant:
             vscode-tunnel:
               - path: /.vscode
-
-    networkpolicies:
-      home-assistant:
-        controller: *app
-
-        policyTypes:
-          - Ingress
-
-        rules:
-          ingress:
-            - from:
-                - podSelector:
-                    matchLabels:
-                      app.kubernetes.io/instance: nginx-internal
-                  namespaceSelector:
-                    matchLabels:
-                      kubernetes.io/metadata.name: networking
-              ports:
-                - protocol: TCP
-                  port: *http
-            - from:
-                - podSelector:
-                    matchLabels:
-                      app.kubernetes.io/instance: nginx-external
-                  namespaceSelector:
-                    matchLabels:
-                      kubernetes.io/metadata.name: networking
-              ports:
-                - protocol: TCP
-                  port: *http

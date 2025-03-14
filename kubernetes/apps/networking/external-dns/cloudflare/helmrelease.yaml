@@ -27,23 +27,32 @@ spec:
   values:
     fullnameOverride: *app
     provider: cloudflare
+    image:
+      repository: ghcr.io/buroa/external-dns
+      tag: a6243325@sha256:a14e69d5c49fdca31693c7c1257f8d2da885a7429bf983f9a36b6e72068cf6db
     env:
-      - name: CF_API_TOKEN
+      - name: &name CF_API_TOKEN
         valueFrom:
           secretKeyRef:
-            name: external-dns-cloudflare-secret
-            key: CF_API_TOKEN
+            name: &secret external-dns-cloudflare-secret
+            key: *name
+      - name: &name CF_ZONE_ID
+        valueFrom:
+          secretKeyRef:
+            name: *secret
+            key: *name
     extraArgs:
       - --cloudflare-dns-records-per-page=1000
       - --cloudflare-proxied
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
-      - --ignore-ingress-tls-spec
-      - --ingress-class=external
+      - --gateway-name=external
+      - --gateway-label-filter=gateway==external
+      - --zone-id-filter=$(CF_ZONE_ID)
     policy: sync
     sources:
       - crd
-      - ingress
+      - gateway-httproute
     txtPrefix: k8s.
     txtOwnerId: "default"
     domainFilters:
@@ -51,4 +60,4 @@ spec:
     serviceMonitor:
       enabled: true
     podAnnotations:
-      secret.reloader.stakater.com/reload: *app
+      secret.reloader.stakater.com/reload: *secret

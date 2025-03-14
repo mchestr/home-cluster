@@ -84,24 +84,19 @@ spec:
         ports:
           http:
             port: *port
-    ingress:
+
+    route:
       app:
-        className: external
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/icon: overseerr.png
-          gethomepage.dev/name: Overseerr
-          gethomepage.dev/group: Media
-          gethomepage.dev/widget.type: overseerr
-          gethomepage.dev/widget.url: http://jellyseerr.default.svc.cluster.local:5055
-          gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_JELLYSEERR_API_KEY}}" }}'
-        hosts:
-          - host: requests.chestr.dev
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames: ["requests.chestr.dev"]
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+
     persistence:
       config:
         existingClaim: *app

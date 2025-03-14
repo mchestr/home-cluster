@@ -90,32 +90,28 @@ spec:
             protocol: TCP
             targetPort: *port
 
-    ingress:
+    route:
       app:
-        className: external
-        annotations:
-          nginx.ingress.kubernetes.io/backend-protocol: HTTPS
-          nginx.ingress.kubernetes.io/server-snippet: |
-            location ~ ^/library/streams {
-              proxy_set_header   Range "";
-              proxy_pass         http://plex.default.svc.cluster.local:32400;
-              proxy_http_version 1.1;
-            }
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/icon: plex.png
-          gethomepage.dev/name: Plex
-          gethomepage.dev/group: Media
-          gethomepage.dev/widget.type: *app
-          gethomepage.dev/widget.url: http://plex.default.svc.cluster.local:32400
-          gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_PLEX_API_KEY}}" }}'
-        hosts:
-          - host: "{{ .Release.Name }}.chestr.dev"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: http
+        hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+            filters:
+              - type: RequestHeaderModifier
+                requestHeaderModifier:
+                  remove: ["Range"]
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /library/streams
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       config:
