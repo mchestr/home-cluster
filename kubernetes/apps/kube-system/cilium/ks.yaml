@@ -1,45 +1,76 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cilium
+  name: &app cilium
   namespace: &namespace kube-system
 spec:
-  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  interval: 30m
   path: ./kubernetes/apps/kube-system/cilium/app
-  dependsOn:
-    - name: cluster-apps
-      namespace: flux-system
+  postBuild:
+    substitute:
+      APP: *app
+  prune: true
+  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  prune: true
-  wait: true
-  interval: 30m
-  retryInterval: 1m
+  targetNamespace: *namespace
   timeout: 5m
-  postBuild:
-    substitute:
-      APP: cilium
+  wait: true
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cilium-config
+  name: &app cilium-config
   namespace: &namespace kube-system
 spec:
-  targetNamespace: *namespace
-  path: ./kubernetes/apps/kube-system/cilium/config
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   dependsOn:
     - name: cilium
       namespace: *namespace
+  interval: 30m
+  path: ./kubernetes/apps/kube-system/cilium/config
+  prune: true
+  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  prune: true
-  wait: true
-  interval: 30m
-  retryInterval: 1m
+  targetNamespace: *namespace
   timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app cilium-gateway
+  namespace: &namespace kube-system
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: cilium
+      namespace: *namespace
+    - name: cert-manager
+      namespace: cert-manager
+  interval: 1h
+  path: ./kubernetes/apps/kube-system/cilium/gateway
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 15m
+  wait: true
