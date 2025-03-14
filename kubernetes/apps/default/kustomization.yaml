@@ -16,6 +16,7 @@ resources:
   - esphome/ks.yaml
   - frigate/ks.yaml
   - home-assistant/ks.yaml
+  - homepage/ks.yaml
   - immich/ks.yaml
   - jellyfin/ks.yaml
   - jellyplex-watched/ks.yaml
