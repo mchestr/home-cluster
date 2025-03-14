@@ -46,6 +46,7 @@ loadBalancer:
   algorithm: maglev
   mode: dsr
 localRedirectPolicy: true
+MTU: 9000
 operator:
   replicas: 2
   rollOutPods: true
