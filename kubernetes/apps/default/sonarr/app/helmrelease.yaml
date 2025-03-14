@@ -75,6 +75,14 @@ spec:
     route:
       app:
         hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: sonarr.png
+          gethomepage.dev/name: Sonarr
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/widget.type: *app
+          gethomepage.dev/widget.url: http://sonarr.default.svc.cluster.local:8989
+          gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_SONARR_API_KEY}}" }}'
         parentRefs:
           - name: internal
             namespace: kube-system

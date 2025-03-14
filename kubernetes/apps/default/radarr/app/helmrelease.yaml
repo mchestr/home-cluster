@@ -75,6 +75,14 @@ spec:
     route:
       app:
         hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: radarr.png
+          gethomepage.dev/name: Radarr
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/widget.type: *app
+          gethomepage.dev/widget.url: http://radarr.default.svc.cluster.local:7878
+          gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_RADARR_API_KEY}}" }}'
         parentRefs:
           - name: internal
             namespace: kube-system
