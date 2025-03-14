@@ -16,83 +16,83 @@ repositories:
     url: https://charts.jetstack.io
 
 releases:
-  - name: cilium
+  - chart: cilium/cilium
+    hooks:
+      - args:
+          - '--field-manager=kustomize-controller'
+          - '--kustomize'
+          - '--namespace=kube-system'
+          - '--server-side'
+          - ../kubernetes/apps/kube-system/cilium/config
+          - apply
+        command: kubectl
+        events: ["postsync"]
+    name: cilium
     namespace: kube-system
-    chart: cilium/cilium
-    version: 1.17.1
     values:
       - ../kubernetes/apps/kube-system/cilium/app/resources/values.yaml
-    hooks:
-      - events: ["postsync"]
-        command: kubectl
-        args:
-          - apply
-          - --server-side
-          - --namespace=kube-system
-          - --field-manager=kustomize-controller
-          - --kustomize
-          - ../kubernetes/apps/kube-system/cilium/config
+    version: 1.17.1
 
-  - name: coredns
+  - chart: coredns/coredns
+    name: coredns
     namespace: kube-system
-    chart: coredns/coredns
-    version: 1.39.1
-    values:
-      - ../kubernetes/apps/kube-system/coredns/app/resources/values.yaml
     needs:
       - kube-system/cilium
-
-  - name: cert-manager
-    namespace: cert-manager
-    chart: jetstack/cert-manager
-    version: v1.17.1
     values:
-      - ../kubernetes/apps/cert-manager/cert-manager/app/resources/values.yaml
+      - ../kubernetes/apps/kube-system/coredns/app/resources/values.yaml
+    version: 1.39.1
+
+  - chart: jetstack/cert-manager
+    name: cert-manager
+    namespace: cert-manager
     needs:
       - kube-system/coredns
-
-  - name: external-secrets
-    namespace: external-secrets
-    chart: oci://ghcr.io/external-secrets/charts/external-secrets
-    version: 0.14.4
     values:
-      - ../kubernetes/apps/external-secrets/external-secrets/app/resources/values.yaml
+      - ../kubernetes/apps/cert-manager/cert-manager/app/resources/values.yaml
+    version: v1.17.1
+
+  - chart: oci://ghcr.io/external-secrets/charts/external-secrets
+    name: external-secrets
+    namespace: external-secrets
     needs:
       - cert-manager/cert-manager
+    values:
+      - ../kubernetes/apps/external-secrets/external-secrets/app/resources/values.yaml
+    version: 0.14.4
 
-  - name: kubelet-csr-approver
+  - chart: postfinance/kubelet-csr-approver
+    name: kubelet-csr-approver
     namespace: kube-system
-    chart: postfinance/kubelet-csr-approver
-    version: 1.2.6
+    needs:
+      - external-secrets/external-secrets
     values:
       - ../kubernetes/apps/kube-system/kubelet-csr-approver/app/resources/values.yaml
+    version: 1.2.6
+
+  - chart: oci://ghcr.io/spegel-org/helm-charts/spegel
+    name: spegel
+    namespace: kube-system
     needs:
       - external-secrets/external-secrets
-
-  - name: spegel
-    namespace: kube-system
-    chart: oci://ghcr.io/spegel-org/helm-charts/spegel
-    version: v0.0.30
     values:
       - ../kubernetes/apps/kube-system/spegel/app/resources/values.yaml
-    needs:
-      - external-secrets/external-secrets
+    version: v0.0.30
 
-  - name: flux-operator
+  - chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator
+    name: flux-operator
     namespace: flux-system
-    chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator
-    version: 0.17.0
-    values:
-      - ../kubernetes/apps/flux-system/flux-operator/app/resources/values.yaml
     needs:
       - kube-system/spegel
-
-  - name: flux-instance
-    namespace: flux-system
-    chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-instance
-    version: 0.17.0
-    wait: false
     values:
-      - ../kubernetes/apps/flux-system/flux-instance/app/resources/values.yaml
+      - ../kubernetes/apps/flux-system/flux-operator/app/resources/values.yaml
+    version: 0.17.0
+
+  - chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-instance
+    name: flux-instance
+    namespace: flux-system
     needs:
       - flux-system/flux-operator
+    values:
+      - ../kubernetes/apps/flux-system/flux-instance/app/resources/values.yaml
+    version: 0.17.0
+    wait: false
