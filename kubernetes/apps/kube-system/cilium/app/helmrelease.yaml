@@ -62,6 +62,7 @@ spec:
         rollOutPods: true
         ingress:
           enabled: true
+          className: internal
           annotations:
             nginx.ingress.kubernetes.io/auth-method: GET
             nginx.ingress.kubernetes.io/auth-url: http://authelia.default.svc.cluster.local/api/verify
@@ -72,5 +73,7 @@ spec:
             gethomepage.dev/icon: cilium.png
             gethomepage.dev/name: Cilium
             gethomepage.dev/group: System
+          hosts:
+            - hubble.chestr.dev
     operator:
       tolerations: []
