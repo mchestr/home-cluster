@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: syncthing
+  name: &app syncthing
 spec:
   interval: 30m
   chartRef:
@@ -45,7 +45,7 @@ spec:
         controller: syncthing
         ports:
           http:
-            port: 8384
+            port: &port 8384
 
       listen:
         controller: syncthing
@@ -64,22 +64,19 @@ spec:
             protocol: UDP
             targetPort: 21027
 
-    ingress:
+    route:
       app:
-        enabled: true
-        className: internal
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/icon: mdi-cloud
-          gethomepage.dev/name: Sync
-          gethomepage.dev/group: System
-        hosts:
-          - host: sync.chestr.dev
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - "{{ .Release.Name }}.chestr.dev"
+          - sync.chestr.dev
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       data:

@@ -15,6 +15,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      GATUS_SUBDOMAIN: echo
       GATUS_PATH: /healthz
   prune: true
   sourceRef:

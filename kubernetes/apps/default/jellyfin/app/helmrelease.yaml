@@ -90,27 +90,19 @@ spec:
           io.cilium/lb-ipam-ips: *ip
         ports:
           http:
-            port: 8096
+            port: &port 8096
 
-    ingress:
+    route:
       app:
-        className: internal
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/icon: jellyfin.png
-          gethomepage.dev/name: Jellyfin
-          gethomepage.dev/group: Media
-          gethomepage.dev/widget.type: jellyfin
-          gethomepage.dev/widget.url: http://jellyfin.default.svc.cluster.local:8096
-          gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}" }}'
-        hosts:
-          - host: "{{ .Release.Name }}.chestr.dev"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: http
+        hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       config:

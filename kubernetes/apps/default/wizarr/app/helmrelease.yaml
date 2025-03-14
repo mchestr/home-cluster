@@ -43,24 +43,19 @@ spec:
         controller: *app
         ports:
           http:
-            port: 5690
+            port: &port 5690
 
-    ingress:
+    route:
       app:
-        className: external
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/icon: wizarr.png
-          gethomepage.dev/name: Wizarr
-          gethomepage.dev/group: System
-        hosts:
-          - host: &host invite.chestr.dev
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: http
+        hostnames: ["invite.chestr.dev"]
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       data:
