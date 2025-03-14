@@ -2,19 +2,21 @@
 machine:
   install:
     diskSelector:
-      serial: "242809808418"
+      serial: '242809808418'
   network:
     hostname: m2.k8s.internal
     interfaces:
-      - # m1
-        deviceSelector: { busPath: 0-1.0 }
+      # m1
+      - addresses: [169.254.255.12/32]
+        deviceSelector:
+          busPath: 0-1.0
         dhcp: false
         mtu: 65520
-        addresses: [169.254.255.12/32]
         routes: [{ network: 169.254.255.11/32, metric: 2048 }]
-      - # m0
-        deviceSelector: { busPath: 1-1.0 }
+      # m0
+      - addresses: [169.254.255.12/32]
+        deviceSelector:
+          busPath: 1-1.0
         dhcp: false
         mtu: 65520
-        addresses: [169.254.255.12/32]
         routes: [{ network: 169.254.255.10/32, metric: 2048 }]
