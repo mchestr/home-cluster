@@ -148,13 +148,12 @@ cluster:
       service:
         disabled: false
   extraManifests:
-    {% for crd in [
-        "alertmanagerconfigs", "alertmanagers", "podmonitors", "probes", "prometheusagents",
-        "prometheuses", "prometheusrules", "scrapeconfigs", "servicemonitors", "thanosrulers"
-    ] %}
-    - # renovate: datasource=docker depName=ghcr.io/prometheus-operator/prometheus-operator
-      https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.80.1/example/prometheus-operator-crd/monitoring.coreos.com_{{ crd }}.yaml
-    {% endfor %}
+    - # renovate: datasource=github-releases depName=kubernetes-sigs/gateway-api
+      https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.1/experimental-install.yaml
+    - # renovate: datasource=github-releases depName=prometheus-operator/prometheus-operator
+      https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.81.0/stripped-down-crds.yaml
+    - # renovate: datasource=github-releases depName=k8snetworkplumbingwg/network-attachment-definition-client
+      https://github.com/k8snetworkplumbingwg/network-attachment-definition-client/raw/refs/tags/v1.7.5/artifacts/networks-crd.yaml
   token: op://{{ ENV.ONEPASSWORD_VAULT }}/talos/CLUSTER_TOKEN
   secretboxEncryptionSecret: op://{{ ENV.ONEPASSWORD_VAULT }}/talos/CLUSTER_SECRETBOXENCRYPTIONSECRET
   ca:
