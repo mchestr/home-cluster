@@ -61,6 +61,7 @@ spec:
         enabled: true
         rollOutPods: true
         ingress:
+          enabled: true
           annotations:
             nginx.ingress.kubernetes.io/auth-method: GET
             nginx.ingress.kubernetes.io/auth-url: http://authelia.default.svc.cluster.local/api/verify
