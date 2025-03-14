@@ -129,11 +129,11 @@ go2rtc:
     living_room_sd:
       - ffmpeg:http://192.168.200.25/flv?port=1935&app=bcs&stream=channel0_ext.bcs&user={FRIGATE_LIVING_ROOM_CAMERA_USERNAME}&password={FRIGATE_LIVING_ROOM_CAMERA_PASSWORD}
     doorbell_hd:
-      - rtsps://udm.chestr.dev:7441/KZjqe7cXROBkVewl
+      - rtsps://10.0.40.1:7441/KZjqe7cXROBkVewl
     doorbell_sd:
-      - rtspx://udm.chestr.dev:7441/NCjKjmbsiMjdPJkH
+      - rtspx://10.0.40.1:7441/NCjKjmbsiMjdPJkH
     doorbell_package:
-      - rtspx://udm.chestr.dev:7441/D9DfIKJZfH6Dz9Oh
+      - rtspx://10.0.40.1:7441/D9DfIKJZfH6Dz9Oh
     catcam:
       - onvif://{FRIGATE_CATCAM_CAMERA_USERNAME}:{FRIGATE_CATCAM_CAMERA_PASSWORD}@192.168.200.104:8000
 cameras:
