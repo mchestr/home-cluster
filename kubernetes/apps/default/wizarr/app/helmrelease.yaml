@@ -48,6 +48,11 @@ spec:
     route:
       app:
         hostnames: ["invite.chestr.dev"]
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: wizarr.png
+          gethomepage.dev/name: Wizarr
+          gethomepage.dev/group: System
         parentRefs:
           - name: external
             namespace: kube-system

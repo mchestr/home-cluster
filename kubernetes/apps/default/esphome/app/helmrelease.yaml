@@ -55,6 +55,11 @@ spec:
     route:
       app:
         hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Automation
+          gethomepage.dev/name: ESPHome
+          gethomepage.dev/icon: esphome.png
         parentRefs:
           - name: internal
             namespace: kube-system

@@ -99,6 +99,11 @@ spec:
       main:
         enabled: true
         hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: grafana.png
+          gethomepage.dev/name: Grafana
+          gethomepage.dev/group: Monitoring
         parentRefs:
           - name: internal
             namespace: kube-system

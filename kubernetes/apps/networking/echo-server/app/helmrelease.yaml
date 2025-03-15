@@ -75,6 +75,10 @@ spec:
     route:
       app:
         hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: System
+          gethomepage.dev/name: Echo
         parentRefs:
           - name: external
             namespace: kube-system

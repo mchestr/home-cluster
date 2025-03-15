@@ -3,20 +3,20 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: emqx
+  name: thanos
   annotations:
     gethomepage.dev/enabled: "true"
-    gethomepage.dev/icon: emqx.png
-    gethomepage.dev/name: Emqx
-    gethomepage.dev/group: Automation
+    gethomepage.dev/icon: thanos.png
+    gethomepage.dev/name: Thanos
+    gethomepage.dev/group: Storage
 spec:
-  hostnames: ["emqx.chestr.dev"]
+  hostnames: ["thanos.chestr.dev"]
   parentRefs:
     - name: internal
       namespace: kube-system
       sectionName: https
   rules:
     - backendRefs:
-        - name: emqx-dashboard
-          namespace: default
-          port: 18083
+        - name: thanos-query-frontend
+          namespace: monitoring
+          port: 9090

@@ -58,6 +58,11 @@ spec:
     route:
       app:
         hostnames: ["cal.chestr.dev"]
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: radicale.png
+          gethomepage.dev/name: Calendar
+          gethomepage.dev/group: System
         parentRefs:
           - name: external
             namespace: kube-system

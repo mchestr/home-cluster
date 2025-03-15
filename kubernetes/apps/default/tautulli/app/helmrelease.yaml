@@ -85,6 +85,14 @@ spec:
     route:
       app:
         hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: tautulli.png
+          gethomepage.dev/name: Tautulli
+          gethomepage.dev/group: Media
+          gethomepage.dev/widget.type: tautulli
+          gethomepage.dev/widget.url: http://tautulli.default.svc.cluster.local:8181
+          gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_TAUTULLI_API_KEY}}" }}'
         parentRefs:
           - name: internal
             namespace: kube-system

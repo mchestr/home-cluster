@@ -58,6 +58,11 @@ spec:
     route:
       app:
         hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: System
+          gethomepage.dev/name: Maintainerr
+          gethomepage.dev/icon: mdi-wrench-clock
         parentRefs:
           - name: internal
             namespace: kube-system

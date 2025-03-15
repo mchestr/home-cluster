@@ -69,6 +69,11 @@ spec:
         hostnames:
           - "{{ .Release.Name }}.chestr.dev"
           - sync.chestr.dev
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: mdi-cloud
+          gethomepage.dev/name: Sync
+          gethomepage.dev/group: System
         parentRefs:
           - name: internal
             namespace: kube-system

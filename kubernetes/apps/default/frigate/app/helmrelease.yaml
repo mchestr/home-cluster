@@ -114,6 +114,11 @@ spec:
     route:
       app:
         hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Home
+          gethomepage.dev/name: Frigate
+          gethomepage.dev/icon: frigate.png
         parentRefs:
           - name: internal
             namespace: kube-system

@@ -55,6 +55,11 @@ spec:
         hostnames:
           - "{{ .Release.Name }}.chestr.dev"
           - zwave.chestr.dev
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: zwavejs2mqtt.png
+          gethomepage.dev/name: zWave
+          gethomepage.dev/group: Automation
         parentRefs:
           - name: internal
             namespace: kube-system

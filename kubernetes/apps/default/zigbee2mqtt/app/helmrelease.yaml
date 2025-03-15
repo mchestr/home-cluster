@@ -80,6 +80,11 @@ spec:
         hostnames:
           - "{{ .Release.Name }}.chestr.dev"
           - zigbee.chestr.dev
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: zigbee2mqtt.png
+          gethomepage.dev/name: Zigbee
+          gethomepage.dev/group: Automation
         parentRefs:
           - name: internal
             namespace: kube-system
