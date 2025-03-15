@@ -362,7 +362,7 @@ spec:
         kubernetes-pods:
           # renovate: depName="Kubernetes / Views / Pods"
           gnetId: 15760
-          revision: 22
+          revision: 36
           datasource: Prometheus
       thanos:
         thanos-bucket-replicate:
