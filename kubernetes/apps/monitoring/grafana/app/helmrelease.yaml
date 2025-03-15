@@ -248,37 +248,36 @@ spec:
       default:
         cloudflared:
           # renovate: depName="Cloudflare Tunnels (cloudflared)"
-          gnetId: 17457 # https://grafana.com/grafana/dashboards/17457?tab=revisions
+          gnetId: 17457
           revision: 6
           datasource:
             - name: DS_PROMETHEUS
               value: Prometheus
         external-dns:
           # renovate: depName="External-dns"
-          gnetId: 15038 # https://grafana.com/grafana/dashboards/15038?tab=revisions
+          gnetId: 15038
           revision: 1
           datasource: Prometheus
         node-exporter-full:
           # renovate: depName="Node Exporter Full"
-          gnetId: 1860 # https://grafana.com/grafana/dashboards/1860?tab=revisions
+          gnetId: 1860
           revision: 31
           datasource: Prometheus
-        redis:
-          gnetId: 763 # https://grafana.com/grafana/dashboards/763?tab=revisions
-          revision: 5
-          datasource: Prometheus
         cert-manager:
-          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/cert-manager/dashboards/cert-manager.json
+          # renovate: depName="Cert-manager-Kubernetes"
+          gnetId: 20842
+          revision: 3
           datasource: Prometheus
         external-secrets:
           url: https://raw.githubusercontent.com/external-secrets/external-secrets/main/docs/snippets/dashboard.json
           datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/14371
         nut:
+          # renovate: depName="Prometheus NUT Exporter"
           gnetId: 14371
           revision: 1
           datasource: Prometheus
         synology-nas-details:
+          # renovate: depName="Synology NAS Details"
           gnetId: 14284
           revision: 9
           datasource: Prometheus
@@ -306,8 +305,8 @@ spec:
           gnetId: 21356
           revision: 3
           datasource:
-            - name: DS_PROMETHEUS
-              value: Prometheus
+            - { name: DS_PROMETHEUS, value: Prometheus }
+            - { name: VAR_REPLICATIONDESTNAME, value: .*-dst }
       ceph:
         ceph-cluster:
           # renovate: depName="Ceph Cluster"
@@ -404,10 +403,10 @@ spec:
           gnetId: 11312
           revision: 9
           datasource: Prometheus
-        unifi-udp:
-          # renovate: depName="UniFi-Poller: USW Insights - Prometheus"
+        unifi-pdu:
+          # renovate: depName="UniFi-Poller: PDU Insights - Prometheus"
           gnetId: 23027
-          revision: 9
+          revision: 1
           datasource: Prometheus
       emqx:
         emqx-authentication:
@@ -459,6 +458,8 @@ spec:
           url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/charges.json
         charging-stats:
           url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/charging-stats.json
+        database-info:
+          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/database-info.json
         drive-stats:
           url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/drive-stats.json
         drives:
@@ -491,6 +492,8 @@ spec:
           url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/internal/charge-details.json
         drive-details:
           url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/internal/drive-details.json
+        home:
+          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/internal/home.json
 
     sidecar:
       dashboards:
