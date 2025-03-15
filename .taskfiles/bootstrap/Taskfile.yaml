@@ -17,6 +17,7 @@ tasks:
       - talosctl --nodes {{.RANDOM_CONTROLLER}} get machineconfig
       - which jq talosctl
 
+  # task bootstrap:apps ROOK_DISK='Samsung SSD 990 PRO 2TB'
   apps:
     desc: Bootstrap Kubernetes Apps [ROOK_DISK=required]
     prompt: Bootstrap Kubernetes Apps ...?
