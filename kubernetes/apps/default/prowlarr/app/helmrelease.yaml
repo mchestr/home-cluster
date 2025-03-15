@@ -71,6 +71,14 @@ spec:
     route:
       app:
         hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: prowlarr.png
+          gethomepage.dev/name: Prowlarr
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/widget.type: *app
+          gethomepage.dev/widget.url: http://prowlarr.default.svc.cluster.local:9696
+          gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}" }}'
         parentRefs:
           - name: internal
             namespace: kube-system

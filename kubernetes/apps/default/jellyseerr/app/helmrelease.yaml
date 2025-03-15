@@ -88,6 +88,14 @@ spec:
     route:
       app:
         hostnames: ["requests.chestr.dev"]
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: overseerr.png
+          gethomepage.dev/name: Requests
+          gethomepage.dev/group: Media
+          gethomepage.dev/widget.type: overseerr
+          gethomepage.dev/widget.url: http://jellyseerr.default.svc.cluster.local:5055
+          gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_JELLYSEERR_API_KEY}}" }}'
         parentRefs:
           - name: external
             namespace: kube-system

@@ -83,6 +83,11 @@ spec:
     route:
       app:
         hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: System
+          gethomepage.dev/name: LLDAP
+          gethomepage.dev/icon: mdi-account-key
         parentRefs:
           - name: internal
             namespace: kube-system

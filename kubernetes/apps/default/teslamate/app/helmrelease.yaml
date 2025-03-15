@@ -56,6 +56,11 @@ spec:
     route:
       app:
         hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: teslamate.png
+          gethomepage.dev/name: TeslaMate
+          gethomepage.dev/group: Monitoring
         parentRefs:
           - name: internal
             namespace: kube-system

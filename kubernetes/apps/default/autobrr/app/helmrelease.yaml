@@ -95,6 +95,14 @@ spec:
     route:
       app:
         hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: autobrr.png
+          gethomepage.dev/name: Autobrr
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/widget.type: autobrr
+          gethomepage.dev/widget.url: http://autobrr.default.svc.cluster.local:7474
+          gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_AUTOBRR_API_KEY}}" }}'
         parentRefs:
           - name: internal
             namespace: kube-system

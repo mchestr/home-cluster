@@ -111,6 +111,11 @@ spec:
         hostnames:
           - "{{ .Release.Name }}.chestr.dev"
           - status.chestr.dev
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: gatus.png
+          gethomepage.dev/name: Status
+          gethomepage.dev/group: System
         parentRefs:
           - name: external
             namespace: kube-system

@@ -69,6 +69,14 @@ spec:
     route:
       app:
         hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: sabnzbd.png
+          gethomepage.dev/name: SABnzbd
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/widget.type: sabnzbd
+          gethomepage.dev/widget.url: http://sabnzbd.default.svc.cluster.local:8080
+          gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_SABNZBD_API_KEY}}" }}'
         parentRefs:
           - name: internal
             namespace: kube-system

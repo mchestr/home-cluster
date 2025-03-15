@@ -30,6 +30,11 @@ spec:
         main:
           enabled: true
           hostnames: ["alertmanager.chestr.dev"]
+          annotations:
+            gethomepage.dev/enabled: "true"
+            gethomepage.dev/icon: alertmanager.png
+            gethomepage.dev/name: Alert-Manager
+            gethomepage.dev/group: Monitoring
           parentRefs:
             - name: internal
               namespace: kube-system
@@ -59,6 +64,11 @@ spec:
           enabled: true
           hostnames:
             - prometheus.chestr.dev
+          annotations:
+            gethomepage.dev/enabled: "true"
+            gethomepage.dev/icon: prometheus.png
+            gethomepage.dev/name: Prometheus
+            gethomepage.dev/group: Monitoring
           parentRefs:
             - name: internal
               namespace: kube-system

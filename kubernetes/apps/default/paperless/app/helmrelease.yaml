@@ -124,6 +124,11 @@ spec:
     route:
       app:
         hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: paperless.png
+          gethomepage.dev/name: Paperless
+          gethomepage.dev/group: Home
         parentRefs:
           - name: internal
             namespace: kube-system

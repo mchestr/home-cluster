@@ -73,6 +73,11 @@ spec:
         hostnames:
           - "{{ .Release.Name }}.chestr.dev"
           - home.chestr.dev
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Home
+          gethomepage.dev/name: Home Assistant
+          gethomepage.dev/icon: home-assistant.png
         parentRefs:
           - name: external
             namespace: kube-system
