@@ -16,14 +16,14 @@ terraform {
       version = "5.1.0"
     }
     onepassword = {
-      source = "1Password/onepassword"
+      source  = "1Password/onepassword"
       version = "2.1.2"
     }
   }
 }
 
 provider "cloudflare" {
-  api_token   = data.onepassword_item.cloudflare.section[0].field[index(data.onepassword_item.cloudflare.section[0].field.*.label, "CLOUDFLARE_TERRAFORM_TOKEN")].value
+  api_token = data.onepassword_item.cloudflare.section[0].field[index(data.onepassword_item.cloudflare.section[0].field.*.label, "CLOUDFLARE_TERRAFORM_TOKEN")].value
 }
 
 provider "onepassword" {
