@@ -27,7 +27,7 @@ spec:
           app:
             image:
               repository: ghcr.io/gethomepage/homepage
-              tag: nightly@sha256:ba6c998399d1ef74fd8e7eacddd00ebffe49d45b0a0059724f99a393623b6672
+              tag: v1.0.2
             env:
               TZ: America/Vancouver
               HOMEPAGE_ALLOWED_HOSTS: "{{ .Release.Name }}.chestr.dev"
