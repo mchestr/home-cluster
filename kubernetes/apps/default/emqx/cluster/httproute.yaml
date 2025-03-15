@@ -9,6 +9,7 @@ metadata:
     gethomepage.dev/icon: emqx.png
     gethomepage.dev/name: Emqx
     gethomepage.dev/group: Automation
+    gethomepage.dev/pod-selector: apps.emqx.io/instance=emqx
 spec:
   hostnames: ["emqx.chestr.dev"]
   parentRefs:

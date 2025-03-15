@@ -9,6 +9,7 @@ metadata:
     gethomepage.dev/icon: rook.png
     gethomepage.dev/name: Rook
     gethomepage.dev/group: Storage
+    gethomepage.dev/pod-selector: app.kubernetes.io/name=ceph-mgr
 spec:
   hostnames: ["rook.chestr.dev"]
   parentRefs:
