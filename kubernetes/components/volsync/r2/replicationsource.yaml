@@ -5,6 +5,9 @@ kind: ReplicationSource
 metadata:
   name: ${APP}
 spec:
+  sourcePVC: ${VOLSYNC_CLAIM:-${APP}}
+  trigger:
+    schedule: ${VOLSYNC_SCHEDULE:-0 11 * * *}
   restic:
     accessModes: ["${VOLSYNC_SNAP_ACCESSMODES:=ReadWriteOnce}"]
     cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:=ReadWriteOnce}"]
@@ -21,6 +24,14 @@ spec:
       daily: 7
     storageClassName: ${VOLSYNC_STORAGECLASS:=ceph-block}
     volumeSnapshotClassName: ${VOLSYNC_SNAPSHOTCLASS:=csi-ceph-blockpool}
-  sourcePVC: ${VOLSYNC_CLAIM:-${APP}}
-  trigger:
-    schedule: ${VOLSYNC_SCHEDULE:-0 11 * * *}
+    moverAffinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - topologyKey: kubernetes.io/hostname
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/created-by: volsync
+            namespaceSelector:
+              matchExpressions:
+                - key: kubernetes.io/metadata.name
+                  operator: Exists
