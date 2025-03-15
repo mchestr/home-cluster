@@ -17,37 +17,13 @@
       versioningTemplate: "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
       packageNameTemplate: "{{#if packageName}}{{{packageName}}}{{else}}{{{depName}}}{{/if}}",
     },
-    {
-      description: "Process Talos version README badge.io Markdown",
-      fileMatch: ["README.md"],
-      matchStrings: [
-        "https:\\/\\/img.shields.io\\/badge\\/Talos-(?<currentValue>\\S+\\d)",
-      ],
-      datasourceTemplate: "github-releases",
-      depNameTemplate: "siderolabs/talos",
-    },
-    {
-      description: "Process Kubernetes version README badge.io Markdown",
-      fileMatch: ["README.md"],
-      matchStrings: [
-        "https:\\/\\/img.shields.io\\/badge\\/k8s-(?<currentValue>\\S+\\d)",
-      ],
-      datasourceTemplate: "github-releases",
-      depNameTemplate: "siderolabs/kubelet",
-    },
   ],
   packageRules: [
     {
       description: "Loose versioning for non-semver packages",
       matchDatasources: ["docker"],
       versioning: "loose",
-      matchPackagePatterns: ["changedetection", "plex", "qbittorrent"],
-    },
-    {
-      description: "Custom versioning for frigate",
-      matchDatasources: ["docker"],
-      versioning: "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(-(?<compatibility>beta)(?<build>\\d+))?$",
-      matchPackagePatterns: ["frigate"],
+      matchPackagePatterns: ["plex"],
     },
   ],
 }
