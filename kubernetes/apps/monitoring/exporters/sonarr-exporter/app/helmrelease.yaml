@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: sonarr-exporter
+  name: &app sonarr-exporter
 spec:
   interval: 30m
   chartRef:
@@ -58,17 +58,17 @@ spec:
 
     service:
       app:
-        controller: sonarr-exporter
+        controller: *app
         ports:
           http:
             port: *port
 
     serviceMonitor:
-      main:
-        serviceName: sonarr-exporter
+      app:
+        serviceName: *app
         endpoints:
           - port: http
             scheme: http
             path: /metrics
-            interval: 3m
-            scrapeTimeout: 1m
+            interval: 1m
+            scrapeTimeout: 30s
