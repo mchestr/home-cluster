@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: overseerr-exporter
+  name: &app jellyseerr-exporter
 spec:
   interval: 30m
   chartRef:
@@ -20,7 +20,7 @@ spec:
     keepHistory: false
   values:
     controllers:
-      overseerr-exporter:
+      jellyseerr-exporter:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -32,10 +32,10 @@ spec:
               - --overseerr.address
               - http://jellyseerr.default.svc.cluster.local.:5055
               - --overseerr.api-key
-              - $(OVERSEERR_API_KEY)
+              - $(JELLYSEERR_API_KEY)
             envFrom:
               - secretRef:
-                  name: overseerr-exporter-secret
+                  name: jellyseerr-exporter-secret
             resources:
               requests:
                 cpu: 5m
@@ -56,17 +56,17 @@ spec:
 
     service:
       app:
-        controller: overseerr-exporter
+        controller: *app
         ports:
           http:
             port: 9850
 
     serviceMonitor:
       app:
-        serviceName: overseerr-exporter
+        serviceName: *app
         endpoints:
           - port: http
             scheme: http
             path: /metrics
-            interval: 1h
-            scrapeTimeout: 1m
+            interval: 1m
+            scrapeTimeout: 30s
