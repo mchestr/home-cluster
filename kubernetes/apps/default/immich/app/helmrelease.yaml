@@ -53,8 +53,9 @@ spec:
               requests: &requests
                 cpu: 100m
                 memory: 250Mi
+                gpu.intel.com/i915: 1
               limits:
-                memory: 1Gi
+                memory: 4Gi
 
       machine-learning:
         annotations:
