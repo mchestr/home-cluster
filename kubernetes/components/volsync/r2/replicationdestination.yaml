@@ -13,9 +13,9 @@ spec:
     capacity: ${VOLSYNC_CAPACITY:-5Gi}
     copyMethod: Snapshot
     moverSecurityContext:
-      fsGroup: ${APP_GID:-568}
-      runAsGroup: ${APP_GID:-568}
-      runAsUser: ${APP_UID:-568}
+      fsGroup: ${APP_GID:-1000}
+      runAsGroup: ${APP_GID:-1000}
+      runAsUser: ${APP_UID:-1000}
     repository: ${APP}-volsync-secret
     storageClassName: ${VOLSYNC_STORAGECLASS:-ceph-block}
     volumeSnapshotClassName: ${VOLSYNC_SNAPSHOTCLASS:-csi-ceph-blockpool}

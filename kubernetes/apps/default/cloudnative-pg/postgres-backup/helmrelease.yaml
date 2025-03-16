@@ -10,14 +10,6 @@ spec:
     name: app-template
     namespace: flux-system
   values:
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups:
-          - 65539
     controllers:
       postgres-backup:
         type: cronjob
@@ -47,6 +39,16 @@ spec:
               POSTGRES_HOST: immich-db-rw.default.svc.cluster.local
               POSTGRES_DB: immich
             command: *command
+
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        runAsNonRoot: true
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 65539
 
     persistence:
       backups:
