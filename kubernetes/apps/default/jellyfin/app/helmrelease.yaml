@@ -23,19 +23,6 @@ spec:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   values:
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups:
-          - 44
-          - 105
-          - 10000
-      nodeSelector:
-        intel.feature.node.kubernetes.io/gpu: "true"
-
     controllers:
       jellyfin:
         containers:
@@ -81,6 +68,20 @@ spec:
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 30
+
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        runAsNonRoot: true
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 44
+          - 105
+          - 10000
+      nodeSelector:
+        intel.feature.node.kubernetes.io/gpu: "true"
 
     service:
       app:

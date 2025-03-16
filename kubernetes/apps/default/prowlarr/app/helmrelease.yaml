@@ -21,13 +21,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: OnRootMismatch
-
     controllers:
       prowlarr:
         annotations:
@@ -60,6 +53,14 @@ spec:
             envFrom:
               - secretRef:
                   name: prowlarr-secret
+
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        runAsNonRoot: true
+        fsGroupChangePolicy: OnRootMismatch
 
     service:
       app:

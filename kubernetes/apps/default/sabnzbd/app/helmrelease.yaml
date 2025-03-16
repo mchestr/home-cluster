@@ -24,13 +24,6 @@ spec:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   values:
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 65539
-        fsGroupChangePolicy: OnRootMismatch
-
     controllers:
       sabnzbd:
         annotations:
@@ -58,6 +51,16 @@ spec:
               requests:
                 cpu: 100m
                 memory: 250Mi
+
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        runAsNonRoot: true
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 65539
 
     service:
       app:
