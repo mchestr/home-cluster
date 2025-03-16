@@ -27,12 +27,19 @@ spec:
             image:
               repository: syncthing/syncthing
               tag: 1.29.3
+            env:
+              PUID: "1000"
+              PGID: "1000"
+            securityContext:
+              # allowPrivilegeEscalation: false
+              # readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 15m
-                memory: 100M
+                memory: 249Mi
               limits:
-                memory: 1Gi
+                memory: 512Mi
 
     defaultPodOptions:
       securityContext:
@@ -43,16 +50,18 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
           - 65539
+        seccompProfile:
+          type: RuntimeDefault
 
     service:
       app:
-        controller: syncthing
+        controller: *app
         ports:
           http:
             port: &port 8384
 
       listen:
-        controller: syncthing
+        controller: *app
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: 10.0.20.90
@@ -89,9 +98,13 @@ spec:
 
     persistence:
       data:
-        enabled: true
         type: nfs
         server: lochnas.chestr.dev
         path: /volume1/shared/syncthing
+        globalMounts:
+          - path: /var/syncthing
+
+      config:
+        existingClaim: *app
         globalMounts:
           - path: /var/syncthing
