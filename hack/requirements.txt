@@ -8,7 +8,7 @@ jsonpickle==4.0.2
 MarkupSafe==3.0.2
 matplotlib-inline==0.1.7
 networkx==3.4.2
-numpy==2.2.3
+numpy==2.2.4
 pandas==2.2.3
 parso==0.8.4
 pexpect==4.9.0
