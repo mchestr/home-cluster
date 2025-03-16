@@ -21,3 +21,13 @@ groups:
             {{ $labels.app }} failed to inject a torrent
         labels:
           severity: critical
+
+      - alert: CrossSeedUnauthorizedAccessMiscondfiguration
+        expr: |
+          sum by (app) (count_over_time({app=~"cross-seed"} |~ "(?i)Unauthorized API access attempt"[5m])) > 0
+        for: 5m
+        annotations:
+          summary: >-
+            {{ $labels.app }} is experiencing unauthorized api access, something is misconfigured
+        labels:
+          severity: critical
