@@ -12,11 +12,6 @@ spec:
   dependsOn:
     - name: qbittorrent
   values:
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-
     controllers:
       qbtools:
         containers:
@@ -107,6 +102,14 @@ spec:
               - qbittorrent.default.svc.cluster.local
               - --port
               - "8080"
+
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        runAsNonRoot: true
+        fsGroupChangePolicy: OnRootMismatch
 
     persistence:
       config-file:

@@ -24,14 +24,6 @@ spec:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   values:
-    defaultPodOptions:
-      hostname: home-assistant
-      securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: OnRootMismatch
-
     controllers:
       home-assistant:
         pod:
@@ -60,6 +52,15 @@ spec:
             image:
               repository: ghcr.io/mchestr/vscode-tunnel
               tag: 1.98.2@sha256:8276a531660eff6c9b3f8ddb57b9a050dbefa1f637336dc322c7e3e943f8b9ca
+
+    defaultPodOptions:
+      hostname: home-assistant
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
 
     service:
       app:
