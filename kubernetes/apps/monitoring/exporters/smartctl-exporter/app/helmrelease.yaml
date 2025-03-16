@@ -4,28 +4,21 @@ kind: HelmRelease
 metadata:
   name: &app smartctl-exporter
 spec:
-  interval: 30m
+  interval: 1h
   chartRef:
     kind: OCIRepository
     name: smartctl-exporter
-    namespace: monitoring
   install:
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   values:
     fullnameOverride: *app
-    config:
-      devices:
-        - /dev/nvme0n1
-
     serviceMonitor:
       enabled: true
-
     prometheusRules:
       enabled: false
