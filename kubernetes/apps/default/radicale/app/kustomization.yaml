@@ -6,12 +6,12 @@ commonLabels:
   app.kubernetes.io/name: radicale
 configMapGenerator:
   - files:
-      - config/config.cfg
+      - resources/config.cfg
     name: radicale-config
 generatorOptions:
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
   disableNameSuffixHash: true
 resources:
-  - externalsecret.yaml
-  - helmrelease.yaml
+  - ./externalsecret.yaml
+  - ./helmrelease.yaml
