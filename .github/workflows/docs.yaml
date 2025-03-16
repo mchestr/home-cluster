@@ -43,21 +43,6 @@ jobs:
           token: "${{ steps.app-token.outputs.token }}"
           enablement: true
 
-      - name: setup python
-        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5
-        with:
-          python-version: 3.13 #install the python needed
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          if [ -f hack/requirements.txt ]; then pip install -r hack/requirements.txt; fi
-
-      - name: execute py script # run file
-        run: |
-          python hack/flux-visualizer.py
-          mv graph.html docs/src/assets/graph.html
-
       - name: Build docs
         uses: docker://ghcr.io/bjw-s/mdbook:0.4.44@sha256:82d38ed9bca2bbf0c3be62deef3ea1a27fdbffe3caf92fedf4a4b3c4c904ec48
         with:
