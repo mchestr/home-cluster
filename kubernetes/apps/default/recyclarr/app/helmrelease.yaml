@@ -26,32 +26,42 @@ spec:
   values:
     defaultPodOptions:
       securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
 
     controllers:
       recyclarr:
-        annotations:
-          reloader.stakater.com/auto: "true"
-
+        type: cronjob
+        cronjob:
+          schedule: 0 0 * * *
+          backoffLimit: 0
+          concurrencyPolicy: Forbid
+          successfulJobsHistory: 1
+          failedJobsHistory: 1
+          ttlSecondsAfterFinished: 86400
         containers:
           app:
             image:
               repository: ghcr.io/recyclarr/recyclarr
-              tag: 7.4.1
-            env:
-              TZ: America/Vancouver
+              tag: 7.4.1@sha256:759540877f95453eca8a26c1a93593e783a7a824c324fbd57523deffb67f48e1
             envFrom:
               - secretRef:
                   name: recyclarr-secret
+            args: ["sync"]
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
-                memory: 50Mi
               limits:
-                memory: 200Mi
+                memory: 128Mi
+        pod:
+          restartPolicy: Never
 
     persistence:
       config:
@@ -62,3 +72,14 @@ spec:
         globalMounts:
           - path: /config/recyclarr.yml
             subPath: recyclarr.yml
+            readOnly: true
+      config-logs:
+        type: emptyDir
+        globalMounts:
+          - path: /config/logs
+      config-repositories:
+        type: emptyDir
+        globalMounts:
+          - path: /config/repositories
+      tmp:
+        type: emptyDir
