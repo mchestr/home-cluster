@@ -39,8 +39,10 @@ spec:
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
-        runAsNonRoot: true
+        # runAsNonRoot: true
         fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 65539
 
     service:
       app:
