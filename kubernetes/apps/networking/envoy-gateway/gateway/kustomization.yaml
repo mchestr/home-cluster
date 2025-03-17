@@ -7,5 +7,5 @@ resources:
   - ./internal-secure.yaml
   - ./internal.yaml
   - ./pushsecret.yaml
-  # - ./redirect.yaml
+  - ./redirect.yaml
   - ./servicemonitor.yaml
