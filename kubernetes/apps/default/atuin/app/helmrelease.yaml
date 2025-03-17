@@ -31,7 +31,7 @@ spec:
           init-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: "16.8"
+              tag: "17.4"
             envFrom:
               - secretRef:
                   name: atuin-dbinit-secret
