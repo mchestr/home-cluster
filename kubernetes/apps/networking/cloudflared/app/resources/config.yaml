@@ -4,7 +4,7 @@ originRequest:
 
 ingress:
   - hostname: chestr.dev
-    service: &service https://cilium-gateway-external.kube-system.svc.cluster.local
+    service: &service https://envoy-networking-external-8c60613e.networking.svc.cluster.local
   - hostname: "*.chestr.dev"
     service: *service
   - service: http_status:404

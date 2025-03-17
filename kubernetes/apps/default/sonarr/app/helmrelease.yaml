@@ -85,8 +85,8 @@ spec:
           gethomepage.dev/widget.url: http://sonarr.default.svc.cluster.local:8989
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_SONARR_API_KEY}}" }}'
         parentRefs:
-          - name: internal
-            namespace: kube-system
+          - name: internal-secure
+            namespace: networking
             sectionName: https
         rules:
           - backendRefs:

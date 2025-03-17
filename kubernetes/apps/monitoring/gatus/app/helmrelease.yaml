@@ -85,6 +85,7 @@ spec:
                 cpu: 100m
               limits:
                 memory: 256Mi
+
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -118,7 +119,7 @@ spec:
           gethomepage.dev/group: System
         parentRefs:
           - name: external
-            namespace: kube-system
+            namespace: networking
             sectionName: https
         rules:
           - backendRefs:

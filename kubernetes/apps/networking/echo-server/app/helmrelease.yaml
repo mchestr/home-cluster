@@ -80,8 +80,8 @@ spec:
           gethomepage.dev/group: System
           gethomepage.dev/name: Echo
         parentRefs:
-          - name: external
-            namespace: kube-system
+          - name: internal-secure
+            namespace: networking
             sectionName: https
         rules:
           - backendRefs:

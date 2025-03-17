@@ -120,8 +120,8 @@ spec:
           gethomepage.dev/name: Frigate
           gethomepage.dev/icon: frigate.png
         parentRefs:
-          - name: internal
-            namespace: kube-system
+          - name: internal-secure
+            namespace: networking
             sectionName: https
         rules:
           - backendRefs:

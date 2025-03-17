@@ -114,8 +114,8 @@ spec:
           gethomepage.dev/widget.url: http://bazarr.default.svc.cluster.local:6767
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_BAZARR_API_KEY}}" }}'
         parentRefs:
-          - name: internal
-            namespace: kube-system
+          - name: internal-secure
+            namespace: networking
             sectionName: https
         rules:
           - backendRefs:

@@ -103,7 +103,7 @@ spec:
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_PLEX_API_KEY}}" }}'
         parentRefs:
           - name: external
-            namespace: kube-system
+            namespace: networking
             sectionName: https
         rules:
           - backendRefs:

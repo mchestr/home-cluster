@@ -1,0 +1,30 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: envoy-gateway
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: envoy-gateway
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    deployment:
+      replicas: 2
+    config:
+      envoy-gateway:
+        gateway:
+          controllerName: gateway.envoyproxy.io/gatewayclass-controller
+        backendTlsConfig:
+          clientCertificateRef: chestr-dev-tls
+      logging:
+        level:
+          default: debug
