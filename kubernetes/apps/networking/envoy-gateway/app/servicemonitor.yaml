@@ -2,7 +2,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: envoy-gateway
+  name: envoy-gateway-controlplane
 spec:
   endpoints:
     - interval: 1m
@@ -10,7 +10,7 @@ spec:
       port: metrics
       scheme: http
       scrapeTimeout: 10s
-  jobLabel: envoy-gateway
+  jobLabel: envoy-gateway-controlplane
   selector:
     matchLabels:
       app.kubernetes.io/instance: envoy-gateway

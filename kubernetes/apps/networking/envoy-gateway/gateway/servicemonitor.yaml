@@ -1,0 +1,18 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: envoy-gateway-dataplane
+spec:
+  endpoints:
+    - interval: 1m
+      path: /stats/prometheus
+      port: metrics
+      scheme: http
+      scrapeTimeout: 10s
+  jobLabel: envoy-gateway-dataplane
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: proxy
+      app.kubernetes.io/managed-by: envoy-gateway
+      app.kubernetes.io/name: envoy
