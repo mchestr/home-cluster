@@ -51,15 +51,15 @@ endpoints:
     alerts:
       - type: pushover
 
-  - name: mainsail.chestr.dev
-    group: certificates
-    url: "tls://mainsail.chestr.dev:443"
-    interval: 24h
-    conditions:
-      - "[CONNECTED] == true"
-      - "[CERTIFICATE_EXPIRATION] > 336h"
-    alerts:
-      - type: pushover
+  # - name: mainsail.chestr.dev
+  #   group: certificates
+  #   url: "tls://mainsail.chestr.dev:443"
+  #   interval: 24h
+  #   conditions:
+  #     - "[CONNECTED] == true"
+  #     - "[CERTIFICATE_EXPIRATION] > 336h"
+  #   alerts:
+  #     - type: pushover
 
   - name: pikvm.chestr.dev
     group: certificates
