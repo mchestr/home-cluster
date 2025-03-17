@@ -5,3 +5,4 @@ resources:
   - ./gatewayclass.yaml
   - ./helmrelease.yaml
   - ./helmrepository.yaml
+  - ./servicemonitor.yaml
