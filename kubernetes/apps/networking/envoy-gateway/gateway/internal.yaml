@@ -51,3 +51,12 @@ spec:
         replicas: 2
       envoyService:
         name: envoy-gateway-internal
+        patch:
+          type: StrategicMerge
+          value:
+            spec:
+              ports:
+                - name: metrics
+                  port: 19001
+                  targetPort: 19001
+                  protocol: TCP
