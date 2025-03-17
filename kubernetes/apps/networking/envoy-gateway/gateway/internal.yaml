@@ -15,6 +15,10 @@ spec:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
       io.cilium/lb-ipam-ips: *ip
+    parametersRef:
+      group: gateway.envoyproxy.io
+      kind: EnvoyProxy
+      name: internal-proxy-config
   listeners:
     - name: http
       protocol: HTTP
@@ -34,3 +38,16 @@ spec:
         certificateRefs:
           - kind: Secret
             name: chestr-dev-tls
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
+metadata:
+  name: internal-proxy-config
+spec:
+  provider:
+    type: Kubernetes
+    kubernetes:
+      envoyDeployment:
+        replicas: 2
+      envoyService:
+        name: envoy-gateway-internal
