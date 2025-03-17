@@ -103,7 +103,7 @@ spec:
         server: lochnas.chestr.dev
         path: /volume1/shared/syncthing
         globalMounts:
-          - path: /var/syncthing
+          - path: /data
 
       config:
         existingClaim: *app
