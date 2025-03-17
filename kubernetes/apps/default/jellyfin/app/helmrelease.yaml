@@ -126,3 +126,8 @@ spec:
         path: /volume1/shared/media
         globalMounts:
           - path: /media
+      cache:
+        enabled: true
+        type: emptyDir
+        globalMounts:
+          - path: /config/cache
