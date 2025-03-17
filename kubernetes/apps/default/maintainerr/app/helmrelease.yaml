@@ -64,8 +64,8 @@ spec:
           gethomepage.dev/name: Maintainerr
           gethomepage.dev/icon: mdi-wrench-clock
         parentRefs:
-          - name: internal
-            namespace: kube-system
+          - name: internal-secure
+            namespace: networking
             sectionName: https
         rules:
           - backendRefs:

@@ -81,8 +81,8 @@ spec:
           gethomepage.dev/widget.url: http://sabnzbd.default.svc.cluster.local:8080
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_SABNZBD_API_KEY}}" }}'
         parentRefs:
-          - name: internal
-            namespace: kube-system
+          - name: internal-secure
+            namespace: networking
             sectionName: https
         rules:
           - backendRefs:

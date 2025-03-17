@@ -7,5 +7,6 @@ components:
 resources:
   - ./cloudflared/ks.yaml
   - ./echo-server/ks.yaml
+  - ./envoy-gateway/ks.yaml
   - ./external-dns/ks.yaml
   - ./multus/ks.yaml

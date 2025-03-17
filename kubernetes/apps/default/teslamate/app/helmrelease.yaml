@@ -62,8 +62,8 @@ spec:
           gethomepage.dev/name: TeslaMate
           gethomepage.dev/group: Monitoring
         parentRefs:
-          - name: internal
-            namespace: kube-system
+          - name: internal-secure
+            namespace: networking
             sectionName: https
         rules:
           - backendRefs:

@@ -112,7 +112,7 @@ spec:
           gethomepage.dev/widget.version: '2'
         parentRefs:
           - name: external
-            namespace: kube-system
+            namespace: networking
             sectionName: https
         rules:
           - backendRefs:

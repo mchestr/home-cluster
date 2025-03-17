@@ -61,8 +61,8 @@ spec:
           gethomepage.dev/name: zWave
           gethomepage.dev/group: Automation
         parentRefs:
-          - name: internal
-            namespace: kube-system
+          - name: internal-secure
+            namespace: networking
             sectionName: https
         rules:
           - backendRefs:

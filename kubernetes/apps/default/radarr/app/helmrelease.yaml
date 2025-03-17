@@ -75,8 +75,8 @@ spec:
           gethomepage.dev/widget.url: http://radarr.default.svc.cluster.local:7878
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_RADARR_API_KEY}}" }}'
         parentRefs:
-          - name: internal
-            namespace: kube-system
+          - name: internal-secure
+            namespace: networking
             sectionName: https
         rules:
           - backendRefs:

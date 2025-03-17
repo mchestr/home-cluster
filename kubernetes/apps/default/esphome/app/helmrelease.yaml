@@ -61,8 +61,8 @@ spec:
           gethomepage.dev/name: ESPHome
           gethomepage.dev/icon: esphome.png
         parentRefs:
-          - name: internal
-            namespace: kube-system
+          - name: internal-secure
+            namespace: networking
             sectionName: https
         rules:
           - backendRefs:

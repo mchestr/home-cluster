@@ -5,6 +5,7 @@ namespace: monitoring
 components:
   - ../../components/common
 resources:
+  - ./referencegrant.yaml
   - ./exporters
   - ./gatus/ks.yaml
   - ./grafana/ks.yaml

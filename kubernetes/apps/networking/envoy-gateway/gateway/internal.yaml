@@ -3,19 +3,18 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: external
+  name: internal
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname external.chestr.dev
+    external-dns.alpha.kubernetes.io/target: &hostname internal.chestr.dev
 spec:
-  gatewayClassName: cilium
+  gatewayClassName: envoy
   addresses:
     - type: IPAddress
-      value: 10.0.20.200
-    - type: IPAddress
-      value: ::ffff:10.0.20.201
+      value: &ip 10.0.20.100
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
+      io.cilium/lb-ipam-ips: *ip
   listeners:
     - name: http
       protocol: HTTP

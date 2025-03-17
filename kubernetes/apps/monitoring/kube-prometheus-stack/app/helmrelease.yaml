@@ -37,8 +37,8 @@ spec:
             gethomepage.dev/group: Monitoring
             gethomepage.dev/pod-selector: app.kubernetes.io/name=alertmanager
           parentRefs:
-            - name: internal
-              namespace: kube-system
+            - name: internal-secure
+              namespace: networking
               sectionName: https
       alertmanagerSpec:
         alertmanagerConfiguration:
@@ -72,8 +72,8 @@ spec:
             gethomepage.dev/group: Monitoring
             gethomepage.dev/pod-selector: app.kubernetes.io/name=prometheus
           parentRefs:
-            - name: internal
-              namespace: kube-system
+            - name: internal-secure
+              namespace: networking
               sectionName: https
       prometheusSpec:
         ruleSelectorNilUsesHelmValues: false

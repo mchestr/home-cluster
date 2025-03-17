@@ -14,7 +14,7 @@ spec:
   hostnames: ["rook.chestr.dev"]
   parentRefs:
     - name: internal
-      namespace: kube-system
+      namespace: networking
       sectionName: https
   rules:
     - backendRefs:
