@@ -23,4 +23,4 @@ spec:
   targetRefs:
     - group: gateway.networking.k8s.io
       kind: Gateway
-      name: internal-secure
+      name: internal

@@ -12,7 +12,7 @@ metadata:
 spec:
   hostnames: ["thanos.chestr.dev"]
   parentRefs:
-    - name: internal-secure
+    - name: internal
       namespace: networking
       sectionName: https
   rules:

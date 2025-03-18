@@ -61,7 +61,9 @@ spec:
 
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        hostnames:
+          - "{{ .Release.Name }}.chestr.dev"
+          - irc.chestr.dev
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: System

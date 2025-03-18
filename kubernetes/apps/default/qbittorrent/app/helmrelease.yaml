@@ -114,7 +114,7 @@ spec:
           gethomepage.dev/widget.type: *app
           gethomepage.dev/widget.url: http://qbittorrent.default.svc.cluster.local:8080
         parentRefs:
-          - name: internal-secure
+          - name: internal
             namespace: networking
             sectionName: https
         rules:

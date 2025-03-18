@@ -123,7 +123,9 @@ spec:
 
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        hostnames:
+          - "{{ .Release.Name }}.chestr.dev"
+          - docs.chestr.dev
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: paperless.png

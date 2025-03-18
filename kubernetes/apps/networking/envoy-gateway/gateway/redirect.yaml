@@ -11,9 +11,6 @@ spec:
     - name: internal
       namespace: networking
       sectionName: http
-    - name: internal-secure
-      namespace: networking
-      sectionName: http
     - name: external
       namespace: networking
       sectionName: http
