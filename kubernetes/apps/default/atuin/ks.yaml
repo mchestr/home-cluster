@@ -6,6 +6,7 @@ metadata:
   namespace: &namespace default
 spec:
   components:
+    - ../../../../components/gatus/internal
     - ../../../../components/gatus/guarded
   dependsOn:
     - name: onepassword-store
