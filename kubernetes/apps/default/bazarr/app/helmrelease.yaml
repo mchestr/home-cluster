@@ -30,8 +30,8 @@ spec:
         initContainers:
           01-init-db:
             image:
-              repository: ghcr.io/onedr0p/postgres-init
-              tag: "17.4"
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 17.4@sha256:1efd1019b3924d3bcff7ee581255813f17555a7413b8a3ff5b0b344a47632d6c
             envFrom:
               - secretRef:
                   name: bazarr-dbinit-secret
@@ -39,8 +39,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/onedr0p/bazarr
-              tag: 1.5.1@sha256:b8fa3c3c2a5b7fe045e8f8eb95feac3c50b37837478ecc11d49db8fa8ddff683
+              repository: ghcr.io/home-operations/bazarr
+              tag: 1.5.1@sha256:a1b0d3a4e6462adb448dbfe4bf466e1d1bc920c17ac97c705b6db6eeb02b37b9
             env:
               TZ: America/Vancouver
             envFrom:
