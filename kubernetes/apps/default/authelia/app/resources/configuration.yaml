@@ -67,7 +67,7 @@ access_control:
 
 notifier:
   smtp:
-    sender: "Authelia <authelia@chestr.dev>"
+    sender: "Authelia <auth@chestr.dev>"
 
 identity_providers:
   oidc:
