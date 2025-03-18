@@ -25,6 +25,7 @@ metadata:
   namespace: &namespace rook-ceph
 spec:
   components:
+    - ../../../../components/gatus/internal
     - ../../../../components/gatus/guarded
   dependsOn:
     - name: rook-ceph

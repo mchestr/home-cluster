@@ -6,6 +6,7 @@ metadata:
   namespace: &namespace default
 spec:
   components:
+    - ../../../../components/gatus/internal
     - ../../../../components/gatus/guarded
   interval: 30m
   path: ./kubernetes/apps/default/homepage/app

@@ -1,0 +1,13 @@
+endpoints:
+  - client:
+      ignore-redirect: true
+    conditions:
+      - '[STATUS] == 401'
+      - '[BODY] == pat(*auth\.chestr\.dev*)'
+    group: internal-secured
+    interval: 1m
+    name: ${APP}
+    ui:
+      hide-hostname: true
+      hide-url: true
+    url: https://${GATUS_SUBDOMAIN:=${APP}}.chestr.dev${GATUS_PATH:=/}
