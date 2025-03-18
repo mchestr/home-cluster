@@ -13,3 +13,4 @@ generatorOptions:
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
+  - ./referencegrant.yaml

@@ -120,7 +120,7 @@ spec:
           gethomepage.dev/name: Frigate
           gethomepage.dev/icon: frigate.png
         parentRefs:
-          - name: internal-secure
+          - name: internal
             namespace: networking
             sectionName: https
         rules:

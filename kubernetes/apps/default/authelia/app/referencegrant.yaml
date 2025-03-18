@@ -2,7 +2,7 @@
 apiVersion: gateway.networking.k8s.io/v1beta1
 kind: ReferenceGrant
 metadata:
-  name: allow-networking-security-policy
+  name: allow-networking-security-policy-auth
 spec:
   from:
     - group: gateway.envoyproxy.io
@@ -11,3 +11,4 @@ spec:
   to:
     - group: ""
       kind: Service
+      name: authelia

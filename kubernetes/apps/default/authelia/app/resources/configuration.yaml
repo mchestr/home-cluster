@@ -45,6 +45,28 @@ access_control:
         - radarr.chestr.dev
       resources: ["^/api.*$"]
       policy: bypass
+    # Bypass domains that have their own auth
+    - domain:
+        - atuin.chestr.dev
+        - sh.chestr.dev
+        - autobrr.chestr.dev
+        - emqx.chestr.dev
+        - home.chestr.dev
+        - home-assistant.chestr.dev
+        - homepage.chestr.dev
+        - photos.chestr.dev
+        - jellyfin.chestr.dev
+        - lldap.chestr.dev
+        - paperless.chestr.dev
+        - docs.chestr.dev
+        - syncthing.chestr.dev
+        - sync.chestr.dev
+        - tautulli.chestr.dev
+        - thelounge.chestr.dev
+        - irc.chestr.dev
+        - grafana.chestr.dev
+        - rook.chestr.dev
+      policy: bypass
     - domain:
         - sonarr.chestr.dev
         - radarr.chestr.dev

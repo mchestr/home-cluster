@@ -86,7 +86,7 @@ spec:
           gethomepage.dev/name: Zigbee
           gethomepage.dev/group: Automation
         parentRefs:
-          - name: internal-secure
+          - name: internal
             namespace: networking
             sectionName: https
         rules:

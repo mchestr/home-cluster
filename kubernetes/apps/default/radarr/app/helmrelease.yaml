@@ -75,7 +75,7 @@ spec:
           gethomepage.dev/widget.url: http://radarr.default.svc.cluster.local:7878
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_RADARR_API_KEY}}" }}'
         parentRefs:
-          - name: internal-secure
+          - name: internal
             namespace: networking
             sectionName: https
         rules:

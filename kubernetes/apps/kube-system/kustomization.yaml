@@ -5,7 +5,6 @@ namespace: kube-system
 components:
   - ../../components/common
 resources:
-  - ./referencegrant.yaml
   - ./cilium/ks.yaml
   - ./coredns/ks.yaml
   - ./descheduler/ks.yaml

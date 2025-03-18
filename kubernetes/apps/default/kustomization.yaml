@@ -5,7 +5,6 @@ namespace: default
 components:
   - ../../components/common
 resources:
-  - referencegrant.yaml
   - atuin/ks.yaml
   - authelia/ks.yaml
   - autobrr/ks.yaml

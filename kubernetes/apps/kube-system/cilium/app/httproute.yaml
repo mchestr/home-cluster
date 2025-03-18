@@ -7,7 +7,7 @@ metadata:
 spec:
   hostnames: ["hubble.chestr.dev"]
   parentRefs:
-    - name: internal-secure
+    - name: internal
       namespace: networking
       sectionName: https
   rules:

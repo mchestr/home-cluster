@@ -62,7 +62,7 @@ spec:
           gethomepage.dev/name: TeslaMate
           gethomepage.dev/group: Monitoring
         parentRefs:
-          - name: internal-secure
+          - name: internal
             namespace: networking
             sectionName: https
         rules:

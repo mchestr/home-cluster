@@ -61,7 +61,7 @@ spec:
           gethomepage.dev/name: zWave
           gethomepage.dev/group: Automation
         parentRefs:
-          - name: internal-secure
+          - name: internal
             namespace: networking
             sectionName: https
         rules:
