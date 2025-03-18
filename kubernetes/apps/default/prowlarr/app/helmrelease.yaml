@@ -30,7 +30,7 @@ spec:
           01-init-db:
             image:
               repository: ghcr.io/home-operations/postgres-init
-              tag: 17.4@sha256:1de24f9a1f13cd9b179985e17a5183c8d92007fa3af1578bd76e173bbb33471d
+              tag: 17.4@sha256:a9f405688344a8a6f718e2c344438342ad21540986aeb5ab5fa781831eb2c597
             envFrom:
               - secretRef:
                   name: prowlarr-dbinit-secret
