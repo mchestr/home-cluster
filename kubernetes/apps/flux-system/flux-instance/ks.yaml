@@ -9,10 +9,16 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/gatus/external
   path: ./kubernetes/apps/flux-system/flux-instance/app
   dependsOn:
     - name: flux-operator
       namespace: *namespace
+  postBuild:
+    substitute:
+      APP: flux-webhook
+      GATUS_STATUS: "404"
   prune: false # never should be deleted
   sourceRef:
     kind: GitRepository
