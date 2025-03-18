@@ -27,6 +27,7 @@
       ".github/workflows": "robot",
       // namespaces
       "actions-runner-system": "github",
+      "cloudflared": "cloudflare",
       "bootstrap": "generator",
       "cert-manager": "guard",
       "default": "home",
@@ -34,6 +35,7 @@
       "external-secrets": "secure",
       "flux-system": "pipe",
       "game-system": "intellij",
+      "gateway": "global",
       "hack": "scripts",
       "kube-system": "kubernetes",
       "kyverno": "admin",
@@ -43,6 +45,7 @@
       "rook-ceph": "base",
       "system-upgrade": "update",
       "talos": "config",
+      "terraform": "terraform",
       "volsync-system": "aws"
   },
   "vs-kubernetes": {
