@@ -53,8 +53,6 @@ spec:
               [
                 "--config",
                 "/config/configuration.yml",
-                "--config.experimental.filters",
-                "expand-env",
               ]
             image:
               repository: ghcr.io/authelia/authelia
@@ -87,6 +85,7 @@ spec:
               AUTHELIA_TELEMETRY_METRICS_ENABLED: "true"
               AUTHELIA_THEME: auto
               AUTHELIA_TOTP_ISSUER: authelia.com
+              X_AUTHELIA_CONFIG_FILTERS: template
 
             envFrom:
               - secretRef:
