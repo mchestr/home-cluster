@@ -3,14 +3,14 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: external
+  name: internal
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname external.chestr.dev
+    external-dns.alpha.kubernetes.io/target: &hostname internal.chestr.dev
 spec:
   gatewayClassName: envoy
   addresses:
     - type: IPAddress
-      value: &ip 10.0.20.200
+      value: &ip 10.0.20.100
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
@@ -18,7 +18,7 @@ spec:
     parametersRef:
       group: gateway.envoyproxy.io
       kind: EnvoyProxy
-      name: external-proxy-config
+      name: internal-proxy-config
   listeners:
     - name: http
       protocol: HTTP
@@ -38,25 +38,3 @@ spec:
         certificateRefs:
           - kind: Secret
             name: chestr-dev-tls
----
-apiVersion: gateway.envoyproxy.io/v1alpha1
-kind: EnvoyProxy
-metadata:
-  name: external-proxy-config
-spec:
-  provider:
-    type: Kubernetes
-    kubernetes:
-      envoyDeployment:
-        replicas: 2
-      envoyService:
-        name: envoy-gateway-external
-        patch:
-          type: StrategicMerge
-          value:
-            spec:
-              ports:
-                - name: metrics
-                  port: 19001
-                  targetPort: 19001
-                  protocol: TCP
