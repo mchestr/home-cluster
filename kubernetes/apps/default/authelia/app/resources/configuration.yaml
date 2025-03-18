@@ -1,6 +1,6 @@
 ---
 log:
-  level: info
+  level: warn
 
 regulation:
   max_retries: 3
