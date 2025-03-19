@@ -2,22 +2,25 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: tautulli-exporter
+  name: &app tautulli-exporter
   namespace: &namespace monitoring
 spec:
-  targetNamespace: *namespace
-  path: ./kubernetes/apps/monitoring/exporters/tautulli-exporter/app
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   dependsOn:
     - name: onepassword-store
       namespace: external-secrets
     - name: tautulli
       namespace: default
+  interval: 30m
+  path: ./kubernetes/apps/monitoring/exporters/tautulli-exporter/app
   prune: true
+  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  interval: 30m
-  retryInterval: 1m
+  targetNamespace: *namespace
   timeout: 3m
   wait: false

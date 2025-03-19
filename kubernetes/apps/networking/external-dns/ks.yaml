@@ -2,41 +2,48 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: external-dns-cloudflare
+  name: &app external-dns-cloudflare
   namespace: &namespace networking
 spec:
-  targetNamespace: *namespace
-  path: ./kubernetes/apps/networking/external-dns/cloudflare
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   dependsOn:
     - name: onepassword-store
       namespace: external-secrets
+  interval: 30m
+  path: ./kubernetes/apps/networking/external-dns/cloudflare
   prune: true
+  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  interval: 30m
-  retryInterval: 1m
+  targetNamespace: *namespace
   timeout: 5m
   wait: false
+
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: external-dns-unifi
+  name: &app external-dns-unifi
   namespace: &namespace networking
 spec:
-  targetNamespace: *namespace
-  path: ./kubernetes/apps/networking/external-dns/unifi
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   dependsOn:
     - name: onepassword-store
       namespace: external-secrets
+  interval: 30m
+  path: ./kubernetes/apps/networking/external-dns/unifi
   prune: true
+  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  interval: 30m
-  retryInterval: 1m
+  targetNamespace: *namespace
   timeout: 5m
   wait: false

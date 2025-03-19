@@ -5,6 +5,9 @@ metadata:
   name: &app paperless
   namespace: &namespace default
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   components:
     - ../../../../components/gatus/internal
     - ../../../../components/gatus/guarded

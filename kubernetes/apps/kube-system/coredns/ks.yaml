@@ -3,22 +3,22 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname coredns
+  name: &app coredns
   namespace: &namespace kube-system
 spec:
-  targetNamespace: *namespace
-  dependsOn:
-    - name: cilium
-      namespace: *namespace
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *appname
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: cilium
+      namespace: kube-system
   interval: 30m
-  timeout: 5m
   path: ./kubernetes/apps/kube-system/coredns/app
-  prune: false # Never delete this
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
   wait: false

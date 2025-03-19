@@ -5,6 +5,9 @@ metadata:
   name: &app plex
   namespace: &namespace default
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   components:
     - ../../../../components/gatus/external
     - ../../../../components/volsync
@@ -40,6 +43,9 @@ metadata:
   name: &app plex-meta-manager
   namespace: &namespace default
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
   dependsOn:

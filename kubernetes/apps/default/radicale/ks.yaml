@@ -5,6 +5,9 @@ metadata:
   name: &app radicale
   namespace: &namespace default
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   components:
     - ../../../../components/gatus/external
     - ../../../../components/volsync
