@@ -5,25 +5,25 @@ metadata:
   name: &app flux-instance
   namespace: &namespace flux-system
 spec:
-  targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/gatus/external
-  path: ./kubernetes/apps/flux-system/flux-instance/app
   dependsOn:
     - name: flux-operator
       namespace: *namespace
+  interval: 30m
+  path: ./kubernetes/apps/flux-system/flux-instance/app
   postBuild:
     substitute:
       APP: flux-webhook
-      GATUS_STATUS: "404"
-  prune: false # never should be deleted
+      GATUS_STATUS: '404'
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
-    namespace: flux-system
-  wait: false
-  interval: 30m
+    namespace: *namespace
+  targetNamespace: *namespace
   timeout: 5m
+  wait: false

@@ -2,9 +2,12 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: rook-ceph
+  name: &app rook-ceph
   namespace: &namespace rook-ceph
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   interval: 30m
   path: ./kubernetes/apps/rook-ceph/rook-ceph/app
   prune: true
@@ -21,15 +24,18 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: rook-ceph-cluster
+  name: &app rook-ceph-cluster
   namespace: &namespace rook-ceph
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   components:
     - ../../../../components/gatus/internal
     - ../../../../components/gatus/guarded
   dependsOn:
     - name: rook-ceph
-      namespace: rook-ceph
+      namespace: *namespace
   interval: 30m
   path: ./kubernetes/apps/rook-ceph/rook-ceph/cluster
   postBuild:

@@ -5,6 +5,9 @@ metadata:
   name: &app bazarr
   namespace: &namespace default
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   components:
     - ../../../../components/gatus/guarded
     - ../../../../components/gatus/internal-secured
@@ -30,14 +33,16 @@ spec:
   targetNamespace: *namespace
   timeout: 5m
   wait: false
-
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: whisper
+  name: &app whisper
   namespace: &namespace default
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   dependsOn:
     - name: bazarr
       namespace: *namespace
