@@ -51,17 +51,6 @@
       separateMinorPatch: true,
     },
     {
-      description: "Thanos image and chart - mismatched versions",
-      groupName: "Thanos",
-      matchPackagePatterns: ["thanos"],
-      matchDatasources: ["docker", "github-releases", "helm"],
-      matchUpdateTypes: ["minor", "patch"],
-      group: {
-        commitMessageTopic: "{{{groupName}}} group",
-      },
-      separateMinorPatch: false,
-    },
-    {
       description: "Kubernetes Upgrade Group",
       groupName: "Kubernetes",
       matchPackagePatterns: [

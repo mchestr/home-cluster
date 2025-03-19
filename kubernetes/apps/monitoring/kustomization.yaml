@@ -13,5 +13,4 @@ resources:
   - ./promtail/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
   - ./silence-operator/ks.yaml
-  - ./thanos/ks.yaml
   - ./unpoller/ks.yaml
