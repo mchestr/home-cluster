@@ -175,6 +175,14 @@ spec:
                   namespaceSelector:
                     matchLabels:
                       kubernetes.io/metadata.name: networking
+                - podSelector:
+                    matchLabels:
+                      app.kubernetes.io/component: homepage
+                      app.kubernetes.io/instance: homepage
+                      app.kubernetes.io/name: homepage
+                  namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: default
               ports:
                 - protocol: TCP
                   port: *port
