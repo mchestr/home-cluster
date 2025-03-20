@@ -58,6 +58,8 @@ spec:
               PAPERLESS_URL: https://{{ .Release.Name }}.chestr.dev
               PAPERLESS_REDIS: redis://paperless-redis.default.svc.cluster.local:6379
               PAPERLESS_SOCIAL_AUTO_SIGNUP: "true"
+              PAPERLESS_DISABLE_REGULAR_LOGIN: "true"
+              PAPERLESS_REDIRECT_LOGIN_TO_SSO: "true"
             envFrom:
               - secretRef:
                   name: paperless-secret
