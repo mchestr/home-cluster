@@ -60,6 +60,8 @@ spec:
           gethomepage.dev/group: Automation
           gethomepage.dev/name: ESPHome
           gethomepage.dev/icon: esphome.png
+          gethomepage.dev/widget.type: esphome
+          gethomepage.dev/widget.url: http://esphome.default.svc.cluster.local:6052
         parentRefs:
           - name: internal
             namespace: networking
