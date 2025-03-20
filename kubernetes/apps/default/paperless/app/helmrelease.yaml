@@ -50,7 +50,7 @@ spec:
             env:
               PAPERLESS_CONSUMER_POLLING: 5
               PAPERLESS_OCR_LANGUAGE: eng
-              PAPERLESS_PORT: 8000
+              PAPERLESS_PORT: &port 8000
               PAPERLESS_TIKA_ENABLED: 1
               PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://paperless-gotenburg.default.svc.cluster.local:3000
               PAPERLESS_TIKA_ENDPOINT: http://paperless-tika.default.svc.cluster.local:9998
@@ -106,7 +106,7 @@ spec:
         controller: *app
         ports:
           http:
-            port: &port 8000
+            port: *port
       gotenburg:
         controller: gotenburg
         ports:
@@ -155,3 +155,26 @@ spec:
                 path: /usr/src/paperless/data
               - subPath: media
                 path: /usr/src/paperless/media
+
+    networkpolicies:
+      paperless:
+        controller: paperless
+
+        policyTypes:
+          - Ingress
+
+        rules:
+          ingress:
+            - from:
+                - podSelector:
+                    matchLabels:
+                      app.kubernetes.io/component: proxy
+                      app.kubernetes.io/managed-by: envoy-gateway
+                      app.kubernetes.io/name: envoy
+                      gateway.envoyproxy.io/owning-gateway-name: internal
+                  namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: networking
+              ports:
+                - protocol: TCP
+                  port: *port
