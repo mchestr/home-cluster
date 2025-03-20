@@ -24,7 +24,7 @@ spec:
       retries: 3
   dependsOn:
     - name: silence-operator-crds
-      namespace: monitoring
+      namespace: observability
   values:
     image:
       name: quay.io/giantswarm/silence-operator
@@ -40,7 +40,7 @@ spec:
         kind: Silence
         metadata:
           name: ceph-node-nfsmount-diskspace-warning
-          namespace: monitoring
+          namespace: observability
         spec:
           matchers:
             - name: alertname
@@ -53,7 +53,7 @@ spec:
         kind: Silence
         metadata:
           name: ceph-node-local-diskspace-warning
-          namespace: monitoring
+          namespace: observability
         spec:
           matchers:
             - name: alertname
@@ -66,7 +66,7 @@ spec:
         kind: Silence
         metadata:
           name: ceph-node-inconsistent-mtu
-          namespace: monitoring
+          namespace: observability
         spec:
           matchers:
             - name: alertname
@@ -76,7 +76,7 @@ spec:
         kind: Silence
         metadata:
           name: ceph-node-packet-drop
-          namespace: monitoring
+          namespace: observability
         spec:
           matchers:
             - name: alertname
@@ -86,7 +86,7 @@ spec:
         kind: Silence
         metadata:
           name: ceph-node-packet-error
-          namespace: monitoring
+          namespace: observability
         spec:
           matchers:
             - name: alertname
