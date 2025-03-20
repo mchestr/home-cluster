@@ -1,0 +1,94 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: silence-operator
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: silence-operator
+      version: 0.0.7
+      sourceRef:
+        kind: HelmRepository
+        name: wiremind
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  dependsOn:
+    - name: silence-operator-crds
+      namespace: monitoring
+  values:
+    image:
+      name: quay.io/giantswarm/silence-operator
+    operator:
+      config:
+        alertmanager:
+          service:
+            address: http://alertmanager-operated.observability.svc.cluster.local:9093
+    rbac:
+      create: true
+    extraDeploy:
+      - apiVersion: monitoring.giantswarm.io/v1alpha1
+        kind: Silence
+        metadata:
+          name: ceph-node-nfsmount-diskspace-warning
+          namespace: monitoring
+        spec:
+          matchers:
+            - name: alertname
+              value: CephNodeDiskspaceWarning
+              isRegex: false
+            - name: mountpoint
+              value: /etc/nfsmount.conf
+              isRegex: false
+      - apiVersion: monitoring.giantswarm.io/v1alpha1
+        kind: Silence
+        metadata:
+          name: ceph-node-local-diskspace-warning
+          namespace: monitoring
+        spec:
+          matchers:
+            - name: alertname
+              value: CephNodeDiskspaceWarning
+              isRegex: false
+            - name: mountpoint
+              value: /var
+              isRegex: false
+      - apiVersion: monitoring.giantswarm.io/v1alpha1
+        kind: Silence
+        metadata:
+          name: ceph-node-inconsistent-mtu
+          namespace: monitoring
+        spec:
+          matchers:
+            - name: alertname
+              value: CephNodeInconsistentMTU
+              isRegex: false
+      - apiVersion: monitoring.giantswarm.io/v1alpha1
+        kind: Silence
+        metadata:
+          name: ceph-node-packet-drop
+          namespace: monitoring
+        spec:
+          matchers:
+            - name: alertname
+              value: CephNodeNetworkPacketDrops
+              isRegex: false
+      - apiVersion: monitoring.giantswarm.io/v1alpha1
+        kind: Silence
+        metadata:
+          name: ceph-node-packet-error
+          namespace: monitoring
+        spec:
+          matchers:
+            - name: alertname
+              value: CephNodeNetworkPacketErrors
+              isRegex: false
