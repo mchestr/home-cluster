@@ -109,3 +109,26 @@ spec:
           home-assistant:
             vscode-tunnel:
               - path: /.vscode
+
+    networkpolicies:
+      paperless:
+        controller: home-assistant
+
+        policyTypes:
+          - Ingress
+
+        rules:
+          ingress:
+            - from:
+                - podSelector:
+                    matchLabels:
+                      app.kubernetes.io/component: proxy
+                      app.kubernetes.io/managed-by: envoy-gateway
+                      app.kubernetes.io/name: envoy
+                      gateway.envoyproxy.io/owning-gateway-name: external
+                  namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: networking
+              ports:
+                - protocol: TCP
+                  port: *port
