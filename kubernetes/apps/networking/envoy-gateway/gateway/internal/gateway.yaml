@@ -10,11 +10,10 @@ spec:
   gatewayClassName: envoy
   addresses:
     - type: IPAddress
-      value: &ip 10.0.20.100
+      value: 10.0.20.100
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
-      io.cilium/lb-ipam-ips: *ip
     parametersRef:
       group: gateway.envoyproxy.io
       kind: EnvoyProxy

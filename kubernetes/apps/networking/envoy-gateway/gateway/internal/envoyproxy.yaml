@@ -15,8 +15,6 @@ spec:
           type: StrategicMerge
           value:
             spec:
-              # Remove the duplicated ExternalIP on the service?
-              externalIPs: []
               ports:
                 - name: metrics
                   port: 19001
