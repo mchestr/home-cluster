@@ -70,6 +70,8 @@ spec:
             gethomepage.dev/name: Prometheus
             gethomepage.dev/group: Monitoring
             gethomepage.dev/pod-selector: app.kubernetes.io/name=prometheus
+            gethomepage.dev/widget.type: prometheus
+            gethomepage.dev/widget.url: http://prometheus-operated.observability.svc.cluster.local:9090
           parentRefs:
             - name: internal
               namespace: networking
