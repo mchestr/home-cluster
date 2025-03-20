@@ -164,12 +164,6 @@ data:
           memory: true
           show: false
           showLabel: true
-    - openmeteo:
-        label: Home
-        latitude: {{HOMEPAGE_VAR_LATITUDE}}
-        longitude: {{HOMEPAGE_VAR_LONGITUDE}}
-        units: metric
-        cache: 5
     - datetime:
         text_size: l
         format:
