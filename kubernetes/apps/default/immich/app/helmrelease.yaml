@@ -98,8 +98,8 @@ spec:
     route:
       app:
         hostnames:
-          - "{{ .Release.Name }}.chestr.dev"
           - photos.chestr.dev
+          - "{{ .Release.Name }}.chestr.dev"
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: immich.png
