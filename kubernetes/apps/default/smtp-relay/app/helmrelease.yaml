@@ -32,7 +32,7 @@ spec:
 
     controllers:
       smtp-relay:
-        replicas: 3
+        replicas: 1
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
@@ -43,7 +43,7 @@ spec:
               repository: ghcr.io/foxcpp/maddy
               tag: 0.8.1
             env:
-              DEBUG: "false"
+              DEBUG: "true"
               SMTP_DOMAIN: chestr.dev
             envFrom:
               - secretRef:
@@ -60,25 +60,30 @@ spec:
         controller: smtp-relay
         ports:
           http:
-            port: 2525
+            port: &port 2525
           metrics:
             port: 9749
 
     persistence:
       config:
-        enabled: true
         type: configMap
         name: smtp-relay
         globalMounts:
           - path: /data/maddy.conf
             subPath: maddy.conf
+            readOnly: true
       data:
-        enabled: true
         type: emptyDir
         medium: Memory
         sizeLimit: 1Gi
         globalMounts:
-          - path: /dev/shm
+          - path: /var/lib/maddy
+      temp:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 256Mi
+        globalMounts:
+          - path: /run/maddy
 
     serviceMonitor:
       app:
@@ -90,3 +95,25 @@ spec:
             path: /metrics
             interval: 1m
             scrapeTimeout: 10s
+
+    networkpolicies:
+      paperless:
+        controller: smtp-relay
+
+        policyTypes:
+          - Ingress
+
+        rules:
+          ingress:
+            - from:
+                - podSelector:
+                    matchLabels:
+                      app.kubernetes.io/component: authelia
+                      app.kubernetes.io/instance: authelia
+                      app.kubernetes.io/name: authelia
+                  namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: default
+              ports:
+                - protocol: TCP
+                  port: *port
