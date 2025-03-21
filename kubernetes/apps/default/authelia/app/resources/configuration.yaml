@@ -48,21 +48,21 @@ access_control:
     # Bypass domains that have their own auth
     - domain:
         - atuin.chestr.dev
-        - sh.chestr.dev
         - autobrr.chestr.dev
+        - docs.chestr.dev
         - emqx.chestr.dev
+        - grafana.chestr.dev
         - homepage.chestr.dev
+        - irc.chestr.dev
         - jellyfin.chestr.dev
         - lldap.chestr.dev
         - paperless.chestr.dev
-        - docs.chestr.dev
         - syncthing.chestr.dev
         - sync.chestr.dev
         - tautulli.chestr.dev
         - thelounge.chestr.dev
-        - irc.chestr.dev
-        - grafana.chestr.dev
         - rook.chestr.dev
+        - sh.chestr.dev
       policy: bypass
     - domain:
         - sonarr.chestr.dev
