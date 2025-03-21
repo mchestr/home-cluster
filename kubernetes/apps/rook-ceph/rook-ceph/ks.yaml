@@ -31,7 +31,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../components/gatus/internal
     - ../../../../components/gatus/guarded
   dependsOn:
     - name: rook-ceph

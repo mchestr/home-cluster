@@ -10,7 +10,6 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/gatus/guarded
-    - ../../../../components/gatus/internal-secured
     - ../../../../components/volsync
   dependsOn:
     - name: onepassword-store
