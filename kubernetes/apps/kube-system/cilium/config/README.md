@@ -4,7 +4,7 @@
 
 ```sh
 router bgp 64513
-  bgp router-id 192.168.1.1
+  bgp router-id 10.0.40.1
   no bgp ebgp-requires-policy
 
   neighbor k8s peer-group
