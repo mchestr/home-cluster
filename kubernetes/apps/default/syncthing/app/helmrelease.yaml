@@ -65,7 +65,7 @@ spec:
         controller: *app
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: 10.0.20.90
+          lbipam.cilium.io/ips: 10.0.20.90
         ports:
           listen:
             enabled: true
