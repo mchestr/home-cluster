@@ -1,0 +1,36 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: tofu-controller
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: tofu-controller
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    image:
+      repository: ghcr.io/flux-iac/tofu-controller
+      pullPolicy: IfNotPresent
+      tag: v0.16.0-rc.5
+    runner:
+      image:
+        repository: ghcr.io/flux-iac/tf-runner
+        tag: v0.16.0-rc.5
+        pullPolicy: IfNotPresent
+      grpc:
+        maxMessageSize: 30
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        interval: 1m
