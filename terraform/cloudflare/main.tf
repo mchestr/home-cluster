@@ -6,7 +6,7 @@ terraform {
     organization = "mchestr"
 
     workspaces {
-      name = "home-cloudflare"
+      name = "cloudflare"
     }
   }
 
