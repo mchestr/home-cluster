@@ -2,8 +2,11 @@
 version: "3"
 
 env:
-  ONEPASSWORD_ACCOUNT_ID:
-    sh: op account list --format json | jq -r '.[].user_uuid'
+  cloudflare_api_token:
+    sh: op item --vault ${ONEPASSWORD_VAULT} get cloudflare --format json | jq -r '.fields.[] | select(.label == "CLOUDFLARE_TERRAFORM_TOKEN") | .value'
+  onepassword_url: http://127.0.0.1:8080
+  onepassword_token:
+    sh: op item --vault ${ONEPASSWORD_VAULT} get 1password --format json | jq -r '.fields.[] | select(.label == "OP_CONNECT_TOKEN") | .value'
 
 tasks:
 
@@ -17,10 +20,10 @@ tasks:
     desc: Show the changes terraform will make
     dir: terraform/cloudflare
     cmds:
-      - terraform plan {{.CLI_ARGS}} -var "onepassword_account_id=${ONEPASSWORD_ACCOUNT_ID}"
+      - terraform plan {{.CLI_ARGS}} -var "cloudflare_api_token=${cloudflare_api_token}" -var "onepassword_url=${onepassword_url}" -var "onepassword_token=${onepassword_token}"
 
   cf:apply:
     desc: Apply the changes to Cloudflare
     dir: terraform/cloudflare
     cmds:
-      - terraform apply {{.CLI_ARGS}} -var "onepassword_account_id=${ONEPASSWORD_ACCOUNT_ID}"
+      - terraform apply {{.CLI_ARGS}} -var "cloudflare_api_token=${cloudflare_api_token}" -var "onepassword_url=${onepassword_url}" -var "onepassword_token=${onepassword_token}"
