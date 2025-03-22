@@ -88,7 +88,7 @@ spec:
         controller: *app
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: *ip
+          lbipam.cilium.io/ips: *ip
         ports:
           http:
             port: &port 8096

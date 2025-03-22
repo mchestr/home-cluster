@@ -5,7 +5,7 @@ metadata:
   name: postgres-lb
   annotations:
     external-dns.alpha.kubernetes.io/hostname: postgres.chestr.dev
-    io.cilium/lb-ipam-ips: 10.0.20.40
+    lbipam.cilium.io/ips: 10.0.20.40
 spec:
   type: LoadBalancer
   ports:
