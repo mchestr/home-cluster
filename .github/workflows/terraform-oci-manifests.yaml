@@ -1,0 +1,45 @@
+---
+name: "Package Terraform as Artifacts"
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths: ["terraform/**"]
+permissions:
+  contents: read
+  packages: write
+jobs:
+  publish-terraform:
+    name: Publish Terraform
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+      - name: Setup Workflow Tools
+        shell: bash
+        run: brew install fluxcd/tap/flux
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: "${{ github.actor }}"
+          password: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Generate Tag
+        id: generate-tag
+        shell: bash
+        run: echo "tag=ghcr.io/${{ github.repository_owner }}/manifests/terraform:$(git rev-parse --short HEAD)" >> "${GITHUB_OUTPUT}"
+      - name: Publish OCI Artifact
+        shell: bash
+        run: |
+          flux push artifact oci://${{ steps.generate-tag.outputs.tag }} \
+              --path="./terraform" \
+              --source="$(git config --get remote.origin.url)" \
+              --revision="$(git branch --show-current)/$(git rev-parse HEAD)"
+      - name: Tag OCI Artifact
+        shell: bash
+        run: |
+          flux tag artifact \
+              oci://${{ steps.generate-tag.outputs.tag }} \
+              --tag main
