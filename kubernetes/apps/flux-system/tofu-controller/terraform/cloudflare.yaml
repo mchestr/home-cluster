@@ -1,0 +1,24 @@
+---
+apiVersion: infra.contrib.fluxcd.io/v1alpha2
+kind: Terraform
+metadata:
+  name: cloudflare
+  namespace: flux-system
+spec:
+  interval: 12h
+  approvePlan: auto
+  cloud:
+    hostname: app.terraform.io
+    organization: mchestr
+    workspaces:
+      name: cloudflare
+  cliConfigSecretRef:
+    name: terraform-cloud-secret
+    namespace: flux-system
+  path: ./cloudflare
+  sourceRef:
+    kind: OCIRepository
+    name: home-cluster-terraform
+    namespace: flux-system
+  writeOutputsToSecret:
+    name: cloudflare-tf-outputs
