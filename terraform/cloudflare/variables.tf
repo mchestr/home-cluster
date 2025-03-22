@@ -4,7 +4,17 @@ variable "cluster_domain" {
   default = "chestr.dev"
 }
 
-variable "onepassword_account_id" {
+variable "cloudflare_api_token" {
   type = string
-  description = "OnePassword Account ID"
+  description = "Cloudflare API Token"
+}
+
+variable "onepassword_url" {
+  type = string
+  description = "Onepassword URL"
+}
+
+variable "onepassword_token" {
+  type = string
+  description = "Onepassword Token"
 }

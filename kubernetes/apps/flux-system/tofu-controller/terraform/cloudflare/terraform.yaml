@@ -3,7 +3,6 @@ apiVersion: infra.contrib.fluxcd.io/v1alpha2
 kind: Terraform
 metadata:
   name: cloudflare
-  namespace: flux-system
 spec:
   interval: 12h
   approvePlan: auto
@@ -20,5 +19,8 @@ spec:
     kind: OCIRepository
     name: home-cluster-terraform
     namespace: flux-system
+  varsFrom:
+    - kind: Secret
+      name: cloudflare-terraform-secret
   writeOutputsToSecret:
     name: cloudflare-tf-outputs
