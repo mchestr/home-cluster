@@ -1,0 +1,103 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app dashbrr
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      dashbrr:
+        labels:
+          postgres: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        initContainers:
+          01-init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 17.4@sha256:a9f405688344a8a6f718e2c344438342ad21540986aeb5ab5fa781831eb2c597
+            envFrom:
+              - secretRef:
+                  name: dashbrr-dbinit-secret
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/autobrr/dashbrr
+              tag: pr-67
+              # tag: v0.2.0@sha256:b3b898d4bf9b463bf802e7af188de45e6ca08eb96e828b4e9cbfde6e418441ad
+            env:
+              DASHBRR__CONFIG_PATH: /config/config.toml
+              DASHBRR__DB_PATH: /cache/._  # cache path is derived from DASHBRR__DB_PATH
+              DASHBRR__LISTEN_ADDR: 0.0.0.0:8080
+              GIN_MODE: debug
+              TZ: America/Vancouver
+            envFrom:
+              - secretRef:
+                  name: dashbrr-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 8080
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        parentRefs:
+          - name: internal
+            namespace: networking
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+    serviceAccount:
+      create: true
+      name: dashbrr
+    persistence:
+      cache:
+        type: emptyDir
+        sizeLimit: 1Gi
+      config:
+        type: configMap
+        name: dashbrr-config

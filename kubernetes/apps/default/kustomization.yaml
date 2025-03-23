@@ -11,6 +11,7 @@ resources:
   - bazarr/ks.yaml
   - cloudnative-pg/ks.yaml
   - cross-seed/ks.yaml
+  - dashbrr/ks.yaml
   - displex/ks.yaml
   - emqx/ks.yaml
   - esphome/ks.yaml
