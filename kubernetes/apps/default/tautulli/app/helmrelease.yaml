@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: ghcr.io/home-operations/tautulli
-              tag: v2.15.2
+              tag: v2.15.1@sha256:0925254e24ca12769d437527a9463f0738d98908bc41f1bd77072aa8f0307a4c
             env:
               TZ: America/Vancouver
               TAUTULLI__PORT: &port 8181
