@@ -49,6 +49,7 @@ access_control:
     - domain:
         - atuin.chestr.dev
         - autobrr.chestr.dev
+        - dashbrr.chestr.dev
         - docs.chestr.dev
         - emqx.chestr.dev
         - grafana.chestr.dev
@@ -105,6 +106,34 @@ identity_providers:
       - key_id: default
         key: {{ env "JWKS_KEY" | mindent 10 "|" | msquote }}
     clients:
+      - client_id: autobrr
+        client_name: Autobrr
+        client_secret: '{{ env "AUTOBRR_OAUTH_CLIENT_SECRET" }}'
+        public: false
+        authorization_policy: two_factor
+        pre_configured_consent_duration: 1y
+        scopes:
+          - openid
+          - profile
+          - groups
+          - email
+        redirect_uris:
+          - https://autobrr.chestr.dev/api/auth/oidc/callback
+        userinfo_signed_response_alg: none
+      - client_id: dashbrr
+        client_name: Dashbrr
+        client_secret: '{{ env "DASHBRR_OAUTH_CLIENT_SECRET" }}'
+        public: false
+        authorization_policy: two_factor
+        pre_configured_consent_duration: 1y
+        scopes:
+          - openid
+          - profile
+          - groups
+          - email
+        redirect_uris:
+          - https://dashbrr.chestr.dev/api/auth/callback
+        userinfo_signed_response_alg: none
       - client_id: grafana
         client_name: Grafana
         client_secret: '{{ env "GRAFANA_OAUTH_CLIENT_SECRET" }}'
