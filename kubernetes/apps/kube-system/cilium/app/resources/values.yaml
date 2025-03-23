@@ -26,9 +26,11 @@ enableIPv4BIGTCP: true
 endpointRoutes:
   enabled: true
 envoy:
-  enabled: false
+  rollOutPods: true
 gatewayAPI:
-  enabled: false
+  enabled: true
+  enableAlpn: true
+  xffNumTrustedHops: 1
 hubble:
   enabled: false
 ipam:

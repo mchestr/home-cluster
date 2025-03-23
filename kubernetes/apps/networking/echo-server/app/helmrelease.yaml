@@ -80,8 +80,8 @@ spec:
           gethomepage.dev/group: System
           gethomepage.dev/name: Echo
         parentRefs:
-          - name: external
-            namespace: networking
+          - name: internal-cilium
+            namespace: kube-system
             sectionName: https
         rules:
           - backendRefs:
