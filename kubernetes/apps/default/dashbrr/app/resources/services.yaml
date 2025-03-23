@@ -1,0 +1,27 @@
+---
+# https://github.com/autobrr/dashbrr/issues/74
+# Run the following to import services
+# dashbrr config import /config/services.yaml
+# Then restart.
+services:
+  autobrr:
+    - url: "http://autobrr.default.svc.cluster.local:7474"
+      apikey: "${DASHBRR_AUTOBRR_API_KEY}"
+  jellyseerr:
+    - url: "http://jellyseerr.default.svc.cluster.local:5055"
+      apikey: "${DASHBRR_JELLYSEERR_API_KEY}"
+  maintainerr:
+    - url: "http://maintainerr.default.svc.cluster.local:6246"
+      apikey: "${DASHBRR_MAINTAINERR_API_KEY}"
+  plex:
+    - url: "http://plex.default.svc.cluster.local:32400"
+      apikey: "${DASHBRR_PLEX_API_KEY}"
+  prowlarr:
+    - url: "http://prowlarr.default.svc.cluster.local:9696"
+      apikey: "${DASHBRR_PROWLARR_API_KEY}"
+  radarr:
+    - url: "http://radarr.default.svc.cluster.local:7878"
+      apikey: "${DASHBRR_RADARR_API_KEY}"
+  sonarr:
+    - url: "http://sonarr.default.svc.cluster.local:8989"
+      apikey: "${DASHBRR_SONARR_API_KEY}"
