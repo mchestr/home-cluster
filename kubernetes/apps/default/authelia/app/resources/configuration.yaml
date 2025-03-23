@@ -2,6 +2,28 @@
 log:
   level: info
 
+authentication_backend:
+  ldap:
+    address: ldap://lldap.default.svc.cluster.local:389
+    implementation: custom
+    timeout: 5s
+    start_tls: false
+    base_dn: dc=home,dc=arpa
+    additional_users_dn: ou=people
+    users_filter: (&({username_attribute}={input})(objectClass=person))
+    additional_groups_dn: ou=groups
+    groups_filter: (member={dn})
+    user: uid=admin,ou=people,dc=home,dc=arpa
+    attributes:
+      username: uid
+      display_name: displayName
+      group_name: cn
+      mail: mail
+      member_of: memberOf
+  password_reset:
+    disable: true
+  refresh_interval: 1m
+
 regulation:
   max_retries: 3
   find_time: 1h
@@ -113,10 +135,9 @@ identity_providers:
         authorization_policy: two_factor
         pre_configured_consent_duration: 1y
         scopes:
+          - email
           - openid
           - profile
-          - groups
-          - email
         redirect_uris:
           - https://autobrr.chestr.dev/api/auth/oidc/callback
         userinfo_signed_response_alg: none
@@ -127,10 +148,9 @@ identity_providers:
         authorization_policy: two_factor
         pre_configured_consent_duration: 1y
         scopes:
+          - email
           - openid
           - profile
-          - groups
-          - email
         redirect_uris:
           - https://dashbrr.chestr.dev/api/auth/callback
         userinfo_signed_response_alg: none
