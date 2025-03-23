@@ -31,7 +31,6 @@ resources:
   - ./postfinance.yaml
   - ./rook-ceph.yaml
   - ./stakater.yaml
-  - ./tofu-controller.yaml
   - ./weaveworks.yaml
   - ./vector.yaml
   - ./wiremind.yaml
