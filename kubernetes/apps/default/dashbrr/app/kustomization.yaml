@@ -10,6 +10,7 @@ configMapGenerator:
   - name: dashbrr-config
     files:
       - ./resources/config.toml
+      - ./resources/services.yaml
     options:
       annotations:
         kustomize.toolkit.fluxcd.io/substitute: disabled

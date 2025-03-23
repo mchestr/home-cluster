@@ -39,7 +39,7 @@ spec:
           app:
             image:
               repository: ghcr.io/autobrr/dashbrr
-              tag: pr-67
+              tag: pr-72
               # tag: v0.2.0@sha256:b3b898d4bf9b463bf802e7af188de45e6ca08eb96e828b4e9cbfde6e418441ad
             env:
               DASHBRR__CONFIG_PATH: /config/config.toml
@@ -67,6 +67,7 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -74,12 +75,14 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
+
     service:
       app:
         controller: *app
         ports:
           http:
             port: *port
+
     route:
       app:
         hostnames: ["{{ .Release.Name }}.chestr.dev"]
@@ -91,9 +94,11 @@ spec:
           - backendRefs:
               - name: *app
                 port: *port
+
     serviceAccount:
       create: true
       name: dashbrr
+
     persistence:
       cache:
         type: emptyDir
