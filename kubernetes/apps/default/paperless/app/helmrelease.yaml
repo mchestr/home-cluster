@@ -56,7 +56,7 @@ spec:
               PAPERLESS_TIKA_ENDPOINT: http://paperless-tika.default.svc.cluster.local:9998
               PAPERLESS_TIME_ZONE: America/Vancouver
               PAPERLESS_URL: https://{{ .Release.Name }}.chestr.dev
-              PAPERLESS_REDIS: redis://paperless-redis.default.svc.cluster.local:6379
+              PAPERLESS_REDIS: redis://paperless-dragonfly:6379
               PAPERLESS_SOCIAL_AUTO_SIGNUP: "true"
               PAPERLESS_DISABLE_REGULAR_LOGIN: "true"
               PAPERLESS_REDIRECT_LOGIN_TO_SSO: "true"
@@ -94,13 +94,6 @@ spec:
               tag: 2.9.1-full
             securityContext: *securityContext
 
-      redis:
-        containers:
-          app:
-            image:
-              repository: public.ecr.aws/docker/library/redis
-              tag: 7.4.2@sha256:bd41d55aae1ecff61b2fafd0d66761223fe94a60373eb6bb781cfbb570a84079
-
     service:
       paperless:
         controller: *app
@@ -117,11 +110,6 @@ spec:
         ports:
           http:
             port: 9998
-      redis:
-        controller: redis
-        ports:
-          http:
-            port: 6379
 
     route:
       app:
