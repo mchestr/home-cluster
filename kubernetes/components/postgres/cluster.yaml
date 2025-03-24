@@ -111,6 +111,7 @@ spec:
           client_tls_sslmode: prefer
           default_pool_size: "100"
           max_client_conn: "500"
+          ignore_startup_parameters: search_path
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
