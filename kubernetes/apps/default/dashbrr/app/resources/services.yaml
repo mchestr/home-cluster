@@ -8,7 +8,7 @@ services:
     - url: "http://autobrr.default.svc.cluster.local:7474"
       apikey: "${DASHBRR_AUTOBRR_API_KEY}"
       access_url: https://autobrr.chestr.dev
-  jellyseerr:
+  overseerr:
     - url: "http://jellyseerr.default.svc.cluster.local:5055"
       apikey: "${DASHBRR_JELLYSEERR_API_KEY}"
       access_url: https://requests.chestr.dev
