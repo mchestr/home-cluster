@@ -12,6 +12,7 @@ services:
     - url: "http://jellyseerr.default.svc.cluster.local:5055"
       apikey: "${DASHBRR_JELLYSEERR_API_KEY}"
       access_url: https://requests.chestr.dev
+      name: Requests
   maintainerr:
     - url: "http://maintainerr.default.svc.cluster.local:6246"
       apikey: "${DASHBRR_MAINTAINERR_API_KEY}"
