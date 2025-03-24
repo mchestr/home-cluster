@@ -81,6 +81,8 @@ spec:
       metadata:
         labels:
           app.kubernetes.io/name: ${APP}-crunchy-postgres-backup
+      jobs:
+        ttlSecondsAfterFinished: 60
       repos:
         - name: repo1
           s3: &r2
