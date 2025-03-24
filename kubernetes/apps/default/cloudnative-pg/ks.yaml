@@ -12,6 +12,8 @@ spec:
     - name: onepassword-store
       namespace: external-secrets
   interval: 30m
+  labels:
+    substitution.flux.home.arpa/enabled: "true"
   path: ./kubernetes/apps/default/cloudnative-pg/app
   prune: true
   retryInterval: 1m
