@@ -30,9 +30,3 @@ spec:
   targetNamespace: *namespace
   timeout: 5m
   wait: false
-  patches:
-    - patch: |-
-        - op: remove
-          path: /spec/dataSource
-      target:
-        kind: PostgresCluster

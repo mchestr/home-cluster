@@ -10,10 +10,8 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/gatus/guarded
-    - ../../../../components/volsync
+    - ../../../../components/postgres
   dependsOn:
-    - name: cloudnative-pg-cluster
-      namespace: *namespace
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: onepassword-store
@@ -32,3 +30,9 @@ spec:
   targetNamespace: *namespace
   timeout: 5m
   wait: false
+  patches:
+    - patch: |-
+        - op: remove
+          path: /spec/dataSource
+      target:
+        kind: PostgresCluster

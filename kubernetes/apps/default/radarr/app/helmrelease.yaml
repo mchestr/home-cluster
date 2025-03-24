@@ -29,15 +29,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        initContainers:
-          01-init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 17.4@sha256:a9f405688344a8a6f718e2c344438342ad21540986aeb5ab5fa781831eb2c597
-            envFrom:
-              - secretRef:
-                  name: radarr-dbinit-secret
-
         containers:
           app:
             image:
@@ -52,6 +43,21 @@ spec:
               RADARR__PORT: 7878
               RADARR__LOG__LEVEL: info
               RADARR__THEME: dark
+              # Postgres Setup
+              RADARR__POSTGRES__HOST: radarr-pgbouncer.default.svc.cluster.local
+              RADARR__POSTGRES__PORT: "5432"
+              RADARR__POSTGRES__USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: radarr-pguser-radarr
+                    key: user
+              RADARR__POSTGRES__PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: radarr-pguser-radarr
+                    key: password
+              RADARR__POSTGRES__MAINDB: *app
+              RADARR__LOG__DBENABLED: "false"
             envFrom:
               - secretRef:
                   name: radarr-secret
