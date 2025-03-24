@@ -1,0 +1,121 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/postgres-operator.crunchydata.com/postgrescluster_v1beta1.json
+apiVersion: postgres-operator.crunchydata.com/v1beta1
+kind: PostgresCluster
+metadata:
+  name: &name ${APP}
+spec:
+  postgresVersion: 17
+
+  monitoring:
+    pgmonitor:
+      exporter:
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64M
+          limits:
+            memory: 512M
+
+  patroni: # Synchronous mode
+    dynamicConfiguration:
+      synchronous_mode: true
+      postgresql:
+        max_wal_size: 5GB
+        synchronous_commit: "on"
+        parameters:
+          max_connections: 500
+
+  instances:
+    - name: postgres
+      metadata:
+        labels:
+          app.kubernetes.io/name: ${APP}-crunchy-postgres
+      replicas: &replicas 2
+      dataVolumeClaimSpec:
+        storageClassName: ceph-block
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: ${POSTGRES_DATA_SIZE:=5Gi}
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: "kubernetes.io/hostname"
+          whenUnsatisfiable: "DoNotSchedule"
+          labelSelector:
+            matchLabels:
+              postgres-operator.crunchydata.com/cluster: ${APP}-postgres
+  users:
+    # Superuser
+    - name: "postgres"
+      databases: ["postgres"]
+      options: "SUPERUSER"
+      password:
+        type: AlphaNumeric
+    # Applications
+    - name: "${USERNAME:=${APP}}"
+      databases: ${DATABASES:=["${APP}"]}
+      password:
+        type: AlphaNumeric
+
+  backups:
+    pgbackrest:
+      configuration: &backupConfig
+        - secret:
+            name: "${APP}-crunchy-postgres"
+      global: &backupFlag
+        # Global
+        compress-type: "bz2"
+        compress-level: "9"
+        # R2
+        repo1-block: "y"
+        repo1-bundle: "y"
+        repo1-path: /${APP}
+        repo1-retention-full: "7" # days
+        repo1-retention-full-type: "time"
+        repo1-s3-uri-style: path
+      manual:
+        repoName: repo1
+        options:
+          - --type=full
+      metadata:
+        labels:
+          app.kubernetes.io/name: ${APP}-crunchy-postgres-backup
+      repos:
+        - name: repo1
+          s3:
+            bucket: crunchy-posgres
+            region: us-east-1
+            endpoint: https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
+          schedules:
+            full: "30 1 * * 0" # Sunday at 01:30
+            differential: "30 1 * * 1-6" # Mon-Sat at 01:30
+            incremental: "*/10 * * * *" # Every hour except 01:30-2:30
+
+  # dataSource:
+  #   pgbackrest:
+  #     stanza: db
+  #     configuration: *backupConfig
+  #     global: *backupFlag
+  #     repo:
+  #       name: repo1
+  #       s3: *minio
+
+  proxy:
+    pgBouncer:
+      port: 5432
+      # replicas: 1
+      config:
+        global:
+          pool_mode: ${POOL_MODE:=session}
+          client_tls_sslmode: prefer
+          default_pool_size: "100"
+          max_client_conn: "500"
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              postgres-operator.crunchydata.com/cluster: *name
+              postgres-operator.crunchydata.com/role: ${APP}-pgbouncer

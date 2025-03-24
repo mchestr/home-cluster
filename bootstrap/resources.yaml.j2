@@ -22,3 +22,12 @@ metadata:
   namespace: networking
 stringData:
   CLOUDFLARE_TUNNEL_ID: op://{{ ENV.ONEPASSWORD_VAULT }}/cloudflare-tunnel/CLOUDFLARE_TUNNEL_ID
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sops-age
+  namespace: flux-system
+stringData:
+  age.agekey: op://{{ ENV.ONEPASSWORD_VAULT }}/sops/SOPS_PRIVATE_KEY
