@@ -26,15 +26,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        initContainers:
-          01-init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 17.4@sha256:a9f405688344a8a6f718e2c344438342ad21540986aeb5ab5fa781831eb2c597
-            envFrom:
-              - secretRef:
-                  name: autobrr-dbinit-secret
-
         containers:
           app:
             image:
@@ -54,6 +45,22 @@ spec:
               AUTOBRR__HOST: 0.0.0.0
               AUTOBRR__PORT: &port 7474
               AUTOBRR__LOG_LEVEL: INFO
+              # App
+              AUTOBRR__DATABASE_TYPE: postgres
+              AUTOBRR__POSTGRES_DATABASE: autobrr
+              AUTOBRR__POSTGRES_HOST: autobrr-pgbouncer.default.svc.cluster.local
+              AUTOBRR__POSTGRES_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: autobrr-pguser-autobrr
+                    key: user
+              AUTOBRR__POSTGRES_PASS:
+                valueFrom:
+                  secretKeyRef:
+                    name: autobrr-pguser-autobrr
+                    key: password
+              AUTOBRR__POSTGRES_PORT: "5432"
+
             probes:
               liveness: &probes
                 enabled: true

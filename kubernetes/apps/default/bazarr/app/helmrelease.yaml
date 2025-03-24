@@ -27,15 +27,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        initContainers:
-          01-init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 17.4@sha256:a9f405688344a8a6f718e2c344438342ad21540986aeb5ab5fa781831eb2c597
-            envFrom:
-              - secretRef:
-                  name: bazarr-dbinit-secret
-
         containers:
           app:
             image:
@@ -43,6 +34,20 @@ spec:
               tag: 1.5.1@sha256:a1b0d3a4e6462adb448dbfe4bf466e1d1bc920c17ac97c705b6db6eeb02b37b9
             env:
               TZ: America/Vancouver
+              POSTGRES_ENABLED: "true"
+              POSTGRES_PORT: "5432"
+              POSTGRES_DATABASE: bazarr
+              POSTGRES_HOST: bazarr-pgbouncer.default.svc.cluster.local
+              POSTGRES_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: bazarr-pguser-bazarr
+                    key: user
+              POSTGRES_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: bazarr-pguser-bazarr
+                    key: password
             envFrom:
               - secretRef:
                   name: bazarr-secret

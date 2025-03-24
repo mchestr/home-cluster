@@ -10,11 +10,10 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/gatus/external
+    - ../../../../components/postgres
   dependsOn:
     - name: onepassword-store
       namespace: external-secrets
-    - name: cloudnative-pg-cluster
-      namespace: *namespace
   interval: 30m
   path: ./kubernetes/apps/default/displex/app
   postBuild:
@@ -30,3 +29,9 @@ spec:
   targetNamespace: *namespace
   timeout: 5m
   wait: false
+  patches:
+    - patch: |-
+        - op: remove
+          path: /spec/dataSource
+      target:
+        kind: PostgresCluster

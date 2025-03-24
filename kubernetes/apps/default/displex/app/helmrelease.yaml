@@ -34,15 +34,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 17.4@sha256:a9f405688344a8a6f718e2c344438342ad21540986aeb5ab5fa781831eb2c597
-            envFrom:
-              - secretRef:
-                  name: displex-dbinit-secret
-
         containers:
           app:
             image: &image
@@ -50,8 +41,18 @@ spec:
               tag: main@sha256:edb866359681ad764fa489875ad12d61c9a333dcf6944d1da8a36e411492bc9b
             args:
               - server
-            env: &envRw
-              DISPLEX_DATABASE__HOST: postgres16-rw.default.svc.cluster.local
+            env: &env
+              DISPLEX_DATABASE__HOST: displex-pgbouncer.default.svc.cluster.local
+              DISPLEX_DATABASE__USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: displex-pguser-displex
+                    key: user
+              DISPLEX_DATABASE__PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: displex-pguser-displex
+                    key: password
               RUST_LOG: displex=info,sea_orm=info,warn
             resources: &resources
               requests:
@@ -67,10 +68,7 @@ spec:
             args:
               - bot
             image: *image
-            env: &envRo
-              DISPLEX_DATABASE__READ_ONLY: "true"
-              DISPLEX_DATABASE__HOST: postgres16-ro.default.svc.cluster.local
-              RUST_LOG: displex=info,sea_orm=info,warn
+            env: *env
             resources: *resources
 
       channel-refresh:
@@ -84,7 +82,7 @@ spec:
           app:
             args:
               - channel-refresh
-            env: *envRo
+            env: *env
             image: *image
             resources: *resources
 
@@ -101,7 +99,7 @@ spec:
             args:
               - requests-upgrade
             image: *image
-            env: *envRo
+            env: *env
             resources: *resources
 
       token-maintenance:
@@ -117,7 +115,7 @@ spec:
             args:
               - token-maintenance
             image: *image
-            env: *envRw
+            env: *env
             resources: *resources
 
       user-refresh:
@@ -133,7 +131,7 @@ spec:
             args:
               - user-refresh
             image: *image
-            env: *envRo
+            env: *env
             resources: *resources
 
     service:
