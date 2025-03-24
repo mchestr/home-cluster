@@ -9,6 +9,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
+    - ../../../../components/dragonfly
     - ../../../../components/gatus/external
   dependsOn:
     - name: cloudnative-pg-cluster

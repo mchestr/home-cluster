@@ -12,7 +12,7 @@ data:
   ENABLE_MAPBOX: "false"
   LOG_LEVEL: log
   NODE_ENV: production
-  REDIS_HOSTNAME: immich-redis.default.svc.cluster.local
+  REDIS_HOSTNAME: immich-dragonfly.default.svc.cluster.local
   REDIS_PORT: "6379"
   REDIS_DBINDEX: "0"
   IMMICH_WEB_URL: http://immich-web.default.svc.cluster.local:3000

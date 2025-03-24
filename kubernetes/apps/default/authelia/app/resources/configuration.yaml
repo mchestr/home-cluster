@@ -38,17 +38,7 @@ session:
     - domain: chestr.dev
       authelia_url: https://auth.chestr.dev
   redis:
-    host: redis.default.svc.cluster.local
-    database_index: 14
-    high_availability:
-      sentinel_name: redis-master
-      nodes:
-        - host: redis-node-0.redis-headless.default.svc.cluster.local
-          port: 26379
-        - host: redis-node-1.redis-headless.default.svc.cluster.local
-          port: 26379
-        - host: redis-node-2.redis-headless.default.svc.cluster.local
-          port: 26379
+    host: authelia-dragonfly.default.svc.cluster.local
 
 access_control:
   default_policy: two_factor

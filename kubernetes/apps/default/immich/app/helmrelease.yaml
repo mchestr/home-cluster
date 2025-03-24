@@ -71,13 +71,6 @@ spec:
               limits:
                 memory: 2Gi
 
-      redis:
-        containers:
-          app:
-            image:
-              repository: public.ecr.aws/docker/library/redis
-              tag: 7.4.2@sha256:bd41d55aae1ecff61b2fafd0d66761223fe94a60373eb6bb781cfbb570a84079
-
     service:
       immich:
         controller: immich
@@ -89,11 +82,6 @@ spec:
         ports:
           http:
             port: 3003
-      redis:
-        controller: redis
-        ports:
-          http:
-            port: 6379
 
     route:
       app:
