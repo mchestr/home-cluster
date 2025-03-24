@@ -18,8 +18,6 @@ spec:
       namespace: external-secrets
     - name: lldap
       namespace: *namespace
-    - name: redis
-      namespace: *namespace
     - name: smtp-relay
       namespace: *namespace
   interval: 30m
