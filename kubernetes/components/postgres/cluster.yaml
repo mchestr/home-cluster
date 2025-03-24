@@ -84,7 +84,7 @@ spec:
       repos:
         - name: repo1
           s3:
-            bucket: crunchy-posgres
+            bucket: crunchy-pg
             region: us-east-1
             endpoint: https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
           schedules:
