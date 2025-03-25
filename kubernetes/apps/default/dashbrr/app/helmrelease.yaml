@@ -26,15 +26,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        initContainers:
-          01-init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 17.4@sha256:a9f405688344a8a6f718e2c344438342ad21540986aeb5ab5fa781831eb2c597
-            envFrom:
-              - secretRef:
-                  name: dashbrr-dbinit-secret
-
         containers:
           app:
             image:
@@ -47,6 +38,21 @@ spec:
               DASHBRR__LISTEN_ADDR: 0.0.0.0:8080
               GIN_MODE: debug
               TZ: America/Vancouver
+              # Postgres
+              DASHBRR__DB_TYPE: postgres
+              DASHBRR__DB_NAME: dashbrr
+              DASHBRR__DB_HOST: dashbrr-pgbouncer.default.svc.cluster.local
+              DASHBRR__DB_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: dashbrr-pguser-dashbrr
+                    key: user
+              DASHBRR__DB_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: dashbrr-pguser-dashbrr
+                    key: password
+              DASHBRR__DB_PORT: "5432"
             envFrom:
               - secretRef:
                   name: dashbrr-secret
