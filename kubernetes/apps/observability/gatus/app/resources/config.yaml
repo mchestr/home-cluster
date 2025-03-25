@@ -4,7 +4,7 @@ debug: false
 
 storage:
   type: postgres
-  path: postgres://${INIT_POSTGRES_USER}:${INIT_POSTGRES_PASS}@${INIT_POSTGRES_HOST}:5432/${INIT_POSTGRES_DBNAME}?sslmode=disable
+  path: ${DB_URI}
   caching: true
 
 ui:

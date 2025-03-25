@@ -24,14 +24,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 17.4@sha256:a9f405688344a8a6f718e2c344438342ad21540986aeb5ab5fa781831eb2c597
-            envFrom:
-              - secretRef:
-                  name: gatus-dbinit-secret
-
           init-config:
             image:
               repository: ghcr.io/kiwigrid/k8s-sidecar
@@ -60,6 +52,11 @@ spec:
               GATUS_CONFIG_PATH: /config
               GATUS_DELAY_START_SECONDS: 5
               CUSTOM_WEB_PORT: &port 80
+              DB_URI:
+                valueFrom:
+                  secretKeyRef:
+                    name: gatus-pguser-gatus
+                    key: pgbouncer-uri
             envFrom:
               - secretRef:
                   name: gatus-secret
