@@ -6,7 +6,6 @@ resources:
   - ./backube.yaml
   - ./bitnami.yaml
   - ./cilium.yaml
-  - ./cloudnative-pg.yaml
   - ./controlplaneio.yaml
   - ./coredns.yaml
   - ./deliveryhero.yaml

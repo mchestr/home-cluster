@@ -9,7 +9,6 @@ resources:
   - authelia/ks.yaml
   - autobrr/ks.yaml
   - bazarr/ks.yaml
-  - cloudnative-pg/ks.yaml
   - cross-seed/ks.yaml
   - dashbrr/ks.yaml
   - displex/ks.yaml
