@@ -242,9 +242,9 @@ spec:
             access: proxy
             url: teslamate-primary.default.svc.cluster.local
             database: teslamate
+            user: $TESLAMATE_POSTGRES_USER
             secureJsonData:
-              user: "${TESLAMATE_POSTGRES_USER}"
-              password: "${TESLAMATE_POSTGRES_PASSWORD}"
+              password: $TESLAMATE_POSTGRES_PASSWORD
             basicAuth: false
             withCredentials: false
             jsonData:
