@@ -5,7 +5,7 @@ kind: PostgresCluster
 metadata:
   name: &name ${APP}
 spec:
-  postgresVersion: 17
+  postgresVersion: ${POSTGRES_VERSION:=17}
   databaseInitSQL:
     name: ${APP}-init-sql
     key: init.sql

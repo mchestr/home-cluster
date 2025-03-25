@@ -26,6 +26,7 @@ spec:
       CDPG_SHARED_PRELOAD_LIBRARIES: vectors.so
       CDPG_SEARCH_PATH: '"$user", public, vectors"'
       CDPG_EXTRA_INIT_SQL: CREATE EXTENSION vectors;
+      POSTGRES_VERSION: "16"
   prune: true
   retryInterval: 1m
   sourceRef:
@@ -53,6 +54,6 @@ spec:
     - patch: |
         - op: replace
           path: /spec/image
-          value: ghcr.io/chkpwd/cdpgvecto.rs:16
+          value: ghcr.io/budimanjojo/cdpgvecto.rs:16
       target:
         kind: PostgresCluster
