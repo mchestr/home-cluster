@@ -51,7 +51,7 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: lldap-pguser-lldap
-                    key: pgbouncer-uri
+                    key: uri
             envFrom:
               - secretRef:
                   name: lldap-secret

@@ -42,7 +42,7 @@ spec:
             args:
               - server
             env: &env
-              DISPLEX_DATABASE__HOST: displex-pgbouncer.default.svc.cluster.local
+              DISPLEX_DATABASE__HOST: displex-primary.default.svc.cluster.local
               DISPLEX_DATABASE__USERNAME:
                 valueFrom:
                   secretKeyRef:

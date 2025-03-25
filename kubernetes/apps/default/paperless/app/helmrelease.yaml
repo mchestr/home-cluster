@@ -61,7 +61,7 @@ spec:
                   secretKeyRef:
                     name: paperless-pguser-paperless
                     key: password
-              PAPERLESS_DBHOST: paperless-pgbouncer.default.svc.cluster.local
+              PAPERLESS_DBHOST: paperless-primary.default.svc.cluster.local
               PAPERLESS_DBNAME: *app
             envFrom:
               - secretRef:

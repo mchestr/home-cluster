@@ -45,7 +45,7 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: atuin-pguser-atuin
-                    key: pgbouncer-uri
+                    key: uri
             args: ["server", "start"]
             securityContext:
               allowPrivilegeEscalation: false

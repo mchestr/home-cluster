@@ -41,7 +41,7 @@ spec:
               # Postgres
               DASHBRR__DB_TYPE: postgres
               DASHBRR__DB_NAME: dashbrr
-              DASHBRR__DB_HOST: dashbrr-pgbouncer.default.svc.cluster.local
+              DASHBRR__DB_HOST: dashbrr-primary.default.svc.cluster.local
               DASHBRR__DB_USER:
                 valueFrom:
                   secretKeyRef:

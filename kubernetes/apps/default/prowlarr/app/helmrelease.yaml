@@ -41,7 +41,7 @@ spec:
               PROWLARR__LOG_LEVEL: info
               PROWLARR__SERVER__PORT: &port 9696
               PROWLARR__UPDATE__BRANCH: develop
-              PROWLARR__POSTGRES__HOST: prowlarr-pgbouncer.default.svc.cluster.local
+              PROWLARR__POSTGRES__HOST: prowlarr-primary.default.svc.cluster.local
               PROWLARR__POSTGRES__PORT: "5432"
               PROWLARR__POSTGRES__USER:
                 valueFrom:

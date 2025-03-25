@@ -105,23 +105,3 @@ spec:
       repo:
         name: repo1
         s3: *r2
-
-  proxy:
-    pgBouncer:
-      port: 5432
-      # replicas: 1
-      config:
-        global:
-          pool_mode: ${POOL_MODE:=session}
-          client_tls_sslmode: prefer
-          default_pool_size: "100"
-          max_client_conn: "500"
-          ignore_startup_parameters: search_path,extra_float_digits
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              postgres-operator.crunchydata.com/cluster: *name
-              postgres-operator.crunchydata.com/role: ${APP}-pgbouncer

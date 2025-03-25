@@ -37,7 +37,7 @@ spec:
               POSTGRES_ENABLED: "true"
               POSTGRES_PORT: "5432"
               POSTGRES_DATABASE: bazarr
-              POSTGRES_HOST: bazarr-pgbouncer.default.svc.cluster.local
+              POSTGRES_HOST: bazarr-primary.default.svc.cluster.local
               POSTGRES_USERNAME:
                 valueFrom:
                   secretKeyRef:

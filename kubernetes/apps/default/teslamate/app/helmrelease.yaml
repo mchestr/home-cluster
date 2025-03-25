@@ -36,7 +36,7 @@ spec:
               DISABLE_MQTT: "false"
               MQTT_HOST: emqx-listeners.default.svc.cluster.local
               DATABASE_NAME: *app
-              DATABASE_HOST: teslamate-pgbouncer.default.svc.cluster.local
+              DATABASE_HOST: teslamate-primary.default.svc.cluster.local
               DATABASE_USER:
                 valueFrom:
                   secretKeyRef:

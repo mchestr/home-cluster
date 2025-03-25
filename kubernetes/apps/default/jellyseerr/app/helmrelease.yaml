@@ -37,7 +37,7 @@ spec:
               PORT: &port 5055
               # Enable Postgres
               DB_TYPE: postgres
-              DB_HOST: jellyseerr-pgbouncer.default.svc.cluster.local
+              DB_HOST: jellyseerr-primary.default.svc.cluster.local
               DB_USER:
                 valueFrom:
                   secretKeyRef:

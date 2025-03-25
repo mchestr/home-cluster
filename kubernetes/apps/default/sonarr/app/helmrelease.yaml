@@ -44,7 +44,7 @@ spec:
               SONARR__LOG__LEVEL: info
               SONARR__THEME: dark
               # Postgres Setup
-              SONARR__POSTGRES__HOST: sonarr-pgbouncer.default.svc.cluster.local
+              SONARR__POSTGRES__HOST: sonarr-primary.default.svc.cluster.local
               SONARR__POSTGRES__PORT: "5432"
               SONARR__POSTGRES__USER:
                 valueFrom:

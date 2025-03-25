@@ -44,7 +44,7 @@ spec:
               RADARR__LOG__LEVEL: info
               RADARR__THEME: dark
               # Postgres Setup
-              RADARR__POSTGRES__HOST: radarr-pgbouncer.default.svc.cluster.local
+              RADARR__POSTGRES__HOST: radarr-primary.default.svc.cluster.local
               RADARR__POSTGRES__PORT: "5432"
               RADARR__POSTGRES__USER:
                 valueFrom:

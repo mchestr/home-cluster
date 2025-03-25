@@ -56,7 +56,7 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: gatus-pguser-gatus
-                    key: pgbouncer-uri
+                    key: uri
             envFrom:
               - secretRef:
                   name: gatus-secret
