@@ -6,6 +6,9 @@ metadata:
   name: &name ${APP}
 spec:
   postgresVersion: 17
+  databaseInitSQL:
+    key: ${APP}-init-sql
+    name: init-sql
 
   monitoring:
     pgmonitor:
