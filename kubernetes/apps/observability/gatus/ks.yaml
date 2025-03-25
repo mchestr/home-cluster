@@ -8,8 +8,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  # components:
-    # - ../../../../components/postgres
+  components:
+    - ../../../../components/postgres
   dependsOn:
     - name: cloudnative-pg-cluster
       namespace: default
@@ -29,9 +29,9 @@ spec:
   targetNamespace: *namespace
   timeout: 5m
   wait: false
-  # patches:
-  #   - patch: |-
-  #       - op: remove
-  #         path: /spec/dataSource
-  #     target:
-  #       kind: PostgresCluster
+  patches:
+    - patch: |-
+        - op: remove
+          path: /spec/dataSource
+      target:
+        kind: PostgresCluster
