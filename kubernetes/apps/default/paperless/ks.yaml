@@ -11,6 +11,7 @@ spec:
   components:
     - ../../../../components/dragonfly
     - ../../../../components/gatus/guarded
+    - ../../../../components/postgres
     - ../../../../components/volsync
   dependsOn:
     - name: cloudnative-pg-cluster
@@ -35,3 +36,9 @@ spec:
   targetNamespace: *namespace
   timeout: 5m
   wait: false
+  patches:
+    - patch: |-
+        - op: remove
+          path: /spec/dataSource
+      target:
+        kind: PostgresCluster
