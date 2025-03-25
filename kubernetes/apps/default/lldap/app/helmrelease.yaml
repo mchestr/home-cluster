@@ -35,14 +35,7 @@ spec:
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          01-init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 17.4@sha256:a9f405688344a8a6f718e2c344438342ad21540986aeb5ab5fa781831eb2c597
-            envFrom:
-              - secretRef:
-                  name: lldap-dbinit-secret
+
         containers:
           app:
             image:
@@ -54,6 +47,11 @@ spec:
               LLDAP_HTTP_URL: https://lldap.chestr.dev
               LLDAP_LDAP_PORT: &ldapPort 389
               LLDAP_LDAP_BASE_DN: dc=home,dc=arpa
+              LLDAP_DATABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: lldap-pguser-lldap
+                    key: pgbouncer-uri
             envFrom:
               - secretRef:
                   name: lldap-secret

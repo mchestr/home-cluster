@@ -237,12 +237,6 @@ spec:
             url: http://loki-headless.observability.svc.cluster.local:3100
             jsonData:
               maxLines: 250
-          - name: PostgreSQL
-            type: postgres
-            access: proxy
-            url: postgres16-rw.default.svc.cluster.local:5432
-            jsonData:
-              maxLines: 250
           - name: TeslaMate
             type: postgres
             access: proxy
