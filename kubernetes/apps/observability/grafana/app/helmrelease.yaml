@@ -20,13 +20,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    extraInitContainers:
-      - name: init-db
-        image: ghcr.io/home-operations/postgres-init:17.4@sha256:a9f405688344a8a6f718e2c344438342ad21540986aeb5ab5fa781831eb2c597
-        imagePullPolicy: IfNotPresent
-        envFrom:
-          - secretRef:
-              name: grafana-dbinit-secret
     image:
       repository: grafana/grafana
       tag: 11.5.2
@@ -55,6 +48,21 @@ spec:
       GF_DISABLE_SANITIZE_HTML: true
       GF_LOG_FILTERS: rendering:debug
       GF_DASHBOARDS_MIN_REFRESH_INTERVAL: 2s
+      # Grafana
+      GF_DATABASE_NAME: grafana
+      GF_DATABASE_HOST: grafana-pgbouncer.default.svc.cluster.local:5432
+      GF_DATABASE_SSL_MODE: disable
+      GF_DATABASE_TYPE: postgres
+
+    envValueFrom:
+      GF_DATABASE_USER:
+        secretKeyRef:
+          name: grafana-pguser-grafana
+          key: user
+      GF_DATABASE_PASSWORD:
+        secretKeyRef:
+          name: grafana-pguser-grafana
+          key: password
 
     grafana.ini:
       news:
