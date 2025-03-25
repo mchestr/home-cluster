@@ -14,8 +14,6 @@ spec:
   dependsOn:
     - name: onepassword-store
       namespace: external-secrets
-    - name: cloudnative-pg-cluster
-      namespace: default
   interval: 30m
   path: ./kubernetes/apps/observability/grafana/app
   postBuild:
