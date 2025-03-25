@@ -24,16 +24,6 @@ spec:
   values:
     controllers:
       jellyseerr:
-
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 17.4@sha256:a9f405688344a8a6f718e2c344438342ad21540986aeb5ab5fa781831eb2c597
-            envFrom:
-              - secretRef:
-                  name: jellyseerr-dbinit-secret
-
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -45,6 +35,20 @@ spec:
               TZ: America/Vancouver
               LOG_LEVEL: "info"
               PORT: &port 5055
+              # Enable Postgres
+              DB_TYPE: postgres
+              DB_HOST: jellyseerr-pgbouncer.default.svc.cluster.local
+              DB_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: jellyseerr-pguser-jellyseerr
+                    key: user
+              DB_PASS:
+                valueFrom:
+                  secretKeyRef:
+                    name: jellyseerr-pguser-jellyseerr
+                    key: password
+              DB_NAME: *app
             envFrom:
               - secretRef:
                   name: jellyseerr-secret

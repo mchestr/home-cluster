@@ -25,14 +25,7 @@ spec:
       teslamate:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          01-init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 17.4@sha256:a9f405688344a8a6f718e2c344438342ad21540986aeb5ab5fa781831eb2c597
-            envFrom:
-              - secretRef:
-                  name: teslamate-dbinit-secret
+
         containers:
           app:
             image:
@@ -42,7 +35,19 @@ spec:
               TZ: &tz America/Vancouver
               DISABLE_MQTT: "false"
               MQTT_HOST: emqx-listeners.default.svc.cluster.local
-            envFrom: &envFrom
+              DATABASE_NAME: *app
+              DATABASE_HOST: teslamate-pgbouncer.default.svc.cluster.local
+              DATABASE_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: teslamate-pguser-teslamate
+                    key: user
+              DATABASE_PASS:
+                valueFrom:
+                  secretKeyRef:
+                    name: teslamate-pguser-teslamate
+                    key: password
+            envFrom:
               - secretRef:
                   name: teslamate-secret
 

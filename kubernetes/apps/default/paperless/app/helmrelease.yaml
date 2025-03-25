@@ -33,15 +33,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        initContainers:
-          01-init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 17.4@sha256:a9f405688344a8a6f718e2c344438342ad21540986aeb5ab5fa781831eb2c597
-            envFrom:
-              - secretRef:
-                  name: paperless-dbinit-secret
-
         containers:
           app:
             image:
@@ -60,6 +51,18 @@ spec:
               PAPERLESS_SOCIAL_AUTO_SIGNUP: "true"
               PAPERLESS_DISABLE_REGULAR_LOGIN: "true"
               PAPERLESS_REDIRECT_LOGIN_TO_SSO: "true"
+              PAPERLESS_DBUSER:
+                valueFrom:
+                  secretKeyRef:
+                    name: paperless-pguser-paperless
+                    key: user
+              PAPERLESS_DBPASS:
+                valueFrom:
+                  secretKeyRef:
+                    name: paperless-pguser-paperless
+                    key: password
+              PAPERLESS_DBHOST: paperless-pgbouncer.default.svc.cluster.local
+              PAPERLESS_DBNAME: *app
             envFrom:
               - secretRef:
                   name: paperless-secret
