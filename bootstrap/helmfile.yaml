@@ -59,6 +59,24 @@ releases:
     values:
       - ../kubernetes/apps/external-secrets/external-secrets/app/resources/values.yaml
     version: 0.15.0
+    hooks:
+      - # Wait for external-secrets CRDs to be available
+        events: ['postsync']
+        command: bash
+        args:
+          - -c
+          - until kubectl get crd clustersecretstores.external-secrets.io &>/dev/null; do sleep 10; done
+        showlogs: true
+      - # Apply cluster secret store configuration
+        events: ['postsync']
+        command: kubectl
+        args:
+          - apply
+          - --namespace=external-secrets
+          - --server-side
+          - --field-manager=kustomize-controller
+          - --filename=../kubernetes/apps/external-secrets/external-secrets/onepassword/store/clustersecretstore.yaml
+        showlogs: true
 
   - chart: postfinance/kubelet-csr-approver
     name: kubelet-csr-approver
