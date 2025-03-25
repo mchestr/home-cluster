@@ -6,3 +6,4 @@ data:
   init.sql: |
     \c ${APP}
     GRANT ALL PRIVILEGES ON SCHEMA public TO "${USERNAME:=${APP}}";
+    ${CDPG_EXTRA_INIT_SQL}
