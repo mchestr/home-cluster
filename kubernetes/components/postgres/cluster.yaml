@@ -26,6 +26,8 @@ spec:
       postgresql:
         max_wal_size: 5GB
         synchronous_commit: "on"
+        pg_hba:
+          - hostnossl ${APP} ${APP} 10.244.0.0/16 md5
         parameters:
           max_connections: 500
 

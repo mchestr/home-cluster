@@ -38,11 +38,6 @@ spec:
   wait: false
   patches:
     - patch: |-
-        - op: remove
-          path: /spec/dataSource
-      target:
-        kind: PostgresCluster
-    - patch: |-
         - op: add
           path: /spec/patroni/dynamicConfiguration/postgresql/parameters
           value:
