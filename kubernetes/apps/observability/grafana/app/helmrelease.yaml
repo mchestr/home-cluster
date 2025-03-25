@@ -246,11 +246,11 @@ spec:
           - name: TeslaMate
             type: postgres
             access: proxy
-            url: postgres16-ro.default.svc.cluster.local:5432
+            url: teslamate-pgbouncer.default.svc.cluster.local
             database: teslamate
-            user: teslamate
             secureJsonData:
-              password: "$TESLAMATE_POSTGRES_PASSWORD"
+              user: "${TESLAMATE_POSTGRES_USER}"
+              password: "${TESLAMATE_POSTGRES_PASSWORD}"
             basicAuth: false
             withCredentials: false
             jsonData:
