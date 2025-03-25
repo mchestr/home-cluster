@@ -42,17 +42,11 @@ spec:
             args:
               - server
             env: &env
-              DISPLEX_DATABASE__HOST: displex-primary.default.svc.cluster.local
-              DISPLEX_DATABASE__USERNAME:
+              DISPLEX_DATABASE__URL:
                 valueFrom:
                   secretKeyRef:
                     name: displex-pguser-displex
-                    key: user
-              DISPLEX_DATABASE__PASSWORD:
-                valueFrom:
-                  secretKeyRef:
-                    name: displex-pguser-displex
-                    key: password
+                    key: uri
               RUST_LOG: displex=info,sea_orm=info,warn
             resources: &resources
               requests:
