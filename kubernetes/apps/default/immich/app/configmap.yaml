@@ -6,7 +6,7 @@ metadata:
 data:
   TZ: America/Vancouver
   DB_DATABASE_NAME: immich
-  DB_HOSTNAME: immich-db-rw.default.svc.cluster.local
+  DB_HOSTNAME: immich-pgbouncer.default.svc.cluster.local
   DB_PORT: "5432"
   DISABLE_REVERSE_GEOCODING: "true"
   ENABLE_MAPBOX: "false"
