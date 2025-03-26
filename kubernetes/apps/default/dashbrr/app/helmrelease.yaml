@@ -92,6 +92,11 @@ spec:
     route:
       app:
         hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: autobrr.png
+          gethomepage.dev/name: Dashbrr
+          gethomepage.dev/group: Media
         parentRefs:
           - name: internal
             namespace: networking
