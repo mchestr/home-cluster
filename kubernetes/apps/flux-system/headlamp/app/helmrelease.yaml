@@ -34,6 +34,8 @@ spec:
       oidc:
         secret:
           create: false
+        externalSecret:
+          enabled: true
           name: headlamp-secret
       pluginsDir: /build/plugins
 
