@@ -69,6 +69,7 @@ access_control:
         - irc.chestr.dev
         - jellyfin.chestr.dev
         - lldap.chestr.dev
+        - ollama.chestr.dev
         - paperless.chestr.dev
         - syncthing.chestr.dev
         - sync.chestr.dev
