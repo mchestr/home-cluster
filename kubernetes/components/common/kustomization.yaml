@@ -4,5 +4,4 @@ kind: Component
 resources:
   - ./alerts
   - ./secrets
-  - ./sops
   - ./namespace.yaml
