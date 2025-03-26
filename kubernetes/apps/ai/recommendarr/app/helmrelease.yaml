@@ -61,6 +61,11 @@ spec:
     route:
       app:
         hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: openai.png
+          gethomepage.dev/name: Recommendarr
+          gethomepage.dev/group: AI
         parentRefs:
           - name: internal
             namespace: networking

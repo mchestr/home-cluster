@@ -31,6 +31,10 @@ data:
         style: row
         columns: 2
         icon: mdi-home-analytics
+      AI:
+        style: row
+        columns: 2
+        icon: si-openapiinitiative
       Media:
         style: row
         columns: 2

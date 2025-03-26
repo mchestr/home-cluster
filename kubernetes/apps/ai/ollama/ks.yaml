@@ -1,0 +1,26 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app ollama
+  namespace: &namespace ai
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/volsync
+  interval: 30m
+  path: ./kubernetes/apps/ai/ollama/app
+  postBuild:
+    substitute:
+      APP: *app
+      VOLSYNC_CAPACITY: 25Gi
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false

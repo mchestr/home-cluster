@@ -1,0 +1,31 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app openweb-ui
+  namespace: &namespace ai
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/gatus/guarded
+    - ../../../../components/volsync
+  dependsOn:
+    - name: ollama
+      namespace: *namespace
+  interval: 30m
+  path: ./kubernetes/apps/ai/openweb-ui/app
+  postBuild:
+    substitute:
+      APP: *app
+      GATUS_SUBDOMAIN: chat
+      VOLSYNC_CAPACITY: 5Gi
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false

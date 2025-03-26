@@ -29,7 +29,6 @@ resources:
   - qbittorrent/ks.yaml
   - radarr/ks.yaml
   - radicale/ks.yaml
-  - recommendarr/ks.yaml
   - recyclarr/ks.yaml
   - sabnzbd/ks.yaml
   - smtp-relay/ks.yaml
