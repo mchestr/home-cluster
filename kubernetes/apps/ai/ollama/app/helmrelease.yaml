@@ -38,7 +38,6 @@ spec:
               OLLAMA_HOST: 0.0.0.0
               OLLAMA_ORIGINS: "*"
               OLLAMA_MODELS: &modelPath /models
-              OLLAMA_KEEP_ALIVE: 24h
               OLLAMA_LOAD_TIMEOUT: "600"
               OLLAMA_CONTEXT_LENGTH: "8192"
             resources:
