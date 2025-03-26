@@ -158,19 +158,6 @@ identity_providers:
         redirect_uris:
           - https://grafana.chestr.dev/login/generic_oauth
         userinfo_signed_response_alg: none
-      - client_id: headlamp
-        client_name: Headlamp
-        client_secret: '{{ env "HEADLAMP_OAUTH_CLIENT_SECRET" }}'
-        public: false
-        authorization_policy: two_factor
-        pre_configured_consent_duration: 1y
-        scopes:
-          - openid
-          - profile
-          - email
-        redirect_uris:
-          - https://headlamp.chestr.dev/oidc-callback
-        userinfo_signed_response_alg: none
       - client_id: immich
         client_name: Immich
         client_secret: '{{ env "IMMICH_OAUTH_CLIENT_SECRET" }}'

@@ -7,4 +7,5 @@ resources:
   - ./helmrelease.yaml
   - ./helmrepository.yaml
   - ./httproute.yaml
+  - ./pushsecret.yaml
   - ./rbac.yaml
