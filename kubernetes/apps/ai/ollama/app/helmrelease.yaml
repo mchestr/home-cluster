@@ -40,6 +40,7 @@ spec:
               OLLAMA_MODELS: &modelPath /models
               OLLAMA_KEEP_ALIVE: 24h
               OLLAMA_LOAD_TIMEOUT: "600"
+              OLLAMA_CONTEXT_LENGTH: "8192"
             resources:
               requests:
                 cpu: 200m
