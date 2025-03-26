@@ -5,6 +5,7 @@ namespace: flux-system
 components:
   - ../../components/common
 resources:
-  - ./flux-operator/ks.yaml
   - ./flux-instance/ks.yaml
+  - ./flux-operator/ks.yaml
+  - ./headlamp/ks.yaml
   - ./tofu-controller/ks.yaml

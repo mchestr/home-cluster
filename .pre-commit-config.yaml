@@ -24,10 +24,6 @@ repos:
     rev: 0.5.0
     hooks:
       - id: fix-smartquotes
-  - repo: https://github.com/k8s-at-home/sops-pre-commit
-    rev: v2.1.1
-    hooks:
-      - id: forbid-secrets
   - repo: https://github.com/zricethezav/gitleaks
     rev: v8.17.0
     hooks:
