@@ -37,7 +37,9 @@ spec:
               TZ: America/Vancouver
               OLLAMA_HOST: 0.0.0.0
               OLLAMA_ORIGINS: "*"
-
+              OLLAMA_MODELS: &modelPath /models
+              OLLAMA_KEEP_ALIVE: 24h
+              OLLAMA_LOAD_TIMEOUT: "600"
             resources:
               requests:
                 cpu: 200m
@@ -53,8 +55,13 @@ spec:
             port: 11434
 
     persistence:
+      models:
+        existingClaim: ollama-models
+        advancedMounts:
+          ollama:
+            app:
+              - path: *modelPath
       config:
-        enabled: true
-        existingClaim: ollama
+        existingClaim: *app
         globalMounts:
           - path: /root/.ollama
