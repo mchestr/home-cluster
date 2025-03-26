@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: docker.io/tannermiddleton/recommendarr
-              tag: v1.3.0@sha256:dd655316e5973eaa9809025a7780acb29304b589c37f45fd01c7294a7d816f12
+              tag: v1.3.0@sha256:0462ed4689f721f1c8806c0d3d55bc5b4089015b931fab21f72f28aea8bb05c2
             env:
               PUBLIC_URL: https://{{ .Release.Name }}.chestr.dev
               DOCKER_ENV: true
