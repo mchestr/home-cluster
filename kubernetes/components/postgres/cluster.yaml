@@ -98,6 +98,17 @@ spec:
             full: "30 1 * * 0" # At 01:30 on Sunday.
             differential: "30 1 * * 1-6" # At 01:30 on every day-of-week from Monday through Saturday.
             incremental: "30 3-23/8 * * *" # Backup every 8 hours from 03:30 to 23:30.
+        - name: repo2
+          volume:
+            volumeClaimSpec:
+              accessModes:
+                - "ReadWriteOnce"
+              resources:
+                requests:
+                  storage: 1Gi
+              storageClassName: nfs
+          schedules:
+            incremental: "*/5 * * * *" # every 5 minutes
 
   dataSource:
     pgbackrest:
