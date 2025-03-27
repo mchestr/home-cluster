@@ -18,7 +18,7 @@ spec:
   path: ./kubernetes/apps/observability/grafana/app
   postBuild:
     substitute:
-      APP: grafana
+      APP: *app
   prune: true
   retryInterval: 1m
   sourceRef:
