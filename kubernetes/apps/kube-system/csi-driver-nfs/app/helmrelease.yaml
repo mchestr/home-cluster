@@ -1,0 +1,34 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: csi-driver-nfs
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: csi-driver-nfs
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controller:
+      replicas: 1
+    storageClass:
+      create: true
+      name: nfs
+      parameters:
+        server: lochnas.chestr.dev
+        share: /volume1/shared/kubernetes
+      mountOptions:
+        - nfsvers=4.1
+        - nconnect=16
+        - hard
+        - noatime
+      reclaimPolicy: Delete
+      volumeBindingMode: Immediate
