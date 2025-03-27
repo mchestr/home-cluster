@@ -25,6 +25,7 @@ spec:
       parameters:
         server: lochnas.chestr.dev
         share: /volume1/shared/kubernetes
+        subDir: "${pvc.metadata.namespace}-${pvc.metadata.name}"
       mountOptions:
         - nfsvers=4.1
         - nconnect=16
