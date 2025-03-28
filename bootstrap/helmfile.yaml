@@ -94,7 +94,7 @@ releases:
       - external-secrets/external-secrets
     values:
       - ../kubernetes/apps/kube-system/spegel/app/resources/values.yaml
-    version: 0.1.0
+    version: 0.1.1
 
   - chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator
     name: flux-operator
