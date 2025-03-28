@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: victoria-metrics-dashboard
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/icon: victoriametrics.png
+    gethomepage.dev/name: VictoriaMetrics
+    gethomepage.dev/group: System
+spec:
+  hostnames: ["vm.chestr.dev"]
+  parentRefs:
+    - name: internal
+      namespace: networking
+      sectionName: https
+  rules:
+    - backendRefs:
+        - name: vmsingle-stack
+          namespace: observability
+          port: 8429
