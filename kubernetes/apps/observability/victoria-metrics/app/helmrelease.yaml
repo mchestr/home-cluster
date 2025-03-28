@@ -1,8 +1,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: vm
-  namespace: monitoring
+  name: victoria-metrics
 spec:
   chart:
     spec:
@@ -51,6 +50,8 @@ spec:
       create: true
       rules:
         groups:
+          etcd:
+            create: false
           kubernetesSystemControllerManager:
             create: false
           kubernetesSystemScheduler:
@@ -74,61 +75,51 @@ spec:
           requests:
             cpu: 530m
             memory: 1.2Gi
-
       ingress:
         enabled: false
 
     alertmanager:
       enabled: true
       spec:
-        externalURL: https://vm-alert.chestr.dev
+        externalURL: https://vm.chestr.dev
       ingress:
         enabled: false
+      useManagedConfig: true
       config:
         route:
-          groupBy: ["alertname", "job"]
-          groupInterval: 10m
-          groupWait: 1m
+          group_by: ["alertname", "job"]
+          group_interval: 10m
+          group_wait: 1m
           receiver: pushover
-          repeatInterval: 12h
+          repeat_interval: 12h
           routes:
             - receiver: "null"
               matchers:
-                - name: alertname
-                  value: InfoInhibitor
-                  matchType: =
+                - alertname=InfoInhibitor
             - receiver: heartbeat
-              groupInterval: 15s
-              groupWait: 0s
-              repeatInterval: 5m
+              group_interval: 15s
+              group_wait: 0s
+              repeat_interval: 5m
               matchers:
-                - name: alertname
-                  value: Watchdog
-                  matchType: =
+                - alertname=Watchdog
             - receiver: pushover
               matchers:
-                - name: severity
-                  value: critical
-                  matchType: =
-        inhibitRules:
-          - equal: ["alertname", "namespace"]
-            sourceMatch:
-              - name: severity
-                value: critical
-                matchType: =
-            targetMatch:
-              - name: severity
-                value: warning
-                matchType: =
+                - severity=~"warning|critical"
+        inhibit_rules:
+          - source_matchers:
+              - severity = "critical"
+            target_matchers:
+              - severity = "warning"
+            equal: ["alertname", "namespace"]
         receivers:
           - name: "null"
           - name: heartbeat
-            webhookConfigs:
-              - urlSecret:
+            webhook_configs:
+              - url_secret:
                   name: &secret alertmanager-secret
                   key: ALERTMANAGER_HEARTBEAT_URL
           - name: pushover
-            pushoverConfigs:
+            pushover_configs:
               - html: true
                 message: |-
                   {{- range .Alerts }}
@@ -151,7 +142,7 @@ spec:
                   {{- end }}
                 priority: |-
                   {{ if eq .Status "firing" }}1{{ else }}0{{ end }}
-                sendResolved: true
+                send_resolved: true
                 sound: gamelan
                 title: >-
                   [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}]
@@ -160,16 +151,16 @@ spec:
                 token:
                   name: *secret
                   key: PUSHOVER_ALERTMANAGER_TOKEN
-                userKey:
+                user_key:
                   name: *secret
                   key: PUSHOVER_USER_KEY
-                urlTitle: View in Alertmanager
+                url_title: View in Alertmanager
 
     vmalert:
       enabled: true
       spec:
         extraArgs:
-          external.url: https://vmalert.chestr.dev
+          external.url: https://vm.chestr.dev
       ingress:
         enabled: false
 
