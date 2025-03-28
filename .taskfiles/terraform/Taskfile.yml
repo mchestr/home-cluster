@@ -1,7 +1,7 @@
 ---
 version: "3"
 
-env:
+x-env: &env
   cloudflare_api_token:
     sh: op item --vault ${ONEPASSWORD_VAULT} get cloudflare --format json | jq -r '.fields.[] | select(.label == "CLOUDFLARE_TERRAFORM_TOKEN") | .value'
   onepassword_url: http://127.0.0.1:8080
@@ -13,17 +13,20 @@ tasks:
   cf:init:
     desc: Initialize terraform dependencies
     dir: terraform/cloudflare
+    env: *env
     cmds:
       - terraform init {{.CLI_ARGS}}
 
   cf:plan:
     desc: Show the changes terraform will make
     dir: terraform/cloudflare
+    env: *env
     cmds:
       - terraform plan {{.CLI_ARGS}} -var "cloudflare_api_token=${cloudflare_api_token}" -var "onepassword_url=${onepassword_url}" -var "onepassword_token=${onepassword_token}"
 
   cf:apply:
     desc: Apply the changes to Cloudflare
     dir: terraform/cloudflare
+    env: *env
     cmds:
       - terraform apply {{.CLI_ARGS}} -var "cloudflare_api_token=${cloudflare_api_token}" -var "onepassword_url=${onepassword_url}" -var "onepassword_token=${onepassword_token}"
