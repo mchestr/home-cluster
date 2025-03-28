@@ -43,7 +43,7 @@ spec:
                 cpu: 5m
                 memory: 36M
               limits:
-                memory: 128M
+                memory: 228M
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -74,4 +74,4 @@ spec:
             scheme: http
             path: /metrics
             interval: 1m
-            scrapeTimeout: 30s
+            scrapeTimeout: 40s

@@ -28,7 +28,7 @@ spec:
     manageCRDs: true
     replicaCount: 2
     metrics:
-      disableAuth: true
+      disableAuth: false
     podSecurityContext:
       runAsNonRoot: true
       runAsUser: 1000

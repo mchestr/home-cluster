@@ -2,7 +2,7 @@
 grafanaDashboard:
   enabled: false
 serviceMonitor:
-  enabled: true
+  enabled: false
 spegel:
   appendMirrors: true
   containerdSock: /run/containerd/containerd.sock
