@@ -84,24 +84,6 @@ spec:
         externalURL: https://vm-alert.chestr.dev
       ingress:
         enabled: false
-      config:
-        route:
-          group_by: ["alertname", "job"]
-          group_wait: 45s
-          group_interval: 10m
-          repeat_interval: 12h
-          routes:
-            - matchers:
-                - alertname=~"WatchDog|InfoInhibitor|KubeMemoryOvercommit"
-              receiver: "blackhole"
-        inhibit_rules:
-          - source_matchers:
-              - severity = "critical"
-            target_matchers:
-              - severity = "warning"
-            equal: ["alertname", "namespace"]
-        receivers:
-          - name: "blackhole"
 
     vmalert:
       enabled: true
