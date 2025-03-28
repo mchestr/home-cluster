@@ -171,6 +171,10 @@ spec:
       ingress:
         enabled: false
       spec:
+        extraArgs:
+          promscrape.maxScrapeSize: 50MiB
+          promscrape.streamParse: "true"
+          promscrape.dropOriginalLabels: "true"
         resources:
           limits:
             memory: 1Gi
