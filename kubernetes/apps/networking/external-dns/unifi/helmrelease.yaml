@@ -61,6 +61,6 @@ spec:
     txtPrefix: k8s.main.
     domainFilters: ["chestr.dev"]
     serviceMonitor:
-      enabled: false
+      enabled: true
     podAnnotations:
       secret.reloader.stakater.com/reload: *secret

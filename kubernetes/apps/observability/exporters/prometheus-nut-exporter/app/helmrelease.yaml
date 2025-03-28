@@ -54,7 +54,7 @@ spec:
         endpoints:
           - port: http
             interval: 15s
-            scrapeTimeout: 30s
+            scrapeTimeout: 10s
             params:
               target:
                 - lochnas.chestr.dev:3493

@@ -51,13 +51,13 @@ operator:
   prometheus:
     enabled: true
     serviceMonitor:
-      enabled: false
+      enabled: true
   dashboards:
     enabled: true
 prometheus:
   enabled: true
   serviceMonitor:
-    enabled: false
+    enabled: true
     trustCRDsExist: true
 rollOutCiliumPods: true
 routingMode: native

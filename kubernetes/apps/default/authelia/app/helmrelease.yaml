@@ -120,7 +120,7 @@ spec:
             scheme: http
             path: /metrics
             interval: 1m
-            scrapeTimeout: 20s
+            scrapeTimeout: 10s
 
     route:
       app:
