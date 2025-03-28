@@ -102,7 +102,7 @@ spec:
       app:
         serviceName: gatus
         endpoints:
-          - port: https
+          - port: http
 
     route:
       app:

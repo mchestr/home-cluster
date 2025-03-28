@@ -18,4 +18,4 @@ certController:
     interval: 1m
 serviceMonitor:
   enabled: true
-  interval: 2m
+  interval: 1m

@@ -117,7 +117,7 @@ spec:
             sectionName: https
 
     serviceMonitor:
-      enabled: false
+      enabled: true
 
     serviceAccount:
       autoMount: true

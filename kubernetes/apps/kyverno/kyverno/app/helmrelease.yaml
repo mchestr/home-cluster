@@ -31,7 +31,7 @@ spec:
         grafana_folder: Infrastructure
     backgroundController:
       serviceMonitor:
-        enabled: false
+        enabled: true
       rbac:
         clusterRole:
           extraResources:
@@ -54,14 +54,14 @@ spec:
           memory: 192Mi
     cleanupController:
       serviceMonitor:
-        enabled: false
+        enabled: true
     reportsController:
       serviceMonitor:
-        enabled: false
+        enabled: true
     admissionController:
       replicas: 3
       serviceMonitor:
-        enabled: false
+        enabled: true
       rbac:
         clusterRole:
           extraResources:

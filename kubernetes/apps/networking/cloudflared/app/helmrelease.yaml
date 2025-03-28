@@ -82,7 +82,7 @@ spec:
       app:
         serviceName: cloudflare-tunnel
         endpoints:
-          - port: https
+          - port: http
 
     persistence:
       config-file:
