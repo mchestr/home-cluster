@@ -38,7 +38,7 @@ spec:
         enabled: true
         urlPrefix: /
         ssl: false
-        prometheusEndpoint: http://prometheus-operated.observability.svc.cluster.local:9090
+        prometheusEndpoint: http://vmsingle-stack.observability.svc.cluster.local:8429
       mgr:
         modules:
           - name: insights

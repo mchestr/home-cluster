@@ -55,7 +55,7 @@ spec:
         ruler:
           enable_api: true
           enable_alertmanager_v2: true
-          alertmanager_url: http://alertmanager-operated.observability.svc.cluster.local:9093
+          alertmanager_url: http://vmalertmanager-stack.observability.svc.cluster.local:9093
           storage:
             type: local
             local:
