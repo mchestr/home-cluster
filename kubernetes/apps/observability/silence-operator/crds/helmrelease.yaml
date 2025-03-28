@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: silence-operator-crds
-      version: 0.0.2
+      version: 0.0.3
       sourceRef:
         kind: HelmRepository
         name: wiremind
