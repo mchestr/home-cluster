@@ -11,7 +11,7 @@ resources:
   - ./grafana/ks.yaml
   - ./kromgo/ks.yaml
   - ./loki/ks.yaml
-  - ./kube-prometheus-stack/ks.yaml
+  # - ./kube-prometheus-stack/ks.yaml
   - ./silence-operator/ks.yaml
   - ./unpoller/ks.yaml
   - ./victoria-metrics/ks.yaml
