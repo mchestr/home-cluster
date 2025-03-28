@@ -2,7 +2,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./alertmanager
+  - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./httproute.yaml
   - ./scrapeconfig.yaml
