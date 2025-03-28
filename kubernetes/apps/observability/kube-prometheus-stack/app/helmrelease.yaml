@@ -103,6 +103,7 @@ spec:
                   storage: 50Gi
 
     prometheus-node-exporter:
+      enabled: false
       fullnameOverride: node-exporter
       prometheus: &prometheus
         monitor:
@@ -115,6 +116,7 @@ spec:
                 - __meta_kubernetes_pod_node_name
               targetLabel: kubernetes_node
     kube-state-metrics:
+      enabled: false
       fullnameOverride: kube-state-metrics
       metricLabelsAllowlist:
         - pods=[*]
