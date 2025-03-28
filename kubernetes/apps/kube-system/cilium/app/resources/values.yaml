@@ -83,4 +83,4 @@ securityContext:
       - SYS_RESOURCE
 tls:
   secretsNamespace:
-    create: false
+    create: true
