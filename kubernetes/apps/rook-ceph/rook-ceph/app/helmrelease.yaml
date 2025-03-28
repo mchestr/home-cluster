@@ -6,14 +6,9 @@ metadata:
 spec:
   interval: 30m
   releaseName: rook-ceph
-  chart:
-    spec:
-      chart: rook-ceph
-      version: v1.16.6
-      sourceRef:
-        kind: HelmRepository
-        name: rook-ceph
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: rook-ceph
   maxHistory: 2
   install:
     createNamespace: true
