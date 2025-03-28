@@ -110,7 +110,7 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: grafana.png
           gethomepage.dev/name: Grafana
-          gethomepage.dev/group: Monitoring
+          gethomepage.dev/group: Observability
         parentRefs:
           - name: internal
             namespace: networking

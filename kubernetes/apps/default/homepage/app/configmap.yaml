@@ -47,7 +47,7 @@ data:
         style: column
         columns: 2
         icon: mdi-home-automation
-      Monitoring:
+      Observability:
         style: column
         icon: mdi-monitor-eye
       Infrastructure:

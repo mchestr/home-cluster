@@ -65,7 +65,7 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: teslamate.png
           gethomepage.dev/name: TeslaMate
-          gethomepage.dev/group: Monitoring
+          gethomepage.dev/group: Observability
         parentRefs:
           - name: internal
             namespace: networking
