@@ -1,0 +1,21 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/icon: victoriametrics.png
+    gethomepage.dev/name: Logs
+    gethomepage.dev/group: Observability
+  name: victoria-logs-server
+spec:
+  hostnames:
+    - logs.chestr.dev
+  parentRefs:
+    - name: internal
+      namespace: networking
+      sectionName: https
+  rules:
+    - backendRefs:
+        - name: victoria-logs-server
+          port: 9428
