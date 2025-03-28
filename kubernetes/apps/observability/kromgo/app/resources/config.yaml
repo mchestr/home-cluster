@@ -26,7 +26,7 @@ metrics:
       - { color: "50B93A", min: 0, max: 9999 }
 
   - name: cluster_cpu_usage
-    query: round(avg(instance:node_cpu_utilisation:rate5m{node=~"m[0-9]+"}) * 100, 0.1)
+    query: round(avg(instance:node_cpu_utilisation:rate5m{job="node-exporter"}) * 100, 0.1)
     suffix: "%"
     colors:
       - { color: "50B93A", min: 0, max: 35 }
@@ -34,7 +34,7 @@ metrics:
       - { color: "red", min: 76, max: 9999 }
 
   - name: cluster_memory_usage
-    query: round(sum(node_memory_MemTotal_bytes{node=~"m[0-9]+"} - node_memory_MemAvailable_bytes{node=~"m[0-9]+"}) / sum(node_memory_MemTotal_bytes{kubernetes_node=~"m[0-9]+"}) * 100, 0.1)
+    query: round(sum(node_memory_MemTotal_bytes{job="node-exporter"} - node_memory_MemAvailable_bytes{job="node-exporter"}) / sum(node_memory_MemTotal_bytes{job="node-exporter"}) * 100, 0.1)
     suffix: "%"
     colors:
       - { color: "50B93A", min: 0, max: 40 }
@@ -58,7 +58,7 @@ metrics:
       - { color: "50B93A", min: 366, max: 9999 }
 
   - name: cluster_uptime_days
-    query: round(avg(node_time_seconds{node=~"m[0-9]+"} - node_boot_time_seconds{node=~"m[0-9]+"}) / 86400)
+    query: round(avg(node_time_seconds{job="node-exporter"} - node_boot_time_seconds{job="node-exporter"}) / 86400)
     suffix: "d"
     colors:
       - { color: "50B93A", min: 0, max: 9999 }
