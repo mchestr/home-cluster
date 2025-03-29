@@ -1,14 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-configMapGenerator:
-  - files:
-      - autobrr.yaml=./resources/lokirule.yaml
-    name: autobrr-loki-rules
-    options:
-      labels:
-        loki_rule: 'true'
-generatorOptions:
-  disableNameSuffixHash: true
 resources:
-  - externalsecret.yaml
-  - helmrelease.yaml
+  - ./externalsecret.yaml
+  - ./helmrelease.yaml
+  - ./vmrule.yaml

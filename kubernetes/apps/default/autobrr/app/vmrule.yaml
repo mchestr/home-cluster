@@ -1,0 +1,25 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
+metadata:
+  name: autobrr-alerts
+  labels:
+    vmalert-logs.io/enabled: "true"
+spec:
+  groups:
+    - name: &name AutobrrNetworkUnhealthy
+      type: vlogs
+      interval: 5m
+      rules:
+        - alert: *name
+          expr: '"(?i)network unhealthy" | filter app := "autobrr" | count() rows | filter rows := 0'
+          annotations:
+            description: 'Service {{$labels.app}} generated {{$labels.rows}} error logs in the last 5 minutes'
+    - name: PSQLError
+      type: vlogs
+      interval: 5m
+      rules:
+        - alert: PSQLError
+          expr: '"(?i)transaction has already been committed or rolled back" | filter app := "autobrr" | count() rows | filter rows := 0'
+          annotations:
+            description: 'Service {{$labels.app}}  is having database issues'
