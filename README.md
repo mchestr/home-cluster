@@ -46,6 +46,8 @@ This repository is my home Kubernetes cluster in a declarative state. [Flux](htt
 
 ### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4a1/512.gif" alt="💡" width="16" height="16"> Core Components
 
+Core components that form the foundation of the cluster:
+
 - [backube/volsync](https://github.com/backube/volsync) and [backube/snapscheduler](https://github.com/backube/snapscheduler): Backup and recovery of persistent volume claims.
 - [cilium/cilium](https://github.com/cilium/cilium): Kubernetes CNI.
 - [envoyproxy/envoy](https://github.com/envoyproxy/gateway): Kubernetes-based application gateway using [Kubernetes Gateway API](https://gateway-api.sigs.k8s.io/).
@@ -55,6 +57,18 @@ This repository is my home Kubernetes cluster in a declarative state. [Flux](htt
 - [rancher/system-upgrade-controller](https://github.com/rancher/system-upgrade-controller): Handles Kubernetes and Talos upgrades automatically.
 - [rook/rook](https://github.com/rook/rook): Distributed block storage for peristent storage.
 - [siderolabs/talos](https://www.talos.dev/): The Kubernetes Operating System.
+
+### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f6a8/512.gif" alt="🚨" width="16" height="16"> Observability
+
+For observability and monitoring of the cluster the following software is used:
+
+- [fluent/fluent-bit](https://github.com/fluent/fluent-bit): Log processor.
+- [grafana/grafana](https://github.com/grafana/grafana): Data visualization platform.
+- [prometheus/alertmanager](https://github.com/prometheus/alertmanager): Handles processing and sending alerts.
+- [pushover](https://pushover.net): Handles receiving alerts on my devices.
+- [TwiN/gatus](https://github.com/TwiN/gatus): High level status dashboard.
+- [VictoriaMetrics/VictoriaLogs](https://docs.victoriametrics.com/victorialogs/): Database for logs.
+- [VictoriaMetrics/VictoriaMetrics](https://github.com/VictoriaMetrics/VictoriaMetrics): Time series database, drop-in replacement for Prometheus.
 
 ### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f916/512.gif" alt="🤖" width="16" height="16"> Automation
 
