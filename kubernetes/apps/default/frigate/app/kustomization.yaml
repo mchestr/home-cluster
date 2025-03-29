@@ -5,16 +5,11 @@ configMapGenerator:
   - files:
       - config.yaml=./resources/config.yaml
     name: frigate-configmap
-  - files:
-      - frigate.yaml=./resources/lokirule.yaml
-    name: frigate-loki-rules
-    options:
-      labels:
-        loki_rule: 'true'
 generatorOptions:
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
   disableNameSuffixHash: true
 resources:
-  - externalsecret.yaml
-  - helmrelease.yaml
+  - ./externalsecret.yaml
+  - ./helmrelease.yaml
+  - ./vmrule.yaml
