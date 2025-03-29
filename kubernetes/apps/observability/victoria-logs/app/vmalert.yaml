@@ -17,3 +17,6 @@ spec:
   ruleSelector:
     matchLabels:
       vmalert-logs.io/enabled: "true"
+  ruleNamespaceSelector:
+    matchExpressions:
+      - { key: somekey, operator: NotIn, values: ["never-used-value"] }
