@@ -13,6 +13,8 @@ machine:
     image: ghcr.io/siderolabs/kubelet:{{ ENV.KUBERNETES_VERSION }}
     extraArgs:
       rotate-server-certificates: "true"
+    extraConfig:
+      maxPods: 150
     extraMounts:
       - destination: /var/mnt/extra
         type: bind
