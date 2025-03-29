@@ -94,15 +94,6 @@ spec:
       ## https://docs.fluentbit.io/manual/pipeline/outputs
       outputs: |
         [OUTPUT]
-          Name loki
-          Match kubernetes.*
-          host loki-headless.observability.svc.cluster.local
-          port 3100
-          uri /loki/api/v1/push
-          line_format json
-          labels job=fluent-bit,source=$source,namespace=$k_namespace_name,app=$app,pod=$k_pod_name,host=$k_host
-
-        [OUTPUT]
           Name http
           Match kubernetes.*
           host victoria-logs-server.observability.svc.cluster.local

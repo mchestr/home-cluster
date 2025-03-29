@@ -10,7 +10,6 @@ resources:
   - ./gatus/ks.yaml
   - ./grafana/ks.yaml
   - ./kromgo/ks.yaml
-  - ./loki/ks.yaml
   - ./silence-operator/ks.yaml
   - ./unpoller/ks.yaml
   - ./victoria-logs/ks.yaml
