@@ -156,6 +156,13 @@ spec:
     vmalert:
       enabled: true
       spec:
+        selectAllByDefault: false
+        ruleSelector:
+          matchExpressions:
+            - { key: vmalert-logs.io/enabled, operator: NotIn, values: ["true"] }
+        ruleNamespaceSelector:
+          matchExpressions:
+            - { key: somekey, operator: NotIn, values: ["never-used-value"] }
         extraArgs:
           external.url: https://vm.chestr.dev
       ingress:
