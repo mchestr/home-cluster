@@ -12,6 +12,6 @@ spec:
       interval: 5m
       rules:
         - alert: *name
-          expr: '"(?i)Mqtt client error connect ECONNREFUSED" | filter app := "zwave-js-ui" | count() rows | filter rows :> 0'
+          expr: '"Mqtt client error connect ECONNREFUSED" | filter app := "zwave-js-ui" | count() rows | filter rows :> 0'
           annotations:
             description: '{{ $labels.app }} is unable to reach MQTT'

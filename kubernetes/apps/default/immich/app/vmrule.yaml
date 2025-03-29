@@ -1,0 +1,17 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
+metadata:
+  name: immich-alerts
+  labels:
+    vmalert-logs.io/enabled: "true"
+spec:
+  groups:
+    - name: &name ImmichWriteReadOnlyReplica
+      type: vlogs
+      interval: 5m
+      rules:
+        - alert: *name
+          expr: '"write against a read only replica" | filter app := "immich" | count() rows | filter rows :> 0'
+          annotations:
+            description: '{{ $labels.app }} is database is in read only mode'
