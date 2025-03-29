@@ -1,0 +1,19 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMAlert
+metadata:
+  name: logs
+spec:
+  replicaCount: 1
+  evaluationInterval: "10s"
+  datasource:
+    url: http://victoria-logs-server.observability.svc.cluster.local:9428
+  notifiers:
+    - url: http://vmalertmanager-stack.observability.svc.cluster.local:9093
+  remoteWrite:
+    url: &vm http://vmsingle-stack.observability.svc.cluster.local:8429
+  remoteRead:
+    url: *vm
+  ruleSelector:
+    matchLabels:
+      vmalert-logs.io/enabled: "true"
