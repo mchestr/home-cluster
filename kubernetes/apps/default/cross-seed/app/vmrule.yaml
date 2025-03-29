@@ -1,0 +1,33 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
+metadata:
+  name: cross-seed-alerts
+  labels:
+    vmalert-logs.io/enabled: "true"
+spec:
+  groups:
+    - name: &name CrossSeedDatabaseMalformed
+      type: vlogs
+      interval: 5m
+      rules:
+        - alert: *name
+          expr: '"(?i)database disk image is malformed" | filter app := "cross-seed" | count() rows | filter rows :> 0'
+          annotations:
+            description: '{{ $labels.app }} is experiencing database issues'
+    - name: &name CrossSeedFailedToInject
+      type: vlogs
+      interval: 5m
+      rules:
+        - alert: *name
+          expr: '"(?i)failed to inject" | filter app := "cross-seed" | count() rows | filter rows :> 0'
+          annotations:
+            description: '{{ $labels.app }} failed to inject a torrent'
+    - name: &name CrossSeedUnauthorizedAccessMiscondfiguration
+      type: vlogs
+      interval: 5m
+      rules:
+        - alert: *name
+          expr: '"(?i)Unauthorized API access attempt" | filter app := "cross-seed" | count() rows | filter rows :> 0'
+          annotations:
+            description: '{{ $labels.app }} is experiencing unauthorized api access, something is misconfigured'
