@@ -4,12 +4,11 @@ apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
 metadata:
   name: victoria-metrics-k8s-stack
-  namespace: flux-system
 spec:
   interval: 2h
   layerSelector:
-    mediaType: "application/vnd.cncf.helm.chart.content.v1.tar+gzip"
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   url: oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-k8s-stack
   ref:
-    tag: 0.43.1
+    tag: 0.39.4
