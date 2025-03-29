@@ -30,7 +30,6 @@ resources:
   - ./postfinance.yaml
   - ./rook-ceph.yaml
   - ./stakater.yaml
-  - ./victoriametrics.yaml
   - ./weaveworks.yaml
   - ./vector.yaml
   - ./wiremind.yaml
