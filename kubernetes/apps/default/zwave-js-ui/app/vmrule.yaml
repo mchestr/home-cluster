@@ -1,0 +1,17 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
+metadata:
+  name: zwave-js-ui-alerts
+  labels:
+    vmalert-logs.io/enabled: "true"
+spec:
+  groups:
+    - name: &name zWaveMQTTUnreachable
+      type: vlogs
+      interval: 5m
+      rules:
+        - alert: *name
+          expr: '"(?i)Mqtt client error connect ECONNREFUSED" | filter app := "zwave-js-ui" | count() rows | filter rows :> 0'
+          annotations:
+            description: '{{ $labels.app }} is unable to reach MQTT'

@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./pvc.yaml
-  - ./vmalert.yaml
+  - ./vmrule.yaml
