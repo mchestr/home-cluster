@@ -127,7 +127,6 @@ spec:
         globalMounts:
           - path: /media
       cache:
-        enabled: true
-        type: emptyDir
+        existingClaim: jellyfin-cache
         globalMounts:
-          - path: /config/cache
+          - path: /cache
