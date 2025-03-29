@@ -1,0 +1,17 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
+metadata:
+  name: qbittorrent-alerts
+  labels:
+    vmalert-logs.io/enabled: "true"
+spec:
+  groups:
+    - name: &name QbittorrentFastResumeRejected
+      type: vlogs
+      interval: 5m
+      rules:
+        - alert: *name
+          expr: '"(?i)fast resume rejected" | filter app := "qbittorrent" | count() rows | filter rows :> 0'
+          annotations:
+            description: '{{ $labels.app }} has a torrent with fast resume rejected'

@@ -5,18 +5,7 @@ configMapGenerator:
   - files:
       - ./resources/post-process.sh
     name: qbittorrent-scripts
-  - files:
-      - qbittorrent.yaml=./resources/lokirule.yaml
-    name: qbittorrent-loki-rules
-    options:
-      labels:
-        loki_rule: 'true'
-generatorOptions:
-  disableNameSuffixHash: true
-labels:
-  - pairs:
-      app.kubernetes.io/instance: qbittorrent
-      app.kubernetes.io/name: qbittorrent
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
+  - ./vmrule.yaml
