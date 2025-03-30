@@ -8,9 +8,7 @@ resources:
   - ./descheduler.yaml
   - ./emqx.yaml
   - ./external-dns.yaml
-  - ./external-secrets.yaml
   - ./fluent.yaml
-  - ./grafana.yaml
   - ./intel.yaml
   - ./itzg-minecraft.yaml
   - ./jetstack.yaml
