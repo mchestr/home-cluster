@@ -6,14 +6,9 @@ metadata:
   name: silence-operator
 spec:
   interval: 1h
-  chart:
-    spec:
-      chart: silence-operator
-      version: 0.0.8
-      sourceRef:
-        kind: HelmRepository
-        name: wiremind
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: silence-operator
   install:
     remediation:
       retries: 3

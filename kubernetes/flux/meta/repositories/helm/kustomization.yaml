@@ -32,4 +32,3 @@ resources:
   - ./stakater.yaml
   - ./weaveworks.yaml
   - ./vector.yaml
-  - ./wiremind.yaml
