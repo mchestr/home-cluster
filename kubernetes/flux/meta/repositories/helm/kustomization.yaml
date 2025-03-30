@@ -10,7 +10,6 @@ resources:
   - ./external-dns.yaml
   - ./fluent.yaml
   - ./intel.yaml
-  - ./itzg-minecraft.yaml
   - ./jetstack.yaml
   - ./kyverno.yaml
   - ./metallb.yaml

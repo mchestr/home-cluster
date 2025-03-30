@@ -5,15 +5,9 @@ metadata:
   name: &app minecraft-gtnh
 spec:
   interval: 15m
-  chart:
-    spec:
-      chart: minecraft
-      version: 4.26.0
-      sourceRef:
-        kind: HelmRepository
-        name: itzg-minecraft
-        namespace: flux-system
-      interval: 15m
+  chartRef:
+    kind: OCIRepository
+    name: minecraft-gtnh
   install:
     remediation:
       retries: -1
