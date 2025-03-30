@@ -9,6 +9,7 @@ metadata:
     gethomepage.dev/icon: victoriametrics.png
     gethomepage.dev/name: VictoriaMetrics
     gethomepage.dev/group: Observability
+    gethomepage.dev/pod-selector: app.kubernetes.io/name=vmsingle
 spec:
   hostnames: ["vm.chestr.dev"]
   parentRefs:

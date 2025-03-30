@@ -104,6 +104,7 @@ spec:
           gethomepage.dev/icon: minio.png
           gethomepage.dev/name: Minio
           gethomepage.dev/group: Storage
+          gethomepage.dev/pod-selector: app.kubernetes.io/name=minio
         parentRefs:
           - name: internal
             namespace: networking
