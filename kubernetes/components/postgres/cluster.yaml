@@ -79,6 +79,7 @@ spec:
         repo1-retention-full: "7" # days
         repo1-retention-full-type: "time"
         repo1-s3-uri-style: path
+        repo1-compress-type: bz2
         # NFS
         repo2-retention-full: "14" # days
         repo2-retention-full-type: "time"

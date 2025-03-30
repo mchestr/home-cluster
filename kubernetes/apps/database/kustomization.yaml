@@ -7,3 +7,4 @@ components:
 resources:
   - ./crunchy-postgres/ks.yaml
   - ./dragonfly/ks.yaml
+  - ./minio/ks.yaml
