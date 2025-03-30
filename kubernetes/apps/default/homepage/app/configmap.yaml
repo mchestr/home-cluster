@@ -89,8 +89,14 @@ data:
         - Pushover:
             - icon: pushover.png
               href: https://client.pushover.net/
+        - UptimeRobot:
+            - icon: si-statuspage
+              href: https://uptimerobot.com/
+        - HealthChecks:
+            - icon: healthchecks.png
+              href: https://healthcheck.io/
     - Git:
-        - k8s-at-home:
+        - Kubesearch:
             - icon: kubernetes-dashboard.png
               description: Helm Chart Search
               href: https://nanne.dev/k8s-at-home-search/
@@ -98,6 +104,15 @@ data:
             - icon: github.png
               description: Renovate Dashboard
               href: https://github.com/mchestr/home-cluster/issues/2976
+        - Homepage Icons:
+            - icon: si-jpeg
+              href: https://github.com/homarr-labs/dashboard-icons/blob/main/ICONS.md
+        - Homepage MDI:
+            - icon: si-materialdesign
+              href: https://pictogrammers.com/library/mdi/
+        - Homepage SI:
+            - icon: si-simpleicons
+              href: https://simpleicons.org/
   services.yaml: |
     - Infrastructure:
         - Cloudflared:
