@@ -42,12 +42,12 @@ spec:
 
             env:
               MINIO_UPDATE: "off"
-              MINIO_BROWSER_REDIRECT_URL: "https://minio.chestr.dev"
+              MINIO_BROWSER_REDIRECT_URL: https://minio.chestr.dev
               MINIO_SERVER_URL: "https://s3.chestr.dev"
               MINIO_API_CORS_ALLOW_ORIGIN: https://minio.chestr.dev,https://s3.chestr.dev
               MINIO_IDENTITY_OPENID_CONFIG_URL: https://auth.chestr.dev/.well-known/openid-configuration
               MINIO_IDENTITY_OPENID_CLIENT_ID: minio
-              MINIO_IDENTITY_OPENID_SCOPES: profile,openid,email,groups
+              MINIO_IDENTITY_OPENID_SCOPES: openid,profile,email,groups
               MINIO_IDENTITY_OPENID_CLAIM_NAME: groups
               MINIO_IDENTITY_OPENID_DISPLAY_NAME: Authelia
 
