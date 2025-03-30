@@ -99,6 +99,11 @@ spec:
     route:
       app:
         hostnames: ["minio.chestr.dev"]
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: minio.png
+          gethomepage.dev/name: Minio
+          gethomepage.dev/group: Storage
         parentRefs:
           - name: internal
             namespace: networking
