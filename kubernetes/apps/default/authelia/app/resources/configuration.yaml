@@ -117,6 +117,11 @@ identity_providers:
         - revocation
         - introspection
       allowed_origins_from_client_redirect_uris: true
+    claims_policies:
+      ## Creates the 'default' claims policy.
+      default:
+        id_token: ['groups', 'email', 'email_verified', 'alt_emails', 'preferred_username', 'name']
+
     jwks:
       - key_id: default
         key: {{ env "JWKS_KEY" | mindent 10 "|" | msquote }}
@@ -134,6 +139,7 @@ identity_providers:
         redirect_uris:
           - https://autobrr.chestr.dev/api/auth/oidc/callback
         userinfo_signed_response_alg: none
+        claims_policy: default
       - client_id: dashbrr
         client_name: Dashbrr
         client_secret: '{{ env "DASHBRR_OAUTH_CLIENT_SECRET" }}'
@@ -147,6 +153,7 @@ identity_providers:
         redirect_uris:
           - https://dashbrr.chestr.dev/api/auth/callback
         userinfo_signed_response_alg: none
+        claims_policy: default
       - client_id: grafana
         client_name: Grafana
         client_secret: '{{ env "GRAFANA_OAUTH_CLIENT_SECRET" }}'
@@ -161,6 +168,7 @@ identity_providers:
         redirect_uris:
           - https://grafana.chestr.dev/login/generic_oauth
         userinfo_signed_response_alg: none
+        claims_policy: default
       - client_id: immich
         client_name: Immich
         client_secret: '{{ env "IMMICH_OAUTH_CLIENT_SECRET" }}'
@@ -175,6 +183,7 @@ identity_providers:
           - https://photos.chestr.dev/auth/login
           - app.immich:/
         userinfo_signed_response_alg: none
+        claims_policy: default
       - client_id: minio
         client_name: minio
         client_secret: '{{ env "MINIO_OAUTH_CLIENT_SECRET" }}'
@@ -189,6 +198,7 @@ identity_providers:
         redirect_uris:
           - https://minio.chestr.dev/oauth_callback
         userinfo_signed_response_alg: none
+        claims_policy: default
       - client_id: paperless
         client_name: Paperless
         client_secret: '{{ env "PAPERLESS_OAUTH_CLIENT_SECRET" }}'
@@ -202,3 +212,4 @@ identity_providers:
         redirect_uris:
           - https://paperless.chestr.dev/accounts/oidc/authelia/login/callback/
         userinfo_signed_response_alg: none
+        claims_policy: default
