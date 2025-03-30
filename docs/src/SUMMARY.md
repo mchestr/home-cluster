@@ -13,3 +13,4 @@
 
 - [Bootstrap](notes/bootstrap.md)
 - [Networking](notes/networking.md)
+- [Observability](notes/observability.md)
