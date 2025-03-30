@@ -1,0 +1,82 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app jellystat
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          main:
+            image:
+              repository: docker.io/cyfershepard/jellystat
+              tag: 1.1.3
+            env:
+              TZ: America/Vancouver
+              POSTGRES_IP: jellystat-primary.media.svc.cluster.local
+              POSTGRES_PORT: "5432"
+              POSTGRES_DB: *app
+              POSTGRES_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: jellystat-pguser-jellystat
+                    key: user
+              POSTGRES_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: jellystat-pguser-jellystat
+                    key: password
+            envFrom:
+              - secretRef:
+                  name: jellystat-secret
+
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: &port 3000
+
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: si-jellyfin
+          gethomepage.dev/name: Jellyfin Stats
+          gethomepage.dev/group: Media
+        parentRefs:
+          - name: internal
+            namespace: networking
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+
+    persistence:
+      backup:
+        type: emptyDir
+        advancedMounts:
+          main:
+            main:
+              - path: /app/backend/backup-data

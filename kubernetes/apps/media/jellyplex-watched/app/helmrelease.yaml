@@ -46,7 +46,7 @@ spec:
               SSL_BYPASS: "True"
               ## Jellyfin server URL, use hostname or IP address if the hostname is not resolving correctly
               ## Comma seperated list for multiple servers
-              JELLYFIN_BASEURL: http://jellyfin.default.svc.cluster.local:8096
+              JELLYFIN_BASEURL: http://jellyfin.media.svc.cluster.local:8096
               ## Blacklisting/Whitelisting libraries, library types such as Movies/TV Shows, and users. Mappings apply so if the mapping for the user or library exist then both will be excluded.
               WHITELIST_LIBRARY: Movies,TV Shows,Shows
 

@@ -36,7 +36,7 @@ spec:
               PORT: &port 5055
               # Enable Postgres
               DB_TYPE: postgres
-              DB_HOST: jellyseerr-primary.default.svc.cluster.local
+              DB_HOST: jellyseerr-primary.media.svc.cluster.local
               DB_USER:
                 valueFrom:
                   secretKeyRef:
@@ -97,7 +97,7 @@ spec:
           gethomepage.dev/name: Requests
           gethomepage.dev/group: Media
           gethomepage.dev/widget.type: overseerr
-          gethomepage.dev/widget.url: http://jellyseerr.default.svc.cluster.local:5055
+          gethomepage.dev/widget.url: http://jellyseerr.media.svc.cluster.local:5055
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_JELLYSEERR_API_KEY}}" }}'
         parentRefs:
           - name: external
