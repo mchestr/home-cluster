@@ -14,7 +14,6 @@ spec:
     remediation:
       retries: -1
   upgrade:
-    crds: CreateReplace
     cleanupOnFail: true
     remediation:
       retries: 3

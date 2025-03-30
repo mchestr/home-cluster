@@ -19,9 +19,7 @@ spec:
       retries: -1
   upgrade:
     cleanupOnFail: true
-    crds: CreateReplace
     remediation:
-      strategy: rollback
       retries: 3
   values:
     fullnameOverride: *name
