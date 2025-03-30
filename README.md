@@ -19,7 +19,7 @@
 
 <div align="center">
 
-[![Home-Internet](https://img.shields.io/endpoint?url=https%3A%2F%2Fhealthchecks.io%2Fbadge%2F47d5c08e-21a9-41f1-b7fd-48092e%2FpXy582uA-2.shields&style=for-the-badge&logo=ubiquiti&logoColor=white&label=Home%20Internet)](https://status.chestr.dev)&nbsp;&nbsp;
+![Home Internet](https://img.shields.io/uptimerobot/status/m798880352-36f58d31f3a556ce80abd5ce?style=for-the-badge&logo=ubiquiti&logoColor=white&label=Home%20Internet)&nbsp;&nbsp;
 [![Status Page](https://img.shields.io/endpoint?url=https%3A%2F%2Fhealthchecks.io%2Fbadge%2F47d5c08e-21a9-41f1-b7fd-48092e%2FpXy582uA-2.shields&style=for-the-badge&logo=statuspage&logoColor=white&label=Status%20Page)](https://status.chestr.dev)&nbsp;&nbsp;
 [![Alertmanager](https://img.shields.io/endpoint?url=https%3A%2F%2Fhealthchecks.io%2Fbadge%2F47d5c08e-21a9-41f1-b7fd-48092e%2FpXy582uA-2.shields&style=for-the-badge&logo=prometheus&logoColor=white&label=Alertmanager)](https://status.chestr.dev)
 
