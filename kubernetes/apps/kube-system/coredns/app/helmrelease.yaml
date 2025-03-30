@@ -10,6 +10,9 @@ spec:
     name: coredns
     namespace: kube-system
   interval: 30m
+  install:
+    remediation:
+      retries: -1
 
   valuesFrom:
     - kind: ConfigMap

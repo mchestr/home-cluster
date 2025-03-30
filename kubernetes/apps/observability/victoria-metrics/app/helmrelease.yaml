@@ -9,10 +9,8 @@ spec:
   interval: 15m
   maxHistory: 3
   install:
-    crds: CreateReplace
-    createNamespace: true
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     crds: CreateReplace
     cleanupOnFail: true

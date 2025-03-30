@@ -14,6 +14,9 @@ spec:
         name: itzg-minecraft
         namespace: flux-system
       interval: 15m
+  install:
+    remediation:
+      retries: -1
   values:
     services:
       minecraft:
