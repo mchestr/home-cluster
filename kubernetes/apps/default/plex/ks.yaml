@@ -52,11 +52,11 @@ spec:
     - name: plex
       namespace: *namespace
     - name: radarr
-      namespace: *namespace
+      namespace: media
     - name: sonarr
-      namespace: *namespace
+      namespace: media
     - name: tautulli
-      namespace: *namespace
+      namespace: media
   interval: 30m
   path: ./kubernetes/apps/default/plex/meta-manager
   postBuild:

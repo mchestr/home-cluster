@@ -12,7 +12,7 @@ spec:
     - name: onepassword-store
       namespace: external-secrets
     - name: prowlarr
-      namespace: default
+      namespace: media
   interval: 30m
   path: ./kubernetes/apps/observability/exporters/prowlarr-exporter/app
   prune: true
