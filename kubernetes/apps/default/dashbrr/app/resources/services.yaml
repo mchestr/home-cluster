@@ -5,7 +5,7 @@
 # Then restart.
 services:
   autobrr:
-    - url: "http://autobrr.default.svc.cluster.local:7474"
+    - url: "http://autobrr.media.svc.cluster.local:7474"
       apikey: "${DASHBRR_AUTOBRR_API_KEY}"
       access_url: https://autobrr.chestr.dev
   overseerr:
@@ -14,7 +14,7 @@ services:
       access_url: https://requests.chestr.dev
       name: Requests
   maintainerr:
-    - url: "http://maintainerr.default.svc.cluster.local:6246"
+    - url: "http://maintainerr.media.svc.cluster.local:6246"
       apikey: "${DASHBRR_MAINTAINERR_API_KEY}"
       access_url: https://maintainerr.chestr.dev
   plex:
