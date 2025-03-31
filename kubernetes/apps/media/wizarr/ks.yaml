@@ -3,7 +3,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app wizarr
-  namespace: &namespace default
+  namespace: &namespace media
 spec:
   commonMetadata:
     labels:
@@ -11,11 +11,8 @@ spec:
   components:
     - ../../../../components/gatus/external
     - ../../../../components/volsync
-  dependsOn:
-    - name: plex
-      namespace: *namespace
   interval: 30m
-  path: ./kubernetes/apps/default/wizarr/app
+  path: ./kubernetes/apps/media/wizarr/app
   postBuild:
     substitute:
       APP: *app

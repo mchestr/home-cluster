@@ -12,3 +12,4 @@ resources:
   - ./jellyseerr/ks.yaml
   - ./jellystat/ks.yaml
   - ./unpackerr/ks.yaml
+  - ./wizarr/ks.yaml
