@@ -5,6 +5,10 @@ configMapGenerator:
   - files:
       - ./resources/post-process.sh
     name: qbittorrent-scripts
+generatorOptions:
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+  disableNameSuffixHash: true
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
