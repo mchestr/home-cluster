@@ -36,7 +36,7 @@ spec:
               POSTGRES_ENABLED: "true"
               POSTGRES_PORT: "5432"
               POSTGRES_DATABASE: bazarr
-              POSTGRES_HOST: bazarr-primary.default.svc.cluster.local
+              POSTGRES_HOST: bazarr-primary.media.svc.cluster.local
               POSTGRES_USERNAME:
                 valueFrom:
                   secretKeyRef:
@@ -115,7 +115,7 @@ spec:
           gethomepage.dev/name: Bazarr
           gethomepage.dev/group: Downloads
           gethomepage.dev/widget.type: *app
-          gethomepage.dev/widget.url: http://bazarr.default.svc.cluster.local:6767
+          gethomepage.dev/widget.url: http://bazarr.media.svc.cluster.local:6767
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_BAZARR_API_KEY}}" }}'
         parentRefs:
           - name: internal
