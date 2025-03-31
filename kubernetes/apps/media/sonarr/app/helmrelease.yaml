@@ -43,7 +43,7 @@ spec:
               SONARR__LOG__LEVEL: info
               SONARR__THEME: dark
               # Postgres Setup
-              SONARR__POSTGRES__HOST: sonarr-primary.default.svc.cluster.local
+              SONARR__POSTGRES__HOST: sonarr-primary.media.svc.cluster.local
               SONARR__POSTGRES__PORT: "5432"
               SONARR__POSTGRES__USER:
                 valueFrom:
@@ -87,7 +87,7 @@ spec:
           gethomepage.dev/name: Sonarr
           gethomepage.dev/group: Downloads
           gethomepage.dev/widget.type: *app
-          gethomepage.dev/widget.url: http://sonarr.default.svc.cluster.local:8989
+          gethomepage.dev/widget.url: http://sonarr.media.svc.cluster.local:8989
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_SONARR_API_KEY}}" }}'
         parentRefs:
           - name: internal

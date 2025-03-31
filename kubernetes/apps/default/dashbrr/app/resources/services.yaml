@@ -9,7 +9,7 @@ services:
       apikey: "${DASHBRR_AUTOBRR_API_KEY}"
       access_url: https://autobrr.chestr.dev
   overseerr:
-    - url: "http://jellyseerr.default.svc.cluster.local:5055"
+    - url: "http://jellyseerr.media.svc.cluster.local:5055"
       apikey: "${DASHBRR_JELLYSEERR_API_KEY}"
       access_url: https://requests.chestr.dev
       name: Requests
@@ -26,10 +26,10 @@ services:
       apikey: "${DASHBRR_PROWLARR_API_KEY}"
       access_url: https://prowlarr.chestr.dev
   radarr:
-    - url: "http://radarr.default.svc.cluster.local:7878"
+    - url: "http://radarr.media.svc.cluster.local:7878"
       apikey: "${DASHBRR_RADARR_API_KEY}"
       access_url: https://radarr.chestr.dev
   sonarr:
-    - url: "http://sonarr.default.svc.cluster.local:8989"
+    - url: "http://sonarr.media.svc.cluster.local:8989"
       apikey: "${DASHBRR_SONARR_API_KEY}"
       access_url: https://sonarr.chestr.dev

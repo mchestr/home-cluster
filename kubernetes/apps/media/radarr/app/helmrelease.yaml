@@ -43,7 +43,7 @@ spec:
               RADARR__LOG__LEVEL: info
               RADARR__THEME: dark
               # Postgres Setup
-              RADARR__POSTGRES__HOST: radarr-primary.default.svc.cluster.local
+              RADARR__POSTGRES__HOST: radarr-primary.media.svc.cluster.local
               RADARR__POSTGRES__PORT: "5432"
               RADARR__POSTGRES__USER:
                 valueFrom:
@@ -77,7 +77,7 @@ spec:
           gethomepage.dev/name: Radarr
           gethomepage.dev/group: Downloads
           gethomepage.dev/widget.type: *app
-          gethomepage.dev/widget.url: http://radarr.default.svc.cluster.local:7878
+          gethomepage.dev/widget.url: http://radarr.media.svc.cluster.local:7878
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_RADARR_API_KEY}}" }}'
         parentRefs:
           - name: internal

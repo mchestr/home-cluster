@@ -2,8 +2,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app sonarr
-  namespace: &namespace default
+  name: &app radarr
+  namespace: &namespace media
 spec:
   commonMetadata:
     labels:
@@ -17,7 +17,7 @@ spec:
     - name: onepassword-store
       namespace: external-secrets
   interval: 30m
-  path: ./kubernetes/apps/default/sonarr/app
+  path: ./kubernetes/apps/media/radarr/app
   postBuild:
     substitute:
       APP: *app
