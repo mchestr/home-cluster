@@ -11,6 +11,9 @@ spec:
   components:
     - ../../../../components/gatus/external
     - ../../../../components/volsync
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   interval: 30m
   path: ./kubernetes/apps/media/wizarr/app
   postBuild:
