@@ -3,7 +3,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app unpackerr
-  namespace: &namespace default
+  namespace: &namespace media
 spec:
   commonMetadata:
     labels:
@@ -12,7 +12,7 @@ spec:
     - name: onepassword-store
       namespace: external-secrets
   interval: 30m
-  path: ./kubernetes/apps/default/unpackerr/app
+  path: ./kubernetes/apps/media/unpackerr/app
   prune: true
   retryInterval: 1m
   sourceRef:

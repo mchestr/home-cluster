@@ -33,7 +33,6 @@ resources:
   - ./tautulli/ks.yaml
   - ./teslamate/ks.yaml
   - ./thelounge/ks.yaml
-  - ./unpackerr/ks.yaml
   - ./wizarr/ks.yaml
   - ./zigbee2mqtt/ks.yaml
   - ./zwave-js-ui/ks.yaml

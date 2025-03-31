@@ -11,3 +11,4 @@ resources:
   - ./jellyplex-watched/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./jellystat/ks.yaml
+  - ./unpackerr/ks.yaml
