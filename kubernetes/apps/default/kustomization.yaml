@@ -30,7 +30,6 @@ resources:
   - ./smtp-relay/ks.yaml
   - ./sonarr/ks.yaml
   - ./syncthing/ks.yaml
-  - ./tautulli/ks.yaml
   - ./teslamate/ks.yaml
   - ./thelounge/ks.yaml
   - ./zigbee2mqtt/ks.yaml
