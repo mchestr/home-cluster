@@ -22,7 +22,7 @@ services:
       apikey: "${DASHBRR_PLEX_API_KEY}"
       access_url: https://plex.chestr.dev
   prowlarr:
-    - url: "http://prowlarr.default.svc.cluster.local:9696"
+    - url: "http://prowlarr.media.svc.cluster.local:9696"
       apikey: "${DASHBRR_PROWLARR_API_KEY}"
       access_url: https://prowlarr.chestr.dev
   radarr:

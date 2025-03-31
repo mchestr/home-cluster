@@ -40,7 +40,7 @@ spec:
               PROWLARR__LOG_LEVEL: info
               PROWLARR__SERVER__PORT: &port 9696
               PROWLARR__UPDATE__BRANCH: develop
-              PROWLARR__POSTGRES__HOST: prowlarr-primary.default.svc.cluster.local
+              PROWLARR__POSTGRES__HOST: prowlarr-primary.media.svc.cluster.local
               PROWLARR__POSTGRES__PORT: "5432"
               PROWLARR__POSTGRES__USER:
                 valueFrom:
@@ -81,7 +81,7 @@ spec:
           gethomepage.dev/name: Prowlarr
           gethomepage.dev/group: Downloads
           gethomepage.dev/widget.type: *app
-          gethomepage.dev/widget.url: http://prowlarr.default.svc.cluster.local:9696
+          gethomepage.dev/widget.url: http://prowlarr.media.svc.cluster.local:9696
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}" }}'
         parentRefs:
           - name: internal

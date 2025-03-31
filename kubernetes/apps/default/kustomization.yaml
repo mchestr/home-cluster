@@ -21,7 +21,6 @@ resources:
   - ./maintainerr/ks.yaml
   - ./paperless/ks.yaml
   - ./plex/ks.yaml
-  - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./radicale/ks.yaml
   - ./recyclarr/ks.yaml
