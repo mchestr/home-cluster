@@ -11,6 +11,7 @@ resources:
   - ./jellyplex-watched/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./jellystat/ks.yaml
+  - ./maintainerr/ks.yaml
   - ./prowlarr/ks.yaml
   - ./radarr/ks.yaml
   - ./recyclarr/ks.yaml
