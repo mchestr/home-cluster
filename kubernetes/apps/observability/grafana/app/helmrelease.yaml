@@ -279,10 +279,8 @@ spec:
         external-secrets:
           url: https://raw.githubusercontent.com/external-secrets/external-secrets/main/docs/snippets/dashboard.json
           datasource: Prometheus
-        nut:
-          # renovate: depName="Prometheus NUT Exporter"
-          gnetId: 14371
-          revision: 1
+        nut-exporter:
+          url: https://raw.githubusercontent.com/DRuggeri/nut_exporter/refs/heads/master/dashboard/dashboard.json
           datasource: Prometheus
         synology-nas-details:
           # renovate: depName="Synology NAS Details"

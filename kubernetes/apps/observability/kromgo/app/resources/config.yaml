@@ -42,7 +42,7 @@ metrics:
       - { color: "red", min: 76, max: 9999 }
 
   - name: cluster_power_usage
-    query: round(nut_load * nut_real_power_nominal_watts, 0.1)
+    query: round(network_ups_tools_ups_load * network_ups_tools_ups_realpower_nominal / 100, 0.1)
     suffix: "w"
     colors:
       - { color: "50B93A", min: 0, max: 400 }
