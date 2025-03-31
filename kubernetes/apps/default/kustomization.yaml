@@ -7,7 +7,6 @@ components:
 resources:
   - ./atuin/ks.yaml
   - ./authelia/ks.yaml
-  - ./autobrr/ks.yaml
   - ./cross-seed/ks.yaml
   - ./dashbrr/ks.yaml
   - ./displex/ks.yaml

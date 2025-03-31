@@ -47,7 +47,7 @@ spec:
               # App
               AUTOBRR__DATABASE_TYPE: postgres
               AUTOBRR__POSTGRES_DATABASE: autobrr
-              AUTOBRR__POSTGRES_HOST: autobrr-primary.default.svc.cluster.local
+              AUTOBRR__POSTGRES_HOST: autobrr-primary.media.svc.cluster.local
               AUTOBRR__POSTGRES_USER:
                 valueFrom:
                   secretKeyRef:
@@ -110,7 +110,7 @@ spec:
           gethomepage.dev/name: Autobrr
           gethomepage.dev/group: Downloads
           gethomepage.dev/widget.type: autobrr
-          gethomepage.dev/widget.url: http://autobrr.default.svc.cluster.local:7474
+          gethomepage.dev/widget.url: http://autobrr.media.svc.cluster.local:7474
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_AUTOBRR_API_KEY}}" }}'
         parentRefs:
           - name: internal
