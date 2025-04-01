@@ -12,13 +12,7 @@ spec:
 
   monitoring:
     pgmonitor:
-      exporter:
-        resources:
-          requests:
-            cpu: 10m
-            memory: 64M
-          limits:
-            memory: 512M
+      exporter: {}
 
   patroni: # Synchronous mode
     dynamicConfiguration:
