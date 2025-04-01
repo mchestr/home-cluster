@@ -52,7 +52,7 @@ spec:
               ATUIN_DB_URI:
                 valueFrom:
                   secretKeyRef:
-                    name: atuin-pguser-atuin
+                    name: atuin-pguser-secret
                     key: uri
             args: ["server", "start"]
             securityContext:

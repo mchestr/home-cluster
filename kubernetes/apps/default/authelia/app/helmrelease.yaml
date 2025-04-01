@@ -69,17 +69,25 @@ spec:
               AUTHELIA_THEME: auto
               AUTHELIA_TOTP_ISSUER: authelia.com
               X_AUTHELIA_CONFIG_FILTERS: template
-              AUTHELIA_STORAGE_POSTGRES_ADDRESS: tcp://authelia-primary.default.svc.cluster.local:5432
-              AUTHELIA_STORAGE_POSTGRES_DATABASE: *app
+              AUTHELIA_STORAGE_POSTGRES_ADDRESS:
+                valueFrom:
+                  secretKeyRef:
+                    name: &pguser authelia-pguser-secret
+                    key: host
+              AUTHELIA_STORAGE_POSTGRES_DATABASE:
+                valueFrom:
+                  secretKeyRef:
+                    name: *pguser
+                    key: db
               AUTHELIA_STORAGE_POSTGRES_USERNAME:
                 valueFrom:
                   secretKeyRef:
-                    name: authelia-pguser-authelia
+                    name: *pguser
                     key: user
               AUTHELIA_STORAGE_POSTGRES_PASSWORD:
                 valueFrom:
                   secretKeyRef:
-                    name: authelia-pguser-authelia
+                    name: *pguser
                     key: password
 
             envFrom:

@@ -48,17 +48,25 @@ spec:
               TZ: America/Vancouver
               # Postgres
               DASHBRR__DB_TYPE: postgres
-              DASHBRR__DB_NAME: dashbrr
-              DASHBRR__DB_HOST: dashbrr-primary.default.svc.cluster.local
+              DASHBRR__DB_NAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: &pguser dashbrr-pguser-secret
+                    key: db
+              DASHBRR__DB_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: *pguser
+                    key: host
               DASHBRR__DB_USER:
                 valueFrom:
                   secretKeyRef:
-                    name: dashbrr-pguser-dashbrr
+                    name: *pguser
                     key: user
               DASHBRR__DB_PASSWORD:
                 valueFrom:
                   secretKeyRef:
-                    name: dashbrr-pguser-dashbrr
+                    name: *pguser
                     key: password
               DASHBRR__DB_PORT: "5432"
             envFrom:

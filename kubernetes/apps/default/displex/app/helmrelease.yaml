@@ -53,7 +53,7 @@ spec:
               DISPLEX_DATABASE__URL:
                 valueFrom:
                   secretKeyRef:
-                    name: displex-pguser-displex
+                    name: displex-pguser-secret
                     key: uri
               RUST_LOG: displex=info,sea_orm=info,warn
             resources: &resources
@@ -142,7 +142,6 @@ spec:
         ports:
           http:
             port: &port 8080
-
 
     route:
       app:

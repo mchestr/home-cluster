@@ -57,18 +57,18 @@ spec:
       GF_DASHBOARDS_MIN_REFRESH_INTERVAL: 2s
       # Grafana
       GF_DATABASE_NAME: grafana
-      GF_DATABASE_HOST: grafana-primary.observability.svc.cluster.local:5432
+      GF_DATABASE_HOST: postgres17-rw.database.svc.cluster.local:5432
       GF_DATABASE_SSL_MODE: disable
       GF_DATABASE_TYPE: postgres
 
     envValueFrom:
       GF_DATABASE_USER:
         secretKeyRef:
-          name: grafana-pguser-grafana
+          name: grafana-pguser-secret
           key: user
       GF_DATABASE_PASSWORD:
         secretKeyRef:
-          name: grafana-pguser-grafana
+          name: grafana-pguser-secret
           key: password
 
     grafana.ini:

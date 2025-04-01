@@ -43,17 +43,25 @@ spec:
               TZ: &tz America/Vancouver
               DISABLE_MQTT: "false"
               MQTT_HOST: emqx-listeners.default.svc.cluster.local
-              DATABASE_NAME: *app
-              DATABASE_HOST: teslamate-primary.default.svc.cluster.local
+              DATABASE_NAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: &pguser teslamate-pguser-secret
+                    key: db
+              DATABASE_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: *pguser
+                    key: host
               DATABASE_USER:
                 valueFrom:
                   secretKeyRef:
-                    name: teslamate-pguser-teslamate
+                    name: *pguser
                     key: user
               DATABASE_PASS:
                 valueFrom:
                   secretKeyRef:
-                    name: teslamate-pguser-teslamate
+                    name: *pguser
                     key: password
             envFrom:
               - secretRef:
