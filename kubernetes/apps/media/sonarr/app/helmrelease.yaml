@@ -49,19 +49,31 @@ spec:
               SONARR__LOG__LEVEL: info
               SONARR__THEME: dark
               # Postgres Setup
-              SONARR__POSTGRES__HOST: sonarr-primary.media.svc.cluster.local
-              SONARR__POSTGRES__PORT: "5432"
+              SONARR__POSTGRES__HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: &pguser sonarr-pguser-secret
+                    key: host
+              SONARR__POSTGRES__PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: *pguser
+                    key: port
               SONARR__POSTGRES__USER:
                 valueFrom:
                   secretKeyRef:
-                    name: sonarr-pguser-sonarr
+                    name: *pguser
                     key: user
               SONARR__POSTGRES__PASSWORD:
                 valueFrom:
                   secretKeyRef:
-                    name: sonarr-pguser-sonarr
+                    name: *pguser
                     key: password
-              SONARR__POSTGRES__MAINDB: *app
+              SONARR__POSTGRES__MAINDB:
+                valueFrom:
+                  secretKeyRef:
+                    name: *pguser
+                    key: db
               SONARR__LOG__DBENABLED: "false"
             envFrom:
               - secretRef:
