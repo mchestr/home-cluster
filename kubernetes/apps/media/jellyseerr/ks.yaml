@@ -12,7 +12,6 @@ spec:
   components:
     - ../../../../components/cnpg
     - ../../../../components/gatus/external
-    - ../../../../components/postgres
     - ../../../../components/volsync
   dependsOn:
     - name: onepassword-store

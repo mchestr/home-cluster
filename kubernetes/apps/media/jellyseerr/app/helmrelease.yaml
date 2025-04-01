@@ -43,18 +43,26 @@ spec:
               PORT: &port 5055
               # Enable Postgres
               DB_TYPE: postgres
-              DB_HOST: jellyseerr-primary.media.svc.cluster.local
+              DB_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: &pguser jellyseerr-pguser-secret
+                    key: host
               DB_USER:
                 valueFrom:
                   secretKeyRef:
-                    name: jellyseerr-pguser-jellyseerr
+                    name: *pguser
                     key: user
               DB_PASS:
                 valueFrom:
                   secretKeyRef:
-                    name: jellyseerr-pguser-jellyseerr
+                    name: *pguser
                     key: password
-              DB_NAME: *app
+              DB_NAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: *pguser
+                    key: db
             envFrom:
               - secretRef:
                   name: jellyseerr-secret

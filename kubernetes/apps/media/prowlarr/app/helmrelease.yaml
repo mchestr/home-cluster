@@ -49,19 +49,32 @@ spec:
               PROWLARR__LOG_LEVEL: info
               PROWLARR__SERVER__PORT: &port 9696
               PROWLARR__UPDATE__BRANCH: develop
-              PROWLARR__POSTGRES__HOST: prowlarr-primary.media.svc.cluster.local
-              PROWLARR__POSTGRES__PORT: "5432"
+              # Postgres Setup
+              PROWLARR__POSTGRES__HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: &pguser prowlarr-pguser-secret
+                    key: host
+              PROWLARR__POSTGRES__PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: *pguser
+                    key: port
               PROWLARR__POSTGRES__USER:
                 valueFrom:
                   secretKeyRef:
-                    name: prowlarr-pguser-prowlarr
+                    name: *pguser
                     key: user
               PROWLARR__POSTGRES__PASSWORD:
                 valueFrom:
                   secretKeyRef:
-                    name: prowlarr-pguser-prowlarr
+                    name: *pguser
                     key: password
-              PROWLARR__POSTGRES__MAINDB: *app
+              PROWLARR__POSTGRES__MAINDB:
+                valueFrom:
+                  secretKeyRef:
+                    name: *pguser
+                    key: db
             envFrom:
               - secretRef:
                   name: prowlarr-secret

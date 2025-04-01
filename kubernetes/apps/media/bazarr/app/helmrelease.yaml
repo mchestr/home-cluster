@@ -40,18 +40,30 @@ spec:
             env:
               TZ: America/Vancouver
               POSTGRES_ENABLED: "true"
-              POSTGRES_PORT: "5432"
-              POSTGRES_DATABASE: bazarr
-              POSTGRES_HOST: bazarr-primary.media.svc.cluster.local
+              POSTGRES_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: &pguser bazarr-pguser-secret
+                    key: port
+              POSTGRES_DATABASE:
+                valueFrom:
+                  secretKeyRef:
+                    name: *pguser
+                    key: db
+              POSTGRES_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: *pguser
+                    key: host
               POSTGRES_USERNAME:
                 valueFrom:
                   secretKeyRef:
-                    name: bazarr-pguser-bazarr
+                    name: *pguser
                     key: user
               POSTGRES_PASSWORD:
                 valueFrom:
                   secretKeyRef:
-                    name: bazarr-pguser-bazarr
+                    name: *pguser
                     key: password
             envFrom:
               - secretRef:

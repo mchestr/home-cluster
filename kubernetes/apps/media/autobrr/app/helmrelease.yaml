@@ -55,19 +55,31 @@ spec:
               AUTOBRR__LOG_LEVEL: INFO
               # App
               AUTOBRR__DATABASE_TYPE: postgres
-              AUTOBRR__POSTGRES_DATABASE: autobrr
-              AUTOBRR__POSTGRES_HOST: autobrr-primary.media.svc.cluster.local
+              AUTOBRR__POSTGRES_DATABASE:
+                valueFrom:
+                  secretKeyRef:
+                    name: &pguser autobrr-pguser-secret
+                    key: db
+              AUTOBRR__POSTGRES_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: *pguser
+                    key: host
               AUTOBRR__POSTGRES_USER:
                 valueFrom:
                   secretKeyRef:
-                    name: autobrr-pguser-autobrr
+                    name: *pguser
                     key: user
               AUTOBRR__POSTGRES_PASS:
                 valueFrom:
                   secretKeyRef:
-                    name: autobrr-pguser-autobrr
+                    name: *pguser
                     key: password
-              AUTOBRR__POSTGRES_PORT: "5432"
+              AUTOBRR__POSTGRES_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: *pguser
+                    key: port
 
             probes:
               liveness: &probes
