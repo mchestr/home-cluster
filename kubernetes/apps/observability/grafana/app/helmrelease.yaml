@@ -23,6 +23,14 @@ spec:
       repository: grafana/grafana
       tag: 11.6.0
 
+    extraInitContainers:
+      - name: init-db
+        image: ghcr.io/home-operations/postgres-init:17
+        imagePullPolicy: IfNotPresent
+        envFrom:
+          - secretRef:
+              name: grafana-initdb-secret
+
     annotations:
       reloader.stakater.com/auto: "true"
 
