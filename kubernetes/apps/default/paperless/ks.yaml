@@ -12,7 +12,6 @@ spec:
     - ../../../../components/cnpg
     - ../../../../components/dragonfly
     - ../../../../components/gatus/guarded
-    - ../../../../components/postgres
     - ../../../../components/volsync
   dependsOn:
     - name: onepassword-store

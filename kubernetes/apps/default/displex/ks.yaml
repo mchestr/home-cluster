@@ -11,7 +11,6 @@ spec:
   components:
     - ../../../../components/cnpg
     - ../../../../components/gatus/external
-    - ../../../../components/postgres
   dependsOn:
     - name: onepassword-store
       namespace: external-secrets
