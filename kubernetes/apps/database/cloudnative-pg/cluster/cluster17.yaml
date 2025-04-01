@@ -6,8 +6,9 @@ metadata:
   name: postgres17
 spec:
   instances: 3
-  imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:17
+  imageName: ghcr.io/cloudnative-pg/postgresql:17
   primaryUpdateStrategy: unsupervised
+  primaryUpdateMethod: switchover
   storage:
     size: 20Gi
     storageClass: openebs-hostpath
@@ -15,7 +16,6 @@ spec:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
   postgresql:
-    shared_preload_libraries: ["vectors.so"]
     parameters:
       max_connections: "400"
       shared_buffers: 256MB

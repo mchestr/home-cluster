@@ -29,15 +29,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        initContainers:
-          01-init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: "17"
-            envFrom:
-              - secretRef:
-                  name: immich-initdb-secret
-
         containers:
           app:
             image:
@@ -47,28 +38,16 @@ spec:
               DB_USERNAME:
                 valueFrom:
                   secretKeyRef:
-                    name: &pguser immich-pguser-secret
+                    name: immich-pguser-immich
                     key: user
               DB_PASSWORD:
                 valueFrom:
                   secretKeyRef:
-                    name: *pguser
+                    name: immich-pguser-immich
                     key: password
-              DB_DATABASE_NAME:
-                valueFrom:
-                  secretKeyRef:
-                    name: *pguser
-                    key: db
-              DB_HOSTNAME:
-                valueFrom:
-                  secretKeyRef:
-                    name: *pguser
-                    key: host
-              DB_PORT:
-                valueFrom:
-                  secretKeyRef:
-                    name: *pguser
-                    key: port
+              DB_DATABASE_NAME: immich
+              DB_HOSTNAME: immich-primary.default.svc.cluster.local
+              DB_PORT: "5432"
             envFrom: &envFrom
               - secretRef:
                   name: immich-secret
