@@ -9,8 +9,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
+    - ../../../../components/cnpg
     - ../../../../components/gatus/guarded
-    - ../../../../components/postgres
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph

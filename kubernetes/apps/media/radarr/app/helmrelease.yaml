@@ -19,14 +19,20 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   values:
     controllers:
       radarr:
         annotations:
           reloader.stakater.com/auto: "true"
+
+        initContainers:
+          01-init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: "17"
+            envFrom:
+              - secretRef:
+                  name: radarr-initdb-secret
 
         containers:
           app:
@@ -43,19 +49,32 @@ spec:
               RADARR__LOG__LEVEL: info
               RADARR__THEME: dark
               # Postgres Setup
-              RADARR__POSTGRES__HOST: radarr-primary.media.svc.cluster.local
-              RADARR__POSTGRES__PORT: "5432"
+              # Postgres Setup
+              RADARR__POSTGRES__HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: &pguser radarr-pguser-secret
+                    key: host
+              RADARR__POSTGRES__PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: *pguser
+                    key: port
               RADARR__POSTGRES__USER:
                 valueFrom:
                   secretKeyRef:
-                    name: radarr-pguser-radarr
+                    name: *pguser
                     key: user
               RADARR__POSTGRES__PASSWORD:
                 valueFrom:
                   secretKeyRef:
-                    name: radarr-pguser-radarr
+                    name: *pguser
                     key: password
-              RADARR__POSTGRES__MAINDB: *app
+              RADARR__POSTGRES__MAINDB:
+                valueFrom:
+                  secretKeyRef:
+                    name: *pguser
+                    key: db
               RADARR__LOG__DBENABLED: "false"
             envFrom:
               - secretRef:
