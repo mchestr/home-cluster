@@ -42,7 +42,7 @@ spec:
           app:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v1.130.3
+              tag: v1.131.1
             env:
               DB_USERNAME:
                 valueFrom:
@@ -89,7 +89,7 @@ spec:
           app:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v1.130.3
+              tag: v1.131.1
             envFrom: *envFrom
             resources:
               requests: *requests
