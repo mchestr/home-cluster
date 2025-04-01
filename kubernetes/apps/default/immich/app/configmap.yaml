@@ -5,9 +5,6 @@ metadata:
   name: immich-configmap
 data:
   TZ: America/Vancouver
-  DB_DATABASE_NAME: immich
-  DB_HOSTNAME: immich-primary.default.svc.cluster.local
-  DB_PORT: "5432"
   DISABLE_REVERSE_GEOCODING: "true"
   ENABLE_MAPBOX: "false"
   LOG_LEVEL: log
