@@ -1,0 +1,51 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: &name ${APP}-pg-backups
+spec:
+  schedule: 5 */4 * * *
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 30
+      template:
+        spec:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            runAsNonRoot: true
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups:
+              - 65539
+          containers:
+            - name: *name
+              image: docker.io/prodrigestivill/postgres-backup-local:17
+              imagePullPolicy: IfNotPresent
+              command:
+                - /backup.sh
+              env:
+                - name: POSTGRES_HOST
+                  value: ${CNPG_NAME:=postgres17}-rw.database.svc.cluster.local
+                - name: POSTGRES_DB
+                  value: ${APP}
+                - name: POSTGRES_USER
+                  valueFrom:
+                    secretKeyRef:
+                      key: user
+                      name: ${APP}-pguser-secret
+                - name: POSTGRES_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: password
+                      name: ${APP}-pguser-secret
+              volumeMounts:
+                - mountPath: /backups
+                  name: backups
+          restartPolicy: OnFailure
+          volumes:
+            - name: backups
+              nfs:
+                path: /volume1/backups/kubernetes/apps/postgres
+                server: lochnas.chestr.dev
