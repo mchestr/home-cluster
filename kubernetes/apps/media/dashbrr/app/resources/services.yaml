@@ -18,7 +18,7 @@ services:
       apikey: "${DASHBRR_MAINTAINERR_API_KEY}"
       access_url: https://maintainerr.chestr.dev
   plex:
-    - url: "http://plex.default.svc.cluster.local:32400"
+    - url: "http://plex.media.svc.cluster.local:32400"
       apikey: "${DASHBRR_PLEX_API_KEY}"
       access_url: https://plex.chestr.dev
   prowlarr:

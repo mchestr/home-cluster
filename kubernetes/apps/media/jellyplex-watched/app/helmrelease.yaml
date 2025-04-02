@@ -42,7 +42,7 @@ spec:
               ## Map libraries between plex and jellyfin in the event that they are different, order does not matter
               #LIBRARY_MAPPING: { "Shows": "TV Shows" }
               LIBRARY_MAPPING: '{ "Shows": "TV Shows" }'
-              PLEX_BASEURL: https://plex.default.svc.cluster.local:32400
+              PLEX_BASEURL: https://plex.media.svc.cluster.local:32400
               SSL_BYPASS: "True"
               ## Jellyfin server URL, use hostname or IP address if the hostname is not resolving correctly
               ## Comma seperated list for multiple servers
