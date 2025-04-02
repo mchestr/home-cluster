@@ -3,7 +3,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app qbittorrent
-  namespace: &namespace default
+  namespace: &namespace media
 spec:
   commonMetadata:
     labels:
@@ -19,7 +19,7 @@ spec:
     - name: volsync
       namespace: volsync-system
   interval: 30m
-  path: ./kubernetes/apps/default/qbittorrent/app
+  path: ./kubernetes/apps/media/qbittorrent/app
   postBuild:
     substitute:
       APP: *app
@@ -37,7 +37,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app qbittorrent-tools
-  namespace: &namespace default
+  namespace: &namespace media
 spec:
   commonMetadata:
     labels:
@@ -46,7 +46,7 @@ spec:
     - name: qbittorrent
       namespace: *namespace
   interval: 30m
-  path: ./kubernetes/apps/default/qbittorrent/tools
+  path: ./kubernetes/apps/media/qbittorrent/tools
   prune: true
   sourceRef:
     kind: GitRepository

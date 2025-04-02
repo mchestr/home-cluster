@@ -12,7 +12,7 @@ spec:
     - name: onepassword-store
       namespace: external-secrets
     - name: sabnzbd
-      namespace: default
+      namespace: media
   interval: 30m
   path: ./kubernetes/apps/observability/exporters/sabnzbd-exporter/app
   prune: true

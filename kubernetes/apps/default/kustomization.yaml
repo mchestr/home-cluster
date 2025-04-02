@@ -7,9 +7,6 @@ components:
 resources:
   - ./atuin/ks.yaml
   - ./authelia/ks.yaml
-  - ./cross-seed/ks.yaml
-  - ./dashbrr/ks.yaml
-  - ./displex/ks.yaml
   - ./emqx/ks.yaml
   - ./esphome/ks.yaml
   - ./frigate/ks.yaml
@@ -19,9 +16,7 @@ resources:
   - ./lldap/ks.yaml
   - ./paperless/ks.yaml
   - ./plex/ks.yaml
-  - ./qbittorrent/ks.yaml
   - ./radicale/ks.yaml
-  - ./sabnzbd/ks.yaml
   - ./smtp-relay/ks.yaml
   - ./syncthing/ks.yaml
   - ./teslamate/ks.yaml

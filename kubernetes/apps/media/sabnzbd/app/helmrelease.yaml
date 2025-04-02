@@ -19,9 +19,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   values:
     controllers:
       sabnzbd:
@@ -38,10 +35,10 @@ spec:
               SABNZBD__PORT: 8080
               SABNZBD__HOST_WHITELIST_ENTRIES: >-
                 sabnzbd,
-                sabnzbd.default,
-                sabnzbd.default.svc,
-                sabnzbd.default.svc.cluster,
-                sabnzbd.default.svc.cluster.local,
+                sabnzbd.media,
+                sabnzbd.media.svc,
+                sabnzbd.media.svc.cluster,
+                sabnzbd.media.svc.cluster.local,
                 sabnzbd.chestr.dev
             envFrom:
               - secretRef:
@@ -77,7 +74,7 @@ spec:
           gethomepage.dev/name: SABnzbd
           gethomepage.dev/group: Downloads
           gethomepage.dev/widget.type: sabnzbd
-          gethomepage.dev/widget.url: http://sabnzbd.default.svc.cluster.local:8080
+          gethomepage.dev/widget.url: http://sabnzbd.media.svc.cluster.local:8080
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_SABNZBD_API_KEY}}" }}'
         parentRefs:
           - name: internal

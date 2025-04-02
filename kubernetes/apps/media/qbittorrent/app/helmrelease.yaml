@@ -50,7 +50,7 @@ spec:
                     fieldPath: status.podIP
               QBT_BitTorrent__Session__InterfaceName: eth0
               CROSS_SEED_ENABLED: true
-              CROSS_SEED_HOST: cross-seed.default.svc.cluster.local
+              CROSS_SEED_HOST: cross-seed.media.svc.cluster.local
               CROSS_SEED_PORT: &cross-seed-port 2468
               CROSS_SEED_SLEEP_INTERVAL: 0
             probes:
@@ -111,7 +111,7 @@ spec:
           gethomepage.dev/name: qBittorrent
           gethomepage.dev/group: Downloads
           gethomepage.dev/widget.type: *app
-          gethomepage.dev/widget.url: http://qbittorrent.default.svc.cluster.local:8080
+          gethomepage.dev/widget.url: http://qbittorrent.media.svc.cluster.local:8080
         parentRefs:
           - name: internal
             namespace: networking
