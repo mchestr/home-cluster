@@ -19,7 +19,7 @@ spec:
       retries: 3
   dependsOn:
     - name: qbittorrent
-      namespace: default
+      namespace: media
   values:
     controllers:
       cross-seed:
