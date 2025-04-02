@@ -41,18 +41,30 @@ spec:
               tag: 1.1.3
             env:
               TZ: America/Vancouver
-              POSTGRES_IP: jellystat-primary.media.svc.cluster.local
-              POSTGRES_PORT: "5432"
-              POSTGRES_DB: *app
+              POSTGRES_IP:
+                valueFrom:
+                  secretKeyRef:
+                    name: &pguser jellystat-pguser-secret
+                    key: host
+              POSTGRES_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: *pguser
+                    key: port
+              POSTGRES_DB:
+                valueFrom:
+                  secretKeyRef:
+                    name: *pguser
+                    key: db
               POSTGRES_USER:
                 valueFrom:
                   secretKeyRef:
-                    name: jellystat-pguser-jellystat
+                    name: *pguser
                     key: user
               POSTGRES_PASSWORD:
                 valueFrom:
                   secretKeyRef:
-                    name: jellystat-pguser-jellystat
+                    name: *pguser
                     key: password
             envFrom:
               - secretRef:
