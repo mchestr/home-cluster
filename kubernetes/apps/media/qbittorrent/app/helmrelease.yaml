@@ -53,6 +53,9 @@ spec:
               CROSS_SEED_HOST: cross-seed.media.svc.cluster.local
               CROSS_SEED_PORT: &cross-seed-port 2468
               CROSS_SEED_SLEEP_INTERVAL: 0
+            envFrom:
+              - secretRef:
+                  name: qbittorrent-secret
             probes:
               liveness: &probes
                 enabled: true
