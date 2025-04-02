@@ -35,7 +35,6 @@ spec:
 
     controllers:
       plex:
-        replicas: 0
         containers:
           app:
             image:
@@ -79,7 +78,7 @@ spec:
         type: LoadBalancer
         controller: *app
         annotations:
-          lbipam.cilium.io/ips: 10.0.20.111
+          lbipam.cilium.io/ips: 10.0.20.110
         ports:
           http:
             enabled: true
