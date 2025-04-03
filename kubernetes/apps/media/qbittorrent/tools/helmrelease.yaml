@@ -1,121 +1,92 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: qbittorrent-tools
+  name: qbtools
 spec:
-  interval: 30m
+  interval: 1h
   chartRef:
     kind: OCIRepository
     name: app-template
     namespace: flux-system
-  dependsOn:
-    - name: qbittorrent
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
   values:
     controllers:
-      qbtools:
-        containers:
-          app:
-            image: &image
-              repository: ghcr.io/buroa/qbtools
-              tag: v0.19.16
-            resources: &resources
-              requests:
-                memory: 250Mi
-                cpu: 25m
-              limits:
-                memory: 500Mi
-            args:
-              - reannounce
-              - --process-seeding
-              - -s
-              - qbittorrent.media.svc.cluster.local
-              - -p
-              - "8080"
-
       tagging:
         type: cronjob
         cronjob:
           schedule: "@hourly"
+          timeZone: &timeZone America/Vancouver
           concurrencyPolicy: Forbid
           successfulJobsHistory: 1
-          ttlSecondsAfterFinished: 30
-        containers:
-          app:
-            image: *image
-            resources: *resources
+          failedJobsHistory: 1
+        initContainers:
+          tagging: &container
+            image:
+              repository: ghcr.io/buroa/qbtools
+              tag: v0.19.16@sha256:2b90924170f62083cf01646e41bda92319ad641e7627add59e15b2b21c6f8cd1
             args:
               - tagging
               - --added-on
               - --expired
               - --last-activity
-              - --not-working
               - --sites
               - --unregistered
-              - --server
-              - qbittorrent.media.svc.cluster.local
-              - --port
-              - "8080"
-
-      prune-expired:
-        type: cronjob
-        cronjob:
-          schedule: 10 */6 * * *
-          concurrencyPolicy: Forbid
-          successfulJobsHistory: 1
-          ttlSecondsAfterFinished: 30
+            env:
+              QBITTORRENT_HOST: qbittorrent.media.svc.cluster.local
+              QBITTORRENT_PORT: 8080
+              TZ: *timeZone
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
         containers:
-          app:
-            image: *image
-            resources: *resources
+          prune-unregistered:
+            <<: *container
             args:
               - prune
-              - --exclude-category
-              - manual
-              - --include-tag
-              - expired
-              - --exclude-tag
-              - activity:24h
-              - --server
-              - qbittorrent.media.svc.cluster.local
-              - --port
-              - "8080"
-
-      prune-unregistered:
-        type: cronjob
-        cronjob:
-          schedule: 20 */6 * * *
-          concurrencyPolicy: Forbid
-          successfulJobsHistory: 1
-          ttlSecondsAfterFinished: 30
-        containers:
-          app:
-            image: *image
-            resources: *resources
+              - --exclude-tag=expired
+              - --exclude-tag=added:1d
+              - --include-tag=unregistered
+              - --with-data
+          prune-expired:
+            <<: *container
             args:
               - prune
-              - --include-tag
-              - unregistered
-              - --exclude-tag
-              - expired
-              - --server
-              - qbittorrent.media.svc.cluster.local
-              - --port
-              - "8080"
-
+              - --exclude-category=manual
+              - --exclude-tag=activity:1d
+              - --include-tag=expired
+              - --with-data
+        pod:
+          restartPolicy: OnFailure
+      reannounce:
+        containers:
+          app:
+            <<: *container
+            args:
+              - reannounce
     defaultPodOptions:
       securityContext:
+        runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
-        fsGroup: 1000
-        runAsNonRoot: true
-        fsGroupChangePolicy: OnRootMismatch
-
     persistence:
-      config-file:
-        enabled: true
+      config:
         type: configMap
         name: qbittorrent-tools-configmap
         globalMounts:
           - path: /config/config.yaml
             subPath: config.yaml
+            readOnly: true
