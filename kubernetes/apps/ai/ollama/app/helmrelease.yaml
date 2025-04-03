@@ -30,7 +30,7 @@ spec:
           app:
             image:
               repository: docker.io/ollama/ollama
-              tag: 0.6.3
+              tag: 0.6.4
 
             env:
               TZ: America/Vancouver
