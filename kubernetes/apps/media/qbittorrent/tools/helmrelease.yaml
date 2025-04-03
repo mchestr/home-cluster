@@ -90,7 +90,7 @@ spec:
             args: [
               "orphaned",
               "--exclude-pattern", "*_unpackerred*",
-              "--dry-run"
+              # "--dry-run"
             ]
         pod:
           restartPolicy: Never
