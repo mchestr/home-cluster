@@ -20,7 +20,7 @@ spec:
     controllers:
       tagging:
         type: cronjob
-        cronjob:
+        cronjob: &cronJobSpec
           schedule: "@hourly"
           timeZone: &timeZone America/Vancouver
           concurrencyPolicy: Forbid
@@ -70,12 +70,31 @@ spec:
               - --with-data
         pod:
           restartPolicy: OnFailure
+
       reannounce:
         containers:
           app:
             <<: *container
             args:
               - reannounce
+
+      orphaned:
+        type: cronjob
+        cronjob:
+          <<: *cronJobSpec
+          schedule: 0 0 * * 0
+          suspend: true
+        containers:
+          app:
+            <<: *container
+            args: [
+              "orphaned",
+              "--exclude-pattern", "*_unpackerred*",
+              "--dry-run"
+            ]
+        pod:
+          restartPolicy: Never
+
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -89,3 +108,12 @@ spec:
           - path: /config/config.yaml
             subPath: config.yaml
             readOnly: true
+      media:
+        type: nfs
+        server: lochnas.chestr.dev
+        path: /volume1/shared/media
+        advancedMounts:
+          orphaned:
+            app:
+              - path: /media/downloads/torrents
+                subPath: downloads/torrents
