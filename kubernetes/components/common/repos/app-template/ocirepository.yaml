@@ -4,9 +4,8 @@ apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
 metadata:
   name: app-template
-  namespace: flux-system
 spec:
-  interval: 1h
+  interval: 5m
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
@@ -15,3 +14,6 @@ spec:
   url: oci://ghcr.io/bjw-s/helm/app-template
   verify:
     provider: cosign
+    matchOIDCIdentity:
+      - issuer: ^https://token.actions.githubusercontent.com$
+        subject: ^https://github.com/bjw-s/helm-charts.*$
