@@ -5,7 +5,6 @@ metadata:
   name: external-secrets
 spec:
   interval: 30m
-
   chartRef:
     kind: OCIRepository
     name: external-secrets

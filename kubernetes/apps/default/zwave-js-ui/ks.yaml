@@ -12,16 +12,14 @@ spec:
     - ../../../../components/gatus/guarded
     - ../../../../components/volsync
   dependsOn:
-    - name: onepassword-store
-      namespace: external-secrets
     - name: emqx-cluster
       namespace: *namespace
+    - name: onepassword-store
+      namespace: external-secrets
     - name: node-feature-discovery-rules
       namespace: kube-system
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: volsync
-      namespace: volsync-system
   interval: 30m
   path: ./kubernetes/apps/default/zwave-js-ui/app
   postBuild:

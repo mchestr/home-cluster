@@ -10,4 +10,4 @@ generatorOptions:
     kustomize.toolkit.fluxcd.io/substitute: disabled
   disableNameSuffixHash: true
 resources:
-  - helmrelease.yaml
+  - ./helmrelease.yaml

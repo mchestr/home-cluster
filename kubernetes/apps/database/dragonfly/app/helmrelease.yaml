@@ -61,6 +61,7 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -74,6 +75,7 @@ spec:
           labelSelector:
             matchLabels:
               app.kubernetes.io/name: *app
+
     service:
       app:
         controller: *app
@@ -82,9 +84,11 @@ spec:
             port: *port
           metrics:
             port: 8080
+
     serviceAccount:
       create: true
       name: *app
+
     serviceMonitor:
       app:
         serviceName: *app

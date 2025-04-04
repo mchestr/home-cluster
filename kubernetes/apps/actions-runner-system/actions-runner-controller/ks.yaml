@@ -9,9 +9,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: onepassword
-      namespace: external-secrets
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2
       kind: HelmRelease
@@ -41,6 +38,8 @@ spec:
   dependsOn:
     - name: actions-runner-controller
       namespace: *namespace
+    - name: onepassword
+      namespace: external-secrets
     - name: openebs
       namespace: openebs-system
   interval: 1h

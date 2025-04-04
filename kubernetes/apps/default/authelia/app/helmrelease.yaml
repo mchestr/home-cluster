@@ -48,10 +48,8 @@ spec:
         containers:
           app:
             args:
-              [
-                "--config",
-                "/config/configuration.yml",
-              ]
+              - --config
+              - /config/configuration.yml
             image:
               repository: ghcr.io/authelia/authelia
               tag: 4.39.1

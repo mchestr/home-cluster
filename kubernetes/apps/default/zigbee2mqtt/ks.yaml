@@ -20,8 +20,6 @@ spec:
       namespace: kube-system
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: volsync
-      namespace: volsync-system
   interval: 30m
   path: ./kubernetes/apps/default/zigbee2mqtt/app
   postBuild:

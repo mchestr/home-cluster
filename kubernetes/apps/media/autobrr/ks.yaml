@@ -12,8 +12,8 @@ spec:
     - ../../../../components/cnpg
     - ../../../../components/gatus/guarded
   dependsOn:
-    - name: qbittorrent
-      namespace: media
+    - name: cloudnative-pg-cluster
+      namespace: database
     - name: onepassword-store
       namespace: external-secrets
   interval: 30m

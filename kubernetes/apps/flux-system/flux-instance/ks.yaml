@@ -11,6 +11,8 @@ spec:
   components:
     - ../../../../components/gatus/external
   dependsOn:
+    - name: onepassword-store
+      namespace: external-secrets
     - name: flux-operator
       namespace: *namespace
   interval: 30m

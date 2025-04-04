@@ -19,7 +19,6 @@ spec:
   targetNamespace: *namespace
   timeout: 5m
   wait: false
-
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -33,6 +32,8 @@ spec:
   dependsOn:
     - name: envoy
       namespace: *namespace
+    - name: onepassword-store
+      namespace: external-secrets
   interval: 30m
   path: ./kubernetes/apps/networking/envoy-gateway/gateway
   prune: true

@@ -13,10 +13,12 @@ spec:
     - ../../../../components/gatus/guarded
     - ../../../../components/volsync
   dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
+    - name: cloudnative-pg-cluster
+      namespace: database
     - name: onepassword-store
       namespace: external-secrets
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   interval: 30m
   path: ./kubernetes/apps/media/bazarr/app
   postBuild:

@@ -14,10 +14,8 @@ spec:
   dependsOn:
     - name: onepassword-store
       namespace: external-secrets
-    - name: lldap
-      namespace: *namespace
-    - name: volsync
-      namespace: volsync-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   interval: 30m
   path: ./kubernetes/apps/default/thelounge/app
   postBuild:

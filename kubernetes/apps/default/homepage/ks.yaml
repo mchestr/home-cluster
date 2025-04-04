@@ -10,6 +10,9 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/gatus/guarded
+  dependsOn:
+    - name: onepassword-store
+      namespace: external-secrets
   interval: 30m
   path: ./kubernetes/apps/default/homepage/app
   postBuild:
