@@ -49,11 +49,32 @@ spec:
             args:
               - server
             env: &env
-              DISPLEX_DATABASE__URL:
+              DISPLEX_DATABASE__TYPE: PostgreSQL
+              DISPLEX_DATABASE__HOST:
                 valueFrom:
                   secretKeyRef:
                     name: displex-pguser-secret
-                    key: uri
+                    key: host
+              DISPLEX_DATABASE__PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: displex-pguser-secret
+                    key: port
+              DISPLEX_DATABASE__USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: displex-pguser-secret
+                    key: user
+              DISPLEX_DATABASE__PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: displex-pguser-secret
+                    key: password
+              DISPLEX_DATABASE__DATABASE:
+                valueFrom:
+                  secretKeyRef:
+                    name: displex-pguser-secret
+                    key: db
               RUST_LOG: displex=info,sea_orm=info,warn
             resources: &resources
               requests:
@@ -69,7 +90,14 @@ spec:
             args:
               - bot
             image: *image
-            env: *env
+            env: &envRo
+              <<: *env
+              DISPLEX_DATABASE__READ_ONLY: "true"
+              DISPLEX_DATABASE__HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: displex-pguser-secret
+                    key: ro_host
             resources: *resources
 
       channel-refresh:
@@ -83,7 +111,7 @@ spec:
           app:
             args:
               - channel-refresh
-            env: *env
+            env: *envRo
             image: *image
             resources: *resources
 
@@ -100,7 +128,7 @@ spec:
             args:
               - requests-upgrade
             image: *image
-            env: *env
+            env: *envRo
             resources: *resources
 
       token-maintenance:
@@ -132,7 +160,7 @@ spec:
             args:
               - user-refresh
             image: *image
-            env: *env
+            env: *envRo
             resources: *resources
 
     service:
