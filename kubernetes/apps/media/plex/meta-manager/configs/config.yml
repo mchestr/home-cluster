@@ -7,13 +7,13 @@ libraries:
       - file: config/Movies - Holidays.yml
       - file: config/Movies - Locations.yml
     overlay_files:
-      - file: config/Movies - Overlays - Charts.yml
-      - file: config/Movies - Overlays - Streaming Services.yml
-      - file: config/Movies - Overlays - Studios.yml
-      - file: config/Movies - Overlays - Oscars.yml
       - file: config/Movies - Overlays - Audio.yml
+      - file: config/Movies - Overlays - Charts.yml
+      - file: config/Movies - Overlays - Oscars.yml
       - file: config/Movies - Overlays - Ratings.yml
       - file: config/Movies - Overlays - Stand-up.yml
+      - file: config/Movies - Overlays - Streaming Services.yml
+      - file: config/Movies - Overlays - Studios.yml
     operations:
       mass_genre_update: imdb
       mass_content_rating_update: omdb
@@ -26,10 +26,10 @@ libraries:
       - file: config/TV Shows.yml
     overlay_files:
       - file: config/TV Shows - Overlays - Charts.yml
-      - file: config/TV Shows - Overlays - Streaming Services + Networks.yml
-      - file: config/TV Shows - Overlays - Studios.yml
       - file: config/TV Shows - Overlays - Ratings.yml
       - file: config/TV Shows - Overlays - Statuses.yml
+      - file: config/TV Shows - Overlays - Streaming Services + Networks.yml
+      - file: config/TV Shows - Overlays - Studios.yml
     operations:
       mass_genre_update: tmdb
       mass_content_rating_update: omdb
@@ -138,15 +138,3 @@ sonarr:
   sonarr_path:
   plex_path:
   upgrade_existing: false
-
-trakt:
-  client_id: <<TRAKT_CLIENT_ID>>
-  client_secret: <<TRAKT_CLIENT_SECRET>>
-  authorization:
-    access_token:
-    token_type:
-    expires_in:
-    refresh_token:
-    scope: public
-    created_at:
-  pin: <<TRAKT_PIN>>
