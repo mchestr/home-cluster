@@ -62,7 +62,6 @@ access_control:
         - atuin.chestr.dev
         - autobrr.chestr.dev
         - dashbrr.chestr.dev
-        - docs.chestr.dev
         - emqx.chestr.dev
         - grafana.chestr.dev
         - homepage.chestr.dev
@@ -195,6 +194,5 @@ identity_providers:
           - email
         redirect_uris:
           - https://paperless.chestr.dev/accounts/oidc/authelia/login/callback/
-          - https://docs.chestr.dev/accounts/oidc/authelia/login/callback/
         userinfo_signed_response_alg: none
         claims_policy: default
