@@ -27,9 +27,9 @@ semantic_search:
 
 genai:
   enabled: true
-  provider: gemini
-  api_key: "{FRIGATE_GOOGLE_GEMINI_API_KEY}"
-  model: gemini-1.5-flash
+  provider: openai
+  api_key: "{FRIGATE_FRIGATE_OPENAI_API_KEY}"
+  model: gpt-4o-mini
 
 model:
   # https://docs.frigate.video/configuration/objects
@@ -166,6 +166,8 @@ cameras:
       password: "{FRIGATE_LIVING_ROOM_CAMERA_PASSWORD}"
 
   doorbell:
+    genai:
+      enabled: true
     ffmpeg:
       inputs:
         - path: rtsp://127.0.0.1:8554/doorbell_sd?video=copy&audio=aac
@@ -179,6 +181,8 @@ cameras:
   doorbell_package:
     audio:
       enabled: false
+    genai:
+      enabled: true
     ffmpeg:
       inputs:
         - path: rtsp://127.0.0.1:8554/doorbell_package?video=copy
