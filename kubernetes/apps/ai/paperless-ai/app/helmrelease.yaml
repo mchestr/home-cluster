@@ -22,7 +22,7 @@ spec:
               TZ: America/Vancouver
               PROCESS_PREDEFINED_DOCUMENTS: true
               AI_PROVIDER: ollama
-              OLLAMA_API_URL: https://ollama.ai.svc.cluster.local:11434
+              OLLAMA_API_URL: http://ollama.ai.svc.cluster.local:11434
               OLLAMA_MODEL: deepseek-r1:latest
               PAPERLESS_API_URL: http://paperless.default.svc.cluster.local:8000/api
               SCAN_INTERVAL: "*/30 * * * *"

@@ -188,6 +188,14 @@ spec:
                   namespaceSelector:
                     matchLabels:
                       kubernetes.io/metadata.name: default
+                - podSelector:
+                    matchLabels:
+                      app.kubernetes.io/component: paperless-ai
+                      app.kubernetes.io/instance: paperless-ai
+                      app.kubernetes.io/name: paperless-ai
+                  namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: ai
               ports:
                 - protocol: TCP
                   port: *port
