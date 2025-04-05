@@ -138,6 +138,8 @@ go2rtc:
       - onvif://{FRIGATE_CATCAM_CAMERA_USERNAME}:{FRIGATE_CATCAM_CAMERA_PASSWORD}@192.168.200.104:8000
 cameras:
   living_room:
+    genai:
+      enabled: false
     ffmpeg:
       output_args:
         record: preset-record-generic-audio-aac
@@ -188,6 +190,8 @@ cameras:
 
   catcam:
     audio:
+      enabled: false
+    genai:
       enabled: false
     ffmpeg:
       output_args:
