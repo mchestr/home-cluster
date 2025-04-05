@@ -21,10 +21,9 @@ spec:
             env:
               TZ: America/Vancouver
               PROCESS_PREDEFINED_DOCUMENTS: true
-              AI_PROVIDER: ollama
-              OLLAMA_API_URL: http://ollama.ai.svc.cluster.local:11434
-              OLLAMA_MODEL: deepseek-r1:latest
-              PAPERLESS_API_URL: http://paperless.default.svc.cluster.local:8000/api
+              AI_PROVIDER: openai
+              OLLAMA_MODEL: gpt-4o-mini
+              PAPERLESS_API_URL: https://paperless.chestr.dev/api
               SCAN_INTERVAL: "*/30 * * * *"
               TAGS: AI
             envFrom:
@@ -94,3 +93,7 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /tmp
+      openai:
+        type: emptyDir
+        globalMounts:
+          - path: /app/OPENAPI
