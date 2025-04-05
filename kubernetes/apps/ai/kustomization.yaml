@@ -6,7 +6,5 @@ components:
   - ../../components/common
 namespace: ai
 resources:
-  - ./ollama/ks.yaml
-  - ./openweb-ui/ks.yaml
   - ./paperless-ai/ks.yaml
   - ./recommendarr/ks.yaml
