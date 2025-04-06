@@ -8,12 +8,10 @@ metadata:
     external-dns.alpha.kubernetes.io/target: &hostname external.chestr.dev
 spec:
   gatewayClassName: envoy
-  addresses:
-    - type: IPAddress
-      value: 10.0.20.200
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
+      lbipam.cilium.io/ips: 10.0.20.200
     parametersRef:
       group: gateway.envoyproxy.io
       kind: EnvoyProxy
