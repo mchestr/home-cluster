@@ -173,7 +173,7 @@ spec:
         extraArgs:
           promscrape.maxScrapeSize: 50MiB
           promscrape.streamParse: "true"
-          promscrape.dropOriginalLabels: "true"
+          promscrape.dropOriginalLabels: "false"
         resources:
           limits:
             memory: 1Gi
@@ -186,6 +186,14 @@ spec:
 
     prometheus-node-exporter:
       enabled: true
+      vmScrape:
+        spec:
+          endpoints:
+            - port: metrics
+              relabelConfigs:
+                - source_labels:
+                    - __meta_kubernetes_endpoint_node_name
+                  target_label: node
 
     kube-state-metrics:
       enabled: true
