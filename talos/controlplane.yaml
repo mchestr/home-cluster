@@ -95,9 +95,6 @@ machine:
     vm.nr_hugepages: 1024                  # PostgreSQL
   sysfs:
     devices.system.cpu.intel_pstate.hwp_dynamic_boost: 1
-    {% for i in range(0, 20) %}
-    devices.system.cpu.cpu{{ i }}.cpufreq.energy_performance_preference: balance_performance
-    {% endfor %}
   features:
     rbac: true
     stableHostname: true
@@ -170,7 +167,7 @@ cluster:
     image: registry.k8s.io/kube-apiserver:{{ ENV.KUBERNETES_VERSION }}
     extraArgs:
       enable-aggregator-routing: true
-    certSANs: [ "10.0.40.2", "127.0.0.1"]
+    certSANs: ["10.0.40.2", "127.0.0.1"]
     disablePodSecurityPolicy: true
   controllerManager:
     image: registry.k8s.io/kube-controller-manager:{{ ENV.KUBERNETES_VERSION }}
