@@ -20,7 +20,6 @@ spec:
   values:
     fullnameOverride: stack
     victoria-metrics-operator:
-      enabled: true
       env:
         - name: VM_VMALERTDEFAULT_CONFIGRELOADERCPU
           value: 0
@@ -29,17 +28,12 @@ spec:
         - name: VM_VMALERTMANAGER_CONFIGRELOADERCPU
           value: 0
       operator:
-        disable_prometheus_converter: false # Ensure we keep enabled the converter to sync prom rules to VM rules
         enable_converter_ownership: true # Required to allow VM to remove VM rules it imports if a prometheus rule is deleted
 
     defaultDashboards:
-      enabled: true
-      grafanaOperator:
-        # -- Create dashboards as CRDs (requires grafana-operator to be installed)
-        enabled: false
+      enabled: false
 
     defaultRules:
-      create: true
       rules:
         groups:
           etcd:
@@ -50,7 +44,6 @@ spec:
             create: false
 
     vmsingle:
-      enabled: true
       spec:
         # -- Data retention period. Possible units character: h(ours), d(ays), w(eeks), y(ears), if no unit character specified - month. The minimum retention period is 24h. See these [docs](https://docs.victoriametrics.com/single-server-victoriametrics/#retention)
         retentionPeriod: "1y"
@@ -67,17 +60,12 @@ spec:
           limits:
             memory: 3Gi
           requests:
-            cpu: 530m
+            cpu: 500m
             memory: 2Gi
-      ingress:
-        enabled: false
 
     alertmanager:
-      enabled: true
       spec:
-        externalURL: https://vm.chestr.dev
-      ingress:
-        enabled: false
+        externalURL: https://am.chestr.dev
       useManagedConfig: true
       config:
         route:
@@ -151,41 +139,33 @@ spec:
                 url_title: View in Alertmanager
 
     vmalert:
-      enabled: true
       spec:
+        # Skip vmalerts for vmlog rules
         selectAllByDefault: false
         ruleSelector:
           matchExpressions:
-            - { key: vmalert-logs.io/enabled, operator: NotIn, values: ["true"] }
+            - key: vmalert-logs.io/enabled
+              operator: NotIn
+              values: ["true"]
         ruleNamespaceSelector:
           matchExpressions:
-            - { key: somekey, operator: NotIn, values: ["never-used-value"] }
+            - key: somekey
+              operator: NotIn
+              values: ["never-used-value"]
         extraArgs:
           external.url: https://vm.chestr.dev
-      ingress:
-        enabled: false
 
     vmagent:
-      enabled: true
-      ingress:
-        enabled: false
       spec:
         extraArgs:
           promscrape.maxScrapeSize: 50MiB
           promscrape.streamParse: "true"
-          promscrape.dropOriginalLabels: "false"
-        resources:
-          limits:
-            memory: 1Gi
-          requests:
-            cpu: 500m
-            memory: 100Mi
+          promscrape.dropOriginalLabels: "true"
 
     grafana:
       enabled: false
 
     prometheus-node-exporter:
-      enabled: true
       vmScrape:
         spec:
           endpoints:
@@ -195,11 +175,7 @@ spec:
                     - __meta_kubernetes_endpoint_node_name
                   target_label: node
 
-    kube-state-metrics:
-      enabled: true
-
     kubelet:
-      enabled: true
       vmScrape:
         spec:
           # drop high cardinality label and useless metrics for cadvisor and kubelet
@@ -243,14 +219,8 @@ spec:
               sourceLabels: [__name__]
               regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
 
-    kubeApiServer:
-      enabled: true
-
     kubeControllerManager:
       enabled: false
-
-    coreDns:
-      enabled: true
 
     kubeEtcd:
       enabled: false
@@ -260,9 +230,6 @@ spec:
 
     kubeProxy:
       enabled: false
-
-    prometheus-operator-crds:
-      enabled: true
 
     additionalVictoriaMetricsMap:
       dockerhub-rules:
