@@ -159,13 +159,9 @@ data:
                 - type: sonarr
                   service_group: Downloads
                   service_name: Sonarr
-                  params:
-                    unmonitored: true
                 - type: radarr
                   service_group: Downloads
                   service_name: Radarr
-                  params:
-                    unmonitored: true
   widgets.yaml: |
     - search:
         provider: [google]
