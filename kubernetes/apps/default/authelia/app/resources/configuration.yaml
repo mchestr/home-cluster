@@ -71,6 +71,7 @@ access_control:
         - s3.chestr.dev
         - ollama.chestr.dev
         - paperless.chestr.dev
+        - photos.chestr.dev
         - syncthing.chestr.dev
         - sync.chestr.dev
         - tautulli.chestr.dev
@@ -124,8 +125,8 @@ identity_providers:
       - key_id: default
         key: {{ env "JWKS_KEY" | mindent 10 "|" | msquote }}
     clients:
-      - client_id: autobrr
-        client_name: Autobrr
+      - client_name: Autobrr
+        client_id: '{{ env "AUTOBRR_OAUTH_CLIENT_ID" }}'
         client_secret: '{{ env "AUTOBRR_OAUTH_CLIENT_SECRET" }}'
         public: false
         authorization_policy: two_factor
@@ -138,8 +139,8 @@ identity_providers:
           - https://autobrr.chestr.dev/api/auth/oidc/callback
         userinfo_signed_response_alg: none
         claims_policy: default
-      - client_id: dashbrr
-        client_name: Dashbrr
+      - client_name: Dashbrr
+        client_id: '{{ env "DASHBRR_OAUTH_CLIENT_ID" }}'
         client_secret: '{{ env "DASHBRR_OAUTH_CLIENT_SECRET" }}'
         public: false
         authorization_policy: two_factor
@@ -152,8 +153,8 @@ identity_providers:
           - https://dashbrr.chestr.dev/api/auth/callback
         userinfo_signed_response_alg: none
         claims_policy: default
-      - client_id: grafana
-        client_name: Grafana
+      - client_name: Grafana
+        client_id: '{{ env "GRAFANA_OAUTH_CLIENT_ID" }}'
         client_secret: '{{ env "GRAFANA_OAUTH_CLIENT_SECRET" }}'
         public: false
         authorization_policy: two_factor
@@ -167,8 +168,8 @@ identity_providers:
           - https://grafana.chestr.dev/login/generic_oauth
         userinfo_signed_response_alg: none
         claims_policy: default
-      - client_id: immich
-        client_name: Immich
+      - client_name: Immich
+        client_id: '{{ env "IMMICH_OAUTH_CLIENT_ID" }}'
         client_secret: '{{ env "IMMICH_OAUTH_CLIENT_SECRET" }}'
         public: false
         authorization_policy: two_factor
@@ -182,8 +183,8 @@ identity_providers:
           - app.immich:/
         userinfo_signed_response_alg: none
         claims_policy: default
-      - client_id: paperless
-        client_name: Paperless
+      - client_name: Paperless
+        client_id: '{{ env "PAPERLESS_OAUTH_CLIENT_ID" }}'
         client_secret: '{{ env "PAPERLESS_OAUTH_CLIENT_SECRET" }}'
         public: false
         authorization_policy: two_factor
