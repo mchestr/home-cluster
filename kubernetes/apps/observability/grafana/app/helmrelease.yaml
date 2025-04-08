@@ -214,6 +214,14 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/envoy
+          - name: victoria-metrics
+            orgId: 1
+            folder: VictoriaMetrics
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/victoria-metrics
 
     datasources:
       datasources.yaml:
@@ -514,6 +522,34 @@ spec:
           datasource: Prometheus
         global-ratelimit:
           url: https://raw.githubusercontent.com/envoyproxy/gateway/refs/heads/main/charts/gateway-addons-helm/dashboards/global-ratelimit.json
+          datasource: Prometheus
+      victoria-metrics:
+        backupmanager:
+          url: https://raw.githubusercontent.com/VictoriaMetrics/VictoriaMetrics/refs/heads/master/dashboards/backupmanager.json
+          datasource: Prometheus
+        clusterbytenant:
+          url: https://raw.githubusercontent.com/VictoriaMetrics/VictoriaMetrics/refs/heads/master/dashboards/clusterbytenant.json
+          datasource: Prometheus
+        operator:
+          url: https://raw.githubusercontent.com/VictoriaMetrics/VictoriaMetrics/refs/heads/master/dashboards/operator.json
+          datasource: Prometheus
+        victorialogs:
+          url: https://raw.githubusercontent.com/VictoriaMetrics/VictoriaMetrics/refs/heads/master/dashboards/victorialogs.json
+          datasource: Prometheus
+        victoriametrics-cluster:
+          url: https://raw.githubusercontent.com/VictoriaMetrics/VictoriaMetrics/refs/heads/master/dashboards/victoriametrics-cluster.json
+          datasource: Prometheus
+        victoriametrics:
+          url: https://raw.githubusercontent.com/VictoriaMetrics/VictoriaMetrics/refs/heads/master/dashboards/victoriametrics.json
+          datasource: Prometheus
+        vmagent:
+          url: https://raw.githubusercontent.com/VictoriaMetrics/VictoriaMetrics/refs/heads/master/dashboards/vmagent.json
+          datasource: Prometheus
+        vmalert:
+          url: https://raw.githubusercontent.com/VictoriaMetrics/VictoriaMetrics/refs/heads/master/dashboards/vmalert.json
+          datasource: Prometheus
+        vmauth:
+          url: https://raw.githubusercontent.com/VictoriaMetrics/VictoriaMetrics/refs/heads/master/dashboards/vmauth.json
           datasource: Prometheus
 
     sidecar:
