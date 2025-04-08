@@ -250,6 +250,10 @@ spec:
               sslmode: disable
             version: 1
             editable: true
+          - name: VictoriaLogs
+            type: victoriametrics-logs-datasource
+            access: proxy
+            url: http://victoria-logs-server.observability.svc.cluster.local:9428
 
     dashboards:
       default:
@@ -540,3 +544,4 @@ spec:
       - natel-discrete-panel
       - pr0ps-trackmap-panel
       - vonage-status-panel
+      - victoriametrics-logs-datasource
