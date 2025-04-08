@@ -125,7 +125,7 @@ identity_providers:
         key: {{ env "JWKS_KEY" | mindent 10 "|" | msquote }}
     clients:
       - client_name: Autobrr
-        client_id: '{{ env AUTOBRR_OAUTH_CLIENT_ID}}'
+        client_id: '{{ env "AUTOBRR_OAUTH_CLIENT_ID" }}'
         client_secret: '{{ env "AUTOBRR_OAUTH_CLIENT_SECRET" }}'
         public: false
         authorization_policy: two_factor
@@ -139,7 +139,7 @@ identity_providers:
         userinfo_signed_response_alg: none
         claims_policy: default
       - client_name: Dashbrr
-        client_id: '{{ env DASHBRR_OAUTH_CLIENT_ID}}'
+        client_id: '{{ env "DASHBRR_OAUTH_CLIENT_ID" }}'
         client_secret: '{{ env "DASHBRR_OAUTH_CLIENT_SECRET" }}'
         public: false
         authorization_policy: two_factor
@@ -153,7 +153,7 @@ identity_providers:
         userinfo_signed_response_alg: none
         claims_policy: default
       - client_name: Grafana
-        client_id: grafana
+        client_id: '{{ env "GRAFANA_OAUTH_CLIENT_ID" }}'
         client_secret: '{{ env "GRAFANA_OAUTH_CLIENT_SECRET" }}'
         public: false
         authorization_policy: two_factor
@@ -167,8 +167,8 @@ identity_providers:
           - https://grafana.chestr.dev/login/generic_oauth
         userinfo_signed_response_alg: none
         claims_policy: default
-      - client_id: immich
-        client_name: Immich
+      - client_name: Immich
+        client_id: '{{ env "IMMICH_OAUTH_CLIENT_ID" }}'
         client_secret: '{{ env "IMMICH_OAUTH_CLIENT_SECRET" }}'
         public: false
         authorization_policy: two_factor
@@ -182,8 +182,8 @@ identity_providers:
           - app.immich:/
         userinfo_signed_response_alg: none
         claims_policy: default
-      - client_id: paperless
-        client_name: Paperless
+      - client_name: Paperless
+        client_id: '{{ env "PAPERLESS_OAUTH_CLIENT_ID" }}'
         client_secret: '{{ env "PAPERLESS_OAUTH_CLIENT_SECRET" }}'
         public: false
         authorization_policy: two_factor
