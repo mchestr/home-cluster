@@ -26,7 +26,7 @@ semantic_search:
   model_size: large
 
 genai:
-  enabled: true
+  enabled: false
   provider: openai
   api_key: "{FRIGATE_FRIGATE_OPENAI_API_KEY}"
   model: gpt-4o-mini
@@ -167,7 +167,7 @@ cameras:
 
   doorbell:
     genai:
-      enabled: true
+      enabled: false
     ffmpeg:
       inputs:
         - path: rtsp://127.0.0.1:8554/doorbell_sd?video=copy&audio=aac
@@ -182,7 +182,7 @@ cameras:
     audio:
       enabled: false
     genai:
-      enabled: true
+      enabled: false
     ffmpeg:
       inputs:
         - path: rtsp://127.0.0.1:8554/doorbell_package?video=copy
