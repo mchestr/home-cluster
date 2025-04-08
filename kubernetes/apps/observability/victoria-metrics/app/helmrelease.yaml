@@ -161,6 +161,12 @@ spec:
           promscrape.maxScrapeSize: 50MiB
           promscrape.streamParse: "true"
           promscrape.dropOriginalLabels: "true"
+        resources:
+          limits:
+            memory: 1Gi
+          requests:
+            cpu: 500m
+            memory: 500Mi
 
     grafana:
       enabled: false
