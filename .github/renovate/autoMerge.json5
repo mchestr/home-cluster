@@ -46,7 +46,6 @@
         "ghcr.io/home-operations/sonarr",
         "ghcr.io/home-operations/tautulli",
         "ghcr.io/koenkk/zigbee2mqtt",
-        "ghcr.io/paperless-ngx/paperless-ngx",
         "ghcr.io/twin/gatus",
         "ghcr.io/wizarrrr/wizarr",
         "ghcr.io/zwave-js/zwave-js-ui",
