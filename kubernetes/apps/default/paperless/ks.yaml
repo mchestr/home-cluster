@@ -27,8 +27,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      APP_GID: '1000'
-      APP_UID: '1000'
       VOLSYNC_CACHE_CAPACITY: 8Gi
       VOLSYNC_CAPACITY: 8Gi
   prune: true

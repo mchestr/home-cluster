@@ -26,6 +26,13 @@ spec:
     defaultPodOptions:
       automountServiceAccountToken: false
       enableServiceLinks: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
 
     controllers:
       paperless:
@@ -82,18 +89,6 @@ spec:
             envFrom:
               - secretRef:
                   name: paperless-secret
-            securityContext: &securityContext
-              allowPrivilegeEscalation: false
-              runAsNonRoot: false
-              runAsUser: ${APP_UID}
-              runAsGroup: ${APP_UID}
-              fsGroup: 65539
-              fsGroupChangePolicy: "Always"
-              seccompProfile:
-                type: RuntimeDefault
-              capabilities:
-                drop:
-                  - ALL
 
       gotenburg:
         containers:
@@ -103,7 +98,6 @@ spec:
               tag: 8.17.3
             env:
               DISABLE_GOOGLE_CHROME: "1"
-            securityContext: *securityContext
 
       tika:
         containers:
@@ -111,7 +105,6 @@ spec:
             image:
               repository: ghcr.io/paperless-ngx/tika
               tag: 2.9.1-full
-            securityContext: *securityContext
 
     service:
       paperless:
