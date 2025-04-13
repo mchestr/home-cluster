@@ -5,12 +5,12 @@ resource "cloudflare_ruleset" "chestr-dev-rulesets" {
   description = "chestr.dev rulesets"
   zone_id     = data.cloudflare_zone.domain.zone_id
   rules = [
-    {
-      expression  = "(cf.client.bot) or (cf.threat_score gt 14)"
-      action      = "block"
-      description = "Block known cloudflare bots"
-      enabled     = true
-    },
+    # {
+    #   expression  = "(cf.client.bot) or (cf.threat_score gt 14)"
+    #   action      = "block"
+    #   description = "Block known cloudflare bots"
+    #   enabled     = true
+    # },
     {
       expression  = "(not ip.geoip.country in {\"CA\" \"US\" \"CN\"})"
       action      = "block"
