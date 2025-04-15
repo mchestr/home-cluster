@@ -41,7 +41,7 @@ spec:
               PLEFI_PLEX__CLIENT_ID: *app
               PLEFI_PLEX__SHARED_LIBRARIES: Movies,TV Shows
               PLEFI_SERVER__HOSTNAME: subs.chestr.dev
-              PLEFI_SERVER__TRUSTED_PROXIES: "10.244.0.0/24"
+              PLEFI_SERVER__TRUSTED_PROXIES: "10.244.0.0/16"
             envFrom:
               - secretRef:
                   name: plefi-secret
