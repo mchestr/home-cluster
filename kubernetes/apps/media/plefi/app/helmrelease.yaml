@@ -36,7 +36,7 @@ spec:
           app:
             image:
               repository: ghcr.io/mchestr/plefi
-              tag: main@sha256:46de53ba5650e548b3a9fc1a68417ac66831a8627b9414f0a266fb63facc54e3
+              tag: main@sha256:5590ad5b220fde82b9220bcccf1ffb6ec152642c20484210ad906f5d6909af13
             env:
               PLEFI_PLEX__CLIENT_ID: *app
               PLEFI_PLEX__SHARED_LIBRARIES: Movies,TV Shows
