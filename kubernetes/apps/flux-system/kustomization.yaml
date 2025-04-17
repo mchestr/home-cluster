@@ -7,5 +7,3 @@ components:
 resources:
   - ./flux-instance/ks.yaml
   - ./flux-operator/ks.yaml
-  - ./headlamp/ks.yaml
-  - ./tofu-controller/ks.yaml
