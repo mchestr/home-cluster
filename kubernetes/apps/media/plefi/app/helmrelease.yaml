@@ -45,7 +45,7 @@ spec:
           app:
             image:
               repository: ghcr.io/mchestr/plefi
-              tag: main@sha256:81d8921c02b0614c85962c50082ffb967d03cc354330c82263a9ea984745683f
+              tag: main@sha256:77dded896bd7f2e9644072adc86818eb49d7596fb4c6eba20b45aad3b169cdd2
             env:
               PLEFI_PLEX__CLIENT_ID: *app
               PLEFI_PLEX__URL: https://plex.chestr.dev
