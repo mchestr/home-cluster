@@ -32,16 +32,32 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
+        initContainers:
+          01-init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: "17"
+            envFrom:
+              - secretRef:
+                  name: plefi-initdb-secret
+
         containers:
           app:
             image:
               repository: ghcr.io/mchestr/plefi
-              tag: main@sha256:373499f45cbaa5f0959fd498be8ee471868444b99558a9979dc1286ffaf24e7c
+              tag: main@sha256:81d8921c02b0614c85962c50082ffb967d03cc354330c82263a9ea984745683f
             env:
               PLEFI_PLEX__CLIENT_ID: *app
+              PLEFI_PLEX__URL: https://plex.chestr.dev
               PLEFI_PLEX__SHARED_LIBRARIES: Movies,TV Shows
               PLEFI_SERVER__HOSTNAME: subs.chestr.dev
               PLEFI_SERVER__TRUSTED_PROXIES: "10.244.0.0/16"
+              PLEFI_DATABASE__DRIVER: postgres
+              PLEFI_DATABASE__DSN:
+                valueFrom:
+                  secretKeyRef:
+                    name: plefi-pguser-secret
+                    key: dsn
             envFrom:
               - secretRef:
                   name: plefi-secret
