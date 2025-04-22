@@ -45,12 +45,13 @@ spec:
           app:
             image:
               repository: ghcr.io/mchestr/plefi
-              tag: main@sha256:2de0c774966573cdcb9c2d81d279af25ac56c94e760a38d09b3255f5add062bd
+              tag: main@sha256:329bd872211895b79531f5f16bba27fdc3d4594970e111211efa2499a491b263
             env:
               PLEFI_PLEX__CLIENT_ID: *app
               PLEFI_PLEX__URL: https://plex.chestr.dev
               PLEFI_PLEX__SHARED_LIBRARIES: Movies,TV Shows
-              PLEFI_SERVER__HOSTNAME: subs.chestr.dev
+              PLEFI_SERVER__HOSTNAME: invite.chestr.dev
+              PLEFI_ONBOARDING__REQUESTS_URL: https://requests.chestr.dev
               PLEFI_SERVER__TRUSTED_PROXIES: "10.244.0.0/16"
               PLEFI_DATABASE__DRIVER: postgres
               PLEFI_DATABASE__DSN:
@@ -77,7 +78,7 @@ spec:
 
     route:
       app:
-        hostnames: ["subs.chestr.dev"]
+        hostnames: ["invite.chestr.dev"]
         parentRefs:
           - name: external
             namespace: networking
