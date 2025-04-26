@@ -42,42 +42,42 @@ spec:
               TZ: &tz America/Vancouver
               DISABLE_MQTT: "false"
               MQTT_HOST: emqx-listeners.default.svc.cluster.local
-              DATABASE_NAME:
-                valueFrom:
-                  secretKeyRef:
-                    name: &pguser teslamate-initdb-secret
-                    key: INIT_POSTGRES_DBNAME
-              DATABASE_HOST:
-                valueFrom:
-                  secretKeyRef:
-                    name: *pguser
-                    key: INIT_POSTGRES_HOST
-              DATABASE_USER: postgres
-              DATABASE_PASS:
-                valueFrom:
-                  secretKeyRef:
-                    name: *pguser
-                    key: INIT_POSTGRES_SUPER_PASS
               # DATABASE_NAME:
               #   valueFrom:
               #     secretKeyRef:
-              #       name: &pguser teslamate-pguser-secret
-              #       key: db
+              #       name: &pguser teslamate-initdb-secret
+              #       key: INIT_POSTGRES_DBNAME
               # DATABASE_HOST:
               #   valueFrom:
               #     secretKeyRef:
               #       name: *pguser
-              #       key: host
-              # DATABASE_USER:
-              #   valueFrom:
-              #     secretKeyRef:
-              #       name: *pguser
-              #       key: user
+              #       key: INIT_POSTGRES_HOST
+              # DATABASE_USER: postgres
               # DATABASE_PASS:
               #   valueFrom:
               #     secretKeyRef:
               #       name: *pguser
-              #       key: password
+              #       key: INIT_POSTGRES_SUPER_PASS
+              DATABASE_NAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: &pguser teslamate-pguser-secret
+                    key: db
+              DATABASE_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: *pguser
+                    key: host
+              DATABASE_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: *pguser
+                    key: user
+              DATABASE_PASS:
+                valueFrom:
+                  secretKeyRef:
+                    name: *pguser
+                    key: password
             envFrom:
               - secretRef:
                   name: teslamate-secret
