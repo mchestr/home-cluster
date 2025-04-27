@@ -53,6 +53,7 @@ spec:
               PLEFI_SERVER__HOSTNAME: subs.chestr.dev
               PLEFI_ONBOARDING__REQUESTS_URL: https://requests.chestr.dev
               PLEFI_SERVER__TRUSTED_PROXIES: "10.244.0.0/16"
+              PLEFI_METRICS__ENABLED: "true"
               PLEFI_DATABASE__DRIVER: postgres
               PLEFI_DATABASE__DSN:
                 valueFrom:
@@ -75,6 +76,8 @@ spec:
         ports:
           http:
             port: &port 8080
+          metrics:
+            port: 8081
 
     route:
       app:
@@ -87,3 +90,13 @@ spec:
           - backendRefs:
               - name: *app
                 port: *port
+
+    serviceMonitor:
+      app:
+        serviceName: *app
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
