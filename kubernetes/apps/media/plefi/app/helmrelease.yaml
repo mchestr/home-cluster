@@ -27,8 +27,7 @@ spec:
 
     controllers:
       plefi:
-        replicas: 2
-        strategy: RollingUpdate
+        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
 
