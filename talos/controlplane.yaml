@@ -43,25 +43,7 @@ machine:
     nameservers: ["10.0.40.1"]
     disableSearchDomain: true
   install:
-    extraKernelArgs:
-      - apparmor=0              # Less security, faster puter
-      - init_on_alloc=0         # Less security, faster puter
-      - init_on_free=0          # Less security, faster puter
-      - intel_iommu=on          # PCI Passthrough
-      - iommu=pt                # PCI Passthrough
-      - mitigations=off         # Less security, faster puter
-      - security=none           # Less security, faster puter
-      - talos.auditd.disabled=1 # Less security, faster puter
-    # systemExtensions:
-    #     officialExtensions:
-    #         - siderolabs/i915
-    #         - siderolabs/intel-ice-firmware
-    #         - siderolabs/intel-ucode
-    #         - siderolabs/nut-client
-    #         - siderolabs/thunderbolt
-    #         - siderolabs/util-linux-tools
-    image: factory.talos.dev/installer-secureboot/aef34bb98f42f525c65144163f69c5bfeb6a0e130b2def44fde55e65cd0bad75:{{ ENV.TALOS_VERSION }}
-    wipe: false
+    image: factory.talos.dev/installer-secureboot/{{ ENV.TALOS_SCHEMATIC }}:{{ ENV.TALOS_VERSION }}
   files:
     - op: create
       path: /etc/cri/conf.d/20-customization.part
