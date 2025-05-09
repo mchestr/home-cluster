@@ -49,7 +49,7 @@ spec:
           vscode-tunnel:
             image:
               repository: ghcr.io/mchestr/vscode-tunnel
-              tag: 1.99.3@sha256:474da69dc2a2d401af15e1918f8d746db53d89092aed63b672c53ac4bdc6ab14
+              tag: 1.100.0@sha256:34ec67ad916f8a8677b96f321557e7eaba0fe32e728dcb4fa542059e96b6141b
 
     defaultPodOptions:
       hostname: home-assistant
