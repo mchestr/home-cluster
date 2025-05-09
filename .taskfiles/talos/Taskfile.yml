@@ -44,16 +44,16 @@ tasks:
 
   upgrade-node:
     desc: Upgrade Talos on a single node [NODE=required]
-    cmd: talosctl --nodes {{.NODE}} upgrade --image={{.TALOS_IMAGE}} --timeout=10m
+    cmd: talosctl --nodes {{.NODE}} upgrade --image=factory.talos.dev/metal-installer-secureboot/{{ .TALOS_SCHEMATIC }}:{{ .VERSION }} --timeout=10m
     vars:
       MACHINE_TYPE:
         sh: talosctl --nodes {{.NODE}} get machinetypes --output=jsonpath='{.spec}'
-      TALOS_IMAGE:
+      TALOS_SCHEMATIC:
         sh: |-
-          talosctl --nodes {{.NODE}} get machineconfig --output=jsonpath='{.spec}' \
-            | yq '.machine.install.image | select(. != null)'
+          curl --silent -X POST --data-binary @{{.TALOS_DIR}}/schematic.yaml https://factory.talos.dev/schematics \
+            | jq --raw-output '.id'
     requires:
-      vars: [NODE]
+      vars: [NODE, VERSION]
     preconditions:
       - talosctl config info
       - talosctl --nodes {{.NODE}} get machineconfig
