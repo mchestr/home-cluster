@@ -66,6 +66,7 @@ access_control:
         - homepage.chestr.dev
         - irc.chestr.dev
         - jellyfin.chestr.dev
+        - jellyseerr.chestr.dev
         - lldap.chestr.dev
         - s3.chestr.dev
         - ollama.chestr.dev

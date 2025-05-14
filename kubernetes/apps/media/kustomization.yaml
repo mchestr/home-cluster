@@ -13,6 +13,7 @@ resources:
   - ./jellyfin/ks.yaml
   - ./jellyplex-watched/ks.yaml
   - ./jellyseerr/ks.yaml
+  - ./jellyseerrfin/ks.yaml
   - ./jellystat/ks.yaml
   - ./maintainerr/ks.yaml
   - ./plefi/ks.yaml
