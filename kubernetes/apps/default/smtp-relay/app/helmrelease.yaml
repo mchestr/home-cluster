@@ -115,3 +115,15 @@ spec:
               ports:
                 - protocol: TCP
                   port: *port
+            - from:
+                - podSelector:
+                    matchLabels:
+                      app.kubernetes.io/component: lldap
+                      app.kubernetes.io/instance: lldap
+                      app.kubernetes.io/name: lldap
+                  namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: default
+              ports:
+                - protocol: TCP
+                  port: *port
