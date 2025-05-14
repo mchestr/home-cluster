@@ -25,7 +25,7 @@ spec:
     fullnameOverride: *app
     image: # TODO: Remove this block when new chart version is released
       repository: registry.k8s.io/external-dns/external-dns
-      tag: v0.16.1
+      tag: v0.17.0
     # logLevel: debug
     provider:
       name: webhook
