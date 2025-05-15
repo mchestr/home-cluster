@@ -31,7 +31,7 @@ releases:
     namespace: kube-system
     values:
       - ../kubernetes/apps/kube-system/cilium/app/resources/values.yaml
-    version: 1.17.3
+    version: 1.17.4
 
   - chart: coredns/coredns
     name: coredns
