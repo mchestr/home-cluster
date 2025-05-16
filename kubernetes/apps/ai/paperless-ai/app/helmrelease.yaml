@@ -17,7 +17,7 @@ spec:
           app:
             image:
               repository: docker.io/clusterzx/paperless-ai
-              tag: 2.7.8@sha256:c4308df5af507968f19b3ccc2fa3b26092f06783871cd7f6cc62f49e45b2c6bc
+              tag: 2.7.8@sha256:d40278a94e36d40be3a3cd25bfb7a7e4a76f370f84f6cad3d07d11743c7e4783
             env:
               TZ: America/Vancouver
               PROCESS_PREDEFINED_DOCUMENTS: true
