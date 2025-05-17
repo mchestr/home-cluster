@@ -37,7 +37,7 @@ spec:
           app:
             image:
               repository: ghcr.io/mchestr/control-forensics
-              tag: main@sha256:edfbe2f339c11d4f0eeb2f909a9f07a311244e67ddb3c9dcd21ad02104e9d1c4
+              tag: main@sha256:4853b280801d82c62d391e0ad19be2929b83d775775fb5c1ff037ff61c57d92e
             envFrom:
               - secretRef:
                   name: controlforensics-secret
