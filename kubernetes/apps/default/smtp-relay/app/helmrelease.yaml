@@ -128,3 +128,15 @@ spec:
               ports:
                 - protocol: TCP
                   port: *port
+            - from:
+                - podSelector:
+                    matchLabels:
+                      app.kubernetes.io/component: controlforensics
+                      app.kubernetes.io/instance: controlforensics
+                      app.kubernetes.io/name: controlforensics
+                  namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: default
+              ports:
+                - protocol: TCP
+                  port: *port
