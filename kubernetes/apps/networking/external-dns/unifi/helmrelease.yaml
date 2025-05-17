@@ -58,7 +58,8 @@ spec:
     sources: ["gateway-httproute", "service"]
     txtOwnerId: main
     txtPrefix: k8s.main.
-    domainFilters: ["chestr.dev"]
+    domainFilters:
+      - chestr.dev
     serviceMonitor:
       enabled: true
     podAnnotations:

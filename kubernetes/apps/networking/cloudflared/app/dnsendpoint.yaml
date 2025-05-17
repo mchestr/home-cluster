@@ -9,3 +9,6 @@ spec:
     - dnsName: external.chestr.dev
       recordType: CNAME
       targets: ["${CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"]
+    - dnsName: external.controlforensics.com
+      recordType: CNAME
+      targets: ["${CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"]

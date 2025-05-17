@@ -1,0 +1,83 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app controlforensics
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 2
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    defaultPodOptions:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: *app
+
+    controllers:
+      controlforensics:
+        replicas: 3
+        strategy: RollingUpdate
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/mchestr/control-forensics
+              tag: main@sha256:fac8bb33fd06d594b45b8c38db67245a59f4c687b580e255c0f29e92ba977928
+            resources:
+              requests:
+                cpu: 100m
+                memory: 100Mi
+              limits:
+                memory: 500Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+
+    service:
+      app:
+        controller: controlforensics
+        ports:
+          http:
+            port: &port 3000
+
+    route:
+      app:
+        hostnames:
+          - www.controlforensics.com
+        parentRefs:
+          - name: external
+            namespace: networking
+            sectionName: controlforensics-https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+      tld:
+        hostnames:
+          - controlforensics.com
+        parentRefs:
+          - name: external
+            namespace: networking
+            sectionName: controlforensics-https-tld
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port

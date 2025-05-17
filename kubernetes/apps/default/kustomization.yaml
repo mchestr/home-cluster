@@ -20,5 +20,6 @@ resources:
   - ./syncthing/ks.yaml
   - ./teslamate/ks.yaml
   - ./thelounge/ks.yaml
+  - ./websites/ks.yaml
   - ./zigbee2mqtt/ks.yaml
   - ./zwave-js-ui/ks.yaml

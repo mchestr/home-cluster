@@ -7,4 +7,12 @@ ingress:
     service: &service https://envoy-gateway-external.networking.svc.cluster.local
   - hostname: "*.chestr.dev"
     service: *service
+  - hostname: controlforensics.com
+    service: *service
+    originRequest:
+      originServerName: controlforensics.com
+  - hostname: "*.controlforensics.com"
+    service: *service
+    originRequest:
+      originServerName: external.controlforensics.com
   - service: http_status:404

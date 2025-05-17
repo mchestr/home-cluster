@@ -35,18 +35,12 @@ spec:
           secretKeyRef:
             name: &secret external-dns-cloudflare-secret
             key: *name
-      - name: &name CF_ZONE_ID
-        valueFrom:
-          secretKeyRef:
-            name: *secret
-            key: *name
     extraArgs:
       - --cloudflare-dns-records-per-page=1000
       - --cloudflare-proxied
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
       - --gateway-name=external
-      - --zone-id-filter=$(CF_ZONE_ID)
     policy: sync
     sources:
       - crd
@@ -55,6 +49,7 @@ spec:
     txtOwnerId: "default"
     domainFilters:
       - chestr.dev
+      - controlforensics.com
     serviceMonitor:
       enabled: true
     podAnnotations:

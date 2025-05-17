@@ -35,3 +35,32 @@ spec:
         certificateRefs:
           - kind: Secret
             name: chestr-dev-tls
+    - name: controlforensics-http
+      protocol: HTTP
+      port: 80
+      hostname: "*.controlforensics.com"
+      allowedRoutes:
+        namespaces:
+          from: Same
+    - name: controlforensics-https-tld
+      protocol: HTTPS
+      port: 443
+      hostname: controlforensics.com
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: controlforensics-com-tls
+    - name: controlforensics-https
+      protocol: HTTPS
+      port: 443
+      hostname: "*.controlforensics.com"
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: controlforensics-com-tls
