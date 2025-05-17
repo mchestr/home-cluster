@@ -38,6 +38,9 @@ spec:
             image:
               repository: ghcr.io/mchestr/control-forensics
               tag: main@sha256:ffec5195a9d5e3f6b8b7d3ec81dc5266f437f19d9a7cf8512f60db797100dc96
+            envFrom:
+              - secretRef:
+                  name: controlforensics-secret
             resources:
               requests:
                 cpu: 100m
