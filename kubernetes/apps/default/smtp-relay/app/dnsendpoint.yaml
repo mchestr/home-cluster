@@ -39,3 +39,37 @@ spec:
       recordType: TXT
       targets:
         - v=DMARC1; p=none;
+
+    - dnsName: nuvu4eeleu2abflxn6ldz3vwrkccz527._domainkey.controlforensics.com
+      recordType: CNAME
+      targets:
+        - nuvu4eeleu2abflxn6ldz3vwrkccz527.dkim.amazonses.com
+      providerSpecific:
+        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+          value: "false"
+    - dnsName: rsngqtkljqqrxu5ct3jtqrpjfcy63nmn._domainkey.controlforensics.com
+      recordType: CNAME
+      targets:
+        - rsngqtkljqqrxu5ct3jtqrpjfcy63nmn.dkim.amazonses.com
+      providerSpecific:
+        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+          value: "false"
+    - dnsName: khziw4xs2rm5rptymwf2qhdabjsltyiq._domainkey.controlforensics.com
+      recordType: CNAME
+      targets:
+        - khziw4xs2rm5rptymwf2qhdabjsltyiq.dkim.amazonses.com
+      providerSpecific:
+        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+          value: "false"
+    - dnsName: mail
+      recordType: MX
+      targets:
+        - feedback-smtp.us-west-2.amazonses.com
+    - dnsName: mail
+      recordType: TXT
+      targets:
+        - v=spf1 include:amazonses.com ~all
+    - dnsName: _dmarc.controlforensics.com
+      recordType: TXT
+      targets:
+        - v=DMARC1; p=none;

@@ -43,6 +43,7 @@ spec:
             env:
               DEBUG: "false"
               SMTP_DOMAIN: chestr.dev
+              SMTP_DOMAIN_2: controlforensics.com
             envFrom:
               - secretRef:
                   name: smtp-relay-secret
