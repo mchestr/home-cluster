@@ -32,6 +32,8 @@ spec:
       controlforensics:
         replicas: 3
         strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
 
         containers:
           app:
