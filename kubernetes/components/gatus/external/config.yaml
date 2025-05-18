@@ -6,4 +6,4 @@ endpoints:
     group: external
     interval: 1m
     name: ${APP}
-    url: https://${GATUS_SUBDOMAIN:=${APP}}.chestr.dev${GATUS_PATH:=/}
+    url: https://${GATUS_SUBDOMAIN:=${APP}}.${GATUS_DOMAIN:=chestr.dev}${GATUS_PATH:=/}

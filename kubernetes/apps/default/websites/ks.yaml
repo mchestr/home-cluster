@@ -8,11 +8,17 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/gatus/external
   dependsOn:
     - name: onepassword-store
       namespace: external-secrets
   interval: 30m
   path: ./kubernetes/apps/default/websites/controlforensics.com
+  postBuild:
+    substitute:
+      APP: *app
+      GATUS_DOMAIN: com
   prune: true
   retryInterval: 1m
   sourceRef:
