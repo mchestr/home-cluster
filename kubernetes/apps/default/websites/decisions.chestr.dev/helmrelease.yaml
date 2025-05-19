@@ -22,11 +22,16 @@ spec:
 
     controllers:
       decisions:
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
               repository: ghcr.io/mchestr/decision-decider
-              tag: main@sha256:d41f71b1d7a9d1c7467e480dd9250a47d7615e3efa8d6055b3b86a71503f1d61
+              tag: main@sha256:79597122dbe83a54e2b3c4de989a4aa4635c26dc58200c645c1437be4bb44d25
+            envFrom:
+              - secretRef:
+                  name: decisions-secret
             resources:
               requests:
                 cpu: 100m
