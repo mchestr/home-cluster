@@ -1,0 +1,66 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app decisions
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 2
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+
+    controllers:
+      decisions:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/mchestr/decision-decider
+              tag: main@sha256:ea35406ed50fb3a0a75afa54a6c613283e29061ec1d8de28eef6be5ecb8ee6a6
+            resources:
+              requests:
+                cpu: 100m
+                memory: 100Mi
+              limits:
+                memory: 500Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+
+    service:
+      app:
+        controller: decisions
+        ports:
+          http:
+            port: &port 3000
+
+    route:
+      app:
+        hostnames:
+          - www.decisions.chestr.dev
+          - decisions.chestr.dev
+        parentRefs:
+          - name: external
+            namespace: networking
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+
+    persistence:
+      data:
+        existingClaim: *app
