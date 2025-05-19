@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: ghcr.io/mchestr/decision-decider
-              tag: main@sha256:ea35406ed50fb3a0a75afa54a6c613283e29061ec1d8de28eef6be5ecb8ee6a6
+              tag: main@sha256:d41f71b1d7a9d1c7467e480dd9250a47d7615e3efa8d6055b3b86a71503f1d61
             resources:
               requests:
                 cpu: 100m
