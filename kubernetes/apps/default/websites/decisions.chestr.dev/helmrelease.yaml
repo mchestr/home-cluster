@@ -28,7 +28,7 @@ spec:
           app:
             image:
               repository: ghcr.io/mchestr/decision-decider
-              tag: main@sha256:4a0df17faaaab54c2d4fab25e7be9fb965eb73f5ec0bae7f4d13f80751033e99
+              tag: main@sha256:b8e332aab1c58e5737af2693bf994ef8d56a20db3f7919222788a64d058e82ae
             envFrom:
               - secretRef:
                   name: decisions-secret
