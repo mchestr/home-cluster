@@ -19,6 +19,9 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    defaultPodOptions:
+      imagePullSecrets:
+        - name: ghcr-docker-secret
 
     controllers:
       decisions:
