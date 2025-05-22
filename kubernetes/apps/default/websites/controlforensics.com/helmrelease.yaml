@@ -21,7 +21,7 @@ spec:
   values:
     defaultPodOptions:
       imagePullSecrets:
-        - name: ghcr-docker-secret
+        - name: gitlab-docker-secret
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
@@ -40,8 +40,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/mchestr/control-forensics
-              tag: main@sha256:57ef7b03c27a1dc7f60fe7b566e039c2723ae62055e3c89c7b6edd314efb22d6
+              repository: registry.gitlab.com/mchestr/control-forensics
+              tag: latest@sha256:af807c866e589f33059e4a1c521a36ba1ead59fa1fb659facd27e60520785b51
             envFrom:
               - secretRef:
                   name: controlforensics-secret

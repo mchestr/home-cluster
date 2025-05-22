@@ -6,11 +6,5 @@ module.exports = {
       username: "mchestr",
       password: process.env.RENOVATE_GITLAB_TOKEN,
     },
-    {
-      hostType: "docker",
-      matchHost: "registry.gitlab.com",
-      username: "mchestr",
-      password: process.env.RENOVATE_GITLAB_TOKEN,
-    },
   ],
 };
