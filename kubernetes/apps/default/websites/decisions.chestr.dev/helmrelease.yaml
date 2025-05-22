@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: registry.gitlab.com/mchestr/decision-decider
-              tag: latest@sha256:e7917c89bc3132bda679feeb9fbc23d8e4d9460c610fa6d01af45e947ee75885
+              tag: latest@sha256:1aa39977ee2183f1fc07677d254881d50a4af4c8565154d620482082b696da94
             envFrom:
               - secretRef:
                   name: decisions-secret
