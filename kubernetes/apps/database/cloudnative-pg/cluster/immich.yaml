@@ -6,7 +6,7 @@ metadata:
   name: immich
 spec:
   instances: 3
-  imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16-v0.3.0
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:16.9
   primaryUpdateStrategy: unsupervised
   primaryUpdateMethod: switchover
   storage:
@@ -15,14 +15,13 @@ spec:
   bootstrap:
     initdb:
       postInitSQL:
-        - ALTER SYSTEM SET search_path TO "$user", public, vectors;
-        - CREATE EXTENSION IF NOT EXISTS "vectors";
+        - CREATE EXTENSION IF NOT EXISTS vchord CASCADE;
   superuserSecret:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
   postgresql:
     shared_preload_libraries:
-      - vectors.so
+      - vchord.so
     parameters:
       max_connections: "400"
       shared_buffers: 256MB
