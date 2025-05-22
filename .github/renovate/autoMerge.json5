@@ -11,6 +11,7 @@
         "ghcr.io/home-operations",
         "ghcr.io/bjw-s",
         "ghcr.io/mchestr",
+        "registry.gitlab.com/mchestr",
       ],
     },
     {
