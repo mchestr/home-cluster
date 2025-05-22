@@ -4,7 +4,7 @@
     {
       "matchDatasources": ["docker"],
       "matchPackagePatterns": ["postgresql", "postgres-backup-local"],
-      "allowedVersions": "<17"
+      "allowedVersions": "<18"
     }
   ]
 }
