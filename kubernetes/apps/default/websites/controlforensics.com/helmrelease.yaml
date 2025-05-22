@@ -41,7 +41,7 @@ spec:
           app:
             image:
               repository: registry.gitlab.com/mchestr/control-forensics
-              tag: latest@sha256:af807c866e589f33059e4a1c521a36ba1ead59fa1fb659facd27e60520785b51
+              tag: latest@sha256:e74eabb7aac3622d1d2a09e9c83f092d2026971c522ff1af864bc42c70b9b00e
             envFrom:
               - secretRef:
                   name: controlforensics-secret
