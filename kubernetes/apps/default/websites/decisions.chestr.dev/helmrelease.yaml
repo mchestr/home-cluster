@@ -58,12 +58,24 @@ spec:
     route:
       app:
         hostnames:
+          - www.chestr.dev
           - www.decisions.chestr.dev
           - decisions.chestr.dev
         parentRefs:
           - name: external
             namespace: networking
             sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+      root:
+        hostnames:
+          - chestr.dev
+        parentRefs:
+          - name: external
+            namespace: networking
+            sectionName: https-root
         rules:
           - backendRefs:
               - name: *app

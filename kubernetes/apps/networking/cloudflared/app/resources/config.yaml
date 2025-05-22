@@ -5,6 +5,8 @@ originRequest:
 ingress:
   - hostname: chestr.dev
     service: &service https://envoy-gateway-external.networking.svc.cluster.local
+    originRequest:
+      originServerName: chestr.dev
   - hostname: "*.chestr.dev"
     service: *service
   - hostname: controlforensics.com
