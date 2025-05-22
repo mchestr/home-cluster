@@ -168,6 +168,7 @@ identity_providers:
           - app.immich:/
         userinfo_signed_response_alg: none
         claims_policy: default
+        token_endpoint_auth_method: client_secret_post
       - client_name: Paperless
         client_id: '{{ env "PAPERLESS_OAUTH_CLIENT_ID" }}'
         client_secret: '{{ env "PAPERLESS_OAUTH_CLIENT_SECRET" }}'
