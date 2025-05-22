@@ -50,7 +50,6 @@ jobs:
         with:
           app-id: "${{ secrets.BOT_APP_ID }}"
           private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
-          owner: ${{ github.repository_owner }}
 
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -68,6 +67,8 @@ jobs:
           RENOVATE_INTERNAL_CHECKS_FILTER: strict
           RENOVATE_PLATFORM: github
           RENOVATE_PLATFORM_COMMIT: true
+          RENOVATE_TOKEN: "${{ secrets.RENOVATE_TOKEN }}"
+          RENOVATE_CONFIG_FILE: ".github/renovate-config.js"
         with:
           token: "${{ steps.app-token.outputs.token }}"
           renovate-version: "${{ inputs.version || 'latest' }}"
