@@ -1,10 +1,16 @@
 module.exports = {
   hostRules: [
     {
-      matchHost: "https://gitlab.com",
+      hostType: "docker",
+      matchHost: "gitlab.com",
       username: "mchestr",
       password: process.env.RENOVATE_GITLAB_TOKEN,
-      hostType: "gitlab",
+    },
+    {
+      hostType: "docker",
+      matchHost: "registry.gitlab.com",
+      username: "mchestr",
+      password: process.env.RENOVATE_GITLAB_TOKEN,
     },
   ],
 };
