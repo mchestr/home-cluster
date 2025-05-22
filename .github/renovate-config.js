@@ -1,10 +1,9 @@
 module.exports = {
   hostRules: [
     {
-      hostType: "docker",
-      matchHost: "ghcr.io",
-      username: "mchestr",
-      password: process.env.RENOVATE_TOKEN,
+      matchHost: "https://gitlab.com",
+      token: process.env.RENOVATE_GITLAB_TOKEN,
+      hostType: "gitlab",
     },
   ],
 };

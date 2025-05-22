@@ -21,7 +21,7 @@ spec:
   values:
     defaultPodOptions:
       imagePullSecrets:
-        - name: ghcr-docker-secret
+        - name: gitlab-docker-secret
 
     controllers:
       decisions:
@@ -30,8 +30,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/mchestr/decision-decider
-              tag: main@sha256:c28c8b4580882031a86dfce32e335dd6dda3c8c748df45ce5d4bb0c1c3748d6b
+              repository: registry.gitlab.com/mchestr/decision-decider
+              tag: latest@sha256:b0515f199bb85bff22a69ab38262f2b8f56f064d66df8edf62522498ba46d193
             envFrom:
               - secretRef:
                   name: decisions-secret
