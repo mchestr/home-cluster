@@ -53,9 +53,9 @@ metrics:
     query: round((time() - min(kube_node_created{node=~"m[0-9]+"}) ) / 86400)
     suffix: "d"
     colors:
-      - { color: "red", min: 0, max: 180 }
-      - { color: "orange", min: 181, max: 365 }
-      - { color: "50B93A", min: 366, max: 9999 }
+      - { color: "red", min: 0, max: 30 }
+      - { color: "orange", min: 31, max: 60 }
+      - { color: "50B93A", min: 61, max: 9999 }
 
   - name: cluster_uptime_days
     query: round(avg(node_time_seconds{job="node-exporter"} - node_boot_time_seconds{job="node-exporter"}) / 86400)
