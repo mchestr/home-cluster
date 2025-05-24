@@ -55,7 +55,7 @@ Core components that form the foundation of the cluster:
 - [jetstack/cert-manager](https://cert-manager.io/docs/): Creates SSL certificates for services in my Kubernetes cluster.
 - [kubernetes-sigs/external-dns](https://github.com/kubernetes-sigs/external-dns): Automatically manages DNS records from my cluster in CloudFlare.
 - [rancher/system-upgrade-controller](https://github.com/rancher/system-upgrade-controller): Handles Kubernetes and Talos upgrades automatically.
-- [rook/rook](https://github.com/rook/rook): Distributed block storage for peristent storage.
+- [rook/rook](https://github.com/rook/rook): Distributed block storage for persistent storage.
 - [siderolabs/talos](https://www.talos.dev/): The Kubernetes Operating System.
 
 ### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f6a8/512.gif" alt="🚨" width="16" height="16"> Observability
@@ -113,15 +113,15 @@ This Git repository contains the following directories.
 
 | Device                                                | Count | OS Disk Size  | Data Disk Size       | Ram     | Operating System | Purpose           |
 |-------------------------------------------------------|-------|---------------|----------------------|---------|------------------|-------------------|
-| UDM-Pro-Max                                           | 1     | -             | -                    | -       | Unifi             | Router            |
-| USW-Pro-Aggregation                                   | 1     | -             | -                    | -       | Unifi             | Switch            |
-| USW-Pro-Max-24-PoE                                    | 1     | -             | -                    | -       | Unifi             | Switch            |
-| UAP-AC-Lite                                           | 1     | -             | -                    | -       | Unifi             | WiFi AP           |
+| UDM-Pro-Max                                           | 1     | -             | -                    | -       | UniFi             | Router            |
+| USW-Pro-Aggregation                                   | 1     | -             | -                    | -       | UniFi             | Switch            |
+| USW-Pro-Max-24-PoE                                    | 1     | -             | -                    | -       | UniFi             | Switch            |
+| UAP-AC-Lite                                           | 1     | -             | -                    | -       | UniFi             | WiFi AP           |
 | ER-10X                                                | 1     | -             | -                    | -       | EdgeOS           | Switch            |
 | PiKVM V4 Mini                                         | 1     | -             | -                    | -       | PiKVM            | KVM               |
 | TESmart HDMI KVM Switch 8 Ports                       | 1     | -             | -                    | -       | -                | KVM Switch        |
 | CyberPower CP1500PFCRM2U                              | 1     | -             | -                    |         | -                | UPS               |
-| USP-PDU-Pro                                           | 1     | -             | -                    | -       | Unifi             | PDU               |
+| USP-PDU-Pro                                           | 1     | -             | -                    | -       | UniFi             | PDU               |
 | Synology DS920+                                       | 1     | -             | 2x8TB & 2x16TB       | 20GB    | DSM              | NAS               |
 | MS-01 i9-13900H                                       | 3     | 1TB           | 2TB                  | 96GB    | Talos            | Control Plane     |
 

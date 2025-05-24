@@ -1,12 +1,12 @@
 # DisPlex Project
 
-Displex is a program I built in my spare time which the source code can be found on my github [mchestr/displex](https://github.com/mchestr/displex). Displex is a discord bot + other stuff which I use to automate managing some of my Plex media and users.
+DisPlex is a program I built in my spare time. The source code can be found on my GitHub repository [mchestr/displex](https://github.com/mchestr/displex). DisPlex is a Discord bot with additional functionality that I use to automate managing my Plex media server and its users.
 
 ## Features
 
-- Web Server: implement OAuth2 flows and Dicord Linked Role. Users can be assigned a role in discord if they are invited to my Plex server.
-- Discord Bot: Doesn't do anything but respond to `~ping` commands.
-- Script to update Discord user metadata to display how many hours the user has streamed.
-- Script to cleanup expired discord tokens
-- Script to automatically increase user request limits on Overseerr as they watch more Plex
-- And whatever else I add
+- **Web Server**: Implements OAuth2 flows and Discord Linked Role. Users can be assigned a role in Discord if they are invited to my Plex server.
+- **Discord Bot**: Currently limited to responding to `~ping` commands.
+- **User Statistics**: Script to update Discord user metadata to display how many hours users have streamed.
+- **Token Management**: Script to clean up expired Discord tokens.
+- **Request Management**: Script to automatically increase user request limits on Overseerr as they watch more Plex content.
+- **Expandable**: Framework in place for additional features as needed.

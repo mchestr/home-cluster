@@ -1,8 +1,11 @@
-### Terraform Setup
+# Terraform Setup
 
-I am using [Terraform Cloud](https://app.terraform.io/) to store the `tfstate` of the app, mostly following others in the [k8s-at-home](https://github.com/k8s-at-home) community setup as an example!
-To initialize TF Cloud run the following in each module.
+This project uses [Terraform Cloud](https://app.terraform.io/) to store the `tfstate` of the app, following patterns established by the [k8s-at-home](https://github.com/k8s-at-home) community.
 
-```
+## Getting Started
+
+To initialize Terraform Cloud, run the following command in each module:
+
+```bash
 terraform init
 ```
