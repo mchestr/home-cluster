@@ -24,17 +24,6 @@ spec:
       allowedRoutes:
         namespaces:
           from: Same
-    - name: https-root
-      protocol: HTTPS
-      port: 443
-      hostname: chestr.dev
-      allowedRoutes:
-        namespaces:
-          from: All
-      tls:
-        certificateRefs:
-          - kind: Secret
-            name: chestr-dev-tls
     - name: https
       protocol: HTTPS
       port: 443
