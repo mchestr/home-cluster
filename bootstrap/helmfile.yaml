@@ -85,7 +85,7 @@ releases:
       - external-secrets/external-secrets
     values:
       - ../kubernetes/apps/kube-system/kubelet-csr-approver/app/resources/values.yaml
-    version: 1.2.7
+    version: 1.2.10
 
   - chart: oci://ghcr.io/spegel-org/helm-charts/spegel
     name: spegel
