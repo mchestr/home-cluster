@@ -61,7 +61,7 @@ spec:
           http:
             port: &port 2525
           metrics:
-            port: 9749
+            port: &metrics 9749
 
     persistence:
       config:
@@ -87,7 +87,6 @@ spec:
     serviceMonitor:
       app:
         serviceName: app
-        enabled: true
         endpoints:
           - port: metrics
             scheme: http
@@ -129,14 +128,9 @@ spec:
                 - protocol: TCP
                   port: *port
             - from:
-                - podSelector:
+                - namespaceSelector:
                     matchLabels:
-                      app.kubernetes.io/component: controlforensics
-                      app.kubernetes.io/instance: controlforensics
-                      app.kubernetes.io/name: controlforensics
-                  namespaceSelector:
-                    matchLabels:
-                      kubernetes.io/metadata.name: default
+                      kubernetes.io/metadata.name: observability
               ports:
                 - protocol: TCP
-                  port: *port
+                  port: *metrics
