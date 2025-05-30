@@ -56,7 +56,7 @@ spec:
 
     service:
       app:
-        controller: smtp-relay
+        controller: *app
         ports:
           http:
             port: &port 2525
@@ -66,7 +66,7 @@ spec:
     persistence:
       config:
         type: configMap
-        name: smtp-relay
+        name: *app
         globalMounts:
           - path: /data/maddy.conf
             subPath: maddy.conf
@@ -86,7 +86,7 @@ spec:
 
     serviceMonitor:
       app:
-        serviceName: app
+        serviceName: *app
         endpoints:
           - port: metrics
             scheme: http
@@ -96,7 +96,7 @@ spec:
 
     networkpolicies:
       paperless:
-        controller: smtp-relay
+        controller: *app
 
         policyTypes:
           - Ingress
