@@ -1,8 +1,8 @@
 ---
 instance:
   distribution:
-    # renovate: datasource=github-releases depName=fluxcd/flux2
-    version: 2.4.0
+    # renovate: datasource=github-releases depName=controlplaneio-fluxcd/distribution
+    version: 2.6.0
   cluster:
     networkPolicy: false
   components:
@@ -20,9 +20,8 @@ instance:
       app.kubernetes.io/name: flux
   kustomize:
     patches:
-      # Increase the number of workers and limits
-      # Ref: https://fluxcd.io/flux/installation/configuration/vertical-scaling/#increase-the-number-of-workers-and-limits
-      - patch: |
+      - # Increase the number of workers
+        patch: |
           - op: add
             path: /spec/template/spec/containers/0/args/-
             value: --concurrent=10
@@ -32,7 +31,8 @@ instance:
         target:
           kind: Deployment
           name: (kustomize-controller|helm-controller|source-controller)
-      - patch: |
+      - # Increase the memory limits
+        patch: |
           apiVersion: apps/v1
           kind: Deployment
           metadata:
@@ -48,9 +48,8 @@ instance:
         target:
           kind: Deployment
           name: (kustomize-controller|helm-controller|source-controller)
-      # Enable in-memory kustomize builds
-      # Ref: https://fluxcd.io/flux/installation/configuration/vertical-scaling/#enable-in-memory-kustomize-builds
-      - patch: |
+      - # Enable in-memory kustomize builds
+        patch: |
           - op: add
             path: /spec/template/spec/containers/0/args/-
             value: --concurrent=20
@@ -63,9 +62,8 @@ instance:
         target:
           kind: Deployment
           name: kustomize-controller
-      # Enable Helm repositories caching
-      # Ref: https://fluxcd.io/flux/installation/configuration/vertical-scaling/#enable-helm-repositories-caching
-      - patch: |
+      - # Enable Helm repositories caching
+        patch: |
           - op: add
             path: /spec/template/spec/containers/0/args/-
             value: --helm-cache-max-size=10
@@ -78,9 +76,8 @@ instance:
         target:
           kind: Deployment
           name: source-controller
-      # Flux near OOM detection for Helm
-      # Ref: https://fluxcd.io/flux/installation/configuration/helm-oom-detection/
-      - patch: |
+      - # Flux near OOM detection for Helm
+        patch: |
           - op: add
             path: /spec/template/spec/containers/0/args/-
             value: --feature-gates=OOMWatch=true
@@ -93,41 +90,11 @@ instance:
         target:
           kind: Deployment
           name: helm-controller
-
-      # Flux Terraform patches
-      - patch: |
+      - # Disable chart digest tracking
+        patch: |
           - op: add
-            path: /spec/versions/0/schema/openAPIV3Schema/properties/spec/properties/eventSources/items/properties/kind/enum/-
-            value: Terraform
-          - op: add
-            path: /spec/versions/1/schema/openAPIV3Schema/properties/spec/properties/eventSources/items/properties/kind/enum/-
-            value: Terraform
-          - op: add
-            path: /spec/versions/2/schema/openAPIV3Schema/properties/spec/properties/eventSources/items/properties/kind/enum/-
-            value: Terraform
+            path: /spec/template/spec/containers/0/args/-
+            value: --feature-gates=DisableChartDigestTracking=true
         target:
-          kind: CustomResourceDefinition
-          name: alerts.notification.toolkit.fluxcd.io
-      - patch: |
-          - op: add
-            path: /spec/versions/0/schema/openAPIV3Schema/properties/spec/properties/resources/items/properties/kind/enum/-
-            value: Terraform
-          - op: add
-            path: /spec/versions/1/schema/openAPIV3Schema/properties/spec/properties/resources/items/properties/kind/enum/-
-            value: Terraform
-          - op: add
-            path: /spec/versions/2/schema/openAPIV3Schema/properties/spec/properties/resources/items/properties/kind/enum/-
-            value: Terraform
-        target:
-          kind: CustomResourceDefinition
-          name: receivers.notification.toolkit.fluxcd.io
-      - patch: |
-          - op: add
-            path: /rules/-
-            value:
-              apiGroups: [ 'infra.contrib.fluxcd.io' ]
-              resources: [ '*' ]
-              verbs: [ '*' ]
-        target:
-          kind: ClusterRole
-          name: crd-controller-flux-system
+          kind: Deployment
+          name: helm-controller
