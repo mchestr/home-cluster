@@ -112,21 +112,23 @@ spec:
             securityContext: *securityContext
 
       celery-worker:
-        replicas: 2
+        replicas: 3
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
           affinity:
             podAntiAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                - labelSelector:
-                    matchExpressions:
-                      - key: app.kubernetes.io/component
-                        operator: In
-                        values:
-                          - celery-worker
-                  topologyKey: "kubernetes.io/hostname"
+              preferredDuringSchedulingIgnoredDuringExecution:
+                - weight: 100
+                  podAffinityTerm:
+                    labelSelector:
+                      matchExpressions:
+                        - key: app.kubernetes.io/component
+                          operator: In
+                          values:
+                            - celery-worker
+                    topologyKey: "kubernetes.io/hostname"
         containers:
           app:
             image: *backend
