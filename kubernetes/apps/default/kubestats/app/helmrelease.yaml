@@ -1,0 +1,229 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kubestats
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 2
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 2
+  uninstall:
+    keepHistory: false
+  values:
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 65539
+    controllers:
+      api:
+        initContainers:
+          01-init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: "17"
+            envFrom:
+              - secretRef:
+                  name: kubestats-initdb-secret
+
+        replicas: 2
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image: &backend
+              repository: ghcr.io/mchestr/kubestats-backend
+              tag: main@sha256:c61494c6458ec10216c48200820dc4c5d5c4d2ece5f67c037d9cda1988cf4b40
+            env: &env
+              BACKEND_CORS_ORIGINS: &host "https://{{ .Release.Name }}.chestr.dev"
+              DOMAIN: chestr.dev
+              FRONTEND_HOST: *host
+              PROJECT_NAME: kubestats
+              TZ: America/Vancouver
+              REDIS_HOST: kubestats-dragonfly.default.svc.cluster.local
+              REDIS_PORT: "6379"
+              REPO_WORKDIR: /repos
+              POSTGRES_SERVER:
+                valueFrom:
+                  secretKeyRef:
+                    name: &pguser kubestats-pguser-secret
+                    key: host
+              POSTGRES_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: *pguser
+                    key: port
+              POSTGRES_DB:
+                valueFrom:
+                  secretKeyRef:
+                    name: *pguser
+                    key: db
+              POSTGRES_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: *pguser
+                    key: user
+              POSTGRES_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: *pguser
+                    key: password
+            envFrom:
+              - secretRef:
+                  name: kubestats-secret
+            resources: &resources
+              requests:
+                cpu: 100m
+                memory: 100Mi
+              limits:
+                memory: 2Gi
+            securityContext: &securityContext
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+
+      frontend:
+        replicas: 2
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/mchestr/kubestats-frontend
+              tag: main@sha256:cb2eda4424ed19c1b83983ea8122965aa8c123e41daf78cc208b26e2d7e89960
+            resources: *resources
+            securityContext: *securityContext
+
+      celery-worker:
+        replicas: 2
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/component
+                        operator: In
+                        values:
+                          - celery-worker
+                  topologyKey: "kubernetes.io/hostname"
+        containers:
+          app:
+            image: *backend
+            command: ["python"]
+            args:
+              [
+                "-m",
+                "celery",
+                "-A",
+                "kubestats.celery_app",
+                "worker",
+                "-l",
+                "info",
+              ]
+            env: *env
+            envFrom:
+              - secretRef:
+                  name: kubestats-secret
+            resources: *resources
+            securityContext: *securityContext
+
+      celery-beat:
+        replicas: 1
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image: *backend
+            command: ["python"]
+            args:
+              [
+                "-m",
+                "celery",
+                "-A",
+                "kubestats.celery_app",
+                "beat",
+                "-l",
+                "info",
+                "--schedule",
+                "/data/beat-schedule"
+              ]
+            env: *env
+            envFrom:
+              - secretRef:
+                  name: kubestats-secret
+            resources: *resources
+            securityContext: *securityContext
+
+    service:
+      api:
+        controller: api
+        ports:
+          http:
+            port: &api 8000
+      frontend:
+        controller: frontend
+        ports:
+          http:
+            port: &port 80
+
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        parentRefs:
+          - name: internal
+            namespace: networking
+            sectionName: https
+        rules:
+          - matches:
+              - path:
+                  value: /api
+            backendRefs:
+              - name: api
+                port: *api
+          - backendRefs:
+              - name: frontend
+                port: *port
+
+    persistence:
+      repos:
+        type: nfs
+        server: lochnas.chestr.dev
+        path: /volume1/shared/kubestats
+        advancedMounts:
+          celery-worker:
+            app:
+              - path: /repos
+      tmp:
+        type: emptyDir
+      data:
+        type: emptyDir
+      run:
+        type: emptyDir
+      cache:
+        type: emptyDir
+        advancedMounts:
+          frontend:
+            app:
+              - path: /var/cache/nginx
