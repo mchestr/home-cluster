@@ -107,7 +107,7 @@ spec:
           app:
             image:
               repository: ghcr.io/mchestr/kubestats-frontend
-              tag: main@sha256:1a9bee26fe647150e525b8a6b214cd9a7e31b350bac1f741c7f94404b80288f7
+              tag: main@sha256:257e18dfd336d7a47a9165d61c536bae9f6a69f8559d0472cdb5638aafac8ec0
             resources: *resources
             securityContext: *securityContext
 
