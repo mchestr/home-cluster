@@ -47,7 +47,7 @@ spec:
           app:
             image: &backend
               repository: ghcr.io/mchestr/kubestats-backend
-              tag: main@sha256:88d47c7aaf99befafaf7fefab9322caa96e74f2f748a11086ec3c81ece4aed82
+              tag: main@sha256:cc0d18c9507139da62099d84b8f92da9fb6d098cac7d859a0a5bbb4e5c5f8846
             env: &env
               BACKEND_CORS_ORIGINS: &host "https://{{ .Release.Name }}.chestr.dev"
               DOMAIN: chestr.dev
