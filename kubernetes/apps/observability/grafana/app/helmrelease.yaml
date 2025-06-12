@@ -280,7 +280,7 @@ spec:
         node-exporter-full:
           # renovate: depName="Node Exporter Full"
           gnetId: 1860
-          revision: 40
+          revision: 41
           datasource: Prometheus
         cert-manager:
           # renovate: depName="Cert-manager-Kubernetes"
