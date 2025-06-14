@@ -85,6 +85,20 @@ spec:
             envFrom:
               - secretRef:
                   name: kubestats-secret
+            probes:
+              liveness: &probes
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &api 8000
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
             resources: &resources
               requests:
                 cpu: 100m
@@ -183,7 +197,7 @@ spec:
         controller: api
         ports:
           http:
-            port: &api 8000
+            port: *api
       frontend:
         controller: frontend
         ports:
