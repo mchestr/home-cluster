@@ -156,6 +156,8 @@ spec:
                 "worker",
                 "-l",
                 "info",
+                "--concurrency",
+                "5"
               ]
             env: *env
             envFrom:
