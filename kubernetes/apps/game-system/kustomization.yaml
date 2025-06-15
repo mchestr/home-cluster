@@ -4,6 +4,6 @@ kind: Kustomization
 namespace: game-system
 components:
   - ../../components/common
-resources:
-  - ./minecraft/ks.yaml
-  - ./satisfactory/ks.yaml
+resources: []
+  #- ./minecraft/ks.yaml
+  #- ./satisfactory/ks.yaml
