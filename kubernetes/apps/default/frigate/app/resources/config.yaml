@@ -138,6 +138,7 @@ go2rtc:
       - onvif://{FRIGATE_CATCAM_CAMERA_USERNAME}:{FRIGATE_CATCAM_CAMERA_PASSWORD}@192.168.200.104:8000
     catcam2:
       - onvif://{FRIGATE_CATCAM_CAMERA_USERNAME}:{FRIGATE_CATCAM_CAMERA_PASSWORD}@192.168.200.99:8000
+      - "ffmpeg:catcam2#video=h264#rotate=90"
 cameras:
   living_room:
     genai:
