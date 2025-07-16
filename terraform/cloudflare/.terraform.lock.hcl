@@ -25,25 +25,25 @@ provider "registry.terraform.io/1password/onepassword" {
 }
 
 provider "registry.terraform.io/cloudflare/cloudflare" {
-  version     = "5.6.0"
-  constraints = "5.6.0"
+  version     = "5.7.1"
+  constraints = "5.7.1"
   hashes = [
-    "h1:3xM0tbxblbFwasF057iUX4Hf1PlSWPAch/b8CQSjnto=",
-    "h1:YJFq/LeaDoqxHF5Js46ZqCeYlzaG9D+V6G39h/vZAkw=",
-    "h1:a9Q9FlgltLKiv3Z4pOK2R5Dq32j0Df/EaDaMOs2J+Cg=",
-    "h1:cWfcC8Srpt2mHUEJClIJM63iqQ1XtWG4aEm1vZ5ExPw=",
-    "h1:dff7RBkvf+9ZY/NyP7HdwbNNUD7WDJRMWP4Qs7kgQc4=",
-    "h1:keTtTzm6LBd67ljVIRiWIcbnskw/dqMg30MufE6gW7s=",
-    "h1:tnXQ5bXv2z0le477irk1s6HGKMzFfGicSt1zjw0bi3I=",
-    "h1:xSzk7DtkMA1e51SIkV540yqY4iAapxB3cw7G1HjnQDQ=",
-    "zh:0f7ad515a0ac56de9ee00f24aadc64773bc9d186c7673672f7c1fd1971e7cc73",
-    "zh:1c7288a4d654860b81ff0d5366f7e7037c144cbd3d8f34d4ba4efd444c01085d",
-    "zh:304ba493a57cf1587f9878999144ee3ff65393ae577ea0304f94cb11e81d2a64",
-    "zh:605509ada3e19777cdd2d4c4e1f99e4b43d8c9e661083f32341d75dc450390ff",
-    "zh:753d2e607cc11cf4f08b9f5b161e2050f2f17bf200f2a6ba1224893b1cdcc476",
-    "zh:b0d557ea5e9a384b844d1d50d9627e61318583004d1a1113dce64c984267a139",
-    "zh:db8f65cc2ae10f1c3cb9e64e1e89a9222fb81ac6f832e796d0369596f1e74713",
-    "zh:f8057a7c670e038ec1a0fd4a490ad352cf94ac82db35f0e525d24503ceb511d2",
+    "h1:+4TMuSUOLhbVBWl386O11qxYt+ufRNNy4nfsASp7KNM=",
+    "h1:1af0SiRude2KSo4HeAhdKdL89kftor+1ZhtxbBEV1DI=",
+    "h1:24uCJp1H3ZK8CCwszYyR3qtOn5Z5Hn1eCcv2gkH7+4g=",
+    "h1:2InUI/wUfuvvmRmSRfhiWEOOs1QvWPMreGceeLVa3YE=",
+    "h1:2uFCyT3jmy53NX5FIKjxocKVK/8PHjwj7FTdEvp2a9A=",
+    "h1:a2eTEG7tGRiIE54nGYmk2anNMzGrVDcYyX4qNWdyx1E=",
+    "h1:az6/Qq/6L2S7zXhO3be65QkcD+TECZmJxGo0X5Zf8Do=",
+    "h1:vmehu0Rv91fE1+iXW93d3b540mljf2po3jAm8LSS3j8=",
+    "zh:0bbd2eaa8210b2214dc426a2471b38cee53db9750b4916b34b0926fc9cbe4d7b",
+    "zh:0de3675e2ace7478ab0d354b2b6db4be2ae5a9a5e68b725cdd10e956131ec687",
+    "zh:4787a255919911aac5e1f8d47ed19fa45e5b90439ecf1fffbb17ff8bfb28de79",
+    "zh:4eb1e4300b3cdee3a323457ebcc8df29a735ea6bbabe3cf9cbd3dc3fb5a9172b",
+    "zh:580bbd5a727c9e3f31ae47c872df860c9a08ea998e0ff3dfe37dbac536146166",
+    "zh:6a359212678ffcf88551e2d8d0f8e52418031cf1f8077bb8ddf500171ee90f2b",
+    "zh:bec6890cb11511577c5f8ec8954e26ac51c44a114cb3e0349fea40f87930c029",
+    "zh:dbe3585510283c8e53a2b24cc7a69fab0ee9d71addae0db1be0374bc32fc6355",
     "zh:f809ab383cca0a5f83072981c64208cbd7fa67e986a86ee02dd2c82333221e32",
   ]
 }
