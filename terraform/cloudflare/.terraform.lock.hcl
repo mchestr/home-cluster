@@ -25,25 +25,25 @@ provider "registry.terraform.io/1password/onepassword" {
 }
 
 provider "registry.terraform.io/cloudflare/cloudflare" {
-  version     = "5.7.1"
-  constraints = "5.7.1"
+  version     = "5.8.2"
+  constraints = "5.8.2"
   hashes = [
-    "h1:+4TMuSUOLhbVBWl386O11qxYt+ufRNNy4nfsASp7KNM=",
-    "h1:1af0SiRude2KSo4HeAhdKdL89kftor+1ZhtxbBEV1DI=",
-    "h1:24uCJp1H3ZK8CCwszYyR3qtOn5Z5Hn1eCcv2gkH7+4g=",
-    "h1:2InUI/wUfuvvmRmSRfhiWEOOs1QvWPMreGceeLVa3YE=",
-    "h1:2uFCyT3jmy53NX5FIKjxocKVK/8PHjwj7FTdEvp2a9A=",
-    "h1:a2eTEG7tGRiIE54nGYmk2anNMzGrVDcYyX4qNWdyx1E=",
-    "h1:az6/Qq/6L2S7zXhO3be65QkcD+TECZmJxGo0X5Zf8Do=",
-    "h1:vmehu0Rv91fE1+iXW93d3b540mljf2po3jAm8LSS3j8=",
-    "zh:0bbd2eaa8210b2214dc426a2471b38cee53db9750b4916b34b0926fc9cbe4d7b",
-    "zh:0de3675e2ace7478ab0d354b2b6db4be2ae5a9a5e68b725cdd10e956131ec687",
-    "zh:4787a255919911aac5e1f8d47ed19fa45e5b90439ecf1fffbb17ff8bfb28de79",
-    "zh:4eb1e4300b3cdee3a323457ebcc8df29a735ea6bbabe3cf9cbd3dc3fb5a9172b",
-    "zh:580bbd5a727c9e3f31ae47c872df860c9a08ea998e0ff3dfe37dbac536146166",
-    "zh:6a359212678ffcf88551e2d8d0f8e52418031cf1f8077bb8ddf500171ee90f2b",
-    "zh:bec6890cb11511577c5f8ec8954e26ac51c44a114cb3e0349fea40f87930c029",
-    "zh:dbe3585510283c8e53a2b24cc7a69fab0ee9d71addae0db1be0374bc32fc6355",
+    "h1:43TcBWSw1urQjMH0lOiDJ6l0A69Kgz5ZONMQXYiwHSM=",
+    "h1:Pr/cE5WzLhn6E8aZ5jlBz+EfH1F8EVxFIO8uQiwMXsc=",
+    "h1:YalSVofkStvVFzDgDdmQ+DWm9pwBtunliPJ+pL7hcNY=",
+    "h1:aCyMzmeilY3JifEhNMuLlA8qO/e+jpfrMP6wsq+kmeg=",
+    "h1:bN3ufnESanjBPS1e0XkA/f/UPN73rUE92qgGcT5ExPI=",
+    "h1:j46o+tJuP4dYqwlhpt7YSXP67yLXkllfHy5m1dV+CIw=",
+    "h1:q9p622Nl/BMW9QUlnGIgFaYF7O94u7bfif48OQ0H9HE=",
+    "h1:z98+LUiN1tOYuLbtBS2gcDuH1XD+BMPGXHuuWoTEddI=",
+    "zh:92d133a074a8a95143861960508501711a95e0b267c60dbc722eec0a68053e08",
+    "zh:95b1f349c59d226d9005c49b5ac61e856492f75d8be3ca30954a91512f2ebecf",
+    "zh:a439ebd2e21dd6a4cd782563de372dbbac9853a713ba4e90fb3d317764374c2f",
+    "zh:b0a2313cdb113e8ecc058052bcbadaa312a6d093820e69ed97ed96725ad5fd8f",
+    "zh:c14e2790827a78f0e5274ec47f56e4fff41b76db01caf915fb73d5082c75c645",
+    "zh:ef135fce7d3925988fa2675287788da233a1630c23652ae160a1d6c2a9e8ebce",
+    "zh:f01d39efcb3aa7fa8634394caad10ca68abd694d75d2c8b3875516859d8df9b4",
+    "zh:f03391264e01749c17ead5a8ba33a96a568490a8212424c5ae6e113ad50bfc9f",
     "zh:f809ab383cca0a5f83072981c64208cbd7fa67e986a86ee02dd2c82333221e32",
   ]
 }
