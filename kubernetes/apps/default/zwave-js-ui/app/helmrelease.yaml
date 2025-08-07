@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: ghcr.io/zwave-js/zwave-js-ui
-              tag: 10.11.0
+              tag: 11.1.0
             env:
               TZ: America/Vancouver
             securityContext:
