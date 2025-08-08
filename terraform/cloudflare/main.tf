@@ -14,7 +14,7 @@ terraform {
     cloudflare = {
       source  = "cloudflare/cloudflare"
       # https://github.com/cloudflare/terraform-provider-cloudflare/issues/5363
-      version = "5.7.1"
+      version = "5.8.2"
     }
     onepassword = {
       source  = "1Password/onepassword"
