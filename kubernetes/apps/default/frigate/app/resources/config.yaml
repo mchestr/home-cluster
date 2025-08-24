@@ -131,9 +131,9 @@ go2rtc:
     doorbell_hd:
       - rtsps://10.0.40.1:7441/KZjqe7cXROBkVewl
     doorbell_sd:
-      - rtspx://10.0.40.1:7441/NCjKjmbsiMjdPJkH
+      - rtsps://10.0.40.1:7441/NCjKjmbsiMjdPJkH
     doorbell_package:
-      - rtspx://10.0.40.1:7441/D9DfIKJZfH6Dz9Oh
+      - rtsps://10.0.40.1:7441/D9DfIKJZfH6Dz9Oh
     catcam1:
       - onvif://{FRIGATE_CATCAM_CAMERA_USERNAME}:{FRIGATE_CATCAM_CAMERA_PASSWORD}@192.168.200.104:8000
     catcam2:
@@ -159,7 +159,9 @@ cameras:
       mask:
         - 0.735,0,0.73,0.074,0.277,0.076,0.281,0
     live:
-      stream_name: living_room_hd
+      streams:
+        Main: living_room_hd
+        Sub: living_room_sd
     # Enable PTZ support
     onvif:
       host: 192.168.200.25
@@ -178,7 +180,9 @@ cameras:
             - detect
             - audio
     live:
-      stream_name: doorbell_hd
+      streams:
+        Main: doorbell_hd
+        Sub: doorbell_sd
 
   doorbell_package:
     audio:
@@ -192,7 +196,8 @@ cameras:
           roles:
             - detect
     live:
-      stream_name: doorbell_package
+      streams:
+        Main: doorbell_package
 
   catcam1:
     audio:
@@ -212,7 +217,8 @@ cameras:
       mask:
         - 0.025,0.039,0.263,0.039,0.265,0.087,0.023,0.086
     live:
-      stream_name: catcam1
+      streams:
+        Main: catcam1
     onvif:
       host: 192.168.200.104
       port: 8000
@@ -237,7 +243,8 @@ cameras:
       mask:
         - 0.025,0.039,0.263,0.039,0.265,0.087,0.023,0.086
     live:
-      stream_name: catcam2
+      streams:
+        Main: catcam2
     onvif:
       host: 192.168.200.99
       port: 8000
