@@ -52,7 +52,7 @@ spec:
               - /config/configuration.yml
             image:
               repository: ghcr.io/authelia/authelia
-              tag: 4.39.6
+              tag: 4.39.8
 
             env:
               AUTHELIA_SERVER_ADDRESS: tcp://0.0.0.0:80
