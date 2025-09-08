@@ -39,7 +39,7 @@ spec:
       # renovate: datasource=github-releases depName=siderolabs/kubelet
       KUBERNETES_VERSION: "v1.33.4"
       # renovate: datasource=github-releases depName=siderolabs/talos
-      TALOS_VERSION: "v1.10.7"
+      TALOS_VERSION: "v1.11.1"
   prune: true
   retryInterval: 1m
   sourceRef:
