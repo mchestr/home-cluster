@@ -16,8 +16,9 @@ spec:
       ignoreUpdates: true
   nodeSelector:
     matchExpressions:
-      - key: kubernetes.io/hostname
-        operator: Exists
+      - key: kubernetes.io/os
+        operator: In
+        values: ["linux"]
   upgrade:
     image: ghcr.io/jfroy/tnu:0.4.3
     args:
