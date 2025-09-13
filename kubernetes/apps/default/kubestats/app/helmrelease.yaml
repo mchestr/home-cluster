@@ -208,6 +208,12 @@ spec:
 
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Observability
+          gethomepage.dev/name: Kubestats
+          gethomepage.dev/icon: mdi-kubernetes
+          gethomepage.dev/href: https://kubestats.chestr.dev
         hostnames: ["{{ .Release.Name }}.chestr.dev"]
         parentRefs:
           - name: internal
