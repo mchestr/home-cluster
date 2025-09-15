@@ -17,7 +17,7 @@ spec:
       - key: kubernetes.io/hostname
         operator: Exists
   upgrade:
-    image: ghcr.io/jfroy/tnu:0.4.3
+    image: ghcr.io/jfroy/tnu:0.4.4
     envs:
       - name: NODE_IP
         valueFrom:
