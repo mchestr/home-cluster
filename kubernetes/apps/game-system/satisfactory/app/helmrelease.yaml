@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: ghcr.io/wolveix/satisfactory-server
-              tag: v1.9.9@sha256:9291f3d319c458511e3eee538428ff47ac6bd33e50b742450e5bf78427bd85de
+              tag: v1.9.10@sha256:e0f2f8c9759875c97add050d3a344167b71cb41bef68e85771f1ea8cc8c00301
             env:
               AUTOPAUSE: true
               MAXTICKRATE: 120 # default is 30
