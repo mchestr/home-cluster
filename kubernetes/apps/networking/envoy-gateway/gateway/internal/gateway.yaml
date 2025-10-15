@@ -6,6 +6,9 @@ metadata:
   name: internal
   annotations:
     external-dns.alpha.kubernetes.io/target: &hostname internal.chestr.dev
+    gatus.home-operations.com/endpoint: |
+      conditions:
+        - "[STATUS] == 401"
 spec:
   gatewayClassName: envoy
   infrastructure:

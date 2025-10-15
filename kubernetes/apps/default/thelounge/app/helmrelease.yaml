@@ -64,6 +64,9 @@ spec:
           gethomepage.dev/group: System
           gethomepage.dev/name: IRC
           gethomepage.dev/icon: thelounge.png
+          gatus.home-operations.com/endpoint: |
+            conditions:
+              - "[STATUS] == 200"
         parentRefs:
           - name: internal
             namespace: networking

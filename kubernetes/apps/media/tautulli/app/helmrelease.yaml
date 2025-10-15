@@ -82,6 +82,9 @@ spec:
           gethomepage.dev/widget.type: tautulli
           gethomepage.dev/widget.url: http://tautulli.media.svc.cluster.local:8181
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_TAUTULLI_API_KEY}}" }}'
+          gatus.home-operations.com/endpoint: |
+            conditions:
+              - "[STATUS] == 200"
         parentRefs:
           - name: internal
             namespace: networking

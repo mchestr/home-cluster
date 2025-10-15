@@ -87,6 +87,9 @@ spec:
           gethomepage.dev/icon: mdi-cloud
           gethomepage.dev/name: Sync
           gethomepage.dev/group: System
+          gatus.home-operations.com/endpoint: |
+            conditions:
+              - "[STATUS] == 200"
         parentRefs:
           - name: internal
             namespace: networking

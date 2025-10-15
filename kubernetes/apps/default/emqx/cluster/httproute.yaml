@@ -10,6 +10,9 @@ metadata:
     gethomepage.dev/name: Emqx
     gethomepage.dev/group: Automation
     gethomepage.dev/pod-selector: apps.emqx.io/instance=emqx
+    gatus.home-operations.com/endpoint: |
+      conditions:
+        - "[STATUS] == 200"
 spec:
   hostnames: ["emqx.chestr.dev"]
   parentRefs:

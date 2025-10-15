@@ -134,6 +134,9 @@ spec:
           gethomepage.dev/widget.type: paperlessngx
           gethomepage.dev/widget.url: http://paperless.default.svc.cluster.local:8000
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_PAPERLESS_API_TOKEN}}" }}'
+          gatus.home-operations.com/endpoint: |
+            conditions:
+              - "[STATUS] == 200"
         parentRefs:
           - name: internal
             namespace: networking

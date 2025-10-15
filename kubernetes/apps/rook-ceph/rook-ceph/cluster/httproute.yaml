@@ -10,6 +10,9 @@ metadata:
     gethomepage.dev/name: Rook
     gethomepage.dev/group: Storage
     gethomepage.dev/pod-selector: app.kubernetes.io/name=ceph-mgr
+    gatus.home-operations.com/endpoint: |
+      conditions:
+        - "[STATUS] == 200"
 spec:
   hostnames: ["rook.chestr.dev"]
   parentRefs:

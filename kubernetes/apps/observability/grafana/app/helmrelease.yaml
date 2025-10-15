@@ -117,6 +117,9 @@ spec:
           gethomepage.dev/icon: grafana.png
           gethomepage.dev/name: Grafana
           gethomepage.dev/group: Observability
+          gatus.home-operations.com/endpoint: |
+            conditions:
+              - "[STATUS] == 200"
         parentRefs:
           - name: internal
             namespace: networking
