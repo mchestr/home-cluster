@@ -71,13 +71,3 @@ endpoints:
       - "[CERTIFICATE_EXPIRATION] > 336h"
     alerts:
       - type: pushover
-
-  - name: controlforesnics.com
-    group: certificates
-    url: "tls://controlforensics.com:443"
-    interval: 24h
-    conditions:
-      - "[CONNECTED] == true"
-      - "[CERTIFICATE_EXPIRATION] > 336h"
-    alerts:
-      - type: pushover
