@@ -99,6 +99,9 @@ spec:
           gethomepage.dev/group: System
           gethomepage.dev/name: LLDAP
           gethomepage.dev/icon: mdi-account-key
+          gatus.home-operations.com/endpoint: |
+            conditions:
+              - "[STATUS] == 200"
         parentRefs:
           - name: internal
             namespace: networking
