@@ -8,5 +8,6 @@ configMapGenerator:
 configurations:
   - kustomizeconfig.yaml
 resources:
+  - ./grafanadashboard.yaml
   - ./helmrelease.yaml
   - ./httproute.yaml

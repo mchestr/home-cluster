@@ -8,6 +8,7 @@ configMapGenerator:
 configurations:
   - ./kustomizeconfig.yaml
 resources:
+  - ./grafanadashboard.yaml
   - ./helmrelease.yaml
   - ./helmrepository.yaml
   - ./prometheusrule.yaml

@@ -31,3 +31,45 @@ spec:
     jsonData:
       implementation: prometheus
     url: http://alertmanager-operated.observability.svc.cluster.local:9093
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: victoriametrics-logs
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+  datasource:
+    type: victoriametrics-logs-datasource
+    name: victoriametrics-logs
+    access: proxy
+    url: http://victoria-logs-server.observability.svc.cluster.local:9428
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: teslamate-pg
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+  valuesFrom:
+    - targetPath: secureJsonData.password
+      valueFrom:
+        secretKeyRef:
+          name: grafana-teslamate-pg-secret
+          key: POSTGRES_PASSWORD
+  datasource:
+    type: postgres
+    name: TeslaMate
+    access: proxy
+    url: postgres17-ro.database.svc.cluster.local:5432
+    database: teslamate
+    basicAuth: false
+    jsonData:
+      postgresVersion: 1000
+      sslmode: disable
+    user: teslamate

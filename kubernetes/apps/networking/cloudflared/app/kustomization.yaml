@@ -10,4 +10,5 @@ generatorOptions:
 resources:
   - ./dnsendpoint.yaml
   - ./externalsecret.yaml
+  - ./grafanadashboard.yaml
   - ./helmrelease.yaml

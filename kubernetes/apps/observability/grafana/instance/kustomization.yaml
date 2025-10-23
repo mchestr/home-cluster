@@ -3,7 +3,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./grafanadatasource.yaml
+  - ./externalsecret.yaml
   - ./grafana.yaml
+  - ./grafanadashboard.yaml
+  - ./grafanadatasource.yaml
   - ./httproute.yaml
   - ./servicemonitor.yaml
