@@ -6,15 +6,9 @@ metadata:
   name: fluent-bit
 spec:
   interval: 30m
-  chart:
-    spec:
-      chart: fluent-bit
-      version: 0.54.0
-      interval: 30m
-      sourceRef:
-        kind: HelmRepository
-        name: fluent
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: fluent-bit
   install:
     remediation:
       retries: -1
