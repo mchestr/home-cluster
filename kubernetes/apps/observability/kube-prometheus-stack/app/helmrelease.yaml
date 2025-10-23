@@ -14,6 +14,11 @@ spec:
     alertmanager:
       route:
         main:
+          annotations:
+            gethomepage.dev/enabled: "true"
+            gethomepage.dev/icon: alertmanager.png
+            gethomepage.dev/name: Alert Manager
+            gethomepage.dev/group: Observability
           enabled: true
           hostnames:
             - alertmanager.chestr.dev
@@ -40,6 +45,11 @@ spec:
     prometheus:
       route:
         main:
+          annotations:
+            gethomepage.dev/enabled: "true"
+            gethomepage.dev/icon: prometheus.png
+            gethomepage.dev/name: Prometheus
+            gethomepage.dev/group: Observability
           enabled: true
           hostnames:
             - prometheus.chestr.dev
