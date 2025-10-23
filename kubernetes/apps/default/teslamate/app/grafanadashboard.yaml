@@ -1,4 +1,15 @@
 ---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaFolder
+metadata:
+  name: teslamate
+spec:
+  allowCrossNamespaceImport: true
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+  title: teslamate
+---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
@@ -6,6 +17,7 @@ metadata:
   name: teslamate-battery-health
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -18,6 +30,7 @@ metadata:
   name: teslamate-charge-level
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -30,6 +43,7 @@ metadata:
   name: teslamate-charges
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -42,6 +56,7 @@ metadata:
   name: teslamate-charging-stats
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -54,6 +69,7 @@ metadata:
   name: teslamate-database-info
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -66,6 +82,7 @@ metadata:
   name: teslamate-drive-stats
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -78,6 +95,7 @@ metadata:
   name: teslamate-drives
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -90,6 +108,7 @@ metadata:
   name: teslamate-efficiency
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -102,6 +121,7 @@ metadata:
   name: teslamate-locations
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -114,6 +134,7 @@ metadata:
   name: teslamate-mileage
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -126,6 +147,7 @@ metadata:
   name: teslamate-overview
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -138,6 +160,7 @@ metadata:
   name: teslamate-projected-range
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -150,6 +173,7 @@ metadata:
   name: teslamate-states
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -162,6 +186,7 @@ metadata:
   name: teslamate-statistics
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -174,6 +199,7 @@ metadata:
   name: teslamate-timeline
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -186,6 +212,7 @@ metadata:
   name: teslamate-trip
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -198,6 +225,7 @@ metadata:
   name: teslamate-updates
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -210,6 +238,7 @@ metadata:
   name: teslamate-vampire-drain
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -222,6 +251,7 @@ metadata:
   name: teslamate-visited
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -234,6 +264,7 @@ metadata:
   name: teslamate-charge-details
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -246,6 +277,7 @@ metadata:
   name: teslamate-drive-details
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -258,6 +290,7 @@ metadata:
   name: teslamate-home
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -270,6 +303,7 @@ metadata:
   name: teslamate-custom-amortization-tracker
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -282,6 +316,7 @@ metadata:
   name: teslamate-custom-charging-cost-stats
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -294,6 +329,7 @@ metadata:
   name: teslamate-custom-charging-curve-stats
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -306,6 +342,7 @@ metadata:
   name: teslamate-custom-continuous-trips
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -318,6 +355,7 @@ metadata:
   name: teslamate-custom-current-charge-view
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -330,6 +368,7 @@ metadata:
   name: teslamate-custom-current-drive-view
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -342,6 +381,7 @@ metadata:
   name: teslamate-custom-current-state
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -354,6 +394,7 @@ metadata:
   name: teslamate-custom-dc-charging-curves-by-carrier
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -366,6 +407,7 @@ metadata:
   name: teslamate-custom-incomplete-data
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -378,6 +420,7 @@ metadata:
   name: teslamate-custom-mileage-stats
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -390,6 +433,7 @@ metadata:
   name: teslamate-custom-range-degradation
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -402,6 +446,7 @@ metadata:
   name: teslamate-custom-speed-rates
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
@@ -414,6 +459,7 @@ metadata:
   name: teslamate-custom-tracking-drives
 spec:
   allowCrossNamespaceImport: true
+  folderRef: teslamate
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
