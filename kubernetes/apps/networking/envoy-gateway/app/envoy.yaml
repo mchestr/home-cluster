@@ -49,10 +49,6 @@ metadata:
   name: envoy-external
   annotations:
     external-dns.alpha.kubernetes.io/target: &hostname external.chestr.dev
-    gatus.home-operations.com/endpoint: |-
-      client:
-        dns-resolver: tcp://1.1.1.1:53
-      group: external
 spec:
   gatewayClassName: envoy
   infrastructure:
@@ -84,12 +80,9 @@ metadata:
   name: envoy-internal
   annotations:
     external-dns.alpha.kubernetes.io/target: &hostname internal.chestr.dev
-    gatus.home-operations.com/endpoint: |-
-      group: internal
-      guarded: true
-      ui:
-        hide-hostname: true
-        hide-url: true
+    gatus.home-operations.com/endpoint: |
+      conditions:
+        - "[STATUS] == 401"
 spec:
   gatewayClassName: envoy
   infrastructure:
