@@ -5,6 +5,7 @@ resources:
   - ./external
   - ./internal
   - ./certificate.yaml
+  - ./policies.yaml
   - ./pushsecret.yaml
   - ./redirect.yaml
   - ./servicemonitor.yaml
