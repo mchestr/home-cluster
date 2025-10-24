@@ -107,7 +107,7 @@ spec:
           gethomepage.dev/widget.url: http://sonarr.media.svc.cluster.local:8989
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_SONARR_API_KEY}}" }}'
         parentRefs:
-          - name: internal
+          - name: envoy-internal
             namespace: networking
             sectionName: https
         rules:

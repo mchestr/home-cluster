@@ -119,7 +119,7 @@ spec:
           gethomepage.dev/name: Status
           gethomepage.dev/group: System
         parentRefs:
-          - name: external
+          - name: envoy-external
             namespace: networking
             sectionName: https
         rules:

@@ -105,7 +105,7 @@ spec:
           gethomepage.dev/widget.url: http://prowlarr.media.svc.cluster.local:9696
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}" }}'
         parentRefs:
-          - name: internal
+          - name: envoy-internal
             namespace: networking
             sectionName: https
         rules:

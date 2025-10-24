@@ -76,7 +76,7 @@ spec:
               - "[STATUS] == 404"
         hostnames: ["{{ .Release.Name }}.chestr.dev"]
         parentRefs:
-          - name: external
+          - name: envoy-external
             namespace: networking
             sectionName: https
         rules:

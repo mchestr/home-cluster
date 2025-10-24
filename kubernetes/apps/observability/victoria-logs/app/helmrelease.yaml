@@ -22,7 +22,7 @@ spec:
         hostnames:
           - victoria-logs.chestr.dev
         parentRefs:
-          - name: internal
+          - name: envoy-internal
             namespace: networking
         extraRules:
           - filters:

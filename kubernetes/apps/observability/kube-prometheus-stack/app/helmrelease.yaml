@@ -23,7 +23,7 @@ spec:
           hostnames:
             - alertmanager.chestr.dev
           parentRefs:
-            - name: internal
+            - name: envoy-internal
               namespace: networking
       alertmanagerSpec:
         alertmanagerConfiguration:
@@ -54,7 +54,7 @@ spec:
           hostnames:
             - prometheus.chestr.dev
           parentRefs:
-            - name: internal
+            - name: envoy-internal
               namespace: networking
       prometheusSpec:
         externalUrl: https://prometheus.chestr.dev

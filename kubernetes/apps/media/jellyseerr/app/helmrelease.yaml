@@ -114,7 +114,7 @@ spec:
           gethomepage.dev/widget.url: http://jellyseerr.media.svc.cluster.local:5055
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_JELLYSEERR_API_KEY}}" }}'
         parentRefs:
-          - name: external
+          - name: envoy-external
             namespace: networking
             sectionName: https
         rules:

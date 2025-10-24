@@ -11,7 +11,7 @@ metadata:
 spec:
   hostnames: ["flux-webhook.chestr.dev"]
   parentRefs:
-    - name: external
+    - name: envoy-external
       namespace: networking
       sectionName: https
   rules:

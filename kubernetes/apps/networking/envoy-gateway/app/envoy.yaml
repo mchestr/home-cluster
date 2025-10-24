@@ -46,7 +46,7 @@ spec:
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: external
+  name: envoy-external
   annotations:
     external-dns.alpha.kubernetes.io/target: &hostname external.chestr.dev
     gatus.home-operations.com/endpoint: |-
@@ -81,7 +81,7 @@ spec:
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: internal
+  name: envoy-internal
   annotations:
     external-dns.alpha.kubernetes.io/target: &hostname internal.chestr.dev
     gatus.home-operations.com/endpoint: |-
@@ -138,7 +138,7 @@ spec:
   targetRefs:
     - group: gateway.networking.k8s.io
       kind: Gateway
-      name: internal
+      name: envoy-internal
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/envoyproxy/gateway/refs/heads/main/charts/gateway-helm/crds/generated/gateway.envoyproxy.io_clienttrafficpolicies.yaml
 apiVersion: gateway.envoyproxy.io/v1alpha1
@@ -200,10 +200,10 @@ metadata:
     external-dns.alpha.kubernetes.io/controller: none
 spec:
   parentRefs:
-    - name: internal
+    - name: envoy-internal
       namespace: networking
       sectionName: http
-    - name: external
+    - name: envoy-external
       namespace: networking
       sectionName: http
   rules:

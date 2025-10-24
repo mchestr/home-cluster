@@ -8,7 +8,7 @@ spec:
   hostnames:
     - grafana.chestr.dev
   parentRefs:
-    - name: internal
+    - name: envoy-internal
       namespace: networking
   rules:
     - backendRefs:

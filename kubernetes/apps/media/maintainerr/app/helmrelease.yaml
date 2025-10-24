@@ -59,7 +59,7 @@ spec:
           gethomepage.dev/name: Maintainerr
           gethomepage.dev/icon: mdi-wrench-clock
         parentRefs:
-          - name: internal
+          - name: envoy-internal
             namespace: networking
             sectionName: https
         rules:

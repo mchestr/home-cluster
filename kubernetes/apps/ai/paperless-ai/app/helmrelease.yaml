@@ -64,7 +64,7 @@ spec:
           gethomepage.dev/name: Paperless AI
           gethomepage.dev/group: AI
         parentRefs:
-          - name: internal
+          - name: envoy-internal
             namespace: networking
             sectionName: https
         rules:

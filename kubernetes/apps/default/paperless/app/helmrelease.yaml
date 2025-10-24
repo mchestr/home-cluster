@@ -138,7 +138,7 @@ spec:
             conditions:
               - "[STATUS] == 200"
         parentRefs:
-          - name: internal
+          - name: envoy-internal
             namespace: networking
             sectionName: https
         rules:
@@ -172,7 +172,7 @@ spec:
                       app.kubernetes.io/component: proxy
                       app.kubernetes.io/managed-by: envoy-gateway
                       app.kubernetes.io/name: envoy
-                      gateway.envoyproxy.io/owning-gateway-name: internal
+                      gateway.envoyproxy.io/owning-gateway-name: envoy-internal
                   namespaceSelector:
                     matchLabels:
                       kubernetes.io/metadata.name: networking

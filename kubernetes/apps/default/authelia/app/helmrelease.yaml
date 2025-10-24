@@ -139,7 +139,7 @@ spec:
       app:
         hostnames: ["auth.chestr.dev"]
         parentRefs:
-          - name: external
+          - name: envoy-external
             namespace: networking
             sectionName: https
         rules:

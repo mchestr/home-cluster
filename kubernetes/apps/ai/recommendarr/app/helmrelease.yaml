@@ -66,7 +66,7 @@ spec:
           gethomepage.dev/name: Recommendarr
           gethomepage.dev/group: AI
         parentRefs:
-          - name: internal
+          - name: envoy-internal
             namespace: networking
             sectionName: https
         rules:

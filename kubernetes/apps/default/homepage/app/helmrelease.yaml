@@ -55,7 +55,7 @@ spec:
               - "[STATUS] == 200"
         hostnames: ["{{ .Release.Name }}.chestr.dev"]
         parentRefs:
-          - name: internal
+          - name: envoy-internal
             namespace: networking
             sectionName: https
         rules:

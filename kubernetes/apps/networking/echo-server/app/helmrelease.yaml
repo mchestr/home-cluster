@@ -78,7 +78,7 @@ spec:
           gethomepage.dev/group: System
           gethomepage.dev/name: Echo
         parentRefs:
-          - name: external
+          - name: envoy-external
             namespace: networking
             sectionName: https
         rules:

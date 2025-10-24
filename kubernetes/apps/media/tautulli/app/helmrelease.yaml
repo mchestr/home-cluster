@@ -86,7 +86,7 @@ spec:
             conditions:
               - "[STATUS] == 200"
         parentRefs:
-          - name: internal
+          - name: envoy-internal
             namespace: networking
             sectionName: https
         rules:

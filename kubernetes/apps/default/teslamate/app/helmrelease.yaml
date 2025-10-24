@@ -98,7 +98,7 @@ spec:
           gethomepage.dev/name: TeslaMate
           gethomepage.dev/group: Observability
         parentRefs:
-          - name: internal
+          - name: envoy-internal
             namespace: networking
             sectionName: https
         rules:

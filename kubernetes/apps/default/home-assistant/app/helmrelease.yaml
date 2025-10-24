@@ -78,7 +78,7 @@ spec:
           gethomepage.dev/name: Home Assistant
           gethomepage.dev/icon: home-assistant.png
         parentRefs:
-          - name: external
+          - name: envoy-external
             namespace: networking
             sectionName: https
         rules:
@@ -123,7 +123,7 @@ spec:
                       app.kubernetes.io/component: proxy
                       app.kubernetes.io/managed-by: envoy-gateway
                       app.kubernetes.io/name: envoy
-                      gateway.envoyproxy.io/owning-gateway-name: external
+                      gateway.envoyproxy.io/owning-gateway-name: envoy-external
                   namespaceSelector:
                     matchLabels:
                       kubernetes.io/metadata.name: networking

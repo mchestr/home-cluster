@@ -62,7 +62,7 @@ spec:
           gethomepage.dev/name: Calendar
           gethomepage.dev/group: System
         parentRefs:
-          - name: external
+          - name: envoy-external
             namespace: networking
             sectionName: https
         rules:

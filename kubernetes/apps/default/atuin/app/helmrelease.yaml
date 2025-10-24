@@ -102,7 +102,7 @@ spec:
           - "{{ .Release.Name }}.chestr.dev"
           - sh.chestr.dev
         parentRefs:
-          - name: internal
+          - name: envoy-internal
             namespace: networking
             sectionName: https
         rules:

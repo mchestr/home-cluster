@@ -100,7 +100,7 @@ spec:
             conditions:
               - "[STATUS] == 401"
         parentRefs:
-          - name: external
+          - name: envoy-external
             namespace: networking
             sectionName: https
         rules:

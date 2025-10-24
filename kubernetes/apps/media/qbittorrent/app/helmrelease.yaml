@@ -115,7 +115,7 @@ spec:
           gethomepage.dev/widget.type: *app
           gethomepage.dev/widget.url: http://qbittorrent.media.svc.cluster.local:8080
         parentRefs:
-          - name: internal
+          - name: envoy-internal
             namespace: networking
             sectionName: https
         rules:
