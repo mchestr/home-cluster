@@ -15,6 +15,24 @@ spec:
       reporting_enabled: "false"
     auth:
       disable_login_form: "false"
+      signout_redirect_url: "https://auth.chestr.dev/logout"
+      oauth_auto_login: "true"
+    auth.generic_oauth:
+      enabled: "true"
+      name: Authelia
+      scopes: openid profile email groups
+      empty_scopes: "false"
+      auth_url: https://auth.chestr.dev/api/oidc/authorization
+      token_url: https://auth.chestr.dev/api/oidc/token
+      api_url: https://auth.chestr.dev/api/oidc/userinfo
+      login_attribute_path: preferred_username
+      groups_attribute_path: groups
+      name_attribute_path: name
+      use_pkce: "true"
+    auth.generic_oauth.group_mapping:
+      role_attribute_path: |
+        contains(groups[*], 'admin') && 'Admin' || contains(groups[*], 'people') && 'Viewer'
+      org_id: "1"
     auth.anonymous:
       enabled: "true"
     log:
@@ -36,6 +54,12 @@ spec:
         type: Recreate
       template:
         spec:
+          initContainers:
+            - name: 01-init-db
+              image: ghcr.io/home-operations/postgres-init:17
+              envFrom:
+                - secretRef:
+                    name: grafana-initdb-secret
           containers:
             - name: grafana
               env:
@@ -44,10 +68,38 @@ spec:
                     secretKeyRef:
                       name: grafana-admin-password-secret
                       key: GF_SECURITY_ADMIN_PASSWORD
+                - name: GF_AUTH_GENERIC_OAUTH_CLIENT_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: grafana-auth-secret
+                      key: GF_AUTH_GENERIC_OAUTH_CLIENT_ID
+                - name: GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET
+                  valueFrom:
+                    secretKeyRef:
+                      name: grafana-auth-secret
+                      key: GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET
+                - name: GF_DATABASE_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: grafana-pguser-secret
+                      key: user
+                - name: GF_DATABASE_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: grafana-pguser-secret
+                      key: password
+                - name: GF_DATABASE_NAME
+                  value: grafana
+                - name: GF_DATABASE_HOST
+                  value: postgres17-rw.database.svc.cluster.local:5432
+                - name: GF_DATABASE_SSL_MODE
+                  value: disable
+                - name: GF_DATABASE_TYPE
+                  value: postgres
               securityContext:
                 allowPrivilegeEscalation: false
                 readOnlyRootFilesystem: true
-                capabilities: {drop: ["ALL"]}
+                capabilities: { drop: ["ALL"] }
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
