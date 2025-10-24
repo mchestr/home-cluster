@@ -4,17 +4,9 @@ originRequest:
 
 ingress:
   - hostname: chestr.dev
-    service: &service https://envoy-gateway-external.networking.svc.cluster.local
+    service: &service https://envoy-external.networking.svc.cluster.local
     originRequest:
       originServerName: chestr.dev
   - hostname: "*.chestr.dev"
     service: *service
-  - hostname: controlforensics.com
-    service: *service
-    originRequest:
-      originServerName: controlforensics.com
-  - hostname: "*.controlforensics.com"
-    service: *service
-    originRequest:
-      originServerName: external.controlforensics.com
   - service: http_status:404
