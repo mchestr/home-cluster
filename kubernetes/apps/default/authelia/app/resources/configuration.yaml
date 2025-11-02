@@ -77,6 +77,7 @@ access_control:
         - thelounge.chestr.dev
         - rook.chestr.dev
         - sh.chestr.dev
+        - osrsdiff.chestr.dev
       policy: bypass
     - domain:
         - sonarr.chestr.dev
