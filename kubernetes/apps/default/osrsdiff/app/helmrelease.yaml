@@ -1,0 +1,174 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: osrsdiff
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 2
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 2
+  uninstall:
+    keepHistory: false
+  values:
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 65539
+    controllers:
+      api:
+        initContainers:
+          01-init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: "17"
+            envFrom:
+              - secretRef:
+                  name: osrsdiff-initdb-secret
+
+        replicas: 2
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image: &backend
+              repository: ghcr.io/mchestr/osrsdiff
+              tag: main@sha256:ba8f7ef29e3e2bcd9bd87325625a5bec45e00efccbacddbe7515b24ee6afa803
+            env: &env
+              ENVIRONMENT: production
+              DEBUG: "false"
+              TZ: America/Vancouver
+              # Database configuration
+              DATABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: &pguser osrsdiff-pguser-secret
+                    key: uri
+              DATABASE_ECHO: "false"
+              DATABASE_POOL_SIZE: "10"
+              DATABASE_MAX_OVERFLOW: "20"
+              DATABASE_POOL_RECYCLE: "3600"
+              # Redis configuration
+              REDIS_URL: redis://osrsdiff-dragonfly.default.svc.cluster.local:6379/0
+              REDIS_MAX_CONNECTIONS: "10"
+              # TaskIQ configuration
+              TASKIQ_DEFAULT_RETRY_COUNT: "3"
+              TASKIQ_DEFAULT_RETRY_DELAY: "2.0"
+              TASKIQ_MAX_RETRY_DELAY: "60.0"
+              TASKIQ_TASK_TIMEOUT: "300.0"
+              TASKIQ_RESULT_TTL: "3600"
+              TASKIQ_WORKER_CONCURRENCY: "4"
+            envFrom:
+              - secretRef:
+                  name: osrsdiff-secret
+            probes:
+              liveness: &probes
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &api 8000
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+            resources: &resources
+              requests:
+                cpu: 100m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+            securityContext: &securityContext
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+
+      taskiq-worker:
+        replicas: 2
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          affinity:
+            podAntiAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+                - weight: 100
+                  podAffinityTerm:
+                    labelSelector:
+                      matchExpressions:
+                        - key: app.kubernetes.io/component
+                          operator: In
+                          values:
+                            - taskiq-worker
+                    topologyKey: "kubernetes.io/hostname"
+        containers:
+          app:
+            image: *backend
+            command: ["taskiq"]
+            args:
+              [
+                "worker",
+                "src.workers.main:broker",
+                "--fs-discover"
+              ]
+            env: *env
+            envFrom:
+              - secretRef:
+                  name: osrsdiff-secret
+            resources: *resources
+            securityContext: *securityContext
+
+    service:
+      api:
+        controller: api
+        ports:
+          http:
+            port: *api
+
+    route:
+      app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Gaming
+          gethomepage.dev/name: OSRS Diff
+          gethomepage.dev/icon: mdi-sword
+          gethomepage.dev/href: https://osrsdiff.chestr.dev
+        hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: api
+                port: *api
+
+    persistence:
+      tmp:
+        type: emptyDir
+        advancedMounts:
+          api:
+            app:
+              - path: /tmp
+          taskiq-worker:
+            app:
+              - path: /tmp

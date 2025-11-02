@@ -15,6 +15,7 @@ resources:
   - ./immich/ks.yaml
   - ./kubestats/ks.yaml
   - ./lldap/ks.yaml
+  - ./osrsdiff/ks.yaml
   - ./paperless/ks.yaml
   - ./radicale/ks.yaml
   - ./smtp-relay/ks.yaml
