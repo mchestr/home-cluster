@@ -19,7 +19,6 @@ resources:
   - ./paperless/ks.yaml
   - ./radicale/ks.yaml
   - ./smtp-relay/ks.yaml
-  - ./syncthing/ks.yaml
   - ./teslamate/ks.yaml
   - ./thelounge/ks.yaml
   - ./zigbee2mqtt/ks.yaml
