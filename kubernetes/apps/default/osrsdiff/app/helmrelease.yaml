@@ -47,31 +47,31 @@ spec:
           app:
             image: &backend
               repository: ghcr.io/mchestr/osrsdiff
-              tag: main@sha256:7d36e2000622353261fc2693ec4d90c16ff96ee90d6094371f93da9d0ab2dea4
+              tag: main@sha256:a9eb41aa7751860f3939212421b55d86d967008248aaf0896c282d22c5147b7f
             env: &env
               ENVIRONMENT: production
               DEBUG: "false"
               TZ: America/Vancouver
               # Database configuration
-              DATABASE_URL:
+              DATABASE__URL:
                 valueFrom:
                   secretKeyRef:
-                    name: &pguser osrsdiff-pguser-secret
+                    name: osrsdiff-pguser-secret
                     key: uri
-              DATABASE_ECHO: "false"
-              DATABASE_POOL_SIZE: "10"
-              DATABASE_MAX_OVERFLOW: "20"
-              DATABASE_POOL_RECYCLE: "3600"
+              DATABASE__ECHO: "false"
+              DATABASE__POOL_SIZE: "10"
+              DATABASE__MAX_OVERFLOW: "20"
+              DATABASE__POOL_RECYCLE: "3600"
               # Redis configuration
-              REDIS_URL: redis://osrsdiff-dragonfly.default.svc.cluster.local:6379/0
-              REDIS_MAX_CONNECTIONS: "10"
+              REDIS__URL: redis://osrsdiff-dragonfly.default.svc.cluster.local:6379/0
+              REDIS__MAX_CONNECTIONS: "10"
               # TaskIQ configuration
-              TASKIQ_DEFAULT_RETRY_COUNT: "3"
-              TASKIQ_DEFAULT_RETRY_DELAY: "2.0"
-              TASKIQ_MAX_RETRY_DELAY: "60.0"
-              TASKIQ_TASK_TIMEOUT: "300.0"
-              TASKIQ_RESULT_TTL: "3600"
-              TASKIQ_WORKER_CONCURRENCY: "4"
+              TASKIQ__DEFAULT_RETRY_COUNT: "3"
+              TASKIQ__DEFAULT_RETRY_DELAY: "2.0"
+              TASKIQ__MAX_RETRY_DELAY: "60.0"
+              TASKIQ__TASK_TIMEOUT: "300.0"
+              TASKIQ__RESULT_TTL: "3600"
+              TASKIQ__WORKER_CONCURRENCY: "4"
             envFrom:
               - secretRef:
                   name: osrsdiff-secret
