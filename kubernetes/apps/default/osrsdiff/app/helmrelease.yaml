@@ -47,7 +47,7 @@ spec:
           app:
             image: &backend
               repository: ghcr.io/mchestr/osrsdiff
-              tag: main@sha256:3b92f605aa67561d0b8e61e60058a17985eac2b7a434a2259939f5e124711b1f
+              tag: main@sha256:54cbc8bbe36db79f5fc80d2887baffde6f363c775de6735b823f2ca00c559fbf
             env: &env
               ENVIRONMENT: production
               DEBUG: "false"
