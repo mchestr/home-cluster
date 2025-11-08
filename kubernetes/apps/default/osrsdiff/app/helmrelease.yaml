@@ -87,7 +87,6 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-              startup: *probes
             resources: &resources
               requests:
                 cpu: 100m
