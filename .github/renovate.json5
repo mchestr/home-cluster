@@ -29,24 +29,24 @@
     'prEditedNotification',
   ],
   flux: {
-    fileMatch: [
-      'kubernetes/.+\\.ya?ml$',
-      'talos/.+\\.ya?ml$',
-      'terraform/.+\\.tf$',
+    managerFilePatterns: [
+      '/kubernetes/.+\\.ya?ml$/',
+      '/talos/.+\\.ya?ml$/',
+      '/terraform/.+\\.tf$/',
     ],
   },
   'helm-values': {
-    fileMatch: [
-      'kubernetes/.+\\.ya?ml$',
-      'talos/.+\\.ya?ml$',
-      'terraform/.+\\.tf$',
+    managerFilePatterns: [
+      '/kubernetes/.+\\.ya?ml$/',
+      '/talos/.+\\.ya?ml$/',
+      '/terraform/.+\\.tf$/',
     ],
   },
   kubernetes: {
-    fileMatch: [
-      'kubernetes/.+\\.ya?ml$',
-      'talos/.+\\.ya?ml$',
-      'terraform/.+\\.tf$',
+    managerFilePatterns: [
+      '/kubernetes/.+\\.ya?ml$/',
+      '/talos/.+\\.ya?ml$/',
+      '/terraform/.+\\.tf$/',
     ],
   },
   packageRules: [
