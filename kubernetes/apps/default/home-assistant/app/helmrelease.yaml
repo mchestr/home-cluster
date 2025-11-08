@@ -46,11 +46,6 @@ spec:
             env:
               TZ: America/Vancouver
 
-          vscode-tunnel:
-            image:
-              repository: ghcr.io/mchestr/vscode-tunnel
-              tag: 1.105.1@sha256:fb97aba846237edc2a155f7204468cf1bea7ab18ec6c084cdc18feeed9e3fc25
-
     defaultPodOptions:
       hostname: home-assistant
       securityContext:
@@ -91,22 +86,6 @@ spec:
         existingClaim: *app
         globalMounts:
           - path: /config
-
-      deploykey:
-        type: secret
-        name: home-assistant-deploykey-secret
-        advancedMounts:
-          home-assistant:
-            vscode-tunnel:
-              - path: /home/kah/.ssh
-      vscode-tunnel:
-        size: 4Gi
-        storageClass: ceph-block
-        accessMode: ReadWriteOnce
-        advancedMounts:
-          home-assistant:
-            vscode-tunnel:
-              - path: /.vscode
 
     networkpolicies:
       paperless:
