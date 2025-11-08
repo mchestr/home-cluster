@@ -187,6 +187,9 @@ spec:
           gethomepage.dev/name: OSRS Diff
           gethomepage.dev/icon: mdi-sword
           gethomepage.dev/href: https://osrsdiff.chestr.dev
+          gatus.home-operations.com/endpoint: |
+            conditions:
+              - "[STATUS] == 200"
         hostnames: ["{{ .Release.Name }}.chestr.dev"]
         parentRefs:
           - name: envoy-internal
