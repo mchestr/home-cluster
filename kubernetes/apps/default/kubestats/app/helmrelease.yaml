@@ -224,10 +224,10 @@ spec:
               - path:
                   value: /api
             backendRefs:
-              - name: api
+              - name: kubestats-api
                 port: *api
           - backendRefs:
-              - name: frontend
+              - name: kubestats-frontend
                 port: *port
 
     persistence:
