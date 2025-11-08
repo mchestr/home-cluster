@@ -68,7 +68,7 @@ For observability and monitoring of the cluster the following software is used:
 - [pushover](https://pushover.net): Handles receiving alerts on my devices.
 - [TwiN/gatus](https://github.com/TwiN/gatus): High level status dashboard.
 - [VictoriaMetrics/VictoriaLogs](https://docs.victoriametrics.com/victorialogs/): Database for logs.
-- [VictoriaMetrics/VictoriaMetrics](https://github.com/VictoriaMetrics/VictoriaMetrics): Time series database, drop-in replacement for Prometheus.
+- [prometheus/prometheus](https://github.com/prometheus/prometheus): Time series database for metrics.
 
 ### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f916/512.gif" alt="🤖" width="16" height="16"> Automation
 
