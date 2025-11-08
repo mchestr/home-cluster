@@ -71,7 +71,7 @@ spec:
           operator: Exists
           effect: NoSchedule
     serviceAccount:
-      system-upgrade-controller: {}
+      system-upgrade: {}
     persistence:
       tmp:
         type: emptyDir
