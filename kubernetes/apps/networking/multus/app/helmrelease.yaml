@@ -54,5 +54,4 @@ spec:
         globalMounts:
           - path: /host/opt/cni/bin
     serviceAccount:
-      create: true
-      name: *app
+      multus: {}
