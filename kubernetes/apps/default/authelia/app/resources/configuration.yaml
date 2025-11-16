@@ -78,6 +78,7 @@ access_control:
         - rook.chestr.dev
         - sh.chestr.dev
         - osrsdiff.chestr.dev
+        - plex-rewind.chestr.dev
       policy: bypass
     - domain:
         - sonarr.chestr.dev
