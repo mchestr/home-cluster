@@ -46,6 +46,23 @@ spec:
             env:
               TZ: America/Vancouver
 
+          code-server:
+            image:
+              repository: ghcr.io/coder/code-server
+              tag: 4.105.1
+            args:
+              - --bind-addr
+              - 0.0.0.0:8080
+              - /config
+            env:
+              TZ: America/Vancouver
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+
     defaultPodOptions:
       hostname: home-assistant
       securityContext:
@@ -61,6 +78,11 @@ spec:
         ports:
           http:
             port: &port 8123
+      code-server:
+        controller: *app
+        ports:
+          http:
+            port: &codeServerPort 8080
 
     route:
       app:
@@ -80,6 +102,23 @@ spec:
           - backendRefs:
               - name: *app
                 port: *port
+
+      code-server:
+        hostnames:
+          - home-assistant-code-server.chestr.dev
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Home
+          gethomepage.dev/name: Code Server
+          gethomepage.dev/icon: code-server.png
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: code-server
+                port: *codeServerPort
 
     persistence:
       config:
