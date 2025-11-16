@@ -50,7 +50,6 @@ spec:
               tag: main@sha256:337eebf947b8e7e6199ad586e867d6f0e40e95866d353e8efa8891670a3dfdb1
             env: &env
               ENVIRONMENT: production
-              DEBUG: "false"
               TZ: America/Vancouver
               # Database configuration
               DATABASE__URL:
@@ -58,20 +57,8 @@ spec:
                   secretKeyRef:
                     name: osrsdiff-pguser-secret
                     key: uri
-              DATABASE__ECHO: "false"
-              DATABASE__POOL_SIZE: "10"
-              DATABASE__MAX_OVERFLOW: "20"
-              DATABASE__POOL_RECYCLE: "3600"
               # Redis configuration
               REDIS__URL: redis://osrsdiff-dragonfly.default.svc.cluster.local:6379/0
-              REDIS__MAX_CONNECTIONS: "10"
-              # TaskIQ configuration
-              TASKIQ__DEFAULT_RETRY_COUNT: "3"
-              TASKIQ__DEFAULT_RETRY_DELAY: "2.0"
-              TASKIQ__MAX_RETRY_DELAY: "60.0"
-              TASKIQ__TASK_TIMEOUT: "300.0"
-              TASKIQ__RESULT_TTL: "3600"
-              TASKIQ__WORKER_CONCURRENCY: "4"
             envFrom:
               - secretRef:
                   name: osrsdiff-secret
@@ -160,12 +147,11 @@ spec:
             args:
               [
                 "scheduler",
-                "app.workers.main:scheduler",
+                "app.workers.scheduler:scheduler",
                 "--fs-discover"
               ]
             env:
               <<: *env
-              TASKIQ__SCHEDULER_PREFIX: app:schedules
             envFrom:
               - secretRef:
                   name: osrsdiff-secret
