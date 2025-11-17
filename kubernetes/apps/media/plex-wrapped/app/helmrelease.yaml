@@ -34,7 +34,7 @@ spec:
           main:
             image:
               repository: ghcr.io/mchestr/plex-wrapped
-              tag: main@sha256:9db5041dfc669e15eac88d17788f0bba03c124aae62c2c9955e4ea7f7ce598a4
+              tag: main@sha256:2e69af223e35bb60fff0a1f984ef6d22877b301fc9082b76fafce34299534c0b
             env:
               NEXT_PUBLIC_APP_URL: https://wrapped.chestr.dev
               NEXTAUTH_URL: https://wrapped.chestr.dev
@@ -65,7 +65,7 @@ spec:
           gethomepage.dev/name: Plex Wrapped
           gethomepage.dev/group: Media
         parentRefs:
-          - name: envoy-internal
+          - name: envoy-external
             namespace: networking
             sectionName: https
         rules:
@@ -78,3 +78,7 @@ spec:
         existingClaim: *app
       tmp:
         type: emptyDir
+      nextjs-cache:
+        type: emptyDir
+        globalMounts:
+          - path: /app/.next/cache
