@@ -15,7 +15,6 @@ resources:
   - ./jellyseerr/ks.yaml
   - ./jellystat/ks.yaml
   - ./maintainerr/ks.yaml
-  - ./plefi/ks.yaml
   - ./plex/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
