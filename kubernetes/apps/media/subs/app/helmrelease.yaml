@@ -73,7 +73,9 @@ spec:
 
     route:
       app:
-        hostnames: ["subs.chestr.dev"]
+        hostnames:
+          - "{{ .Release.Name }}.chestr.dev"
+          - wrapped.chestr.dev
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: si-plex

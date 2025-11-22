@@ -17,7 +17,6 @@ resources:
   - ./maintainerr/ks.yaml
   - ./plefi/ks.yaml
   - ./plex/ks.yaml
-  - ./plex-wrapped/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./radarr/ks.yaml
