@@ -68,17 +68,11 @@ access_control:
         - jellyfin.chestr.dev
         - jellyseerr.chestr.dev
         - lldap.chestr.dev
-        - s3.chestr.dev
-        - ollama.chestr.dev
         - paperless.chestr.dev
-        - syncthing.chestr.dev
-        - sync.chestr.dev
         - tautulli.chestr.dev
         - thelounge.chestr.dev
         - rook.chestr.dev
         - sh.chestr.dev
-        - osrsdiff.chestr.dev
-        - plex-rewind.chestr.dev
       policy: bypass
     - domain:
         - sonarr.chestr.dev
