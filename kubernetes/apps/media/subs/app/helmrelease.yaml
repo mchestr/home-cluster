@@ -45,7 +45,7 @@ spec:
           main:
             image:
               repository: ghcr.io/mchestr/plex-wrapped
-              tag: main@sha256:810b8dfbc841770a627b4c267e44cdfca7227da8fbe79bf51126eb21758d682f
+              tag: main@sha256:50b7f9efb8090446459b1c00853c0780958cdffe1739712087a3d40aba7b8eac
             env:
               NEXT_PUBLIC_APP_URL: https://subs.chestr.dev
               NEXTAUTH_URL: https://subs.chestr.dev
