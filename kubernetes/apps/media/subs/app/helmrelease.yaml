@@ -44,8 +44,8 @@ spec:
         containers:
           main:
             image:
-              repository: ghcr.io/mchestr/plex-wrapped
-              tag: main@sha256:50b7f9efb8090446459b1c00853c0780958cdffe1739712087a3d40aba7b8eac
+              repository: ghcr.io/mchestr/plex-manager
+              tag: main@sha256:8e9ba79723fb07ea6a18d3e30fbd5521179dd47bfbd93af4678dbf92e65e5933
             env:
               NEXT_PUBLIC_APP_URL: https://subs.chestr.dev
               NEXTAUTH_URL: https://subs.chestr.dev
