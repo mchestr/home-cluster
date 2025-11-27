@@ -45,7 +45,7 @@ spec:
           main:
             image:
               repository: ghcr.io/mchestr/plex-manager
-              tag: main@sha256:c1fd1fa1a8b56c0bbf1fd4c82486302b467a3c68df908863795be65f62dc6a68
+              tag: main@sha256:3a3b003d54f2db5f6e3df2fcbe66449249f8205ae9e30521a2f4d6121803e95e
             env:
               NEXT_PUBLIC_APP_URL: https://subs.chestr.dev
               NEXTAUTH_URL: https://subs.chestr.dev
