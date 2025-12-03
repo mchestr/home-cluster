@@ -31,6 +31,8 @@ spec:
 
     controllers:
       saidcompany:
+        replicas: 2
+        strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -41,7 +43,8 @@ spec:
               tag: main@sha256:a32e142d11f1a7d0e45c87aeb2a8a8318b5ab3221ba584e52118f73b9d8a45f9
             env:
               TZ: America/Vancouver
-              CORS_ORIGINS: '["http://saidcompany.co","https://saidcompany.chestr.dev"]'
+              CORS_ORIGINS: '["https://saidcompany.co","https://www.saidcompany.co","https://saidcompany.chestr.dev"]'
+              API_PREFIX: ""
             envFrom:
               - secretRef:
                   name: saidcompany-secret
@@ -51,7 +54,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /api/v1/health
+                    path: &health /health
                     port: &port 8000
                   initialDelaySeconds: 0
                   periodSeconds: 10
@@ -62,7 +65,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /api/v1/health
+                    path: *health
                     port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
@@ -73,7 +76,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /api/v1/health
+                    path: *health
                     port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 5
