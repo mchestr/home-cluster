@@ -49,6 +49,7 @@ spec:
             env:
               NEXT_PUBLIC_APP_URL: https://subs.chestr.dev
               NEXTAUTH_URL: https://subs.chestr.dev
+              REDIS_URL: redis://subs-dragonfly.media.svc.cluster.local:6379
               DATABASE_URL:
                 valueFrom:
                   secretKeyRef:
