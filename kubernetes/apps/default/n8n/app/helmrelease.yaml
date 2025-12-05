@@ -44,6 +44,9 @@ spec:
               N8N_PROXY_HOPS: "1"
               N8N_LOG_LEVEL: info
               N8N_LOG_OUTPUT: console
+              N8N_TELEMETRY_ENABLED: "false"
+              N8N_VERSION_NOTIFICATIONS_ENABLED: "false"
+              N8N_HIRING_BANNER_ENABLED: "false"
               N8N_ENCRYPTION_KEY:
                 valueFrom:
                   secretKeyRef:
