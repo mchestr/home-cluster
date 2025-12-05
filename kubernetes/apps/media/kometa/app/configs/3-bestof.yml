@@ -1,0 +1,39 @@
+templates:
+  Chart Alpha:
+    sort_title: ++++3.1_<<num>><<collection_name>>
+    sync_mode: sync
+    collection_order: alpha
+  Best of:
+    trakt_list: https://trakt.tv/users/lish408/lists/rotten-tomatoes-best-of-<<year>>
+    sort_title: ++++3.2_<<num>><<collection_name>>
+    sync_mode: sync
+    summary: Rotten Tomatoes Best Films in <<year>>
+    smart_label: audience_rating.desc
+
+######################################################
+#                     Best Of                        #
+######################################################
+
+collections:
+  Best of 1980s:
+    template: { name: Chart Alpha, num: 1.1 }
+    trakt_list: https://trakt.tv/users/zyrus/lists/80s-classics?sort=rank,asc
+    summary: Best of 1980s
+  Best of 1990s:
+    template: { name: Chart Alpha, num: 1.2 }
+    trakt_list: https://trakt.tv/users/sp1ti/lists/a-v-club-s-best-films-of-the-90s?sort=rank,asc
+    summary: Best of the 1990s
+  Best of 2000s:
+    template: { name: Chart Alpha, num: 1.3 }
+    trakt_list: https://trakt.tv/users/sp1ti/lists/a-v-club-s-best-films-of-the-00s?sort=rank,asc
+    summary: Best of the 2000s
+  Best of 2020:
+    template: { name: Best of, year: 2020, num: 1.7 }
+  Best of 2021:
+    template: { name: Best of, year: 2021, num: 1.8 }
+  Best of 2022:
+    template: { name: Best of, year: 2022, num: 1.9 }
+  Best of 2023:
+    template: { name: Best of, year: 2023, num: 2.0 }
+  Best of 2024:
+    template: { name: Best of, year: 2024, num: 2.1 }

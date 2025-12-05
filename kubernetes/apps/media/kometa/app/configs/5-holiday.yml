@@ -1,0 +1,69 @@
+templates:
+  Holiday:
+    url_poster: <<poster>>
+    sort_title: ++++5.1_<<collection_name>>
+    collection_order: alpha
+
+######################################################
+#                     Holiday                        #
+######################################################
+
+collections:
+  Christmas:
+    template: { name: Holiday, poster: https://theposterdb.com/api/assets/111696 }
+    imdb_list:
+      url: https://www.imdb.com/list/ls000096828/
+      limit: 100
+    summary: Top 100 Christmas movies
+    visible_home: range(12/01-12/31)
+    visible_shared: range(12/01-12/31)
+  Halloween:
+    template: { name: Holiday, poster: https://theposterdb.com/api/assets/27316 }
+    trakt_list:
+      - https://trakt.tv/users/kairbear08/lists/halloween
+      - https://trakt.tv/users/mybicycle/lists/halloween
+      - https://trakt.tv/users/jayinftl/lists/halloween
+      - https://trakt.tv/users/roswellgeek/lists/halloween
+    summary: Halloween film is a genre that revolves around the plot involving Halloween.
+    visible_home: range(10/01-10/31)
+    visible_shared: range(10/01-10/31)
+  Thanksgiving:
+    template: { name: Holiday, poster: https://theposterdb.com/api/assets/111695 }
+    imdb_list:
+      url: https://www.imdb.com/list/ls000835734/
+      limit: 50
+    summary: Thanksgiving movies
+    visible_home: range(11/01-11/30)
+    visible_shared: range(11/01-11/30)
+  Valentine's Day:
+    template: { name: Holiday, poster: https://theposterdb.com/api/assets/29583 }
+    imdb_list:
+      url: https://www.imdb.com/list/ls000094398/
+      limit: 50
+    summary: Valentine's Day romantic movies
+    visible_home: range(02/01-02/14)
+    visible_shared: range(02/01-02/14)
+  St. Patrick's Day:
+    template: { name: Holiday, poster: https://theposterdb.com/api/assets/53952 }
+    imdb_list:
+      url: https://www.imdb.com/list/ls063934595/
+      limit: 50
+    summary: St. Patrick's Day movies
+    visible_home: range(03/01-03/17)
+    visible_shared: range(03/01-03/17)
+  Easter:
+    template: { name: Holiday, poster: https://theposterdb.com/api/assets/111694 }
+    imdb_list:
+      url: https://www.imdb.com/list/ls062665509/
+      limit: 50
+    summary: Easter movies
+    visible_home: range(03/15-04/30)
+    visible_shared: range(03/15-04/30)
+  Independence Day:
+    template: { name: Holiday, poster: https://theposterdb.com/api/assets/29582 }
+    imdb_list:
+      url: https://www.imdb.com/list/ls068664510/
+      limit: 50
+    summary: Fourth of July / Independence Day movies
+    visible_home: range(06/25-07/10)
+    visible_shared: range(06/25-07/10)

@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app plex
+  name: &app kometa
   namespace: &namespace media
 spec:
   commonMetadata:
@@ -11,18 +11,23 @@ spec:
   components:
     - ../../../../components/volsync
   dependsOn:
-    - name: intel-device-plugin-gpu
-      namespace: kube-system
+    - name: onepassword-store
+      namespace: external-secrets
     - name: rook-ceph-cluster
       namespace: rook-ceph
+    - name: plex
+      namespace: *namespace
+    - name: radarr
+      namespace: *namespace
+    - name: sonarr
+      namespace: *namespace
+    - name: tautulli
+      namespace: *namespace
   interval: 30m
-  path: ./kubernetes/apps/media/plex/app
+  path: ./kubernetes/apps/media/kometa/app
   postBuild:
     substitute:
       APP: *app
-      GATUS_STATUS: '401'
-      VOLSYNC_CACHE_CAPACITY: 70Gi
-      VOLSYNC_CAPACITY: 70Gi
   prune: true
   retryInterval: 1m
   sourceRef:

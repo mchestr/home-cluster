@@ -1,0 +1,48 @@
+templates:
+  Chart:
+    sort_title: ++++1.1_<<num>><<collection_name>>
+    sync_mode: sync
+    collection_order: release
+  Chart Alpha:
+    sort_title: ++++1.1_<<num>><<collection_name>>
+    sync_mode: sync
+    collection_order: alpha
+
+######################################################
+#                Chart Collections                   #
+######################################################
+
+collections:
+  Plex Popular:
+    template: { name: Chart Alpha, num: 1.2 }
+    tautulli_popular:
+      list_days: 30
+      list_size: 20
+      list_buffer: 20
+    tautulli_watched:
+      list_days: 30
+      list_size: 20
+      list_buffer: 20
+    summary: Movies Popular on Plex
+  Trending:
+    sync_mode: sync
+    template: { name: Chart Alpha, num: 1.3 }
+    trakt_trending: 15
+    tmdb_trending_daily: 15
+    tmdb_trending_weekly: 15
+    summary: Movies Trending across the internet
+  Popular:
+    template: { name: Chart, num: 1.4 }
+    tmdb_popular: 40
+    imdb_list:
+      url: https://www.imdb.com/search/title/?title_type=feature,tv_movie,documentary,short
+      limit: 40
+    summary: Popular Movies across the internet
+  Top Rated:
+    template: { name: Chart Alpha, num: 1.5 }
+    tmdb_top_rated: 250
+    summary: Top Rated Movies
+  Oscars:
+    template: { name: Chart Alpha, num: 1.6 }
+    imdb_list: https://www.imdb.com/search/title/?title_type=feature,documentary&groups=oscar_winner
+    summary: Oscar Winning Movies

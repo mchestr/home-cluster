@@ -1,0 +1,38 @@
+templates:
+  Network:
+    optional:
+      - network
+    tmdb_network: <<network>>
+    sort_title: ++++7.1_<<collection_name>>
+    sync_mode: sync
+    smart_label: episode_added.desc
+
+######################################################
+#                     Networks                       #
+######################################################
+
+collections:
+  HBO:
+    template: { name: Network, network: "49, 2593, 3186, 3308" }
+  Showtime:
+    template: { name: Network, network: 67 }
+  Netflix:
+    template: { name: Network, network: 213 }
+  Hulu:
+    template: { name: Network, network: 453 }
+  Prime Video:
+    template: { name: Network, network: 1024 }
+  FX:
+    template: { name: Network, network: 88 }
+  Disney+:
+    template: { name: Network, network: "2739, 2919" }
+  Apple TV+:
+    template: { name: Network, network: 2552 }
+  Paramount+:
+    template: { name: Network, network: 4330 }
+  Peacock:
+    template: { name: Network, network: 3353 }
+  AMC:
+    template: { name: Network, network: 174 }
+  BBC:
+    template: { name: Network, network: "4, 100, 126, 317, 332, 493, 627, 1028, 3278" }

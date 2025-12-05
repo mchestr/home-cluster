@@ -1,0 +1,17 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./externalsecret.yaml
+  - ./helmrelease.yaml
+configMapGenerator:
+  - name: kometa-configmap
+    files:
+      - ./configs/config.yml
+      - ./configs/1-moviecharts.yml
+      - ./configs/2-tvcharts.yml
+      - ./configs/3-bestof.yml
+      - ./configs/5-holiday.yml
+      - ./configs/7-networks.yml
+generatorOptions:
+  disableNameSuffixHash: true
