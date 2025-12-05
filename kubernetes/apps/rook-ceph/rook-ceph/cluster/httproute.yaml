@@ -5,11 +5,13 @@ kind: HTTPRoute
 metadata:
   name: rook-ceph-dashboard
   annotations:
+    # -- Homepage annotations
     gethomepage.dev/enabled: "true"
-    gethomepage.dev/icon: rook.png
-    gethomepage.dev/name: Rook
     gethomepage.dev/group: Storage
+    gethomepage.dev/name: Rook
+    gethomepage.dev/icon: rook.png
     gethomepage.dev/pod-selector: app.kubernetes.io/name=ceph-mgr
+    # -- Gatus annotations
     gatus.home-operations.com/endpoint: |
       conditions:
         - "[STATUS] == 200"

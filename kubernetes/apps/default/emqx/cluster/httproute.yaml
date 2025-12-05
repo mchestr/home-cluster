@@ -5,11 +5,13 @@ kind: HTTPRoute
 metadata:
   name: emqx
   annotations:
+    # -- Homepage annotations
     gethomepage.dev/enabled: "true"
-    gethomepage.dev/icon: emqx.png
-    gethomepage.dev/name: Emqx
     gethomepage.dev/group: Automation
+    gethomepage.dev/name: EMQX
+    gethomepage.dev/icon: emqx.png
     gethomepage.dev/pod-selector: apps.emqx.io/instance=emqx
+    # -- Gatus annotations
     gatus.home-operations.com/endpoint: |
       conditions:
         - "[STATUS] == 200"

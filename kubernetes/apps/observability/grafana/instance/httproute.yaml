@@ -5,6 +5,13 @@ kind: HTTPRoute
 metadata:
   name: grafana
   annotations:
+    # -- Homepage annotations
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/group: Observability
+    gethomepage.dev/name: Grafana
+    gethomepage.dev/icon: grafana.png
+    gethomepage.dev/pod-selector: app.kubernetes.io/name=grafana
+    # -- Gatus annotations
     gatus.home-operations.com/endpoint: |
       conditions:
         - "[STATUS] == 200"
