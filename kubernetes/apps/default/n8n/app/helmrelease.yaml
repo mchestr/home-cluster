@@ -30,7 +30,6 @@ spec:
               repository: ghcr.io/n8n-io/n8n
               tag: 1.123.2
             env:
-              TZ: America/Vancouver
               GENERIC_TIMEZONE: America/Vancouver
               DB_SQLITE_VACUUM_ON_STARTUP: "true"
               DB_SQLITE_POOL_SIZE: "4"
@@ -41,9 +40,8 @@ spec:
               EXECUTIONS_DATA_MAX_AGE: "7"
               EXECUTIONS_DATA_PRUNE_MAX_COUNT: "50000"
               N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: "false"
-              N8N_PROTOCOL: https
-              N8N_PORT: &port 5678
-              N8N_HOST: &hostName n8n.chestr.dev
+              WEBHOOK_URL: https://n8n.chestr.dev
+              N8N_PROXY_HOPS: "1"
               N8N_LOG_LEVEL: info
               N8N_LOG_OUTPUT: console
               N8N_ENCRYPTION_KEY:
@@ -71,12 +69,11 @@ spec:
         controller: *app
         ports:
           http:
-            port: *port
+            port: &port 5678
 
     route:
       app:
-        hostnames:
-          - *hostName
+        hostnames: ["{{ .Release.Name }}.chestr.dev"]
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Automation
