@@ -33,6 +33,10 @@ spec:
               TZ: America/Vancouver
               GENERIC_TIMEZONE: America/Vancouver
               DB_SQLITE_VACUUM_ON_STARTUP: "true"
+              DB_SQLITE_POOL_SIZE: "4"
+              N8N_RUNNERS_ENABLED: "true"
+              N8N_BLOCK_ENV_ACCESS_IN_NODE: "false"
+              N8N_GIT_NODE_DISABLE_BARE_REPOS: "true"
               EXECUTIONS_DATA_PRUNE: "true"
               EXECUTIONS_DATA_MAX_AGE: "7"
               EXECUTIONS_DATA_PRUNE_MAX_COUNT: "50000"
