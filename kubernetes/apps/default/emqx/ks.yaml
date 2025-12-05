@@ -32,7 +32,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
   dependsOn:
     - name: emqx-operator
       namespace: *namespace
@@ -42,6 +41,7 @@ spec:
     substitute:
       APP: emqx
   prune: true
+  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system

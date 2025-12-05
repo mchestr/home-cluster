@@ -3,28 +3,39 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: grafana
+  name: &app grafana
+  namespace: &namespace observability
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   interval: 1h
   path: ./kubernetes/apps/observability/grafana/app
   prune: true
+  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: observability
+  targetNamespace: *namespace
+  timeout: 5m
   wait: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: grafana-instance
+  name: &app grafana-instance
+  namespace: &namespace observability
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   components:
     - ../../../../components/cnpg
   dependsOn:
     - name: grafana
+      namespace: *namespace
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
@@ -33,9 +44,11 @@ spec:
     substitute:
       APP: grafana
   prune: true
+  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: observability
+  targetNamespace: *namespace
+  timeout: 5m
   wait: false

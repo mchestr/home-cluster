@@ -13,6 +13,9 @@ spec:
       namespace: external-secrets
   interval: 30m
   path: ./kubernetes/apps/media/unpackerr/app
+  postBuild:
+    substitute:
+      APP: *app
   prune: true
   retryInterval: 1m
   sourceRef:

@@ -35,9 +35,11 @@ spec:
   interval: 30m
   path: ./kubernetes/apps/kube-system/node-feature-discovery/rules
   prune: true
+  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
+  timeout: 5m
   wait: true

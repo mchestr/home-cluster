@@ -8,7 +8,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
   dependsOn:
     - name: onepassword-store
       namespace: external-secrets
@@ -21,6 +20,7 @@ spec:
       APP: flux-webhook
       GATUS_STATUS: '404'
   prune: false
+  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system

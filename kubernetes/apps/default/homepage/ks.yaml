@@ -8,7 +8,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
   dependsOn:
     - name: onepassword-store
       namespace: external-secrets

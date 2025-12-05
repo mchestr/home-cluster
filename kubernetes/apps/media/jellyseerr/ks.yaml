@@ -27,6 +27,7 @@ spec:
       GATUS_PATH: /api/v1/status
       GATUS_SUBDOMAIN: requests
   prune: true
+  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
