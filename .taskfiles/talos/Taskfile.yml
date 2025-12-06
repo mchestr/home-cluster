@@ -2,13 +2,14 @@
 version: "3"
 
 vars:
-  SYSTEM_UPGRADE_KS: '{{.KUBERNETES_DIR}}/apps/system-upgrade/system-upgrade-controller/ks.yaml'
+  SYSTEM_UPGRADE_KUBERNETES: '{{.KUBERNETES_DIR}}/apps/system-upgrade/tuppr/upgrades/kubernetes.yaml'
+  SYSTEM_UPGRADE_TALOS: '{{.KUBERNETES_DIR}}/apps/system-upgrade/tuppr/upgrades/talos.yaml'
 
 env:
   KUBERNETES_VERSION:
-    sh: yq '.spec.postBuild.substitute.KUBERNETES_VERSION | select(.)' {{.SYSTEM_UPGRADE_KS}}
+    sh: yq '.spec.kubernetes.version | select(.)' {{.SYSTEM_UPGRADE_KUBERNETES}}
   TALOS_VERSION:
-    sh: yq '.spec.postBuild.substitute.TALOS_VERSION | select(.)' {{.SYSTEM_UPGRADE_KS}}
+    sh: yq '.spec.talos.version | select(.)' {{.SYSTEM_UPGRADE_TALOS}}
 
 tasks:
 
