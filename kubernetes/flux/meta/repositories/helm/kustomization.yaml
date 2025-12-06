@@ -17,3 +17,4 @@ resources:
   - ./node-feature-discovery.yaml
   - ./openebs.yaml
   - ./postfinance.yaml
+  - ./windmill.yaml

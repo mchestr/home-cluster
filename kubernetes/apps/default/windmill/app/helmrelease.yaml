@@ -1,0 +1,92 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: windmill
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: windmill
+      version: 3.0.60
+      sourceRef:
+        kind: HelmRepository
+        name: windmill
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    windmill:
+      baseDomain: windmill.chestr.dev
+      baseProtocol: https
+      appReplicas: 2
+      lspReplicas: 1
+      multiplayerReplicas: 0
+      app:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          - name: 01-init-db
+            image: ghcr.io/home-operations/postgres-init:18
+            envFrom: &envFrom
+              - secretRef:
+                  name: windmill-initdb-secret
+          - name: init-grants
+            image: ghcr.io/onedr0p/postgres-init:16
+            command:
+              - /bin/bash
+              - -c
+              - |
+                #!/bin/bash
+
+                set -o errexit
+                set -o nounset
+
+                /var/run/grants.sh
+            envFrom: *envFrom
+            volumeMounts:
+              - name: grants
+                readOnly: true
+                subPath: grants.sh
+                mountPath: /var/run/grants.sh
+        volumes:
+          - name: grants
+            configMap:
+              name: windmill-grants
+              defaultMode: 509
+      workerGroups:
+        - name: default
+          replicas: 2
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 2Gi
+        - name: native
+          replicas: 1
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              memory: 256Mi
+    ingress:
+      enabled: false
+    postgresql:
+      enabled: false
+    minio:
+      enabled: false
+  valuesFrom:
+    - kind: Secret
+      name: windmill-pguser-secret
+      valuesKey: uri
+      targetPath: windmill.databaseUrl
