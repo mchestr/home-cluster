@@ -74,6 +74,7 @@ access_control:
         - rook.chestr.dev
         - sh.chestr.dev
         - n8n.chestr.dev
+        - windmill.chestr.dev
       policy: bypass
     - domain:
         - sonarr.chestr.dev
