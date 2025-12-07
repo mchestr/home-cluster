@@ -15,7 +15,6 @@ resources:
   - ./immich/ks.yaml
   - ./kubestats/ks.yaml
   - ./lldap/ks.yaml
-  - ./n8n/ks.yaml
   - ./paperless/ks.yaml
   - ./radicale/ks.yaml
   - ./saidcompany/ks.yaml

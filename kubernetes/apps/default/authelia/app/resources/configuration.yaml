@@ -73,7 +73,6 @@ access_control:
         - thelounge.chestr.dev
         - rook.chestr.dev
         - sh.chestr.dev
-        - n8n.chestr.dev
         - windmill.chestr.dev
       policy: bypass
     - domain:
