@@ -13,7 +13,6 @@ resources:
   - ./home-assistant/ks.yaml
   - ./homepage/ks.yaml
   - ./immich/ks.yaml
-  - ./kubestats/ks.yaml
   - ./lldap/ks.yaml
   - ./paperless/ks.yaml
   - ./radicale/ks.yaml
