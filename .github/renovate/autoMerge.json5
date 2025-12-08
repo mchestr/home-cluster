@@ -54,7 +54,6 @@
         "wordpress",
       ],
       schedule: ["after 2am and before 6am"],
-      stabilityDays: 1,
     },
   ],
 }
