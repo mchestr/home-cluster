@@ -40,7 +40,7 @@ spec:
           app:
             image:
               repository: ghcr.io/mchestr/saidcompany-api
-              tag: main@sha256:a32e142d11f1a7d0e45c87aeb2a8a8318b5ab3221ba584e52118f73b9d8a45f9
+              tag: main@sha256:2fc89bb08e8227c40ee78609e1b7bfe25dcfd821348e421b246cd805cad55b14
             env:
               TZ: America/Vancouver
               CORS_ORIGINS: '["https://saidcompany.co","https://www.saidcompany.co","https://saidcompany.chestr.dev"]'
