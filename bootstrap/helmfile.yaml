@@ -49,7 +49,7 @@ releases:
       - kube-system/coredns
     values:
       - ../kubernetes/apps/cert-manager/cert-manager/app/resources/values.yaml
-    version: v1.19.1
+    version: v1.19.2
 
   - chart: oci://ghcr.io/external-secrets/charts/external-secrets
     name: external-secrets
