@@ -11,3 +11,16 @@ spec:
     kind: ClusterIssuer
   commonName: chestr.dev
   dnsNames: ["chestr.dev", "*.chestr.dev"]
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: mikeflix-lol
+spec:
+  secretName: mikeflix-lol-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: mikeflix.lol
+  dnsNames: ["mikeflix.lol", "*.mikeflix.lol"]

@@ -47,8 +47,8 @@ spec:
               repository: ghcr.io/mchestr/plex-manager
               tag: main@sha256:89d3494e3b0abc7bbd6f45056d290786a8dba0c0e5e334db1f036ba12d8b7742
             env:
-              NEXT_PUBLIC_APP_URL: https://subs.chestr.dev
-              NEXTAUTH_URL: https://subs.chestr.dev
+              NEXT_PUBLIC_APP_URL: https://mikeflix.lol
+              NEXTAUTH_URL: https://mikeflix.lol
               REDIS_URL: redis://subs-dragonfly.media.svc.cluster.local:6379
               DATABASE_URL:
                 valueFrom:
@@ -75,7 +75,7 @@ spec:
     route:
       app:
         hostnames:
-          - "{{ .Release.Name }}.chestr.dev"
+          - mikeflix.lol
           - wrapped.chestr.dev
         annotations:
           gethomepage.dev/enabled: "true"

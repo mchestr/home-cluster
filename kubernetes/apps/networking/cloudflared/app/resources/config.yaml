@@ -9,4 +9,12 @@ ingress:
       originServerName: chestr.dev
   - hostname: "*.chestr.dev"
     service: *service
+  - hostname: mikeflix.lol
+    service: *service
+    originRequest:
+      originServerName: mikeflix.lol
+  - hostname: "*.mikeflix.lol"
+    service: *service
+    originRequest:
+      originServerName: external.mikeflix.lol
   - service: http_status:404

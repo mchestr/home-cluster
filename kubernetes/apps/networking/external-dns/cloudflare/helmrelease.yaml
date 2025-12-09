@@ -50,6 +50,7 @@ spec:
     domainFilters:
       - chestr.dev
       - controlforensics.com
+      - mikeflix.lol
     serviceMonitor:
       enabled: true
     podAnnotations:
