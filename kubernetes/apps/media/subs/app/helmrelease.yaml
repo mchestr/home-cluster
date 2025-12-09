@@ -77,6 +77,7 @@ spec:
         hostnames:
           - mikeflix.lol
           - wrapped.chestr.dev
+          - "{{ .Release.Name }}.chestr.dev"
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: si-plex
