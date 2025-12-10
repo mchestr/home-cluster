@@ -12,3 +12,6 @@ spec:
     - dnsName: external.mikeflix.lol
       recordType: CNAME
       targets: ["${CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"]
+    - dnsName: external.homerp.xyz
+      recordType: CNAME
+      targets: ["${CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"]

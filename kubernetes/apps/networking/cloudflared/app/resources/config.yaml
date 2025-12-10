@@ -17,4 +17,12 @@ ingress:
     service: *service
     originRequest:
       originServerName: external.mikeflix.lol
+  - hostname: homerp.xyz
+    service: *service
+    originRequest:
+      originServerName: external.homerp.xyz
+  - hostname: "*.homerp.xyz"
+    service: *service
+    originRequest:
+      originServerName: external.homerp.xyz
   - service: http_status:404

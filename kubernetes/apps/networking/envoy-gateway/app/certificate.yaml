@@ -24,3 +24,16 @@ spec:
     kind: ClusterIssuer
   commonName: mikeflix.lol
   dnsNames: ["mikeflix.lol", "*.mikeflix.lol"]
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: homerp-xyz
+spec:
+  secretName: homerp-xyz-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: homerp.xyz
+  dnsNames: ["homerp.xyz", "*.homerp.xyz"]

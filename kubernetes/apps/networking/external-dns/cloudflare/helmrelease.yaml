@@ -51,6 +51,7 @@ spec:
       - chestr.dev
       - controlforensics.com
       - mikeflix.lol
+      - homerp.xyz
     serviceMonitor:
       enabled: true
     podAnnotations:

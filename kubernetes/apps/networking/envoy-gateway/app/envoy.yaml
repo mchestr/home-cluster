@@ -74,6 +74,8 @@ spec:
             name: chestr-dev-tls
           - kind: Secret
             name: mikeflix-lol-tls
+          - kind: Secret
+            name: homerp-xyz-tls
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/gateway_v1.json
 apiVersion: gateway.networking.k8s.io/v1
