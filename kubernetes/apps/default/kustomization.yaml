@@ -12,6 +12,7 @@ resources:
   - ./frigate/ks.yaml
   - ./home-assistant/ks.yaml
   - ./homepage/ks.yaml
+  - ./homerp/ks.yaml
   - ./immich/ks.yaml
   - ./lldap/ks.yaml
   - ./paperless/ks.yaml
