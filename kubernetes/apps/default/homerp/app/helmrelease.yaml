@@ -61,11 +61,11 @@ spec:
             env:
               DEBUG: "false"
               UPLOAD_DIR: /app/uploads
-              FRONTEND_URL: https://homerp.xyz
+              FRONTEND_URL: &url https://homerp.xyz
               DATABASE_URL:
                 valueFrom:
                   secretKeyRef:
-                    name: &pguser homerp-pguser-secret
+                    name: homerp-pguser-secret
                     key: async_uri
             envFrom:
               - secretRef:
@@ -97,9 +97,9 @@ spec:
           app:
             image:
               repository: ghcr.io/mchestr/homerp/frontend
-              tag: latest@sha256:42a872fefbc17ec50e39e88163db91707d1dc957f5ddf26f149cba890fdd3355
+              tag: latest@sha256:b6d105411c0cc392b1de22a515b30580f4b7b640514fb8bfd0c86158d2fc1a58
             env:
-              NEXT_PUBLIC_API_URL: http://homerp-backend.default.svc.cluster.local:8000
+              NEXT_PUBLIC_API_URL: *url
             resources:
               requests:
                 cpu: 50m
