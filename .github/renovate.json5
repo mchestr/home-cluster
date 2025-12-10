@@ -1,4 +1,10 @@
 {
+  hostRules: [
+    {
+      matchHost: 'api.github.com',
+      token: '{{ process.env.GITHUB_COM_TOKEN }}',
+    },
+  ],
   extends: [
     'config:recommended',
     'docker:enableMajor',
