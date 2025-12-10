@@ -137,7 +137,7 @@ spec:
 
     route:
       app:
-        hostnames: ["auth.chestr.dev"]
+        hostnames: ["auth.chestr.dev", "auth.homerp.xyz"]
         parentRefs:
           - name: envoy-external
             namespace: networking

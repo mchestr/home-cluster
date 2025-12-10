@@ -37,6 +37,8 @@ session:
   cookies:
     - domain: chestr.dev
       authelia_url: https://auth.chestr.dev
+    - domain: homerp.xyz
+      authelia_url: https://auth.homerp.xyz
   redis:
     host: authelia-dragonfly.default.svc.cluster.local
 
@@ -49,9 +51,6 @@ access_control:
         - 172.16.0.0/12
         - 192.168.0.0/16
   rules:
-    - domain: displex.chestr.dev
-      resources: ["^/auth.*$"]
-      policy: bypass
     - domain:
         - sonarr.chestr.dev
         - radarr.chestr.dev
@@ -74,6 +73,7 @@ access_control:
         - rook.chestr.dev
         - sh.chestr.dev
         - windmill.chestr.dev
+        - homerp.xyz
       policy: bypass
     - domain:
         - sonarr.chestr.dev

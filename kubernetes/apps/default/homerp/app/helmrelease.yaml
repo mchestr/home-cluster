@@ -112,26 +112,15 @@ spec:
         controller: backend
         ports:
           http:
-            port: 8000
+            port: &backendPort 8000
       frontend:
         controller: frontend
         ports:
           http:
-            port: &port 3000
+            port: &frontendPort 3000
 
     route:
       app:
-        hostnames:
-          - homerp.xyz
-        parentRefs:
-          - name: envoy-internal
-            namespace: networking
-            sectionName: https
-        rules:
-          - backendRefs:
-              - name: homerp-frontend
-                port: *port
-      api:
         hostnames:
           - homerp.xyz
         parentRefs:
@@ -143,23 +132,18 @@ spec:
               - path:
                   type: PathPrefix
                   value: /api
-            backendRefs:
-              - name: homerp-backend
-                port: 8000
-          - matches:
               - path:
                   type: PathPrefix
                   value: /docs
-            backendRefs:
-              - name: homerp-backend
-                port: 8000
-          - matches:
               - path:
                   type: PathPrefix
                   value: /openapi.json
             backendRefs:
               - name: homerp-backend
-                port: 8000
+                port: *backendPort
+          - backendRefs:
+              - name: homerp-frontend
+                port: *frontendPort
 
     persistence:
       uploads:
