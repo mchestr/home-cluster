@@ -1,7 +1,7 @@
 {
   hostRules: [
     {
-      matchHost: 'api.github.com',
+      matchHost: 'github.com',
       token: '{{ process.env.GITHUB_COM_TOKEN }}',
     },
   ],
