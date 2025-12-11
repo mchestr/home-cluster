@@ -97,7 +97,7 @@ spec:
           app:
             image:
               repository: registry.gitlab.com/mchestr/homerp/frontend
-              tag: latest@sha256:79738493f28b6b783e7a030fe4990fba1d1fdf7c24ce5027edf91190bf5df6d0
+              tag: latest@sha256:9795e1d1a1144fa9b272f94dd3873a4ca5a2319de595a0f19d7a1ca3cb84d912
             env:
               NEXT_PUBLIC_API_URL: *url
             resources:
