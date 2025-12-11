@@ -72,16 +72,15 @@ jobs:
           RENOVATE_HOST_RULES: |
             [
               {
-                "matchHost": "ghcr.io",
-                "hostType": "docker",
-                "username": "x-access-token",
-                "password": "${{ steps.app-token.outputs.token }}"
+                "matchHost": "https://gitlab.com",
+                "hostType": "gitlab",
+                "token": "${{ secrets.RENOVATE_GITLAB_TOKEN }}"
               },
               {
-                "matchHost": "ghcr.io",
-                "hostType": "helm",
-                "username": "x-access-token",
-                "password": "${{ steps.app-token.outputs.token }}"
+                "matchHost": "registry.gitlab.com",
+                "hostType": "docker",
+                "username": "oauth2",
+                "password": "${{ secrets.RENOVATE_GITLAB_TOKEN }}"
               }
             ]
         with:
