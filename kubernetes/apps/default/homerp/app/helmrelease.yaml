@@ -124,7 +124,7 @@ spec:
         hostnames:
           - homerp.xyz
         parentRefs:
-          - name: envoy-internal
+          - name: envoy-external
             namespace: networking
             sectionName: https
         rules:
@@ -132,12 +132,6 @@ spec:
               - path:
                   type: PathPrefix
                   value: /api
-              - path:
-                  type: PathPrefix
-                  value: /docs
-              - path:
-                  type: PathPrefix
-                  value: /openapi.json
             backendRefs:
               - name: homerp-backend
                 port: *backendPort
