@@ -21,7 +21,7 @@ spec:
   values:
     defaultPodOptions:
       imagePullSecrets:
-        - name: ghcr-docker-secret
+        - name: gitlab-docker-secret
       automountServiceAccountToken: false
       enableServiceLinks: false
 
@@ -56,8 +56,8 @@ spec:
 
           app:
             image:
-              repository: ghcr.io/mchestr/homerp/backend
-              tag: latest@sha256:6ba57028188f1362748542167963edfc64751dbd80c5b77eab371e0b4995cce7
+              repository: registry.gitlab.com/mchestr/homerp/backend
+              tag: latest@sha256:0a233b454ed89738daad93dd580541bd64dbbcada892e22cf4bda36b56e52990
             env:
               DEBUG: "false"
               UPLOAD_DIR: /app/uploads
@@ -96,8 +96,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/mchestr/homerp/frontend
-              tag: latest@sha256:b6d105411c0cc392b1de22a515b30580f4b7b640514fb8bfd0c86158d2fc1a58
+              repository: registry.gitlab.com/mchestr/homerp/frontend
+              tag: latest@sha256:79738493f28b6b783e7a030fe4990fba1d1fdf7c24ce5027edf91190bf5df6d0
             env:
               NEXT_PUBLIC_API_URL: *url
             resources:
