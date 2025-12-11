@@ -15,7 +15,7 @@ spec:
   hostnames:
     - windmill.chestr.dev
   parentRefs:
-    - name: envoy-internal
+    - name: envoy-external
       namespace: networking
       sectionName: https
   rules:

@@ -72,8 +72,6 @@ access_control:
         - thelounge.chestr.dev
         - rook.chestr.dev
         - sh.chestr.dev
-        - windmill.chestr.dev
-        - homerp.xyz
       policy: bypass
     - domain:
         - sonarr.chestr.dev
