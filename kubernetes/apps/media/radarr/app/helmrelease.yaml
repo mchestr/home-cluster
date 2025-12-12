@@ -123,6 +123,12 @@ spec:
         path: /volume1/shared/media
         globalMounts:
           - path: /media
+      data:
+        type: nfs
+        server: nebula.chestr.dev
+        path: /var/nfs/shared/cluster/media
+        globalMounts:
+          - path: /data
       scripts:
         type: configMap
         name: radarr-pushover

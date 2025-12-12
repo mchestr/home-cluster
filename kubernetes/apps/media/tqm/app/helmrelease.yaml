@@ -81,3 +81,9 @@ spec:
         globalMounts:
           - path: /media
             readOnly: true
+      data:
+        type: nfs
+        server: nebula.chestr.dev
+        path: /var/nfs/shared/cluster/media
+        globalMounts:
+          - path: /data
