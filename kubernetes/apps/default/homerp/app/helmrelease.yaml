@@ -142,7 +142,7 @@ spec:
     persistence:
       uploads:
         type: nfs
-        server: lochnas.chestr.dev
-        path: /volume1/shared/homerp
+        server: nebula.chestr.dev
+        path: /var/nfs/shared/cluster/apps/homerp
         globalMounts:
           - path: /app/uploads
