@@ -34,7 +34,7 @@ spec:
         pod:
           affinity:
             podAntiAffinity:
-              preferredDuringSchedulingIgnoredDuringExecution:
+              requiredDuringSchedulingIgnoredDuringExecution:
                 - weight: 100
                   podAffinityTerm:
                     labelSelector:
@@ -78,14 +78,14 @@ spec:
                 memory: 512Mi
 
       frontend:
-        replicas: 2
+        replicas: 3
         strategy: RollingUpdate
-        annotations:
-          reloader.stakater.com/auto: "true"
+        rollingUpdate:
+          unavailable: 1
         pod:
           affinity:
             podAntiAffinity:
-              preferredDuringSchedulingIgnoredDuringExecution:
+              requiredDuringSchedulingIgnoredDuringExecution:
                 - weight: 100
                   podAffinityTerm:
                     labelSelector:
