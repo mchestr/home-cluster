@@ -141,8 +141,8 @@ spec:
             subPath: config.yaml
       media:
         type: nfs
-        server: lochnas.chestr.dev
-        path: /volume1/shared/frigate
+        server: nebula.chestr.dev
+        path: /var/nfs/shared/cluster
         globalMounts:
           - path: /media
       cache:
