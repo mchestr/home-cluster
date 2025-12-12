@@ -142,7 +142,7 @@ spec:
       media:
         type: nfs
         server: nebula.chestr.dev
-        path: /var/nfs/shared/cluster
+        path: /var/nfs/shared/cluster/security
         globalMounts:
           - path: /media
       cache:

@@ -59,6 +59,7 @@ machine:
         hard=True
         nconnect=16
         noatime=True
+        nolock=True
   time:
     disabled: false
     servers: ["time.cloudflare.com"]
