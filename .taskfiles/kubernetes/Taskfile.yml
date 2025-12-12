@@ -1,7 +1,23 @@
 ---
 version: "3"
 
+vars:
+  KUBERNETES_RESOURCES_DIR: '{{.ROOT_DIR}}/.taskfiles/kubernetes/resources'
+
 tasks:
+
+  nfs-pod:
+    desc: Start a pod with NFS mounts for nebula and lochnas [NS=default]
+    interactive: true
+    cmds:
+      - kubectl apply -f {{.KUBERNETES_RESOURCES_DIR}}/nfs-debug-pod.yaml --namespace {{.NS}}
+      - kubectl wait --for=condition=Ready pod/nfs-debug --namespace {{.NS}} --timeout=60s
+      - defer: kubectl delete -f {{.KUBERNETES_RESOURCES_DIR}}/nfs-debug-pod.yaml --namespace {{.NS}}
+      - kubectl exec -it nfs-debug --namespace {{.NS}} -- /bin/bash
+    vars:
+      NS: '{{.NS | default "default"}}'
+    preconditions:
+      - which kubectl
 
   hr:restart:
     desc: Restart all failed Helm Releases
