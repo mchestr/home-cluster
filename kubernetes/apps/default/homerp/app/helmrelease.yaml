@@ -143,6 +143,6 @@ spec:
       uploads:
         type: nfs
         server: nebula.chestr.dev
-        path: /var/nfs/shared/cluster/apps/homerp
+        path: /var/nfs/shared/cluster/apps/homerp/uploads
         globalMounts:
           - path: /app/uploads
