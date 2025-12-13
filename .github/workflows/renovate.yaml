@@ -51,6 +51,7 @@ jobs:
         with:
           app-id: ${{ secrets.BOT_APP_ID }}
           private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+          repositories: home-cluster,homerp
 
       - name: Checkout
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -71,6 +72,12 @@ jobs:
           RENOVATE_PLATFORM_COMMIT: true
           RENOVATE_HOST_RULES: |
             [
+              {
+                "matchHost": "ghcr.io",
+                "hostType": "docker",
+                "username": "x-access-token",
+                "password": "${{ steps.app-token.outputs.token }}"
+              },
               {
                 "matchHost": "https://gitlab.com",
                 "hostType": "gitlab",
