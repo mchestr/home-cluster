@@ -35,13 +35,11 @@ spec:
           affinity:
             podAntiAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
-                - weight: 100
-                  podAffinityTerm:
-                    labelSelector:
-                      matchLabels:
-                        app.kubernetes.io/name: *app
-                        app.kubernetes.io/controller: backend
-                    topologyKey: kubernetes.io/hostname
+                - labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: *app
+                      app.kubernetes.io/controller: backend
+                  topologyKey: kubernetes.io/hostname
 
         initContainers:
           01-init-db:
@@ -86,13 +84,11 @@ spec:
           affinity:
             podAntiAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
-                - weight: 100
-                  podAffinityTerm:
-                    labelSelector:
-                      matchLabels:
-                        app.kubernetes.io/name: *app
-                        app.kubernetes.io/controller: frontend
-                    topologyKey: kubernetes.io/hostname
+                - labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: *app
+                      app.kubernetes.io/controller: frontend
+                  topologyKey: kubernetes.io/hostname
         containers:
           app:
             image:
