@@ -55,7 +55,7 @@ spec:
           app:
             image:
               repository: registry.gitlab.com/mchestr/homerp/backend
-              tag: latest@sha256:6453c97efb11b36c6c88b7c06685837c36904f2a0f73f316fc38a5a575d92244
+              tag: latest@sha256:572bd4fd756477aafbf65b39720264ab1c745894cad0b74631f00ec787df5f6e
             env:
               DEBUG: "false"
               UPLOAD_DIR: /app/uploads
