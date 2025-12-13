@@ -55,7 +55,7 @@ spec:
           app:
             image:
               repository: ghcr.io/mchestr/homerp/backend
-              tag: latest@sha256:b78c6fd3cc6f37f31468c33c8e76b830d638604e66e553c91832e2f029e59e40
+              tag: latest@sha256:82b029951e3e51c96093a597c7a09ccf78bb8244267f99fb50573bb206e4a69b
             env:
               DEBUG: "false"
               UPLOAD_DIR: /app/uploads
