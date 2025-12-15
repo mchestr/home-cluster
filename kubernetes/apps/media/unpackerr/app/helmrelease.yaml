@@ -36,8 +36,9 @@ spec:
               UN_SONARR_0_PATHS_0: /complete/sonarr
               UN_SONARR_0_PATHS_1: /completed-torrents/sonarr
               UN_RADARR_0_URL: http://radarr.media.svc.cluster.local:7878
-              UN_RADARR_0_PATHS_0: /complete/radarr
               UN_RADARR_0_PATHS_1: /completed-torrents/radarr
+              UN_RADARR_4K_0_URL: http://radarr-4k.media.svc.cluster.local:5055
+              UN_RADARR_4K_0_PATHS_1: /completed-torrents/radarr-4k
             envFrom:
               - secretRef:
                   name: unpackerr-secret

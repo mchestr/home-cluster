@@ -72,6 +72,7 @@ access_control:
         - thelounge.chestr.dev
         - rook.chestr.dev
         - sh.chestr.dev
+        - radarr-4k.chestr.dev
       policy: bypass
     - domain:
         - sonarr.chestr.dev

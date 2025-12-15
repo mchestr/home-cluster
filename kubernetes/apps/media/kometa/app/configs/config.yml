@@ -103,7 +103,7 @@ radarr:
   token: <<RADARR_API_KEY>>
   add_missing: false
   add_existing: false
-  root_folder_path: /media/movies
+  root_folder_path: /data/movies
   monitor: true
   availability: announced
   quality_profile: Any
@@ -115,7 +115,7 @@ sonarr:
   token: <<SONARR_API_KEY>>
   add_missing: false
   add_existing: false
-  root_folder_path: /media/tv
+  root_folder_path: /data/tv
   monitor: all
   quality_profile: Any
   language_profile: English
