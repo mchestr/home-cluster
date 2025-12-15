@@ -3,7 +3,7 @@
 clients:
   qb:
     create_tags_upfront: false
-    download_path: /media/downloads/torrents/complete
+    download_path: /data/downloads/torrents/complete
     enabled: true
     filter: default
     type: qbittorrent
