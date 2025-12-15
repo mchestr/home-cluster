@@ -104,7 +104,9 @@ spec:
 
     route:
       app:
-        hostnames: ["requests.chestr.dev"]
+        hostnames:
+          - requests.chestr.dev
+          - requests.mikeflix.lol
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: overseerr.png
