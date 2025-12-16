@@ -55,7 +55,7 @@ radarr:
         assign_scores_to:
           - name: SQP-1 (2160p)
   radarr-4k:
-    base_url: http://radarr-4k.media.svc.cluster.local:5055
+    base_url: http://radarr-4k.media.svc.cluster.local:7878
     api_key: !env_var RADARR_4K_API_KEY
     delete_old_custom_formats: true
     replace_existing_custom_formats: true
