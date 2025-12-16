@@ -61,6 +61,7 @@ spec:
               UPLOAD_DIR: /app/uploads
               FRONTEND_URL: &url https://homerp.xyz
               REDIS_URL: redis://homerp-dragonfly.default.svc.cluster.local:6379
+              ALLOWED_NETWORKS: "10.0.20.200/32"
               DATABASE_URL:
                 valueFrom:
                   secretKeyRef:
