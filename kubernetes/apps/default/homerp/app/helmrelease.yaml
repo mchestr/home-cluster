@@ -62,6 +62,7 @@ spec:
               FRONTEND_URL: &url https://homerp.xyz
               REDIS_URL: redis://homerp-dragonfly.default.svc.cluster.local:6379
               ALLOWED_NETWORKS: "10.0.20.200/32"
+              FREE_MONTHLY_CREDITS: "10"
               DATABASE_URL:
                 valueFrom:
                   secretKeyRef:
