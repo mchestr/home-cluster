@@ -60,6 +60,7 @@ spec:
               DEBUG: "false"
               UPLOAD_DIR: /app/uploads
               FRONTEND_URL: &url https://homerp.xyz
+              REDIS_URL: redis://homerp-dragonfly.default.svc.cluster.local:6379
               DATABASE_URL:
                 valueFrom:
                   secretKeyRef:
