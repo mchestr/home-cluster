@@ -100,7 +100,7 @@ spec:
           app:
             image:
               repository: ghcr.io/mchestr/homerp/frontend
-              tag: latest@sha256:bc67aaf12890d6d20f529552a03cfcf183434a88368cd45928a596f6775c9323
+              tag: latest@sha256:33936afce47c38214dd35ff80e905d689b3545f03251ea9479a1ab17df506f75
             env:
               NEXT_PUBLIC_API_URL: *url
             resources:
