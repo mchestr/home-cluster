@@ -44,6 +44,8 @@ spec:
               DEBUG: "false"
               SMTP_DOMAIN: chestr.dev
               SMTP_DOMAIN_2: controlforensics.com
+              SMTP_DOMAIN_3: homerp.xyz
+              SMTP_DOMAIN_4: mikeflix.lol
             envFrom:
               - secretRef:
                   name: smtp-relay-secret
