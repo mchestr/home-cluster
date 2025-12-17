@@ -63,7 +63,7 @@ spec:
               UPLOAD_DIR: /app/uploads
               FRONTEND_URL: &url https://homerp.xyz
               REDIS_URL: redis://homerp-dragonfly.default.svc.cluster.local:6379
-              # ENVIRONMENT: production
+              ENVIRONMENT: production
               ALLOWED_NETWORKS: "10.0.20.200/32"
               FREE_MONTHLY_CREDITS: "50"
               SMTP_HOST: smtp-relay.default.svc.cluster.local
