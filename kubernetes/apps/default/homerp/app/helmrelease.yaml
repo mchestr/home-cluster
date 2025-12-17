@@ -78,6 +78,40 @@ spec:
             envFrom:
               - secretRef:
                   name: homerp-secret
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8000
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8000
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8000
+                  initialDelaySeconds: 0
+                  periodSeconds: 5
+                  timeoutSeconds: 1
+                  failureThreshold: 30
             resources:
               requests:
                 cpu: 50m
@@ -106,6 +140,40 @@ spec:
               tag: latest@sha256:b798f4e6860c40d927e9051fc3afe910a5f8d619de910f87a6402fb716ef8b90
             env:
               NEXT_PUBLIC_API_URL: *url
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 3000
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 3000
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 3000
+                  initialDelaySeconds: 0
+                  periodSeconds: 5
+                  timeoutSeconds: 1
+                  failureThreshold: 30
             resources:
               requests:
                 cpu: 50m
