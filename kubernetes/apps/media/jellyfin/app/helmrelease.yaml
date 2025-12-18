@@ -119,12 +119,6 @@ spec:
           - path: /config
       transcode:
         type: emptyDir
-      media:
-        type: nfs
-        server: lochnas.chestr.dev
-        path: /volume1/shared/media
-        globalMounts:
-          - path: /media
       data:
         type: nfs
         server: nebula.chestr.dev

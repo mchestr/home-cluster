@@ -34,11 +34,10 @@ spec:
               UN_WEBSERVER_METRICS: "true"
               UN_SONARR_0_URL: http://sonarr.media.svc.cluster.local:8989
               UN_SONARR_0_PATHS_0: /complete/sonarr
-              UN_SONARR_0_PATHS_1: /completed-torrents/sonarr
               UN_RADARR_0_URL: http://radarr.media.svc.cluster.local:7878
-              UN_RADARR_0_PATHS_1: /completed-torrents/radarr
+              UN_RADARR_0_PATHS_1: /complete/radarr
               UN_RADARR_4K_0_URL: http://radarr-4k.media.svc.cluster.local:5055
-              UN_RADARR_4K_0_PATHS_1: /completed-torrents/radarr-4k
+              UN_RADARR_4K_0_PATHS_1: /complete/radarr-4k
             envFrom:
               - secretRef:
                   name: unpackerr-secret
@@ -61,19 +60,12 @@ spec:
             port: 5656
 
     persistence:
-      media:
-        enabled: true
-        type: nfs
-        server: lochnas.chestr.dev
-        path: /volume1/shared/media/downloads/torrents/complete
-        globalMounts:
-          - path: /complete
       data:
         type: nfs
         server: nebula.chestr.dev
         path: /var/nfs/shared/cluster/media/downloads/torrents/complete
         globalMounts:
-          - path: /completed-torrents
+          - path: /complete
 
     serviceMonitor:
       app:

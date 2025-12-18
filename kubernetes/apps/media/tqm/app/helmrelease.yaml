@@ -74,16 +74,10 @@ spec:
           - path: /.config/tqm/config.yaml
             subPath: config.yaml
             readOnly: true
-      media:
-        type: nfs
-        server: lochnas.chestr.dev
-        path: /volume1/shared/media
-        globalMounts:
-          - path: /media
-            readOnly: true
       data:
         type: nfs
         server: nebula.chestr.dev
         path: /var/nfs/shared/cluster/media
         globalMounts:
           - path: /data
+            readOnly: true

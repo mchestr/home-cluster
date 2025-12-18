@@ -47,5 +47,5 @@ spec:
           volumes:
             - name: backups
               nfs:
-                path: /volume1/backups/kubernetes/apps/postgres
-                server: lochnas.chestr.dev
+                path: /var/nfs/shared/cluster/apps/postgres-backup-local
+                server: nebula.chestr.dev
