@@ -10,7 +10,8 @@
       "matchDatasources": ["docker"],
       "matchPackageNames": ["ghcr.io/blakeblackshear/frigate"],
       "versioning": "semver",
-      "ignoreUnstable": false
+      "ignoreUnstable": false,
+      "allowedVersions": "/^\\d+\\.\\d+\\.\\d+(-beta\\d+)?$/"
     }
   ]
 }
