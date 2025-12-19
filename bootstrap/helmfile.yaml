@@ -58,7 +58,7 @@ releases:
       - cert-manager/cert-manager
     values:
       - ../kubernetes/apps/external-secrets/external-secrets/app/resources/values.yaml
-    version: 1.1.1
+    version: 1.2.0
     hooks:
       - # Wait for external-secrets CRDs to be available
         events: ['postsync']
