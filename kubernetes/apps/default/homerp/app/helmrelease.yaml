@@ -197,6 +197,7 @@ spec:
       app:
         hostnames:
           - homerp.xyz
+          - www.homerp.xyz
         parentRefs:
           - name: envoy-external
             namespace: networking
