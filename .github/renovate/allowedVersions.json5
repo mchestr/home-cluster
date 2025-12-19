@@ -5,6 +5,12 @@
       "matchDatasources": ["docker"],
       "matchPackagePatterns": ["postgresql", "postgres-backup-local"],
       "allowedVersions": "<18"
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/blakeblackshear/frigate"],
+      "versioning": "semver",
+      "ignoreUnstable": false
     }
   ]
 }
