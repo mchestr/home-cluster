@@ -20,16 +20,23 @@ detectors:
     type: edgetpu
     device: usb
 
+review:
+  genai:
+    enabled: true
+    image_source: recordings
+
+lpr:
+  enabled: True
+
 semantic_search:
   enabled: true
   reindex: false
-  model_size: large
+  model_size: small
 
 genai:
-  enabled: false
   provider: openai
   api_key: "{FRIGATE_FRIGATE_OPENAI_API_KEY}"
-  model: gpt-4o-mini
+  model: gpt-5-mini
 
 model:
   # https://docs.frigate.video/configuration/objects
@@ -67,25 +74,25 @@ snapshots:
     default: 2
 
 record:
-  enabled: true
-  retain:
-    days: 14
-    mode: all
+  enabled: True
+  continuous:
+    days: 3
+  motion:
+    days: 7
   alerts:
     retain:
-      days: 90
-      mode: active_objects
+      days: 30
+      mode: all
   detections:
     retain:
-      days: 90
-      mode: active_objects
+      days: 30
+      mode: all
 
 objects:
   track:
     - person
     - vehicle
     - animal
-    - bike
     - package
   filters:
     person:
@@ -136,11 +143,11 @@ go2rtc:
       - rtsps://10.0.40.1:7441/D9DfIKJZfH6Dz9Oh
     catcam1:
       - onvif://{FRIGATE_CATCAM_CAMERA_USERNAME}:{FRIGATE_CATCAM_CAMERA_PASSWORD}@192.168.200.104:8000
-    catcam2:
-      - onvif://{FRIGATE_CATCAM_CAMERA_USERNAME}:{FRIGATE_CATCAM_CAMERA_PASSWORD}@192.168.200.99:8000
+    # catcam2:
+    #   - onvif://{FRIGATE_CATCAM_CAMERA_USERNAME}:{FRIGATE_CATCAM_CAMERA_PASSWORD}@192.168.200.99:8000
 cameras:
   living_room:
-    genai:
+    lpr:
       enabled: false
     ffmpeg:
       output_args:
@@ -170,8 +177,13 @@ cameras:
       password: "{FRIGATE_LIVING_ROOM_CAMERA_PASSWORD}"
 
   doorbell:
-    genai:
-      enabled: false
+    objects:
+      genai:
+        enabled: true
+        use_snapshot: True
+        objects:
+          - person
+          - vehicle
     ffmpeg:
       inputs:
         - path: rtsp://127.0.0.1:8554/doorbell_sd?video=copy&audio=aac
@@ -187,8 +199,14 @@ cameras:
   doorbell_package:
     audio:
       enabled: false
-    genai:
+    lpr:
       enabled: false
+    objects:
+      genai:
+        enabled: true
+        use_snapshot: True
+        objects:
+          - package
     ffmpeg:
       inputs:
         - path: rtsp://127.0.0.1:8554/doorbell_package?video=copy
@@ -202,7 +220,7 @@ cameras:
   catcam1:
     audio:
       enabled: false
-    genai:
+    lpr:
       enabled: false
     ffmpeg:
       output_args:
@@ -225,38 +243,39 @@ cameras:
       user: "{FRIGATE_CATCAM_CAMERA_USERNAME}"
       password: "{FRIGATE_CATCAM_CAMERA_PASSWORD}"
 
-  catcam2:
-    audio:
-      enabled: false
-    genai:
-      enabled: false
-    ffmpeg:
-      output_args:
-        record: preset-record-generic-audio-aac
-      inputs:
-        - path: rtsp://127.0.0.1:8554/catcam2?video=copy&audio=aac
-          input_args: preset-rtsp-restream
-          roles:
-            - record
-            - detect
-    motion:
-      mask:
-        - 0.025,0.039,0.263,0.039,0.265,0.087,0.023,0.086
-    live:
-      streams:
-        Main: catcam2
-    onvif:
-      host: 192.168.200.99
-      port: 8000
-      user: "{FRIGATE_CATCAM_CAMERA_USERNAME}"
-      password: "{FRIGATE_CATCAM_CAMERA_PASSWORD}"
+  # catcam2:
+  #   audio:
+  #     enabled: false
+  #   lpr:
+  #     enabled: false
+  #   ffmpeg:
+  #     output_args:
+  #       record: preset-record-generic-audio-aac
+  #     inputs:
+  #       - path: rtsp://127.0.0.1:8554/catcam2?video=copy&audio=aac
+  #         input_args: preset-rtsp-restream
+  #         roles:
+  #           - record
+  #           - detect
+  #   motion:
+  #     mask:
+  #       - 0.025,0.039,0.263,0.039,0.265,0.087,0.023,0.086
+  #   live:
+  #     streams:
+  #       Main: catcam2
+  #   onvif:
+  #     host: 192.168.200.99
+  #     port: 8000
+  #     user: "{FRIGATE_CATCAM_CAMERA_USERNAME}"
+  #     password: "{FRIGATE_CATCAM_CAMERA_PASSWORD}"
 
 auth:
-  enabled: false
+  enabled: true
 
 proxy:
   header_map:
     user: remote-user
+    role: remote-groups
 
 tls:
   enabled: false
