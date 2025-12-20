@@ -157,11 +157,11 @@ cameras:
           input_args: preset-rtsp-restream-low-latency
           roles:
             - record
+            - audio
         - path: rtsp://127.0.0.1:8554/living_room_sd?video=copy&audio=aac
           input_args: preset-rtsp-restream-low-latency
           roles:
             - detect
-            - audio
     motion:
       mask:
         - 0.735,0,0.73,0.074,0.277,0.076,0.281,0
@@ -186,11 +186,15 @@ cameras:
           - vehicle
     ffmpeg:
       inputs:
+        - path: rtsp://127.0.0.1:8554/doorbell_hd?video=copy&audio=aac
+          input_args: preset-rtsp-restream
+          roles:
+            - audio
+            - record
         - path: rtsp://127.0.0.1:8554/doorbell_sd?video=copy&audio=aac
           input_args: preset-rtsp-restream
           roles:
             - detect
-            - audio
     live:
       streams:
         Main: doorbell_hd
@@ -213,6 +217,7 @@ cameras:
           input_args: preset-rtsp-restream
           roles:
             - detect
+            - record
     live:
       streams:
         Main: doorbell_package
