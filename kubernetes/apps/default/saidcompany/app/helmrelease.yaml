@@ -105,6 +105,10 @@ spec:
     route:
       app:
         hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        annotations:
+          gatus.home-operations.com/endpoint: |
+            conditions:
+              - "[STATUS] == 404"
         parentRefs:
           - name: envoy-external
             namespace: networking

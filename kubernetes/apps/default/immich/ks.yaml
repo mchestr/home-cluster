@@ -23,7 +23,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      GATUS_SUBDOMAIN: photos
       CNPG_NAME: *app
   prune: true
   retryInterval: 1m

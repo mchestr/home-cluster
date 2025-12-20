@@ -20,7 +20,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      GATUS_STATUS: '401'
       VOLSYNC_CACHE_CAPACITY: 70Gi
       VOLSYNC_CAPACITY: 70Gi
   prune: true

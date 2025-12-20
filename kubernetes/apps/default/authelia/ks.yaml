@@ -25,7 +25,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      GATUS_SUBDOMAIN: auth
       DRAGONFLY_REPLICAS: "3"
   prune: true
   retryInterval: 1m

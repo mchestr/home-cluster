@@ -24,7 +24,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      GATUS_SUBDOMAIN: zwave
   prune: true
   retryInterval: 1m
   sourceRef:

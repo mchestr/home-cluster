@@ -13,8 +13,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      GATUS_SUBDOMAIN: echo
-      GATUS_PATH: /healthz
   prune: true
   retryInterval: 1m
   sourceRef:
