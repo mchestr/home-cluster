@@ -37,7 +37,7 @@ spec:
           main:
             image:
               repository: docker.io/cyfershepard/jellystat
-              tag: 1.1.6
+              tag: 1.1.7
             env:
               TZ: America/Vancouver
               POSTGRES_IP:
