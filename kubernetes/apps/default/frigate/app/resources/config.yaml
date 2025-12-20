@@ -177,6 +177,8 @@ cameras:
       password: "{FRIGATE_LIVING_ROOM_CAMERA_PASSWORD}"
 
   doorbell:
+    detect:
+      enabled: true
     objects:
       genai:
         enabled: true
@@ -201,6 +203,8 @@ cameras:
         Sub: doorbell_sd
 
   doorbell_package:
+    detect:
+      enabled: true
     audio:
       enabled: false
     lpr:
