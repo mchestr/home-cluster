@@ -197,7 +197,6 @@ spec:
       app:
         hostnames:
           - homerp.xyz
-          - www.homerp.xyz
         parentRefs:
           - name: envoy-external
             namespace: networking
@@ -213,6 +212,19 @@ spec:
           - backendRefs:
               - name: homerp-frontend
                 port: *frontendPort
+      www-redirect:
+        hostnames:
+          - www.homerp.xyz
+        parentRefs:
+          - name: envoy-external
+            namespace: networking
+            sectionName: https
+        rules:
+          - filters:
+              - type: RequestRedirect
+                requestRedirect:
+                  hostname: homerp.xyz
+                  statusCode: 301
 
     persistence:
       uploads:
