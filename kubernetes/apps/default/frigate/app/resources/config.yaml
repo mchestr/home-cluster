@@ -249,6 +249,9 @@ cameras:
         objects:
           - package
         loitering_time: 10
+        filters:
+          package:
+            threshold: 0.75
 
   catcam1:
     audio:
