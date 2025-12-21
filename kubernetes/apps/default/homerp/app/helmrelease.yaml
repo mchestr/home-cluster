@@ -65,7 +65,6 @@ spec:
               REDIS_URL: redis://homerp-dragonfly.default.svc.cluster.local:6379
               ENVIRONMENT: production
               ALLOWED_NETWORKS: "10.0.20.200/32"
-              FREE_MONTHLY_CREDITS: "50"
               SMTP_HOST: smtp-relay.default.svc.cluster.local
               SMTP_PORT: 2525
               SMTP_FROM_EMAIL: no-reply@homerp.xyz
