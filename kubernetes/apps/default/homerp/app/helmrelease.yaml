@@ -137,7 +137,7 @@ spec:
           app:
             image:
               repository: ghcr.io/mchestr/homerp/frontend
-              tag: latest@sha256:6bafb4140d9cdf91c0945c4614b7569cfc52271581fcc2b1d79e674282ee6a0b
+              tag: latest@sha256:d4424d7113a41bdda85143b0fc5f779d01fd2ec04b46cf7d867fec20ddb9abed
             env:
               NEXT_PUBLIC_API_URL: *url
             probes:
