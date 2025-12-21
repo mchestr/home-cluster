@@ -10,3 +10,4 @@ configurations:
 resources:
   - ./helmrelease.yaml
   - ./helmrepository.yaml
+  - ./httproute.yaml
