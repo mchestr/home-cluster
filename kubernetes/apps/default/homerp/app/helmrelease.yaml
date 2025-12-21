@@ -68,7 +68,7 @@ spec:
               FREE_MONTHLY_CREDITS: "50"
               SMTP_HOST: smtp-relay.default.svc.cluster.local
               SMTP_PORT: 2525
-              SMTP_FROM: no-reply@homerp.xyz
+              SMTP_FROM_EMAIL: no-reply@homerp.xyz
               SMTP_USE_TLS: false
               DATABASE_URL:
                 valueFrom:
