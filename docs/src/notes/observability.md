@@ -1,64 +1,55 @@
-## Observability
+# Observability
 
-### In-Cluster Monitoring
+## In-Cluster Monitoring
 
-#### Metrics
+### Metrics
 
-I use all the standard Prometheus CRDs for metric collection, such as ServiceMonitor/PodMonitor/PrometheusRules etc.
+I use all the standard Prometheus CRDs for metric collection - ServiceMonitor, PodMonitor, PrometheusRules, etc.
 
-For metrics storage I use [Victoria Metrics](https://victoriametrics.com/).
-VM is a drop-in replacement for Prometheus which claims to be more performant than Prometheus.
-For the most part it seems to work well.
+For metrics storage I use [Victoria Metrics](https://victoriametrics.com/). VM is a drop-in replacement for Prometheus which claims to be more performant. For the most part it seems to work well.
 
-Reasons for switching from Prometheus:
+Why I switched from Prometheus:
 
-1. Works with all the same CRDs as Prometheus, so I could swap back later.
-2. Claims to be more performant.
-3. UI is a bit nicer in my opinion.
+1. Works with all the same CRDs, so I could swap back later if needed
+2. Claims to be more performant
+3. UI is a bit nicer in my opinion
 
-#### Logging
+### Logging
 
-To gather logs, I use [FluentBit](https://fluentbit.io/). I used to use vector/promtail however I gave fluentbit
-a try and so far I prefer it over the others. Fluent bit uses minimal resources (10 mCPU / 15MB RAM)
-and is fairly easy to configure for label normalization/cleaning.
+For log collection I use [FluentBit](https://fluentbit.io/). I used to use vector/promtail but gave fluentbit a try and prefer it over the others. It uses minimal resources (~10 mCPU / 15MB RAM) and is fairly easy to configure for label normalization/cleaning.
 
-For log storage I use [Victoria Logs](https://docs.victoriametrics.com/victorialogs/).
-I switched to VM Logs from Loki and much prefer VM Logs over Loki+Grafana for querying.
+For log storage I use [Victoria Logs](https://docs.victoriametrics.com/victorialogs/). I switched from Loki and much prefer VM Logs over Loki+Grafana for querying.
 
-Reasons for switching from Loki:
+Why I switched from Loki:
 
-1. Loki is just a storage layer and has no UI, to visualize logs you need to use Grafana.
+1. Loki is just a storage layer with no UI - you need Grafana to visualize logs
 2. Using Grafana to ad-hoc query logs is tedious and slow
-3. Loki is not as straight forward to setup.
-4. VM Logs has a built-in Prometheus-like query dashboard so ad-hoc log diving is simple.
+3. Loki is not straightforward to setup
+4. VM Logs has a built-in Prometheus-like query dashboard so ad-hoc log diving is simple
 
-#### Alerting
+### Alerting
 
-Alerting I use the standard [AlertManager](https://prometheus.io/docs/alerting/latest/alertmanager/) from Prometheus via Victoria Metrics.
+For alerting I use [AlertManager](https://prometheus.io/docs/alerting/latest/alertmanager/) via Victoria Metrics.
 
-I run 2 instance of [VMAlert](https://docs.victoriametrics.com/operator/resources/vmalert/) at the moment, one setup to Alert off Victoria Metric rules, and one to alert off Victoria Log rules. VMAlert will manage pushing alerts to AlertManager.
-Right now 2 instances are needed otherwise the query language used in Victoria Log rules will fail if run against Victora Metrics.
+I run 2 instances of [VMAlert](https://docs.victoriametrics.com/operator/resources/vmalert/) - one for Victoria Metrics rules and one for Victoria Logs rules. Two instances are needed because the query languages are different and would fail if run against the wrong backend.
 
-For push notifications I paid $5 and use [PushOver](https://pushover.net/).
+For push notifications I paid $5 for [PushOver](https://pushover.net/) and it works great.
 
-### Off-Cluster Monitoring
+## Off-Cluster Monitoring
 
-For things not codified in this repo, the following extra external services are used.
+For things not in this repo, I use a few external services.
 
-#### UDM Pro Dynamic DNS
+### UDM Pro Dynamic DNS
 
-I use Dynamic DNS on my UDM Pro to automatically update a A Record in Cloudflare that contains my home public IP.
+I use Dynamic DNS on my UDM Pro to automatically update an A Record in Cloudflare with my home public IP.
 
-#### Healthchecks.io
+### Healthchecks.io
 
-I have 2 push monitors setup on [HealthChecks.io](https://healthchecks.io/) to track cluster status externally. Healthchecks has free push monitors which is why I use it.
+I have 2 push monitors on [HealthChecks.io](https://healthchecks.io/) to track cluster status externally. They have free push monitors which is why I use it.
 
-1. Alertmanager `Watchdog` will ping the healthchecks.io endpoint every 5 minutes.
-  a. This ensures my alerting is working correctly.
-2. Gatus endpoint for my [status page](https://status.chestr.dev).
-  a. This ensures my status page is available and working.
+1. AlertManager `Watchdog` pings healthchecks.io every 5 minutes - this ensures my alerting is working
+2. Gatus endpoint for my [status page](https://status.chestr.dev) - ensures the status page is available
 
-#### UptimeRobot
+### UptimeRobot
 
-I use [UptimeRobot](https://uptimerobot.com/) to periodically ping the DNS A record set by my UDM to monitor my home network is reachable externally.
-Uptime robot is free for 5 minute pings.
+I use [UptimeRobot](https://uptimerobot.com/) to periodically ping the DNS A record set by my UDM to monitor that my home network is reachable externally. Free for 5 minute pings.
