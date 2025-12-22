@@ -39,6 +39,8 @@ session:
       authelia_url: https://auth.chestr.dev
     - domain: homerp.xyz
       authelia_url: https://auth.homerp.xyz
+    - domain: mikeflix.lol
+      authelia_url: https://auth.mikeflix.lol
   redis:
     host: authelia-dragonfly.default.svc.cluster.local
 
@@ -65,7 +67,7 @@ access_control:
         - homepage.chestr.dev
         - irc.chestr.dev
         - jellyfin.chestr.dev
-        - jellyseerr.chestr.dev
+        - play.mikeflix.lol
         - lldap.chestr.dev
         - paperless.chestr.dev
         - tautulli.chestr.dev
