@@ -30,7 +30,7 @@ spec:
               DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
               JELLYFIN_FFmpeg__probesize: 50000000
               JELLYFIN_FFmpeg__analyzeduration: 50000000
-              JELLYFIN_PublishedServerUrl: &ip 10.0.20.70
+              JELLYFIN_PublishedServerUrl: &ip https://play.mikeflix.lol
               TZ: America/Vancouver
             resources:
               requests:
