@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app jellyseerr
+  name: &app jellyseerr-fin
 spec:
   interval: 30m
   chartRef:
@@ -18,7 +18,7 @@ spec:
       retries: 3
   values:
     controllers:
-      jellyseerr:
+      jellyseerr-fin:
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -29,7 +29,7 @@ spec:
               tag: "18"
             envFrom:
               - secretRef:
-                  name: jellyseerr-initdb-secret
+                  name: jellyseerr-fin-initdb-secret
 
         containers:
           app:
@@ -45,7 +45,7 @@ spec:
               DB_HOST:
                 valueFrom:
                   secretKeyRef:
-                    name: &pguser jellyseerr-pguser-secret
+                    name: &pguser jellyseerr-fin-pguser-secret
                     key: host
               DB_USER:
                 valueFrom:
@@ -64,7 +64,7 @@ spec:
                     key: db
             envFrom:
               - secretRef:
-                  name: jellyseerr-secret
+                  name: jellyseerr-fin-secret
             probes:
               liveness: &probes
                 enabled: true
@@ -105,15 +105,14 @@ spec:
     route:
       app:
         hostnames:
-          - requests.chestr.dev
-          # - requests.mikeflix.lol
+          - requests.mikeflix.lol
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: overseerr.png
-          gethomepage.dev/name: Requests
+          gethomepage.dev/name: Requests-fin
           gethomepage.dev/group: Media
           gethomepage.dev/widget.type: overseerr
-          gethomepage.dev/widget.url: http://jellyseerr.media.svc.cluster.local:5055
+          gethomepage.dev/widget.url: http://jellyseerr-fin.media.svc.cluster.local:5055
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_JELLYSEERR_API_KEY}}" }}'
         parentRefs:
           - name: envoy-external
@@ -130,7 +129,7 @@ spec:
         globalMounts:
           - path: /app/config
       config-cache:
-        existingClaim: jellyseerr-cache
+        existingClaim: jellyseerr-fin-cache
         globalMounts:
           - path: /app/config/cache
       config-logs:

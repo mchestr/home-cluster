@@ -12,6 +12,7 @@ resources:
   - ./jellyfin/ks.yaml
   - ./jellyplex-watched/ks.yaml
   - ./jellyseerr/ks.yaml
+  - ./jellyseerr-fin/ks.yaml
   - ./jellystat/ks.yaml
   - ./kometa/ks.yaml
   - ./plex/ks.yaml
