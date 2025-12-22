@@ -91,7 +91,9 @@ spec:
 
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        hostnames:
+          - "{{ .Release.Name }}.chestr.dev"
+          - play.mikeflix.lol
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: jellyfin.png
