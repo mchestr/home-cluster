@@ -15,7 +15,7 @@ machine:
       rotate-server-certificates: "true"
     extraConfig:
       maxPods: 150
-      imageMaximumGCAge: 1d
+      imageMaximumGCAge: 12h
     extraMounts:
       - destination: /var/mnt/extra
         type: bind
