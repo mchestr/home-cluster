@@ -16,6 +16,7 @@ resources:
   - ./jellyseerr-fin/ks.yaml
   - ./jellystat/ks.yaml
   - ./kometa/ks.yaml
+  - ./pinchflat/ks.yaml
   - ./plex/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
