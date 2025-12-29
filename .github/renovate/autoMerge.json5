@@ -37,7 +37,6 @@
       matchUpdateTypes: ["minor", "patch", "digest"],
       matchDepNames: [
         "ghcr.io/esphome/esphome",
-        "ghcr.io/fallenbagel/jellyseerr",
         "ghcr.io/home-operations/bazarr",
         "ghcr.io/home-operations/plex",
         "ghcr.io/home-operations/prowlarr",
@@ -47,6 +46,7 @@
         "ghcr.io/home-operations/sonarr",
         "ghcr.io/home-operations/tautulli",
         "ghcr.io/koenkk/zigbee2mqtt",
+        "ghcr.io/seerr-team/seerr",
         "ghcr.io/twin/gatus",
         "ghcr.io/wizarrrr/wizarr",
         "ghcr.io/zwave-js/zwave-js-ui",
