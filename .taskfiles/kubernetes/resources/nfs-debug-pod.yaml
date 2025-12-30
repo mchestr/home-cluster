@@ -11,14 +11,8 @@ spec:
       volumeMounts:
         - name: nebula
           mountPath: /mnt/nebula
-        - name: lochnas
-          mountPath: /mnt/lochnas
   volumes:
     - name: nebula
       nfs:
         server: nebula.chestr.dev
         path: /var/nfs/shared/cluster
-    - name: lochnas
-      nfs:
-        server: lochnas.chestr.dev
-        path: /volume1/shared

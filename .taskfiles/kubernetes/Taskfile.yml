@@ -7,7 +7,7 @@ vars:
 tasks:
 
   nfs-pod:
-    desc: Start a pod with NFS mounts for nebula and lochnas [NS=default]
+    desc: Start a pod with NFS mounts for nebula [NS=default]
     interactive: true
     cmds:
       - kubectl apply -f {{.KUBERNETES_RESOURCES_DIR}}/nfs-debug-pod.yaml --namespace {{.NS}}
