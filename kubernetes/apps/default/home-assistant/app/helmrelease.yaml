@@ -66,8 +66,8 @@ spec:
         ports:
           http:
             port: &port 8123
-          events:
-            port: 14000
+          sonos:
+            port: 1400
 
     route:
       app:
