@@ -66,6 +66,8 @@ spec:
         ports:
           http:
             port: &port 8123
+          events:
+            port: 14000
 
     route:
       app:
