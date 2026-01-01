@@ -32,8 +32,25 @@ spec:
                 "namespace": "networking",
                 "ips": ["10.0.10.250/24"]
               }]
+          hostAliases:
+            - ip: "10.0.10.250"
+              hostnames:
+                - "home-assistant"
         annotations:
           reloader.stakater.com/auto: "true"
+
+        initContainers:
+          copy-soco-fix:
+            image:
+              repository: busybox
+              tag: latest
+            command:
+              - sh
+              - -c
+              - |
+                mkdir -p /config/custom_components/soco_ip_fix
+                cp /soco-config/manifest.json /config/custom_components/soco_ip_fix/
+                cp /soco-config/__init__.py /config/custom_components/soco_ip_fix/
 
         containers:
           app:
@@ -88,13 +105,48 @@ spec:
               - name: *app
                 port: *port
 
+    configMaps:
+      soco-config:
+        data:
+          manifest.json: |
+            {
+              "domain": "soco_ip_fix",
+              "name": "Soco IP Fix",
+              "version": "1.0.0",
+              "codeowners": [],
+              "dependencies": [],
+              "requirements": []
+            }
+          __init__.py: |
+            import soco.config
+            soco.config.EVENT_LISTENER_IP = "10.0.10.250"
+
+            async def async_setup(hass, config):
+                return True
+
     persistence:
       config:
         existingClaim: *app
-        globalMounts:
-          - path: /config
-          - path: /.vscode-server
-          - path: /.vscode
+        advancedMounts:
+          home-assistant:
+            copy-soco-fix:
+              - path: /config
+            app:
+              - path: /config
+              - path: /.vscode-server
+              - path: /.vscode
+            vscode-tunnel:
+              - path: /config
+              - path: /.vscode-server
+              - path: /.vscode
+
+      soco-config:
+        type: configMap
+        name: home-assistant
+        advancedMounts:
+          home-assistant:
+            copy-soco-fix:
+              - path: /soco-config
 
       deploykey:
         type: secret
