@@ -105,6 +105,8 @@ spec:
               - name: *app
                 port: *port
 
+    # Custom component to fix Sonos soco library binding to pod IP instead of Multus IP.
+    # Sets soco.config.EVENT_LISTENER_IP so Sonos speakers can reach HA for event callbacks.
     configMaps:
       soco-config:
         data:
