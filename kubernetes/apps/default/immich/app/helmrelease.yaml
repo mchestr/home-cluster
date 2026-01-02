@@ -93,7 +93,7 @@ spec:
             resources:
               requests: *requests
               limits:
-                memory: 2Gi
+                memory: 8Gi
 
     service:
       immich:
