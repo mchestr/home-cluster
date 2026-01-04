@@ -15,6 +15,7 @@ resources:
   - ./homerp/ks.yaml
   - ./immich/ks.yaml
   - ./lldap/ks.yaml
+  - ./matter-server/ks.yaml
   - ./paperless/ks.yaml
   - ./radicale/ks.yaml
   - ./saidcompany/ks.yaml

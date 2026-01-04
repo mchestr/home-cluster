@@ -1,0 +1,93 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app matter-server
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 2
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  values:
+    controllers:
+      matter-server:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"multus-iot",
+                "namespace": "networking",
+                "ips": ["10.0.10.122/24"]
+              }]
+          securityContext:
+            runAsNonRoot: false
+            runAsUser: 0
+            runAsGroup: 0
+            fsGroup: 0
+            fsGroupChangePolicy: OnRootMismatch
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/home-assistant-libs/python-matter-server
+              tag: 8.1.0@sha256:170aa093ce91c76cde4cc390918307590f0f5558fcec93f913af3cb019e6562a
+            env:
+              TZ: America/Vancouver
+              MATTER_SERVER__INSTANCE_NAME: "{{ .Release.Name }}"
+              MATTER_SERVER__PORT: &port 5580
+              MATTER_SERVER__APPLICATION_URL: &host "{{ .Release.Name }}.chestr.dev"
+              MATTER_SERVER__LOG_LEVEL: info
+            args:
+              - --storage-path=/data
+              - --primary-interface=net1
+              - --log-level=debug
+              - --log-level-sdk=info
+            resources:
+              limits:
+                memory: 100Mi
+
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
+
+    route:
+      app:
+        hostnames:
+          - *host
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: home-assistant.png
+          gethomepage.dev/name: Matter Server
+          gethomepage.dev/group: Automation
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+
+    persistence:
+      data:
+        existingClaim: *app
+      tmp:
+        type: emptyDir
