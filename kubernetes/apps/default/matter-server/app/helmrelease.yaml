@@ -59,7 +59,7 @@ spec:
               - --log-level-sdk=info
             resources:
               limits:
-                memory: 100Mi
+                memory: 1Gi
 
     service:
       app:
