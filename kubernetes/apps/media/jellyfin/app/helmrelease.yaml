@@ -30,7 +30,7 @@ spec:
               DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
               JELLYFIN_FFmpeg__probesize: 50000000
               JELLYFIN_FFmpeg__analyzeduration: 50000000
-              JELLYFIN_PublishedServerUrl: &ip https://play.mikeflix.lol
+              JELLYFIN_PublishedServerUrl: https://play.mikeflix.lol,http://10.0.20.70:8096
               TZ: America/Vancouver
             resources:
               requests:
@@ -84,10 +84,16 @@ spec:
         controller: *app
         type: LoadBalancer
         annotations:
-          lbipam.cilium.io/ips: *ip
+          lbipam.cilium.io/ips: 10.0.20.70
         ports:
           http:
             port: &port 8096
+            protocol: TCP
+            targetPort: *port
+          discovery:
+            port: &discoveryPort 7359
+            protocol: UDP
+            targetPort: *discoveryPort
 
     route:
       app:
