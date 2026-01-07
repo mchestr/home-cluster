@@ -9,7 +9,8 @@ metadata:
       conditions:
         - "[STATUS] == 404"
 spec:
-  hostnames: ["flux-webhook.chestr.dev"]
+  hostnames:
+    - flux-webhook.chestr.dev
   parentRefs:
     - name: envoy-external
       namespace: networking

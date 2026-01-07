@@ -26,7 +26,7 @@ review:
     image_source: recordings
 
 lpr:
-  enabled: True
+  enabled: true
 
 semantic_search:
   enabled: true
@@ -74,7 +74,7 @@ snapshots:
     default: 2
 
 record:
-  enabled: True
+  enabled: true
   continuous:
     days: 3
   motion:

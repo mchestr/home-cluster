@@ -16,7 +16,8 @@ metadata:
       conditions:
         - "[STATUS] == 200"
 spec:
-  hostnames: ["rook.chestr.dev"]
+  hostnames:
+    - rook.chestr.dev
   parentRefs:
     - name: envoy-internal
       namespace: networking

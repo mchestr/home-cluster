@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2154
+set -euo pipefail
 
 PUSHOVER_DEBUG="${PUSHOVER_DEBUG:-"true"}"
 # kubectl port-forward service/sonarr -n default 8989:80

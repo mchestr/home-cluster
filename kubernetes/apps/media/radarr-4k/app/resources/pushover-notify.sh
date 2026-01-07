@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2154
+set -euo pipefail
 
 PUSHOVER_DEBUG="${PUSHOVER_DEBUG:-"true"}"
 # kubectl port-forward service/radarr-4k -n default 7878:80

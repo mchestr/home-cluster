@@ -16,7 +16,8 @@ metadata:
       conditions:
         - "[STATUS] == 200"
 spec:
-  hostnames: ["emqx.chestr.dev"]
+  hostnames:
+    - emqx.chestr.dev
   parentRefs:
     - name: envoy-internal
       namespace: networking

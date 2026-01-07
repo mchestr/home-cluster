@@ -8,6 +8,7 @@ spec:
     kind: OCIRepository
     name: openebs
   interval: 1h
+  maxHistory: 2
   install:
     remediation:
       retries: -1
@@ -15,6 +16,8 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
+  uninstall:
+    keepHistory: false
   values:
     localpv-provisioner:
       localpv:

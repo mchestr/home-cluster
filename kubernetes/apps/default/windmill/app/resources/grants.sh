@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 export INIT_POSTGRES_SUPER_USER=${INIT_POSTGRES_SUPER_USER:-postgres}
 export INIT_POSTGRES_PORT=${INIT_POSTGRES_PORT:-5432}

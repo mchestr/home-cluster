@@ -13,7 +13,7 @@ spec:
         kind: HelmRepository
         name: intel
         namespace: flux-system
-  maxHistory: 3
+  maxHistory: 2
   install:
     remediation:
       retries: -1

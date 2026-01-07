@@ -12,7 +12,8 @@ metadata:
     gethomepage.dev/icon: cilium.png
     gethomepage.dev/pod-selector: app.kubernetes.io/name=hubble-ui
 spec:
-  hostnames: ["hubble.chestr.dev"]
+  hostnames:
+    - hubble.chestr.dev
   parentRefs:
     - name: envoy-internal
       namespace: networking

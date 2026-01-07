@@ -9,6 +9,16 @@ spec:
     kind: OCIRepository
     name: gha-runner-scale-set
   interval: 1h
+  maxHistory: 2
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     githubConfigUrl: https://github.com/mchestr/home-cluster
     githubConfigSecret: home-cluster-runner-secret

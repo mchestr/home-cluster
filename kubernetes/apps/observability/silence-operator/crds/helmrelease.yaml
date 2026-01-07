@@ -9,6 +9,7 @@ spec:
   chartRef:
     kind: OCIRepository
     name: silence-operator-crds
+  maxHistory: 2
   install:
     remediation:
       retries: -1
@@ -16,3 +17,5 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
+  uninstall:
+    keepHistory: false

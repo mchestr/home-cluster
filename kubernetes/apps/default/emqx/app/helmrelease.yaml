@@ -13,6 +13,7 @@ spec:
         kind: HelmRepository
         name: emqx
         namespace: flux-system
+  maxHistory: 2
   install:
     remediation:
       retries: -1
@@ -20,6 +21,8 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
+  uninstall:
+    keepHistory: false
   values:
     fullnameOverride: emqx-operator
     image:

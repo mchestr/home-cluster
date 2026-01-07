@@ -34,7 +34,7 @@ Flux manages the state of the cluster, but it can't do that until its installed.
 6. [spegel](https://github.com/spegel-org/spegel) - In-cluster OCI registry mirror to save some bandwidth.
 7. [Flux](https://fluxcd.io/) - After this point Flux manages the state of the cluster via manifests in the repo.
 
-All of these get installed with a single command from the [bootstrap Taskfile](https://github.com/mchestr/home-cluster/blob/main/.taskfiles/bootstrap/Taskfile.yaml#L20):
+All of these get installed with a single command from the [bootstrap Taskfile](https://github.com/mchestr/home-cluster/blob/main/.taskfiles/bootstrap/Taskfile.yml#L20):
 
 ```bash
 task bootstrap:apps
