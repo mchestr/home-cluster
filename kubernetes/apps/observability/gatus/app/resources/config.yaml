@@ -3,13 +3,20 @@ metrics: true
 debug: false
 
 storage:
-  type: postgres
-  path: ${DB_URI}
+  type: sqlite
   caching: true
+  path: ${GATUS_CONFIG_PATH}/gatus.db
 
 ui:
   title: Status | Gatus
   header: Status
+  logo: https://avatars.githubusercontent.com/u/1817506
+  link: https://github.com/mchestr
+  buttons:
+    - name: Github
+      link: https://github.com/mchestr
+    - name: Homelab
+      link: https://github.com/mchestr/home-cluster
 
 web:
   port: ${CUSTOM_WEB_PORT}

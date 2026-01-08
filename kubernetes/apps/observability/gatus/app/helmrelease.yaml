@@ -26,14 +26,6 @@ spec:
           reloader.stakater.com/auto: "true"
 
         initContainers:
-          01-init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: "18"
-            envFrom:
-              - secretRef:
-                  name: gatus-initdb-secret
-
           init-config:
             image:
               repository: ghcr.io/home-operations/gatus-sidecar
@@ -59,11 +51,6 @@ spec:
               GATUS_CONFIG_PATH: /config
               GATUS_DELAY_START_SECONDS: 5
               CUSTOM_WEB_PORT: &port 80
-              DB_URI:
-                valueFrom:
-                  secretKeyRef:
-                    name: gatus-pguser-secret
-                    key: uri
             envFrom:
               - secretRef:
                   name: gatus-secret
@@ -129,6 +116,36 @@ spec:
           - backendRefs:
               - name: *app
                 port: *port
+
+    rbac:
+      roles:
+        gatus:
+          type: ClusterRole
+          rules:
+            - apiGroups:
+                - ""
+              resources:
+                - services
+              verbs:
+                - get
+                - watch
+                - list
+            - apiGroups:
+                - gateway.networking.k8s.io
+              resources:
+                - gateways
+                - httproutes
+              verbs:
+                - get
+                - watch
+                - list
+      bindings:
+        gatus:
+          type: ClusterRoleBinding
+          roleRef:
+            identifier: gatus
+          subjects:
+            - identifier: gatus
 
     serviceAccount:
       gatus: {}
