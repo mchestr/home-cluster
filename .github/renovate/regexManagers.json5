@@ -17,5 +17,16 @@
       versioningTemplate: "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
       packageNameTemplate: "{{#if packageName}}{{{packageName}}}{{else}}{{{depName}}}{{/if}}",
     },
+    {
+      description: "Process GitHub raw URLs with versions in path",
+      fileMatch: [
+        "talos/.+\\.ya?ml$",
+      ],
+      matchStrings: [
+        'datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\n\\s+https://github\\.com/[^/]+/[^/]+/(?:releases/download|raw/refs/tags)/(?<currentValue>v[\\d.]+)/[^\\s]+',
+      ],
+      datasourceTemplate: "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
+      versioningTemplate: "semver",
+    },
   ],
 }
