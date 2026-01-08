@@ -49,6 +49,10 @@ metadata:
   name: envoy-external
   annotations:
     external-dns.alpha.kubernetes.io/target: &hostname external.chestr.dev
+    gatus.home-operations.com/endpoint: |-
+      client:
+        dns-resolver: tcp://1.1.1.1:53
+      group: external
 spec:
   gatewayClassName: envoy
   infrastructure:
@@ -84,7 +88,12 @@ metadata:
   name: envoy-internal
   annotations:
     external-dns.alpha.kubernetes.io/target: &hostname internal.chestr.dev
-    gatus.home-operations.com/endpoint: |
+    gatus.home-operations.com/endpoint: |-
+      group: internal
+      guarded: true
+      ui:
+        hide-hostname: true
+        hide-url: true
       conditions:
         - "[STATUS] == 401"
 spec:
@@ -148,14 +157,12 @@ metadata:
   name: envoy
 spec:
   compression:
+    - type: Zstd
     - type: Brotli
     - type: Gzip
-  connection:
-    bufferLimit: 8Mi
   targetSelectors:
-    - kind: Gateway
-      matchLabels:
-        app.kubernetes.io/name: envoy
+    - group: gateway.networking.k8s.io
+      kind: Gateway
   tcpKeepalive: {}
   timeout:
     http:
@@ -169,19 +176,14 @@ metadata:
 spec:
   clientIPDetection:
     xForwardedFor:
-      numTrustedHops: 1
-  connection:
-    bufferLimit: 4Mi
-    # maxAcceptPerSocketEvent: 0
+      trustedCIDRs:
+        - 10.42.0.0/16
   http2:
-    initialStreamWindowSize: 512Ki
-    initialConnectionWindowSize: 8Mi
     onInvalidMessage: TerminateStream
   http3: {}
   targetSelectors:
-    - kind: Gateway
-      matchLabels:
-        app.kubernetes.io/name: envoy
+    - group: gateway.networking.k8s.io
+      kind: Gateway
   tcpKeepalive: {}
   timeout:
     http:
