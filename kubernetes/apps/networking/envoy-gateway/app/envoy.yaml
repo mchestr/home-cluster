@@ -144,6 +144,11 @@ spec:
           namespace: default
           port: 80
       path: /api/authz/ext-authz/
+      headersToBackend:
+        - Remote-User
+        - Remote-Groups
+        - Remote-Name
+        - Remote-Email
   targetRefs:
     - group: gateway.networking.k8s.io
       kind: Gateway
