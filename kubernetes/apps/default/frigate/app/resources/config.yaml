@@ -185,7 +185,6 @@ cameras:
         use_snapshot: True
         objects:
           - person
-          - vehicle
     ffmpeg:
       inputs:
         - path: rtsp://127.0.0.1:8554/doorbell_hd?video=copy&audio=aac
