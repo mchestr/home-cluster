@@ -62,7 +62,6 @@ spec:
                   httpGet:
                     path: /health
                     port: *port
-                  initialDelaySeconds: 30
                   periodSeconds: 10
                   timeoutSeconds: 3
                   failureThreshold: 3
