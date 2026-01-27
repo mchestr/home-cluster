@@ -6,7 +6,11 @@ metadata:
   name: postgres17
 spec:
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:17
+  imageName: ghcr.io/clevyr/cloudnativepg-timescale:17
+  bootstrap:
+    initdb:
+      postInitSQL:
+        - CREATE EXTENSION IF NOT EXISTS timescaledb CASCADE;
   primaryUpdateStrategy: unsupervised
   primaryUpdateMethod: switchover
   storage:
@@ -16,9 +20,12 @@ spec:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
   postgresql:
+    shared_preload_libraries:
+      - timescaledb
     parameters:
       max_connections: "400"
       shared_buffers: 256MB
+      # timescaledb.telemetry_level: "off"
   nodeMaintenanceWindow:
     inProgress: false
     reusePVC: true
