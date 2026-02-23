@@ -27,6 +27,5 @@ resources:
   - ./sonarr/ks.yaml
   - ./subs/ks.yaml
   - ./tautulli/ks.yaml
-  - ./tracearr/ks.yaml
   - ./unpackerr/ks.yaml
   - ./tqm/ks.yaml
