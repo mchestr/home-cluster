@@ -128,3 +128,31 @@ tasks:
       - talosctl config info
       - talosctl --nodes {{.RANDOM_CONTROLLER}} get machineconfig
       - which jq talosctl
+
+  regen-certs:
+    desc: Regenerate Talos admin client certificates using machine CA from 1Password
+    prompt: Regenerate Talos admin client certificates ... continue?
+    cmds:
+      - |
+        TMPDIR=$(mktemp -d)
+        trap "rm -rf $TMPDIR" EXIT
+        echo "Extracting machine CA from 1Password..."
+        MACHINE_CA_CRT=$(op read "op://${ONEPASSWORD_VAULT}/talos/MACHINE_CA_CRT" | tr -d '\n')
+        MACHINE_CA_KEY=$(op read "op://${ONEPASSWORD_VAULT}/talos/MACHINE_CA_KEY" | tr -d '\n')
+        printf '%s' "$MACHINE_CA_CRT" | base64 -d > "$TMPDIR/ca.crt"
+        printf '%s' "$MACHINE_CA_KEY" | base64 -d > "$TMPDIR/ca.key"
+        echo "Generating new admin key, CSR, and certificate..."
+        cd "$TMPDIR"
+        talosctl gen key --name admin
+        talosctl gen csr --key admin.key --ip 127.0.0.1
+        talosctl gen crt --ca ca --csr admin.csr --name admin
+        echo "Assembling new talosconfig..."
+        ADMIN_CRT=$(base64 < admin.crt | tr -d '\n')
+        ADMIN_KEY=$(base64 < admin.key | tr -d '\n')
+        printf 'context: k8s\ncontexts:\n  k8s:\n    endpoints:\n      - 10.0.40.2\n    ca: %s\n    crt: %s\n    key: %s\n' \
+          "$MACHINE_CA_CRT" "$ADMIN_CRT" "$ADMIN_KEY" > "{{.TALOS_DIR}}/talosconfig"
+        echo "Verifying new talosconfig..."
+        talosctl config info
+    preconditions:
+      - op user get --me
+      - which op talosctl base64
