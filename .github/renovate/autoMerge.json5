@@ -53,7 +53,7 @@
         "grafana",
         "wordpress",
       ],
-      schedule: ["after 2am and before 6am"],
+      schedule: ["after 4am and before 6am"],
     },
   ],
 }
