@@ -77,7 +77,7 @@ jobs:
 
       - if: ${{ steps.diff.outputs.diff != '' }}
         name: Add Comment
-        uses: mshick/add-pr-comment@b8f338c590a895d50bcbfa6c5859251edc8952fc # v2
+        uses: mshick/add-pr-comment@011b026a3c7232d6216bd04f2300f821dab95f3a # v3
         with:
           repo-token: "${{ steps.app-token.outputs.token }}"
           message-id: "${{ github.event.pull_request.number }}/kubernetes/${{ matrix.resources }}"
