@@ -2,24 +2,24 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/1password/onepassword" {
-  version     = "3.2.1"
-  constraints = "3.2.1"
+  version     = "3.3.0"
+  constraints = "3.3.0"
   hashes = [
-    "h1:2oZnlv8MoB+lr0PwRb+cVwjl5FGlYZ7fKH/swx/2Vwk=",
-    "h1:Cgnzf730laGVmvSalQf3SM6bBwwm/OCZcCpOlsBBC4s=",
-    "h1:Cptwjxyu8HtBa01xURjnBBR7+rHRQ7kmrQpctYwi9nc=",
-    "h1:KzFIYHNLIU1VBpWgwtrl3MaejyVcTm0vockK3dzJoVQ=",
-    "h1:PccgMFFnAIYz9UzNpp10MCiPKusor9mallVpFdEAv8s=",
-    "h1:StnkXlda1e6zQq7njiuYOc7PetlMYDNBa4i8+lVQ8hQ=",
-    "h1:hZrcwOpBicojsJA33Iv5ZvY/3rB4pf9WAuwrRWE4W5k=",
-    "zh:56c142b07295608de4ef2b7915684578b384bc2b47519c6811e93184945cd161",
-    "zh:785b52b0c7055deb249843063327bb25cbc952fb560681d2a84c4e32283a6eae",
-    "zh:8622fa665dabeb753443a5bb8495857e65827c5ac24bc002cfcb15213712b141",
+    "h1:+0ryguIBRwbtZTdeOyJNta2UiFUuxGLrqsFgel3jr7c=",
+    "h1:GmVSVh9pwOrVYtDh/NM548lVcP8ecMtA+161OLTVrCY=",
+    "h1:PZeR5AmgIr5NmHPhnHUQ8mrb7Vv0LJ0xHy4FoaPq6Bk=",
+    "h1:PoXC6hwQWZseYV8pPeCugZFszd9t3crs+Eukk95HT3k=",
+    "h1:fQVrQUcFftL3bPtx4nsPw68yZpEtF06eTBWVRZvjBcM=",
+    "h1:hkOmRdVtJ7n0+PgLC92UAw3daUL7ayW5B3yZULdMZck=",
+    "h1:l2jTvzft47LmhbMhnXM/AUdFmbvLj5VLgCr8uZ2u5BE=",
+    "zh:3c509085d5885b820396506098b29a49f43675b078bf38ea104deb4b703e2761",
+    "zh:3db536f481d11cc254f0581aacc6fca24398d1c76e065e48411eff514c4dea56",
+    "zh:67a8ca1f7540ea2458c38fd9f3659bbdb952c604641d98d4a51e7cb2056defe6",
+    "zh:6e4389d74aa51ea30c6000c2d01813fca622080b0a746c6dffdef0def205d4b3",
+    "zh:72cbdb26129ca897ea681cbfade7de58ab642894159fb8fc2b4bdc0ebbc6b166",
     "zh:890df766e9b839623b1f0437355032a3c006226a6c200cd911e15ee1a9014e9f",
-    "zh:b40068bfcff2b5cccd219852fcb9dc45594cad5df2bca41b1f95473e5d9d0d68",
-    "zh:d2d0191eccb20dbab553d7faabcd6fc34568aa9532264b6ecd71d7211752f21b",
-    "zh:d7073f3d2e84fc6051915c390b7ca580d7cfa8647caa116cf295e9d43dbb2fac",
-    "zh:dae5b257dd8b3ced1318ecf6cb730326deb85b538c46da5d378771281c3621d3",
+    "zh:a5d6d26039fde8935f0ec17e488a022d40bbac5063d3ca79400ae424af34d3c2",
+    "zh:b1f15ea47e73bd7cb285d368fbb5c26610bd866a403c8ded5809c702420388bf",
   ]
 }
 
