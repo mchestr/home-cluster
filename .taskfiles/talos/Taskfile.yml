@@ -150,9 +150,12 @@ tasks:
         ADMIN_CRT=$(base64 < admin.crt | tr -d '\n')
         ADMIN_KEY=$(base64 < admin.key | tr -d '\n')
         printf 'context: k8s\ncontexts:\n  k8s:\n    endpoints:\n      - 10.0.40.2\n    ca: %s\n    crt: %s\n    key: %s\n' \
-          "$MACHINE_CA_CRT" "$ADMIN_CRT" "$ADMIN_KEY" > "{{.TALOS_DIR}}/talosconfig"
+          "$MACHINE_CA_CRT" "$ADMIN_CRT" "$ADMIN_KEY" > "$TALOSCONFIG"
         echo "Verifying new talosconfig..."
         talosctl config info
+        echo "Regenerating kubeconfig..."
+        RANDOM_CONTROLLER=$(talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1)
+        talosctl kubeconfig --nodes "$RANDOM_CONTROLLER" --force "$ROOT_DIR"
     preconditions:
       - op user get --me
-      - which op talosctl base64
+      - which op talosctl base64 jq
