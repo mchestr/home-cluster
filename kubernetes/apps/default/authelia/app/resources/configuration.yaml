@@ -37,8 +37,6 @@ session:
   cookies:
     - domain: chestr.dev
       authelia_url: https://auth.chestr.dev
-    - domain: homerp.xyz
-      authelia_url: https://auth.homerp.xyz
     - domain: mikeflix.lol
       authelia_url: https://auth.mikeflix.lol
   redis:

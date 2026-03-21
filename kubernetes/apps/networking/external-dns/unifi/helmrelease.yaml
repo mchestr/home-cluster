@@ -57,7 +57,7 @@ spec:
     sources: ["gateway-httproute", "service"]
     txtOwnerId: main
     txtPrefix: k8s.main.
-    domainFilters: ["chestr.dev", "homerp.xyz", "mikeflix.lol"]
+    domainFilters: ["chestr.dev", "mikeflix.lol"]
     serviceMonitor:
       enabled: true
     podAnnotations:
