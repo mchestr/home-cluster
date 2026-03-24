@@ -104,7 +104,7 @@ spec:
           app:
             image:
               repository: docker.io/apache/tika
-              tag: 3.2.3.0-full
+              tag: 3.3.0.0-full
 
     service:
       paperless:
