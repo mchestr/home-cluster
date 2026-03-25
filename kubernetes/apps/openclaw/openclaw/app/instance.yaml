@@ -1,0 +1,38 @@
+apiVersion: openclaw.rocks/v1alpha1
+kind: OpenClawInstance
+metadata:
+  name: openclaw
+spec:
+  envFrom:
+    - secretRef:
+        name: openclaw-secret
+  env:
+    - name: RADARR_URL
+      value: "https://radarr.chestr.dev"
+    - name: SONARR_URL
+      value: "https://sonarr.chestr.dev"
+  runtimeDeps:
+    python: true
+  gateway:
+    controlUiOrigins:
+      - "https://openclaw.chestr.dev"
+    existingSecret: openclaw-secret
+  config:
+    mergeMode: overwrite
+    raw:
+      agents:
+        defaults:
+          model:
+            primary: "anthropic/claude-haiku-4-5-20251001"
+      skills:
+        load:
+          extraDirs:
+            - "/home/openclaw/.openclaw/skills"
+      channels:
+        signal:
+          enabled: true
+          dmPolicy: pairing
+  storage:
+    persistence:
+      enabled: true
+      size: 10Gi
