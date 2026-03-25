@@ -29,7 +29,7 @@ spec:
           extraDirs:
             - "/home/openclaw/.openclaw/skills"
       channels:
-        signal:
+        whatsapp:
           enabled: true
           dmPolicy: pairing
   storage:
