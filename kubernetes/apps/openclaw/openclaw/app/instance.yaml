@@ -16,7 +16,6 @@ spec:
   gateway:
     controlUiOrigins:
       - "https://openclaw.chestr.dev"
-    existingSecret: openclaw-secret
   config:
     mergeMode: overwrite
     raw:
