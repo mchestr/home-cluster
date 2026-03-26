@@ -11,8 +11,7 @@ spec:
       value: "https://radarr.chestr.dev"
     - name: SONARR_URL
       value: "https://sonarr.chestr.dev"
-  skills:
-    - openclaw-homeassistant
+  skills: []
   runtimeDeps:
     python: true
   gateway:
