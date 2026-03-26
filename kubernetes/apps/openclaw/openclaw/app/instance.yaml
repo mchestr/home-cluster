@@ -33,32 +33,27 @@ spec:
         signal:
           enabled: true
           dmPolicy: pairing
-  sidecars:
-    - name: signal-cli
-      image: bbernhard/signal-cli-rest-api:latest
-      securityContext:
-        runAsUser: 0
-        runAsNonRoot: false
-        allowPrivilegeEscalation: true
-        readOnlyRootFilesystem: false
-      env:
-        - name: PHONE_NUMBER
-          valueFrom:
-            secretKeyRef:
-              name: openclaw-secret
-              key: SIGNAL_PHONE_NUMBER
-        - name: MODE
-          value: normal
-        - name: PUID
-          value: "1000"
-        - name: PGID
-          value: "1000"
-      ports:
-        - containerPort: 8080
+          cliPath: /home/openclaw/.openclaw/bin/signal-cli
+  initContainers:
+    - name: install-signal-cli
+      image: busybox:1.37
+      command:
+        - sh
+        - -c
+        - |
+          BIN=/home/openclaw/.openclaw/bin
+          mkdir -p "$BIN"
+          if [ ! -f "$BIN/signal-cli-bin" ]; then
+            wget -qO /tmp/signal-cli.tar.gz https://github.com/AsamK/signal-cli/releases/download/v0.14.1/signal-cli-0.14.1-Linux-native.tar.gz
+            tar -xzf /tmp/signal-cli.tar.gz -C /tmp
+            mv /tmp/signal-cli-0.14.1-Linux-native/signal-cli "$BIN/signal-cli-bin"
+            chmod +x "$BIN/signal-cli-bin"
+          fi
+          printf '#!/bin/sh\nexec %s/signal-cli-bin -c /home/openclaw/.openclaw/signal-cli "$@"\n' "$BIN" > "$BIN/signal-cli"
+          chmod +x "$BIN/signal-cli"
       volumeMounts:
         - name: data
-          mountPath: /home/.local/share/signal-cli
-          subPath: signal-cli
+          mountPath: /home/openclaw/.openclaw
   storage:
     persistence:
       enabled: true
