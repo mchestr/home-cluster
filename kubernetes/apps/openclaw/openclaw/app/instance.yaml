@@ -36,6 +36,11 @@ spec:
   sidecars:
     - name: signal-cli
       image: bbernhard/signal-cli-rest-api:latest
+      securityContext:
+        runAsUser: 0
+        runAsNonRoot: false
+        allowPrivilegeEscalation: true
+        readOnlyRootFilesystem: false
       env:
         - name: PHONE_NUMBER
           valueFrom:
