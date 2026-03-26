@@ -44,6 +44,10 @@ spec:
               key: SIGNAL_PHONE_NUMBER
         - name: MODE
           value: normal
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
       ports:
         - containerPort: 8080
       volumeMounts:
