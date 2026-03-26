@@ -11,6 +11,8 @@ spec:
       value: "https://radarr.chestr.dev"
     - name: SONARR_URL
       value: "https://sonarr.chestr.dev"
+  skills:
+    - openclaw-homeassistant
   runtimeDeps:
     python: true
   gateway:
@@ -32,6 +34,23 @@ spec:
         signal:
           enabled: true
           dmPolicy: pairing
+  sidecars:
+    - name: signal-cli
+      image: bbernhard/signal-cli-rest-api:latest
+      env:
+        - name: PHONE_NUMBER
+          valueFrom:
+            secretKeyRef:
+              name: openclaw-secret
+              key: SIGNAL_PHONE_NUMBER
+        - name: MODE
+          value: normal
+      ports:
+        - containerPort: 8080
+      volumeMounts:
+        - name: data
+          mountPath: /home/.local/share/signal-cli
+          subPath: signal-cli
   storage:
     persistence:
       enabled: true
