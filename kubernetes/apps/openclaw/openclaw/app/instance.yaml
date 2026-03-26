@@ -45,8 +45,8 @@ spec:
           mkdir -p "$BIN"
           if [ ! -f "$BIN/signal-cli-bin" ]; then
             wget -qO /tmp/signal-cli.tar.gz https://github.com/AsamK/signal-cli/releases/download/v0.14.1/signal-cli-0.14.1-Linux-native.tar.gz
-            tar -xzf /tmp/signal-cli.tar.gz -C /tmp
-            mv /tmp/signal-cli-0.14.1-Linux-native/signal-cli "$BIN/signal-cli-bin"
+            tar -xzf /tmp/signal-cli.tar.gz -C "$BIN"
+            mv "$BIN/signal-cli" "$BIN/signal-cli-bin"
             chmod +x "$BIN/signal-cli-bin"
           fi
           printf '#!/bin/sh\nexec %s/signal-cli-bin -c /home/openclaw/.openclaw/signal-cli "$@"\n' "$BIN" > "$BIN/signal-cli"
