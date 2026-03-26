@@ -39,7 +39,7 @@ spec:
           app:
             image:
               repository: ghcr.io/foxcpp/maddy
-              tag: 0.9.1
+              tag: 0.9.2
             env:
               DEBUG: "false"
               SMTP_DOMAIN: chestr.dev
