@@ -5,5 +5,5 @@ namespace: openclaw
 components:
   - ../../components/common
 resources:
-  - ./openclaw-operator/ks.yaml
-  - ./openclaw/ks.yaml
+  # - ./openclaw-operator/ks.yaml
+  # - ./openclaw/ks.yaml
