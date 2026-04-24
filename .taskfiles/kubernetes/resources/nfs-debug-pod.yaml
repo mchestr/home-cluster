@@ -6,7 +6,7 @@ metadata:
 spec:
   containers:
     - name: debug
-      image: docker.io/library/ubuntu:24.04
+      image: docker.io/library/ubuntu:26.04
       command: ["/bin/bash", "-c", "apt-get update && apt-get install -y rsync && sleep infinity"]
       volumeMounts:
         - name: nebula
