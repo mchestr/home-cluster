@@ -24,25 +24,25 @@ provider "registry.terraform.io/1password/onepassword" {
 }
 
 provider "registry.terraform.io/cloudflare/cloudflare" {
-  version     = "5.19.0"
-  constraints = "5.19.0"
+  version     = "5.19.1"
+  constraints = "5.19.1"
   hashes = [
-    "h1:+gs8iCqECIlB3L82+Yoiv6QkU7QaoTJWX/oWRl1Fu+s=",
-    "h1:/9cWfFsh4Zaa6PSFQqTYv5LEWZUM44G1oGK/ltPB8mg=",
-    "h1:18fPH+2UWukAmtbs+CzHjVys7l95jt2gCUs2N0fdfjM=",
-    "h1:DfwnA214pLOZnVHnUzCqrDYb+mKbZjcfgYVYtDfMP/w=",
-    "h1:Sn5zzjtyc8R6XgfRnWywLSIK+Ql9/155Pp3Bw8f6EDU=",
-    "h1:YL4CNFu4cYBfRFJ0ngT9cR+6Ll6NiAxoPsF9ik+Cg+k=",
-    "h1:d8B13MT3MP7H2a3H+DLqiyT8u8e7If47lMgzfcrU4t8=",
-    "h1:yx6O5g5k8Uw09NPRHTVJNIjOsC2jqHX9U53Zka0jIdE=",
-    "zh:1946c61d0aeffd3fed14cc55581f125d798fed14b0c1f9f765fecf46dbf4baff",
-    "zh:2b8028e59b93aa6388a74721902d15b2742460353809453dbee13be55f68dd31",
-    "zh:4e21ff650e5fc6ab3e592618dcddc02f35ab8a70e146a77de59a124030a1abd9",
-    "zh:75afe38d6d009dad42229a7fa22d4a05ebd9815050deb523d50a2b6deb6a0156",
-    "zh:867879ebca16e8eda4515367bac9cefd1ede4c06e4c62260efb32cadf866c34f",
-    "zh:a978dd6fa8d1a1b90f17c56ec7e1259e4e569ca0a851724d7c0f0e9c5b1016c0",
-    "zh:db0db1f9c19fd9382908e413cedc62b18b67dfe09807ba101df093a9bd16da01",
-    "zh:e41d361df586e76fe7ac8c27424949d2d9bc11903de0f9d52f2d0f9d1844eed8",
+    "h1:HkKPMZ/n+QiExkRUSLjGMTGnuIaph+k932LiTp7CKZM=",
+    "h1:LicdZu3hugYpWuCAprg2EslbVP0zANnV9n9/2KiOnYc=",
+    "h1:VvnqJUTXlbKrB/6X2K9dc7lE3CQj3KX055gr+bMyXsg=",
+    "h1:XYVRvCG+auhkY1NnSe6pK7ClqKW5GX8BgUnMQwfC7mQ=",
+    "h1:Xf1PHfUfK690caJYZvoudKKBppfleJ6RcqsEQWqKVCw=",
+    "h1:i6pbudcLi1X2MVeN9IV3bDeiGWnWhn+v9dMrMzAN+l8=",
+    "h1:mopYISyLkUVUwMjJbuPenxIUVDrna1/7ACB1hfMfciU=",
+    "h1:xfoTAyKkR12F8nuVC96DwBA2Fva38o5BnYHLXZzmDP4=",
+    "zh:0651618000db705564dab5a25322b9d76ea54b7dd78931ed3565497b559babeb",
+    "zh:1a7847e9479fb6d21a65ef933ffae1416b1e4b44ca940c0d6c50fc4248cc4a0d",
+    "zh:5597cee5854131045eb9f201ae3a70b59c51955d31a647d9616863c746d902cb",
+    "zh:580786830d93e35b957754fd4c62d4681a3b19abc28b757e41acba26455663b1",
+    "zh:83c4bdfb0e74fd50e56fff3c461d76c1c1ec61af3f679e4de1aa70b5ed05a09f",
+    "zh:abb4d1052cee61d80f9cb51e5421e3c118312403afb7104b98bd7e310ac736ee",
+    "zh:b0aeeb3d66ea4d719989875e778c477065ba941e3a76e9a8caacc3be08208dd9",
+    "zh:e43b4b2dfcec1ce2115f5a5c86042d432deb49bee8eae103eb56d97ea02e2e3b",
     "zh:f809ab383cca0a5f83072981c64208cbd7fa67e986a86ee02dd2c82333221e32",
   ]
 }
