@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Setup Homebrew
-        uses: Homebrew/actions/setup-homebrew@ac93e64636f67b85384f251de7359f58c5dee140 # master
+        uses: Homebrew/actions/setup-homebrew@8eb7f2efa6ab636da09aef605b497fd5b8a7587d # master
       - name: Setup Workflow Tools
         shell: bash
         run: brew install fluxcd/tap/flux
