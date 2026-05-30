@@ -107,6 +107,12 @@ spec:
           - backendRefs:
               - name: *app
                 port: *port
+            timeouts:
+              request: 0s
+              backendRequest: 0s
+          - backendRefs:
+              - name: *app
+                port: *port
             filters:
               - type: RequestHeaderModifier
                 requestHeaderModifier:
@@ -115,12 +121,6 @@ spec:
               - path:
                   type: PathPrefix
                   value: /library/streams
-          - backendRefs:
-              - name: *app
-                port: *port
-            timeouts:
-              request: 0s
-              backendRequest: 0s
 
     persistence:
       config:
