@@ -98,7 +98,7 @@ spec:
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_PLEX_API_KEY}}" }}'
           gatus.home-operations.com/endpoint: |
             conditions:
-              - "[STATUS] == 401"
+              - "[STATUS] == 404"
         parentRefs:
           - name: envoy-external
             namespace: networking
