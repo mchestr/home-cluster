@@ -29,7 +29,7 @@ spec:
           init-config:
             image:
               repository: ghcr.io/home-operations/gatus-sidecar
-              tag: 0.0.18@sha256:3e8ab2f65ac6eba268c963919e34e6f4c4e10439979de3ded71242240621edcd
+              tag: 0.1.1@sha256:271eceebbd15b09b6e31c79b761bd68dc980e45fa194687c3db7f812b110743c
             args:
               - --auto-httproute
               - --enable-httproute
