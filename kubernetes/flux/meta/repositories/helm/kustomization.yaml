@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./actions-runner-controller.yaml
   - ./backube.yaml
+  - ./ceph-csi-operator.yaml
   - ./cilium.yaml
   - ./cloudnative-pg.yaml
   - ./descheduler.yaml
