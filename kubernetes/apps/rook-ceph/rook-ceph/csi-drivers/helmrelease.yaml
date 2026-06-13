@@ -42,9 +42,13 @@ spec:
       rbd:
         enabled: true
         name: rook-ceph.rbd.csi.ceph.com
+        # Chart default for rbd is "none", which drops the csi-snapshotter
+        # sidecar and breaks VolSync (all backups snapshot RBD volumes).
+        snapshotPolicy: volumeSnapshot
       cephfs:
         enabled: true
         name: rook-ceph.cephfs.csi.ceph.com
+        snapshotPolicy: volumeSnapshot
       nfs:
         enabled: false
         name: rook-ceph.nfs.csi.ceph.com
