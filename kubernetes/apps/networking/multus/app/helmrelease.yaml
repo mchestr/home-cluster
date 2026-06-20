@@ -45,6 +45,9 @@ spec:
               privileged: true
     defaultPodOptions:
       hostNetwork: true
+      # app-template v5 defaults automountServiceAccountToken to false; multus needs the
+      # SA token + CA cert to generate its kubeconfig (/var/run/secrets/.../ca.crt)
+      automountServiceAccountToken: true
     persistence:
       etc-cni-net-d:
         type: hostPath
