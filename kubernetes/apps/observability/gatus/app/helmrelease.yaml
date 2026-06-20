@@ -78,6 +78,8 @@ spec:
                 memory: 256Mi
 
     defaultPodOptions:
+      # app-template v5 defaults automountServiceAccountToken to false; gatus needs API access for its kubernetes health checks
+      automountServiceAccountToken: true
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000

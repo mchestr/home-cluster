@@ -86,5 +86,8 @@ spec:
           - subPath: widgets.yaml
             path: /app/config/widgets.yaml
 
+    defaultPodOptions:
+      # app-template v5 defaults automountServiceAccountToken to false; homepage needs API access for its kubernetes widgets
+      automountServiceAccountToken: true
     serviceAccount:
       homepage: {}
