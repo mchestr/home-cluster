@@ -145,7 +145,7 @@ tasks:
         cd "$TMPDIR"
         talosctl gen key --name admin
         talosctl gen csr --key admin.key --ip 127.0.0.1
-        talosctl gen crt --ca ca --csr admin.csr --name admin
+        talosctl gen crt --ca ca --csr admin.csr --name admin --hours 70080
         echo "Assembling new talosconfig..."
         ADMIN_CRT=$(base64 < admin.crt | tr -d '\n')
         ADMIN_KEY=$(base64 < admin.key | tr -d '\n')
