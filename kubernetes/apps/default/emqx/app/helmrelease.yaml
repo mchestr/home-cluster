@@ -7,13 +7,14 @@ spec:
   interval: 30m
   chart:
     spec:
-      # 2.3.2 calls the enterprise-only /api/v5/load_rebalance/global_status API on
-      # every reconcile; against open-source EMQX it 404s as a fatal error, so the
-      # operator never sets the apps.emqx.io/on-serving readiness gate -> listener
-      # Service has no serving endpoints -> MQTT clients get EHOSTUNREACH. Pin to
-      # 2.3.1 until a release fixes the edition gating / 404 handling.
+      # The 2.3.x operator series breaks open-source EMQX: every reconcile it calls
+      # the enterprise-only /api/v5/load_rebalance/global_status API, which 404s as
+      # a fatal error, so the operator never sets the apps.emqx.io/on-serving pod
+      # readiness gate -> emqx-listeners Service has no serving endpoints -> MQTT
+      # clients get EHOSTUNREACH. 2.3.0 was already reverted once before; pin to the
+      # last known-good 2.2.29 and keep it off the 2.3.x line.
       chart: emqx-operator
-      version: 2.3.1
+      version: 2.2.29
       sourceRef:
         kind: HelmRepository
         name: emqx
