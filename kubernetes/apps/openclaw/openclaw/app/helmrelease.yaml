@@ -67,6 +67,29 @@ spec:
                   tar -xzf /tmp/signal-cli.tar.gz -C "$$BIN"
                   chmod +x "$$BIN/signal-cli"
                 fi
+          # GitHub CLI on the PVC at ~/.local/bin (on PATH for the agent's exec
+          # tool). Auth comes from the GITHUB_TOKEN env, so no `gh auth login`.
+          install-gh:
+            image:
+              repository: docker.io/library/busybox
+              tag: "1.37"
+            command:
+              - sh
+              - -c
+              - |
+                set -eu
+                # renovate: datasource=github-releases depName=cli/cli
+                GH_VERSION=2.95.0
+                BIN=/home/node/.local/bin
+                mkdir -p "$$BIN"
+                if [ "$$(cat "$$BIN/.ghver" 2>/dev/null)" != "$$GH_VERSION" ]; then
+                  wget -qO /tmp/gh.tar.gz "https://github.com/cli/cli/releases/download/v$$GH_VERSION/gh_$${GH_VERSION}_linux_amd64.tar.gz"
+                  tar -xzf /tmp/gh.tar.gz -C /tmp
+                  cp "/tmp/gh_$${GH_VERSION}_linux_amd64/bin/gh" "$$BIN/gh"
+                  chmod +x "$$BIN/gh"
+                  printf '%s' "$$GH_VERSION" > "$$BIN/.ghver"
+                  rm -rf /tmp/gh.tar.gz "/tmp/gh_$${GH_VERSION}_linux_amd64"
+                fi
         containers:
           app:
             image:
@@ -106,6 +129,9 @@ spec:
             env:
               HOME: &homepath /home/node
               TZ: America/Vancouver
+              # Prepend ~/.local/bin so the agent's exec tool finds gh (and any
+              # other PVC-installed binaries). /usr/local/bin keeps node on PATH.
+              PATH: /home/node/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
               OPENCLAW_GATEWAY_PORT: &port 18789
               OPENCLAW_LOG_LEVEL: info
               RADARR_URL: "https://radarr.chestr.dev"
