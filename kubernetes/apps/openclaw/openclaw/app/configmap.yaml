@@ -1,0 +1,144 @@
+---
+# JSON5 OpenClaw gateway config. Flux postBuild substitutes ${VAR}; use $${VAR}
+# here so Flux emits a literal ${VAR} for OpenClaw's runtime env substitution.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openclaw-config
+data:
+  openclaw.json: |
+    {
+      agents: {
+        defaults: {
+          model: {
+            primary: "openai/gpt-5.4-mini",
+          },
+          contextInjection: "always",
+          bootstrapMaxChars: 50000,
+          bootstrapTotalMaxChars: 100000,
+          thinkingDefault: "medium",
+          timeoutSeconds: 600,
+          maxConcurrent: 4,
+          contextPruning: { mode: "off" },
+          // On context pressure, summarise the session into memory (memini)
+          // before compacting, so long-running work keeps its key facts.
+          compaction: {
+            mode: "default",
+            reserveTokensFloor: 30000,
+            memoryFlush: {
+              enabled: true,
+              softThresholdTokens: 80000,
+              prompt: "Extract key decisions, state changes, lessons, and blockers worth remembering. Skip routine work. Respond NO_FLUSH if nothing important.",
+              systemPrompt: "Compacting session context. Extract only what's worth remembering. No fluff.",
+            },
+          },
+        },
+      },
+      commands: {
+        native: "auto",
+        nativeSkills: "auto",
+      },
+      tools: {
+        sessions: { visibility: "all" },
+        agentToAgent: { enabled: true },
+        // Full shell exec without prompting. openclaw already has cluster-admin,
+        // so this is consistent with the intended access level. Set ask: "on"
+        // or security: "restricted" to dial it back.
+        exec: { security: "full", ask: "off" },
+        web: {
+          fetch: { enabled: true },
+          search: { enabled: true, provider: "searxng" },
+        },
+      },
+      hooks: {
+        internal: {
+          enabled: true,
+          entries: {
+            "compaction-notifier": { enabled: true },
+            "session-memory": { enabled: true },
+          },
+        },
+      },
+      session: {
+        dmScope: "main",
+        reset: { mode: "idle", idleMinutes: 1440 },
+        maintenance: {
+          mode: "enforce",
+          pruneAfter: "7d",
+          maxEntries: 1000,
+          rotateBytes: "100mb",
+          resetArchiveRetention: "7d",
+        },
+      },
+      messages: {
+        responsePrefix: "[{model}]",
+      },
+      gateway: {
+        auth: { mode: "token", token: "$${OPENCLAW_GATEWAY_TOKEN}" },
+        controlUi: { allowedOrigins: ["https://openclaw.chestr.dev"] },
+        mode: "local",
+        port: 18789,
+        trustedProxies: ["10.244.0.0/16"],
+      },
+      plugins: {
+        entries: {
+          // Disable built-in memory-core so it doesn't fight the memini slot.
+          "memory-core": { enabled: false },
+          memini: {
+            enabled: true,
+            hooks: { allowConversationAccess: true },
+            config: {
+              base_url: "http://memini.openclaw.svc.cluster.local:8080",
+              namespace: "openclaw",
+              fallback_on_error: true,
+              timeout_ms: 5000,
+            },
+          },
+          searxng: {
+            enabled: true,
+            config: {
+              webSearch: {
+                baseUrl: "http://searxng.openclaw.svc.cluster.local:8080",
+              },
+            },
+          },
+          // Render memini's memories into a browsable markdown vault (backlinks,
+          // daily notes, dashboards) under ~/.openclaw/wiki — view it via the
+          // code-server sidecar at openclaw-code.chestr.dev.
+          "memory-wiki": {
+            enabled: true,
+            config: {
+              vaultMode: "bridge",
+              vault: {
+                path: "/home/node/.openclaw/wiki/main",
+                renderMode: "native",
+              },
+              bridge: {
+                enabled: true,
+                readMemoryArtifacts: true,
+                indexDailyNotes: true,
+                indexMemoryRoot: true,
+                followMemoryEvents: true,
+              },
+              search: { backend: "shared", corpus: "all" },
+              render: {
+                preserveHumanBlocks: true,
+                createBacklinks: true,
+                createDashboards: true,
+              },
+            },
+          },
+        },
+        slots: {
+          memory: "memini",
+        },
+      },
+      mcp: {
+        servers: {
+          kubernetes: {
+            url: "http://localhost:8081/mcp",
+            transport: "streamable-http",
+          },
+        },
+      },
+    }

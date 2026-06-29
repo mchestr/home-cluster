@@ -1,0 +1,50 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app memini
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: memini
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      main:
+        containers:
+          main:
+            env:
+              MEMINI_DEFAULT_NAMESPACE: openclaw
+              # in-cluster TEI embeddings server (bge-small-en-v1.5, 384-dim)
+              MEMINI_EMBED_BASE_URL: "http://text-embeddings.openclaw.svc.cluster.local:8080/v1"
+              MEMINI_EMBED_MODEL: bge-small-en-v1.5
+              MEMINI_EMBED_DIMS: "384"
+              # bearer token protecting /v1 and /mcp (shared with openclaw)
+              MEMINI_API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: memini-secret
+                    key: MEMINI_API_KEY
+    persistence:
+      data:
+        size: 10Gi
+        storageClass: ceph-block
+    route:
+      ui:
+        enabled: true
+        hostnames: ["memini.chestr.dev"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+            sectionName: https

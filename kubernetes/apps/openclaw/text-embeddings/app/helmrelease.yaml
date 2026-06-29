@@ -1,0 +1,85 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app text-embeddings
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    controllers:
+      text-embeddings:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/huggingface/text-embeddings-inference
+              tag: cpu-1.8@sha256:8de25e75ce39617f17f2f6c77d60a4f75b65e779ed5005420eb1400072a15c1c
+            args:
+              - --model-id
+              - BAAI/bge-small-en-v1.5
+              - --port
+              - "8080"
+              - --auto-truncate
+            env:
+              HOME: /data
+              HF_HOME: /data
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet: { path: /health, port: &port 8080 }
+                  initialDelaySeconds: 0
+                  periodSeconds: 30
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet: { path: /health, port: *port }
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet: { path: /health, port: *port }
+                  # generous: first start downloads the model from HuggingFace
+                  failureThreshold: 60
+                  periodSeconds: 10
+            resources:
+              requests:
+                cpu: 200m
+                memory: 512Mi
+              limits:
+                memory: 2Gi
+    persistence:
+      data:
+        type: emptyDir
+        globalMounts:
+          - path: /data
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port

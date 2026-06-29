@@ -1,0 +1,19 @@
+---
+# openclaw is granted full cluster access. Its ServiceAccount (created by the
+# HelmRelease) is bound to the built-in cluster-admin ClusterRole, so openclaw
+# can read/write/delete any resource in any namespace, including Secrets.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: &app openclaw
+  labels:
+    app.kubernetes.io/instance: *app
+    app.kubernetes.io/name: *app
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: *app
+    namespace: openclaw

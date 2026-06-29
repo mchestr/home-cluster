@@ -1,0 +1,194 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app openclaw
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    defaultPodOptions:
+      # openclaw is granted cluster-admin (see rbac.yaml); mount its SA token.
+      automountServiceAccountToken: true
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 100
+        fsGroup: 100
+        fsGroupChangePolicy: OnRootMismatch
+    serviceAccount:
+      openclaw: {}
+    controllers:
+      openclaw:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-config:
+            image:
+              repository: docker.io/library/alpine
+              tag: "3.24"
+            command:
+              - sh
+              - -c
+              - |
+                set -eu
+                mkdir -p /home/node/.openclaw
+                cp /tmp/openclaw.json /home/node/.openclaw/openclaw.json
+                chmod 600 /home/node/.openclaw/openclaw.json
+        containers:
+          app:
+            image:
+              repository: ghcr.io/openclaw/openclaw
+              tag: 2026.6.10@sha256:af7ea052cf216f581fb18fabada01552356c53717461c0399b623cba7ecad4b1
+            command:
+              - /bin/sh
+              - -c
+              - |
+                set -eu
+                # Install the memini memory plugin from ClawHub, version-guarded so
+                # normal restarts stay offline. $$ escapes Flux postBuild so the
+                # shell receives a literal $.
+                # renovate: datasource=github-tags depName=eleboucher/memini
+                MEMINI_PLUGIN_VERSION=0.4.23
+                EXT=/home/node/.openclaw/extensions/memini
+                if [ "$$(cat "$$EXT/.clawver" 2>/dev/null)" != "$$MEMINI_PLUGIN_VERSION" ]; then
+                  if node dist/index.js plugins install "clawhub:@eleboucher/memini@$$MEMINI_PLUGIN_VERSION" --pin --force; then
+                    mkdir -p "$$EXT" && printf '%s' "$$MEMINI_PLUGIN_VERSION" > "$$EXT/.clawver"
+                  else
+                    echo "WARN: memini plugin install failed; starting with whatever is present"
+                  fi
+                fi
+                exec node dist/index.js gateway --bind lan
+            env:
+              HOME: &homepath /home/node
+              TZ: America/Vancouver
+              OPENCLAW_GATEWAY_PORT: &port 18789
+              OPENCLAW_LOG_LEVEL: info
+              RADARR_URL: "https://radarr.chestr.dev"
+              SONARR_URL: "https://sonarr.chestr.dev"
+            envFrom:
+              - secretRef:
+                  name: openclaw-secret
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 4Gi
+          # Kubernetes MCP server sidecar. Auto-detects in-cluster config and so
+          # uses the pod's ServiceAccount token (cluster-admin). Listens on
+          # localhost:8081; openclaw reaches it in-pod, and the ingress
+          # NetworkPolicy keeps the port unreachable from other pods. Add
+          # --read-only or --disable-destructive here to scope down what openclaw
+          # can do via MCP without changing the RBAC.
+          kube-mcp:
+            image:
+              repository: ghcr.io/containers/kubernetes-mcp-server
+              tag: v0.0.63@sha256:9317449ed47916a297f71b955eab57402064de852bf1fb007c4e0705754de2b3
+            args: ["--port", "8081"]
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+          # VS Code (code-server) sidecar to browse the memory-wiki vault and
+          # openclaw's config/state. Password-protected with the gateway token —
+          # this pod holds a cluster-admin token, so never expose it unauthed.
+          codeserver:
+            image:
+              repository: ghcr.io/coder/code-server
+              tag: 4.126.0@sha256:e1f03b5faaefd63ba6c7173a5290c6ec0526ac907f23acfe6bc949dd965279e4
+            env:
+              HOME: *homepath
+              TZ: America/Vancouver
+              PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: openclaw-secret
+                    key: OPENCLAW_GATEWAY_TOKEN
+            args:
+              - --auth
+              - password
+              - --user-data-dir
+              - /home/node/.vscode
+              - --extensions-dir
+              - /home/node/.vscode
+              - --port
+              - "12321"
+              - /home/node/.openclaw
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 1Gi
+    persistence:
+      config:
+        existingClaim: *app
+        globalMounts:
+          - path: *homepath
+      configmap:
+        type: configMap
+        name: openclaw-config
+        defaultMode: 0644
+        globalMounts:
+          - path: /tmp/openclaw.json
+            subPath: openclaw.json
+      tmp:
+        type: emptyDir
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
+          codeserver:
+            port: &codeserverPort 12321
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+      codeserver:
+        hostnames: ["openclaw-code.chestr.dev"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *codeserverPort

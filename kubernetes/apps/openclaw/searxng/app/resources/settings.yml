@@ -1,0 +1,33 @@
+---
+# Minimal SearXNG config for programmatic use by openclaw. The key bit is
+# formats: [html, json] — openclaw's web.search needs the JSON API. Limiter is
+# off so no Redis is required (internal, single-replica instance).
+use_default_settings: true
+
+server:
+  limiter: false
+  image_proxy: true
+  method: GET # https://github.com/searxng/searxng/pull/3619
+  public_instance: false
+
+search:
+  autocomplete: duckduckgo
+  favicon_resolver: duckduckgo
+  formats:
+    - html
+    - json
+
+general:
+  instance_name: openclaw search
+
+ui:
+  default_theme: simple
+  static_use_hash: true
+
+enabled_plugins:
+  - Basic Calculator
+  - Hash plugin
+  - Open Access DOI rewrite
+  - Self Informations
+  - Tracker URL remover
+  - Unit converter plugin

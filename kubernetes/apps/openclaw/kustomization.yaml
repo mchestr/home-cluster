@@ -5,5 +5,7 @@ namespace: openclaw
 components:
   - ../../components/common
 resources:
-  - ./openclaw-operator/ks.yaml
+  - ./text-embeddings/ks.yaml
+  - ./memini/ks.yaml
+  - ./searxng/ks.yaml
   - ./openclaw/ks.yaml
