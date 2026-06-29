@@ -18,9 +18,14 @@ spec:
         - protocol: TCP
           port: 18789
 ---
-# Cross-node Envoy traffic gets SNATed to the node IP. All 3 nodes are control
-# plane nodes, so Cilium classifies their IPs as kube-apiserver (identity 7).
-# This CiliumNetworkPolicy allows that masqueraded traffic on the gateway port.
+# Allow ingress from the cluster's own node identities on all ports. Two reasons:
+#   1. Cross-node Envoy traffic is SNATed to the node IP; all 3 nodes are control
+#      plane, so Cilium tags it kube-apiserver — that reaches the gateway (18789).
+#   2. kube-apiserver REPLY traffic to the openclaw pod (the kube-mcp sidecar
+#      calling the API for its cluster-admin access) comes back tagged with a
+#      node identity to the sidecar's ephemeral ports. Without an all-ports allow
+#      here, openclaw's default-deny ingress drops the API SYN-ACK and every
+#      cluster call times out. host/remote-node cover same-node and worker paths.
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
@@ -33,10 +38,8 @@ spec:
   ingress:
     - fromEntities:
         - kube-apiserver
-      toPorts:
-        - ports:
-            - port: "18789"
-              protocol: TCP
+        - remote-node
+        - host
 # NOTE: no egress policy. openclaw needs to reach DNS, the Anthropic API,
 # ClawHub (plugin install), memini, and the in-cluster TEI embeddings server.
 # In Cilium's default mode, adding any egress rule would switch openclaw to
