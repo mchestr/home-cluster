@@ -80,6 +80,15 @@ data:
       messages: {
         responsePrefix: "[{model}]",
       },
+      channels: {
+        signal: {
+          enabled: true,
+          account: "$${SIGNAL_PHONE_NUMBER}",
+          cliPath: "/home/node/.openclaw/bin/signal-cli",
+          configPath: "/home/node/.openclaw/signal-cli",
+          dmPolicy: "pairing",
+        },
+      },
       gateway: {
         auth: { mode: "token", token: "$${OPENCLAW_GATEWAY_TOKEN}" },
         controlUi: { allowedOrigins: ["https://openclaw.chestr.dev"] },
