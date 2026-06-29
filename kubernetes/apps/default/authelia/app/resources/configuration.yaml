@@ -67,6 +67,7 @@ access_control:
         - jellyfin.chestr.dev
         - play.mikeflix.lol
         - lldap.chestr.dev
+        - openclaw.chestr.dev
         - paperless.chestr.dev
         - tautulli.chestr.dev
         - thelounge.chestr.dev
