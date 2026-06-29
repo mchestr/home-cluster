@@ -62,13 +62,20 @@ spec:
                 # shell receives a literal $.
                 # renovate: datasource=github-tags depName=eleboucher/memini
                 MEMINI_PLUGIN_VERSION=0.4.23
+                CFG=/home/node/.openclaw/openclaw.json
                 EXT=/home/node/.openclaw/extensions/memini
                 if [ "$$(cat "$$EXT/.clawver" 2>/dev/null)" != "$$MEMINI_PLUGIN_VERSION" ]; then
+                  # The installer refuses to run against an invalid config, and our
+                  # config references the memini memory slot before it is installed
+                  # (chicken-and-egg). Move the config aside so install runs against
+                  # a clean default, then restore it for the gateway.
+                  [ -f "$$CFG" ] && mv "$$CFG" "$$CFG.installtmp"
                   if node dist/index.js plugins install "clawhub:@eleboucher/memini@$$MEMINI_PLUGIN_VERSION" --pin --force; then
                     mkdir -p "$$EXT" && printf '%s' "$$MEMINI_PLUGIN_VERSION" > "$$EXT/.clawver"
                   else
                     echo "WARN: memini plugin install failed; starting with whatever is present"
                   fi
+                  [ -f "$$CFG.installtmp" ] && mv "$$CFG.installtmp" "$$CFG"
                 fi
                 exec node dist/index.js gateway --bind lan
             env:
