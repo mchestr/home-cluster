@@ -18,14 +18,9 @@ spec:
         - protocol: TCP
           port: 18789
 ---
-# Allow ingress from the cluster's own node identities on all ports. Two reasons:
-#   1. Cross-node Envoy traffic is SNATed to the node IP; all 3 nodes are control
-#      plane, so Cilium tags it kube-apiserver — that reaches the gateway (18789).
-#   2. kube-apiserver REPLY traffic to the openclaw pod (the kube-mcp sidecar
-#      calling the API for its cluster-admin access) comes back tagged with a
-#      node identity to the sidecar's ephemeral ports. Without an all-ports allow
-#      here, openclaw's default-deny ingress drops the API SYN-ACK and every
-#      cluster call times out. host/remote-node cover same-node and worker paths.
+# Cross-node Envoy traffic gets SNATed to the node IP. All 3 nodes are control
+# plane, so Cilium classifies their IPs as kube-apiserver. This allows that
+# masqueraded ingress to reach the gateway port.
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
@@ -38,10 +33,17 @@ spec:
   ingress:
     - fromEntities:
         - kube-apiserver
-        - remote-node
-        - host
-# NOTE: no egress policy. openclaw needs to reach DNS, the Anthropic API,
-# ClawHub (plugin install), memini, and the in-cluster TEI embeddings server.
-# In Cilium's default mode, adding any egress rule would switch openclaw to
-# egress default-deny; since openclaw is granted cluster-admin anyway, we leave
-# egress unrestricted.
+      toPorts:
+        - ports:
+            - port: "18789"
+              protocol: TCP
+  # Egress allowlist. The kube-mcp sidecar (cluster-admin) needs the kube-apiserver
+  # entity, which Cilium does NOT cover under default-allow egress — without this
+  # explicit entry every API call from the pod times out. `cluster` covers DNS and
+  # the in-cluster memini/searxng/TEI services; `world` covers the OpenAI/Anthropic
+  # APIs, ClawHub, HuggingFace, and the signal-cli GitHub download.
+  egress:
+    - toEntities:
+        - cluster
+        - kube-apiserver
+        - world
