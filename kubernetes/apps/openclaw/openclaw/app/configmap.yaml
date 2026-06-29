@@ -13,6 +13,14 @@ data:
           model: {
             primary: "openai/gpt-5.4-mini",
           },
+          // Force OpenClaw's own runtime so the model bills against OPENAI_API_KEY
+          // (OpenAI Platform, usage-based) instead of the default Codex/ChatGPT
+          // subscription route, which has per-plan usage caps.
+          models: {
+            "openai/gpt-5.4-mini": {
+              agentRuntime: { id: "openclaw" },
+            },
+          },
           contextInjection: "always",
           bootstrapMaxChars: 50000,
           bootstrapTotalMaxChars: 100000,
