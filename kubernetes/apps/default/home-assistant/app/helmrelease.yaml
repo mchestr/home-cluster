@@ -63,10 +63,27 @@ spec:
             env:
               TZ: America/Vancouver
 
-          vscode-tunnel:
+          codeserver:
             image:
-              repository: ghcr.io/mchestr/vscode-tunnel
-              tag: 1.126.0@sha256:d7bad62611030b58dd99298a72230cfd23a669fe3ae7e7a9410eec3802fddae1
+              repository: ghcr.io/coder/code-server
+              tag: 4.126.0@sha256:e1f03b5faaefd63ba6c7173a5290c6ec0526ac907f23acfe6bc949dd965279e4
+            env:
+              TZ: America/Vancouver
+              PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: home-assistant-secret
+                    key: CODE_SERVER_PASSWORD
+            args:
+              - --auth
+              - password
+              - --user-data-dir
+              - /config/.vscode
+              - --extensions-dir
+              - /config/.vscode/extensions
+              - --port
+              - "12321"
+              - /config
 
     defaultPodOptions:
       hostname: home-assistant
@@ -85,6 +102,8 @@ spec:
             port: &port 8123
           sonos:
             port: 1400
+          codeserver:
+            port: &codeserverPort 12321
 
     route:
       app:
@@ -104,6 +123,20 @@ spec:
           - backendRefs:
               - name: *app
                 port: *port
+      # Self-hosted code-server (replaces the VS Code tunnel) for editing HA
+      # config. Password-protected via CODE_SERVER_PASSWORD. On envoy-external to
+      # preserve the tunnel's remote access; move to envoy-internal for LAN-only.
+      codeserver:
+        hostnames:
+          - home-assistant-code.chestr.dev
+        parentRefs:
+          - name: envoy-external
+            namespace: networking
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *codeserverPort
 
     # Custom component to fix Sonos soco library binding to pod IP instead of Multus IP.
     # Sets soco.config.EVENT_LISTENER_IP so Sonos speakers can reach HA for event callbacks.
@@ -137,10 +170,8 @@ spec:
               - path: /config
               - path: /.vscode-server
               - path: /.vscode
-            vscode-tunnel:
+            codeserver:
               - path: /config
-              - path: /.vscode-server
-              - path: /.vscode
 
       soco-config:
         type: configMap
@@ -153,10 +184,11 @@ spec:
       deploykey:
         type: secret
         name: home-assistant-deploykey-secret
+        defaultMode: 0600
         advancedMounts:
           home-assistant:
-            vscode-tunnel:
-              - path: /home/kah/.ssh
+            codeserver:
+              - path: /home/coder/.ssh
 
     networkpolicies:
       home-assistant:
@@ -180,3 +212,5 @@ spec:
               ports:
                 - protocol: TCP
                   port: *port
+                - protocol: TCP
+                  port: *codeserverPort
