@@ -125,6 +125,14 @@ spec:
                   fi
                   [ -f "$$CFG.installtmp" ] && mv "$$CFG.installtmp" "$$CFG"
                 fi
+                # Persist gh credentials to the on-disk config. openclaw's exec
+                # tool strips secret env vars (GITHUB_TOKEN included), so the agent
+                # can't auth gh from the env — but it does read ~/.config/gh on the
+                # PVC. Re-runs each boot so token rotation is picked up.
+                if [ -n "$$GITHUB_TOKEN" ]; then
+                  printf '%s' "$$GITHUB_TOKEN" | env -u GITHUB_TOKEN -u GH_TOKEN gh auth login --with-token >/dev/null 2>&1 \
+                    && echo "gh: credentials persisted to ~/.config/gh" || echo "WARN: gh credential persist failed"
+                fi
                 exec node dist/index.js gateway --bind lan
             env:
               HOME: &homepath /home/node
