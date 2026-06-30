@@ -77,6 +77,19 @@ spec:
             envFrom:
               - secretRef:
                   name: sonarr-secret
+          exporter:
+            image:
+              repository: ghcr.io/onedr0p/exportarr
+              tag: v2.3.0
+            args: ["sonarr"]
+            env:
+              PORT: "9707"
+              URL: http://sonarr.media.svc.cluster.local:8989
+              APIKEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: sonarr-secret
+                    key: SONARR__AUTH__APIKEY
 
     defaultPodOptions:
       securityContext:
@@ -94,6 +107,18 @@ spec:
         ports:
           http:
             port: &port 8989
+          metrics:
+            port: &metricsPort 9707
+
+    serviceMonitor:
+      app:
+        serviceName: *app
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
 
     route:
       app:

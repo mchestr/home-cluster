@@ -78,6 +78,19 @@ spec:
             envFrom:
               - secretRef:
                   name: radarr-secret
+          exporter:
+            image:
+              repository: ghcr.io/onedr0p/exportarr
+              tag: v2.3.0
+            args: ["radarr"]
+            env:
+              PORT: "9707"
+              URL: http://radarr.media.svc.cluster.local:7878
+              APIKEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: radarr-secret
+                    key: RADARR__AUTH__APIKEY
 
     service:
       app:
@@ -85,6 +98,18 @@ spec:
         ports:
           http:
             port: &port 7878
+          metrics:
+            port: &metricsPort 9707
+
+    serviceMonitor:
+      app:
+        serviceName: *app
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
 
     route:
       app:

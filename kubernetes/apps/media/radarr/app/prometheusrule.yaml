@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: radarr-rules
+spec:
+  groups:
+    - name: radarr.rules
+      rules:
+        - alert: RadarrQueueNotEmpty
+          expr: |
+            sum(radarr_queue_total) > 0
+          for: 60m
+          annotations:
+            summary: Radarr has {{ $value }} item(s) in its queue
+            description: Radarr has had one or more queued downloads for at least 60 minutes.
+          labels:
+            app: radarr
+            namespace: media
+            severity: critical

@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: sonarr-rules
+spec:
+  groups:
+    - name: sonarr.rules
+      rules:
+        - alert: SonarrQueueNotEmpty
+          expr: |
+            sum(sonarr_queue_total) > 0
+          for: 60m
+          annotations:
+            summary: Sonarr has {{ $value }} item(s) in its queue
+            description: Sonarr has had one or more queued downloads for at least 60 minutes.
+          labels:
+            app: sonarr
+            namespace: media
+            severity: critical
