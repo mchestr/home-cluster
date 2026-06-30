@@ -251,6 +251,10 @@ spec:
             subPath: prometheus.md
           - path: /skills/victorialogs/SKILL.md
             subPath: victorialogs.md
+          - path: /skills/sonarr/SKILL.md
+            subPath: sonarr.md
+          - path: /skills/radarr/SKILL.md
+            subPath: radarr.md
           - path: /skills/kubernetes-events/SKILL.md
             subPath: kubernetes-events.md
           - path: /skills/flux/SKILL.md

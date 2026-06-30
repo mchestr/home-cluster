@@ -84,6 +84,8 @@ data:
         entries: {
           prometheus: { enabled: true },
           victorialogs: { enabled: true },
+          sonarr: { enabled: true },
+          radarr: { enabled: true },
           "kubernetes-events": { enabled: true },
           flux: { enabled: true },
         },

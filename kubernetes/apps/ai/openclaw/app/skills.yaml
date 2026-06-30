@@ -74,7 +74,7 @@ data:
 
     - Scope queries with label matchers (e.g. `{namespace="rook-ceph"}`) to cut noise.
     - Use `topk(10, ...)` to surface the worst offenders.
-    - Cross-check a metric spike against `kubectl`/MCP pod events and logs before
+    - Cross-check a metric spike against Kubernetes MCP pod events and logs before
       concluding a root cause.
     - For Alertmanager-triggered investigations, start with the alert's labels
       (`namespace`, `pod`, `node`, `job`, `instance`) and compare the firing time
@@ -171,12 +171,199 @@ data:
       Prometheus metrics before naming a root cause.
     - Stay read-only during alert investigations.
 
+  sonarr.md: |
+    ---
+    name: sonarr
+    description: Inspect the Sonarr HTTP API during media investigations, especially Sonarr queue, health, wanted, history, indexer, download client, and import failures
+    metadata:
+      { "openclaw": { "emoji": "tv", "homepage": "https://wiki.servarr.com/sonarr" } }
+    user-invocable: true
+    disable-model-invocation: false
+    ---
+
+    Use this skill when an alert, log line, or user question points at Sonarr,
+    especially `SonarrQueueNotEmpty`, stalled imports, missing episodes,
+    download client issues, indexer failures, or API/widget problems.
+
+    Keep investigations read-only. Do not use POST/PUT/DELETE endpoints unless
+    explicitly told to remediate.
+
+    ## Endpoint
+
+    In-cluster URL: `http://sonarr.media.svc.cluster.local:8989`
+
+    OpenClaw has `SONARR_API_KEY` in the environment. Query with `curl` and the
+    `X-Api-Key` header:
+
+    ```sh
+    curl -fsS -H "X-Api-Key: ${SONARR_API_KEY}" \
+      "http://sonarr.media.svc.cluster.local:8989/api/v3/system/status"
+    ```
+
+    Pipe through `jq` when available.
+
+    ## Fast checks
+
+    System status and health:
+
+    ```sh
+    curl -fsS -H "X-Api-Key: ${SONARR_API_KEY}" \
+      "http://sonarr.media.svc.cluster.local:8989/api/v3/system/status"
+    curl -fsS -H "X-Api-Key: ${SONARR_API_KEY}" \
+      "http://sonarr.media.svc.cluster.local:8989/api/v3/health"
+    ```
+
+    Queue details for stuck downloads/imports:
+
+    ```sh
+    curl -fsS -H "X-Api-Key: ${SONARR_API_KEY}" \
+      "http://sonarr.media.svc.cluster.local:8989/api/v3/queue?page=1&pageSize=100&sortKey=timeleft&sortDirection=ascending&includeUnknownSeriesItems=true&includeSeries=true&includeEpisode=true"
+    ```
+
+    Recent queue/import/download history:
+
+    ```sh
+    curl -fsS -H "X-Api-Key: ${SONARR_API_KEY}" \
+      "http://sonarr.media.svc.cluster.local:8989/api/v3/history?page=1&pageSize=100&sortKey=date&sortDirection=descending"
+    ```
+
+    Wanted missing episodes:
+
+    ```sh
+    curl -fsS -H "X-Api-Key: ${SONARR_API_KEY}" \
+      "http://sonarr.media.svc.cluster.local:8989/api/v3/wanted/missing?page=1&pageSize=50&sortKey=airDateUtc&sortDirection=descending"
+    ```
+
+    Indexer and download client status:
+
+    ```sh
+    curl -fsS -H "X-Api-Key: ${SONARR_API_KEY}" \
+      "http://sonarr.media.svc.cluster.local:8989/api/v3/indexer/status"
+    curl -fsS -H "X-Api-Key: ${SONARR_API_KEY}" \
+      "http://sonarr.media.svc.cluster.local:8989/api/v3/downloadclient/status"
+    ```
+
+    ## What to look for
+
+    - Queue items with `trackedDownloadStatus` or `statusMessages` explaining
+      why import is blocked.
+    - Download client warnings, unavailable indexers, auth failures, or DNS/TLS
+      errors in health/status responses.
+    - Repeated grab/import failures in history close to the alert `startsAt`.
+    - Path problems involving `/data`, `/complete/sonarr`, permissions, or NFS.
+    - A mismatch between Sonarr queue data and exporter metrics
+      (`sonarr_queue_total`).
+
+    ## Investigation flow
+
+    - Start with `/api/v3/queue` for `SonarrQueueNotEmpty`.
+    - Use `/api/v3/health`, indexer status, and download client status to
+      explain why queue items are stuck.
+    - Cross-check with VictoriaLogs for Sonarr and related download client logs.
+    - If the API is unhealthy or unreachable, inspect Kubernetes events, pod
+      status, service endpoints, and Flux state before blaming Sonarr itself.
+    - Report the exact queued series/episode, blockage reason, and safest next
+      action.
+
+  radarr.md: |
+    ---
+    name: radarr
+    description: Inspect the Radarr HTTP API during media investigations, especially Radarr queue, health, wanted, history, indexer, download client, and import failures
+    metadata:
+      { "openclaw": { "emoji": "movie", "homepage": "https://wiki.servarr.com/radarr" } }
+    user-invocable: true
+    disable-model-invocation: false
+    ---
+
+    Use this skill when an alert, log line, or user question points at Radarr,
+    especially `RadarrQueueNotEmpty`, stalled imports, missing movies,
+    download client issues, indexer failures, or API/widget problems.
+
+    Keep investigations read-only. Do not use POST/PUT/DELETE endpoints unless
+    explicitly told to remediate.
+
+    ## Endpoint
+
+    In-cluster URL: `http://radarr.media.svc.cluster.local:7878`
+
+    OpenClaw has `RADARR_API_KEY` in the environment. Query with `curl` and the
+    `X-Api-Key` header:
+
+    ```sh
+    curl -fsS -H "X-Api-Key: ${RADARR_API_KEY}" \
+      "http://radarr.media.svc.cluster.local:7878/api/v3/system/status"
+    ```
+
+    Pipe through `jq` when available.
+
+    ## Fast checks
+
+    System status and health:
+
+    ```sh
+    curl -fsS -H "X-Api-Key: ${RADARR_API_KEY}" \
+      "http://radarr.media.svc.cluster.local:7878/api/v3/system/status"
+    curl -fsS -H "X-Api-Key: ${RADARR_API_KEY}" \
+      "http://radarr.media.svc.cluster.local:7878/api/v3/health"
+    ```
+
+    Queue details for stuck downloads/imports:
+
+    ```sh
+    curl -fsS -H "X-Api-Key: ${RADARR_API_KEY}" \
+      "http://radarr.media.svc.cluster.local:7878/api/v3/queue?page=1&pageSize=100&sortKey=timeleft&sortDirection=ascending&includeUnknownMovieItems=true&includeMovie=true"
+    ```
+
+    Recent queue/import/download history:
+
+    ```sh
+    curl -fsS -H "X-Api-Key: ${RADARR_API_KEY}" \
+      "http://radarr.media.svc.cluster.local:7878/api/v3/history?page=1&pageSize=100&sortKey=date&sortDirection=descending"
+    ```
+
+    Wanted missing movies:
+
+    ```sh
+    curl -fsS -H "X-Api-Key: ${RADARR_API_KEY}" \
+      "http://radarr.media.svc.cluster.local:7878/api/v3/wanted/missing?page=1&pageSize=50&sortKey=releaseDate&sortDirection=descending"
+    ```
+
+    Indexer and download client status:
+
+    ```sh
+    curl -fsS -H "X-Api-Key: ${RADARR_API_KEY}" \
+      "http://radarr.media.svc.cluster.local:7878/api/v3/indexer/status"
+    curl -fsS -H "X-Api-Key: ${RADARR_API_KEY}" \
+      "http://radarr.media.svc.cluster.local:7878/api/v3/downloadclient/status"
+    ```
+
+    ## What to look for
+
+    - Queue items with `trackedDownloadStatus` or `statusMessages` explaining
+      why import is blocked.
+    - Download client warnings, unavailable indexers, auth failures, or DNS/TLS
+      errors in health/status responses.
+    - Repeated grab/import failures in history close to the alert `startsAt`.
+    - Path problems involving `/data`, `/complete/radarr`, permissions, or NFS.
+    - A mismatch between Radarr queue data and exporter metrics
+      (`radarr_queue_total`).
+
+    ## Investigation flow
+
+    - Start with `/api/v3/queue` for `RadarrQueueNotEmpty`.
+    - Use `/api/v3/health`, indexer status, and download client status to
+      explain why queue items are stuck.
+    - Cross-check with VictoriaLogs for Radarr and related download client logs.
+    - If the API is unhealthy or unreachable, inspect Kubernetes events, pod
+      status, service endpoints, and Flux state before blaming Radarr itself.
+    - Report the exact queued movie, blockage reason, and safest next action.
+
   kubernetes-events.md: |
     ---
     name: kubernetes-events
     description: Inspect Kubernetes events, pod status, and object descriptions to explain scheduling, probe, image pull, volume, and lifecycle failures
     metadata:
-      { "openclaw": { "emoji": "events", "homepage": "https://kubernetes.io/docs/reference/kubectl/generated/kubectl_events/" } }
+      { "openclaw": { "emoji": "events", "homepage": "https://kubernetes.io/docs/reference/kubernetes-api/cluster-resources/event-v1/" } }
     user-invocable: true
     disable-model-invocation: false
     ---
@@ -185,41 +372,36 @@ data:
     explain why a symptom started: failed scheduling, image pull errors, probe
     failures, volume attachment problems, evictions, and rollout churn.
 
-    ## Fast checks
+    OpenClaw does not have `kubectl`. Use the Kubernetes MCP tools to list and
+    read Kubernetes resources directly.
 
-    Recent events across the cluster:
+    ## Fast checks via Kubernetes MCP
 
-    ```sh
-    kubectl get events -A --sort-by=.lastTimestamp
-    ```
+    Recent events:
 
-    Recent warning events:
+    - List `events` in the core API group across namespaces when supported.
+    - Also list `events.events.k8s.io` if the MCP exposes the newer events API.
+    - Filter the returned objects by `type: Warning`, `metadata.namespace`,
+      `involvedObject`, `regarding`, `reason`, `message`, `firstTimestamp`,
+      `lastTimestamp`, `eventTime`, and `count`.
 
-    ```sh
-    kubectl get events -A --field-selector type=Warning --sort-by=.lastTimestamp
-    ```
+    Object state for alert targets:
 
-    Events in one namespace:
+    - Read the Pod, Deployment, StatefulSet, DaemonSet, Job, PVC, Service, or
+      EndpointSlice named by alert labels.
+    - Inspect `.status.conditions`, `.status.containerStatuses`,
+      `.status.initContainerStatuses`, `.status.phase`, `.status.reason`,
+      `.status.message`, `.spec.nodeName`, `.spec.tolerations`, `.spec.affinity`,
+      `.spec.volumes`, and owner references.
+    - For pod lifecycle issues, inspect waiting/terminated reasons, restart
+      counts, readiness, image IDs, last termination state, and mounted PVCs.
 
-    ```sh
-    kubectl get events -n <namespace> --sort-by=.lastTimestamp
-    ```
+    Namespace scoping:
 
-    Describe the object named by an alert:
-
-    ```sh
-    kubectl describe pod -n <namespace> <pod>
-    kubectl describe deploy -n <namespace> <deployment>
-    kubectl describe statefulset -n <namespace> <statefulset>
-    kubectl describe pvc -n <namespace> <claim>
-    ```
-
-    Check pod state compactly:
-
-    ```sh
-    kubectl get pod -n <namespace> <pod> -o wide
-    kubectl get pod -n <namespace> <pod> -o jsonpath='{range .status.containerStatuses[*]}{.name}{" ready="}{.ready}{" restarts="}{.restartCount}{" reason="}{.state.waiting.reason}{.state.terminated.reason}{"\n"}{end}'
-    ```
+    - Start with the alert's `namespace`, `pod`, `persistentvolumeclaim`,
+      `deployment`, `statefulset`, `daemonset`, `job`, or `node` labels.
+    - If labels are missing, use the alert `instance`, `app`, and annotations to
+      infer the likely namespace/object, then verify with MCP reads.
 
     ## What to look for
 
@@ -234,7 +416,7 @@ data:
 
     - Start with the namespace and object labels from the alert payload.
     - Compare event timestamps with the alert `startsAt` time.
-    - Use `describe` output for conditions and recent event context.
+    - Use MCP-read object status for conditions and recent event context.
     - Cross-check with Prometheus metrics and VictoriaLogs before concluding.
     - Stay read-only during alert investigations.
 
@@ -254,51 +436,39 @@ data:
 
     Keep investigations read-only unless explicitly told to remediate.
 
-    ## Fast checks
+    OpenClaw does not have the `flux` or `kubectl` CLI. Use the Kubernetes MCP
+    tools to inspect Flux custom resources directly.
 
-    Flux Kustomizations:
+    ## Fast checks via Kubernetes MCP
 
-    ```sh
-    flux get kustomizations -A
-    ```
+    List and read these Flux CRDs across namespaces:
 
-    HelmReleases:
+    - `kustomizations.kustomize.toolkit.fluxcd.io`
+    - `helmreleases.helm.toolkit.fluxcd.io`
+    - `gitrepositories.source.toolkit.fluxcd.io`
+    - `helmrepositories.source.toolkit.fluxcd.io`
+    - `ocirepositories.source.toolkit.fluxcd.io`
+    - `buckets.source.toolkit.fluxcd.io`
 
-    ```sh
-    flux get helmreleases -A
-    ```
+    For app incidents, read the app namespace's `HelmRelease` and the parent
+    `Kustomization` that points at the app path. For source/reconcile incidents,
+    read the relevant source object in `flux-system` or the app namespace.
 
-    Sources:
+    Inspect these fields:
 
-    ```sh
-    flux get sources git -A
-    flux get sources helm -A
-    flux get sources oci -A
-    ```
+    - `.status.conditions[]` with `type`, `status`, `reason`, `message`, and
+      `lastTransitionTime`.
+    - `.status.lastAttemptedRevision`, `.status.lastAppliedRevision`,
+      `.status.lastHandledReconcileAt`, and inventory/snapshot fields when
+      present.
+    - `.spec.dependsOn`, `.spec.path`, `.spec.interval`, `.spec.retryInterval`,
+      `.spec.sourceRef`, `.spec.chartRef`, `.spec.valuesFrom`, and remediation
+      settings.
+    - Events for the Flux object via the kubernetes-events skill.
 
-    Recent Flux controller logs:
-
-    ```sh
-    flux logs --all-namespaces --level=error --since=1h
-    ```
-
-    ## Kubernetes fallbacks
-
-    If the `flux` CLI is unavailable, use Kubernetes resources directly:
-
-    ```sh
-    kubectl get kustomizations.kustomize.toolkit.fluxcd.io -A
-    kubectl get helmreleases.helm.toolkit.fluxcd.io -A
-    kubectl describe kustomization -n <namespace> <name>
-    kubectl describe helmrelease -n <namespace> <name>
-    ```
-
-    Inspect status conditions as JSON:
-
-    ```sh
-    kubectl get helmrelease -n <namespace> <name> -o jsonpath='{range .status.conditions[*]}{.type}{" status="}{.status}{" reason="}{.reason}{" message="}{.message}{"\n"}{end}'
-    kubectl get kustomization -n <namespace> <name> -o jsonpath='{range .status.conditions[*]}{.type}{" status="}{.status}{" reason="}{.reason}{" message="}{.message}{"\n"}{end}'
-    ```
+    If more detail is needed, use VictoriaLogs for Flux controller logs in the
+    `flux-system` namespace (`source-controller`, `kustomize-controller`,
+    `helm-controller`, and `notification-controller`).
 
     ## What to look for
 
@@ -310,7 +480,8 @@ data:
 
     ## Investigation flow
 
-    - Start with `flux get kustomizations -A` and `flux get helmreleases -A`.
+    - Start by listing Flux Kustomizations and HelmReleases through the
+      Kubernetes MCP.
     - If an app is failing, inspect its namespace's HelmRelease and parent
       Kustomization.
     - Compare Flux reconciliation events with Kubernetes events and app logs.
