@@ -56,6 +56,16 @@ access_control:
         - radarr.chestr.dev
       resources: ["^/api.*$"]
       policy: bypass
+    # memini: /v1 and /mcp are guarded by memini's own MEMINI_API_KEY bearer
+    # token, so bypass Authelia there to let openclaw/Claude/MCP save memories.
+    # Everything else (the web UI, which embeds the API token in its HTML) falls
+    # through to the admin two_factor rule below so it isn't publicly reachable.
+    - domain:
+        - memini.chestr.dev
+      resources:
+        - "^/v1.*$"
+        - "^/mcp.*$"
+      policy: bypass
     # Bypass domains that have their own auth
     - domain:
         - atuin.chestr.dev
@@ -67,7 +77,6 @@ access_control:
         - jellyfin.chestr.dev
         - play.mikeflix.lol
         - lldap.chestr.dev
-        - memini.chestr.dev
         - openclaw.chestr.dev
         - paperless.chestr.dev
         - tautulli.chestr.dev
