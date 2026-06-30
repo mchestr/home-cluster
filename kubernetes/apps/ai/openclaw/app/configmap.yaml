@@ -100,15 +100,6 @@ data:
           search: { enabled: true, provider: "searxng" },
         },
       },
-      hooks: {
-        internal: {
-          enabled: true,
-          entries: {
-            "compaction-notifier": { enabled: true },
-            "session-memory": { enabled: true },
-          },
-        },
-      },
       session: {
         dmScope: "main",
         reset: { mode: "idle", idleMinutes: 1440 },
@@ -147,6 +138,13 @@ data:
         enabled: true,
         path: "/hooks",
         token: "$${OPENCLAW_HOOKS_TOKEN}",
+        internal: {
+          enabled: true,
+          entries: {
+            "compaction-notifier": { enabled: true },
+            "session-memory": { enabled: true },
+          },
+        },
       },
       plugins: {
         entries: {
