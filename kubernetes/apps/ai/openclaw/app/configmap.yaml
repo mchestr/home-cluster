@@ -12,6 +12,13 @@ data:
         defaults: {
           model: {
             primary: "openai/gpt-5.4-mini",
+            // OpenAI rate-limits hard; fail over to the same model via OpenRouter
+            // (its own pooled keys bypass our per-account caps), then Anthropic as
+            // a last resort. Cross-provider fallbacks bypass model allowlists.
+            fallbacks: [
+              "openrouter/openai/gpt-5.4-mini",
+              "anthropic/claude-sonnet-4-6",
+            ],
           },
           // Force OpenClaw's own runtime so the model bills against OPENAI_API_KEY
           // (OpenAI Platform, usage-based) instead of the default Codex/ChatGPT
@@ -47,6 +54,17 @@ data:
       models: {
         providers: {
           openai: {
+            timeoutSeconds: 180,
+          },
+          // OpenAI-compatible gateway; bills against OPENROUTER_API_KEY.
+          openrouter: {
+            baseUrl: "https://openrouter.ai/api/v1",
+            apiKey: "$${OPENROUTER_API_KEY}",
+            api: "openai-completions",
+            timeoutSeconds: 180,
+          },
+          // Built-in provider reads ANTHROPIC_API_KEY from env automatically.
+          anthropic: {
             timeoutSeconds: 180,
           },
         },
