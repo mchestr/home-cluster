@@ -3,13 +3,13 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app text-embeddings
-  namespace: &namespace openclaw
+  namespace: &namespace ai
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   interval: 30m
-  path: ./kubernetes/apps/openclaw/text-embeddings/app
+  path: ./kubernetes/apps/ai/text-embeddings/app
   prune: true
   retryInterval: 1m
   sourceRef:

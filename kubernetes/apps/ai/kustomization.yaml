@@ -7,3 +7,6 @@ components:
 resources:
   - ./litellm-operator/ks.yaml
   - ./litellm/ks.yaml
+  - ./text-embeddings/ks.yaml
+  - ./memini/ks.yaml
+  - ./openclaw/ks.yaml
