@@ -17,6 +17,9 @@ spec:
       ports:
         - protocol: TCP
           port: 18789
+        # code-server sidecar (openclaw-code.chestr.dev)
+        - protocol: TCP
+          port: 12321
 ---
 # Cross-node Envoy traffic gets SNATed to the node IP. All 3 nodes are control
 # plane, so Cilium classifies their IPs as kube-apiserver. This allows that
@@ -36,6 +39,11 @@ spec:
       toPorts:
         - ports:
             - port: "18789"
+              protocol: TCP
+            # code-server sidecar (openclaw-code.chestr.dev). Envoy runs on
+            # m1/m2 while openclaw is on m0, so this cross-node (SNATed) path
+            # is what actually gates the gateway -> code-server traffic.
+            - port: "12321"
               protocol: TCP
   # Egress allowlist. The kube-mcp sidecar (cluster-admin) needs the kube-apiserver
   # entity, which Cilium does NOT cover under default-allow egress — without this
