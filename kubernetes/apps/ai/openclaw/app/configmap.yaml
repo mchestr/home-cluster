@@ -17,7 +17,7 @@ data:
             // a last resort. Cross-provider fallbacks bypass model allowlists.
             fallbacks: [
               "openrouter/openai/gpt-5.4-mini",
-              "anthropic/claude-sonnet-4-6",
+              "anthropic/claude-haiku-4-5",
             ],
           },
           // Force OpenClaw's own runtime so the model bills against OPENAI_API_KEY
