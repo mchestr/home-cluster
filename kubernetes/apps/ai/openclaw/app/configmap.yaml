@@ -42,6 +42,15 @@ data:
           },
         },
       },
+      // Per-provider HTTP request timeout (connect/headers/body/total abort),
+      // separate from the whole-run agents.defaults.timeoutSeconds above.
+      models: {
+        providers: {
+          openai: {
+            timeoutSeconds: 180,
+          },
+        },
+      },
       commands: {
         native: "auto",
         nativeSkills: "auto",
