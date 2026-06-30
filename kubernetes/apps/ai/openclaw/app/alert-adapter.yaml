@@ -1,0 +1,258 @@
+---
+# Translates Alertmanager's fixed webhook payload into an OpenClaw /hooks/agent
+# request. Alertmanager POSTs here; the adapter renders the firing alerts into a
+# read-only investigation prompt and fires it at the gateway, which runs an
+# agent turn (kube MCP + exec) and delivers the diagnosis to Signal. Stdlib
+# only — no pip install.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openclaw-alert-adapter
+data:
+  adapter.py: |
+    import json, os, sys, threading, urllib.request
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+    HOOK_URL = os.environ.get("OPENCLAW_HOOK_URL", "http://openclaw.ai.svc.cluster.local:18789/hooks/agent")
+    TOKEN = os.environ.get("OPENCLAW_TOKEN", "")
+    CHANNEL = os.environ.get("SIGNAL_CHANNEL", "signal")
+    TO = os.environ.get("SIGNAL_TO", "")
+    PORT = int(os.environ.get("LISTEN_PORT", "8080"))
+
+    def log(*a):
+        print(*a, file=sys.stderr, flush=True)
+
+    def fmt_map(value):
+        if not value:
+            return "-"
+        return ", ".join("{}={}".format(k, v) for k, v in sorted(value.items()))
+
+    def build_message(payload):
+        all_alerts = payload.get("alerts", [])
+        alerts = [a for a in all_alerts if a.get("status", "firing") == "firing"]
+        if not alerts:
+            return None
+        common_labels = payload.get("commonLabels", {})
+        common_annotations = payload.get("commonAnnotations", {})
+        group_labels = payload.get("groupLabels", {})
+        lines = []
+        for a in alerts:
+            lbl = a.get("labels", {})
+            ann = a.get("annotations", {})
+            target = lbl.get("pod") or lbl.get("instance") or lbl.get("node") or "-"
+            lines.append(
+                "- {name} (severity={sev}, namespace={ns}, target={tgt})\n"
+                "    summary: {summary}\n"
+                "    description: {desc}\n"
+                "    startsAt: {starts}\n"
+                "    source: {src}\n"
+                "    labels: {labels}\n"
+                "    annotations: {annotations}".format(
+                    name=lbl.get("alertname", "unknown"),
+                    sev=lbl.get("severity", "?"),
+                    ns=lbl.get("namespace", "-"),
+                    tgt=target,
+                    summary=ann.get("summary") or ann.get("message") or "",
+                    desc=ann.get("description") or "",
+                    starts=a.get("startsAt", ""),
+                    src=a.get("generatorURL", ""),
+                    labels=fmt_map(lbl),
+                    annotations=fmt_map(ann),
+                )
+            )
+        return (
+            "A critical Prometheus alert is firing in the Kubernetes cluster. "
+            "Investigate the most likely root cause using the kubernetes MCP tools, "
+            "the kubernetes-events skill for recent object events, the flux skill "
+            "for GitOps reconciliation state, the prometheus skill for metrics and "
+            "current alerts, and the victorialogs skill for container logs when "
+            "logs are needed. "
+            "This is STRICTLY READ-ONLY: do not restart, scale, edit, delete, "
+            "patch, or reconcile anything.\n\n"
+            "Alertmanager context:\n"
+            "- status: {status}\n"
+            "- receiver: {receiver}\n"
+            "- externalURL: {external_url}\n"
+            "- groupKey: {group_key}\n"
+            "- groupLabels: {group_labels}\n"
+            "- commonLabels: {common_labels}\n"
+            "- commonAnnotations: {common_annotations}\n"
+            "- firingCount: {firing_count}\n"
+            "- resolvedCount: {resolved_count}\n\n"
+            "Firing alerts:\n{alerts}\n\n"
+            "Reply using exactly these sections:\n"
+            "Impact\n"
+            "Likely cause\n"
+            "Evidence\n"
+            "Recommended fix\n"
+            "Commands checked".format(
+                status=payload.get("status", "-"),
+                receiver=payload.get("receiver", "-"),
+                external_url=payload.get("externalURL", "-"),
+                group_key=payload.get("groupKey", "-"),
+                group_labels=fmt_map(group_labels),
+                common_labels=fmt_map(common_labels),
+                common_annotations=fmt_map(common_annotations),
+                firing_count=len(alerts),
+                resolved_count=len([a for a in all_alerts if a.get("status") == "resolved"]),
+                alerts="\n".join(lines),
+            )
+        )
+
+    def dispatch(message, name):
+        data = {"message": message, "name": name, "deliver": "announce", "timeoutSeconds": 600}
+        if TO:
+            data["channel"] = CHANNEL
+            data["to"] = TO
+        req = urllib.request.Request(
+            HOOK_URL,
+            data=json.dumps(data).encode(),
+            headers={"Content-Type": "application/json", "Authorization": "Bearer " + TOKEN},
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=900) as resp:
+                log("openclaw {}: {}".format(resp.status, resp.read(500).decode(errors="replace")))
+        except Exception as e:
+            log("openclaw dispatch failed: {}".format(e))
+
+    class Handler(BaseHTTPRequestHandler):
+        def _send(self, code, body=b"ok"):
+            self.send_response(code)
+            self.send_header("Content-Type", "text/plain")
+            self.end_headers()
+            self.wfile.write(body)
+
+        def do_GET(self):
+            self._send(200) if self.path == "/healthz" else self._send(404, b"not found")
+
+        def do_POST(self):
+            length = int(self.headers.get("Content-Length", "0") or 0)
+            raw = self.rfile.read(length) if length else b"{}"
+            try:
+                payload = json.loads(raw or b"{}")
+            except Exception as e:
+                log("bad payload: {}".format(e))
+                self._send(400, b"bad json")
+                return
+            message = build_message(payload)
+            if not message:
+                self._send(200, b"no firing alerts")
+                return
+            name = "alert: " + payload.get("groupLabels", {}).get("alertname", "critical")
+            threading.Thread(target=dispatch, args=(message, name), daemon=True).start()
+            self._send(202, b"accepted")
+
+        def log_message(self, *a):
+            pass
+
+    if __name__ == "__main__":
+        log("alert-adapter listening on :{} -> {}".format(PORT, HOOK_URL))
+        ThreadingHTTPServer(("0.0.0.0", PORT), Handler).serve_forever()
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: openclaw-alert-adapter
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        seccompProfile: { type: RuntimeDefault }
+    controllers:
+      openclaw-alert-adapter:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: docker.io/library/python
+              tag: "3.13-alpine"
+            command: ["python3", "/app/adapter.py"]
+            env:
+              OPENCLAW_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: openclaw-secret
+                    key: OPENCLAW_HOOKS_TOKEN
+              # Default: deliver to the Signal account as Note to Self. Override
+              # by pointing this at a different secret key if you want the alert
+              # to go to another Signal contact.
+              SIGNAL_TO:
+                valueFrom:
+                  secretKeyRef:
+                    name: openclaw-secret
+                    key: SIGNAL_PHONE_NUMBER
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 8080
+                  initialDelaySeconds: 5
+                  periodSeconds: 20
+              readiness: *probe
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 64Mi
+    service:
+      app:
+        controller: openclaw-alert-adapter
+        ports:
+          http:
+            port: 8080
+    persistence:
+      scripts:
+        type: configMap
+        name: openclaw-alert-adapter
+        defaultMode: 0644
+        globalMounts:
+          - path: /app
+---
+# Only Alertmanager (observability ns) may reach the adapter.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: openclaw-alert-adapter-allow-alertmanager
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: openclaw-alert-adapter
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: observability
+      ports:
+        - protocol: TCP
+          port: 8080

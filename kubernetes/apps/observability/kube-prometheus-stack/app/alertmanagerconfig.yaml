@@ -21,6 +21,14 @@ spec:
           - name: alertname
             value: Watchdog
             matchType: =
+      - receiver: openclaw-investigate
+        continue: true
+        groupWait: 1m
+        repeatInterval: 24h
+        matchers:
+          - name: severity
+            value: critical
+            matchType: =
       - receiver: pushover
         matchers:
           - name: severity
@@ -48,6 +56,10 @@ spec:
 
   receivers:
     - name: blackhole
+    - name: openclaw-investigate
+      webhookConfigs:
+        - url: http://openclaw-alert-adapter.ai.svc.cluster.local:8080/
+          sendResolved: false
     - name: heartbeat
       webhookConfigs:
         - urlSecret:

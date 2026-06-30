@@ -20,6 +20,15 @@ spec:
         # code-server sidecar (openclaw-code.chestr.dev)
         - protocol: TCP
           port: 12321
+    # alert-adapter -> /hooks/agent (same-node path; the cross-node SNATed path
+    # is covered by the kube-apiserver entity rule below).
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: openclaw-alert-adapter
+      ports:
+        - protocol: TCP
+          port: 18789
 ---
 # Cross-node Envoy traffic gets SNATed to the node IP. All 3 nodes are control
 # plane, so Cilium classifies their IPs as kube-apiserver. This allows that

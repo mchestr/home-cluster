@@ -238,6 +238,23 @@ spec:
         globalMounts:
           - path: /tmp/openclaw.json
             subPath: openclaw.json
+      # Generic skills bundle. Each ConfigMap key is mounted to its own
+      # /skills/<name>/SKILL.md (OpenClaw discovers skills by the SKILL.md
+      # filename); skills.load.extraDirs in openclaw.json points at /skills.
+      # Add a globalMount line per skill key in skills.yaml.
+      skills:
+        type: configMap
+        name: openclaw-skills
+        defaultMode: 0644
+        globalMounts:
+          - path: /skills/prometheus/SKILL.md
+            subPath: prometheus.md
+          - path: /skills/victorialogs/SKILL.md
+            subPath: victorialogs.md
+          - path: /skills/kubernetes-events/SKILL.md
+            subPath: kubernetes-events.md
+          - path: /skills/flux/SKILL.md
+            subPath: flux.md
       tmp:
         type: emptyDir
     service:
