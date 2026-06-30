@@ -1,0 +1,57 @@
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMProxy
+metadata:
+  name: litellm
+spec:
+  image: ghcr.io/berriai/litellm:v1.83.14-stable@sha256:d6401c001f90f3bab4bb23c5fd6d9302a7df58999ec6fa9e3f175e1f5f26544b
+  replicas: 1
+  generalSettings:
+    health_check_endpoint: /v1/health
+  routerSettings:
+    routing_strategy: simple-shuffle
+    redis_host: os.environ/REDIS_HOST
+    redis_port: os.environ/REDIS_PORT
+    num_retries: 3
+    timeout: 600
+    # Primary -> fallback when the primary model errors / times out.
+    fallbacks:
+      - memini-chat: ["memini-chat-fallback"]
+  litellmSettings:
+    drop_params: true
+    cache: true
+    cache_params:
+      type: redis
+      host: os.environ/REDIS_HOST
+      port: os.environ/REDIS_PORT
+  env:
+    - name: LITELLM_LOG
+      value: INFO
+    - name: LITELLM_MODE
+      value: PRODUCTION
+    # Dragonfly (Redis-compatible) created by the dragonfly component as
+    # "<APP>-dragonfly" — see ks.yaml postBuild APP=litellm.
+    - name: REDIS_HOST
+      value: litellm-dragonfly
+    - name: REDIS_PORT
+      value: "6379"
+    - name: LITELLM_MASTER_KEY
+      valueFrom:
+        secretKeyRef:
+          name: litellm-secret
+          key: LITELLM_MASTER_KEY
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      memory: 1Gi
+  service:
+    type: ClusterIP
+    port: 4000
+  route:
+    hostnames:
+      - litellm.chestr.dev
+    parentRefs:
+      - name: envoy-internal
+        namespace: networking
