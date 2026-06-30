@@ -1,0 +1,28 @@
+---
+# Primary chat/answer model memini calls (MEMINI_LLM_MODEL=memini-chat).
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: memini-chat
+spec:
+  modelName: memini-chat
+  params:
+    model: openrouter/qwen/qwen3-14b
+    apiBase: https://openrouter.ai/api/v1
+    apiKeyRef:
+      name: litellm-secret
+      key: OPENROUTER_API_KEY
+---
+# Fallback used by routerSettings.fallbacks when the primary errors/times out.
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: memini-chat-fallback
+spec:
+  modelName: memini-chat-fallback
+  params:
+    model: openrouter/qwen/qwen-2.5-7b-instruct
+    apiBase: https://openrouter.ai/api/v1
+    apiKeyRef:
+      name: litellm-secret
+      key: OPENROUTER_API_KEY

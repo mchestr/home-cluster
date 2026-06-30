@@ -36,6 +36,21 @@ spec:
                   secretKeyRef:
                     name: memini-secret
                     key: MEMINI_API_KEY
+              # Opt-in LLM pipeline: dedup/consolidation, episodic->semantic
+              # promotion, /v1/answer, and rerank. Routed through litellm
+              # (ai namespace) to a hosted OpenAI-compatible provider.
+              MEMINI_LLM_BASE_URL: "http://litellm.ai.svc.cluster.local:4000/v1"
+              MEMINI_LLM_API: openai
+              MEMINI_LLM_MODEL: memini-chat
+              MEMINI_LLM_API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: memini-secret
+                    key: MEMINI_LLM_API_KEY
+              # Phase 1: rerank via the chat LLM (no extra service). A dedicated
+              # cross-encoder reranker can replace this once the chat path is
+              # validated.
+              MEMINI_RERANK: llm
     persistence:
       data:
         size: 10Gi
