@@ -7,6 +7,9 @@ talosconfig
 talos/clusterconfig/
 # task
 .task/
+# codex
+.codex/
+AGENTS.md
 # vscode-sops
 .decrypted~*.yaml
 .decrypted~*.yml
