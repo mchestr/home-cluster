@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+configMapGenerator:
+  - name: openclaw-skills
+    files:
+      - ./prometheus.md
+      - ./victorialogs.md
+      - ./sonarr.md
+      - ./radarr.md
+      - ./kubernetes-events.md
+      - ./flux.md
+generatorOptions:
+  disableNameSuffixHash: true
