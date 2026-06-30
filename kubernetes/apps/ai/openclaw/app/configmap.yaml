@@ -75,6 +75,9 @@ data:
       // the agent to query cluster metrics, logs, events, and GitOps
       // reconciliation state during investigations (see skills.yaml).
       skills: {
+        // Disable all bundled OpenClaw skills; only load explicitly managed
+        // GitOps skills from /skills plus any installed plugin-provided skills.
+        allowBundled: [],
         load: {
           extraDirs: ["/skills"],
         },
