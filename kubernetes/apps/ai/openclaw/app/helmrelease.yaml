@@ -133,6 +133,17 @@ spec:
                   printf '%s' "$$GITHUB_TOKEN" | env -u GITHUB_TOKEN -u GH_TOKEN gh auth login --with-token >/dev/null 2>&1 \
                     && echo "gh: credentials persisted to ~/.config/gh" || echo "WARN: gh credential persist failed"
                 fi
+                # OpenClaw's config-integrity guard persists a self-saved
+                # "last-good" snapshot on the PVC and restores it whenever the
+                # config it reads lacks the runtime-injected "meta" block
+                # (suspicious: missing-meta-vs-last-good). Our GitOps ConfigMap
+                # copy never has that meta block, so on every boot the guard
+                # reverted to a stale snapshot and silently dropped config
+                # changes (fallbacks, providers, timeouts never went live). Drop
+                # the persisted last-good/backup/health state so the gateway
+                # adopts the current ConfigMap-derived config as the new
+                # baseline. git is the source of truth for this deployment.
+                rm -f "$${CFG}.last-good" "$${CFG}".bak* /home/node/.openclaw/logs/config-health.json
                 exec node dist/index.js gateway --bind lan
             env:
               HOME: &homepath /home/node
