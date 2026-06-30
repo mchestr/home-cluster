@@ -27,7 +27,7 @@ spec:
             env:
               MEMINI_DEFAULT_NAMESPACE: openclaw
               # in-cluster TEI embeddings server (bge-small-en-v1.5, 384-dim)
-              MEMINI_EMBED_BASE_URL: "http://text-embeddings.openclaw.svc.cluster.local:8080/v1"
+              MEMINI_EMBED_BASE_URL: "http://text-embeddings.ai.svc.cluster.local:8080/v1"
               MEMINI_EMBED_MODEL: bge-small-en-v1.5
               MEMINI_EMBED_DIMS: "384"
               # bearer token protecting /v1 and /mcp (shared with openclaw)
@@ -53,8 +53,8 @@ spec:
               MEMINI_RERANK: llm
     persistence:
       data:
-        size: 10Gi
-        storageClass: ceph-block
+        # PVC is created + bootstrap-restored from R2 by the volsync component.
+        existingClaim: *app
     route:
       ui:
         enabled: true

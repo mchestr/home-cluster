@@ -16,4 +16,4 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: *app
-    namespace: openclaw
+    namespace: ai

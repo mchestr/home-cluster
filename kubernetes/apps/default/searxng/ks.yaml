@@ -2,23 +2,17 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app openclaw
-  namespace: &namespace openclaw
+  name: &app searxng
+  namespace: &namespace default
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
     - name: onepassword-store
       namespace: external-secrets
-    - name: memini
-      namespace: openclaw
-    - name: searxng
-      namespace: openclaw
   interval: 30m
-  path: ./kubernetes/apps/openclaw/openclaw/app
+  path: ./kubernetes/apps/default/searxng/app
   prune: true
   retryInterval: 1m
   sourceRef:
@@ -27,4 +21,4 @@ spec:
     namespace: flux-system
   targetNamespace: *namespace
   timeout: 5m
-  wait: false
+  wait: true
