@@ -26,6 +26,17 @@ curl -fsS -H "X-Api-Key: ${SONARR_API_KEY}" \
   "http://sonarr.media.svc.cluster.local:8989/api/v3/system/status"
 ```
 
+If the env var is missing, read the Kubernetes Secret directly:
+
+```sh
+APISERVER=https://kubernetes.default.svc
+TOKEN="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
+CA=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+SONARR_API_KEY="$(curl -fsS --cacert "$CA" -H "Authorization: Bearer $TOKEN" \
+  "$APISERVER/api/v1/namespaces/media/secrets/sonarr-secret" \
+  | jq -r '.data."SONARR__AUTH__APIKEY" | @base64d')"
+```
+
 Pipe through `jq` when available.
 
 ## Fast checks

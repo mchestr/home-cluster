@@ -6,8 +6,18 @@ configMapGenerator:
     files:
       - ./prometheus.md
       - ./victorialogs.md
+      - ./autobrr.md
+      - ./bazarr.md
+      - ./cross-seed.md
+      - ./jellyfin.md
+      - ./jellyseerr.md
+      - ./plex.md
+      - ./prowlarr.md
+      - ./qbittorrent.md
       - ./sonarr.md
       - ./radarr.md
+      - ./sabnzbd.md
+      - ./tautulli.md
       - ./kubernetes-events.md
       - ./flux.md
 generatorOptions:

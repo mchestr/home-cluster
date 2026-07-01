@@ -251,10 +251,30 @@ spec:
             subPath: prometheus.md
           - path: /skills/victorialogs/SKILL.md
             subPath: victorialogs.md
+          - path: /skills/autobrr/SKILL.md
+            subPath: autobrr.md
+          - path: /skills/bazarr/SKILL.md
+            subPath: bazarr.md
+          - path: /skills/cross-seed/SKILL.md
+            subPath: cross-seed.md
+          - path: /skills/jellyfin/SKILL.md
+            subPath: jellyfin.md
+          - path: /skills/jellyseerr/SKILL.md
+            subPath: jellyseerr.md
+          - path: /skills/plex/SKILL.md
+            subPath: plex.md
+          - path: /skills/prowlarr/SKILL.md
+            subPath: prowlarr.md
+          - path: /skills/qbittorrent/SKILL.md
+            subPath: qbittorrent.md
           - path: /skills/sonarr/SKILL.md
             subPath: sonarr.md
           - path: /skills/radarr/SKILL.md
             subPath: radarr.md
+          - path: /skills/sabnzbd/SKILL.md
+            subPath: sabnzbd.md
+          - path: /skills/tautulli/SKILL.md
+            subPath: tautulli.md
           - path: /skills/kubernetes-events/SKILL.md
             subPath: kubernetes-events.md
           - path: /skills/flux/SKILL.md

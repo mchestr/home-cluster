@@ -26,6 +26,17 @@ curl -fsS -H "X-Api-Key: ${RADARR_API_KEY}" \
   "http://radarr.media.svc.cluster.local:7878/api/v3/system/status"
 ```
 
+If the env var is missing, read the Kubernetes Secret directly:
+
+```sh
+APISERVER=https://kubernetes.default.svc
+TOKEN="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
+CA=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+RADARR_API_KEY="$(curl -fsS --cacert "$CA" -H "Authorization: Bearer $TOKEN" \
+  "$APISERVER/api/v1/namespaces/media/secrets/radarr-secret" \
+  | jq -r '.data."RADARR__AUTH__APIKEY" | @base64d')"
+```
+
 Pipe through `jq` when available.
 
 ## Fast checks
