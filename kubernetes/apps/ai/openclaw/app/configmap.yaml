@@ -175,6 +175,9 @@ data:
       plugins: {
         entries: {
           codex: { enabled: true },
+          // Kanban-style task board in the dashboard; state persists in a
+          // plugin-owned SQLite DB under ~/.openclaw (on the VolSync PVC).
+          workboard: { enabled: true },
           // Disable built-in memory-core so it doesn't fight the memini slot.
           "memory-core": { enabled: false },
           memini: {
