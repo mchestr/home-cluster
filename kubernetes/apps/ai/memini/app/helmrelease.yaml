@@ -47,10 +47,6 @@ spec:
                   secretKeyRef:
                     name: memini-secret
                     key: MEMINI_LLM_API_KEY
-              # Phase 1: rerank via the chat LLM (no extra service). A dedicated
-              # cross-encoder reranker can replace this once the chat path is
-              # validated.
-              MEMINI_RERANK: llm
     persistence:
       data:
         # PVC is created + bootstrap-restored from R2 by the volsync component.
