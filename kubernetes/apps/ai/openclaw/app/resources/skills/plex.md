@@ -23,7 +23,7 @@ OpenClaw has `PLEX_API_TOKEN` in the environment. Query with `curl` and the
 
 ```sh
 curl -fsS \
-  "http://plex.media.svc.cluster.local:32400/identity?X-Plex-Token=${PLEX_API_TOKEN}"
+  "http://plex.media.svc.cluster.local:32400/identity?X-Plex-Token=$${PLEX_API_TOKEN}"
 ```
 
 If the env var is missing, read the homepage Secret directly:
@@ -46,20 +46,20 @@ Identity, server status, and active sessions:
 
 ```sh
 curl -fsS \
-  "http://plex.media.svc.cluster.local:32400/identity?X-Plex-Token=${PLEX_API_TOKEN}"
+  "http://plex.media.svc.cluster.local:32400/identity?X-Plex-Token=$${PLEX_API_TOKEN}"
 curl -fsS \
-  "http://plex.media.svc.cluster.local:32400/status/sessions?X-Plex-Token=${PLEX_API_TOKEN}"
+  "http://plex.media.svc.cluster.local:32400/status/sessions?X-Plex-Token=$${PLEX_API_TOKEN}"
 curl -fsS \
-  "http://plex.media.svc.cluster.local:32400/status/sessions/history/all?X-Plex-Token=${PLEX_API_TOKEN}"
+  "http://plex.media.svc.cluster.local:32400/status/sessions/history/all?X-Plex-Token=$${PLEX_API_TOKEN}"
 ```
 
 Libraries and scans:
 
 ```sh
 curl -fsS \
-  "http://plex.media.svc.cluster.local:32400/library/sections?X-Plex-Token=${PLEX_API_TOKEN}"
+  "http://plex.media.svc.cluster.local:32400/library/sections?X-Plex-Token=$${PLEX_API_TOKEN}"
 curl -fsS \
-  "http://plex.media.svc.cluster.local:32400/butler/tasks?X-Plex-Token=${PLEX_API_TOKEN}"
+  "http://plex.media.svc.cluster.local:32400/butler/tasks?X-Plex-Token=$${PLEX_API_TOKEN}"
 ```
 
 ## What to look for

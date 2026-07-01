@@ -50,7 +50,7 @@ curl -fsS "http://qbittorrent.media.svc.cluster.local:8080/api/v2/torrents/categ
 Trackers for a specific torrent hash:
 
 ```sh
-curl -fsS "http://qbittorrent.media.svc.cluster.local:8080/api/v2/torrents/trackers?hash=${TORRENT_HASH}"
+curl -fsS "http://qbittorrent.media.svc.cluster.local:8080/api/v2/torrents/trackers?hash=$${TORRENT_HASH}"
 ```
 
 Pipe responses through `jq` when available.

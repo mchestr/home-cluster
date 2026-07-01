@@ -23,7 +23,7 @@ query parameter:
 
 ```sh
 curl -fsS \
-  "http://sabnzbd.media.svc.cluster.local:8080/api?mode=version&output=json&apikey=${SABNZBD_API_KEY}"
+  "http://sabnzbd.media.svc.cluster.local:8080/api?mode=version&output=json&apikey=$${SABNZBD_API_KEY}"
 ```
 
 If the env var is missing, read the Kubernetes Secret directly:
@@ -45,25 +45,25 @@ Version and full queue:
 
 ```sh
 curl -fsS \
-  "http://sabnzbd.media.svc.cluster.local:8080/api?mode=version&output=json&apikey=${SABNZBD_API_KEY}"
+  "http://sabnzbd.media.svc.cluster.local:8080/api?mode=version&output=json&apikey=$${SABNZBD_API_KEY}"
 curl -fsS \
-  "http://sabnzbd.media.svc.cluster.local:8080/api?mode=queue&output=json&apikey=${SABNZBD_API_KEY}"
+  "http://sabnzbd.media.svc.cluster.local:8080/api?mode=queue&output=json&apikey=$${SABNZBD_API_KEY}"
 ```
 
 History and warnings:
 
 ```sh
 curl -fsS \
-  "http://sabnzbd.media.svc.cluster.local:8080/api?mode=history&output=json&limit=50&apikey=${SABNZBD_API_KEY}"
+  "http://sabnzbd.media.svc.cluster.local:8080/api?mode=history&output=json&limit=50&apikey=$${SABNZBD_API_KEY}"
 curl -fsS \
-  "http://sabnzbd.media.svc.cluster.local:8080/api?mode=warnings&output=json&apikey=${SABNZBD_API_KEY}"
+  "http://sabnzbd.media.svc.cluster.local:8080/api?mode=warnings&output=json&apikey=$${SABNZBD_API_KEY}"
 ```
 
 Server statistics:
 
 ```sh
 curl -fsS \
-  "http://sabnzbd.media.svc.cluster.local:8080/api?mode=server_stats&output=json&apikey=${SABNZBD_API_KEY}"
+  "http://sabnzbd.media.svc.cluster.local:8080/api?mode=server_stats&output=json&apikey=$${SABNZBD_API_KEY}"
 ```
 
 ## What to look for

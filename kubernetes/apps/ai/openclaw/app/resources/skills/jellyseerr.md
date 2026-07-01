@@ -22,7 +22,7 @@ OpenClaw has `JELLYSEERR_API_KEY` in the environment. Query with `curl` and
 the `X-Api-Key` header:
 
 ```sh
-curl -fsS -H "X-Api-Key: ${JELLYSEERR_API_KEY}" \
+curl -fsS -H "X-Api-Key: $${JELLYSEERR_API_KEY}" \
   "http://jellyseerr.media.svc.cluster.local:5055/api/v1/status"
 ```
 
@@ -44,25 +44,25 @@ Pipe responses through `jq` when available.
 Status and settings:
 
 ```sh
-curl -fsS -H "X-Api-Key: ${JELLYSEERR_API_KEY}" \
+curl -fsS -H "X-Api-Key: $${JELLYSEERR_API_KEY}" \
   "http://jellyseerr.media.svc.cluster.local:5055/api/v1/status"
-curl -fsS -H "X-Api-Key: ${JELLYSEERR_API_KEY}" \
+curl -fsS -H "X-Api-Key: $${JELLYSEERR_API_KEY}" \
   "http://jellyseerr.media.svc.cluster.local:5055/api/v1/settings/main"
 ```
 
 Recent and pending requests:
 
 ```sh
-curl -fsS -H "X-Api-Key: ${JELLYSEERR_API_KEY}" \
+curl -fsS -H "X-Api-Key: $${JELLYSEERR_API_KEY}" \
   "http://jellyseerr.media.svc.cluster.local:5055/api/v1/request?take=50&skip=0&sort=added&filter=all"
-curl -fsS -H "X-Api-Key: ${JELLYSEERR_API_KEY}" \
+curl -fsS -H "X-Api-Key: $${JELLYSEERR_API_KEY}" \
   "http://jellyseerr.media.svc.cluster.local:5055/api/v1/request?take=50&skip=0&sort=added&filter=pending"
 ```
 
 Issue list:
 
 ```sh
-curl -fsS -H "X-Api-Key: ${JELLYSEERR_API_KEY}" \
+curl -fsS -H "X-Api-Key: $${JELLYSEERR_API_KEY}" \
   "http://jellyseerr.media.svc.cluster.local:5055/api/v1/issue?take=50&skip=0&sort=created&filter=all"
 ```
 

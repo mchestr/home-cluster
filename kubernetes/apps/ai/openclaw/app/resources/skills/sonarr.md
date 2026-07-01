@@ -22,7 +22,7 @@ OpenClaw has `SONARR_API_KEY` in the environment. Query with `curl` and the
 `X-Api-Key` header:
 
 ```sh
-curl -fsS -H "X-Api-Key: ${SONARR_API_KEY}" \
+curl -fsS -H "X-Api-Key: $${SONARR_API_KEY}" \
   "http://sonarr.media.svc.cluster.local:8989/api/v3/system/status"
 ```
 
@@ -44,39 +44,39 @@ Pipe through `jq` when available.
 System status and health:
 
 ```sh
-curl -fsS -H "X-Api-Key: ${SONARR_API_KEY}" \
+curl -fsS -H "X-Api-Key: $${SONARR_API_KEY}" \
   "http://sonarr.media.svc.cluster.local:8989/api/v3/system/status"
-curl -fsS -H "X-Api-Key: ${SONARR_API_KEY}" \
+curl -fsS -H "X-Api-Key: $${SONARR_API_KEY}" \
   "http://sonarr.media.svc.cluster.local:8989/api/v3/health"
 ```
 
 Queue details for stuck downloads/imports:
 
 ```sh
-curl -fsS -H "X-Api-Key: ${SONARR_API_KEY}" \
+curl -fsS -H "X-Api-Key: $${SONARR_API_KEY}" \
   "http://sonarr.media.svc.cluster.local:8989/api/v3/queue?page=1&pageSize=100&sortKey=timeleft&sortDirection=ascending&includeUnknownSeriesItems=true&includeSeries=true&includeEpisode=true"
 ```
 
 Recent queue/import/download history:
 
 ```sh
-curl -fsS -H "X-Api-Key: ${SONARR_API_KEY}" \
+curl -fsS -H "X-Api-Key: $${SONARR_API_KEY}" \
   "http://sonarr.media.svc.cluster.local:8989/api/v3/history?page=1&pageSize=100&sortKey=date&sortDirection=descending"
 ```
 
 Wanted missing episodes:
 
 ```sh
-curl -fsS -H "X-Api-Key: ${SONARR_API_KEY}" \
+curl -fsS -H "X-Api-Key: $${SONARR_API_KEY}" \
   "http://sonarr.media.svc.cluster.local:8989/api/v3/wanted/missing?page=1&pageSize=50&sortKey=airDateUtc&sortDirection=descending"
 ```
 
 Indexer and download client status:
 
 ```sh
-curl -fsS -H "X-Api-Key: ${SONARR_API_KEY}" \
+curl -fsS -H "X-Api-Key: $${SONARR_API_KEY}" \
   "http://sonarr.media.svc.cluster.local:8989/api/v3/indexer/status"
-curl -fsS -H "X-Api-Key: ${SONARR_API_KEY}" \
+curl -fsS -H "X-Api-Key: $${SONARR_API_KEY}" \
   "http://sonarr.media.svc.cluster.local:8989/api/v3/downloadclient/status"
 ```
 

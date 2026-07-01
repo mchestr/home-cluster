@@ -22,7 +22,7 @@ OpenClaw has `BAZARR_API_KEY` in the environment. Query with `curl` and the
 `X-API-KEY` header:
 
 ```sh
-curl -fsS -H "X-API-KEY: ${BAZARR_API_KEY}" \
+curl -fsS -H "X-API-KEY: $${BAZARR_API_KEY}" \
   "http://bazarr.media.svc.cluster.local:6767/api/system/status"
 ```
 
@@ -46,20 +46,20 @@ open `http://bazarr.media.svc.cluster.local:6767/api/swaggerui` or fetch
 System status and health:
 
 ```sh
-curl -fsS -H "X-API-KEY: ${BAZARR_API_KEY}" \
+curl -fsS -H "X-API-KEY: $${BAZARR_API_KEY}" \
   "http://bazarr.media.svc.cluster.local:6767/api/system/status"
-curl -fsS -H "X-API-KEY: ${BAZARR_API_KEY}" \
+curl -fsS -H "X-API-KEY: $${BAZARR_API_KEY}" \
   "http://bazarr.media.svc.cluster.local:6767/api/system/health"
 ```
 
 Wanted subtitles and provider state:
 
 ```sh
-curl -fsS -H "X-API-KEY: ${BAZARR_API_KEY}" \
+curl -fsS -H "X-API-KEY: $${BAZARR_API_KEY}" \
   "http://bazarr.media.svc.cluster.local:6767/api/episodes/wanted"
-curl -fsS -H "X-API-KEY: ${BAZARR_API_KEY}" \
+curl -fsS -H "X-API-KEY: $${BAZARR_API_KEY}" \
   "http://bazarr.media.svc.cluster.local:6767/api/movies/wanted"
-curl -fsS -H "X-API-KEY: ${BAZARR_API_KEY}" \
+curl -fsS -H "X-API-KEY: $${BAZARR_API_KEY}" \
   "http://bazarr.media.svc.cluster.local:6767/api/providers"
 ```
 

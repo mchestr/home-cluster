@@ -22,7 +22,7 @@ OpenClaw has `JELLYFIN_API_KEY` in the environment. Query with `curl` and the
 `X-Emby-Token` header:
 
 ```sh
-curl -fsS -H "X-Emby-Token: ${JELLYFIN_API_KEY}" \
+curl -fsS -H "X-Emby-Token: $${JELLYFIN_API_KEY}" \
   "http://jellyfin.media.svc.cluster.local:8096/System/Info/Public"
 ```
 
@@ -44,25 +44,25 @@ Pipe responses through `jq` when available.
 System info and sessions:
 
 ```sh
-curl -fsS -H "X-Emby-Token: ${JELLYFIN_API_KEY}" \
+curl -fsS -H "X-Emby-Token: $${JELLYFIN_API_KEY}" \
   "http://jellyfin.media.svc.cluster.local:8096/System/Info"
-curl -fsS -H "X-Emby-Token: ${JELLYFIN_API_KEY}" \
+curl -fsS -H "X-Emby-Token: $${JELLYFIN_API_KEY}" \
   "http://jellyfin.media.svc.cluster.local:8096/Sessions"
 ```
 
 Libraries and users:
 
 ```sh
-curl -fsS -H "X-Emby-Token: ${JELLYFIN_API_KEY}" \
+curl -fsS -H "X-Emby-Token: $${JELLYFIN_API_KEY}" \
   "http://jellyfin.media.svc.cluster.local:8096/Library/VirtualFolders"
-curl -fsS -H "X-Emby-Token: ${JELLYFIN_API_KEY}" \
+curl -fsS -H "X-Emby-Token: $${JELLYFIN_API_KEY}" \
   "http://jellyfin.media.svc.cluster.local:8096/Users"
 ```
 
 Scheduled tasks:
 
 ```sh
-curl -fsS -H "X-Emby-Token: ${JELLYFIN_API_KEY}" \
+curl -fsS -H "X-Emby-Token: $${JELLYFIN_API_KEY}" \
   "http://jellyfin.media.svc.cluster.local:8096/ScheduledTasks"
 ```
 

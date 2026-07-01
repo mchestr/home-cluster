@@ -22,7 +22,7 @@ OpenClaw has `PROWLARR_API_KEY` in the environment. Query with `curl` and the
 `X-Api-Key` header:
 
 ```sh
-curl -fsS -H "X-Api-Key: ${PROWLARR_API_KEY}" \
+curl -fsS -H "X-Api-Key: $${PROWLARR_API_KEY}" \
   "http://prowlarr.media.svc.cluster.local:9696/api/v1/system/status"
 ```
 
@@ -44,27 +44,27 @@ Pipe responses through `jq` when available.
 System status and health:
 
 ```sh
-curl -fsS -H "X-Api-Key: ${PROWLARR_API_KEY}" \
+curl -fsS -H "X-Api-Key: $${PROWLARR_API_KEY}" \
   "http://prowlarr.media.svc.cluster.local:9696/api/v1/system/status"
-curl -fsS -H "X-Api-Key: ${PROWLARR_API_KEY}" \
+curl -fsS -H "X-Api-Key: $${PROWLARR_API_KEY}" \
   "http://prowlarr.media.svc.cluster.local:9696/api/v1/health"
 ```
 
 Indexers and indexer status:
 
 ```sh
-curl -fsS -H "X-Api-Key: ${PROWLARR_API_KEY}" \
+curl -fsS -H "X-Api-Key: $${PROWLARR_API_KEY}" \
   "http://prowlarr.media.svc.cluster.local:9696/api/v1/indexer"
-curl -fsS -H "X-Api-Key: ${PROWLARR_API_KEY}" \
+curl -fsS -H "X-Api-Key: $${PROWLARR_API_KEY}" \
   "http://prowlarr.media.svc.cluster.local:9696/api/v1/indexerstatus"
 ```
 
 Applications and download clients:
 
 ```sh
-curl -fsS -H "X-Api-Key: ${PROWLARR_API_KEY}" \
+curl -fsS -H "X-Api-Key: $${PROWLARR_API_KEY}" \
   "http://prowlarr.media.svc.cluster.local:9696/api/v1/applications"
-curl -fsS -H "X-Api-Key: ${PROWLARR_API_KEY}" \
+curl -fsS -H "X-Api-Key: $${PROWLARR_API_KEY}" \
   "http://prowlarr.media.svc.cluster.local:9696/api/v1/downloadclient"
 ```
 

@@ -24,7 +24,7 @@ query parameter:
 
 ```sh
 curl -fsS \
-  "http://tautulli.media.svc.cluster.local:8181/api/v2?apikey=${TAUTULLI_API_KEY}&cmd=status"
+  "http://tautulli.media.svc.cluster.local:8181/api/v2?apikey=$${TAUTULLI_API_KEY}&cmd=status"
 ```
 
 If the env var is missing, read the homepage Secret directly:
@@ -46,22 +46,22 @@ Status, server info, and active streams:
 
 ```sh
 curl -fsS \
-  "http://tautulli.media.svc.cluster.local:8181/api/v2?apikey=${TAUTULLI_API_KEY}&cmd=status"
+  "http://tautulli.media.svc.cluster.local:8181/api/v2?apikey=$${TAUTULLI_API_KEY}&cmd=status"
 curl -fsS \
-  "http://tautulli.media.svc.cluster.local:8181/api/v2?apikey=${TAUTULLI_API_KEY}&cmd=get_server_info"
+  "http://tautulli.media.svc.cluster.local:8181/api/v2?apikey=$${TAUTULLI_API_KEY}&cmd=get_server_info"
 curl -fsS \
-  "http://tautulli.media.svc.cluster.local:8181/api/v2?apikey=${TAUTULLI_API_KEY}&cmd=get_activity"
+  "http://tautulli.media.svc.cluster.local:8181/api/v2?apikey=$${TAUTULLI_API_KEY}&cmd=get_activity"
 ```
 
 Libraries, recent media, and history:
 
 ```sh
 curl -fsS \
-  "http://tautulli.media.svc.cluster.local:8181/api/v2?apikey=${TAUTULLI_API_KEY}&cmd=get_libraries"
+  "http://tautulli.media.svc.cluster.local:8181/api/v2?apikey=$${TAUTULLI_API_KEY}&cmd=get_libraries"
 curl -fsS \
-  "http://tautulli.media.svc.cluster.local:8181/api/v2?apikey=${TAUTULLI_API_KEY}&cmd=get_recently_added&count=25"
+  "http://tautulli.media.svc.cluster.local:8181/api/v2?apikey=$${TAUTULLI_API_KEY}&cmd=get_recently_added&count=25"
 curl -fsS \
-  "http://tautulli.media.svc.cluster.local:8181/api/v2?apikey=${TAUTULLI_API_KEY}&cmd=get_history&length=50"
+  "http://tautulli.media.svc.cluster.local:8181/api/v2?apikey=$${TAUTULLI_API_KEY}&cmd=get_history&length=50"
 ```
 
 ## What to look for

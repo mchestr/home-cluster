@@ -22,7 +22,7 @@ OpenClaw has `CROSS_SEED_API_KEY` in the environment. Query with `curl` and the
 `X-Api-Key` header:
 
 ```sh
-curl -fsS -H "X-Api-Key: ${CROSS_SEED_API_KEY}" \
+curl -fsS -H "X-Api-Key: $${CROSS_SEED_API_KEY}" \
   "http://cross-seed.media.svc.cluster.local:2468/api/ping"
 ```
 
@@ -44,7 +44,7 @@ Pipe responses through `jq` when available.
 Ping and daemon logs:
 
 ```sh
-curl -fsS -H "X-Api-Key: ${CROSS_SEED_API_KEY}" \
+curl -fsS -H "X-Api-Key: $${CROSS_SEED_API_KEY}" \
   "http://cross-seed.media.svc.cluster.local:2468/api/ping"
 ```
 

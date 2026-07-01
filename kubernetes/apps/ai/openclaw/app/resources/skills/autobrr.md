@@ -22,7 +22,7 @@ OpenClaw has `AUTOBRR_API_KEY` in the environment. Query with `curl` and the
 `X-Api-Token` header:
 
 ```sh
-curl -fsS -H "X-Api-Token: ${AUTOBRR_API_KEY}" \
+curl -fsS -H "X-Api-Token: $${AUTOBRR_API_KEY}" \
   "http://autobrr.media.svc.cluster.local:7474/api/healthz/liveness"
 ```
 
@@ -45,20 +45,20 @@ check the live OpenAPI docs or app logs before trying a session login.
 Health:
 
 ```sh
-curl -fsS -H "X-Api-Token: ${AUTOBRR_API_KEY}" \
+curl -fsS -H "X-Api-Token: $${AUTOBRR_API_KEY}" \
   "http://autobrr.media.svc.cluster.local:7474/api/healthz/liveness"
-curl -fsS -H "X-Api-Token: ${AUTOBRR_API_KEY}" \
+curl -fsS -H "X-Api-Token: $${AUTOBRR_API_KEY}" \
   "http://autobrr.media.svc.cluster.local:7474/api/healthz/readiness"
 ```
 
 Common read-only API surfaces to try when available in the running version:
 
 ```sh
-curl -fsS -H "X-Api-Token: ${AUTOBRR_API_KEY}" \
+curl -fsS -H "X-Api-Token: $${AUTOBRR_API_KEY}" \
   "http://autobrr.media.svc.cluster.local:7474/api/filters"
-curl -fsS -H "X-Api-Token: ${AUTOBRR_API_KEY}" \
+curl -fsS -H "X-Api-Token: $${AUTOBRR_API_KEY}" \
   "http://autobrr.media.svc.cluster.local:7474/api/indexers"
-curl -fsS -H "X-Api-Token: ${AUTOBRR_API_KEY}" \
+curl -fsS -H "X-Api-Token: $${AUTOBRR_API_KEY}" \
   "http://autobrr.media.svc.cluster.local:7474/api/releases?limit=50"
 ```
 
