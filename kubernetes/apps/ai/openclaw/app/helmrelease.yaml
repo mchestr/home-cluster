@@ -173,7 +173,7 @@ spec:
                 cpu: 100m
                 memory: 512Mi
               limits:
-                memory: 4Gi
+                memory: 8Gi
           # Kubernetes MCP server sidecar. Auto-detects in-cluster config and so
           # uses the pod's ServiceAccount token (cluster-admin). Listens on
           # localhost:8081; openclaw reaches it in-pod, and the ingress
