@@ -29,7 +29,7 @@ spec:
       config:
         alertmanager:
           service:
-            address: http://vmalertmanager-stack.observability.svc.cluster.local:9093
+            address: http://alertmanager-operated.observability.svc.cluster.local:9093
     rbac:
       create: true
     extraDeploy:
