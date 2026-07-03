@@ -79,7 +79,7 @@ spec:
               - |
                 set -eu
                 # renovate: datasource=github-releases depName=cli/cli
-                GH_VERSION=2.95.0
+                GH_VERSION=2.96.0
                 BIN=/home/node/.local/bin
                 mkdir -p "$$BIN"
                 if [ "$$(cat "$$BIN/.ghver" 2>/dev/null)" != "$$GH_VERSION" ]; then
