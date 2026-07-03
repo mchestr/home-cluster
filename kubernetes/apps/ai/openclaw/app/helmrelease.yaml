@@ -106,7 +106,7 @@ spec:
                 # the config aside during install and restore it for the gateway.
                 # $$ escapes Flux postBuild so the shell receives a literal $.
                 # renovate: datasource=github-tags depName=eleboucher/memini
-                MEMINI_PLUGIN_VERSION=0.5.2
+                MEMINI_PLUGIN_VERSION=0.5.4
                 CFG=/home/node/.openclaw/openclaw.json
                 EXT=/home/node/.openclaw/extensions
                 NEED=0
