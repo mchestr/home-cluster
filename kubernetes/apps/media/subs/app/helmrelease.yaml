@@ -46,7 +46,7 @@ spec:
           main:
             image:
               repository: ghcr.io/mchestr/plex-manager
-              tag: main@sha256:4a22c856bf2e6e5dc884684a5d58227be81aed60d22b50f3d4a4830c507718b1
+              tag: main@sha256:5f01a0ca4ff57b8d799bc04bd70299d0ecb736d6caedfc323be06d10bb575d7c
             env:
               NEXT_PUBLIC_APP_URL: https://mikeflix.lol
               NEXTAUTH_URL: https://mikeflix.lol
