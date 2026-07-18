@@ -42,6 +42,13 @@ spec:
             enabled: true
           - name: rook
             enabled: true
+      resources:
+        mgr:
+          requests:
+            cpu: 500m
+            memory: 512Mi
+          limits:
+            memory: 2Gi
       network:
         provider: host
         addressRanges:
