@@ -309,12 +309,13 @@ cameras:
   #     password: "{FRIGATE_CATCAM_CAMERA_PASSWORD}"
 
 auth:
-  enabled: true
+  enabled: false
 
 proxy:
   header_map:
     user: remote-user
     role: remote-groups
+  default_role: admin
 
 tls:
   enabled: false
