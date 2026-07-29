@@ -25,6 +25,9 @@ spec:
       retries: -1
   upgrade:
     cleanupOnFail: true
+    # The 2.3.x CRDs are not cleanly downgradable; leave installed CRDs in place
+    # while rolling the operator deployment back to the last known-good chart.
+    crds: Skip
     remediation:
       retries: 3
   uninstall:
