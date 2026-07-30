@@ -26,7 +26,8 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
-      retries: 3
+      remediateLastFailure: false
+      retries: 0
   uninstall:
     keepHistory: false
   values:
