@@ -27,7 +27,7 @@ spec:
     cleanupOnFail: true
     remediation:
       remediateLastFailure: false
-      retries: 0
+      retries: 1
   uninstall:
     keepHistory: false
   values:
