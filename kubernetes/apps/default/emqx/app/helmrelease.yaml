@@ -14,7 +14,7 @@ spec:
       # clients get EHOSTUNREACH. 2.3.0 was already reverted once before; pin to the
       # last known-good 2.2.29 and keep it off the 2.3.x line.
       chart: emqx-operator
-      version: 2.2.29
+      version: 2.3.2
       sourceRef:
         kind: HelmRepository
         name: emqx
