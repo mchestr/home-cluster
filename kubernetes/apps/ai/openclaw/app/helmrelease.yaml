@@ -59,7 +59,7 @@ spec:
               - |
                 set -eu
                 # renovate: datasource=github-releases depName=AsamK/signal-cli
-                SIGNAL_CLI_VERSION=0.14.6
+                SIGNAL_CLI_VERSION=0.14.7
                 BIN=/home/node/.openclaw/bin
                 mkdir -p "$$BIN"
                 if [ ! -x "$$BIN/signal-cli" ]; then
