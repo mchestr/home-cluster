@@ -26,6 +26,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      VOLSYNC_SCHEDULE: "30 8 * * *"
       VOLSYNC_CAPACITY: 20Gi
       # openclaw pod runs as uid 1000 / gid 100; the restic mover must restore
       # the data with the same ownership.

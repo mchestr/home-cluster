@@ -24,6 +24,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      VOLSYNC_SCHEDULE: "0 8 * * *"
       VOLSYNC_CAPACITY: 10Gi
       # memini container runs as uid/gid 65532 (nonroot); the restic mover must
       # write the restored data with the same ownership.

@@ -22,6 +22,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      VOLSYNC_SCHEDULE: "0 15 * * *"
       VOLSYNC_CACHE_CAPACITY: 100Gi
       VOLSYNC_CAPACITY: 200Gi
   prune: true
