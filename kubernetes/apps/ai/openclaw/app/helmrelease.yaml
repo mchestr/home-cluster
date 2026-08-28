@@ -90,6 +90,27 @@ spec:
                   printf '%s' "$$GH_VERSION" > "$$BIN/.ghver"
                   rm -rf /tmp/gh.tar.gz "/tmp/gh_$${GH_VERSION}_linux_amd64"
                 fi
+          # jq is used frequently by agent-generated shell checks during alert
+          # investigations. Keep it on the PVC so those turns do not fail on a
+          # missing JSON formatter.
+          install-jq:
+            image:
+              repository: docker.io/library/busybox
+              tag: "1.38"
+            command:
+              - sh
+              - -c
+              - |
+                set -eu
+                # renovate: datasource=github-releases depName=jqlang/jq
+                JQ_VERSION=1.8.1
+                BIN=/home/node/.local/bin
+                mkdir -p "$$BIN"
+                if [ "$$(cat "$$BIN/.jqver" 2>/dev/null)" != "$$JQ_VERSION" ]; then
+                  wget -qO "$$BIN/jq" "https://github.com/jqlang/jq/releases/download/jq-$$JQ_VERSION/jq-linux-amd64"
+                  chmod +x "$$BIN/jq"
+                  printf '%s' "$$JQ_VERSION" > "$$BIN/.jqver"
+                fi
         containers:
           app:
             image:
@@ -100,6 +121,18 @@ spec:
               - -c
               - |
                 set -eu
+                # Codex's exec tool prepends its own helper directory to PATH.
+                # Mirror PVC-installed tools there when writable so plain `gh`
+                # and `jq` work in shell snippets after restarts.
+                CODEX_PATH=/app/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path
+                if [ -x /home/node/.local/bin/jq ] && [ -d "$$CODEX_PATH" ] && [ -w "$$CODEX_PATH" ]; then
+                  cp /home/node/.local/bin/jq "$$CODEX_PATH/jq"
+                  chmod +x "$$CODEX_PATH/jq"
+                fi
+                if [ -x /home/node/.local/bin/gh ] && [ -d "$$CODEX_PATH" ] && [ -w "$$CODEX_PATH" ]; then
+                  cp /home/node/.local/bin/gh "$$CODEX_PATH/gh"
+                  chmod +x "$$CODEX_PATH/gh"
+                fi
                 # Install non-bundled ClawHub plugins (memini memory + signal
                 # channel). The installer refuses to run against a config that
                 # references not-yet-installed plugins (chicken-and-egg), so move
