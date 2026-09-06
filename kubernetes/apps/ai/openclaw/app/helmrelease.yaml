@@ -115,7 +115,7 @@ spec:
           app:
             image:
               repository: ghcr.io/openclaw/openclaw
-              tag: 2026.7.1
+              tag: 2026.9.2
             command:
               - /bin/sh
               - -c
