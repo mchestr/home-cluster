@@ -37,7 +37,7 @@ spec:
           app:
             image:
               repository: ghcr.io/home-operations/sonarr
-              tag: 4.0.19.3008@sha256:bd8f94115e6b9314fb50aff83b5913e249f086beaa9902f5dcd813c4fe6368e0
+              tag: 4.0.20.3012@sha256:1f19eb5e0f421418c1a956bbe01310a0141423afe28bd9a4b1dcb8629ff2bce2
             env:
               TZ: America/Vancouver
               PUSHOVER_DEBUG: "false"
