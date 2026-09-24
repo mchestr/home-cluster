@@ -43,7 +43,7 @@ spec:
           app:
             image:
               repository: docker.io/kometateam/kometa
-              tag: v2.4.8@sha256:c58f6d4af511613f218b6dafbfc84078af4e5a6089790c1fdba58fd7c5dad70a
+              tag: v2.5.1@sha256:20388de48f0e088ad9feb9904f6a452fd9ef933a79c7b2bf186e388224e8f437
             command:
               - /bin/sh
               - -c
