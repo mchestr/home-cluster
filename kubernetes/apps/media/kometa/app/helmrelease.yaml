@@ -79,9 +79,6 @@ spec:
           - path: /config/3-bestof.yml
             subPath: 3-bestof.yml
             readOnly: true
-          - path: /config/5-holiday.yml
-            subPath: 5-holiday.yml
-            readOnly: true
           - path: /config/7-networks.yml
             subPath: 7-networks.yml
             readOnly: true
