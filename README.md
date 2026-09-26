@@ -48,13 +48,16 @@ This repository is my home Kubernetes cluster in a declarative state. [Flux](htt
 
 Core components that form the foundation of the cluster:
 
-- [backube/volsync](https://github.com/backube/volsync) and [backube/snapscheduler](https://github.com/backube/snapscheduler): Backup and recovery of persistent volume claims.
+- [authelia/authelia](https://github.com/authelia/authelia): SSO and two-factor authentication in front of internal apps, with [lldap/lldap](https://github.com/lldap/lldap) as the user directory.
+- [backube/volsync](https://github.com/backube/volsync): Backup and recovery of persistent volume claims.
 - [cilium/cilium](https://github.com/cilium/cilium): Kubernetes CNI.
-- [envoyproxy/envoy](https://github.com/envoyproxy/gateway): Kubernetes-based application gateway using [Kubernetes Gateway API](https://gateway-api.sigs.k8s.io/).
+- [cloudnative-pg/cloudnative-pg](https://github.com/cloudnative-pg/cloudnative-pg): High-availability PostgreSQL for apps that need a database.
+- [dragonflydb/dragonfly](https://github.com/dragonflydb/dragonfly): Redis-compatible in-memory store for caches, sessions and queues.
+- [envoyproxy/envoy](https://github.com/envoyproxy/gateway): Kubernetes-based application gateway using [Kubernetes Gateway API](https://gateway-api.sigs.k8s.io/), split into an internal (Authelia-protected) and an external gateway.
 - [external-secrets/external-secrets](https://github.com/external-secrets/external-secrets): Managed Kubernetes secrets using [1Password Connect](https://github.com/1Password/connect).
+- [home-operations/tuppr](https://github.com/home-operations/tuppr): Handles Kubernetes and Talos upgrades automatically.
 - [jetstack/cert-manager](https://cert-manager.io/docs/): Creates SSL certificates for services in my Kubernetes cluster.
 - [kubernetes-sigs/external-dns](https://github.com/kubernetes-sigs/external-dns): Automatically manages DNS records from my cluster in CloudFlare.
-- [rancher/system-upgrade-controller](https://github.com/rancher/system-upgrade-controller): Handles Kubernetes and Talos upgrades automatically.
 - [rook/rook](https://github.com/rook/rook): Distributed block storage for persistent storage.
 - [siderolabs/talos](https://www.talos.dev/): The Kubernetes Operating System.
 
@@ -70,6 +73,15 @@ For observability and monitoring of the cluster the following software is used:
 - [VictoriaMetrics/VictoriaLogs](https://docs.victoriametrics.com/victorialogs/): Database for logs.
 - [prometheus/prometheus](https://github.com/prometheus/prometheus): Time series database for metrics.
 
+### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f9e0/512.gif" alt="🧠" width="16" height="16"> AI
+
+Self-hosted AI services, backed by hosted models rather than local GPUs:
+
+- [BerriAI/litellm](https://github.com/BerriAI/litellm): OpenAI-compatible LLM proxy, managed by [home-operations/litellm-operator](https://github.com/home-operations/litellm-operator) and routing to [OpenRouter](https://openrouter.ai).
+- [eleboucher/memini](https://github.com/eleboucher/memini): Persistent memory for AI agents.
+- [huggingface/text-embeddings-inference](https://github.com/huggingface/text-embeddings-inference): In-cluster embedding model server.
+- [openclaw/openclaw](https://github.com/openclaw/openclaw): Personal AI agent gateway.
+
 ### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f916/512.gif" alt="🤖" width="16" height="16"> Automation
 
 - [Github Actions](https://docs.github.com/en/actions) for checking code formatting and running periodic jobs
@@ -81,6 +93,7 @@ For observability and monitoring of the cluster the following software is used:
 - [AWS SES](https://aws.amazon.com/ses/) for sending emails.
 - [Cloudflare](https://cloudflare.com) tunnels for exposing services & creating certificates & managing domains.
 - [Cloudflare R2](https://www.cloudflare.com/developer-platform/r2/) for daily backups.
+- [OpenRouter](https://openrouter.ai) for hosted LLM inference.
 - [Pushover](https://pushover.net/) for sending alerts.
 
 Total cloud costs yearly is approximately ~$150/year.
@@ -90,9 +103,8 @@ Total cloud costs yearly is approximately ~$150/year.
 This Git repository contains the following directories.
 
 ```sh
-📁 bootstrap       # Flux installation to bootstrap cluster
+📁 bootstrap       # Resources to bootstrap the cluster
 📁 docs            # Docs
-📁 hacks           # Contains random scripts
 📁 kubernetes      # Kubernetes cluster defined as code
 ├─📁 flux          # Main Flux configuration of repository
 ├─📁 components    # Flux components
@@ -127,11 +139,11 @@ This Git repository contains the following directories.
 
 ---
 
-## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f64f/512.gif" alt="🙏" width="16" height="16"> Graditude and Thanks
+## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f64f/512.gif" alt="🙏" width="16" height="16"> Gratitude and Thanks
 
 Thanks to all the people who donate their time to the [Kubernetes @Home](https://github.com/k8s-at-home/) community.
 
-This repository was built off the [onedr0p/template-cluster-k3s](https://github.com/onedr0p/flux-cluster-template) repository.
+This repository was built off the [onedr0p/cluster-template](https://github.com/onedr0p/cluster-template) repository.
 
 ## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2728/512.gif" alt="✨" width="16" height="16"> Star History
 
