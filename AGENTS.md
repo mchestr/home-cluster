@@ -33,7 +33,7 @@ task volsync:state-suspend / volsync:state-resume    # Pause/resume all VolSync 
 **Talos:**
 ```sh
 task talos:apply-node NODE=<m0|m1|m2>                # Render + apply machine config to a node
-task talos:upgrade-node NODE=<m0|m1|m2>              # Manually upgrade Talos (normally tuppr does this)
+task talos:upgrade-node NODE=<m0|m1|m2> VERSION=<v> # Manually upgrade Talos (normally tuppr does this)
 task talos:upgrade-k8s                               # Manually upgrade Kubernetes (normally tuppr does this)
 task talos:kubeconfig                                # Regenerate kubeconfig
 task talos:reboot-node NODE=<m0|m1|m2>               # Reboot a node

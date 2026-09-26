@@ -49,7 +49,7 @@ flowchart TB
         Plex["Plex<br/>10.0.20.110"]
         Jellyfin["Jellyfin<br/>10.0.20.70"]
         PG["PostgreSQL<br/>10.0.20.17"]
-        Envoy["Envoy Gateway<br/>External: 10.0.20.100<br/>Internal: 10.0.20.200"]
+        Envoy["Envoy Gateway<br/>External: 10.0.20.200<br/>Internal: 10.0.20.100"]
     end
 
     subgraph Mgmt["Management"]
@@ -133,6 +133,7 @@ flowchart LR
             end
 
             CFTunnel["Cloudflared<br/>Tunnel Pod"]
+            Authelia["Authelia<br/>ext-auth (2FA)"]
 
             subgraph Apps["Application Pods"]
                 ExtApps["External Apps<br/>Plex, Home Assistant, Radicale"]
@@ -152,6 +153,7 @@ flowchart LR
     HomeUsers --> UDM
     UDM --> ExtGW
     UDM --> IntGW
+    IntGW -.->|"authz check"| Authelia
     IntGW --> IntApps
 
     ExtDNSOp -.->|Sync| ExtDNS
@@ -166,7 +168,7 @@ flowchart LR
     classDef router fill:#e74c3c,color:white
 
     class CFEdge,CFTunnel,ExtDNS cloudflare
-    class ExtGW,IntGW gateway
+    class ExtGW,IntGW,Authelia gateway
     class ExtApps extapps
     class IntApps intapps
     class UDM router
@@ -183,9 +185,26 @@ flowchart LR
 
 **Internal Traffic (Home Network → Services):**
 1. User requests `app.chestr.dev`
-2. UDM DNS resolves to gateway IP (10.0.20.100 or 10.0.20.200)
-3. Envoy Gateway routes to pod
-4. Full access to all services
+2. UDM DNS resolves to the app's gateway IP (10.0.20.100 internal or 10.0.20.200 external)
+3. On the internal gateway, Envoy asks Authelia whether the request is allowed (see below)
+4. Envoy Gateway routes to pod
+
+### Internal vs External Gateway
+
+Which gateway an app's `HTTPRoute` uses decides who can reach it and what protects it:
+
+| Gateway | IP | Reachable from | Auth in front |
+|---|---|---|---|
+| `envoy-internal` (default) | 10.0.20.100 | LAN / WireGuard only | Authelia |
+| `envoy-external` | 10.0.20.200 | Internet via the Cloudflare tunnel, plus LAN | None: the app's own login |
+
+- **Internal** apps sit behind [Authelia](https://www.authelia.com) through an Envoy Gateway `SecurityPolicy` (`internal-secure`) that runs an ext-auth check on every request. It fails closed: if Authelia is down, internal apps are unreachable (there's an `AutheliaDown` alert for that). The access rules live in `kubernetes/apps/default/authelia/app/resources/configuration.yaml`:
+  - two-factor for the `admin` group
+  - one-factor for the `media` group on the *arr apps
+  - `bypass` for apps with their own login
+  - deny for everything else
+- **External** apps have no Authelia in front, so only apps with solid authentication of their own go there (Plex, Immich, Home Assistant, Authelia itself, …). Several of them use Authelia as an OIDC provider for their login. Admin UIs, shells and editors should never be on the external gateway.
+- Each app's NetworkPolicy only admits the Envoy pods of the gateway it uses.
 
 **Split Horizon DNS:**
 - External-DNS operator syncs HTTPRoute hostnames to both Cloudflare and UDM
