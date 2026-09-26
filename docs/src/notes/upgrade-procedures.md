@@ -4,11 +4,11 @@ How to upgrade Talos, Kubernetes, and everything else.
 
 ## Before You Upgrade
 
-Always a good idea to check things are healthy first:
+Always a good idea to check things are healthy first. There's no Ceph toolbox pod, so run `ceph` through the operator:
 
 ```bash
 kubectl get nodes
-kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- ceph status
+kubectl -n rook-ceph exec deploy/rook-ceph-operator -- ceph -c /var/lib/rook/rook-ceph/rook-ceph.config status
 ```
 
 And maybe take a manual backup of anything critical:
@@ -17,46 +17,55 @@ And maybe take a manual backup of anything critical:
 task volsync:snapshot APP=<app> NS=<ns>
 ```
 
-## Talos Upgrades
+## Talos & Kubernetes (tuppr)
 
-### Single Node
+Talos and Kubernetes upgrades are automated by [tuppr](https://github.com/home-operations/tuppr). The target versions live in:
 
-```bash
-task talos:upgrade-node NODE=m0 VERSION=v1.9.0
-```
+- `kubernetes/apps/system-upgrade/tuppr/upgrades/talos.yaml`
+- `kubernetes/apps/system-upgrade/tuppr/upgrades/kubernetes.yaml`
 
-This downloads the Talos version from the factory, applies it with secure boot, and reboots. Times out after 10 minutes.
+Renovate opens PRs to bump them. Merging the PR is the upgrade: tuppr rolls through the nodes one at a time and, before each node, waits for:
 
-### Rolling Upgrade
+- Ceph to be `HEALTH_OK`
+- no VolSync backups to be in progress
 
-For the whole cluster, just do them one at a time and wait for each to come back:
-
-```bash
-task talos:upgrade-node NODE=m0 VERSION=v1.9.0
-# wait for it to rejoin
-task talos:upgrade-node NODE=m1 VERSION=v1.9.0
-# wait
-task talos:upgrade-node NODE=m2 VERSION=v1.9.0
-```
-
-Between each, verify the node is Ready and Ceph is healthy:
+Talos upgrades power-cycle each node, so expect Ceph to go briefly degraded while a node is down. Watch progress with:
 
 ```bash
-kubectl get nodes
-kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- ceph status
+kubectl get talosupgrade,kubernetesupgrade
+kubectl -n system-upgrade get jobs,pods
 ```
 
-## Kubernetes Upgrades
+### Things to check first
+
+- **Version compatibility.** Each Talos minor version only supports a range of Kubernetes versions (e.g. Talos 1.13 supports Kubernetes 1.31–1.36; 1.37 needs Talos 1.14). Upgrade Talos first, then Kubernetes. The ranges are in Talos's [support matrix](https://docs.siderolabs.com/talos/latest/getting-started/support-matrix).
+- **Pending Talos config changes.** Changes to `talos/controlplane.yaml` (including Renovate bumps to the `extraManifests` URLs) are not applied automatically. Apply them before upgrading, because `upgrade-k8s` re-applies each node's own `extraManifests` and fails on stale ones:
+
+  ```bash
+  task talos:apply-node NODE=m0   # repeat for m1, m2; dry-run first to see if a reboot is needed
+  ```
+
+### Retrying a failed upgrade
+
+When tuppr runs out of retries it marks the upgrade `Failed` and stops. Fix the cause, then reset it:
 
 ```bash
-task talos:upgrade-k8s
+kubectl annotate kubernetesupgrade kubernetes tuppr.home-operations.com/reset="$(date)"
+kubectl annotate talosupgrade talos tuppr.home-operations.com/reset="$(date)"
 ```
 
-This upgrades Kubernetes across all nodes. The version comes from `kubernetes/apps/system-upgrade/tuppr/upgrades/kubernetes.yaml`.
+### Manual upgrades
+
+If tuppr isn't an option, the old manual tasks still work. Do one node at a time and wait for it to rejoin, and for Ceph to be healthy, before moving on:
+
+```bash
+task talos:upgrade-node NODE=m0 VERSION=v1.13.10
+task talos:upgrade-k8s   # version comes from tuppr/upgrades/kubernetes.yaml
+```
 
 ## Flux and Helm Charts
 
-Renovate handles this automatically - it creates PRs when updates are available. Just review and merge them.
+Renovate automerges minor, patch and digest updates once they're 2 days old. Majors, `0.x` minor bumps, core infrastructure (CNI, storage, Flux, Talos/Kubernetes, app-template, cert-manager, external-secrets) and apps with database migrations still get a PR to review. The rules are in `.github/renovate/autoMerge.json5`.
 
 To force a reconcile after merging:
 
@@ -99,7 +108,11 @@ task talos:reboot-node NODE=<node> MODE=powercycle
 
 ### Flux/Helm
 
-Just revert the commit and push:
+A failed Helm upgrade is rolled back automatically to the last good release (configured centrally in `kubernetes/flux/cluster/ks.yaml`). Rollback only triggers if the pod fails its probes before the Helm timeout, so apps need real health probes.
+
+Apps that run database migrations are the exception. They use `RetryOnFailure` instead, because rolling the image back onto a migrated schema breaks them. If one of those fails, fix forward rather than reverting.
+
+Otherwise, just revert the commit and push:
 
 ```bash
 git revert <commit>
@@ -137,4 +150,10 @@ Restart failed releases:
 
 ```bash
 task kubernetes:hr:restart
+```
+
+If an upgrade is stuck waiting on pods that will never become ready, scaling the app's deployments to 0 lets Flux finish the Helm upgrade. Force another reconcile afterwards if the replicas stay at 0:
+
+```bash
+flux reconcile hr -n <ns> <app> --force
 ```
