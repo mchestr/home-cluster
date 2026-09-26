@@ -131,6 +131,8 @@ identity_providers:
     clients:
       - client_name: Autobrr
         client_id: '{{ env "AUTOBRR_OAUTH_CLIENT_ID" }}'
+        require_pkce: true
+        pkce_challenge_method: S256
         client_secret: '{{ env "AUTOBRR_OAUTH_CLIENT_SECRET" }}'
         public: false
         authorization_policy: two_factor
@@ -145,6 +147,8 @@ identity_providers:
         claims_policy: default
       - client_name: Grafana
         client_id: '{{ env "GRAFANA_OAUTH_CLIENT_ID" }}'
+        require_pkce: true
+        pkce_challenge_method: S256
         client_secret: '{{ env "GRAFANA_OAUTH_CLIENT_SECRET" }}'
         public: false
         authorization_policy: two_factor
@@ -160,6 +164,8 @@ identity_providers:
         claims_policy: default
       - client_name: Immich
         client_id: '{{ env "IMMICH_OAUTH_CLIENT_ID" }}'
+        require_pkce: true
+        pkce_challenge_method: S256
         client_secret: '{{ env "IMMICH_OAUTH_CLIENT_SECRET" }}'
         public: false
         authorization_policy: two_factor
@@ -177,6 +183,8 @@ identity_providers:
         token_endpoint_auth_method: client_secret_post
       - client_name: Paperless
         client_id: '{{ env "PAPERLESS_OAUTH_CLIENT_ID" }}'
+        require_pkce: true
+        pkce_challenge_method: S256
         client_secret: '{{ env "PAPERLESS_OAUTH_CLIENT_SECRET" }}'
         public: false
         authorization_policy: two_factor

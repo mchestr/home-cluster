@@ -1,0 +1,57 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: authelia-rules
+spec:
+  groups:
+    - name: authelia.rules
+      rules:
+        - alert: AutheliaDown
+          expr: |
+            absent(up{job="authelia"} == 1)
+          for: 5m
+          annotations:
+            summary: >-
+              Authelia is down; ext-auth fails closed so all internal apps are unreachable
+          labels:
+            severity: critical
+
+        - alert: AutheliaServerErrors
+          expr: |
+            sum(rate(authelia_request{job="authelia", code=~"5.."}[5m]))
+              / sum(rate(authelia_request{job="authelia"}[5m])) > 0.05
+          for: 10m
+          annotations:
+            summary: >-
+              {{ $value | humanizePercentage }} of Authelia requests are failing with 5xx
+          labels:
+            severity: critical
+
+        - alert: AutheliaFailedLogins
+          expr: |
+            sum(increase(authelia_authn{job="authelia", success="false"}[15m])) > 5
+          annotations:
+            summary: >-
+              {{ $value | humanize }} failed Authelia password logins in the last 15 minutes
+          labels:
+            severity: warning
+
+        - alert: AutheliaSecondFactorFailures
+          expr: |
+            sum(increase(authelia_authn_second_factor{job="authelia", success="false"}[15m])) > 3
+          annotations:
+            summary: >-
+              {{ $value | humanize }} failed Authelia second-factor attempts in the last 15 minutes
+          labels:
+            severity: warning
+
+        - alert: AutheliaUserBanned
+          expr: |
+            sum(increase(authelia_authn{job="authelia", banned="true"}[10m])) > 0
+          annotations:
+            summary: >-
+              Authelia rejected logins from a banned user (regulation triggered)
+          labels:
+            severity: warning

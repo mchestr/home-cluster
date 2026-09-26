@@ -59,7 +59,7 @@ spec:
               AUTHELIA_TELEMETRY_METRICS_ADDRESS: tcp://0.0.0.0:8080
               AUTHELIA_TELEMETRY_METRICS_ENABLED: "true"
               AUTHELIA_THEME: auto
-              AUTHELIA_TOTP_ISSUER: authelia.com
+              AUTHELIA_TOTP_ISSUER: chestr.dev
               X_AUTHELIA_CONFIG_FILTERS: template
               AUTHELIA_STORAGE_POSTGRES_ADDRESS:
                 valueFrom:
@@ -86,21 +86,35 @@ spec:
               - secretRef:
                   name: authelia-secret
 
+            # ext-auth fails closed, so a liveness restart of both replicas takes
+            # down every internal app: keep readiness tight, liveness lenient.
             probes:
-              liveness: &probes
+              readiness:
                 enabled: true
                 custom: true
                 spec:
-                  httpGet:
+                  httpGet: &health
                     path: /api/health
                     port: &port 80
-                  initialDelaySeconds: 0
                   periodSeconds: 10
-                  timeoutSeconds: 1
+                  timeoutSeconds: 3
                   failureThreshold: 3
-              readiness: *probes
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet: *health
+                  periodSeconds: 20
+                  timeoutSeconds: 5
+                  failureThreshold: 6
               startup:
-                enabled: false
+                enabled: true
+                custom: true
+                spec:
+                  httpGet: *health
+                  periodSeconds: 5
+                  timeoutSeconds: 3
+                  failureThreshold: 30
 
             resources:
               requests:
