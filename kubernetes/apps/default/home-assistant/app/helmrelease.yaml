@@ -138,14 +138,14 @@ spec:
           - backendRefs:
               - name: *app
                 port: *port
-      # Self-hosted code-server (replaces the VS Code tunnel) for editing HA
-      # config. Password-protected via CODE_SERVER_PASSWORD. On envoy-external to
-      # preserve the tunnel's remote access; move to envoy-internal for LAN-only.
+      # Self-hosted code-server for editing HA config. It is a shell with write
+      # access to the config, so it must stay on envoy-internal ONLY (behind
+      # Authelia 2FA + CODE_SERVER_PASSWORD). Never expose it on envoy-external.
       codeserver:
         hostnames:
           - home-assistant-code.chestr.dev
         parentRefs:
-          - name: envoy-external
+          - name: envoy-internal
             namespace: networking
             sectionName: https
         rules:
@@ -214,6 +214,7 @@ spec:
 
         rules:
           ingress:
+            # External gateway may only reach Home Assistant itself
             - from:
                 - podSelector:
                     matchLabels:
@@ -227,5 +228,17 @@ spec:
               ports:
                 - protocol: TCP
                   port: *port
+            # code-server is internal-only
+            - from:
+                - podSelector:
+                    matchLabels:
+                      app.kubernetes.io/component: proxy
+                      app.kubernetes.io/managed-by: envoy-gateway
+                      app.kubernetes.io/name: envoy
+                      gateway.envoyproxy.io/owning-gateway-name: envoy-internal
+                  namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: networking
+              ports:
                 - protocol: TCP
                   port: *codeserverPort
