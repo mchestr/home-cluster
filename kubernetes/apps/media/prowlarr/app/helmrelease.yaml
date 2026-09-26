@@ -72,6 +72,31 @@ spec:
             envFrom:
               - secretRef:
                   name: prowlarr-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  # Up to 30m so DB migrations on upgrade aren't killed mid-run
+                  failureThreshold: 180
 
     defaultPodOptions:
       securityContext:

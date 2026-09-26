@@ -53,6 +53,30 @@ spec:
                   name: home-assistant-secret
             env:
               TZ: America/Vancouver
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /manifest.json
+                    port: &port 8123
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /manifest.json
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  failureThreshold: 30
 
           codeserver:
             image:
@@ -90,7 +114,7 @@ spec:
         controller: *app
         ports:
           http:
-            port: &port 8123
+            port: *port
           sonos:
             port: 1400
           codeserver:

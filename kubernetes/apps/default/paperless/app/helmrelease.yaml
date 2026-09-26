@@ -85,6 +85,31 @@ spec:
             envFrom:
               - secretRef:
                   name: paperless-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /accounts/login/
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /accounts/login/
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  # Up to 30m so DB migrations on upgrade aren't killed mid-run
+                  failureThreshold: 180
 
       gotenburg:
         containers:
@@ -94,6 +119,30 @@ spec:
               tag: 8.17.3
             env:
               DISABLE_GOOGLE_CHROME: "1"
+            probes:
+              liveness: &gotenbergProbes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 3000
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  failureThreshold: 3
+              readiness: *gotenbergProbes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 3000
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  failureThreshold: 30
 
       tika:
         containers:
@@ -101,6 +150,30 @@ spec:
             image:
               repository: docker.io/apache/tika
               tag: 3.3.1.0-full
+            probes:
+              liveness: &tikaProbes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /version
+                    port: 9998
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  failureThreshold: 3
+              readiness: *tikaProbes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /version
+                    port: 9998
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  failureThreshold: 30
 
     service:
       paperless:
