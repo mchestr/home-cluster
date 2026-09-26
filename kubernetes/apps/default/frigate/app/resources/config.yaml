@@ -146,10 +146,6 @@ go2rtc:
       - rtspx://10.0.40.1:7441/NCjKjmbsiMjdPJkH
     doorbell_package:
       - rtspx://10.0.40.1:7441/D9DfIKJZfH6Dz9Oh
-    catcam1:
-      - onvif://{FRIGATE_CATCAM_CAMERA_USERNAME}:{FRIGATE_CATCAM_CAMERA_PASSWORD}@192.168.200.104:8000
-    # catcam2:
-    #   - onvif://{FRIGATE_CATCAM_CAMERA_USERNAME}:{FRIGATE_CATCAM_CAMERA_PASSWORD}@192.168.200.99:8000
 cameras:
   living_room:
     lpr:
@@ -258,55 +254,6 @@ cameras:
         filters:
           package:
             threshold: 0.75
-
-  catcam1:
-    audio:
-      enabled: false
-    lpr:
-      enabled: false
-    ffmpeg:
-      output_args:
-        record: preset-record-generic-audio-aac
-      inputs:
-        - path: rtsp://127.0.0.1:8554/catcam1?video=copy&audio=aac
-          input_args: preset-rtsp-restream
-          roles:
-            - record
-            - detect
-    live:
-      streams:
-        Main: catcam1
-    onvif:
-      host: 192.168.200.104
-      port: 8000
-      user: "{FRIGATE_CATCAM_CAMERA_USERNAME}"
-      password: "{FRIGATE_CATCAM_CAMERA_PASSWORD}"
-
-  # catcam2:
-  #   audio:
-  #     enabled: false
-  #   lpr:
-  #     enabled: false
-  #   ffmpeg:
-  #     output_args:
-  #       record: preset-record-generic-audio-aac
-  #     inputs:
-  #       - path: rtsp://127.0.0.1:8554/catcam2?video=copy&audio=aac
-  #         input_args: preset-rtsp-restream
-  #         roles:
-  #           - record
-  #           - detect
-  #   motion:
-  #     mask:
-  #       - 0.025,0.039,0.263,0.039,0.265,0.087,0.023,0.086
-  #   live:
-  #     streams:
-  #       Main: catcam2
-  #   onvif:
-  #     host: 192.168.200.99
-  #     port: 8000
-  #     user: "{FRIGATE_CATCAM_CAMERA_USERNAME}"
-  #     password: "{FRIGATE_CATCAM_CAMERA_PASSWORD}"
 
 auth:
   enabled: false
