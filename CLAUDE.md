@@ -90,7 +90,7 @@ bootstrap/                     # helmfile + resources for initial cluster setup
 
 Nearly all apps use the `app-template` chart (`oci://ghcr.io/bjw-s-labs/helm/app-template`) sourced via the `OCIRepository` defined in `components/common/repos/app-template/`. The `chartRef` in HelmReleases references `kind: OCIRepository, name: app-template`.
 
-Install/upgrade failure handling is injected into every HelmRelease by a patch in `kubernetes/flux/cluster/ks.yaml` (a failed upgrade is rolled back to the last good release), so don't add `install`/`upgrade`/`uninstall` remediation blocks per app. Apps that run DB migrations on upgrade set `upgrade.strategy.name: RetryOnFailure` instead, since rolling the image back onto a migrated schema breaks them. Rollback only triggers if the pod fails its probes before the Helm timeout (5m), and app-template enables no probes by default, so give HTTP apps liveness/readiness/startup probes on a real health endpoint.
+Install/upgrade failure handling is injected into every HelmRelease by a patch in `kubernetes/flux/cluster/ks.yaml` (a failed upgrade is rolled back to the last good release, and CRDs in a chart's `crds/` directory are replaced on every upgrade), so don't add `install`/`upgrade`/`uninstall` remediation blocks per app. Apps that run DB migrations on upgrade set `upgrade.strategy.name: RetryOnFailure` instead, since rolling the image back onto a migrated schema breaks them. Rollback only triggers if the pod fails its probes before the Helm timeout (5m), and app-template enables no probes by default, so give HTTP apps liveness/readiness/startup probes on a real health endpoint.
 
 ### Ingress / Routing
 

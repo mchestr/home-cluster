@@ -19,9 +19,14 @@ spec:
     # provider, so don't auto-register llmkube InferenceServices as models.
     llmkube:
       autoRegister: false
+    # The operator caches every Secret cluster-wide, and Helm release secrets
+    # alone are ~40MiB; bursts of Helm upgrades OOMKilled it at 128Mi.
+    env:
+      - name: GOMEMLIMIT
+        value: 200MiB
     resources:
       requests:
         cpu: 10m
-        memory: 64Mi
-      limits:
         memory: 128Mi
+      limits:
+        memory: 256Mi

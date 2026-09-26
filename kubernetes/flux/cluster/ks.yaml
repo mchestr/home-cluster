@@ -57,6 +57,8 @@ spec:
             - # A failed upgrade is rolled back to the last good release. Apps that
               # migrate data on upgrade set upgrade.strategy.name: RetryOnFailure in
               # their HelmRelease instead, which skips remediation entirely.
+              # CRDs shipped in a chart's crds/ directory are only installed once by
+              # default (upgrade.crds: Skip), so replace them on every upgrade.
               patch: |-
                 apiVersion: helm.toolkit.fluxcd.io/v2
                 kind: HelmRelease
@@ -64,10 +66,12 @@ spec:
                   name: not-used
                 spec:
                   install:
+                    crds: CreateReplace
                     remediation:
                       retries: -1
                   upgrade:
                     cleanupOnFail: true
+                    crds: CreateReplace
                     remediation:
                       retries: 2
                       remediateLastFailure: true
