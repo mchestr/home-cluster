@@ -155,7 +155,7 @@ jobs:
               $marker,
               "## Risk assessment: \(.risk | badge)\n",
               .summary,
-              "\n| Package | Update | Risk | Notes |\n|---|---|---|---|",
+              (if (.updates | length) > 0 then "\n| Package | Update | Risk | Notes |\n|---|---|---|---|" else "" end),
               (.updates[] | "| `\(.package)` | \(.from) → \(.to) | \(.risk | badge) | \(.notes | gsub("\n"; " ")) \(.sources | to_entries | map("[[\(.key + 1)]](\(.value))") | join(" ")) |"),
               list("Breaking changes"; .breaking_changes),
               list("Deprecations"; .deprecations),
