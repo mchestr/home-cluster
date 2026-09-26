@@ -8,13 +8,24 @@ spec:
   groups:
     - name: smartctl-exporter.rules
       rules:
+        # SN770 / 990 PRO firmware warning thresholds are 84°C / 82°C
         - alert: SmartDeviceHighTemperature
           expr: |
-            smartctl_device_temperature{temperature_type="current"} > 65
+            smartctl_device_temperature{temperature_type="current"} > 72
+          for: 15m
+          annotations:
+            summary: >-
+              Mounted drive {{ $labels.device }} on device {{ $labels.instance }} has been above 72°C for 15 minutes
+          labels:
+            severity: warning
+
+        - alert: SmartDeviceCriticalTemperature
+          expr: |
+            smartctl_device_temperature{temperature_type="current"} > 78
           for: 5m
           annotations:
             summary: >-
-              Mounted drive {{ $labels.device }} on device {{ $labels.instance }} has a temperature higher than 65°C
+              Mounted drive {{ $labels.device }} on device {{ $labels.instance }} is above 78°C, close to its thermal throttle point
           labels:
             severity: critical
 

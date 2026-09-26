@@ -22,5 +22,6 @@ spec:
     fullnameOverride: *app
     serviceMonitor:
       enabled: true
+    # Chart rules duplicate prometheusrule.yaml and warn at 60°C, well below the drives' own limits
     prometheusRules:
-      enabled: true
+      enabled: false
