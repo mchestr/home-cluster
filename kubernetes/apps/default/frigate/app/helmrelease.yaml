@@ -90,7 +90,7 @@ spec:
         controller: *app
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: go2rtc-streams.chestr.dev
+          external-dns.kubernetes.io/hostname: go2rtc-streams.chestr.dev
           lbipam.cilium.io/ips: 10.0.20.60
         ports:
           http:

@@ -11,21 +11,21 @@ spec:
       targets:
         - r6aoj7vhzjzzuitmxypnvzq5om27foyc.dkim.amazonses.com
       providerSpecific:
-        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+        - name: cloudflare/proxied
           value: "false"
     - dnsName: 6ajw3icev6dwsjdcxqyfsorhtxsndc5f._domainkey.chestr.dev
       recordType: CNAME
       targets:
         - 6ajw3icev6dwsjdcxqyfsorhtxsndc5f.dkim.amazonses.com
       providerSpecific:
-        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+        - name: cloudflare/proxied
           value: "false"
     - dnsName: dclakzwyzjqdkygjisjvbscqf5zxjqln._domainkey.chestr.dev
       recordType: CNAME
       targets:
         - dclakzwyzjqdkygjisjvbscqf5zxjqln.dkim.amazonses.com
       providerSpecific:
-        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+        - name: cloudflare/proxied
           value: "false"
     - dnsName: mail
       recordType: MX
@@ -45,21 +45,21 @@ spec:
       targets:
         - nuvu4eeleu2abflxn6ldz3vwrkccz527.dkim.amazonses.com
       providerSpecific:
-        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+        - name: cloudflare/proxied
           value: "false"
     - dnsName: rsngqtkljqqrxu5ct3jtqrpjfcy63nmn._domainkey.controlforensics.com
       recordType: CNAME
       targets:
         - rsngqtkljqqrxu5ct3jtqrpjfcy63nmn.dkim.amazonses.com
       providerSpecific:
-        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+        - name: cloudflare/proxied
           value: "false"
     - dnsName: khziw4xs2rm5rptymwf2qhdabjsltyiq._domainkey.controlforensics.com
       recordType: CNAME
       targets:
         - khziw4xs2rm5rptymwf2qhdabjsltyiq.dkim.amazonses.com
       providerSpecific:
-        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+        - name: cloudflare/proxied
           value: "false"
     - dnsName: mail
       recordType: MX
