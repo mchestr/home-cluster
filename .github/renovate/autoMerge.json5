@@ -12,7 +12,6 @@
       matchUpdateTypes: ["minor", "patch", "digest"],
       automerge: true,
       automergeType: "branch",
-      ignoreTests: true,
       minimumReleaseAge: "2 days",
       // Registries that do not publish release timestamps would otherwise hold updates forever
       minimumReleaseAgeBehaviour: "timestamp-optional",
@@ -61,7 +60,6 @@
       automergeType: "branch",
       matchUpdateTypes: ["minor", "patch", "digest"],
       minimumReleaseAge: "3 days",
-      ignoreTests: true,
     },
   ],
 }
