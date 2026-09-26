@@ -3,6 +3,7 @@
   "additionalProperties": false,
   "required": [
     "risk",
+    "headline",
     "summary",
     "updates",
     "breaking_changes",
@@ -21,9 +22,13 @@
         "high"
       ]
     },
+    "headline": {
+      "type": "string",
+      "description": "One line, at most 12 words, stating the verdict's reason, e.g. 'Patch release, bug fixes only' or 'Renames persistence.config values key we set'"
+    },
     "summary": {
       "type": "string",
-      "description": "Two or three sentences on what changes and why it is or isn't safe to automerge"
+      "description": "At most three short sentences: what changes and why it is or isn't safe"
     },
     "updates": {
       "type": "array",

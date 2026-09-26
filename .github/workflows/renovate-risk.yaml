@@ -146,28 +146,12 @@ jobs:
       - name: Write Report
         env:
           FIX_URL: ${{ steps.fix.outputs.url }}
+          FLUX_LOCAL_RESULT: ${{ inputs.flux-local-result }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          jq -r --arg marker "${REPORT_MARKER}" '
-            def badge: {"low": "🟢 low", "medium": "🟡 medium", "high": "🔴 high"}[.];
-            def list(title; items): if (items | length) > 0 then "\n### \(title)\n\n" + (items | map("- \(.)") | join("\n")) + "\n" else "" end;
-            [
-              $marker,
-              "## Risk assessment: \(.risk | badge)\n",
-              .summary,
-              (if (.updates | length) > 0 then "\n| Package | Update | Risk | Notes |\n|---|---|---|---|" else "" end),
-              (.updates[] | "| `\(.package)` | \(.from) → \(.to) | \(.risk | badge) | \(.notes | gsub("\n"; " ")) \(.sources | to_entries | map("[[\(.key + 1)]](\(.value))") | join(" ")) |"),
-              list("Breaking changes"; .breaking_changes),
-              list("Deprecations"; .deprecations),
-              list("Required actions"; .required_actions),
-              list("New features worth adopting"; .new_features),
-              (if env.FIX_URL != "" then "\n### Proposed fix\n\n\(.fix_description)\n\nOpened as \(env.FIX_URL); merge it into this branch to apply." else "" end),
-              (if .risk == "high" then "\n> Automerge is blocked while this check fails." else "" end),
-              "\n<sub>[Assessment run](\(env.RUN_URL))</sub>"
-            ] | map(select(. != "")) | join("\n")
-            # Link via redirect.github.com so upstream issues and PRs do not get backlinks
-            | gsub("https://github\\.com/"; "https://redirect.github.com/")
-          ' "${RUNNER_TEMP}/assessment.json" > "${RUNNER_TEMP}/report.md"
+          jq -r --arg marker "${REPORT_MARKER}" \
+            --from-file <(git show HEAD:.github/renovate-risk/report.jq) \
+            "${RUNNER_TEMP}/assessment.json" > "${RUNNER_TEMP}/report.md"
           cp "${RUNNER_TEMP}/assessment.json" "${RUNNER_TEMP}/report.md" .
           cat report.md >> "${GITHUB_STEP_SUMMARY}"
 
