@@ -60,4 +60,4 @@ Return the structured result. A human skims it as a PR comment, so write for sca
 - `notes`: at most two sentences per package.
 - `sources`: the URLs you actually read, release pages preferred.
 
-Report only problems you're confident in, cite the file in this repo each one affects, and don't comment on style or praise the change. `new_features` is optional: only list features that would clearly benefit how this repo uses the component.
+Report only problems you're confident in and have evidence for (a file you read, a release note, documentation, or the flux-local output). Don't assert how GitHub Actions, Kubernetes or an app will behave at runtime from assumptions; if something needs checking that you can't check, say what to verify instead of reporting it as a defect. Cite the file in this repo each one affects, and don't comment on style or praise the change. `new_features` is optional: only list features that would clearly benefit how this repo uses the component.
