@@ -45,7 +45,7 @@ flowchart TB
     end
 
     subgraph Services["K8s Services (10.0.20.0/24)"]
-        MQTT["EMQX MQTT<br/>10.0.20.50"]
+        MQTT["Mosquitto MQTT<br/>10.0.20.50"]
         Plex["Plex<br/>10.0.20.110"]
         Jellyfin["Jellyfin<br/>10.0.20.70"]
         PG["PostgreSQL<br/>10.0.20.17"]

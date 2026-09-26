@@ -70,7 +70,6 @@ access_control:
     - domain:
         - atuin.chestr.dev
         - autobrr.chestr.dev
-        - emqx.chestr.dev
         - grafana.chestr.dev
         - homepage.chestr.dev
         - irc.chestr.dev

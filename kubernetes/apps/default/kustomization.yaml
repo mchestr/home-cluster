@@ -7,7 +7,6 @@ components:
 resources:
   - ./atuin/ks.yaml
   - ./authelia/ks.yaml
-  - ./emqx/ks.yaml
   - ./esphome/ks.yaml
   - ./frigate/ks.yaml
   - ./govee2mqtt/ks.yaml
@@ -16,6 +15,7 @@ resources:
   - ./immich/ks.yaml
   - ./lldap/ks.yaml
   - ./matter-server/ks.yaml
+  - ./mosquitto/ks.yaml
   - ./paperless/ks.yaml
   - ./radicale/ks.yaml
   - ./saidcompany/ks.yaml

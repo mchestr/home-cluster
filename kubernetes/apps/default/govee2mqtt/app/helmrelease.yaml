@@ -45,7 +45,7 @@ spec:
               tag: latest@sha256:d5427fa1524e3e6f87c59e5cbc59e782036a2b5274e4f96cfb581d844aa2b6dc
             env:
               TZ: America/Vancouver
-              GOVEE_MQTT_HOST: emqx-listeners.default.svc.cluster.local
+              GOVEE_MQTT_HOST: mosquitto.default.svc.cluster.local
               GOVEE_MQTT_PORT: "1883"
               GOVEE_TEMPERATURE_SCALE: F
               RUST_LOG_STYLE: always

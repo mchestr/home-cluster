@@ -41,7 +41,7 @@ spec:
             env:
               TZ: &tz America/Vancouver
               DISABLE_MQTT: "false"
-              MQTT_HOST: emqx-listeners.default.svc.cluster.local
+              MQTT_HOST: mosquitto.default.svc.cluster.local
               # DATABASE_NAME:
               #   valueFrom:
               #     secretKeyRef:

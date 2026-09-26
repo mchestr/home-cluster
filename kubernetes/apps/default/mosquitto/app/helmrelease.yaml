@@ -1,0 +1,123 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app mosquitto
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 2
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  values:
+    controllers:
+      mosquitto:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        initContainers:
+          init-config:
+            image: &image
+              repository: public.ecr.aws/docker/library/eclipse-mosquitto
+              tag: 2.0.22
+            command:
+              - sh
+              - -c
+              - |
+                cp /tmp/secret/mosquitto_pwd /mosquitto/external_config/mosquitto_pwd
+                chmod 0600 /mosquitto/external_config/mosquitto_pwd
+                mosquitto_passwd -U /mosquitto/external_config/mosquitto_pwd
+
+        containers:
+          app:
+            image: *image
+            env:
+              TZ: America/Vancouver
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      app:
+        controller: *app
+        type: LoadBalancer
+        annotations:
+          external-dns.kubernetes.io/hostname: mqtt.chestr.dev
+          lbipam.cilium.io/ips: 10.0.20.50
+        ports:
+          mqtt:
+            port: 1883
+
+    configMaps:
+      config:
+        data:
+          mosquitto.conf: |
+            per_listener_settings false
+            listener 1883
+            allow_anonymous false
+            password_file /mosquitto/external_config/mosquitto_pwd
+            persistence true
+            persistence_location /data/
+            autosave_interval 60
+            connection_messages false
+            log_dest stdout
+
+    persistence:
+      data:
+        existingClaim: *app
+        advancedMounts:
+          mosquitto:
+            app:
+              - path: /data
+      config-file:
+        type: configMap
+        identifier: config
+        advancedMounts:
+          mosquitto:
+            app:
+              - path: /mosquitto/config/mosquitto.conf
+                subPath: mosquitto.conf
+                readOnly: true
+      secret-file:
+        type: secret
+        name: mosquitto-secret
+        advancedMounts:
+          mosquitto:
+            init-config:
+              - path: /tmp/secret
+                readOnly: true
+      external-config:
+        type: emptyDir
+        globalMounts:
+          - path: /mosquitto/external_config
