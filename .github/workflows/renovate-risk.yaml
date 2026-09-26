@@ -1,11 +1,11 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
-name: "Renovate Risk"
+name: "Risk Assessment"
 
 on:
-  # Called by Flux Local after it tests every push to a renovate/** branch and
-  # renders the manifest diff. Renovate waits for this check and opens a PR
-  # instead of automerging when it fails.
+  # Called by Flux Local after it tests a push to a renovate/** branch or a
+  # PR, and renders the manifest diff. Renovate waits for this check and opens
+  # a PR instead of automerging when it fails.
   workflow_call:
     inputs:
       flux-local-result:
@@ -27,14 +27,15 @@ env:
 jobs:
   assess:
     name: Assess
-    if: ${{ github.event_name == 'push' }}
+    if: ${{ inputs.flux-local-result != '' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
       # renovate: datasource=npm depName=@anthropic-ai/claude-code
       CLAUDE_CODE_VERSION: 2.1.283
       CLAUDE_MODEL: claude-sonnet-5
-      BRANCH: ${{ github.ref_name }}
+      BRANCH: ${{ github.head_ref || github.ref_name }}
+      PR_NUMBER: ${{ github.event.pull_request.number }}
     steps:
       - name: Generate Token
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
@@ -49,6 +50,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          # The PR head, not the merge commit, so a proposed fix applies to it
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
           persist-credentials: false
 
@@ -70,6 +73,9 @@ jobs:
           # no credentials that can write anywhere.
           GH_TOKEN: ${{ github.token }}
           FLUX_LOCAL_RESULT: ${{ inputs.flux-local-result }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
         run: |
           flux_dir="${RUNNER_TEMP}/flux-local"
           mkdir -p "${flux_dir}"
@@ -81,6 +87,10 @@ jobs:
           - Rendered diff against main, Helm charts templated: \`${flux_dir}/diff-helmrelease.patch\`
           - Kustomization diff against main: \`${flux_dir}/diff-kustomization.patch\`
           - Files present: $(ls "${flux_dir}" | tr '\n' ' ')"
+          if [[ -n "${PR_NUMBER}" && "${BRANCH}" != renovate/* ]]; then
+            prompt+="$(printf '\n\n%s\n\n## Pull request #%s by @%s: %s\n\n%s\n' \
+              "$(cat .github/renovate-risk/pull-request.md)" "${PR_NUMBER}" "${PR_AUTHOR}" "${PR_TITLE}" "${PR_BODY}")"
+          fi
           [[ -n "${ANTHROPIC_KEY}" ]] && export ANTHROPIC_API_KEY="${ANTHROPIC_KEY}"
           [[ -n "${CLAUDE_OAUTH}" ]] && export CLAUDE_CODE_OAUTH_TOKEN="${CLAUDE_OAUTH}"
           claude --print "${prompt}" \
@@ -114,12 +124,12 @@ jobs:
           if [[ "$(jq -r '.risk' "${RUNNER_TEMP}/assessment.json")" != "high" ]] || git diff --cached --quiet; then
             exit 0
           fi
-          fix_branch="renovate-risk/${BRANCH#renovate/}"
+          fix_branch="risk-fix/${BRANCH}"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git switch --create "${fix_branch}"
           git commit --quiet --file - <<EOF
-          fix: adapt config for ${BRANCH#renovate/}
+          fix: address risk assessment for ${BRANCH}
 
           $(jq -r '.fix_description' "${RUNNER_TEMP}/assessment.json")
           EOF
@@ -128,8 +138,8 @@ jobs:
           url=$(gh pr list --head "${fix_branch}" --base "${BRANCH}" --json url --jq '.[0].url')
           if [[ -z "${url}" ]]; then
             url=$(gh pr create --head "${fix_branch}" --base "${BRANCH}" \
-              --title "fix: adapt config for ${BRANCH#renovate/}" \
-              --body "$(jq -r '"Proposed by Renovate Risk to make `\(env.BRANCH)` safe to merge.\n\n\(.fix_description)"' "${RUNNER_TEMP}/assessment.json")")
+              --title "fix: address risk assessment for ${BRANCH}" \
+              --body "$(jq -r '"Proposed by the risk assessment to make `\(env.BRANCH)` safe to merge.\n\n\(.fix_description)"' "${RUNNER_TEMP}/assessment.json")")
           fi
           echo "url=${url}" >> "${GITHUB_OUTPUT}"
 
@@ -143,7 +153,7 @@ jobs:
             def list(title; items): if (items | length) > 0 then "\n### \(title)\n\n" + (items | map("- \(.)") | join("\n")) + "\n" else "" end;
             [
               $marker,
-              "## Renovate Risk: \(.risk | badge)\n",
+              "## Risk assessment: \(.risk | badge)\n",
               .summary,
               "\n| Package | Update | Risk | Notes |\n|---|---|---|---|",
               (.updates[] | "| `\(.package)` | \(.from) → \(.to) | \(.risk | badge) | \(.notes | gsub("\n"; " ")) \(.sources | to_entries | map("[[\(.key + 1)]](\(.value))") | join(" ")) |"),
@@ -173,7 +183,7 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          pr=$(gh pr list --head "${BRANCH}" --base main --json number --jq '.[0].number')
+          pr="${PR_NUMBER:-$(gh pr list --head "${BRANCH}" --base main --json number --jq '.[0].number')}"
           [[ -z "${pr}" ]] && exit 0
           comment=$(gh api "repos/${GITHUB_REPOSITORY}/issues/${pr}/comments" --paginate \
             --jq "map(select(.body | startswith(\"${REPORT_MARKER}\"))) | .[0].id // empty")
@@ -188,13 +198,14 @@ jobs:
           risk=$(jq -r '.risk' assessment.json)
           echo "Risk: ${risk}"
           if [[ "${risk}" == "high" ]]; then
-            echo "::error::High risk update: $(jq -r '.summary' assessment.json)"
+            echo "::error::High risk change: $(jq -r '.summary' assessment.json)"
             exit 1
           fi
 
   comment:
     name: Renovate Risk Comment
-    if: ${{ github.event_name == 'pull_request' && startsWith(github.head_ref, 'renovate/') }}
+    # Only on this workflow's own pull_request trigger, not when called
+    if: ${{ inputs.flux-local-result == '' && github.event_name == 'pull_request' && startsWith(github.head_ref, 'renovate/') }}
     runs-on: ubuntu-latest
     permissions:
       actions: read
