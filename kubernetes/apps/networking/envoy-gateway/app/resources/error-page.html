@@ -1,0 +1,96 @@
+<!doctype html>
+<!--
+  Served by Envoy Gateway in place of 502/503/504 responses (see the
+  BackendTrafficPolicy in envoy.yaml). Envoy expands its access-log command
+  operators in this body, so never use a literal percent sign anywhere,
+  including comments: CSS sticks to rem/vh/px and the script avoids modulo.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>%REQ(:AUTHORITY)% is unavailable</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f6f5f2; --card: #ffffff; --ink: #1d1d1f; --muted: #6b6b70;
+    --line: #e4e2dd; --accent: #c2410c; --accent-soft: #fdeee6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141416; --card: #1d1d20; --ink: #ececef; --muted: #9a9aa2;
+      --line: #2c2c31; --accent: #fb923c; --accent-soft: #2a1d15;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; display: grid; place-items: center;
+    padding: 1.5rem; background: var(--bg); color: var(--ink);
+    font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main {
+    width: min(34rem, calc(100vw - 3rem)); background: var(--card);
+    border: 1px solid var(--line); border-radius: 1rem; padding: 2.25rem 2rem;
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--accent-soft); color: var(--accent);
+    font-weight: 600; font-size: 0.8rem; letter-spacing: 0.04em;
+    padding: 0.3rem 0.7rem; border-radius: 99rem;
+  }
+  .dot { width: 0.5rem; height: 0.5rem; border-radius: 1rem; background: currentColor;
+         animation: pulse 0.8s ease-in-out infinite alternate; }
+  @keyframes pulse { to { opacity: 0.25; } }
+  h1 { font-size: 1.6rem; line-height: 1.25; margin: 1.1rem 0 0.6rem; overflow-wrap: anywhere; }
+  p { margin: 0 0 1rem; color: var(--muted); }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.9rem; margin-top: 1.5rem; }
+  button {
+    font: inherit; font-weight: 600; cursor: pointer; border: 0; border-radius: 0.6rem;
+    padding: 0.6rem 1.1rem; background: var(--ink); color: var(--card);
+  }
+  #countdown { font-size: 0.9rem; color: var(--muted); }
+  details { margin-top: 1.75rem; border-top: 1px solid var(--line); padding-top: 1rem;
+            font-size: 0.85rem; color: var(--muted); }
+  summary { cursor: pointer; }
+  dl { display: grid; grid-template-columns: max-content 1fr; gap: 0.35rem 1rem; margin: 0.8rem 0 0; }
+  dt { font-weight: 600; }
+  dd { margin: 0; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; overflow-wrap: anywhere; }
+</style>
+</head>
+<body>
+<main>
+  <span class="badge"><span class="dot"></span>Error %RESPONSE_CODE%</span>
+  <h1>%REQ(:AUTHORITY)% isn&rsquo;t responding</h1>
+  <p>The service behind this address is down or restarting. This usually
+     clears up on its own within a few minutes.</p>
+  <div class="actions">
+    <button type="button" onclick="location.reload()">Try again</button>
+    <span id="countdown"></span>
+  </div>
+  <details>
+    <summary>Details</summary>
+    <dl>
+      <dt>Status</dt><dd>%RESPONSE_CODE%</dd>
+      <dt>Reason</dt><dd>%RESPONSE_CODE_DETAILS%</dd>
+      <dt>Time</dt><dd>%START_TIME(%Y-%m-%d %H:%M:%S UTC)%</dd>
+      <dt>Request ID</dt><dd>%REQ(X-REQUEST-ID)%</dd>
+    </dl>
+  </details>
+</main>
+<script>
+  // Retry automatically so the page recovers on its own once the service is back
+  (function () {
+    var left = 30;
+    var el = document.getElementById("countdown");
+    function tick() {
+      if (left <= 0) { location.reload(); return; }
+      el.textContent = "Retrying in " + left + "s";
+      left -= 1;
+      setTimeout(tick, 1000);
+    }
+    tick();
+  })();
+</script>
+</body>
+</html>
