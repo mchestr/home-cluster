@@ -1,0 +1,110 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "risk",
+    "summary",
+    "updates",
+    "breaking_changes",
+    "deprecations",
+    "new_features",
+    "required_actions",
+    "fix_applied",
+    "fix_description"
+  ],
+  "properties": {
+    "risk": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "summary": {
+      "type": "string",
+      "description": "Two or three sentences on what changes and why it is or isn't safe to automerge"
+    },
+    "updates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "package",
+          "from",
+          "to",
+          "risk",
+          "notes",
+          "sources"
+        ],
+        "properties": {
+          "package": {
+            "type": "string"
+          },
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "risk": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "notes": {
+            "type": "string",
+            "description": "What changed between the versions that matters for this cluster"
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Release note / changelog URLs actually read"
+          }
+        }
+      }
+    },
+    "breaking_changes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Breaking changes that affect this repo's config, each citing the file it affects"
+    },
+    "deprecations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Deprecations of things this repo uses, each citing the file it affects"
+    },
+    "required_actions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Manual steps a human must take that cannot be done in the repo (e.g. backups, one-off migrations)"
+    },
+    "new_features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "New features worth adopting here, each naming the file it would change"
+    },
+    "fix_applied": {
+      "type": "boolean",
+      "description": "True only if you edited repo files to make the update safe"
+    },
+    "fix_description": {
+      "type": "string",
+      "description": "What was edited and why; empty if fix_applied is false"
+    }
+  }
+}

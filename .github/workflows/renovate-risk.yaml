@@ -1,0 +1,227 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: "Renovate Risk"
+
+on:
+  # Called by Flux Local after it tests every push to a renovate/** branch and
+  # renders the manifest diff. Renovate waits for this check and opens a PR
+  # instead of automerging when it fails.
+  workflow_call:
+    inputs:
+      flux-local-result:
+        description: Result of the Flux Local test job
+        type: string
+        required: true
+  # Once Renovate opens a PR (for a failed check or a non-automerge update),
+  # post the assessment that was already made for its head commit.
+  pull_request:
+    types: ["opened"]
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+env:
+  REPORT_MARKER: "<!-- renovate-risk -->"
+
+jobs:
+  assess:
+    name: Assess
+    if: ${{ github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      # renovate: datasource=npm depName=@anthropic-ai/claude-code
+      CLAUDE_CODE_VERSION: 2.1.283
+      CLAUDE_MODEL: claude-sonnet-5
+      BRANCH: ${{ github.ref_name }}
+    steps:
+      - name: Generate Token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        id: app-token
+        with:
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+          repositories: home-cluster
+          permission-contents: write
+          permission-pull-requests: write
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Download Flux Local Results
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        continue-on-error: true
+        with:
+          name: flux-local
+          path: ${{ runner.temp }}/flux-local
+
+      - name: Install Claude Code
+        run: npm install --global "@anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}"
+
+      - name: Assess Update
+        env:
+          ANTHROPIC_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_OAUTH: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          # Read-only token: release notes are untrusted input, so Claude gets
+          # no credentials that can write anywhere.
+          GH_TOKEN: ${{ github.token }}
+          FLUX_LOCAL_RESULT: ${{ inputs.flux-local-result }}
+        run: |
+          flux_dir="${RUNNER_TEMP}/flux-local"
+          mkdir -p "${flux_dir}"
+          prompt="$(cat .github/renovate-risk/prompt.md)
+
+          ## Flux Local results for this branch
+
+          - \`flux-local test\` (builds every Kustomization and renders every HelmRelease): **${FLUX_LOCAL_RESULT}**. Output: \`${flux_dir}/test.log\`
+          - Rendered diff against main, Helm charts templated: \`${flux_dir}/diff-helmrelease.patch\`
+          - Kustomization diff against main: \`${flux_dir}/diff-kustomization.patch\`
+          - Files present: $(ls "${flux_dir}" | tr '\n' ' ')"
+          [[ -n "${ANTHROPIC_KEY}" ]] && export ANTHROPIC_API_KEY="${ANTHROPIC_KEY}"
+          [[ -n "${CLAUDE_OAUTH}" ]] && export CLAUDE_CODE_OAUTH_TOKEN="${CLAUDE_OAUTH}"
+          claude --print "${prompt}" \
+            --add-dir "${flux_dir}" \
+            --model "${CLAUDE_MODEL}" \
+            --max-turns 60 \
+            --output-format json \
+            --json-schema "$(cat .github/renovate-risk/schema.json)" \
+            --allowedTools \
+              "Read" "Grep" "Glob" "Edit" "WebFetch" "WebSearch" \
+              "Bash(git diff:*)" "Bash(git log:*)" "Bash(git show:*)" \
+              "Bash(gh release view:*)" "Bash(gh release list:*)" "Bash(gh api:*)" \
+              "Bash(helm show:*)" "Bash(helm repo add:*)" "Bash(helm search:*)" \
+            > "${RUNNER_TEMP}/claude.json" || true
+          # Fail closed: no verdict means no automerge
+          if ! jq -e '.structured_output.risk' "${RUNNER_TEMP}/claude.json" > /dev/null; then
+            echo "::error::Claude did not return an assessment"
+            jq -r '.result // .' "${RUNNER_TEMP}/claude.json" || cat "${RUNNER_TEMP}/claude.json"
+            exit 1
+          fi
+          jq '.structured_output' "${RUNNER_TEMP}/claude.json" > "${RUNNER_TEMP}/assessment.json"
+          jq . "${RUNNER_TEMP}/assessment.json"
+
+      - name: Propose Fix
+        id: fix
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          # Only commit edits to cluster config, whatever else Claude touched
+          git add -- kubernetes talos terraform bootstrap
+          if [[ "$(jq -r '.risk' "${RUNNER_TEMP}/assessment.json")" != "high" ]] || git diff --cached --quiet; then
+            exit 0
+          fi
+          fix_branch="renovate-risk/${BRANCH#renovate/}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch --create "${fix_branch}"
+          git commit --quiet --file - <<EOF
+          fix: adapt config for ${BRANCH#renovate/}
+
+          $(jq -r '.fix_description' "${RUNNER_TEMP}/assessment.json")
+          EOF
+          git push --force \
+            "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/heads/${fix_branch}"
+          url=$(gh pr list --head "${fix_branch}" --base "${BRANCH}" --json url --jq '.[0].url')
+          if [[ -z "${url}" ]]; then
+            url=$(gh pr create --head "${fix_branch}" --base "${BRANCH}" \
+              --title "fix: adapt config for ${BRANCH#renovate/}" \
+              --body "$(jq -r '"Proposed by Renovate Risk to make `\(env.BRANCH)` safe to merge.\n\n\(.fix_description)"' "${RUNNER_TEMP}/assessment.json")")
+          fi
+          echo "url=${url}" >> "${GITHUB_OUTPUT}"
+
+      - name: Write Report
+        env:
+          FIX_URL: ${{ steps.fix.outputs.url }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          jq -r --arg marker "${REPORT_MARKER}" '
+            def badge: {"low": "🟢 low", "medium": "🟡 medium", "high": "🔴 high"}[.];
+            def list(title; items): if (items | length) > 0 then "\n### \(title)\n\n" + (items | map("- \(.)") | join("\n")) + "\n" else "" end;
+            [
+              $marker,
+              "## Renovate Risk: \(.risk | badge)\n",
+              .summary,
+              "\n| Package | Update | Risk | Notes |\n|---|---|---|---|",
+              (.updates[] | "| `\(.package)` | \(.from) → \(.to) | \(.risk | badge) | \(.notes | gsub("\n"; " ")) \(.sources | to_entries | map("[[\(.key + 1)]](\(.value))") | join(" ")) |"),
+              list("Breaking changes"; .breaking_changes),
+              list("Deprecations"; .deprecations),
+              list("Required actions"; .required_actions),
+              list("New features worth adopting"; .new_features),
+              (if env.FIX_URL != "" then "\n### Proposed fix\n\n\(.fix_description)\n\nOpened as \(env.FIX_URL); merge it into this branch to apply." else "" end),
+              (if .risk == "high" then "\n> Automerge is blocked while this check fails." else "" end),
+              "\n<sub>[Assessment run](\(env.RUN_URL))</sub>"
+            ] | map(select(. != "")) | join("\n")
+            # Link via redirect.github.com so upstream issues and PRs do not get backlinks
+            | gsub("https://github\\.com/"; "https://redirect.github.com/")
+          ' "${RUNNER_TEMP}/assessment.json" > "${RUNNER_TEMP}/report.md"
+          cp "${RUNNER_TEMP}/assessment.json" "${RUNNER_TEMP}/report.md" .
+          cat report.md >> "${GITHUB_STEP_SUMMARY}"
+
+      - name: Upload Report
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: renovate-risk
+          path: |
+            assessment.json
+            report.md
+
+      - name: Comment on PR
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          pr=$(gh pr list --head "${BRANCH}" --base main --json number --jq '.[0].number')
+          [[ -z "${pr}" ]] && exit 0
+          comment=$(gh api "repos/${GITHUB_REPOSITORY}/issues/${pr}/comments" --paginate \
+            --jq "map(select(.body | startswith(\"${REPORT_MARKER}\"))) | .[0].id // empty")
+          if [[ -n "${comment}" ]]; then
+            gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/comments/${comment}" -F body=@report.md > /dev/null
+          else
+            gh pr comment "${pr}" --body-file report.md
+          fi
+
+      - name: Gate Automerge
+        run: |
+          risk=$(jq -r '.risk' assessment.json)
+          echo "Risk: ${risk}"
+          if [[ "${risk}" == "high" ]]; then
+            echo "::error::High risk update: $(jq -r '.summary' assessment.json)"
+            exit 1
+          fi
+
+  comment:
+    name: Renovate Risk Comment
+    if: ${{ github.event_name == 'pull_request' && startsWith(github.head_ref, 'renovate/') }}
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+    steps:
+      - name: Generate Token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        id: app-token
+        with:
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+          repositories: home-cluster
+          permission-pull-requests: write
+
+      - name: Post Assessment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          SHA: ${{ github.event.pull_request.head.sha }}
+          PR: ${{ github.event.number }}
+          APP_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          # The push run for this commit may still be going; it comments itself
+          # when it finishes if the PR exists by then.
+          run=$(gh run list --workflow flux-local.yaml --event push --commit "${SHA}" \
+            --status completed --limit 1 --json databaseId --jq '.[0].databaseId')
+          if [[ -z "${run}" ]] || ! gh run download "${run}" --name renovate-risk; then
+            echo "No completed assessment for ${SHA} yet"
+            exit 0
+          fi
+          GH_TOKEN="${APP_TOKEN}" gh pr comment "${PR}" --body-file report.md
