@@ -22,25 +22,31 @@ collections:
     summary: Popular Shows on Plex
   Trending:
     template: { name: Chart, num: 1.1 }
-    trakt_trending: 40
     tmdb_trending_daily: 40
     tmdb_trending_weekly: 40
     summary: Trending Shows across the internet
   Popular:
     template: { name: Chart, num: 1.2 }
     tmdb_popular: 40
-    imdb_list:
-      url: https://www.imdb.com/search/title/?title_type=tv_series,tv_miniseries
+    imdb_search:
+      type: tv_series, tv_mini_series
+      sort_by: popularity.asc
       limit: 40
     summary: Popular Shows across the internet
   Top Rated:
     template: { name: Chart, num: 1.3 }
-    imdb_list:
-      url: https://www.imdb.com/search/title/?title_type=tv_series,tv_miniseries&num_votes=20000,&sort=user_rating,desc
+    imdb_search:
+      type: tv_series, tv_mini_series
+      votes.gte: 20000
+      sort_by: rating.desc
       limit: 100
     tmdb_top_rated: 100
     summary: Top Rated Shows across the internet
   Emmy Winners:
     template: { name: Chart, num: 1.4 }
-    imdb_list: https://www.imdb.com/search/title/?title_type=tv_series,tv_miniseries&groups=emmy_winner
+    imdb_search:
+      type: tv_series, tv_mini_series
+      event.winning: emmy
+      sort_by: popularity.asc
+      limit: 250
     summary: Emmy Winning Shows

@@ -95,7 +95,7 @@ omdb:
   cache_expiration: 60
 
 mdblist:
-  apikey: <<MDBLIST_APIKEY>>
+  apikey: <<MDBLIST_API_KEY>>
   cache_expiration: 60
 
 radarr:

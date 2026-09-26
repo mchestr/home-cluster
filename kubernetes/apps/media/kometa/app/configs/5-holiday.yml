@@ -19,11 +19,11 @@ collections:
     visible_shared: range(12/01-12/31)
   Halloween:
     template: { name: Holiday, poster: https://theposterdb.com/api/assets/27316 }
-    trakt_list:
-      - https://trakt.tv/users/kairbear08/lists/halloween
-      - https://trakt.tv/users/mybicycle/lists/halloween
-      - https://trakt.tv/users/jayinftl/lists/halloween
-      - https://trakt.tv/users/roswellgeek/lists/halloween
+    imdb_search:
+      type: movie
+      keyword.any: halloween
+      sort_by: popularity.asc
+      limit: 100
     summary: Halloween film is a genre that revolves around the plot involving Halloween.
     visible_home: range(10/01-10/31)
     visible_shared: range(10/01-10/31)
