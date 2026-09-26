@@ -68,17 +68,20 @@ data:
           thinkingDefault: "medium",
           timeoutSeconds: 600,
           maxConcurrent: 4,
-          contextPruning: { mode: "off" },
+          // Trim old tool results once the prompt cache TTL lapses. Applies to
+          // embedded-runtime models (Anthropic fallback); Codex-backed OpenAI
+          // models manage their own thread history, capped via contextTokens
+          // under models.providers.openai.
+          contextPruning: { mode: "cache-ttl", ttl: "5m" },
           // On context pressure, summarise the session into memory (memini)
           // before compacting, so long-running work keeps its key facts.
           compaction: {
             mode: "default",
-            reserveTokensFloor: 30000,
             memoryFlush: {
               enabled: true,
-              softThresholdTokens: 80000,
-              prompt: "Extract key decisions, state changes, lessons, and blockers worth remembering. Skip routine work. Respond NO_FLUSH if nothing important.",
-              systemPrompt: "Compacting session context. Extract only what's worth remembering. No fluff.",
+              // Gap below the compaction point that triggers the flush; must
+              // stay well under the smallest contextTokens cap below.
+              softThresholdTokens: 8000,
             },
           },
         },
@@ -89,6 +92,18 @@ data:
         providers: {
           openai: {
             timeoutSeconds: 180,
+            // The org's per-model TPM limit (200K for gpt-6-luna) fits fewer
+            // than two ~100K-token requests a minute, and every tool call in a
+            // turn resends the whole thread. Cap the active window so Codex
+            // compacts early (the cap is forwarded as model_context_window) and
+            // requests stay under ~80K. Raise it if the org's tier goes up.
+            models: [
+              { id: "gpt-5.5", name: "GPT-5.5", contextWindow: 1050000, contextTokens: 80000, maxTokens: 128000 },
+              { id: "gpt-5.5-pro", name: "GPT-5.5 Pro", contextWindow: 1050000, contextTokens: 80000, maxTokens: 128000 },
+              { id: "gpt-6-astra", name: "GPT-6 Astra", contextWindow: 1050000, contextTokens: 80000, maxTokens: 128000 },
+              { id: "gpt-6-sol", name: "GPT-6 Sol", contextWindow: 1050000, contextTokens: 80000, maxTokens: 128000 },
+              { id: "gpt-6-luna", name: "GPT-6 Luna", contextWindow: 1050000, contextTokens: 80000, maxTokens: 128000 },
+            ],
           },
           // OpenAI-compatible gateway; bills against OPENROUTER_API_KEY.
           openrouter: {
