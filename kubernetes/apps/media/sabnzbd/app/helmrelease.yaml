@@ -33,6 +33,30 @@ spec:
             envFrom:
               - secretRef:
                   name: sabnzbd-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api?mode=version
+                    port: &port 8080
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api?mode=version
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  failureThreshold: 30
             resources:
               requests:
                 cpu: 100m
@@ -53,7 +77,7 @@ spec:
         controller: *app
         ports:
           http:
-            port: &port 8080
+            port: *port
 
     route:
       app:

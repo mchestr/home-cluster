@@ -73,6 +73,31 @@ spec:
             envFrom:
               - secretRef:
                   name: radarr-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: &port 7878
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  # Up to 30m so DB migrations on upgrade aren't killed mid-run
+                  failureThreshold: 180
           exporter:
             image:
               repository: ghcr.io/onedr0p/exportarr
@@ -92,7 +117,7 @@ spec:
         controller: *app
         ports:
           http:
-            port: &port 7878
+            port: *port
           metrics:
             port: &metricsPort 9707
 

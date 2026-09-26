@@ -68,6 +68,31 @@ spec:
                   name: immich-secret
               - configMapRef:
                   name: immich-configmap
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/server/ping
+                    port: &port 2283
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/server/ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  # Up to 30m so DB migrations on upgrade aren't killed mid-run
+                  failureThreshold: 180
             resources: &resources
               requests: &requests
                 cpu: 100m
@@ -85,6 +110,30 @@ spec:
               repository: ghcr.io/immich-app/immich-machine-learning
               tag: v3.2.2
             envFrom: *envFrom
+            probes:
+              liveness: &mlProbes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: 3003
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  failureThreshold: 3
+              readiness: *mlProbes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: 3003
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  failureThreshold: 30
             resources:
               requests: *requests
               limits:
@@ -95,7 +144,7 @@ spec:
         controller: immich
         ports:
           http:
-            port: &port 2283
+            port: *port
       machine-learning:
         controller: machine-learning
         ports:
