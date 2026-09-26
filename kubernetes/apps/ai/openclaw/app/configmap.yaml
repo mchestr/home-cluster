@@ -215,6 +215,8 @@ data:
       plugins: {
         entries: {
           codex: { enabled: true },
+          // External channel plugins must be trusted explicitly before they load.
+          signal: { enabled: true },
           // Kanban-style task board in the dashboard; state persists in a
           // plugin-owned SQLite DB under ~/.openclaw (on the VolSync PVC).
           workboard: { enabled: true },
