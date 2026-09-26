@@ -29,9 +29,63 @@ jobs:
       - name: Build Kustomizations and render HelmReleases
         uses: docker://ghcr.io/allenporter/flux-local:v8.4.0@sha256:c0be852e30f299ce6a220cc992b0c21a2a0b0684cc17713b9d718e18d9c8beff
         with:
+          # Keep the output for the Renovate risk assessment
+          entrypoint: sh
           args: >-
-            test
+            -c "mkdir -p flux-local-out;
+            flux-local test
             --enable-helm
             --all-namespaces
             --path kubernetes/flux/cluster
             --sources flux-system
+            > flux-local-out/test.log 2>&1;
+            rc=$?; cat flux-local-out/test.log; exit $rc"
+
+      - name: Checkout Default Branch
+        if: ${{ !cancelled() && github.event_name == 'push' }}
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: "${{ github.event.repository.default_branch }}"
+          path: default
+
+      # Rendered manifests (charts templated) before and after the update, so
+      # the risk assessment sees exactly what would change in the cluster
+      - name: Diff Rendered Resources
+        if: ${{ !cancelled() && github.event_name == 'push' }}
+        continue-on-error: true
+        uses: docker://ghcr.io/allenporter/flux-local:v8.4.0@sha256:c0be852e30f299ce6a220cc992b0c21a2a0b0684cc17713b9d718e18d9c8beff
+        with:
+          entrypoint: sh
+          args: >-
+            -c "for kind in helmrelease kustomization; do
+            flux-local diff $kind
+            --unified 6
+            --path /github/workspace/kubernetes/flux/cluster
+            --path-orig /github/workspace/default/kubernetes/flux/cluster
+            --strip-attrs helm.sh/chart,checksum/config,app.kubernetes.io/version,chart
+            --limit-bytes 0
+            --all-namespaces
+            --sources flux-system
+            --output-file flux-local-out/diff-$kind.patch
+            > flux-local-out/diff-$kind.log 2>&1 || cat flux-local-out/diff-$kind.log;
+            done"
+
+      - name: Upload Results
+        if: ${{ !cancelled() && github.event_name == 'push' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: flux-local
+          path: flux-local-out/
+
+  risk:
+    name: Renovate Risk
+    needs: ["test"]
+    # Also runs when the test fails, so Claude can explain and fix the breakage
+    if: ${{ !cancelled() && github.event_name == 'push' && !github.event.deleted }}
+    uses: ./.github/workflows/renovate-risk.yaml
+    permissions:
+      contents: read
+      actions: read
+    secrets: inherit
+    with:
+      flux-local-result: ${{ needs.test.result }}

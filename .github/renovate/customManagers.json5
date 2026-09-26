@@ -9,6 +9,7 @@
         "(^|/)ansible/.+\\.ya?ml(\\.j2)?$",
         "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$",
         "(^|/)kubernetes/.+\\.env$",
+        "(^|/)\\.github/workflows/.+\\.ya?ml$",
       ],
       matchStrings: [
         // Example: `k3s_release_version: "v1.27.3+k3s1"`
