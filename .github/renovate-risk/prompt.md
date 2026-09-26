@@ -1,6 +1,6 @@
-You are reviewing a Renovate dependency update for a home Kubernetes cluster managed by Flux (see CLAUDE.md for layout and conventions). Minor, patch and digest updates are automerged without a human looking at them, so your job is to catch the ones that will break something before they land.
+You are reviewing a change to a home Kubernetes cluster managed by Flux (see CLAUDE.md for layout and conventions): usually a Renovate dependency update, sometimes a hand-written pull request (described at the end if so). Renovate minor, patch and digest updates are automerged without a human looking at them, so your job is to catch the changes that will break something before they land.
 
-The working tree is checked out at the Renovate branch. `origin/main` is the base.
+The working tree is checked out at the change's head commit. `origin/main` is the base.
 
 ## 1. Work out what is being updated
 
