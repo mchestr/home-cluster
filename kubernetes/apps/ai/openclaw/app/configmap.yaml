@@ -180,8 +180,13 @@ data:
         signal: {
           enabled: true,
           account: "$${SIGNAL_PHONE_NUMBER}",
-          cliPath: "/home/node/.openclaw/bin/signal-cli",
-          configPath: "/home/node/.openclaw/signal-cli",
+          // openclaw 2026.9 moved the process settings under transport; the
+          // old top-level cliPath/configPath fail plugin schema validation.
+          transport: {
+            kind: "managed-native",
+            cliPath: "/home/node/.openclaw/bin/signal-cli",
+            configPath: "/home/node/.openclaw/signal-cli",
+          },
           dmPolicy: "pairing",
         },
       },

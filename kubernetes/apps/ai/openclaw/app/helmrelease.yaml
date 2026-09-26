@@ -123,8 +123,11 @@ spec:
                   cp /home/node/.local/bin/gh "$$CODEX_PATH/gh"
                   chmod +x "$$CODEX_PATH/gh"
                 fi
-                # Install non-bundled ClawHub plugins (memini memory + signal
-                # channel). The installer refuses to run against a config that
+                # Install non-bundled plugins (memini memory, signal channel,
+                # searxng web search). Don't pass --pin: openclaw rejects it for
+                # anything but npm registry installs, which silently failed every
+                # install. memini needs --accept-capabilities to install at all.
+                # The installer refuses to run against a config that
                 # references not-yet-installed plugins (chicken-and-egg), so move
                 # the config aside during install and restore it for the gateway.
                 # $$ escapes Flux postBuild so the shell receives a literal $.
@@ -135,16 +138,21 @@ spec:
                 NEED=0
                 [ "$$(cat "$$EXT/memini/.clawver" 2>/dev/null)" != "$$MEMINI_PLUGIN_VERSION" ] && NEED=1
                 [ ! -d "$$EXT/signal" ] && NEED=1
+                [ ! -d "$$EXT/searxng" ] && NEED=1
                 if [ "$$NEED" = 1 ]; then
                   [ -f "$$CFG" ] && mv "$$CFG" "$$CFG.installtmp"
-                  if node dist/index.js plugins install "clawhub:@eleboucher/memini@$$MEMINI_PLUGIN_VERSION" --pin --force; then
+                  if node dist/index.js plugins install "clawhub:@eleboucher/memini@$$MEMINI_PLUGIN_VERSION" --force --accept-capabilities; then
                     mkdir -p "$$EXT/memini" && printf '%s' "$$MEMINI_PLUGIN_VERSION" > "$$EXT/memini/.clawver"
                   else
                     echo "WARN: memini plugin install failed"
                   fi
                   if [ ! -d "$$EXT/signal" ]; then
-                    node dist/index.js plugins install "clawhub:@openclaw/signal" --pin --force \
+                    node dist/index.js plugins install "clawhub:@openclaw/signal" --force \
                       || echo "WARN: signal plugin install failed"
+                  fi
+                  if [ ! -d "$$EXT/searxng" ]; then
+                    node dist/index.js plugins install "@openclaw/searxng-plugin" --force \
+                      || echo "WARN: searxng plugin install failed"
                   fi
                   [ -f "$$CFG.installtmp" ] && mv "$$CFG.installtmp" "$$CFG"
                 fi
