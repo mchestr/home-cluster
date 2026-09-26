@@ -80,7 +80,7 @@ spec:
                   printf '%s' "$$GH_VERSION" > "$$BIN/.ghver"
                   rm -rf /tmp/gh.tar.gz "/tmp/gh_$${GH_VERSION}_linux_amd64"
                 fi
-          # jq is used frequently by agent-generated shell checks during alert
+          # jq is used frequently by agent-generated shell checks during
           # investigations. Keep it on the PVC so those turns do not fail on a
           # missing JSON formatter.
           install-jq:

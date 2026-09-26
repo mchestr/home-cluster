@@ -7,5 +7,4 @@ resources:
   - ./externalsecret.yaml
   - ./rbac.yaml
   - ./helmrelease.yaml
-  - ./alert-adapter.yaml
   - ./networkpolicy.yaml
