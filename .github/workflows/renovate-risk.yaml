@@ -186,6 +186,38 @@ jobs:
             exit 1
           fi
 
+      # Both a high-risk verdict and a failed assessment block automerge, so say
+      # so right away instead of waiting for the daily digest
+      - name: Notify Blocked
+        if: ${{ failure() && github.event_name == 'push' }}
+        env:
+          PUSHOVER_TOKEN: ${{ secrets.PUSHOVER_TOKEN }}
+          PUSHOVER_USER_KEY: ${{ secrets.PUSHOVER_USER_KEY }}
+          FIX_URL: ${{ steps.fix.outputs.url }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [[ -z "${PUSHOVER_TOKEN}" || -z "${PUSHOVER_USER_KEY}" ]]; then
+            echo "Pushover not configured"
+            exit 0
+          fi
+          name="${BRANCH#renovate/}"
+          if [[ "$(jq -r '.risk' assessment.json 2>/dev/null)" == "high" ]]; then
+            title="🔴 Blocked: ${name}"
+            message="$(jq -r '.headline' assessment.json)"
+            [[ -n "${FIX_URL}" ]] && message+=$'\n'"Proposed fix: ${FIX_URL}"
+          else
+            title="⚠️ Risk assessment failed: ${name}"
+            message="Automerge is blocked until it passes. Re-run the job once the cause is fixed."
+          fi
+          curl --silent --show-error --fail \
+            --form-string "token=${PUSHOVER_TOKEN}" \
+            --form-string "user=${PUSHOVER_USER_KEY}" \
+            --form-string "title=${title}" \
+            --form-string "message=${message}" \
+            --form-string "url=${RUN_URL}" \
+            --form-string "url_title=Assessment run" \
+            https://api.pushover.net/1/messages.json > /dev/null
+
   comment:
     name: Renovate Risk Comment
     # Only on this workflow's own pull_request trigger, not when called

@@ -1,0 +1,42 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: "Merge Digest"
+
+on:
+  schedule:
+    # 08:00 America/Vancouver during daylight time (07:00 in winter)
+    - cron: "0 15 * * *"
+  workflow_dispatch:
+    inputs:
+      hours:
+        description: Hours to look back
+        type: number
+        default: 24
+
+permissions:
+  contents: read
+
+jobs:
+  digest:
+    name: Merge Digest
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Send Digest
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          HOURS: ${{ inputs.hours || 24 }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          PUSHOVER_TOKEN: ${{ secrets.PUSHOVER_TOKEN }}
+          PUSHOVER_USER_KEY: ${{ secrets.PUSHOVER_USER_KEY }}
+        run: .github/renovate-risk/digest.sh
