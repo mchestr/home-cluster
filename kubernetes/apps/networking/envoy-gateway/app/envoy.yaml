@@ -167,6 +167,30 @@ spec:
   timeout:
     http:
       requestTimeout: 0s
+  # Replace Envoy's bare "upstream connect error ..." text with a friendly
+  # page when a backend is down. This matches on status code only, so an app
+  # that returns its own 502/503/504 also gets this page instead of its body.
+  responseOverride:
+    - match:
+        statusCodes:
+          - type: Value
+            value: 502
+          - type: Value
+            value: 503
+          - type: Value
+            value: 504
+      response:
+        contentType: text/html; charset=utf-8
+        header:
+          set:
+            - name: Cache-Control
+              value: no-store
+        body:
+          type: ValueRef
+          valueRef:
+            group: ""
+            kind: ConfigMap
+            name: envoy-error-page
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/envoyproxy/gateway/refs/heads/main/charts/gateway-helm/crds/generated/gateway.envoyproxy.io_clienttrafficpolicies.yaml
 apiVersion: gateway.envoyproxy.io/v1alpha1
