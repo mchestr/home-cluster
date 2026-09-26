@@ -27,15 +27,15 @@ collections:
   Trending:
     sync_mode: sync
     template: { name: Chart Alpha, num: 1.3 }
-    trakt_trending: 15
     tmdb_trending_daily: 15
     tmdb_trending_weekly: 15
     summary: Movies Trending across the internet
   Popular:
     template: { name: Chart, num: 1.4 }
     tmdb_popular: 40
-    imdb_list:
-      url: https://www.imdb.com/search/title/?title_type=feature,tv_movie,documentary,short
+    imdb_search:
+      type: movie, tv_movie, short
+      sort_by: popularity.asc
       limit: 40
     summary: Popular Movies across the internet
   Top Rated:
@@ -44,5 +44,9 @@ collections:
     summary: Top Rated Movies
   Oscars:
     template: { name: Chart Alpha, num: 1.6 }
-    imdb_list: https://www.imdb.com/search/title/?title_type=feature,documentary&groups=oscar_winner
+    imdb_search:
+      type: movie
+      event.winning: oscar
+      sort_by: popularity.asc
+      limit: 250
     summary: Oscar Winning Movies
