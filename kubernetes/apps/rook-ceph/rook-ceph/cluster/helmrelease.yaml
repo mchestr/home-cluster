@@ -9,14 +9,7 @@ spec:
     kind: OCIRepository
     name: rook-ceph-cluster
   maxHistory: 2
-  install:
-    remediation:
-      retries: -1
   timeout: 15m
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
   values:
     monitoring:
       enabled: true
@@ -56,6 +49,23 @@ spec:
           cluster: ["169.254.255.0/24"]
         connections:
           requireMsgr2: true
+      # CVE-2025-30156: rotate core daemon keys to AES256K (requires ceph >= 20.2.4)
+      security:
+        cephx:
+          daemon:
+            keyRotationPolicy: KeyGeneration
+            keyGeneration: 2
+      # CSI client keys stay AES until nodes run kernel >= 7.0; unmute once rotated
+      healthCheck:
+        muteHealthWarning:
+          AUTH_INSECURE_ROTATING_SERVICE_KEY_TYPE:
+            policy: mute
+          AUTH_INSECURE_CLIENT_KEY_TYPE:
+            policy: mute
+          AUTH_INSECURE_KEYS_ALLOWED:
+            policy: mute
+          AUTH_INSECURE_KEYS_CREATABLE:
+            policy: mute
       storage:
         useAllNodes: true
         useAllDevices: false
