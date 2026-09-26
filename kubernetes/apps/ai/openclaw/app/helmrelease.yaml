@@ -25,6 +25,19 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
+          # The /tmp emptyDir is created world-writable without the sticky bit,
+          # and openclaw 2026.9 refuses to stage plugin installs in such a
+          # directory ("temp workspace directory is group/world writable without
+          # sticky protection"). Give it normal /tmp permissions; the pod runs as
+          # uid 1000, so this one step needs root.
+          fix-tmp-permissions:
+            image:
+              repository: docker.io/library/busybox
+              tag: "1.38"
+            command: ["chmod", "1777", "/tmp"]
+            securityContext:
+              runAsUser: 0
+              runAsNonRoot: false
           init-config:
             image:
               repository: docker.io/library/alpine
