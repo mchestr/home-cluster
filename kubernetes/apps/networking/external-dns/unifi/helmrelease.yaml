@@ -15,15 +15,6 @@ spec:
         name: external-dns
         namespace: flux-system
   maxHistory: 2
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  uninstall:
-    keepHistory: false
   values:
     fullnameOverride: *app
     provider:

@@ -16,15 +16,6 @@ spec:
         namespace: flux-system
       interval: 5m
   maxHistory: 2
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  uninstall:
-    keepHistory: false
   values:
     worker:
       config:

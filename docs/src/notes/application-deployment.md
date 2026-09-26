@@ -92,16 +92,19 @@ spec:
         kind: HelmRepository
         name: some-repo
         namespace: flux-system
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
   values:
     # your values here
+```
+
+Install/upgrade remediation is not set per app: `kubernetes/flux/cluster/ks.yaml` patches
+every HelmRelease so a failed upgrade is rolled back to the last good release. If the app
+runs database migrations on upgrade, opt out of rollback instead:
+
+```yaml
+spec:
+  upgrade:
+    strategy:
+      name: RetryOnFailure
 ```
 
 ### 4. Create the Kustomization

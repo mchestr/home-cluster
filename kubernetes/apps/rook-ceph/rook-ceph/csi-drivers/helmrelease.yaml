@@ -14,15 +14,6 @@ spec:
         name: ceph-csi-operator
         namespace: flux-system
   maxHistory: 2
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  uninstall:
-    keepHistory: false
   # Rook-compatible values (see rook/rook#17665). The driver names MUST match the
   # provisioner names Rook uses in StorageClasses/VolumeSnapshotClasses. The chart
   # creates the plugin ServiceAccounts + RBAC and sets serviceAccountName on the

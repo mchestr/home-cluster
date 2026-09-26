@@ -9,15 +9,6 @@ spec:
     kind: OCIRepository
     name: spegel
   maxHistory: 2
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  uninstall:
-    keepHistory: false
   valuesFrom:
     - kind: ConfigMap
       name: spegel-helm-values

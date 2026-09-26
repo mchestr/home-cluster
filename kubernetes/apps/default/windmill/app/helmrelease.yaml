@@ -14,15 +14,10 @@ spec:
         name: windmill
         namespace: flux-system
   maxHistory: 2
-  install:
-    remediation:
-      retries: -1
   upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  uninstall:
-    keepHistory: false
+    # Runs DB migrations on upgrade; don't roll back onto a migrated schema
+    strategy:
+      name: RetryOnFailure
   values:
     windmill:
       baseDomain: windmill.chestr.dev

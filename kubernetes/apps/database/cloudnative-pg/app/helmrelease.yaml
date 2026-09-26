@@ -15,15 +15,6 @@ spec:
         namespace: flux-system
       interval: 15m
   maxHistory: 2
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: false
-    remediation:
-      retries: 3
-  uninstall:
-    keepHistory: false
   values:
     crds:
       create: true

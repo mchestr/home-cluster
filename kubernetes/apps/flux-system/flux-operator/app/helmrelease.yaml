@@ -10,15 +10,6 @@ spec:
     name: flux-operator
     namespace: flux-system
   maxHistory: 2
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  uninstall:
-    keepHistory: false
   valuesFrom:
     - kind: ConfigMap
       name: flux-operator-helm-values

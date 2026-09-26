@@ -11,14 +11,10 @@ spec:
   maxHistory: 2
   install:
     createNamespace: true
-    remediation:
-      retries: 3
   upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  uninstall:
-    keepHistory: false
+    # Runs DB migrations on upgrade; don't roll back onto a migrated schema
+    strategy:
+      name: RetryOnFailure
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
