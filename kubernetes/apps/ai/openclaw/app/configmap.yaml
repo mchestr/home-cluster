@@ -177,11 +177,9 @@ data:
         port: 18789,
         trustedProxies: ["10.244.0.0/16"],
       },
-      // Inbound HTTP triggers on the gateway port. POST /hooks/agent runs a
-      // one-shot agent turn and delivers the reply to a channel. Used by the
-      // alert-adapter to turn critical Alertmanager alerts into read-only
-      // cluster investigations (see alert-adapter.yaml). Bearer-token auth,
-      // reusing the gateway token.
+      // Hooks: the internal entries below run inside the gateway. The external
+      // POST /hooks/agent trigger on the gateway port is bearer-token protected
+      // and currently has no callers.
       hooks: {
         enabled: true,
         path: "/hooks",
