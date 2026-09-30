@@ -20,3 +20,8 @@ spec:
       ports:
         - port: 9999
           protocol: TCP
+    - from:
+        - podSelector: {}
+      ports:
+        - port: 6379
+          protocol: TCP
