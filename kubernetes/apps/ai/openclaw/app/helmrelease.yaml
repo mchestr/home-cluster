@@ -164,6 +164,21 @@ spec:
                   printf '%s' "$$GITHUB_TOKEN" | env -u GITHUB_TOKEN -u GH_TOKEN gh auth login --with-token >/dev/null 2>&1 \
                     && echo "gh: credentials persisted to ~/.config/gh" || echo "WARN: gh credential persist failed"
                 fi
+                # Run Doctor once per OpenClaw version, before the gateway starts.
+                # Upgrades can bump the state/agent SQLite schemas, and the
+                # gateway refuses to migrate them itself: 2026.9.7 crashlooped
+                # for two days on "agent database ... uses schema version 23;
+                # run openclaw doctor --fix". --non-interactive applies only safe
+                # migrations; the marker keeps normal restarts fast.
+                OPENCLAW_VERSION="$$(node dist/index.js --version 2>/dev/null | awk '{print $$2}')"
+                DOCTOR_MARKER=/home/node/.openclaw/.doctor-version
+                if [ -n "$$OPENCLAW_VERSION" ] && [ "$$(cat "$$DOCTOR_MARKER" 2>/dev/null)" != "$$OPENCLAW_VERSION" ]; then
+                  if node dist/index.js doctor --repair --non-interactive; then
+                    printf '%s' "$$OPENCLAW_VERSION" > "$$DOCTOR_MARKER"
+                  else
+                    echo "WARN: openclaw doctor failed; starting gateway anyway"
+                  fi
+                fi
                 # OpenClaw's config-integrity guard persists a self-saved
                 # "last-good" snapshot on the PVC and restores it whenever the
                 # config it reads lacks the runtime-injected "meta" block
