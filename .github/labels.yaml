@@ -35,6 +35,10 @@
   color: "ffc300"
 - name: renovate/terraform
   color: "ffc300"
+- name: stop-updating
+  color: "ee0701"
+  description: >-
+    Renovate won't rebase or automerge this PR; added to updates rated high risk
 # Semantic Type
 - name: type/digest
   color: "FFEC19"

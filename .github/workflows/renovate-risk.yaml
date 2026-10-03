@@ -4,8 +4,8 @@ name: "Risk Assessment"
 
 on:
   # Called by Flux Local after it tests a push to a renovate/** branch or a
-  # PR, and renders the manifest diff. Renovate waits for this check and opens
-  # a PR instead of automerging when it fails.
+  # PR, and renders the manifest diff. Renovate waits for this check before
+  # automerging, and a high verdict holds the update in a PR (Hold for Review).
   workflow_call:
     inputs:
       flux-local-result:
@@ -163,6 +163,37 @@ jobs:
             assessment.json
             report.md
 
+      # A failing check alone doesn't hold a Renovate update: Renovate rebases
+      # automerge branches whenever main moves, the rebased commit is assessed
+      # again, and a lower verdict lets it automerge. So on a high verdict, open
+      # the PR as the Renovate app (Renovate adopts PRs from its own user) with
+      # Renovate's stop-updating label, which stops it rebasing or automerging
+      # the branch until the label is removed.
+      - name: Hold for Review
+        id: hold
+        if: ${{ github.event_name == 'push' && startsWith(env.BRANCH, 'renovate/') }}
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          HOLD_LABEL: stop-updating
+          FIX_URL: ${{ steps.fix.outputs.url }}
+        run: |
+          [[ "$(jq -r '.risk' assessment.json)" == "high" ]] || exit 0
+          pr=$(gh pr list --head "${BRANCH}" --base main --json number --jq '.[0].number // empty')
+          if [[ -n "${pr}" ]]; then
+            gh pr edit "${pr}" --add-label "${HOLD_LABEL}" > /dev/null
+            url=$(gh pr view "${pr}" --json url --jq '.url')
+          else
+            body="Renovate would have automerged this update, but the risk assessment rated it **high risk**, so it's held here for review. The assessment is in the comment below."
+            [[ -n "${FIX_URL}" ]] && body+=$'\n\n'"A proposed fix is in ${FIX_URL}."
+            body+=$'\n\n'"- **Merge** this PR yourself once you're happy with it."
+            body+=$'\n'"- **Remove the \`${HOLD_LABEL}\` label** to hand it back to Renovate. It will rebase, reassess, and automerge unless the new verdict is high again."
+            body+=$'\n'"- **Close** this PR to skip this version."
+            url=$(gh pr create --head "${BRANCH}" --base main \
+              --title "$(git log -1 --format=%s "${GITHUB_SHA}")" \
+              --body "${body}" --label "${HOLD_LABEL}")
+          fi
+          echo "url=${url}" >> "${GITHUB_OUTPUT}"
+
       - name: Comment on PR
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
@@ -194,6 +225,7 @@ jobs:
           PUSHOVER_TOKEN: ${{ secrets.PUSHOVER_TOKEN }}
           PUSHOVER_USER_KEY: ${{ secrets.PUSHOVER_USER_KEY }}
           FIX_URL: ${{ steps.fix.outputs.url }}
+          HOLD_URL: ${{ steps.hold.outputs.url }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           if [[ -z "${PUSHOVER_TOKEN}" || -z "${PUSHOVER_USER_KEY}" ]]; then
@@ -204,6 +236,7 @@ jobs:
           if [[ "$(jq -r '.risk' assessment.json 2>/dev/null)" == "high" ]]; then
             title="🔴 Blocked: ${name}"
             message="$(jq -r '.headline' assessment.json)"
+            [[ -n "${HOLD_URL}" ]] && message+=$'\n'"Held for review: ${HOLD_URL}"
             [[ -n "${FIX_URL}" ]] && message+=$'\n'"Proposed fix: ${FIX_URL}"
           else
             title="⚠️ Risk assessment failed: ${name}"
