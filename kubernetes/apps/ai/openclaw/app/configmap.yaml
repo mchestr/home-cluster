@@ -228,6 +228,9 @@ data:
             config: {
               base_url: "http://memini.ai.svc.cluster.local:8080",
               namespace: "openclaw",
+              // memini 0.7 defaults to per-agent namespaces ("openclaw-main"),
+              // which would hide everything stored under "openclaw".
+              namespace_per_agent: false,
               fallback_on_error: true,
               timeout_ms: 5000,
             },
