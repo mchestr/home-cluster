@@ -61,5 +61,11 @@
       matchUpdateTypes: ["minor", "patch", "digest"],
       minimumReleaseAge: "3 days",
     },
+    {
+      description: "Renovate only gets release dates from Docker Hub, so images and OCI charts on other registries (ghcr.io, quay.io, registry.k8s.io, ...) can't be aged and were already skipping minimumReleaseAge under timestamp-optional, with a warning every run. Don't ask for an age there; the risk assessment is their check before merging. Last so it also covers docker:// actions.",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/^[^/]+\\.[^/]+\\//", "!/^(index\\.)?docker\\.io\\//"],
+      minimumReleaseAge: null,
+    },
   ],
 }
