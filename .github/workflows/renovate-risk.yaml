@@ -32,7 +32,7 @@ jobs:
     timeout-minutes: 30
     env:
       # renovate: datasource=npm depName=@anthropic-ai/claude-code
-      CLAUDE_CODE_VERSION: 2.1.289
+      CLAUDE_CODE_VERSION: 2.1.296
       CLAUDE_MODEL: claude-sonnet-5
       BRANCH: ${{ github.head_ref || github.ref_name }}
       PR_NUMBER: ${{ github.event.pull_request.number }}
