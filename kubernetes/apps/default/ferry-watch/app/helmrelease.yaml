@@ -19,7 +19,7 @@ spec:
           app:
             image:
               repository: ghcr.io/mchestr/ferry-watch
-              tag: 0.5.0
+              tag: 0.5.1
             env:
               TZ: America/Vancouver
               # Linked from the "in your cart" alert: KasmVNC's view of the browser holding the cart,

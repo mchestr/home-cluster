@@ -28,11 +28,13 @@ spec:
 ---
 # Cross-node Envoy traffic gets SNATed to the node IP. All 3 nodes are control plane, so Cilium
 # classifies their IPs as kube-apiserver. This lets that masqueraded traffic reach both ports.
-# Ingress only: no egress section, so the pod can still reach bcferries.com and Pushover.
+#
+# Egress: the pod runs a browser, so it may reach DNS and the internet (BC Ferries, Pushover) but
+# nothing else in the cluster or on the home network.
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: ferry-watch-allow-remote-node
+  name: ferry-watch
 spec:
   endpointSelector:
     matchLabels:
@@ -47,3 +49,21 @@ spec:
               protocol: TCP
             - port: "6080"
               protocol: TCP
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: ANY
+    # CIDR rules only ever match addresses outside the cluster; the private ranges are the home network.
+    - toCIDRSet:
+        - cidr: 0.0.0.0/0
+          except:
+            - 10.0.0.0/8
+            - 172.16.0.0/12
+            - 192.168.0.0/16
+            - 100.64.0.0/10
+            - 169.254.0.0/16
