@@ -1,0 +1,49 @@
+---
+# Only the internal gateway's Envoy pods may reach the app (8765) and the remote viewer (6080).
+# Neither has its own login, so this keeps other workloads in the cluster from skipping Authelia.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ferry-watch-allow-envoy
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/instance: ferry-watch
+      app.kubernetes.io/name: ferry-watch
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: networking
+          podSelector:
+            matchLabels:
+              gateway.envoyproxy.io/owning-gateway-name: envoy-internal
+      ports:
+        - protocol: TCP
+          port: 8765
+        - protocol: TCP
+          port: 6080
+---
+# Cross-node Envoy traffic gets SNATed to the node IP. All 3 nodes are control plane, so Cilium
+# classifies their IPs as kube-apiserver. This lets that masqueraded traffic reach both ports.
+# Ingress only: no egress section, so the pod can still reach bcferries.com and Pushover.
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: ferry-watch-allow-remote-node
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/instance: ferry-watch
+      app.kubernetes.io/name: ferry-watch
+  ingress:
+    - fromEntities:
+        - kube-apiserver
+      toPorts:
+        - ports:
+            - port: "8765"
+              protocol: TCP
+            - port: "6080"
+              protocol: TCP
