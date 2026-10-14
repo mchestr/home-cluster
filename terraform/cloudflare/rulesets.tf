@@ -19,3 +19,24 @@ resource "cloudflare_ruleset" "chestr-dev-rulesets" {
     }
   ]
 }
+
+resource "cloudflare_ruleset" "chestr-dev-config-settings" {
+  name        = "configuration rules"
+  kind        = "zone"
+  phase       = "http_config_settings"
+  description = "chestr.dev configuration rules"
+  zone_id     = data.cloudflare_zone.domain.zone_id
+  rules = [
+    {
+      # Ferry Watch pins its pages' scripts with CSP hashes; Rocket Loader and email obfuscation rewrite the HTML.
+      expression  = "(http.host in {\"ferry.chestr.dev\" \"ferry-next.chestr.dev\" \"ferry-checkout.chestr.dev\"})"
+      action      = "set_config"
+      action_parameters = {
+        rocket_loader     = false
+        email_obfuscation = false
+      }
+      description = "Ferry Watch: leave the HTML alone"
+      enabled     = true
+    }
+  ]
+}

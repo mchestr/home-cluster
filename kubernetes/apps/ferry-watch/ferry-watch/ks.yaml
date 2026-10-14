@@ -1,0 +1,34 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app ferry-watch
+  namespace: &namespace ferry-watch
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/cnpg
+  dependsOn:
+    - name: onepassword-store
+      namespace: external-secrets
+    - name: cloudnative-pg-cluster
+      namespace: database
+  interval: 30m
+  path: ./kubernetes/apps/ferry-watch/ferry-watch/app
+  postBuild:
+    substitute:
+      # components/cnpg: the database, its owner role and the Secrets are all "ferrywatch"
+      # (a Postgres name without a hyphen).
+      APP: ferrywatch
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  # The HelmRelease runs the database Job before rolling out (up to its own 10m timeout).
+  timeout: 15m
+  wait: true

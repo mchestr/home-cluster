@@ -31,6 +31,15 @@
       separateMinorPatch: true,
     },
     {
+      description: "Ferry Watch images: the browser pods must run the release ferry-control expects",
+      groupName: "Ferry Watch",
+      matchPackageNames: ["/^ghcr\\.io/mchestr/ferry-watch-(control|browser|vnc-edge)$/"],
+      matchDatasources: ["docker"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
       description: "Rook-Ceph image and chart",
       groupName: "Rook-Ceph",
       matchPackagePatterns: ["rook.ceph"],

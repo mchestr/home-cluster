@@ -23,6 +23,10 @@ cni:
 dashboards:
   enabled: true
 devices: bond+
+dnsProxy:
+  # A name a DNS rule doesn't allow gets NXDOMAIN rather than REFUSED, so a resolver walking the search path
+  # moves on to the next suffix instead of giving up. Only pods with DNS rules see this (Ferry Watch's).
+  dnsRejectResponseCode: nameError
 enableIPv4BIGTCP: true
 endpointRoutes:
   enabled: true

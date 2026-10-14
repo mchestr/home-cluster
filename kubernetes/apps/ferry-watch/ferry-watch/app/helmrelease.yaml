@@ -1,0 +1,1415 @@
+---
+# Ferry Watch, multi-tenant (github.com/mchestr/ferry-watch, docs/multi-tenant/design-reference.md §7).
+#
+# - ferry-web: sign-in, the API and the dashboard. No Kubernetes access.
+# - ferry-control: the hub the browser pods dial, and the fleet loop that starts and reaps them.
+# - vnc-edge: the checkout host. Stock nginx, no secrets.
+# - db: a hook Job that creates the database and applies migrations before every install and upgrade.
+#
+# One browser pod per watched trip runs in the ferry-watch-browsers namespace. ferry-control builds those pods
+# itself; the rawResources below fence that namespace in. The admission policies admit only the exact pod
+# ferry-control builds, and nobody can change or enter one afterwards.
+#
+# ferry.* is Ferry Watch's own configuration. ferry-control's config, ferry-web's config and the admission
+# policy's parameters are all rendered from it, so they can't drift apart. Change values there, not in the
+# rendered objects. The ferry-watch repo renders this file in CI and proves the admission policies against a
+# real API server (tests/apiserver), so keep the two copies in step.
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app ferry-watch
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 2
+  # The db hook Job (up to 10 minutes on a first install, while the database roles appear) runs first.
+  timeout: 10m
+  upgrade:
+    # Runs DB migrations on upgrade; don't roll back onto a migrated schema
+    strategy:
+      name: RetryOnFailure
+  values:
+    ferry:
+      hosts:
+        # ferry-next until the cutover from the single-tenant app (kubernetes/apps/default/ferry-watch), which
+        # still holds ferry.chestr.dev.
+        dashboard: ferry-next.chestr.dev
+        checkout: ferry-checkout.chestr.dev
+
+      # The browser pods' image. The tag is for people and Renovate; the digest is what ferry-control starts and
+      # what the admission policy admits, so it is required.
+      browserImage:
+        repository: ghcr.io/mchestr/ferry-watch-browser
+        tag: 0.6.0
+
+      # ferry-control's config.json (src/ferry_watch/control/config.py). pod.image and pod.vncOrigin are added
+      # from browserImage and hosts.checkout.
+      control:
+        pod:
+          hubUrl: ws://ferry-control.ferry-watch.svc.cluster.local.:8766/agent/v1
+          # The public half of FERRY_WATCH_CHECKOUT_KEY, as <keyId>:<base64url> (two, comma-separated, while
+          # the key rotates). See ../README.md.
+          vncPubkeys: ""
+          sandbox: false
+          cpuRequest: 200m
+          # In Mi: the browser quota below is computed from it.
+          podMemory: 1536Mi
+          requireUserNamespace: false
+          namespace: ferry-watch-browsers
+        fleet:
+          maxBrowsersTotal: 7
+          shortCheckSlots: 1
+        hold:
+          unclaimed: 30m
+          session: 30m
+          viewerGone: 10m
+          hard: 60m
+        polling: &polling
+          shortCheckInterval: 6h
+          horizonDays: 30
+          quietStart: "23:00"
+          quietEnd: "06:00"
+        limits: &limits
+          defaults: {}
+          ceilings: {}
+        roles:
+          web: ferrywatch_web
+          control: ferrywatch_control
+        checksPerMinute: 20
+        autoCart: true
+        alertOnlyFares: []
+        alertOnlyVehicles: []
+        listenPort: 8766
+        probePort: 9090
+
+      # ferry-web's config.json (src/ferry_watch/web/config.py). baseUrl, oidc.redirectUri and checkout.origin
+      # are added from hosts. The OIDC client id and every secret come from the ferry-watch Secret as files.
+      web:
+        oidc:
+          issuer: &issuer https://auth.chestr.dev
+          scopes: [openid, profile, email, groups]
+        checkout:
+          keyId: k1
+        smtp:
+          host: smtp-relay.default.svc.cluster.local.
+          port: 2525
+          sender: ferry-watch@chestr.dev
+        vapidSubject: mailto:ferry-watch@chestr.dev
+        identity:
+          # The owner, by lldap username: admitted and made an admin at first sign-in.
+          bootstrapAdmins:
+            - issuer: *issuer
+              username: mike
+          inviteClaim: preferred_username
+          autoApproveGroups: []
+          reverifyHours: 24
+        polling: *polling
+        limits: *limits
+        # The donation link in the dashboard (https://ko-fi.com/<name>); leave unset to hide it.
+        # kofiUrl: https://ko-fi.com/<name>
+        listenPort: 8765
+        staticDir: /app/static
+
+    controllers:
+      ferry-web:
+        forceRename: ferry-web
+        annotations:
+          reloader.stakater.com/auto: "true"
+        serviceAccount:
+          identifier: ferry-web
+        containers:
+          app:
+            image: &image
+              repository: ghcr.io/mchestr/ferry-watch-control
+              tag: 0.6.0
+            args: [ferry-web, run]
+            env:
+              FW_WEB_CONFIG: /etc/ferry-web/config.json
+              FW_OIDC_CLIENT_ID_FILE: /var/run/secrets/ferry-web/oidc-client-id
+              FW_OIDC_CLIENT_SECRET_FILE: /var/run/secrets/ferry-web/oidc-client-secret
+              FW_CHECKOUT_KEY_FILE: /var/run/secrets/ferry-web/checkout-key
+              FW_VAPID_KEY_FILE: /var/run/secrets/ferry-web/vapid-key
+              FW_LOG_LEVEL: &logLevel INFO
+              PGHOST: &pgHost postgres17-rw.database.svc.cluster.local.
+              PGPORT: &pgPort "5432"
+              PGDATABASE: &pgDatabase ferrywatch
+              PGSSLMODE: &pgSslMode prefer
+              PGUSER: ferrywatch_web
+              PGPASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: ferry-watch
+                    key: FERRY_WATCH_WEB_DB_PASSWORD
+            ports:
+              - name: http
+                containerPort: &webPort 8765
+            probes:
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /livez
+                    port: *webPort
+                  periodSeconds: 2
+                  failureThreshold: 30
+              liveness: &webProbes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /livez
+                    port: *webPort
+                  periodSeconds: 15
+                  timeoutSeconds: 2
+                  failureThreshold: 3
+              readiness: *webProbes
+            resources:
+              requests:
+                cpu: 50m
+                memory: 192Mi
+              limits:
+                memory: 512Mi
+            securityContext: &securityContext
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
+      # One at a time (a Postgres advisory lock): a second one waits, not ready, so it must be Recreate.
+      ferry-control:
+        forceRename: ferry-control
+        annotations:
+          reloader.stakater.com/auto: "true"
+        serviceAccount:
+          identifier: ferry-control
+        pod:
+          # The only workload that talks to the API server: browser pods, and TokenReview for the hub.
+          automountServiceAccountToken: true
+        containers:
+          app:
+            image: *image
+            args: [ferry-control, run]
+            env:
+              FW_CONTROL_CONFIG: /etc/ferry-control/config.json
+              FW_LOG_LEVEL: *logLevel
+              PGHOST: *pgHost
+              PGPORT: *pgPort
+              PGDATABASE: *pgDatabase
+              PGSSLMODE: *pgSslMode
+              PGUSER: ferrywatch_control
+              PGPASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: ferry-watch
+                    key: FERRY_WATCH_CONTROL_DB_PASSWORD
+            ports:
+              - name: hub
+                containerPort: &hubPort 8766
+              - name: probes
+                containerPort: &probePort 9090
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /livez
+                    port: *probePort
+                  periodSeconds: 15
+                  timeoutSeconds: 2
+                  failureThreshold: 3
+              # Ready once it holds the lock and serves the hub.
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /readyz
+                    port: *probePort
+                  periodSeconds: 10
+                  timeoutSeconds: 2
+                  failureThreshold: 3
+            resources:
+              requests:
+                cpu: 50m
+                memory: 192Mi
+              limits:
+                memory: 512Mi
+            securityContext: *securityContext
+
+      vnc-edge:
+        forceRename: vnc-edge
+        replicas: 2
+        strategy: RollingUpdate
+        serviceAccount:
+          identifier: vnc-edge
+        pod:
+          securityContext:
+            runAsUser: 101
+            runAsGroup: 101
+            runAsNonRoot: true
+            seccompProfile: { type: RuntimeDefault }
+        containers:
+          app:
+            image:
+              repository: ghcr.io/mchestr/ferry-watch-vnc-edge
+              tag: 0.6.0
+            ports:
+              - name: http
+                containerPort: &edgePort 8080
+            probes:
+              liveness: &edgeProbes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /vnc.html
+                    port: *edgePort
+                  periodSeconds: 15
+                  timeoutSeconds: 2
+                  failureThreshold: 3
+              readiness: *edgeProbes
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+            securityContext: *securityContext
+
+      # Before every install and upgrade: create the database if it's new (the stock postgres-init, which alone
+      # sees the superuser password), then apply migrations and grants as the database owner. A hook, so it
+      # reads its own copy of ferry-control's config (migrate-config).
+      db:
+        forceRename: ferry-db
+        type: job
+        annotations:
+          helm.sh/hook: pre-install,pre-upgrade
+          helm.sh/hook-weight: "0"
+          helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        job:
+          # The login roles are CNPG managed roles; on a first install they can lag the database by a moment.
+          backoffLimit: 6
+          activeDeadlineSeconds: 600
+        serviceAccount:
+          # Release ServiceAccounts don't exist yet when a pre-install hook runs.
+          name: default
+        initContainers:
+          01-init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: "18"
+            envFrom:
+              - secretRef:
+                  name: ferrywatch-initdb-secret
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+            securityContext: *securityContext
+        containers:
+          migrate:
+            image: *image
+            args: [ferry-control, migrate]
+            env:
+              FW_CONTROL_CONFIG: /etc/ferry-control/config.json
+              FW_LOG_LEVEL: *logLevel
+              PGHOST: *pgHost
+              PGPORT: *pgPort
+              PGDATABASE: *pgDatabase
+              PGSSLMODE: *pgSslMode
+              PGUSER:
+                valueFrom:
+                  secretKeyRef:
+                    name: ferrywatch-pguser-secret
+                    key: user
+              PGPASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: ferrywatch-pguser-secret
+                    key: password
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 256Mi
+            securityContext: *securityContext
+
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 65532
+        runAsGroup: 65532
+        runAsNonRoot: true
+        # ferry-web's secret files are 0440, readable through this group.
+        fsGroup: 65532
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+
+    serviceAccount:
+      ferry-web:
+        forceRename: ferry-web
+        automountServiceAccountToken: false
+      ferry-control:
+        forceRename: ferry-control
+        automountServiceAccountToken: true
+      vnc-edge:
+        forceRename: vnc-edge
+        automountServiceAccountToken: false
+
+    configMaps:
+      control-config:
+        forceRename: ferry-control-config
+        includeChecksumInControllers: [ferry-control]
+        data:
+          config.json: &controlConfig >-
+            {{- if not (contains "@sha256:" .Values.ferry.browserImage.tag) -}}
+            {{- fail "ferry.browserImage.tag must pin the digest: <version>@sha256:<digest>" -}}
+            {{- end -}}
+            {{- if not .Values.ferry.control.pod.vncPubkeys -}}
+            {{- fail "ferry.control.pod.vncPubkeys: set the checkout key's public half (README.md)" -}}
+            {{- end -}}
+            {{- if not (and (hasSuffix "Mi" .Values.ferry.control.pod.podMemory) (gt (trimSuffix "Mi" .Values.ferry.control.pod.podMemory | atoi) 0)) -}}
+            {{- fail "ferry.control.pod.podMemory must be in Mi" -}}
+            {{- end -}}
+            {{- toPrettyJson (merge (dict "pod" (dict
+              "image" (printf "%s:%s" .Values.ferry.browserImage.repository .Values.ferry.browserImage.tag)
+              "vncOrigin" (printf "https://%s" .Values.ferry.hosts.checkout)))
+              .Values.ferry.control) -}}
+      # The same file for the db hook, which runs before the release's own ConfigMaps exist.
+      migrate-config:
+        forceRename: ferry-migrate-config
+        includeInChecksum: false
+        annotations:
+          helm.sh/hook: pre-install,pre-upgrade
+          helm.sh/hook-weight: "-10"
+          helm.sh/hook-delete-policy: before-hook-creation
+        data:
+          config.json: *controlConfig
+      web-config:
+        forceRename: ferry-web-config
+        includeChecksumInControllers: [ferry-web]
+        data:
+          config.json: >-
+            {{- toPrettyJson (merge (dict
+              "baseUrl" (printf "https://%s" .Values.ferry.hosts.dashboard)
+              "oidc" (dict "redirectUri" (printf "https://%s/auth/callback" .Values.ferry.hosts.dashboard))
+              "checkout" (dict "origin" (printf "https://%s" .Values.ferry.hosts.checkout)))
+              .Values.ferry.web) -}}
+
+    persistence:
+      control-config:
+        type: configMap
+        identifier: control-config
+        advancedMounts:
+          ferry-control:
+            app:
+              - path: /etc/ferry-control
+                readOnly: true
+      migrate-config:
+        type: configMap
+        identifier: migrate-config
+        advancedMounts:
+          db:
+            migrate:
+              - path: /etc/ferry-control
+                readOnly: true
+      web-config:
+        type: configMap
+        identifier: web-config
+        advancedMounts:
+          ferry-web:
+            app:
+              - path: /etc/ferry-web
+                readOnly: true
+      web-secrets:
+        type: secret
+        name: ferry-watch
+        defaultMode: 288 # 0440
+        items:
+          - key: FERRY_WATCH_OAUTH_CLIENT_ID
+            path: oidc-client-id
+          - key: FERRY_WATCH_OAUTH_CLIENT_SECRET
+            path: oidc-client-secret
+          - key: FERRY_WATCH_CHECKOUT_KEY
+            path: checkout-key
+          - key: FERRY_WATCH_VAPID_KEY
+            path: vapid-key
+        advancedMounts:
+          ferry-web:
+            app:
+              - path: /var/run/secrets/ferry-web
+                readOnly: true
+      tmp:
+        type: emptyDir
+        sizeLimit: 64Mi
+        advancedMounts:
+          ferry-web:
+            app:
+              - path: /tmp
+          ferry-control:
+            app:
+              - path: /tmp
+          vnc-edge:
+            app:
+              - path: /tmp
+          db:
+            01-init-db:
+              - path: /tmp
+
+    service:
+      ferry-web:
+        forceRename: ferry-web
+        controller: ferry-web
+        ports:
+          http:
+            port: *webPort
+      # The browser pods dial this (ferry.control.pod.hubUrl).
+      ferry-control:
+        forceRename: ferry-control
+        controller: ferry-control
+        ports:
+          hub:
+            port: *hubPort
+      vnc-edge:
+        forceRename: vnc-edge
+        controller: vnc-edge
+        ports:
+          http:
+            port: *edgePort
+
+    route:
+      # No gateway auth: ferry-web signs people in itself (OIDC). Every cookie is dropped (the app sets none
+      # and reads none); Authorization carries the app's own token, so it stays.
+      ferry-web:
+        forceRename: ferry-web
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Home
+          gethomepage.dev/name: Ferry Watch
+          gethomepage.dev/icon: mdi-ferry
+        hostnames: ["{{ .Values.ferry.hosts.dashboard }}"]
+        parentRefs: &externalGateway
+          - name: envoy-external
+            namespace: networking
+            sectionName: https
+        rules:
+          - filters:
+              - type: RequestHeaderModifier
+                requestHeaderModifier:
+                  remove: [Cookie, Remote-User, Remote-Groups, Remote-Email, Remote-Name]
+            backendRefs:
+              - identifier: ferry-web
+                port: *webPort
+      # The checkout host: a one-time ticket in the URL is the only credential, so no cookie or Authorization
+      # header reaches vnc-edge or a browser pod.
+      vnc-edge:
+        forceRename: vnc-edge
+        annotations:
+          gatus.home-operations.com/enabled: "false"
+        hostnames: ["{{ .Values.ferry.hosts.checkout }}"]
+        parentRefs: *externalGateway
+        rules:
+          - filters:
+              - type: RequestHeaderModifier
+                requestHeaderModifier:
+                  remove: [Cookie, Authorization]
+            backendRefs:
+              - identifier: vnc-edge
+                port: *edgePort
+
+    # ---- The release namespace. Default deny covers this release's pods only: components/cnpg's pg-backups
+    # CronJob runs here too.
+    networkpolicies:
+      default-deny:
+        forceRename: ferry-watch-default-deny
+        type: native
+        podSelector:
+          matchLabels:
+            app.kubernetes.io/instance: *app
+        policyTypes: [Ingress, Egress]
+        rules: {}
+      ferry-web:
+        forceRename: ferry-web
+        type: native
+        controller: ferry-web
+        policyTypes: [Ingress, Egress]
+        rules:
+          ingress:
+            - from:
+                - &envoyExternal
+                  namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: networking
+                  podSelector:
+                    matchLabels:
+                      gateway.envoyproxy.io/owning-gateway-name: envoy-external
+              ports:
+                - protocol: TCP
+                  port: *webPort
+          # DNS is in the Cilium policy below, which limits the names ferry-web may look up.
+          egress:
+            - to:
+                - &postgres
+                  namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: database
+                  podSelector:
+                    matchLabels:
+                      cnpg.io/cluster: postgres17
+              ports:
+                - protocol: TCP
+                  port: 5432
+            - to:
+                - namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: default
+                  podSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: smtp-relay
+              ports:
+                - protocol: TCP
+                  port: 2525
+            # The OIDC issuer (auth.chestr.dev) is served by envoy-external; the policy sees its pods, where
+            # Envoy Gateway listens on the HTTPS port shifted by 10000.
+            - to:
+                - *envoyExternal
+              ports:
+                - protocol: TCP
+                  port: 10443
+      ferry-web-cilium:
+        forceRename: ferry-web-cilium
+        type: cilium
+        controller: ferry-web
+        # Cross-node gateway traffic is SNATed to a node, which Cilium sees as the kube-apiserver entity.
+        ingress:
+          - fromEntities: [kube-apiserver]
+            toPorts:
+              - ports:
+                  - port: "8765"
+                    protocol: TCP
+        egress:
+          - toEndpoints:
+              - &kubeDns
+                matchLabels:
+                  k8s:io.kubernetes.pod.namespace: kube-system
+                  k8s-app: kube-dns
+            toPorts:
+              - ports:
+                  - port: "53"
+                    protocol: ANY
+                rules:
+                  dns:
+                    - matchName: postgres17-rw.database.svc.cluster.local
+                    - matchName: smtp-relay.default.svc.cluster.local
+                    - matchName: auth.chestr.dev
+                    - matchName: fcm.googleapis.com
+                    - matchPattern: "*.push.apple.com"
+                    - matchName: updates.push.services.mozilla.com
+                    - matchPattern: "*.notify.windows.com"
+                    - matchName: www.bcferries.com
+          # Web Push services, and BC Ferries' terminal list.
+          - toFQDNs:
+              - matchName: fcm.googleapis.com
+              - matchPattern: "*.push.apple.com"
+              - matchName: updates.push.services.mozilla.com
+              - matchPattern: "*.notify.windows.com"
+              - matchName: www.bcferries.com
+            toPorts:
+              - ports:
+                  - port: "443"
+                    protocol: TCP
+      ferry-control:
+        forceRename: ferry-control
+        type: native
+        controller: ferry-control
+        policyTypes: [Ingress, Egress]
+        rules:
+          ingress:
+            - from:
+                - &browserPods
+                  namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: ferry-watch-browsers
+                  podSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: ferry-browser
+              ports:
+                - protocol: TCP
+                  port: *hubPort
+          egress:
+            - to:
+                - *postgres
+              ports:
+                - protocol: TCP
+                  port: 5432
+            - &dnsEgress
+              to:
+                - namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: kube-system
+                  podSelector:
+                    matchLabels:
+                      k8s-app: kube-dns
+              ports:
+                - protocol: UDP
+                  port: 53
+                - protocol: TCP
+                  port: 53
+      ferry-control-cilium:
+        forceRename: ferry-control-cilium
+        type: cilium
+        controller: ferry-control
+        egress:
+          - toEntities: [kube-apiserver]
+            toPorts:
+              - ports:
+                  - port: "6443"
+                    protocol: TCP
+      vnc-edge:
+        forceRename: vnc-edge
+        type: native
+        controller: vnc-edge
+        policyTypes: [Ingress, Egress]
+        rules:
+          ingress:
+            - from:
+                - *envoyExternal
+              ports:
+                - protocol: TCP
+                  port: *edgePort
+          egress:
+            - to:
+                - *browserPods
+              ports:
+                - protocol: TCP
+                  port: 6080
+            - *dnsEgress
+      vnc-edge-cilium:
+        forceRename: vnc-edge-cilium
+        type: cilium
+        controller: vnc-edge
+        ingress:
+          - fromEntities: [kube-apiserver]
+            toPorts:
+              - ports:
+                  - port: "8080"
+                    protocol: TCP
+      db:
+        forceRename: ferry-watch-db
+        type: native
+        controller: db
+        policyTypes: [Ingress, Egress]
+        rules:
+          egress:
+            - to:
+                - *postgres
+              ports:
+                - protocol: TCP
+                  port: 5432
+            - *dnsEgress
+
+    # ---- Everything else is a guard rail, not a workload: the browser pods' namespace and what fences it in,
+    # ferry-control's RBAC, and the admission policies. rawResources keep their namespace, so these land in
+    # ferry-watch-browsers (or are cluster-scoped). Nothing here holds a secret.
+    rawResources:
+      # Kept on uninstall: deleting it would take every running browser pod with it.
+      browsers-namespace:
+        forceRename: ferry-watch-browsers
+        manifest:
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            labels:
+              ferry-watch.io/browsers: "true"
+              pod-security.kubernetes.io/enforce: restricted
+              pod-security.kubernetes.io/audit: restricted
+              pod-security.kubernetes.io/warn: restricted
+            annotations:
+              helm.sh/resource-policy: keep
+          spec: {}
+
+      # The browser pods' identity: no bindings and no API token (only the hub token ferry-control checks).
+      browser-serviceaccount:
+        forceRename: ferry-browser
+        manifest:
+          apiVersion: v1
+          kind: ServiceAccount
+          metadata:
+            namespace: ferry-watch-browsers
+          automountServiceAccountToken: false
+
+      # Gives each pod a name vnc-edge can reach: fw-<trip>-g<gen>.browsers.ferry-watch-browsers.svc.cluster.local.
+      browsers-service:
+        forceRename: browsers
+        manifest:
+          apiVersion: v1
+          kind: Service
+          metadata:
+            namespace: ferry-watch-browsers
+          spec:
+            clusterIP: None
+            publishNotReadyAddresses: true
+            selector:
+              app.kubernetes.io/name: ferry-browser
+            ports:
+              - name: vnc
+                port: 6080
+                targetPort: vnc
+
+      # The admission policies' parameters: the same values ferry-control builds its pods from.
+      browser-policy:
+        forceRename: ferry-browser-policy
+        manifest:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            namespace: ferry-watch-browsers
+          data:
+            allowedImages: "{{ printf \"%s:%s\" .Values.ferry.browserImage.repository .Values.ferry.browserImage.tag }}"
+            hubUrl: "{{ .Values.ferry.control.pod.hubUrl }}"
+            vncPubkeys: "{{ .Values.ferry.control.pod.vncPubkeys }}"
+            vncOrigin: "https://{{ .Values.ferry.hosts.checkout }}"
+            podMemory: "{{ .Values.ferry.control.pod.podMemory }}"
+            cpuRequest: "{{ .Values.ferry.control.pod.cpuRequest }}"
+            maxDeadline: "93600"
+            requireUserNamespace: "{{ .Values.ferry.control.pod.requireUserNamespace }}"
+            sandbox: "{{ .Values.ferry.control.pod.sandbox }}"
+            seccompProfile: profiles/fw-chromium.json
+            optionalEnv: ""
+            controlSA: system:serviceaccount:ferry-watch:ferry-control
+            breakGlassGroup: ferry-watch:break-glass
+
+      # One spare slot over fleet.maxBrowsersTotal, for a pod that's still terminating while its successor starts.
+      browsers-quota:
+        forceRename: browsers
+        manifest:
+          apiVersion: v1
+          kind: ResourceQuota
+          metadata:
+            namespace: ferry-watch-browsers
+          spec:
+            hard:
+              pods: "{{ add1 .Values.ferry.control.fleet.maxBrowsersTotal }}"
+              requests.memory: &quotaMemory >-
+                {{- mul (add1 .Values.ferry.control.fleet.maxBrowsersTotal) (trimSuffix "Mi" .Values.ferry.control.pod.podMemory | atoi) -}}Mi
+              limits.memory: *quotaMemory
+              requests.cpu: >-
+                {{- mul (add1 .Values.ferry.control.fleet.maxBrowsersTotal) (trimSuffix "m" .Values.ferry.control.pod.cpuRequest | atoi) -}}m
+            scopeSelector:
+              matchExpressions:
+                - scopeName: PriorityClass
+                  operator: In
+                  values: [ferry-browser]
+      # Every pod must carry activeDeadlineSeconds.
+      require-deadline-quota:
+        forceRename: require-deadline
+        manifest:
+          apiVersion: v1
+          kind: ResourceQuota
+          metadata:
+            namespace: ferry-watch-browsers
+          spec:
+            hard:
+              pods: "0"
+            scopes: [NotTerminating]
+      objects-quota:
+        forceRename: objects
+        manifest:
+          apiVersion: v1
+          kind: ResourceQuota
+          metadata:
+            namespace: ferry-watch-browsers
+          spec:
+            hard:
+              services: "1" # the headless `browsers`
+              configmaps: "2" # the policy parameters and kube-root-ca.crt
+              secrets: "0"
+              count/poddisruptionbudgets.policy: "0"
+      browsers-limits:
+        forceRename: browsers
+        manifest:
+          apiVersion: v1
+          kind: LimitRange
+          metadata:
+            namespace: ferry-watch-browsers
+          spec:
+            limits:
+              - type: Container
+                max:
+                  memory: "{{ .Values.ferry.control.pod.podMemory }}"
+                  cpu: 1500m
+                  ephemeral-storage: 256Mi
+
+      # Nothing in or out of a browser pod unless a policy below says so.
+      browsers-default-deny:
+        forceRename: default-deny
+        manifest:
+          apiVersion: networking.k8s.io/v1
+          kind: NetworkPolicy
+          metadata:
+            namespace: ferry-watch-browsers
+          spec:
+            podSelector: {}
+            policyTypes: [Ingress, Egress]
+      # Always: BC Ferries and Queue-it on 443 by name, ferry-control's hub, vnc-edge in, the kubelet's probes in.
+      browser-egress:
+        forceRename: fw-browser-egress
+        manifest:
+          apiVersion: cilium.io/v2
+          kind: CiliumNetworkPolicy
+          metadata:
+            namespace: ferry-watch-browsers
+          spec:
+            endpointSelector:
+              matchLabels:
+                app.kubernetes.io/name: ferry-browser
+            ingress:
+              - fromEndpoints:
+                  - matchLabels:
+                      k8s:io.kubernetes.pod.namespace: ferry-watch
+                      app.kubernetes.io/instance: *app
+                      app.kubernetes.io/controller: vnc-edge
+                toPorts:
+                  - ports:
+                      - port: "6080"
+                        protocol: TCP
+              - fromEntities: [host]
+                toPorts:
+                  - ports:
+                      - port: "8080"
+                        protocol: TCP
+            egress:
+              - toEndpoints:
+                  - *kubeDns
+                toPorts:
+                  - ports:
+                      - port: "53"
+                        protocol: ANY
+                    rules:
+                      dns:
+                        - matchName: bcferries.com
+                        - matchPattern: "*.bcferries.com"
+                        - matchName: queue-it.net
+                        - matchPattern: "*.queue-it.net"
+                        - matchName: ferry-control.ferry-watch.svc.cluster.local
+              - toFQDNs:
+                  - matchName: bcferries.com
+                  - matchPattern: "*.bcferries.com"
+                  - matchName: queue-it.net
+                  - matchPattern: "*.queue-it.net"
+                toPorts:
+                  - ports:
+                      - port: "443"
+                        protocol: TCP
+              - toEndpoints:
+                  - matchLabels:
+                      k8s:io.kubernetes.pod.namespace: ferry-watch
+                      app.kubernetes.io/instance: *app
+                      app.kubernetes.io/controller: ferry-control
+                toPorts:
+                  - ports:
+                      - port: "8766"
+                        protocol: TCP
+      # While holding a cart (the egress label, which only ferry-control can flip): any public HTTPS host, for
+      # the bank's 3-D Secure page. Private, CGNAT, link-local and cluster addresses stay denied in every state.
+      browser-hold-egress:
+        forceRename: fw-browser-hold-egress
+        manifest:
+          apiVersion: cilium.io/v2
+          kind: CiliumNetworkPolicy
+          metadata:
+            namespace: ferry-watch-browsers
+          spec:
+            endpointSelector:
+              matchLabels:
+                app.kubernetes.io/name: ferry-browser
+                ferry-watch.io/egress: hold
+            egress:
+              - toEndpoints:
+                  - *kubeDns
+                toPorts:
+                  - ports:
+                      - port: "53"
+                        protocol: ANY
+                    rules:
+                      dns:
+                        - matchPattern: "*"
+              # CIDR rules select only the world identity, never pods, nodes or the API server.
+              - toCIDRSet:
+                  - cidr: 0.0.0.0/0
+                    except:
+                      - 10.0.0.0/8
+                      - 172.16.0.0/12
+                      - 192.168.0.0/16
+                      - 100.64.0.0/10
+                      - 169.254.0.0/16
+                      - 127.0.0.0/8
+                      - 0.0.0.0/8
+                      - 224.0.0.0/4
+                      - 240.0.0.0/4
+                toPorts:
+                  - ports:
+                      - port: "443"
+                        protocol: TCP
+
+      # ferry-control's only namespaced verbs: pods in the browser namespace. `patch` exists for the egress label
+      # alone; fw-browser-pod-lock denies every other change.
+      control-role:
+        forceRename: ferry-watch-control
+        manifest:
+          apiVersion: rbac.authorization.k8s.io/v1
+          kind: Role
+          metadata:
+            namespace: ferry-watch-browsers
+          rules:
+            - apiGroups: [""]
+              resources: [pods]
+              verbs: [create, delete, get, list, watch, patch]
+      control-rolebinding:
+        forceRename: ferry-watch-control
+        manifest:
+          apiVersion: rbac.authorization.k8s.io/v1
+          kind: RoleBinding
+          metadata:
+            namespace: ferry-watch-browsers
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: Role
+            name: ferry-watch-control
+          subjects:
+            - kind: ServiceAccount
+              name: ferry-control
+              namespace: ferry-watch
+      # And its only cluster-wide ones: TokenReview, to know which pod is calling the hub, and reading nodes.
+      control-tokenreview-clusterrole:
+        forceRename: ferry-watch-control-tokenreview
+        manifest:
+          apiVersion: rbac.authorization.k8s.io/v1
+          kind: ClusterRole
+          rules:
+            - apiGroups: [authentication.k8s.io]
+              resources: [tokenreviews]
+              verbs: [create]
+      control-tokenreview-clusterrolebinding:
+        forceRename: ferry-watch-control-tokenreview
+        manifest:
+          apiVersion: rbac.authorization.k8s.io/v1
+          kind: ClusterRoleBinding
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: ferry-watch-control-tokenreview
+          subjects:
+            - kind: ServiceAccount
+              name: ferry-control
+              namespace: ferry-watch
+      control-nodes-clusterrole:
+        forceRename: ferry-watch-control-nodes
+        manifest:
+          apiVersion: rbac.authorization.k8s.io/v1
+          kind: ClusterRole
+          rules:
+            - apiGroups: [""]
+              resources: [nodes]
+              verbs: [get, list, watch]
+      control-nodes-clusterrolebinding:
+        forceRename: ferry-watch-control-nodes
+        manifest:
+          apiVersion: rbac.authorization.k8s.io/v1
+          kind: ClusterRoleBinding
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: ferry-watch-control-nodes
+          subjects:
+            - kind: ServiceAccount
+              name: ferry-control
+              namespace: ferry-watch
+
+      # Browsers never preempt anything, and default-priority pods can't preempt a holding browser.
+      browser-priorityclass:
+        forceRename: ferry-browser
+        manifest:
+          apiVersion: scheduling.k8s.io/v1
+          kind: PriorityClass
+          value: 0
+          preemptionPolicy: Never
+          globalDefault: false
+          description: Ferry Watch browser pods.
+
+      # fw-browser-pod: the only pod the browser namespace admits is the one ferry-control builds
+      # (src/ferry_watch/control/pods.py), created by ferry-control or a break-glass person. Every field is fixed
+      # or equals a parameter from ferry-browser-policy.
+      browser-pod-policy:
+        forceRename: fw-browser-pod
+        manifest:
+          apiVersion: admissionregistration.k8s.io/v1
+          kind: ValidatingAdmissionPolicy
+          spec:
+            failurePolicy: Fail
+            paramKind:
+              apiVersion: v1
+              kind: ConfigMap
+            matchConstraints:
+              namespaceSelector:
+                matchLabels:
+                  kubernetes.io/metadata.name: ferry-watch-browsers
+              resourceRules:
+                - apiGroups: [""]
+                  apiVersions: [v1]
+                  operations: [CREATE]
+                  resources: [pods]
+            variables:
+              - name: p
+                expression: params.data
+              - name: name
+                expression: object.metadata.name
+              - name: labels
+                expression: object.metadata.labels
+              - name: spec
+                expression: object.spec
+              - name: c
+                expression: object.spec.containers[0]
+              - name: env
+                expression: variables.c.env
+              - name: optionalEnv
+                # A params change can admit one of these, never anything else.
+                expression: "variables.p.optionalEnv.split(',').filter(n, n in ['FW_CHECKOUT_MODE'])"
+              - name: sc
+                expression: variables.c.securityContext
+            validations:
+              # ---- who
+              - expression: >-
+                  request.userInfo.username == variables.p.controlSA ||
+                  variables.p.breakGlassGroup in request.userInfo.groups
+                message: Only ferry-control creates browser pods.
+
+              # ---- metadata
+              - expression: "variables.name.matches('^fw-[a-f0-9]{16}-g[1-9][0-9]{0,5}$')"
+                message: The name must be fw-<trip>-g<gen>.
+              - expression: >-
+                  has(object.metadata.labels) && variables.labels.size() == 7 &&
+                  variables.labels['app.kubernetes.io/name'] == 'ferry-browser' &&
+                  variables.labels['app.kubernetes.io/managed-by'] == 'ferry-watch-control' &&
+                  variables.labels['ferry-watch.io/trip'] == variables.name.substring(3, 19) &&
+                  variables.labels['ferry-watch.io/pod'] == variables.name &&
+                  variables.labels['ferry-watch.io/gen'] == variables.name.substring(21) &&
+                  variables.labels['ferry-watch.io/owner'].matches('^[a-z0-9]{20}$') &&
+                  variables.labels['ferry-watch.io/egress'] == 'allowlist'
+                message: The labels must be exactly the seven derived from the pod's name and owner, with egress=allowlist.
+              - expression: >-
+                  !has(object.metadata.annotations) ||
+                  object.metadata.annotations.all(k, k in ['fluentbit.io/exclude', 'kubernetes.io/egress-bandwidth'])
+                message: Only the log-exclusion and egress-bandwidth annotations are allowed.
+              - expression: >-
+                  (!has(object.metadata.ownerReferences) || object.metadata.ownerReferences.size() == 0) &&
+                  (!has(object.metadata.finalizers) || object.metadata.finalizers.size() == 0)
+                message: Browser pods are bare, with no owners or finalizers.
+
+              # ---- the pod
+              - expression: >-
+                  variables.spec.serviceAccountName == 'ferry-browser' &&
+                  has(variables.spec.automountServiceAccountToken) && !variables.spec.automountServiceAccountToken &&
+                  has(variables.spec.enableServiceLinks) && !variables.spec.enableServiceLinks &&
+                  variables.spec.restartPolicy == 'Never' &&
+                  has(variables.spec.hostname) && variables.spec.hostname == variables.name &&
+                  has(variables.spec.subdomain) && variables.spec.subdomain == 'browsers' &&
+                  variables.spec.priorityClassName == 'ferry-browser' &&
+                  variables.spec.dnsPolicy == 'ClusterFirst' &&
+                  has(variables.spec.activeDeadlineSeconds) && variables.spec.activeDeadlineSeconds > 0 &&
+                  variables.spec.activeDeadlineSeconds <= int(variables.p.maxDeadline) &&
+                  variables.spec.terminationGracePeriodSeconds == 90
+                message: The pod's fixed fields (service account, no token, hostname, priority, deadline, grace) don't match.
+              - expression: >-
+                  variables.p.requireUserNamespace != 'true' ||
+                  (has(variables.spec.hostUsers) && !variables.spec.hostUsers)
+                message: The pod must run in its own user namespace (hostUsers false).
+              - expression: >-
+                  has(variables.spec.securityContext) &&
+                  variables.spec.securityContext.runAsNonRoot == true &&
+                  variables.spec.securityContext.runAsUser == 1001 &&
+                  variables.spec.securityContext.runAsGroup == 1001 &&
+                  (variables.p.sandbox == 'true'
+                    ? variables.spec.securityContext.seccompProfile.type == 'Localhost' &&
+                      variables.spec.securityContext.seccompProfile.localhostProfile == variables.p.seccompProfile
+                    : variables.spec.securityContext.seccompProfile.type == 'RuntimeDefault') &&
+                  !has(variables.spec.securityContext.sysctls) &&
+                  !has(variables.spec.securityContext.seLinuxOptions) &&
+                  !has(variables.spec.securityContext.windowsOptions) &&
+                  !has(variables.spec.securityContext.supplementalGroups) &&
+                  !has(variables.spec.securityContext.fsGroup)
+                message: The pod's security context must be uid 1001 with the expected seccomp profile, and nothing more.
+              - expression: >-
+                  !has(variables.spec.hostAliases) && !has(variables.spec.dnsConfig) && !has(variables.spec.nodeName) &&
+                  !has(variables.spec.nodeSelector) && !has(variables.spec.affinity) && !has(variables.spec.runtimeClassName) &&
+                  !has(variables.spec.shareProcessNamespace) && !has(variables.spec.resourceClaims) &&
+                  !has(variables.spec.overhead) && !has(variables.spec.schedulingGates) &&
+                  !has(variables.spec.initContainers) && !has(variables.spec.ephemeralContainers) &&
+                  !has(variables.spec.readinessGates) && !has(variables.spec.topologySpreadConstraints) &&
+                  !has(variables.spec.imagePullSecrets) && !has(variables.spec.resources) &&
+                  !(has(variables.spec.hostNetwork) && variables.spec.hostNetwork) &&
+                  !(has(variables.spec.hostPID) && variables.spec.hostPID) &&
+                  !(has(variables.spec.hostIPC) && variables.spec.hostIPC)
+                message: The pod sets a field browser pods never use (placement, host namespaces, extra containers, ...).
+              - expression: >-
+                  has(variables.spec.tolerations) && variables.spec.tolerations.size() == 2 &&
+                  variables.spec.tolerations.all(t,
+                    t.key in ['node.kubernetes.io/not-ready', 'node.kubernetes.io/unreachable'] &&
+                    t.operator == 'Exists' && t.effect == 'NoExecute' && t.tolerationSeconds == 60) &&
+                  variables.spec.tolerations[0].key != variables.spec.tolerations[1].key
+                message: The tolerations must be exactly not-ready and unreachable for 60 seconds.
+
+              # ---- the one container
+              - expression: >-
+                  variables.spec.containers.size() == 1 && variables.c.name == 'browser' &&
+                  variables.c.image.contains('@sha256:') && variables.c.image in variables.p.allowedImages.split(',')
+                message: One container, named browser, running an allowed image by digest.
+              - expression: >-
+                  !has(variables.c.command) && !has(variables.c.args) && !has(variables.c.workingDir) &&
+                  !has(variables.c.lifecycle) && !has(variables.c.envFrom) && !has(variables.c.volumeDevices) &&
+                  !has(variables.c.restartPolicy) &&
+                  !(has(variables.c.stdin) && variables.c.stdin) && !(has(variables.c.tty) && variables.c.tty)
+                message: The container can't set a command, arguments, hooks or other inputs.
+              - expression: >-
+                  has(variables.c.env) && variables.env.all(e, !has(e.valueFrom) && has(e.value)) &&
+                  variables.env.all(e, variables.env.exists_one(f, f.name == e.name)) &&
+                  variables.env.all(e, e.name in ['FW_TRIP_ID', 'FW_OWNER', 'FW_POD_NAME', 'FW_DEADLINE_AT', 'FW_HUB_URL',
+                    'FW_VNC_PUBKEYS', 'FW_VNC_ORIGIN', 'FW_SANDBOX'] ||
+                    (e.name in variables.optionalEnv && e.value.matches('^[a-z_]{1,16}$'))) &&
+                  variables.env.exists(e, e.name == 'FW_TRIP_ID' && e.value == variables.labels['ferry-watch.io/trip']) &&
+                  variables.env.exists(e, e.name == 'FW_OWNER' && e.value == variables.labels['ferry-watch.io/owner']) &&
+                  variables.env.exists(e, e.name == 'FW_POD_NAME' && e.value == variables.name) &&
+                  variables.env.exists(e, e.name == 'FW_DEADLINE_AT' && e.value.matches('^[0-9]{10}$')) &&
+                  variables.env.exists(e, e.name == 'FW_HUB_URL' && e.value == variables.p.hubUrl) &&
+                  variables.env.exists(e, e.name == 'FW_VNC_PUBKEYS' && e.value == variables.p.vncPubkeys) &&
+                  variables.env.exists(e, e.name == 'FW_VNC_ORIGIN' && e.value == variables.p.vncOrigin) &&
+                  variables.env.exists(e, e.name == 'FW_SANDBOX' && e.value == (variables.p.sandbox == 'true' ? '1' : '0'))
+                message: The environment must be exactly the eight literal values, matching the pod and the parameters.
+              - expression: >-
+                  has(variables.c.ports) && variables.c.ports.size() == 2 &&
+                  variables.c.ports.exists(q, q.name == 'vnc' && q.containerPort == 6080) &&
+                  variables.c.ports.exists(q, q.name == 'probe' && q.containerPort == 8080) &&
+                  variables.c.ports.all(q, q.protocol == 'TCP' && !has(q.hostPort) && !has(q.hostIP))
+                message: The ports must be vnc 6080 and probe 8080, with no host ports.
+              - expression: >-
+                  has(variables.c.startupProbe) && has(variables.c.livenessProbe) && has(variables.c.readinessProbe) &&
+                  [variables.c.startupProbe, variables.c.livenessProbe, variables.c.readinessProbe].all(probe,
+                    has(probe.httpGet) && string(probe.httpGet.port) == 'probe' && !has(probe.httpGet.host) &&
+                    !has(probe.httpGet.httpHeaders) && probe.httpGet.path in ['/livez', '/readyz'])
+                message: Each probe is an HTTP GET of /livez or /readyz on the probe port.
+              - expression: >-
+                  has(variables.c.resources.requests) && has(variables.c.resources.limits) &&
+                  variables.c.resources.requests.size() == 3 && variables.c.resources.limits.size() == 3 &&
+                  quantity(variables.c.resources.requests['cpu']).compareTo(quantity(variables.p.cpuRequest)) == 0 &&
+                  quantity(variables.c.resources.requests['memory']).compareTo(quantity(variables.p.podMemory)) == 0 &&
+                  quantity(variables.c.resources.requests['ephemeral-storage']).compareTo(quantity('64Mi')) == 0 &&
+                  quantity(variables.c.resources.limits['cpu']).compareTo(quantity('1500m')) == 0 &&
+                  quantity(variables.c.resources.limits['memory']).compareTo(quantity(variables.p.podMemory)) == 0 &&
+                  quantity(variables.c.resources.limits['ephemeral-storage']).compareTo(quantity('256Mi')) == 0
+                message: The resources must be the fleet's, memory request equal to its limit.
+              - expression: >-
+                  has(variables.c.securityContext) &&
+                  has(variables.sc.allowPrivilegeEscalation) && !variables.sc.allowPrivilegeEscalation &&
+                  has(variables.sc.readOnlyRootFilesystem) && variables.sc.readOnlyRootFilesystem &&
+                  has(variables.sc.capabilities) && has(variables.sc.capabilities.drop) &&
+                  variables.sc.capabilities.drop == ['ALL'] && !has(variables.sc.capabilities.add) &&
+                  !has(variables.sc.privileged) && !has(variables.sc.runAsUser) && !has(variables.sc.runAsGroup) &&
+                  !has(variables.sc.runAsNonRoot) && !has(variables.sc.procMount) && !has(variables.sc.seLinuxOptions) &&
+                  !has(variables.sc.seccompProfile) && !has(variables.sc.windowsOptions)
+                message: The container must drop every capability, keep its root read-only, and override nothing.
+              - expression: >-
+                  variables.c.terminationMessagePolicy == 'File' &&
+                  variables.c.terminationMessagePath == '/dev/termination-log'
+                message: The termination message comes from /dev/termination-log only.
+              - expression: >-
+                  has(variables.c.volumeMounts) && variables.c.volumeMounts.size() == 3 &&
+                  variables.c.volumeMounts.all(m, !has(m.subPath) && !has(m.subPathExpr) && !has(m.mountPropagation)) &&
+                  variables.c.volumeMounts.exists(m, m.name == 'tmp' && m.mountPath == '/tmp') &&
+                  variables.c.volumeMounts.exists(m, m.name == 'shm' && m.mountPath == '/dev/shm') &&
+                  variables.c.volumeMounts.exists(m, m.name == 'hub-token' && m.mountPath == '/var/run/fw' &&
+                    has(m.readOnly) && m.readOnly)
+                message: The mounts must be /tmp, /dev/shm and the hub token, read-only, with no sub-paths.
+              - expression: >-
+                  has(variables.spec.volumes) && variables.spec.volumes.size() == 3 &&
+                  variables.spec.volumes.exists(v, v.name == 'tmp' && has(v.emptyDir) && v.emptyDir.medium == 'Memory' &&
+                    quantity(v.emptyDir.sizeLimit).compareTo(quantity('512Mi')) == 0) &&
+                  variables.spec.volumes.exists(v, v.name == 'shm' && has(v.emptyDir) && v.emptyDir.medium == 'Memory' &&
+                    quantity(v.emptyDir.sizeLimit).compareTo(quantity('256Mi')) == 0) &&
+                  variables.spec.volumes.exists(v, v.name == 'hub-token' && has(v.projected) &&
+                    v.projected.sources.size() == 1 && has(v.projected.sources[0].serviceAccountToken) &&
+                    v.projected.sources[0].serviceAccountToken.audience == 'ferry-watch-agent' &&
+                    v.projected.sources[0].serviceAccountToken.expirationSeconds <= 600 &&
+                    v.projected.sources[0].serviceAccountToken.path == 'token')
+                message: The volumes must be the two memory scratch dirs and the hub token (audience ferry-watch-agent, at most 10 minutes).
+      browser-pod-policy-binding:
+        forceRename: fw-browser-pod
+        manifest:
+          apiVersion: admissionregistration.k8s.io/v1
+          kind: ValidatingAdmissionPolicyBinding
+          spec:
+            policyName: fw-browser-pod
+            validationActions: [Deny]
+            paramRef: &policyParams
+              name: ferry-browser-policy
+              namespace: ferry-watch-browsers
+              parameterNotFoundAction: Deny
+            matchResources: &browsersNamespace
+              namespaceSelector:
+                matchLabels:
+                  kubernetes.io/metadata.name: ferry-watch-browsers
+
+      # fw-browser-pod-lock: once a browser pod exists, nobody changes it or gets into it. ferry-control may move
+      # the egress label between allowlist and hold (and change nothing else), and the kubelet and three named
+      # kube-system controllers keep their usual updates. Break-glass people are not limited. ferry-control's
+      # pods `patch` verb is only safe with this policy in place.
+      browser-pod-lock-policy:
+        forceRename: fw-browser-pod-lock
+        manifest:
+          apiVersion: admissionregistration.k8s.io/v1
+          kind: ValidatingAdmissionPolicy
+          spec:
+            failurePolicy: Fail
+            paramKind:
+              apiVersion: v1
+              kind: ConfigMap
+            matchConstraints:
+              namespaceSelector:
+                matchLabels:
+                  kubernetes.io/metadata.name: ferry-watch-browsers
+              resourceRules:
+                - apiGroups: [""]
+                  apiVersions: [v1]
+                  operations: [UPDATE]
+                  resources: [pods, pods/ephemeralcontainers]
+                - apiGroups: [""]
+                  apiVersions: [v1]
+                  operations: [CONNECT]
+                  resources: [pods/exec, pods/attach, pods/portforward]
+            variables:
+              - name: user
+                expression: request.userInfo.username
+              - name: breakGlass
+                expression: params.data.breakGlassGroup in request.userInfo.groups
+              - name: system
+                expression: >-
+                  variables.user.startsWith('system:node:') ||
+                  variables.user in ['system:serviceaccount:kube-system:generic-garbage-collector',
+                    'system:serviceaccount:kube-system:node-controller',
+                    'system:serviceaccount:kube-system:pod-garbage-collector']
+              - name: egressFlip
+                # The only change ferry-control may make: the egress label, between allowlist and hold. A ternary,
+                # so nothing below is evaluated for any other request (an error in a variable fails the policy).
+                expression: >-
+                  variables.user == params.data.controlSA && request.operation == 'UPDATE' &&
+                  request.resource.resource == 'pods' && (!has(request.subResource) || request.subResource == '')
+                  ? object.spec == oldObject.spec &&
+                    has(object.metadata.labels) && has(oldObject.metadata.labels) &&
+                    object.metadata.labels.size() == oldObject.metadata.labels.size() &&
+                    object.metadata.labels.all(k, k == 'ferry-watch.io/egress' ||
+                      (k in oldObject.metadata.labels && oldObject.metadata.labels[k] == object.metadata.labels[k])) &&
+                    'ferry-watch.io/egress' in object.metadata.labels &&
+                    object.metadata.labels['ferry-watch.io/egress'] in ['allowlist', 'hold'] &&
+                    has(object.metadata.annotations) == has(oldObject.metadata.annotations) &&
+                    (!has(object.metadata.annotations) || object.metadata.annotations == oldObject.metadata.annotations) &&
+                    has(object.metadata.ownerReferences) == has(oldObject.metadata.ownerReferences) &&
+                    (!has(object.metadata.ownerReferences) || object.metadata.ownerReferences == oldObject.metadata.ownerReferences) &&
+                    has(object.metadata.finalizers) == has(oldObject.metadata.finalizers) &&
+                    (!has(object.metadata.finalizers) || object.metadata.finalizers == oldObject.metadata.finalizers)
+                  : false
+            validations:
+              - expression: variables.breakGlass || variables.system || variables.egressFlip
+                message: Browser pods can't be changed or entered; ferry-control may only move the egress label.
+      browser-pod-lock-policy-binding:
+        forceRename: fw-browser-pod-lock
+        manifest:
+          apiVersion: admissionregistration.k8s.io/v1
+          kind: ValidatingAdmissionPolicyBinding
+          spec:
+            policyName: fw-browser-pod-lock
+            validationActions: [Deny]
+            paramRef: *policyParams
+            matchResources: *browsersNamespace
+
+      # fw-ns-objects: defence in depth behind RBAC. No Ferry Watch service account may write any of these in
+      # either namespace, or create a pod in this one, whatever a RoleBinding someday says.
+      ns-objects-policy:
+        forceRename: fw-ns-objects
+        manifest:
+          apiVersion: admissionregistration.k8s.io/v1
+          kind: ValidatingAdmissionPolicy
+          spec:
+            failurePolicy: Fail
+            matchConstraints:
+              namespaceSelector:
+                matchExpressions:
+                  - key: kubernetes.io/metadata.name
+                    operator: In
+                    values: [ferry-watch, ferry-watch-browsers]
+              resourceRules:
+                - apiGroups: [""]
+                  apiVersions: ["*"]
+                  operations: [CREATE, UPDATE, DELETE]
+                  resources: [secrets, configmaps, services, endpoints, serviceaccounts, resourcequotas, limitranges]
+                - apiGroups: [discovery.k8s.io]
+                  apiVersions: ["*"]
+                  operations: [CREATE, UPDATE, DELETE]
+                  resources: [endpointslices]
+                - apiGroups: [networking.k8s.io]
+                  apiVersions: ["*"]
+                  operations: [CREATE, UPDATE, DELETE]
+                  resources: [networkpolicies]
+                - apiGroups: [cilium.io]
+                  apiVersions: ["*"]
+                  operations: [CREATE, UPDATE, DELETE]
+                  resources: [ciliumnetworkpolicies]
+                - apiGroups: [rbac.authorization.k8s.io]
+                  apiVersions: ["*"]
+                  operations: [CREATE, UPDATE, DELETE]
+                  resources: [roles, rolebindings]
+                - apiGroups: [gateway.networking.k8s.io]
+                  apiVersions: ["*"]
+                  operations: [CREATE, UPDATE, DELETE]
+                  resources: [httproutes]
+                - apiGroups: [gateway.envoyproxy.io]
+                  apiVersions: ["*"]
+                  operations: [CREATE, UPDATE, DELETE]
+                  resources: [securitypolicies]
+                - apiGroups: [external-secrets.io]
+                  apiVersions: ["*"]
+                  operations: [CREATE, UPDATE, DELETE]
+                  resources: [externalsecrets, pushsecrets]
+                - apiGroups: [policy]
+                  apiVersions: ["*"]
+                  operations: [CREATE, UPDATE, DELETE]
+                  resources: [poddisruptionbudgets]
+                - apiGroups: [apps]
+                  apiVersions: ["*"]
+                  operations: [CREATE, UPDATE, DELETE]
+                  resources: [deployments, replicasets, statefulsets, daemonsets]
+                - apiGroups: [batch]
+                  apiVersions: ["*"]
+                  operations: [CREATE, UPDATE, DELETE]
+                  resources: [jobs, cronjobs]
+                - apiGroups: [""]
+                  apiVersions: ["*"]
+                  operations: [CREATE]
+                  resources: [pods]
+            validations:
+              - expression: >-
+                  !(request.userInfo.username.startsWith('system:serviceaccount:ferry-watch:') ||
+                    request.userInfo.username.startsWith('system:serviceaccount:ferry-watch-browsers:')) ||
+                  (request.resource.resource == 'pods' && request.namespace == 'ferry-watch-browsers')
+                message: Ferry Watch's service accounts can't change objects in its namespaces.
+      ns-objects-policy-binding:
+        forceRename: fw-ns-objects
+        manifest:
+          apiVersion: admissionregistration.k8s.io/v1
+          kind: ValidatingAdmissionPolicyBinding
+          spec:
+            policyName: fw-ns-objects
+            validationActions: [Deny]
