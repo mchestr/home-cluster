@@ -51,7 +51,7 @@ spec:
           hubUrl: ws://ferry-control.ferry-watch.svc.cluster.local.:8766/agent/v1
           # The public half of FERRY_WATCH_CHECKOUT_KEY, as <keyId>:<base64url> (two, comma-separated, while
           # the key rotates). See ../README.md.
-          vncPubkeys: ""
+          vncPubkeys: k1:ODYaV036tlurYBPYQbL2HX40mnxBQOViEwBFwx_7wjk
           sandbox: false
           # In millicores and Mi: the browser quota below is computed from them.
           cpuRequest: 200m
