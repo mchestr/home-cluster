@@ -3,6 +3,6 @@ provider "cloudflare" {
 }
 
 provider "onepassword" {
-  url   = var.onepassword_url
-  token = var.onepassword_token
+  connect_url   = var.onepassword_url
+  connect_token = var.onepassword_token
 }
