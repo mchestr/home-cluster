@@ -33,9 +33,7 @@ spec:
   values:
     ferry:
       hosts:
-        # ferry-next until the cutover from the single-tenant app (kubernetes/apps/default/ferry-watch), which
-        # still holds ferry.chestr.dev.
-        dashboard: ferry-next.chestr.dev
+        dashboard: ferry.chestr.dev
         checkout: ferry-checkout.chestr.dev
 
       # The browser pods' image. The tag is for people and Renovate; the digest is what ferry-control starts and

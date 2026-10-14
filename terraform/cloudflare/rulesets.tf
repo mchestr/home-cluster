@@ -29,7 +29,7 @@ resource "cloudflare_ruleset" "chestr-dev-config-settings" {
   rules = [
     {
       # Ferry Watch pins its pages' scripts with CSP hashes; Rocket Loader and email obfuscation rewrite the HTML.
-      expression  = "(http.host in {\"ferry.chestr.dev\" \"ferry-next.chestr.dev\" \"ferry-checkout.chestr.dev\"})"
+      expression  = "(http.host in {\"ferry.chestr.dev\" \"ferry-checkout.chestr.dev\"})"
       action      = "set_config"
       action_parameters = {
         rocket_loader     = false

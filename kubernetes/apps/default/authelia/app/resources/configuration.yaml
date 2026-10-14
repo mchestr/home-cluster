@@ -249,8 +249,6 @@ identity_providers:
           - authorization_code
         redirect_uris:
           - https://ferry.chestr.dev/auth/callback
-          # Until the cutover from the single-tenant app.
-          - https://ferry-next.chestr.dev/auth/callback
         userinfo_signed_response_alg: none
         claims_policy: default
       {{- end }}

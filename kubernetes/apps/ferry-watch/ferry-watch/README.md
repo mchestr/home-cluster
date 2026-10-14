@@ -1,12 +1,11 @@
 # Ferry Watch (multi-tenant)
 
 [github.com/mchestr/ferry-watch](https://github.com/mchestr/ferry-watch), deployed with app-template
-(`app/helmrelease.yaml`). It runs beside the single-tenant app in `kubernetes/apps/default/ferry-watch` until the
-cutover below.
+(`app/helmrelease.yaml`). It replaced the single-tenant app (`kubernetes/apps/default/ferry-watch`) on 2026-10-13.
 
 | Piece | Where |
 |---|---|
-| `ferry-web`: sign-in (Authelia OIDC), the API and the dashboard | `ferry-next.chestr.dev` on envoy-external |
+| `ferry-web`: sign-in (Authelia OIDC), the API and the dashboard | `ferry.chestr.dev` on envoy-external |
 | `ferry-control`: the hub and the fleet of browser pods | in-cluster only |
 | `vnc-edge`: the checkout page, while a cart is held | `ferry-checkout.chestr.dev` on envoy-external |
 | `ferry-db`: creates the database and runs migrations | a Helm hook Job, before every install and upgrade |
@@ -106,27 +105,6 @@ An invitee's lldap account is also an account for every other Authelia OIDC clie
 and anyone with a password can enrol a second factor. Before adding anyone but yourself to lldap, give
 Autobrr, Grafana, Immich, Paperless and Windmill their own `authorization_policies` limited to the groups that
 use them (`default/authelia/app/resources/configuration.yaml`, like `ferry-watch`'s).
-
-## Cutover from the single-tenant app
-
-1. Run the new stack on `ferry-next.chestr.dev` until you have signed in there. Until the cutover, the checkout
-   page's "Back to Ferry Watch" links and its retry after an expired ticket lead to `ferry.chestr.dev` (built
-   into the vnc-edge image), which is still the old app, so test a checkout end to end after the cutover.
-2. Cutover:
-   - Scale `kubernetes/apps/default/ferry-watch` to `replicas: 0`, turn its route off, and set its PVC to
-     `kustomize.toolkit.fluxcd.io/prune: disabled`.
-   - Set `ferry.hosts.dashboard: ferry.chestr.dev`. That moves the route, `baseUrl` and the OIDC redirect
-     URI together.
-
-   Pin the old app's image by digest first, so that a revert brings back exactly what ran.
-3. Wait until all of these hold:
-   - 14 days have passed.
-   - A real guest checkout has worked on the new stack.
-   - No forced login wall has been seen since the cutover.
-
-   Then delete `kubernetes/apps/default/ferry-watch` (and its entry in `default/kustomization.yaml`) and the
-   old fields of the `ferry-watch` item (`BCF_USER`, `BCF_PASS`), and remove the `ferry-next` redirect URI
-   from the Authelia client.
 
 ## Rotating the checkout key
 
