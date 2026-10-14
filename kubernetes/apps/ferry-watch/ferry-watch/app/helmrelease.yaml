@@ -42,7 +42,7 @@ spec:
       # what the admission policy admits. Like the other two images, it must carry its digest.
       browserImage:
         repository: ghcr.io/mchestr/ferry-watch-browser
-        tag: 0.6.0
+        tag: 0.6.0@sha256:7d49eadd1ee19fee5c58aea58388ee646c761d68512e4f5a8345d85a09a44236
 
       # ferry-control's config.json (src/ferry_watch/control/config.py). pod.image and pod.vncOrigin are added
       # from browserImage and hosts.checkout.
@@ -124,7 +124,7 @@ spec:
           app:
             image: &image
               repository: ghcr.io/mchestr/ferry-watch-control
-              tag: 0.6.0
+              tag: 0.6.0@sha256:ff120de51f588f07ea49c909fce4ab54a82d29157324374dee4719f1bbdd83dc
             args: [ferry-web, run]
             env:
               FW_WEB_CONFIG: /etc/ferry-web/config.json
@@ -256,7 +256,7 @@ spec:
           app:
             image:
               repository: ghcr.io/mchestr/ferry-watch-vnc-edge
-              tag: 0.6.0
+              tag: 0.6.0@sha256:6a523bbe180cc2c331c6348cb4efeb346c2bfed3d2856247ace84a0878478b96
             ports:
               - name: http
                 containerPort: &edgePort 8080
