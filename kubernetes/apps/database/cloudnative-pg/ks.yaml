@@ -48,3 +48,29 @@ spec:
   targetNamespace: *namespace
   timeout: 3m
   wait: true
+---
+# Passwords for the login roles that cluster17.yaml manages (spec.managed.roles). Its own Kustomization with no
+# wait, so a password missing from 1Password holds back only the app that uses the role, not the database.
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app cloudnative-pg-roles
+  namespace: &namespace database
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: onepassword-store
+      namespace: external-secrets
+  interval: 30m
+  path: ./kubernetes/apps/database/cloudnative-pg/roles
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 3m
+  wait: false

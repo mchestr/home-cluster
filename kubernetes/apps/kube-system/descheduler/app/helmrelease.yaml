@@ -41,6 +41,11 @@ spec:
                 excludeOwnerKinds:
                   - Job
                 minPodLifetimeSeconds: 1800
+                # Ferry Watch's browser pods are bare, so this is the only plugin that could touch them (the
+                # default evictor skips pods without an owner). ferry-control cleans up its own.
+                namespaces:
+                  exclude:
+                    - ferry-watch-browsers
             - name: RemovePodsViolatingInterPodAntiAffinity
             - name: RemovePodsViolatingNodeAffinity
               args:

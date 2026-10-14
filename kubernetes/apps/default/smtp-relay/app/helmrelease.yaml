@@ -119,6 +119,18 @@ spec:
               ports:
                 - protocol: TCP
                   port: *port
+            # Ferry Watch's invitations and alerts (ferry-web only).
+            - from:
+                - podSelector:
+                    matchLabels:
+                      app.kubernetes.io/controller: ferry-web
+                      app.kubernetes.io/instance: ferry-watch
+                  namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: ferry-watch
+              ports:
+                - protocol: TCP
+                  port: *port
             - from:
                 - namespaceSelector:
                     matchLabels:

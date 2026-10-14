@@ -50,6 +50,7 @@
         "/postgres/",
         "/immich/",
         "/windmill/",
+        "/ferry-watch/",
       ],
       automerge: false,
     },
