@@ -39,7 +39,7 @@ spec:
         checkout: ferry-checkout.chestr.dev
 
       # The browser pods' image. The tag is for people and Renovate; the digest is what ferry-control starts and
-      # what the admission policy admits, so it is required.
+      # what the admission policy admits. Like the other two images, it must carry its digest.
       browserImage:
         repository: ghcr.io/mchestr/ferry-watch-browser
         tag: 0.6.0
@@ -53,8 +53,8 @@ spec:
           # the key rotates). See ../README.md.
           vncPubkeys: ""
           sandbox: false
+          # In millicores and Mi: the browser quota below is computed from them.
           cpuRequest: 200m
-          # In Mi: the browser quota below is computed from it.
           podMemory: 1536Mi
           requireUserNamespace: false
           namespace: ferry-watch-browsers
@@ -85,13 +85,12 @@ spec:
         probePort: 9090
 
       # ferry-web's config.json (src/ferry_watch/web/config.py). baseUrl, oidc.redirectUri and checkout.origin
-      # are added from hosts. The OIDC client id and every secret come from the ferry-watch Secret as files.
+      # are added from hosts. The OIDC client id and every secret come from the ferry-watch Secret as files; the
+      # checkout key carries its own id (k1:<key>).
       web:
         oidc:
           issuer: &issuer https://auth.chestr.dev
           scopes: [openid, profile, email, groups]
-        checkout:
-          keyId: k1
         smtp:
           host: smtp-relay.default.svc.cluster.local.
           port: 2525
@@ -113,8 +112,10 @@ spec:
         staticDir: /app/static
 
     controllers:
+      # No lock to hold (the outbox claims rows with SKIP LOCKED), so it rolls without downtime.
       ferry-web:
         forceRename: ferry-web
+        strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
         serviceAccount:
@@ -367,14 +368,19 @@ spec:
         includeChecksumInControllers: [ferry-control]
         data:
           config.json: &controlConfig >-
-            {{- if not (contains "@sha256:" .Values.ferry.browserImage.tag) -}}
-            {{- fail "ferry.browserImage.tag must pin the digest: <version>@sha256:<digest>" -}}
+            {{- range (list .Values.ferry.browserImage.tag (index .Values.controllers "ferry-control" "containers" "app" "image" "tag") (index .Values.controllers "vnc-edge" "containers" "app" "image" "tag")) -}}
+            {{- if not (contains "@sha256:" .) -}}
+            {{- fail "Each Ferry Watch image tag must pin its digest: <version>@sha256:<digest>" -}}
+            {{- end -}}
             {{- end -}}
             {{- if not .Values.ferry.control.pod.vncPubkeys -}}
             {{- fail "ferry.control.pod.vncPubkeys: set the checkout key's public half (README.md)" -}}
             {{- end -}}
             {{- if not (and (hasSuffix "Mi" .Values.ferry.control.pod.podMemory) (gt (trimSuffix "Mi" .Values.ferry.control.pod.podMemory | atoi) 0)) -}}
             {{- fail "ferry.control.pod.podMemory must be in Mi" -}}
+            {{- end -}}
+            {{- if not (and (hasSuffix "m" .Values.ferry.control.pod.cpuRequest) (gt (trimSuffix "m" .Values.ferry.control.pod.cpuRequest | atoi) 0)) -}}
+            {{- fail "ferry.control.pod.cpuRequest must be in millicores (200m)" -}}
             {{- end -}}
             {{- toPrettyJson (merge (dict "pod" (dict
               "image" (printf "%s:%s" .Values.ferry.browserImage.repository .Values.ferry.browserImage.tag)
@@ -845,7 +851,8 @@ spec:
                   cpu: 1500m
                   ephemeral-storage: 256Mi
 
-      # Nothing in or out of a browser pod unless a policy below says so.
+      # Nothing in or out of a browser pod unless a policy below says so. Kept on uninstall with the namespace,
+      # so a browser pod left behind is cut off rather than let loose.
       browsers-default-deny:
         forceRename: default-deny
         manifest:
@@ -853,6 +860,8 @@ spec:
           kind: NetworkPolicy
           metadata:
             namespace: ferry-watch-browsers
+            annotations:
+              helm.sh/resource-policy: keep
           spec:
             podSelector: {}
             policyTypes: [Ingress, Egress]

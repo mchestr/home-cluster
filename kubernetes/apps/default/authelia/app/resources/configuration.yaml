@@ -127,7 +127,8 @@ identity_providers:
 
     authorization_policies:
       # Ferry Watch is for invitees as well as admins: password only (no second factor to enrol), and only
-      # for these groups. A one-factor session opens no other client.
+      # for these groups. The other clients still want two_factor, but any lldap user can enrol a second factor,
+      # so restrict them to their own groups before inviting anyone (ferry-watch README, "Before inviting").
       ferry-watch:
         default_policy: deny
         rules:
@@ -223,6 +224,8 @@ identity_providers:
           - https://windmill.chestr.dev/user/login_callback/authelia
         userinfo_signed_response_alg: none
         claims_policy: default
+      {{- if env "FERRY_WATCH_OAUTH_CLIENT_ID" }}
+      # Only once the 1Password fields reach authelia-secret: a client without an id would stop Authelia starting.
       # The app takes the code from the URL fragment, so it never reaches an access log.
       - client_name: Ferry Watch
         client_id: '{{ env "FERRY_WATCH_OAUTH_CLIENT_ID" }}'
@@ -250,6 +253,7 @@ identity_providers:
           - https://ferry-next.chestr.dev/auth/callback
         userinfo_signed_response_alg: none
         claims_policy: default
+      {{- end }}
       # - client_name: ErsatzTV
       #   client_id: '{{ env "ERSATZTV_OAUTH_CLIENT_ID" }}'
       #   client_secret: '{{ env "ERSATZTV_OAUTH_CLIENT_SECRET" }}'
