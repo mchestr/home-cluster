@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: windmill
-      version: 4.0.280
+      version: 4.0.282
       sourceRef:
         kind: HelmRepository
         name: windmill
