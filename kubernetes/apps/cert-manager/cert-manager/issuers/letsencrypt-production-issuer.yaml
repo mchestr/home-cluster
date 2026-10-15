@@ -18,5 +18,4 @@ spec:
         selector:
           dnsZones:
             - chestr.dev
-            - controlforensics.com
             - mikeflix.lol
