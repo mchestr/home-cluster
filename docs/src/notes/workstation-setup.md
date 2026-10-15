@@ -34,8 +34,6 @@ Everything gets installed via Homebrew.
 | `go-task` | Task runner |
 | `jq` | JSON wrangling |
 | `yq` | YAML wrangling |
-| `age` | Encryption |
-| `sops` | Secret operations |
 
 ### Cluster Management
 
@@ -52,7 +50,6 @@ Everything gets installed via Homebrew.
 |------|---------|
 | `cloudflared` | Cloudflare tunnel |
 | `gh` | GitHub CLI |
-| `talhelper` | Talos config helper |
 | `minijinja-cli` | Template rendering |
 
 ### Secrets

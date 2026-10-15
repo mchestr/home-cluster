@@ -9,23 +9,15 @@ talos/clusterconfig/
 .task/
 # codex
 .codex/
-# vscode-sops
-.decrypted~*.yaml
-.decrypted~*.yml
-.decrypted~*.toml
 .config.env
-*.agekey
 *.pub
 *.key
 github-deploy-key*
-# Ansible
-xanmanning.k3s*
 # Terraform
 .terraform
 .terraform.tfstate*
 terraform.tfstate*
 tmpl/
 *.tfvars
-edgerouter_config**
 docs/book/**
 **/graph.html
