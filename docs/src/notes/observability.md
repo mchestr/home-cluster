@@ -4,15 +4,7 @@
 
 ### Metrics
 
-I use all the standard Prometheus CRDs for metric collection - ServiceMonitor, PodMonitor, PrometheusRules, etc.
-
-For metrics storage I use [Victoria Metrics](https://victoriametrics.com/). VM is a drop-in replacement for Prometheus which claims to be more performant. For the most part it seems to work well.
-
-Why I switched from Prometheus:
-
-1. Works with all the same CRDs, so I could swap back later if needed
-2. Claims to be more performant
-3. UI is a bit nicer in my opinion
+Metrics are collected and stored by Prometheus from [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack), using the standard CRDs (ServiceMonitor, PodMonitor, PrometheusRule, ScrapeConfig). Retention is 14 days on a 50Gi Ceph volume. Grafana (via the Grafana operator) and kromgo read from `prometheus-operated.observability.svc.cluster.local:9090`.
 
 ### Logging
 
@@ -29,9 +21,7 @@ Why I switched from Loki:
 
 ### Alerting
 
-For alerting I use [AlertManager](https://prometheus.io/docs/alerting/latest/alertmanager/) via Victoria Metrics.
-
-I run 2 instances of [VMAlert](https://docs.victoriametrics.com/operator/resources/vmalert/) - one for Victoria Metrics rules and one for Victoria Logs rules. Two instances are needed because the query languages are different and would fail if run against the wrong backend.
+Prometheus rules go to [AlertManager](https://prometheus.io/docs/alerting/latest/alertmanager/) from kube-prometheus-stack. Log-based alerts are `VMRule` objects (`vmrule.yaml` next to the apps that have them) evaluated by a `VMAlert` against VictoriaLogs and sent to the same AlertManager; those two kinds need the VictoriaMetrics operator's CRDs, so they only work once it is installed.
 
 For push notifications I paid $5 for [PushOver](https://pushover.net/) and it works great.
 

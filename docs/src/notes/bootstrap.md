@@ -1,10 +1,10 @@
 # Cluster Bootstrap
 
-The process should be mostly automated via `task bootstrap:apps`. If all goes well the cluster should come up based on the last available Volsync snapshot, which runs daily.
+The process should be mostly automated via `task bootstrap:apps`. If all goes well the cluster should come up based on the last available Volsync snapshot, which runs daily. Postgres needs one manual step first; see [disaster recovery](disaster-recovery.md#complete-cluster-loss).
 
 ## Priming the Hardware
 
-1. Grab the latest Talos .iso [here](https://www.talos.dev/v1.9/talos-guides/install/bare-metal-platforms/iso/)
+1. Grab the Talos ISO matching `kubernetes/apps/system-upgrade/tuppr/upgrades/talos.yaml` from the [image factory](https://factory.talos.dev/) using `talos/schematic.yaml` (Secure Boot image)
 2. Plug it in and follow secure boot setup
 
 ### MS-01 SecureBoot Setup
@@ -26,8 +26,8 @@ If you still see errors on start about key violations it probably means the fact
 
 Flux manages the state of the cluster, but it can't do that until its installed. A few things need to be manually installed first:
 
-1. [Cilium](https://github.com/cilium/cilium) - By default Talos installs a basic CNI, so I [disable that](https://github.com/mchestr/home-cluster/blob/main/talos/controlplane.yaml#L135-L136). Kubernetes doesn't work without a CNI.
-2. [CoreDNS](https://coredns.io/) - Talos installs this by default but that makes it hard to upgrade so I [disable it](https://github.com/mchestr/home-cluster/blob/main/talos/controlplane.yaml#L140-L141) and manage it with [Flux](https://github.com/mchestr/home-cluster/tree/main/kubernetes/apps/kube-system/coredns).
+1. [Cilium](https://github.com/cilium/cilium) - By default Talos installs a basic CNI, so I disable that (`cluster.network.cni.name: none` in [controlplane.yaml](https://github.com/mchestr/home-cluster/blob/main/talos/controlplane.yaml)). Kubernetes doesn't work without a CNI.
+2. [CoreDNS](https://coredns.io/) - Talos installs this by default but that makes it hard to upgrade so I disable it (`cluster.coreDNS.disabled: true`) and manage it with [Flux](https://github.com/mchestr/home-cluster/tree/main/kubernetes/apps/kube-system/coredns).
 3. [cert-manager](https://cert-manager.io/) - For certificate things. Bootstrapping this early makes life easier since everything is based on my domain.
 4. [external-secrets](https://external-secrets.io/latest/) - All my secrets are in 1Password, this pulls them into the cluster.
 5. [kubelet-csr-approver](https://github.com/postfinance/kubelet-csr-approver) - Auto approves CSRs, makes life easy.

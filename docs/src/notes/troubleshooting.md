@@ -180,7 +180,7 @@ task kubernetes:browse-pvc NS=<namespace> CLAIM=<pvc-name>
 ### Tail Logs
 
 ```bash
-stern -n <namespace> -l app=<app>
+stern -n <namespace> -l app.kubernetes.io/name=<app>
 ```
 
 ## When All Else Fails

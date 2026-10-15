@@ -4,27 +4,29 @@ Notes on Rook-Ceph management and troubleshooting.
 
 ## Checking Cluster Health
 
+The Rook toolbox pod is disabled; `ceph` runs through the `rook-ceph` kubectl plugin (`task workstation:krew` installs it).
+
 ```bash
-kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- ceph status
+kubectl rook-ceph ceph status
 ```
 
 You want to see `HEALTH_OK`. If not, check whats wrong:
 
 ```bash
-kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- ceph health detail
+kubectl rook-ceph ceph health detail
 ```
 
 Other useful commands:
 
 ```bash
 # OSD tree
-kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- ceph osd tree
+kubectl rook-ceph ceph osd tree
 
 # Pool usage
-kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- ceph df
+kubectl rook-ceph ceph df
 
 # OSD usage
-kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- ceph osd df
+kubectl rook-ceph ceph osd df
 ```
 
 ## Removing a Dead OSD
@@ -33,19 +35,19 @@ If a node died and you need to clean up the OSD (adapted from [Mirantis docs](ht
 
 ```bash
 # Check status
-kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- ceph -s
+kubectl rook-ceph ceph -s
 
 # Scale down the OSD (probably stuck in Pending if node is dead)
 kubectl -n rook-ceph scale deploy rook-ceph-osd-<ID> --replicas 0
 
 # Purge it
-kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- ceph osd purge <ID> --yes-i-really-mean-it
+kubectl rook-ceph ceph osd purge <ID> --yes-i-really-mean-it
 
 # Delete auth
-kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- ceph auth del osd.<ID>
+kubectl rook-ceph ceph auth del osd.<ID>
 
 # Remove node from CRUSH map if decomissioning
-kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- ceph osd crush remove <nodename>
+kubectl rook-ceph ceph osd crush remove <nodename>
 ```
 
 ## Cleaning a Disk
@@ -90,7 +92,7 @@ Sometimes after moving a disk between nodes, the OSD fails with permission issue
 
 1. Debug the OSD pod and grab the keyring:
    ```bash
-   kubectl -n rook-ceph debug rook-ceph-osd-<ID>-<suffix>
+   kubectl rook-ceph debug start rook-ceph-osd-<ID>
    cat /var/lib/ceph/osd/ceph-<ID>/keyring
    ```
 
@@ -105,10 +107,10 @@ Sometimes after moving a disk between nodes, the OSD fails with permission issue
 
 3. Import it:
    ```bash
-   kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- ceph auth import -i osd.export
+   kubectl rook-ceph ceph auth import -i osd.export
    ```
 
-4. Clean up the debug pod
+4. Clean up the debug pod: `kubectl rook-ceph debug stop rook-ceph-osd-<ID>`
 
 The OSD should join and cluster should recover.
 
@@ -117,21 +119,21 @@ The OSD should join and cluster should recover.
 To poke around in a PVC:
 
 ```bash
-task kubernetes:browse-pvc NS=media CLAIM=plex-config
+task kubernetes:browse-pvc NS=media CLAIM=plex
 ```
 
-This mounts it in an Alpine container for you to look around.
+This mounts it in an Alpine container for you to look around. Volume names match the app name (the VolSync component creates `<app>`); cache volumes are `<app>-cache`.
 
 ## Maintenance Mode
 
 Before doing storage maintenance, prevent Ceph from rebalancing:
 
 ```bash
-kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- ceph osd set noout
+kubectl rook-ceph ceph osd set noout
 ```
 
 Do your thing, then unset it:
 
 ```bash
-kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- ceph osd unset noout
+kubectl rook-ceph ceph osd unset noout
 ```
