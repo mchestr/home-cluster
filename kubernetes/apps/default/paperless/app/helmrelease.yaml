@@ -9,8 +9,6 @@ spec:
     kind: OCIRepository
     name: app-template
   maxHistory: 2
-  install:
-    createNamespace: true
   upgrade:
     # Runs DB migrations on upgrade; don't roll back onto a migrated schema
     strategy:
@@ -253,14 +251,6 @@ spec:
                   namespaceSelector:
                     matchLabels:
                       kubernetes.io/metadata.name: default
-                - podSelector:
-                    matchLabels:
-                      app.kubernetes.io/component: paperless-ai
-                      app.kubernetes.io/instance: paperless-ai
-                      app.kubernetes.io/name: paperless-ai
-                  namespaceSelector:
-                    matchLabels:
-                      kubernetes.io/metadata.name: ai
               ports:
                 - protocol: TCP
                   port: *port
