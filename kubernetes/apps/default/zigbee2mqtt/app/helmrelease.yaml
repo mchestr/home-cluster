@@ -24,8 +24,6 @@ spec:
               TZ: America/Vancouver
               ZIGBEE2MQTT_DATA: /data
               ZIGBEE2MQTT_CONFIG_ADVANCED_LAST_SEEN: ISO_8601
-              ZIGBEE2MQTT_CONFIG_ADVANCED_LEGACY_API: "false"
-              ZIGBEE2MQTT_CONFIG_ADVANCED_LEGACY_AVAILABILITY_PAYLOAD: "false"
               ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_LEVEL: info
               ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_OUTPUT: '["console"]'
               ZIGBEE2MQTT_CONFIG_ADVANCED_BAUDRATE: 115200
@@ -33,9 +31,7 @@ spec:
               ZIGBEE2MQTT_CONFIG_ADVANCED_CHANNEL: 21
               ZIGBEE2MQTT_CONFIG_AVAILABILITY_ACTIVE_TIMEOUT: 60
               ZIGBEE2MQTT_CONFIG_AVAILABILITY_PASSIVE_TIMEOUT: 2000
-              ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_LEGACY: "false"
               ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_RETAIN: "true"
-              ZIGBEE2MQTT_CONFIG_EXPERIMENTAL_NEW_API: "true"
               ZIGBEE2MQTT_CONFIG_FRONTEND_ENABLED: "true"
               ZIGBEE2MQTT_CONFIG_FRONTEND_PORT: 8080
               ZIGBEE2MQTT_CONFIG_FRONTEND_URL: https://zigbee.chestr.dev
@@ -51,8 +47,6 @@ spec:
             envFrom:
               - secretRef:
                   name: zigbee2mqtt-secret
-            securityContext:
-              privileged: true
 
     service:
       app:
