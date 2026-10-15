@@ -12,9 +12,9 @@ resource "cloudflare_ruleset" "chestr-dev-rulesets" {
     #   enabled     = true
     # },
     {
-      expression  = "(not ip.geoip.country in {\"CA\" \"US\" \"CN\"})"
+      expression  = "(not ip.geoip.country in {\"CA\" \"US\"})"
       action      = "block"
-      description = "Block all countries except CA,US,CN"
+      description = "Block all countries except CA,US"
       enabled     = true
     }
   ]
