@@ -80,7 +80,6 @@ access_control:
         - paperless.chestr.dev
         - tautulli.chestr.dev
         - thelounge.chestr.dev
-        - rook.chestr.dev
         - sh.chestr.dev
       policy: bypass
     - domain:
