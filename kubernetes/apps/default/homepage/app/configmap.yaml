@@ -16,7 +16,7 @@ data:
     # https://pictogrammers.com/library/mdi/
     # https://simpleicons.org/
     title: Dashboard
-    favicon: https://github.com/walkxcode/dashboard-icons/blob/main/png/heimdall.png
+    favicon: https://raw.githubusercontent.com/homarr-labs/dashboard-icons/main/png/heimdall.png
     theme: dark
     headerStyle: clean
     hideVersion: true
@@ -60,8 +60,6 @@ data:
         style: row
         columns: 4
         icon: mdi-application
-  custom.css: ""
-  custom.js: ""
   bookmarks.yaml: |
     - Social:
         - Discord:
@@ -69,7 +67,7 @@ data:
               href: https://discord.com/app
         - Gmail:
             - icon: gmail.png
-              href: http://gmail.com
+              href: https://mail.google.com
         - Reddit:
             - icon: reddit.png
               href: https://reddit.com
