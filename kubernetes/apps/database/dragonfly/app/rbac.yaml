@@ -11,7 +11,7 @@ rules:
     resources: ["events"]
     verbs: ["create", "patch"]
   - apiGroups: [""]
-    resources: ["pods", "services", "configmaps", "poddisruptionbudgets"]
+    resources: ["pods", "services", "configmaps"]
     verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
   - apiGroups: ["apps"]
     resources: ["statefulsets"]
