@@ -15,12 +15,10 @@ rules:
     resources: [helmrepositories, ocirepositories]
     verbs: [get, list, watch, patch]
 ---
-# Named after the role it binds: a binding's roleRef is immutable, so moving the
-# ServiceAccount off cluster-admin needs a new binding (Flux prunes the old one).
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: home-cluster-runner-flux-sources
+  name: home-cluster-runner
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
