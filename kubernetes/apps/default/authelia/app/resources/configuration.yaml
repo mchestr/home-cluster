@@ -71,7 +71,6 @@ access_control:
         - atuin.chestr.dev
         - autobrr.chestr.dev
         - grafana.chestr.dev
-        - homepage.chestr.dev
         - irc.chestr.dev
         - jellyfin.chestr.dev
         - play.mikeflix.lol
