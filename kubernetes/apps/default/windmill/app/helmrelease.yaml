@@ -35,7 +35,7 @@ spec:
               - secretRef:
                   name: windmill-initdb-secret
           - name: init-grants
-            image: ghcr.io/onedr0p/postgres-init:16
+            image: ghcr.io/home-operations/postgres-init:18
             command:
               - /bin/bash
               - -c
