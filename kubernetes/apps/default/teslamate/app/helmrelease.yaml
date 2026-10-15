@@ -33,6 +33,12 @@ spec:
             image:
               repository: teslamate/teslamate
               tag: 4.3.0
+            resources:
+              requests:
+                memory: 250Mi
+                cpu: 50m
+              limits:
+                memory: 500Mi
             env:
               TZ: &tz America/Vancouver
               DISABLE_MQTT: "false"
@@ -100,10 +106,3 @@ spec:
           - backendRefs:
               - name: *app
                 port: *port
-
-    resources:
-      requests:
-        memory: 250Mi
-        cpu: 50m
-      limits:
-        memory: 500Mi
