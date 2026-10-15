@@ -45,7 +45,7 @@ jobs:
           ref: "${{ matrix.branches == 'default' && github.event.repository.default_branch || '' }}"
 
       - name: Gather Images
-        uses: docker://ghcr.io/allenporter/flux-local:v8.4.0
+        uses: docker://ghcr.io/allenporter/flux-local:v8.4.0@sha256:c0be852e30f299ce6a220cc992b0c21a2a0b0684cc17713b9d718e18d9c8beff
         with:
           args: >-
             get cluster
@@ -90,7 +90,8 @@ jobs:
           echo '```' >> $GITHUB_STEP_SUMMARY
 
   pull:
-    if: ${{ needs.pre-job.outputs.any_changed == 'true' && needs.compare.outputs.images != '[]' }}
+    # Self-hosted runner with node credentials: never for a fork's pull request
+    if: ${{ needs.pre-job.outputs.any_changed == 'true' && needs.compare.outputs.images != '[]' && github.event.pull_request.head.repo.full_name == github.repository }}
     name: Image Pull - Pull Images
     runs-on: home-cluster-runner
     needs: ["pre-job", "compare"]
