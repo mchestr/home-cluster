@@ -55,7 +55,8 @@ jobs:
     name: Helm Repo Sync - Sync Helm Repos
     needs: ["pre-job", "extract"]
     runs-on: home-cluster-runner
-    if: ${{ needs.pre-job.outputs.any_changed == 'true' && needs.extract.outputs.repos != '[]' }}
+    # Self-hosted runner with cluster credentials: never for a fork's pull request
+    if: ${{ needs.pre-job.outputs.any_changed == 'true' && needs.extract.outputs.repos != '[]' && github.event.pull_request.head.repo.full_name == github.repository }}
     steps:
       - name: Install flux
         run: curl -fsSL https://fluxcd.io/install.sh | bash
