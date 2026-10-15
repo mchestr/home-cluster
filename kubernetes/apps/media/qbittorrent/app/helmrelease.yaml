@@ -28,6 +28,10 @@ spec:
               QBT_WEBUI_PORT: &port 8080
               QBT_TORRENTING_PORT: &bittorrentPort 50413
               QBT_Preferences__WebUI__AlternativeUIEnabled: false
+              # The pod CIDR is whitelisted so Envoy (after Authelia) and the in-cluster
+              # clients that carry no credentials (cross-seed, tqm, the homepage widget)
+              # reach the API without a second login. Any pod can therefore use the API:
+              # keep the HTTP port off the LoadBalancer and off any other Service.
               QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
               QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
                 10.244.0.0/16, 192.168.0.0/16, 10.0.40.0/24
@@ -40,7 +44,7 @@ spec:
               QBT_BitTorrent__Session__InterfaceName: eth0
               CROSS_SEED_ENABLED: true
               CROSS_SEED_HOST: cross-seed.media.svc.cluster.local
-              CROSS_SEED_PORT: &cross-seed-port 2468
+              CROSS_SEED_PORT: 2468
               CROSS_SEED_SLEEP_INTERVAL: 0
             envFrom:
               - secretRef:
@@ -81,18 +85,19 @@ spec:
     service:
       app:
         controller: *app
+        ports:
+          http:
+            port: *port
+      # Only the BitTorrent port is exposed on the LAN; the WebUI is reached through the Authelia route.
+      bittorrent:
+        controller: *app
         type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: 10.0.20.80
         ports:
-          http:
-            port: *port
           bittorrent:
-            enabled: true
             port: *bittorrentPort
             protocol: TCP
-          cross-seed:
-            port: *cross-seed-port
 
     route:
       app:
@@ -116,8 +121,6 @@ spec:
     persistence:
       config:
         existingClaim: *app
-      cross-seeds:
-        type: emptyDir
       data:
         type: nfs
         server: nebula.chestr.dev
@@ -130,10 +133,3 @@ spec:
         defaultMode: 0775
         globalMounts:
           - readOnly: true
-      secret-file:
-        type: secret
-        name: cross-seed-secret
-        globalMounts:
-          - path: /config/config.js
-            subPath: config.js
-            readOnly: true
