@@ -76,3 +76,32 @@ spec:
         globalMounts:
           - path: /config/users
             subPath: users
+
+    networkpolicies:
+      # Only the external gateway reaches this pod.
+      app:
+        controller: radicale
+        policyTypes: [Ingress]
+        rules:
+          ingress:
+            - from:
+                - namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: networking
+                  podSelector:
+                    matchLabels:
+                      gateway.envoyproxy.io/owning-gateway-name: envoy-external
+              ports:
+                - protocol: TCP
+                  port: *port
+      # Cross-node gateway traffic is SNATed to the node, which Cilium sees as the
+      # kube-apiserver entity on this all-control-plane cluster (see ferry-watch).
+      cilium:
+        type: cilium
+        controller: radicale
+        ingress:
+          - fromEntities: [kube-apiserver]
+            toPorts:
+              - ports:
+                  - port: "5232"
+                    protocol: TCP

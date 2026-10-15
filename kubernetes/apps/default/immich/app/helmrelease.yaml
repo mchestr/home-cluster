@@ -183,3 +183,35 @@ spec:
         path: /var/nfs/shared/cluster/apps/immich
         globalMounts:
           - path: /usr/src/app/upload
+
+    networkpolicies:
+      # Only the external gateway reaches this pod, plus the in-cluster callers listed.
+      app:
+        controller: immich
+        policyTypes: [Ingress]
+        rules:
+          ingress:
+            - from:
+                - namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: networking
+                  podSelector:
+                    matchLabels:
+                      gateway.envoyproxy.io/owning-gateway-name: envoy-external
+                - podSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: homepage
+              ports:
+                - protocol: TCP
+                  port: *port
+      # Cross-node gateway traffic is SNATed to the node, which Cilium sees as the
+      # kube-apiserver entity on this all-control-plane cluster (see ferry-watch).
+      cilium:
+        type: cilium
+        controller: immich
+        ingress:
+          - fromEntities: [kube-apiserver]
+            toPorts:
+              - ports:
+                  - port: "2283"
+                    protocol: TCP

@@ -137,3 +137,44 @@ spec:
           - path: /app/config/logs
       tmp:
         type: emptyDir
+
+    networkpolicies:
+      # Only the external gateway reaches this pod, plus the in-cluster callers listed.
+      app:
+        controller: jellyseerr
+        policyTypes: [Ingress]
+        rules:
+          ingress:
+            - from:
+                - namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: networking
+                  podSelector:
+                    matchLabels:
+                      gateway.envoyproxy.io/owning-gateway-name: envoy-external
+                - namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: default
+                  podSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: homepage
+                - namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: ai
+                  podSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: openclaw
+              ports:
+                - protocol: TCP
+                  port: *port
+      # Cross-node gateway traffic is SNATed to the node, which Cilium sees as the
+      # kube-apiserver entity on this all-control-plane cluster (see ferry-watch).
+      cilium:
+        type: cilium
+        controller: jellyseerr
+        ingress:
+          - fromEntities: [kube-apiserver]
+            toPorts:
+              - ports:
+                  - port: "5055"
+                    protocol: TCP
