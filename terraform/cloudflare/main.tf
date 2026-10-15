@@ -23,9 +23,10 @@ terraform {
   }
 }
 
-data "cloudflare_zone" "domain" {
+data "cloudflare_zone" "zone" {
+  for_each = toset(var.zones)
   filter = {
-    name = var.cluster_domain
+    name = each.value
   }
 }
 

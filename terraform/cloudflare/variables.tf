@@ -1,7 +1,7 @@
-variable "cluster_domain" {
-  type = string
-  description = "Cluster Domain Name"
-  default = "chestr.dev"
+variable "zones" {
+  type        = list(string)
+  description = "Zones served through the cluster's tunnel; every zone gets the same settings and firewall rules"
+  default     = ["chestr.dev", "mikeflix.lol"]
 }
 
 variable "cloudflare_api_token" {
