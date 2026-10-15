@@ -152,7 +152,6 @@ cluster:
     extraArgs:
       enable-aggregator-routing: true
     certSANs: ["10.0.40.2", "127.0.0.1"]
-    disablePodSecurityPolicy: true
   controllerManager:
     image: registry.k8s.io/kube-controller-manager:{{ ENV.KUBERNETES_VERSION }}
     extraArgs:
