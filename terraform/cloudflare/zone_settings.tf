@@ -1,105 +1,142 @@
-resource "cloudflare_zone_setting" "always_use_https" {
-  zone_id = data.cloudflare_zone.domain.zone_id
-  setting_id = "always_use_https"
-  value = "on"
+# One set of settings, applied to every zone in var.zones.
+locals {
+  zone_settings = {
+    always_use_https         = "on"
+    ssl                      = "strict"
+    min_tls_version          = "1.2"
+    opportunistic_encryption = "on"
+    tls_1_3                  = "zrt"
+    automatic_https_rewrites = "on"
+    browser_check            = "on"
+    challenge_ttl            = 1800
+    privacy_pass             = "on"
+    security_level           = "medium"
+    brotli                   = "on"
+    rocket_loader            = "on"
+    http3                    = "on"
+    ipv6                     = "on"
+    websockets               = "on"
+    opportunistic_onion      = "on"
+    pseudo_ipv4              = "off"
+    ip_geolocation           = "on"
+    email_obfuscation        = "on"
+    server_side_exclude      = "on"
+    hotlink_protection       = "on"
+  }
+  zone_setting_pairs = {
+    for pair in setproduct(var.zones, keys(local.zone_settings)) :
+    "${pair[0]}/${pair[1]}" => { zone = pair[0], setting = pair[1] }
+  }
 }
-resource "cloudflare_zone_setting" "ssl" {
-  zone_id = data.cloudflare_zone.domain.zone_id
-  setting_id = "ssl"
-  value = "strict"
+
+resource "cloudflare_zone_setting" "this" {
+  for_each   = local.zone_setting_pairs
+  zone_id    = data.cloudflare_zone.zone[each.value.zone].zone_id
+  setting_id = each.value.setting
+  value      = local.zone_settings[each.value.setting]
 }
-resource "cloudflare_zone_setting" "min_tls_version" {
-  zone_id = data.cloudflare_zone.domain.zone_id
-  setting_id = "min_tls_version"
-  value = "1.2"
+
+moved {
+  from = cloudflare_zone_setting.always_use_https
+  to   = cloudflare_zone_setting.this["chestr.dev/always_use_https"]
 }
-resource "cloudflare_zone_setting" "opportunistic_encryption" {
-  zone_id = data.cloudflare_zone.domain.zone_id
-  setting_id = "opportunistic_encryption"
-  value = "on"
+
+moved {
+  from = cloudflare_zone_setting.ssl
+  to   = cloudflare_zone_setting.this["chestr.dev/ssl"]
 }
-resource "cloudflare_zone_setting" "tls_1_3" {
-  zone_id = data.cloudflare_zone.domain.zone_id
-  setting_id = "tls_1_3"
-  value = "zrt"
+
+moved {
+  from = cloudflare_zone_setting.min_tls_version
+  to   = cloudflare_zone_setting.this["chestr.dev/min_tls_version"]
 }
-resource "cloudflare_zone_setting" "automatic_https_rewrites" {
-  zone_id = data.cloudflare_zone.domain.zone_id
-  setting_id = "automatic_https_rewrites"
-  value = "on"
+
+moved {
+  from = cloudflare_zone_setting.opportunistic_encryption
+  to   = cloudflare_zone_setting.this["chestr.dev/opportunistic_encryption"]
 }
-resource "cloudflare_zone_setting" "browser_check" {
-  zone_id = data.cloudflare_zone.domain.zone_id
-  setting_id = "browser_check"
-  value = "on"
+
+moved {
+  from = cloudflare_zone_setting.tls_1_3
+  to   = cloudflare_zone_setting.this["chestr.dev/tls_1_3"]
 }
-resource "cloudflare_zone_setting" "challenge_ttl" {
-  zone_id = data.cloudflare_zone.domain.zone_id
-  setting_id = "challenge_ttl"
-  value = 1800
+
+moved {
+  from = cloudflare_zone_setting.automatic_https_rewrites
+  to   = cloudflare_zone_setting.this["chestr.dev/automatic_https_rewrites"]
 }
-resource "cloudflare_zone_setting" "privacy_pass" {
-  zone_id = data.cloudflare_zone.domain.zone_id
-  setting_id = "privacy_pass"
-  value = "on"
+
+moved {
+  from = cloudflare_zone_setting.browser_check
+  to   = cloudflare_zone_setting.this["chestr.dev/browser_check"]
 }
-resource "cloudflare_zone_setting" "security_level" {
-  zone_id = data.cloudflare_zone.domain.zone_id
-  setting_id = "security_level"
-  value = "medium"
+
+moved {
+  from = cloudflare_zone_setting.challenge_ttl
+  to   = cloudflare_zone_setting.this["chestr.dev/challenge_ttl"]
 }
-resource "cloudflare_zone_setting" "brotli" {
-  zone_id = data.cloudflare_zone.domain.zone_id
-  setting_id = "brotli"
-  value = "on"
+
+moved {
+  from = cloudflare_zone_setting.privacy_pass
+  to   = cloudflare_zone_setting.this["chestr.dev/privacy_pass"]
 }
-resource "cloudflare_zone_setting" "rocket_loader" {
-  zone_id = data.cloudflare_zone.domain.zone_id
-  setting_id = "rocket_loader"
-  value = "on"
+
+moved {
+  from = cloudflare_zone_setting.security_level
+  to   = cloudflare_zone_setting.this["chestr.dev/security_level"]
 }
-resource "cloudflare_zone_setting" "http3" {
-  zone_id = data.cloudflare_zone.domain.zone_id
-  setting_id = "http3"
-  value = "on"
+
+moved {
+  from = cloudflare_zone_setting.brotli
+  to   = cloudflare_zone_setting.this["chestr.dev/brotli"]
 }
-resource "cloudflare_zone_setting" "ipv6" {
-  zone_id = data.cloudflare_zone.domain.zone_id
-  setting_id = "ipv6"
-  value = "on"
+
+moved {
+  from = cloudflare_zone_setting.rocket_loader
+  to   = cloudflare_zone_setting.this["chestr.dev/rocket_loader"]
 }
-resource "cloudflare_zone_setting" "websockets" {
-  zone_id = data.cloudflare_zone.domain.zone_id
-  setting_id = "websockets"
-  value = "on"
+
+moved {
+  from = cloudflare_zone_setting.http3
+  to   = cloudflare_zone_setting.this["chestr.dev/http3"]
 }
-resource "cloudflare_zone_setting" "opportunistic_onion" {
-  zone_id = data.cloudflare_zone.domain.zone_id
-  setting_id = "opportunistic_onion"
-  value = "on"
+
+moved {
+  from = cloudflare_zone_setting.ipv6
+  to   = cloudflare_zone_setting.this["chestr.dev/ipv6"]
 }
-resource "cloudflare_zone_setting" "pseudo_ipv4" {
-  zone_id = data.cloudflare_zone.domain.zone_id
-  setting_id = "pseudo_ipv4"
-  value = "off"
+
+moved {
+  from = cloudflare_zone_setting.websockets
+  to   = cloudflare_zone_setting.this["chestr.dev/websockets"]
 }
-resource "cloudflare_zone_setting" "ip_geolocation" {
-  zone_id = data.cloudflare_zone.domain.zone_id
-  setting_id = "ip_geolocation"
-  value = "on"
+
+moved {
+  from = cloudflare_zone_setting.opportunistic_onion
+  to   = cloudflare_zone_setting.this["chestr.dev/opportunistic_onion"]
 }
-resource "cloudflare_zone_setting" "email_obfuscation" {
-  zone_id = data.cloudflare_zone.domain.zone_id
-  setting_id = "email_obfuscation"
-  value = "on"
+
+moved {
+  from = cloudflare_zone_setting.pseudo_ipv4
+  to   = cloudflare_zone_setting.this["chestr.dev/pseudo_ipv4"]
 }
-resource "cloudflare_zone_setting" "server_side_exclude" {
-  zone_id = data.cloudflare_zone.domain.zone_id
-  setting_id = "server_side_exclude"
-  value = "on"
+
+moved {
+  from = cloudflare_zone_setting.ip_geolocation
+  to   = cloudflare_zone_setting.this["chestr.dev/ip_geolocation"]
 }
-resource "cloudflare_zone_setting" "hotlink_protection" {
-  zone_id = data.cloudflare_zone.domain.zone_id
-  setting_id = "hotlink_protection"
-  value = "on"
+
+moved {
+  from = cloudflare_zone_setting.email_obfuscation
+  to   = cloudflare_zone_setting.this["chestr.dev/email_obfuscation"]
+}
+
+moved {
+  from = cloudflare_zone_setting.server_side_exclude
+  to   = cloudflare_zone_setting.this["chestr.dev/server_side_exclude"]
+}
+
+moved {
+  from = cloudflare_zone_setting.hotlink_protection
+  to   = cloudflare_zone_setting.this["chestr.dev/hotlink_protection"]
 }

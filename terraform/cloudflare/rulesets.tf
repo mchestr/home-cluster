@@ -1,9 +1,11 @@
-resource "cloudflare_ruleset" "chestr-dev-rulesets" {
+# The same country allowlist on every zone served through the tunnel.
+resource "cloudflare_ruleset" "firewall" {
+  for_each    = data.cloudflare_zone.zone
   name        = "domain rulesets"
   kind        = "zone"
   phase       = "http_request_firewall_custom"
-  description = "chestr.dev rulesets"
-  zone_id     = data.cloudflare_zone.domain.zone_id
+  description = "${each.key} rulesets"
+  zone_id     = each.value.zone_id
   rules = [
     # {
     #   expression  = "(cf.client.bot) or (cf.threat_score gt 14)"
@@ -20,12 +22,17 @@ resource "cloudflare_ruleset" "chestr-dev-rulesets" {
   ]
 }
 
+moved {
+  from = cloudflare_ruleset.chestr-dev-rulesets
+  to   = cloudflare_ruleset.firewall["chestr.dev"]
+}
+
 resource "cloudflare_ruleset" "chestr-dev-config-settings" {
   name        = "configuration rules"
   kind        = "zone"
   phase       = "http_config_settings"
   description = "chestr.dev configuration rules"
-  zone_id     = data.cloudflare_zone.domain.zone_id
+  zone_id     = data.cloudflare_zone.zone["chestr.dev"].zone_id
   rules = [
     {
       # Ferry Watch pins its pages' scripts with CSP hashes; Rocket Loader and email obfuscation rewrite the HTML.
