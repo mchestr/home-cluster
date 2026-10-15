@@ -1,6 +1,6 @@
 # Rook Ceph
 
-A collection of useful procedures to troubleshoot and maintain the Rook Ceph storage system.
+A collection of useful procedures to troubleshoot and maintain the Rook Ceph storage system. The toolbox pod is disabled, so `ceph` runs through the `rook-ceph` kubectl plugin (`kubectl rook-ceph ceph ...`). The same procedures are in the book under [Storage Operations](../../../../docs/src/notes/storage-operations.md).
 
 ## Remove OSD
 
@@ -8,19 +8,19 @@ If the node is already dead, follow these steps to clean up the OSD. Procedure a
 
 ```bash
 # Get status of Ceph cluster
-kubectl -n rook-ceph ceph -s
+kubectl rook-ceph ceph -s
 
 # Scale OSD down (should be stuck in Pending if node is dead)
 kubectl -n rook-ceph scale deploy rook-ceph-osd-<ID> --replicas 0
 
 # Purge the OSD
-kubectl -n rook-ceph ceph osd purge <ID> --yes-i-really-mean-it
+kubectl rook-ceph ceph osd purge <ID> --yes-i-really-mean-it
 
 # Delete authentication
-kubectl -n rook-ceph ceph auth del osd.<ID>
+kubectl rook-ceph ceph auth del osd.<ID>
 
 # Remove dead node
-kubectl -n rook-ceph ceph osd crush remove <nodename>
+kubectl rook-ceph ceph osd crush remove <nodename>
 ```
 
 ## Clean Rook Directory on Storage Device
@@ -61,7 +61,7 @@ This issue can occur after moving a storage device from one node to another, esp
 1. Start a debug pod for the OSD having issues:
 
 ```bash
-kubectl -n rook-ceph debug stop rook-ceph-osd-<ID>
+kubectl rook-ceph debug start rook-ceph-osd-<ID>
 ```
 
 2. Exec into the debug pod and retrieve the keyring:
@@ -83,13 +83,13 @@ caps osd = "allow *"
 4. Import it into Ceph:
 
 ```bash
-kubectl -n rook-ceph ceph auth import -i osd.export
+kubectl rook-ceph ceph auth import -i osd.export
 ```
 
 5. Clean up the debug pod:
 
 ```bash
-kubectl -n rook-ceph debug stop rook-ceph-osd-<ID>
+kubectl rook-ceph debug stop rook-ceph-osd-<ID>
 ```
 
 If successful, the OSD should join and the cluster should recover.

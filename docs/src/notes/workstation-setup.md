@@ -79,23 +79,17 @@ Installed via Krew:
 
 ### Kubeconfig
 
-The kubeconfig is at `kubernetes/kubeconfig`. Set the environment variable:
-
-```bash
-export KUBECONFIG=/path/to/home-cluster/kubernetes/kubeconfig
-```
-
-Or add to your shell profile.
+The kubeconfig is at `kubernetes/kubeconfig`. `task` sets `KUBECONFIG` for every task, and `.mise.toml` exports it (and `TALOSCONFIG`) for your shell when `mise` is installed, so nothing needs adding to a profile.
 
 ### Talos Config
 
-Talos config lives in `~/.talos/config` or wherever `TALOSCONFIG` points.
-
-Regenerate it with:
+`Taskfile.yml` points `TALOSCONFIG` at `talos/talosconfig` (git-ignored). Regenerate it from the machine CA in 1Password with:
 
 ```bash
-task talos:kubeconfig
+task talos:regen-certs
 ```
+
+`task talos:kubeconfig` regenerates the *kube*config.
 
 ### 1Password
 

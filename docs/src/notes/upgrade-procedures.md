@@ -4,11 +4,11 @@ How to upgrade Talos, Kubernetes, and everything else.
 
 ## Before You Upgrade
 
-Always a good idea to check things are healthy first. There's no Ceph toolbox pod, so run `ceph` through the operator:
+Always a good idea to check things are healthy first. There's no Ceph toolbox pod, so run `ceph` through the `rook-ceph` kubectl plugin:
 
 ```bash
 kubectl get nodes
-kubectl -n rook-ceph exec deploy/rook-ceph-operator -- ceph -c /var/lib/rook/rook-ceph/rook-ceph.config status
+kubectl rook-ceph ceph status
 ```
 
 And maybe take a manual backup of anything critical:

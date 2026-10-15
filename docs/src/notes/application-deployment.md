@@ -1,53 +1,34 @@
 # Application Deployment
 
-How to deploy apps using Flux.
+How to deploy apps using Flux. The short version is in [`AGENTS.md`](https://github.com/mchestr/home-cluster/blob/main/AGENTS.md); this page walks through it.
 
 ## Repo Structure
 
 ```
 kubernetes/
-├── flux/                    # Flux config
-├── components/             # Reusable components
-└── apps/                   # Applications by namespace
-    ├── cert-manager/
-    ├── database/
-    ├── default/
-    ├── external-secrets/
-    ├── flux-system/
-    ├── kube-system/
-    ├── media/
-    ├── networking/
-    ├── observability/
-    ├── openebs-system/
-    ├── rook-ceph/
-    ├── system-upgrade/
-    └── volsync-system/
-```
-
-## App Structure
-
-Each app follows this pattern:
-
-```
-apps/<namespace>/<app-name>/
-├── ks.yaml                 # Flux Kustomization
-└── app/
-    ├── kustomization.yaml
-    ├── helmrelease.yaml
-    └── externalsecret.yaml # If needed
+├── flux/
+│   ├── cluster/ks.yaml        # Entry point: loads meta, then every namespace under apps/
+│   └── meta/                  # CRDs and shared Helm/OCI repositories
+├── components/                # Reusable Kustomize components (common, volsync, cnpg, dragonfly)
+└── apps/<namespace>/          # One directory per namespace: actions-runner-system, ai, cert-manager,
+    │                          # database, default, external-secrets, ferry-watch, flux-system,
+    │                          # kube-system, media, networking, observability, openebs-system,
+    │                          # rook-ceph, system-upgrade, volsync-system
+    ├── kustomization.yaml     # Lists each app's ks.yaml in the namespace
+    └── <app>/
+        ├── ks.yaml            # Flux Kustomization: dependsOn, components, postBuild vars
+        └── app/
+            ├── kustomization.yaml
+            ├── helmrelease.yaml
+            ├── externalsecret.yaml   # If needed
+            └── resources/            # Config files mounted from ConfigMaps, if any
 ```
 
 ## Deploying a New App
 
-### 1. Create the Directory
+### 1. The Flux Kustomization
 
-```bash
-mkdir -p kubernetes/apps/<namespace>/<app-name>/app
-```
-
-### 2. Create the Flux Kustomization
-
-`ks.yaml`:
+`kubernetes/apps/<namespace>/<app>/ks.yaml`. The Kustomization lives in the app's namespace and deploys there with `targetNamespace`. `dependsOn` lists what must exist first (`onepassword-store` for anything with an ExternalSecret, `rook-ceph-cluster` for a PVC, `cloudnative-pg-cluster` for a database). `components` add storage, backups and databases; `postBuild.substitute` feeds them.
 
 ```yaml
 ---
@@ -55,50 +36,129 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app my-app
-  namespace: flux-system
+  namespace: &namespace default
 spec:
-  targetNamespace: default
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/volsync      # PVC named after the app + nightly restic backup to R2
+  dependsOn:
+    - name: onepassword-store
+      namespace: external-secrets
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  interval: 30m
   path: ./kubernetes/apps/default/my-app/app
+  postBuild:
+    substitute:
+      APP: *app
+      VOLSYNC_CAPACITY: 10Gi
   prune: true
+  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: false
-  interval: 30m
-  retryInterval: 1m
+    namespace: flux-system
+  targetNamespace: *namespace
   timeout: 5m
+  wait: false
 ```
 
-### 3. Create the HelmRelease
+Components and their variables:
 
-`app/helmrelease.yaml`:
+| Component | Adds | Variables |
+|---|---|---|
+| `volsync` | PVC `${APP}` + ReplicationSource/Destination to Cloudflare R2 | `APP`, `VOLSYNC_CAPACITY` (5Gi), `VOLSYNC_SCHEDULE`, `VOLSYNC_CACHE_CAPACITY`, `VOLSYNC_STORAGECLASS`, `VOLSYNC_ACCESSMODES`, `VOLSYNC_CLAIM`, `APP_UID`/`APP_GID` (must match the container user for the restore to be readable) |
+| `cnpg` | Database on the CloudNative-PG cluster, `${APP}-pguser-secret`, `${APP}-initdb-secret`, backup CronJob | `APP`, `CNPG_NAME` (postgres17). Create the credentials in 1Password first: `kubernetes/components/cnpg/README.md` |
+| `dragonfly` | A Dragonfly (Redis-compatible) instance `${APP}-dragonfly` | `APP`, `DRAGONFLY_REPLICAS` (1) |
+
+### 2. The HelmRelease
+
+Nearly every app uses the shared `app-template` chart through `chartRef`. The things the rest of the cluster relies on:
+
+- **Probes on a real health endpoint.** A failed upgrade is rolled back only if the pod fails its probes before the Helm timeout, and app-template enables no probes by default.
+- **Security context**: `runAsNonRoot` with a fixed UID/GID at the pod level, `allowPrivilegeEscalation: false`, `readOnlyRootFilesystem: true` and `capabilities.drop: [ALL]` on the container, unless the app needs a device.
+- **Resources**: a CPU request and a memory limit.
+- **Secrets** via `envFrom: secretRef` from the ExternalSecret, with `reloader.stakater.com/auto: "true"` on the controller so rotated secrets restart the pod.
+- **Routes** under `route`, default gateway `envoy-internal`.
 
 ```yaml
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: my-app
+  name: &app my-app
 spec:
   interval: 30m
-  chart:
-    spec:
-      chart: my-app
-      version: 1.0.0
-      sourceRef:
-        kind: HelmRepository
-        name: some-repo
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 2
   values:
-    # your values here
+    controllers:
+      my-app:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/example/my-app
+              tag: 1.2.3
+            envFrom:
+              - secretRef:
+                  name: my-app-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: &port 8080
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 256Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+    persistence:
+      config:
+        existingClaim: *app       # created by the volsync component
 ```
 
-Install/upgrade remediation is not set per app: `kubernetes/flux/cluster/ks.yaml` patches
-every HelmRelease so a failed upgrade is rolled back to the last good release. If the app
-runs database migrations on upgrade, opt out of rollback instead:
+Install/upgrade remediation is not set per app: `kubernetes/flux/cluster/ks.yaml` patches every HelmRelease so a failed upgrade is rolled back to the last good release. If the app runs database migrations on upgrade, opt out of rollback instead:
 
 ```yaml
 spec:
@@ -107,36 +167,65 @@ spec:
       name: RetryOnFailure
 ```
 
-### 4. Create the Kustomization
+### 3. Secrets
 
-`app/kustomization.yaml`:
+Put the values in a 1Password item and add an `ExternalSecret` (see [secrets management](secrets-management.md)):
+
+```yaml
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: my-app
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword
+  target:
+    name: my-app-secret
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        API_KEY: "{{ .MY_APP_API_KEY }}"
+  dataFrom:
+    - extract:
+        key: my-app
+```
+
+### 4. The Kustomization and the namespace list
+
+`app/kustomization.yaml` lists the files; then add `./my-app/ks.yaml` to `kubernetes/apps/<namespace>/kustomization.yaml`. New namespace directories are discovered automatically.
 
 ```yaml
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - helmrelease.yaml
+  - ./externalsecret.yaml
+  - ./helmrelease.yaml
 ```
 
-### 5. Add to Namespace
-
-Add your app to `kubernetes/apps/<namespace>/kustomization.yaml`:
-
-```yaml
-resources:
-  - ./my-app/ks.yaml
-```
-
-### 6. Commit and Push
+### 5. Commit and push
 
 ```bash
-git add kubernetes/apps/<namespace>/<app-name>
-git commit -m "feat: add my-app"
+git add kubernetes/apps/<namespace>/<app>
+git commit -m "feat(<app>): add <app>"
 git push
 ```
 
-Flux picks it up automatically.
+Open a pull request: CI builds every Kustomization with flux-local, renders the Helm diff and posts a risk assessment. Flux picks the change up when it lands on `main` (`task kubernetes:reconcile` to hurry it along).
+
+## Choosing a gateway
+
+Which gateway the route uses is a security decision:
+
+| Gateway | Reachable from | Auth in front |
+|---|---|---|
+| `envoy-internal` (default) | LAN / VPN only | Authelia (two-factor for `admin`, see `kubernetes/apps/default/authelia/app/resources/configuration.yaml`) |
+| `envoy-external` | The internet, through the Cloudflare tunnel | None: the app must have its own login |
+
+Only put an app on `envoy-external` if it authenticates users itself (OIDC through Authelia, or its own accounts), and give it a NetworkPolicy that admits only that gateway (copy the one in `kubernetes/apps/default/home-assistant/app/helmrelease.yaml`). Apps whose own login should replace the Authelia prompt on the internal gateway go in the `bypass` list in the Authelia configuration.
 
 ## Managing Apps
 
@@ -150,84 +239,20 @@ task kubernetes:reconcile
 
 ```bash
 flux get hr -n <namespace> <app>
-flux get ks <app>
+flux get ks -n <namespace> <app>
 kubectl get pods -n <namespace> -l app.kubernetes.io/name=<app>
 ```
 
 ### Suspend/Resume
 
 ```bash
-flux suspend ks <app>
+flux suspend ks -n <namespace> <app>
 flux suspend hr -n <namespace> <app>
 
-flux resume ks <app>
+flux resume ks -n <namespace> <app>
 flux resume hr -n <namespace> <app>
 ```
 
-## Adding Storage
-
-For Ceph storage, add a PVC:
-
-```yaml
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: my-app
-spec:
-  accessModes: ["ReadWriteOnce"]
-  storageClassName: ceph-block
-  resources:
-    requests:
-      storage: 10Gi
-```
-
-## Adding Backups
-
-Create a ReplicationSource for Volsync:
-
-```yaml
-apiVersion: volsync.backube/v1alpha1
-kind: ReplicationSource
-metadata:
-  name: my-app
-spec:
-  sourcePVC: my-app
-  trigger:
-    schedule: "0 0 * * *"  # Daily
-  restic:
-    repository: my-app-restic-secret
-    retain:
-      daily: 7
-      weekly: 4
-```
-
-## Ingress
-
-For external access, use Gateway API:
-
-```yaml
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: my-app
-spec:
-  parentRefs:
-    - name: external
-      namespace: networking
-  hostnames: ["my-app.example.com"]
-  rules:
-    - backendRefs:
-        - name: my-app
-          port: 80
-```
-
-For internal only, use `internal` instead of `external`.
-
 ## Renovate
 
-Renovate watches for updates and creates PRs automatically. Just review and merge them:
-
-```bash
-task github:pr:list
-task github:pr:merge ID=<pr>
-```
+Renovate automerges minor, patch and digest updates once the risk assessment passes; majors, `0.x` minors, core infrastructure and apps with database migrations get a pull request to review. See [upgrade procedures](upgrade-procedures.md).

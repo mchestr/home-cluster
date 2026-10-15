@@ -65,12 +65,12 @@ Before doing maintenance on a node:
 1. Check things are healthy:
    ```bash
    kubectl get nodes
-   kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- ceph status
+   kubectl rook-ceph ceph status
    ```
 
 2. Tell Ceph not to rebalance:
    ```bash
-   kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- ceph osd set noout
+   kubectl rook-ceph ceph osd set noout
    ```
 
 3. Cordon and drain:
@@ -88,7 +88,7 @@ Before doing maintenance on a node:
 
 6. Unset noout:
    ```bash
-   kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- ceph osd unset noout
+   kubectl rook-ceph ceph osd unset noout
    ```
 
 ## Resetting a Node

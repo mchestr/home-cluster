@@ -1,11 +1,11 @@
 # Terraform Setup
 
-This project uses [Terraform Cloud](https://app.terraform.io/) to store the `tfstate` of the app, following patterns established by the [k8s-at-home](https://github.com/k8s-at-home) community.
+The Cloudflare workspace (`terraform/cloudflare`) stores its state in [Terraform Cloud](https://app.terraform.io/), organization `mchestr`, workspace `cloudflare`. The Cloudflare and 1Password Connect credentials come from workspace variables.
 
-## Getting Started
-
-To initialize Terraform Cloud, run the following command in each module:
+Run it through the Taskfile:
 
 ```bash
-terraform init
+task terraform:cf:init
+task terraform:cf:plan
+task terraform:cf:apply
 ```

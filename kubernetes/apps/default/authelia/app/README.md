@@ -2,22 +2,23 @@
 
 ## Populate Secrets for a New App
 
-Use the following script to generate and store OAuth2 secrets for a new application:
+Generate an OIDC client id, secret and secret hash with the Authelia version the cluster runs (the tag in `helmrelease.yaml`), and store them in the `authelia` item in 1Password. The generated values are passed straight to `op`; they never reach the screen or your shell history.
 
 ```bash
-# Set the application name
-export APP=AUTOBRR_TEST
+export APP=MYAPP              # upper-case prefix used in externalsecret.yaml
+AUTHELIA=authelia/authelia:4.39.28
 
-# Generate a client ID
-CLIENT_ID=$(docker run --rm authelia/authelia:latest authelia crypto rand --length 72 --charset rfc3986 | awk '{print $3}')
+CLIENT_ID="$(docker run --rm "$AUTHELIA" authelia crypto rand --length 72 --charset rfc3986 | awk '/^Random Value:/ {print $3}')"
+SECRET_OUT="$(docker run --rm "$AUTHELIA" authelia crypto hash generate argon2 --random --random.length 64 --random.charset alphanumeric)"
+CLIENT_SECRET="$(printf '%s\n' "$SECRET_OUT" | awk '/^Random Password:/ {print $3}')"
+CLIENT_SECRET_HASH="$(printf '%s\n' "$SECRET_OUT" | awk '/^Digest:/ {print $2}')"
+case "$CLIENT_SECRET_HASH" in '$argon2id$'*) echo "ok" ;; *) echo "no hash: stop"; exit 1 ;; esac
 
-# Generate client secret and hash
-CLIENT_SECRET_OUTPUT=$(docker run authelia/authelia:latest authelia crypto hash generate argon2 --random --random.length 64 --random.charset alphanumeric)
-CLIENT_SECRET=$(echo $CLIENT_SECRET_OUTPUT | cut -f 3 -d ' ')
-CLIENT_SECRET_HASH=$(echo $CLIENT_SECRET_OUTPUT | sed '2p;d' | cut -f 2 -d ' ')
-
-# Store credentials in 1Password
-op item edit authelia "${APP}_OAUTH_CLIENT_ID[password]=${CLIENT_ID}"
-op item edit authelia "${APP}_OAUTH_CLIENT_SECRET[password]=${CLIENT_SECRET}"
-op item edit authelia "${APP}_OAUTH_CLIENT_SECRET_HASH[password]=${CLIENT_SECRET_HASH}"
+op item edit authelia --vault kubernetes \
+  "${APP}_OAUTH_CLIENT_ID[password]=$CLIENT_ID" \
+  "${APP}_OAUTH_CLIENT_SECRET[password]=$CLIENT_SECRET" \
+  "${APP}_OAUTH_CLIENT_SECRET_HASH[password]=$CLIENT_SECRET_HASH" >/dev/null
+unset CLIENT_ID SECRET_OUT CLIENT_SECRET CLIENT_SECRET_HASH
 ```
+
+Then add the three keys to `externalsecret.yaml`, the client to `resources/configuration.yaml` (Authelia gets the `_HASH`, the app gets the plain secret), and an access rule or `authorization_policies` entry for the groups that may use it. `kubernetes/apps/ferry-watch/ferry-watch/README.md` is a complete worked example.

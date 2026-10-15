@@ -47,6 +47,8 @@ flowchart TB
     subgraph Services["K8s Services (10.0.20.0/24)"]
         MQTT["Mosquitto MQTT<br/>10.0.20.50"]
         Plex["Plex<br/>10.0.20.110"]
+        QBT["qBittorrent<br/>10.0.20.80"]
+        Frigate2["Frigate streams<br/>10.0.20.60"]
         Jellyfin["Jellyfin<br/>10.0.20.70"]
         PG["PostgreSQL<br/>10.0.20.17"]
         Envoy["Envoy Gateway<br/>External: 10.0.20.200<br/>Internal: 10.0.20.100"]
@@ -94,7 +96,7 @@ flowchart TB
     class NAS storage
     class CEPH tbring
     class HA,Frigate,ESPHome,Zigbee,ZWave iot
-    class MQTT,Plex,Jellyfin,PG,Envoy service
+    class MQTT,Plex,QBT,Frigate2,Jellyfin,PG,Envoy service
     class Devices homelan
 ```
 
@@ -204,7 +206,8 @@ Which gateway an app's `HTTPRoute` uses decides who can reach it and what protec
   - `bypass` for apps with their own login
   - deny for everything else
 - **External** apps have no Authelia in front, so only apps with solid authentication of their own go there (Plex, Immich, Home Assistant, Authelia itself, …). Several of them use Authelia as an OIDC provider for their login. Admin UIs, shells and editors should never be on the external gateway.
-- Each app's NetworkPolicy only admits the Envoy pods of the gateway it uses.
+- Apps on `envoy-external` should carry a NetworkPolicy that admits only that gateway's Envoy pods (plus a CiliumNetworkPolicy for the `kube-apiserver` entity, since cross-node gateway traffic is SNATed to a control-plane node). `home-assistant` and `ferry-watch` are the reference implementations; the rest are being brought in line.
+- Home Assistant, Frigate, ESPHome, matter-server and govee2mqtt also get a second interface on the IoT VLAN through Multus (`networking/multus/config/iot.yaml`). On that leg there is no gateway and no NetworkPolicy, so IoT devices reach those pods directly on their `10.0.10.x` addresses; what they may reach is a UDM firewall rule, not something in this repo.
 
 **Split Horizon DNS:**
 - External-DNS operator syncs HTTPRoute hostnames to both Cloudflare and UDM

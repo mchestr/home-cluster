@@ -8,7 +8,12 @@ How I handle secrets using External Secrets and 1Password.
 1Password -> 1Password Connect -> External Secrets Operator -> Kubernetes Secrets
 ```
 
-All my secrets live in 1Password. The External Secrets Operator pulls them into the cluster automatically.
+All my secrets live in the `kubernetes` vault in 1Password. The External Secrets Operator pulls them into the cluster automatically. Two things sit outside that flow:
+
+- Talos machine secrets and the bootstrap secrets are rendered with `op inject` (`op://kubernetes/...` references in `talos/controlplane.yaml` and `bootstrap/resources.yaml`).
+- `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_TUNNEL_ID` reach every Kustomization as `${VAR}` substitutions from the `cluster-secrets` Secret (`kubernetes/components/common/secrets/`).
+
+App credentials that need generating have their own scripts: `kubernetes/apps/default/authelia/app/README.md` (OIDC clients), `kubernetes/components/cnpg/README.md` (database users).
 
 ## Adding a New Secret
 
@@ -21,16 +26,15 @@ Add a new item to 1Password with the fields you need. The item name should match
 Add this to your app's directory:
 
 ```yaml
-apiVersion: external-secrets.io/v1beta1
+apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
   name: my-app-secret
   namespace: default
 spec:
-  refreshInterval: 1h
   secretStoreRef:
     kind: ClusterSecretStore
-    name: onepassword-connect
+    name: onepassword
   target:
     name: my-app-secret
     creationPolicy: Owner
@@ -101,10 +105,10 @@ Common issues:
 
 ```bash
 # Check pod status
-kubectl get pods -n external-secrets -l app=onepassword-connect
+kubectl get pods -n external-secrets -l app.kubernetes.io/name=onepassword
 
 # Check logs
-kubectl logs -n external-secrets -l app=onepassword-connect
+kubectl logs -n external-secrets -l app.kubernetes.io/name=onepassword
 ```
 
 ### Secret Not Updating
