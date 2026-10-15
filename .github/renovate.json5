@@ -19,7 +19,6 @@
     'github>mchestr/home-cluster//.github/renovate/semanticCommits.json5',
   ],
   ignorePaths: [
-    '**/*.sops.*',
     '**/.archive/**',
   ],
   dependencyDashboardTitle: 'Renovate Dashboard',
@@ -48,17 +47,4 @@
       '/terraform/.+\\.tf$/',
     ],
   },
-  packageRules: [
-    {
-      description: 'Loose versioning for non-semver packages',
-      matchDatasources: [
-        'docker',
-      ],
-      versioning: 'loose',
-      versionCompatibility: '^pr-(?<version>.*)$',
-      matchPackageNames: [
-        '/dashbrr/',
-      ],
-    },
-  ],
 }

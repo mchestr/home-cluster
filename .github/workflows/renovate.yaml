@@ -84,17 +84,6 @@ jobs:
                 "hostType": "docker",
                 "username": "${{ github.actor }}",
                 "password": "${{ secrets.GITHUB_TOKEN }}"
-              },
-              {
-                "matchHost": "https://gitlab.com",
-                "hostType": "gitlab",
-                "token": "${{ secrets.RENOVATE_GITLAB_TOKEN }}"
-              },
-              {
-                "matchHost": "registry.gitlab.com",
-                "hostType": "docker",
-                "username": "oauth2",
-                "password": "${{ secrets.RENOVATE_GITLAB_TOKEN }}"
               }
             ]
         with:
