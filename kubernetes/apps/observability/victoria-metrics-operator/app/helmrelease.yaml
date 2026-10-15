@@ -1,0 +1,30 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: victoria-metrics-operator
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: victoria-metrics-operator
+  maxHistory: 2
+  values:
+    # Only here for the VMAlert/VMRule objects that run log alerts against VictoriaLogs
+    # (victoria-logs/app/vmalert.yaml and the per-app vmrule.yaml files). Prometheus
+    # stays the metrics backend, so the Prometheus-CRD converter stays off.
+    crds:
+      enabled: true
+      plain: true
+    operator:
+      disable_prometheus_converter: true
+    admissionWebhooks:
+      enabled: false
+    replicaCount: 1
+    resources:
+      requests:
+        cpu: 10m
+        memory: 64Mi
+      limits:
+        memory: 256Mi
