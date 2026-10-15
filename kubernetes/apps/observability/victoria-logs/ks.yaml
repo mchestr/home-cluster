@@ -8,6 +8,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: victoria-metrics-operator
+      namespace: *namespace
   interval: 30m
   path: ./kubernetes/apps/observability/victoria-logs/app
   postBuild:
