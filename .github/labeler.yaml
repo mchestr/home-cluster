@@ -1,8 +1,5 @@
 ---
 # Area
-area/ansible:
-  - changed-files:
-      - any-glob-to-any-file: ansible/**/*
 area/github:
   - changed-files:
       - any-glob-to-any-file: .github/**/*
@@ -19,6 +16,3 @@ area/terraform:
 area/talos:
   - changed-files:
       - any-glob-to-any-file: talos/**/*
-area/hack:
-  - changed-files:
-      - any-glob-to-any-file: hack/**/*
