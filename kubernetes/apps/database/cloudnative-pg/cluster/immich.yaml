@@ -61,7 +61,7 @@ spec:
   # cluster when recovering from an existing cnpg cluster
   # bootstrap:
   #   recovery:
-  #     source: &previousCluster postgres17-v1
+  #     source: &previousCluster immich-v1
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
   # externalClusters:
   #   - name: *previousCluster
