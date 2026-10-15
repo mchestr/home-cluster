@@ -15,8 +15,8 @@ spec:
         containers:
           app:
             image:
-              repository: jellyfin/jellyfin
-              tag: 10.11.11
+              repository: docker.io/jellyfin/jellyfin
+              tag: 12.2@sha256:357724bf0ae27a672c7cbaa899db2d9abeb13dbd8657ccce750258a4c059d037
             env:
               DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
               JELLYFIN_FFmpeg__probesize: 50000000
