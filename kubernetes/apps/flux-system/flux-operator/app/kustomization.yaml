@@ -9,5 +9,5 @@ configurations:
   - ./kustomizeconfig.yaml
 resources:
   - ./helmrelease.yaml
-  - ./helmrepository.yaml
+  - ./ocirepository.yaml
   - ./httproute.yaml

@@ -1,9 +1,9 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1beta2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
-  name: rook-ceph
+  name: rook-ceph-cluster
 spec:
   interval: 5m
   layerSelector:
@@ -11,4 +11,4 @@ spec:
     operation: copy
   ref:
     tag: v1.20.8
-  url: oci://ghcr.io/rook/rook-ceph
+  url: oci://ghcr.io/rook/rook-ceph-cluster

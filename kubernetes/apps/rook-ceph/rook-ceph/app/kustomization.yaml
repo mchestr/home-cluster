@@ -5,4 +5,4 @@ resources:
   - ./externalsecret.yaml
   - ./grafanadashboard.yaml
   - ./helmrelease.yaml
-  - ./helmrepository.yaml
+  - ./ocirepository.yaml
