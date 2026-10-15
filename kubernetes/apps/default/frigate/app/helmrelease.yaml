@@ -77,17 +77,23 @@ spec:
                   failureThreshold: 30
 
     service:
+      # Frigate's own auth is disabled (Authelia fronts the route and sets the proxy
+      # headers), so the HTTP ports stay on a ClusterIP and never on the LAN.
       app:
+        controller: *app
+        ports:
+          http:
+            port: &port 8971
+          unsecure:
+            port: 5000
+      # Stream ports only: RTSP restreams and WebRTC for cameras and Home Assistant.
+      streams:
         controller: *app
         type: LoadBalancer
         annotations:
           external-dns.kubernetes.io/hostname: go2rtc-streams.chestr.dev
           lbipam.cilium.io/ips: 10.0.20.60
         ports:
-          http:
-            port: &port 8971
-          unsecure:
-            port: 5000
           rtsp:
             port: 8554
           webrtc-tcp:
@@ -96,9 +102,6 @@ spec:
           webrtc-udp:
             port: 8555
             protocol: UDP
-          go2rtc:
-            port: 1984
-            protocol: TCP
 
     route:
       app:
