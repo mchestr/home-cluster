@@ -23,7 +23,7 @@ spec:
           expr: '"failed to inject" | filter app := "cross-seed" | count() rows | filter rows :> 0'
           annotations:
             description: '{{ $labels.app }} failed to inject a torrent'
-    - name: &name CrossSeedUnauthorizedAccessMiscondfiguration
+    - name: &name CrossSeedUnauthorizedAccessMisconfiguration
       type: vlogs
       interval: 5m
       rules:
