@@ -33,8 +33,8 @@ spec:
         initContainers:
           copy-soco-fix:
             image:
-              repository: busybox
-              tag: latest
+              repository: docker.io/library/busybox
+              tag: "1.38"
             command:
               - sh
               - -c
