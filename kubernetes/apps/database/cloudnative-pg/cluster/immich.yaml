@@ -6,7 +6,7 @@ metadata:
   name: immich
 spec:
   instances: 3
-  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:16.9
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:16.15-1.1.1
   primaryUpdateStrategy: unsupervised
   primaryUpdateMethod: switchover
   storage:
