@@ -4,6 +4,7 @@ set -euo pipefail
 printf "Cleaning subtitles for '%s' ...\n" "$1"
 python3 /subcleaner/subcleaner/subcleaner.py "$1" -s
 
+section=""
 case $1 in
     *movies*) section="1";;
     *shows*) section="2";;

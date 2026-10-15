@@ -33,7 +33,7 @@ spec:
             env:
               TZ: America/Vancouver
               ASR_MODEL: small # tiny, base, small, medium, large, large-v1, large-v2, large-v3, and turbo
-              ASR_ENGINEL: faster_whisper # openai_whisper, faster_whisper
+              ASR_ENGINE: faster_whisper # openai_whisper, faster_whisper
             resources:
               limits:
                 memory: 10Gi
