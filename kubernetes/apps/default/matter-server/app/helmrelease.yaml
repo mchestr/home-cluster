@@ -42,7 +42,6 @@ spec:
               MATTER_SERVER__INSTANCE_NAME: "{{ .Release.Name }}"
               MATTER_SERVER__PORT: &port 5580
               MATTER_SERVER__APPLICATION_URL: &host "{{ .Release.Name }}.chestr.dev"
-              MATTER_SERVER__LOG_LEVEL: info
             args:
               - --storage-path=/data
               - --primary-interface=net1
