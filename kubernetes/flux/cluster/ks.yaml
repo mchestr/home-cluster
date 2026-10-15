@@ -32,7 +32,7 @@ spec:
     namespace: flux-system
   wait: false
   patches:
-    - # Add Sops decryption to child Kustomizations
+    - # Make the cluster-secrets variables available to every child Kustomization
       patch: |-
         apiVersion: kustomize.toolkit.fluxcd.io/v1
         kind: Kustomization
