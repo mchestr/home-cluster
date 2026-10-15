@@ -21,11 +21,6 @@ spec:
           - name: alertname
             value: Watchdog
             matchType: =
-      - receiver: pushover
-        matchers:
-          - name: severity
-            value: critical
-            matchType: =
     groupBy:
       - alertname
       - cluster
