@@ -85,6 +85,10 @@ spec:
     service:
       app:
         controller: *app
+        # Keep the bare "qbittorrent" name (app-template suffixes the identifier once a
+        # controller has more than one Service): cross-seed, tqm, the homepage widget and
+        # the *arr download clients all point at qbittorrent.media.svc.cluster.local.
+        forceRename: *app
         ports:
           http:
             port: *port
