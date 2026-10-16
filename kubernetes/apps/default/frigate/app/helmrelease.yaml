@@ -80,6 +80,10 @@ spec:
       # headers), so the HTTP ports stay on a ClusterIP and never on the LAN.
       app:
         controller: *app
+        # Keep the bare "frigate" name (app-template suffixes the identifier once a
+        # controller has more than one Service): the Home Assistant integration points
+        # at frigate.default.svc.cluster.local:5000.
+        forceRename: *app
         ports:
           http:
             port: &port 8971
