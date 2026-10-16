@@ -40,7 +40,7 @@ spec:
       # what the admission policy admits. Like the other two images, it must carry its digest.
       browserImage:
         repository: ghcr.io/mchestr/ferry-watch-browser
-        tag: 0.7.0@sha256:cebe0a1f175bf8195aab18bd83ce24c4e7b921e3549329a6365e7aabbeb8eb38
+        tag: 0.7.1@sha256:7a98a225f10cefe8e96a3f7451d0c500babfbf084473581bfd04fef2fb9341cd
 
       # The streamed checkout viewer (beta, 0.7.0): off, admins or everyone. ferry-web shows its Settings switch
       # and opens checkouts in it only for those it is offered to; ferry-control lets only their pods serve it.
@@ -132,7 +132,7 @@ spec:
           app:
             image: &image
               repository: ghcr.io/mchestr/ferry-watch-control
-              tag: 0.7.0@sha256:80d5154b825b9424b477ad689cccc6ee7ec8c3ae4772dad9831aa9cacca84720
+              tag: 0.7.1@sha256:5376ca94ee7bc276ae6e786db9898e477981ff670b66852b44e3951d80040709
             args: [ferry-web, run]
             env:
               FW_WEB_CONFIG: /etc/ferry-web/config.json
@@ -264,7 +264,7 @@ spec:
           app:
             image:
               repository: ghcr.io/mchestr/ferry-watch-vnc-edge
-              tag: 0.7.0@sha256:26620ef44da8fb8a021802428692f66dede661e823359d88f309c34156cebd3a
+              tag: 0.7.1@sha256:ba3d516b0bf709818971d256bc1d822cb8c8ff86002ce875459b180619bab4e6
             ports:
               - name: http
                 containerPort: &edgePort 8080
