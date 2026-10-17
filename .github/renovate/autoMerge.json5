@@ -55,6 +55,15 @@
       automerge: false,
     },
     {
+      description: "Auto merge Claude Code, which the risk assessment workflow installs from npm",
+      matchDatasources: ["npm"],
+      matchPackageNames: ["@anthropic-ai/claude-code"],
+      matchUpdateTypes: ["minor", "patch"],
+      automerge: true,
+      automergeType: "branch",
+      minimumReleaseAge: "2 days",
+    },
+    {
       description: ["Auto-merge GitHub Actions"],
       matchManagers: ["github-actions"],
       automerge: true,
