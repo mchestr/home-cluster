@@ -156,7 +156,6 @@ Talos and Kubernetes upgrades are driven by [tuppr](https://github.com/home-oper
 - `litellm-operator` + `litellm`: an OpenAI-compatible LLM proxy. Models are declared as `LiteLLMModel` resources in `kubernetes/apps/ai/litellm/app/models/` and routed to hosted providers (OpenRouter), with no local GPU inference.
 - `text-embeddings`: HuggingFace TEI serving `bge-small-en-v1.5` embeddings in-cluster.
 - `memini`: persistent agent memory at `memini.chestr.dev`. It uses `text-embeddings` for vectors and `litellm` for chat. Its `/v1` and `/mcp` paths bypass Authelia because they are protected by memini's own API key.
-- `openclaw`: an AI agent gateway at `openclaw.chestr.dev`. Its ServiceAccount is bound to `cluster-admin` and it mounts every media API key; treat anything it can fetch (web pages, logs, tickets) as untrusted input to a privileged process when changing its config or skills.
 
 ### Observability
 

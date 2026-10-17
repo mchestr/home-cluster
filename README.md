@@ -80,7 +80,6 @@ Self-hosted AI services, backed by hosted models rather than local GPUs:
 - [BerriAI/litellm](https://github.com/BerriAI/litellm): OpenAI-compatible LLM proxy, managed by [home-operations/litellm-operator](https://github.com/home-operations/litellm-operator) and routing to [OpenRouter](https://openrouter.ai).
 - [eleboucher/memini](https://github.com/eleboucher/memini): Persistent memory for AI agents.
 - [huggingface/text-embeddings-inference](https://github.com/huggingface/text-embeddings-inference): In-cluster embedding model server.
-- [openclaw/openclaw](https://github.com/openclaw/openclaw): Personal AI agent gateway.
 
 ### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f916/512.gif" alt="🤖" width="16" height="16"> Automation
 
