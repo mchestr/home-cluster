@@ -158,12 +158,6 @@ spec:
                   podSelector:
                     matchLabels:
                       app.kubernetes.io/name: homepage
-                - namespaceSelector:
-                    matchLabels:
-                      kubernetes.io/metadata.name: ai
-                  podSelector:
-                    matchLabels:
-                      app.kubernetes.io/name: openclaw
               ports:
                 - protocol: TCP
                   port: *port

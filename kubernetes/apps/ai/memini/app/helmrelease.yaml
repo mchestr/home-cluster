@@ -15,12 +15,14 @@ spec:
         containers:
           main:
             env:
+              # existing memories live in this namespace; changing it hides them
+              # from clients that don't pass one
               MEMINI_DEFAULT_NAMESPACE: openclaw
               # in-cluster TEI embeddings server (bge-small-en-v1.5, 384-dim)
               MEMINI_EMBED_BASE_URL: "http://text-embeddings.ai.svc.cluster.local:8080/v1"
               MEMINI_EMBED_MODEL: bge-small-en-v1.5
               MEMINI_EMBED_DIMS: "384"
-              # bearer token protecting /v1 and /mcp (shared with openclaw)
+              # bearer token protecting /v1 and /mcp
               MEMINI_API_KEY:
                 valueFrom:
                   secretKeyRef:
