@@ -109,13 +109,6 @@ spec:
     route:
       app:
         hostnames: ["{{ .Release.Name }}.chestr.dev"]
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Home
-          gethomepage.dev/name: Frigate
-          gethomepage.dev/icon: frigate.png
-          gethomepage.dev/widget.type: frigate
-          gethomepage.dev/widget.url: http://frigate.default.svc.cluster.local:5000
         parentRefs:
           - name: envoy-internal
             namespace: networking
