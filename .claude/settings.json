@@ -21,7 +21,25 @@
       "mcp__flux-operator__get_kubernetes_metrics",
       "mcp__flux-operator__get_kubernetes_resources",
       "mcp__flux-operator__search_flux_docs",
-      "mcp__flux-operator__set_kubeconfig_context"
+      "mcp__flux-operator__set_kubeconfig_context",
+      "Bash(kubectl get *)",
+      "Bash(kubectl logs *)",
+      "Bash(kubectl describe *)",
+      "Bash(kubectl top *)",
+      "Bash(kubectl api-resources *)",
+      "Bash(kubectl explain *)",
+      "Bash(flux get *)",
+      "Bash(kustomize build *)",
+      "Bash(flux-local test *)",
+      "Bash(flux-local build *)",
+      "Bash(flux-local diff *)",
+      "Bash(helm show *)",
+      "Bash(dig *)",
+      "Bash(ping *)",
+      "Bash(op whoami)",
+      "mcp__github__pull_request_read",
+      "mcp__claude-in-chrome__tabs_context_mcp",
+      "mcp__claude-in-chrome__get_page_text"
     ]
   }
 }
