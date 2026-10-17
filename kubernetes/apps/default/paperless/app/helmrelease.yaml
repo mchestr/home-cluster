@@ -242,7 +242,6 @@ spec:
                       kubernetes.io/metadata.name: networking
                 - podSelector:
                     matchLabels:
-                      app.kubernetes.io/component: homepage
                       app.kubernetes.io/instance: homepage
                       app.kubernetes.io/name: homepage
                   namespaceSelector:
