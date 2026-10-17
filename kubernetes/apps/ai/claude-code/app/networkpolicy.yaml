@@ -1,0 +1,14 @@
+---
+# Remote Control is outbound-only (the CLI polls Anthropic over HTTPS), so the
+# pod accepts no ingress at all. Egress stays default-allow.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: claude-code-deny-ingress
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/instance: claude-code
+      app.kubernetes.io/name: claude-code
+  policyTypes:
+    - Ingress
