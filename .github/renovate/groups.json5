@@ -31,9 +31,9 @@
       separateMinorPatch: true,
     },
     {
-      description: "Ferry Watch images: the browser pods must run the release ferry-control expects",
-      groupName: "Ferry Watch",
-      matchPackageNames: ["/^ghcr\\.io/mchestr/ferry-watch-(control|browser|vnc-edge)$/"],
+      description: "Waitlist images: the browser pods must run the release waitlist-control expects",
+      groupName: "Waitlist",
+      matchPackageNames: ["/^ghcr\\.io/mchestr/waitlist-(control|browser|vnc-edge)$/"],
       matchDatasources: ["docker"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",

@@ -1,23 +1,27 @@
 ---
-# Ferry Watch, multi-tenant (github.com/mchestr/ferry-watch, docs/multi-tenant/design-reference.md §7).
+# Waitlist, multi-tenant (github.com/mchestr/waitlist, docs/multi-tenant/design-reference.md §7).
 #
-# - ferry-web: sign-in, the API and the dashboard. No Kubernetes access.
-# - ferry-control: the hub the browser pods dial, and the fleet loop that starts and reaps them.
+# - waitlist-web: sign-in, the API and the dashboard. No Kubernetes access.
+# - waitlist-control: the hub the browser pods dial, the fleet loop that starts and reaps them, and the checks
+#   of the providers that need no browser (Buntzen Lake), which it asks waitlist-fetcher to make.
+# - waitlist-fetcher: the only process that calls such a provider's site. No secrets, no database, no API token;
+#   only waitlist-control may reach it, and it may reach only the providers' hosts (docs/waitlist/design.md §4.4).
 # - vnc-edge: the checkout host. Stock nginx, no secrets.
 # - db: a hook Job that creates the database and applies migrations before every install and upgrade.
 #
-# One browser pod per watched trip runs in the ferry-watch-browsers namespace. ferry-control builds those pods
-# itself; the rawResources below fence that namespace in. The admission policies admit only the exact pod
-# ferry-control builds, and nobody can change or enter one afterwards.
+# One browser pod per watched BC Ferries trip runs in the waitlist-browsers namespace. waitlist-control builds
+# those pods itself; the rawResources below fence that namespace in. The admission policies admit only the exact
+# pod waitlist-control builds, and nobody can change or enter one afterwards.
 #
-# ferry.* is Ferry Watch's own configuration. ferry-control's config, ferry-web's config and the admission
-# policy's parameters are all rendered from it, so they can't drift apart. Change values there, not in the
-# rendered objects. The ferry-watch repo renders this file in CI and proves the admission policies against a
-# real API server (tests/apiserver), so keep the two copies in step.
+# waitlist.* is Waitlist's own configuration. waitlist-control's, waitlist-web's and waitlist-fetcher's configs
+# and the admission policy's parameters are all rendered from it, so they can't drift apart. Change values there,
+# not in the rendered objects. The waitlist repo renders this file in CI and proves the admission policies against
+# a real API server (tests/apiserver), so keep the two copies in step: they differ only in the streamViewer: and
+# offer: lines, each deployment's own choice.
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app ferry-watch
+  name: &app waitlist
 spec:
   interval: 30m
   chartRef:
@@ -31,40 +35,59 @@ spec:
     strategy:
       name: RetryOnFailure
   values:
-    ferry:
+    waitlist:
       hosts:
-        dashboard: ferry.chestr.dev
-        checkout: ferry-checkout.chestr.dev
+        dashboard: waitlist.chestr.dev
+        checkout: waitlist-checkout.chestr.dev
 
-      # The browser pods' image. The tag is for people and Renovate; the digest is what ferry-control starts and
-      # what the admission policy admits. Like the other two images, it must carry its digest.
+      # The browser pods' image. The tag is for people and Renovate; the digest is what waitlist-control starts and
+      # what the admission policy admits. Like the other two images, it must carry its digest. A release sets the
+      # three images and control.pod.vncPubkeys in both copies at once (home-cluster's
+      # kubernetes/apps/waitlist/waitlist/README.md, Phase 0 steps 6-7).
       browserImage:
-        repository: ghcr.io/mchestr/ferry-watch-browser
-        tag: 0.7.1@sha256:7a98a225f10cefe8e96a3f7451d0c500babfbf084473581bfd04fef2fb9341cd
+        repository: ghcr.io/mchestr/waitlist-browser
+        tag: 1.0.0  # + @sha256:<digest> at Phase 0 step 6 (../README.md); the render refuses it until then
 
-      # The streamed checkout viewer (beta, 0.7.0): off, admins or everyone. ferry-web shows its Settings switch
-      # and opens checkouts in it only for those it is offered to; ferry-control lets only their pods serve it.
+      # The streamed checkout viewer (beta, 0.7.0): off, admins or everyone. waitlist-web shows its Settings switch
+      # and opens checkouts in it only for those it is offered to; waitlist-control lets only their pods serve it.
       # "off" is the kill switch: no stream links, and live streams fall back to the classic viewer within one
       # configure push. Keep it quoted: YAML reads a bare off as false. Rendered into both configs unless "off",
       # which both default to: with "off" the configs are 0.6.4's, so its images can be rolled back to as they are.
       checkout:
         streamViewer: "admins"
 
-      # ferry-control's config.json (src/ferry_watch/control/config.py). pod.image, pod.vncOrigin and (unless
+      # The providers whose watches waitlist-control checks through waitlist-fetcher (BC Ferries is always on).
+      # offer: who may create their watches, "off", "admins" or "everyone" (quoted: YAML reads a bare off as false).
+      # "off" renders nothing about the provider: no fetcher URL or httpChecks for waitlist-control, no offer for
+      # waitlist-web, no cap for waitlist-fetcher. This is the only place to set them: a fetcher or httpChecks under
+      # control, providers under web, or providers or listenPort under fetcher is refused.
+      providers:
+        buntzen:
+          offer: "admins"
+          requestsPerMinute: 12 # waitlist-control's budget (1-30)
+          fetcherPerMinute: 30 # waitlist-fetcher's own hard cap (requestsPerMinute-30)
+
+      # waitlist-fetcher's config.json (src/waitlist/fetcher/config.py). listenPort and providers are added from
+      # the Service and waitlist.providers.
+      fetcher:
+        upstreamTimeoutSeconds: 10
+
+      # waitlist-control's config.json (src/waitlist/control/config.py). pod.image, pod.vncOrigin and (unless
       # "off") checkout.streamViewer are added from browserImage, hosts.checkout and checkout.streamViewer, which is
-      # the only place to set it: a checkout.streamViewer here (or under web) is refused.
+      # the only place to set it: a checkout.streamViewer here (or under web) is refused. fetcher and httpChecks are
+      # added from waitlist.providers.
       control:
         pod:
-          hubUrl: ws://ferry-control.ferry-watch.svc.cluster.local.:8766/agent/v1
-          # The public half of FERRY_WATCH_CHECKOUT_KEY, as <keyId>:<base64url> (two, comma-separated, while
+          hubUrl: ws://waitlist-control.waitlist.svc.cluster.local.:8766/agent/v1
+          # The public half of WAITLIST_CHECKOUT_KEY, as <keyId>:<base64url> (two, comma-separated, while
           # the key rotates). See ../README.md.
-          vncPubkeys: k1:ODYaV036tlurYBPYQbL2HX40mnxBQOViEwBFwx_7wjk
+          vncPubkeys: ""  # WAITLIST_CHECKOUT_KEY's public half (k1:...) at Phase 0 step 6 (../README.md); refused until then
           sandbox: false
           # In millicores and Mi: the browser quota below is computed from them.
           cpuRequest: 200m
           podMemory: 1536Mi
           requireUserNamespace: false
-          namespace: ferry-watch-browsers
+          namespace: waitlist-browsers
         fleet:
           maxBrowsersTotal: 7
           shortCheckSlots: 1
@@ -82,8 +105,8 @@ spec:
           defaults: {}
           ceilings: {}
         roles:
-          web: ferrywatch_web
-          control: ferrywatch_control
+          web: waitlist_web
+          control: waitlist_control
         checksPerMinute: 20
         autoCart: true
         alertOnlyFares: []
@@ -91,9 +114,9 @@ spec:
         listenPort: 8766
         probePort: 9090
 
-      # ferry-web's config.json (src/ferry_watch/web/config.py). baseUrl, oidc.redirectUri and checkout.origin
+      # waitlist-web's config.json (src/waitlist/web/config.py). baseUrl, oidc.redirectUri and checkout.origin
       # are added from hosts, and (unless "off") checkout.streamViewer from checkout (a copy here is refused). The
-      # OIDC client id and every secret come from the ferry-watch Secret as files; the checkout key carries its own
+      # OIDC client id and every secret come from the waitlist Secret as files; the checkout key carries its own
       # id (k1:<key>).
       web:
         oidc:
@@ -102,8 +125,8 @@ spec:
         smtp:
           host: smtp-relay.default.svc.cluster.local.
           port: 2525
-          sender: ferry-watch@chestr.dev
-        vapidSubject: mailto:ferry-watch@chestr.dev
+          sender: waitlist@chestr.dev
+        vapidSubject: mailto:waitlist@chestr.dev
         identity:
           # The owner, by lldap username: admitted and made an admin at first sign-in.
           bootstrapAdmins:
@@ -121,36 +144,36 @@ spec:
 
     controllers:
       # No lock to hold (the outbox claims rows with SKIP LOCKED), so it rolls without downtime.
-      ferry-web:
-        forceRename: ferry-web
+      waitlist-web:
+        forceRename: waitlist-web
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
         serviceAccount:
-          identifier: ferry-web
+          identifier: waitlist-web
         containers:
           app:
             image: &image
-              repository: ghcr.io/mchestr/ferry-watch-control
-              tag: 0.7.1@sha256:5376ca94ee7bc276ae6e786db9898e477981ff670b66852b44e3951d80040709
-            args: [ferry-web, run]
+              repository: ghcr.io/mchestr/waitlist-control
+              tag: 1.0.0  # + @sha256:<digest> at Phase 0 step 6 (../README.md); the render refuses it until then
+            args: [waitlist-web, run]
             env:
-              FW_WEB_CONFIG: /etc/ferry-web/config.json
-              FW_OIDC_CLIENT_ID_FILE: /var/run/secrets/ferry-web/oidc-client-id
-              FW_OIDC_CLIENT_SECRET_FILE: /var/run/secrets/ferry-web/oidc-client-secret
-              FW_CHECKOUT_KEY_FILE: /var/run/secrets/ferry-web/checkout-key
-              FW_VAPID_KEY_FILE: /var/run/secrets/ferry-web/vapid-key
-              FW_LOG_LEVEL: &logLevel INFO
+              WL_WEB_CONFIG: /etc/waitlist-web/config.json
+              WL_OIDC_CLIENT_ID_FILE: /var/run/secrets/waitlist-web/oidc-client-id
+              WL_OIDC_CLIENT_SECRET_FILE: /var/run/secrets/waitlist-web/oidc-client-secret
+              WL_CHECKOUT_KEY_FILE: /var/run/secrets/waitlist-web/checkout-key
+              WL_VAPID_KEY_FILE: /var/run/secrets/waitlist-web/vapid-key
+              WL_LOG_LEVEL: &logLevel INFO
               PGHOST: &pgHost postgres17-rw.database.svc.cluster.local.
               PGPORT: &pgPort "5432"
-              PGDATABASE: &pgDatabase ferrywatch
+              PGDATABASE: &pgDatabase waitlist
               PGSSLMODE: &pgSslMode prefer
-              PGUSER: ferrywatch_web
+              PGUSER: waitlist_web
               PGPASSWORD:
                 valueFrom:
                   secretKeyRef:
-                    name: ferry-watch
-                    key: FERRY_WATCH_WEB_DB_PASSWORD
+                    name: waitlist
+                    key: WAITLIST_WEB_DB_PASSWORD
             ports:
               - name: http
                 containerPort: &webPort 8765
@@ -187,32 +210,32 @@ spec:
               capabilities: { drop: ["ALL"] }
 
       # One at a time (a Postgres advisory lock): a second one waits, not ready, so it must be Recreate.
-      ferry-control:
-        forceRename: ferry-control
+      waitlist-control:
+        forceRename: waitlist-control
         annotations:
           reloader.stakater.com/auto: "true"
         serviceAccount:
-          identifier: ferry-control
+          identifier: waitlist-control
         pod:
           # The only workload that talks to the API server: browser pods, and TokenReview for the hub.
           automountServiceAccountToken: true
         containers:
           app:
             image: *image
-            args: [ferry-control, run]
+            args: [waitlist-control, run]
             env:
-              FW_CONTROL_CONFIG: /etc/ferry-control/config.json
-              FW_LOG_LEVEL: *logLevel
+              WL_CONTROL_CONFIG: /etc/waitlist-control/config.json
+              WL_LOG_LEVEL: *logLevel
               PGHOST: *pgHost
               PGPORT: *pgPort
               PGDATABASE: *pgDatabase
               PGSSLMODE: *pgSslMode
-              PGUSER: ferrywatch_control
+              PGUSER: waitlist_control
               PGPASSWORD:
                 valueFrom:
                   secretKeyRef:
-                    name: ferry-watch
-                    key: FERRY_WATCH_CONTROL_DB_PASSWORD
+                    name: waitlist
+                    key: WAITLIST_CONTROL_DB_PASSWORD
             ports:
               - name: hub
                 containerPort: &hubPort 8766
@@ -248,6 +271,50 @@ spec:
                 memory: 512Mi
             securityContext: *securityContext
 
+      # Makes the requests waitlist-control sends it, to the providers' hosts only, and answers with what it parsed
+      # (src/waitlist/fetchwire.py). No PG* env, no secret, no API token, no RBAC. One replica: its rate caps are
+      # its only state, and waitlist-control retries in 30 seconds when it is away.
+      waitlist-fetcher:
+        forceRename: waitlist-fetcher
+        strategy: RollingUpdate # Kubernetes' 25 % defaults round to surge 1 / unavailable 0 for one replica
+        serviceAccount:
+          identifier: waitlist-fetcher
+        pod:
+          automountServiceAccountToken: false
+          dnsConfig:
+            options: [{ name: ndots, value: "1" }] # api.yodelpass.com resolves as itself, not via search domains
+        containers:
+          app:
+            image: *image
+            args: [waitlist-fetcher, run]
+            env:
+              WL_FETCHER_CONFIG: /etc/waitlist-fetcher/config.json
+              WL_LOG_LEVEL: *logLevel
+            ports:
+              - name: http
+                containerPort: &fetcherPort 8767
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet: { path: /livez, port: *fetcherPort }
+                  periodSeconds: 15
+                  timeoutSeconds: 2
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet: { path: /readyz, port: *fetcherPort }
+                  periodSeconds: 10
+                  timeoutSeconds: 2
+                  failureThreshold: 3
+            resources:
+              requests: { cpu: 10m, memory: 64Mi }
+              limits: { memory: 192Mi }
+            securityContext: *securityContext
+
       vnc-edge:
         forceRename: vnc-edge
         replicas: 2
@@ -263,8 +330,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/mchestr/ferry-watch-vnc-edge
-              tag: 0.7.1@sha256:ba3d516b0bf709818971d256bc1d822cb8c8ff86002ce875459b180619bab4e6
+              repository: ghcr.io/mchestr/waitlist-vnc-edge
+              tag: 1.0.0  # + @sha256:<digest> at Phase 0 step 6 (../README.md); the render refuses it until then
             ports:
               - name: http
                 containerPort: &edgePort 8080
@@ -290,9 +357,9 @@ spec:
 
       # Before every install and upgrade: create the database if it's new (the stock postgres-init, which alone
       # sees the superuser password), then apply migrations and grants as the database owner. A hook, so it
-      # reads its own copy of ferry-control's config (migrate-config).
+      # reads its own copy of waitlist-control's config (migrate-config).
       db:
-        forceRename: ferry-db
+        forceRename: waitlist-db
         type: job
         annotations:
           helm.sh/hook: pre-install,pre-upgrade
@@ -312,7 +379,7 @@ spec:
               tag: "18"
             envFrom:
               - secretRef:
-                  name: ferrywatch-initdb-secret
+                  name: waitlist-initdb-secret
             resources:
               requests:
                 cpu: 10m
@@ -323,10 +390,10 @@ spec:
         containers:
           migrate:
             image: *image
-            args: [ferry-control, migrate]
+            args: [waitlist-control, migrate]
             env:
-              FW_CONTROL_CONFIG: /etc/ferry-control/config.json
-              FW_LOG_LEVEL: *logLevel
+              WL_CONTROL_CONFIG: /etc/waitlist-control/config.json
+              WL_LOG_LEVEL: *logLevel
               PGHOST: *pgHost
               PGPORT: *pgPort
               PGDATABASE: *pgDatabase
@@ -334,12 +401,12 @@ spec:
               PGUSER:
                 valueFrom:
                   secretKeyRef:
-                    name: ferrywatch-pguser-secret
+                    name: waitlist-pguser-secret
                     key: user
               PGPASSWORD:
                 valueFrom:
                   secretKeyRef:
-                    name: ferrywatch-pguser-secret
+                    name: waitlist-pguser-secret
                     key: password
             resources:
               requests:
@@ -354,59 +421,92 @@ spec:
         runAsUser: 65532
         runAsGroup: 65532
         runAsNonRoot: true
-        # ferry-web's secret files are 0440, readable through this group.
+        # waitlist-web's secret files are 0440, readable through this group.
         fsGroup: 65532
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
 
     serviceAccount:
-      ferry-web:
-        forceRename: ferry-web
+      waitlist-web:
+        forceRename: waitlist-web
         automountServiceAccountToken: false
-      ferry-control:
-        forceRename: ferry-control
+      waitlist-control:
+        forceRename: waitlist-control
         automountServiceAccountToken: true
+      # No bindings anywhere: it holds no verb at all.
+      waitlist-fetcher:
+        forceRename: waitlist-fetcher
+        automountServiceAccountToken: false
       vnc-edge:
         forceRename: vnc-edge
         automountServiceAccountToken: false
 
     configMaps:
       control-config:
-        forceRename: ferry-control-config
-        includeChecksumInControllers: [ferry-control]
+        forceRename: waitlist-control-config
+        includeChecksumInControllers: [waitlist-control]
         data:
           config.json: &controlConfig >-
-            {{- range (list .Values.ferry.browserImage.tag (index .Values.controllers "ferry-control" "containers" "app" "image" "tag") (index .Values.controllers "vnc-edge" "containers" "app" "image" "tag")) -}}
+            {{- range (list .Values.waitlist.browserImage.tag (index .Values.controllers "waitlist-control" "containers" "app" "image" "tag") (index .Values.controllers "waitlist-fetcher" "containers" "app" "image" "tag") (index .Values.controllers "vnc-edge" "containers" "app" "image" "tag")) -}}
             {{- if not (contains "@sha256:" .) -}}
-            {{- fail "Each Ferry Watch image tag must pin its digest: <version>@sha256:<digest>" -}}
+            {{- fail "Each Waitlist image tag must pin its digest: <version>@sha256:<digest>" -}}
             {{- end -}}
             {{- end -}}
-            {{- if not .Values.ferry.control.pod.vncPubkeys -}}
-            {{- fail "ferry.control.pod.vncPubkeys: set the checkout key's public half (README.md)" -}}
+            {{- if not .Values.waitlist.control.pod.vncPubkeys -}}
+            {{- fail "waitlist.control.pod.vncPubkeys: set the checkout key's public half (README.md)" -}}
             {{- end -}}
-            {{- if not (and (hasSuffix "Mi" .Values.ferry.control.pod.podMemory) (gt (trimSuffix "Mi" .Values.ferry.control.pod.podMemory | atoi) 0)) -}}
-            {{- fail "ferry.control.pod.podMemory must be in Mi" -}}
+            {{- if not (and (hasSuffix "Mi" .Values.waitlist.control.pod.podMemory) (gt (trimSuffix "Mi" .Values.waitlist.control.pod.podMemory | atoi) 0)) -}}
+            {{- fail "waitlist.control.pod.podMemory must be in Mi" -}}
             {{- end -}}
-            {{- if not (and (hasSuffix "m" .Values.ferry.control.pod.cpuRequest) (gt (trimSuffix "m" .Values.ferry.control.pod.cpuRequest | atoi) 0)) -}}
-            {{- fail "ferry.control.pod.cpuRequest must be in millicores (200m)" -}}
+            {{- if not (and (hasSuffix "m" .Values.waitlist.control.pod.cpuRequest) (gt (trimSuffix "m" .Values.waitlist.control.pod.cpuRequest | atoi) 0)) -}}
+            {{- fail "waitlist.control.pod.cpuRequest must be in millicores (200m)" -}}
             {{- end -}}
-            {{- if not (has .Values.ferry.checkout.streamViewer (list "off" "admins" "everyone")) -}}
-            {{- fail "ferry.checkout.streamViewer must be \"off\", \"admins\" or \"everyone\" (quoted: YAML reads a bare off as false)" -}}
+            {{- if not (has .Values.waitlist.checkout.streamViewer (list "off" "admins" "everyone")) -}}
+            {{- fail "waitlist.checkout.streamViewer must be \"off\", \"admins\" or \"everyone\" (quoted: YAML reads a bare off as false)" -}}
             {{- end -}}
             {{- /* One source: "off" renders no key, so a copy under control or web would fill the gap and win. */ -}}
-            {{- if or (hasKey (.Values.ferry.control.checkout | default dict) "streamViewer") (hasKey ((.Values.ferry.web | default dict).checkout | default dict) "streamViewer") -}}
-            {{- fail "Set ferry.checkout.streamViewer only: a copy under ferry.control.checkout or ferry.web.checkout would override the kill switch" -}}
+            {{- if or (hasKey (.Values.waitlist.control.checkout | default dict) "streamViewer") (hasKey ((.Values.waitlist.web | default dict).checkout | default dict) "streamViewer") -}}
+            {{- fail "Set waitlist.checkout.streamViewer only: a copy under waitlist.control.checkout or waitlist.web.checkout would override the kill switch" -}}
+            {{- end -}}
+            {{- /* The same rule for the providers: waitlist.providers is the one place that turns one on. */ -}}
+            {{- if or (hasKey .Values.waitlist.control "fetcher") (hasKey .Values.waitlist.control "httpChecks") (hasKey (.Values.waitlist.web | default dict) "providers") (hasKey (.Values.waitlist.fetcher | default dict) "providers") (hasKey (.Values.waitlist.fetcher | default dict) "listenPort") -}}
+            {{- fail "Set waitlist.providers only: a fetcher or httpChecks under waitlist.control, providers under waitlist.web, or providers or listenPort under waitlist.fetcher would bypass it" -}}
+            {{- end -}}
+            {{- $httpChecks := dict -}}
+            {{- range $id, $p := (.Values.waitlist.providers | default dict) -}}
+            {{- if not (has $p.offer (list "off" "admins" "everyone")) -}}
+            {{- fail (printf "waitlist.providers.%s.offer must be \"off\", \"admins\" or \"everyone\" (quoted: YAML reads a bare off as false)" $id) -}}
+            {{- end -}}
+            {{- range $key := list "requestsPerMinute" "fetcherPerMinute" -}}
+            {{- $n := index $p $key -}}
+            {{- if or (kindIs "string" $n) (ne (toString (int $n)) (toString $n)) -}}
+            {{- fail (printf "waitlist.providers.%s.%s must be a whole number" $id $key) -}}
+            {{- end -}}
+            {{- end -}}
+            {{- if not (and (le 1 (int $p.requestsPerMinute)) (le (int $p.requestsPerMinute) (int $p.fetcherPerMinute)) (le (int $p.fetcherPerMinute) 30)) -}}
+            {{- fail (printf "waitlist.providers.%s: 1 <= requestsPerMinute <= fetcherPerMinute <= 30 doesn't hold" $id) -}}
+            {{- end -}}
+            {{- if ne $p.offer "off" -}}
+            {{- $_ := set $httpChecks $id (dict "requestsPerMinute" (int $p.requestsPerMinute)) -}}
+            {{- end -}}
             {{- end -}}
             {{- $added := dict "pod" (dict
-              "image" (printf "%s:%s" .Values.ferry.browserImage.repository .Values.ferry.browserImage.tag)
-              "vncOrigin" (printf "https://%s" .Values.ferry.hosts.checkout)) -}}
-            {{- if ne .Values.ferry.checkout.streamViewer "off" -}}
-            {{- $_ := set $added "checkout" (dict "streamViewer" .Values.ferry.checkout.streamViewer) -}}
+              "image" (printf "%s:%s" .Values.waitlist.browserImage.repository .Values.waitlist.browserImage.tag)
+              "vncOrigin" (printf "https://%s" .Values.waitlist.hosts.checkout)) -}}
+            {{- if ne .Values.waitlist.checkout.streamViewer "off" -}}
+            {{- $_ := set $added "checkout" (dict "streamViewer" .Values.waitlist.checkout.streamViewer) -}}
             {{- end -}}
-            {{- toPrettyJson (merge $added .Values.ferry.control) -}}
+            {{- /* "off" everywhere: no fetcher keys, so the config is BC Ferries-only, as 0.7.1's was. */ -}}
+            {{- if $httpChecks -}}
+            {{- $_ := set $added "fetcher" (dict
+              "url" (printf "http://waitlist-fetcher.%s.svc.cluster.local.:%d" .Release.Namespace (int (index .Values.service "waitlist-fetcher" "ports" "http" "port")))
+              "timeoutSeconds" 20) -}}
+            {{- $_ := set $added "httpChecks" $httpChecks -}}
+            {{- end -}}
+            {{- toPrettyJson (merge $added .Values.waitlist.control) -}}
       # The same file for the db hook, which runs before the release's own ConfigMaps exist.
       migrate-config:
-        forceRename: ferry-migrate-config
+        forceRename: waitlist-migrate-config
         includeInChecksum: false
         annotations:
           helm.sh/hook: pre-install,pre-upgrade
@@ -415,28 +515,54 @@ spec:
         data:
           config.json: *controlConfig
       web-config:
-        forceRename: ferry-web-config
-        includeChecksumInControllers: [ferry-web]
+        forceRename: waitlist-web-config
+        includeChecksumInControllers: [waitlist-web]
         data:
           config.json: >-
-            {{- $checkout := dict "origin" (printf "https://%s" .Values.ferry.hosts.checkout) -}}
-            {{- if ne .Values.ferry.checkout.streamViewer "off" -}}
-            {{- $_ := set $checkout "streamViewer" .Values.ferry.checkout.streamViewer -}}
+            {{- $checkout := dict "origin" (printf "https://%s" .Values.waitlist.hosts.checkout) -}}
+            {{- if ne .Values.waitlist.checkout.streamViewer "off" -}}
+            {{- $_ := set $checkout "streamViewer" .Values.waitlist.checkout.streamViewer -}}
+            {{- end -}}
+            {{- $added := dict
+              "baseUrl" (printf "https://%s" .Values.waitlist.hosts.dashboard)
+              "oidc" (dict "redirectUri" (printf "https://%s/auth/callback" .Values.waitlist.hosts.dashboard))
+              "checkout" $checkout -}}
+            {{- $offers := dict -}}
+            {{- range $id, $p := (.Values.waitlist.providers | default dict) -}}
+            {{- if ne $p.offer "off" -}}
+            {{- $_ := set $offers $id (dict "offer" $p.offer) -}}
+            {{- end -}}
+            {{- end -}}
+            {{- if $offers -}}
+            {{- $_ := set $added "providers" $offers -}}
+            {{- end -}}
+            {{- toPrettyJson (merge $added .Values.waitlist.web) -}}
+      # waitlist-fetcher's: a cap for each provider that isn't "off" (one it doesn't list, it refuses to fetch for).
+      fetcher-config:
+        forceRename: waitlist-fetcher-config
+        includeChecksumInControllers: [waitlist-fetcher]
+        data:
+          config.json: >-
+            {{- $limits := dict -}}
+            {{- range $id, $p := (.Values.waitlist.providers | default dict) -}}
+            {{- if ne $p.offer "off" -}}
+            {{- $_ := set $limits $id (dict "maxPerMinute" (int $p.fetcherPerMinute)) -}}
+            {{- end -}}
             {{- end -}}
             {{- toPrettyJson (merge (dict
-              "baseUrl" (printf "https://%s" .Values.ferry.hosts.dashboard)
-              "oidc" (dict "redirectUri" (printf "https://%s/auth/callback" .Values.ferry.hosts.dashboard))
-              "checkout" $checkout)
-              .Values.ferry.web) -}}
+              "listenPort" (int (index .Values.service "waitlist-fetcher" "ports" "http" "port"))
+              "providers" $limits)
+              (.Values.waitlist.fetcher | default dict)
+              (dict "maxBodyBytes" 262144)) -}}
 
     persistence:
       control-config:
         type: configMap
         identifier: control-config
         advancedMounts:
-          ferry-control:
+          waitlist-control:
             app:
-              - path: /etc/ferry-control
+              - path: /etc/waitlist-control
                 readOnly: true
       migrate-config:
         type: configMap
@@ -444,42 +570,53 @@ spec:
         advancedMounts:
           db:
             migrate:
-              - path: /etc/ferry-control
+              - path: /etc/waitlist-control
                 readOnly: true
       web-config:
         type: configMap
         identifier: web-config
         advancedMounts:
-          ferry-web:
+          waitlist-web:
             app:
-              - path: /etc/ferry-web
+              - path: /etc/waitlist-web
+                readOnly: true
+      fetcher-config:
+        type: configMap
+        identifier: fetcher-config
+        advancedMounts:
+          waitlist-fetcher:
+            app:
+              - path: /etc/waitlist-fetcher
                 readOnly: true
       web-secrets:
         type: secret
-        name: ferry-watch
+        name: waitlist
         defaultMode: 288 # 0440
         items:
-          - key: FERRY_WATCH_OAUTH_CLIENT_ID
+          - key: WAITLIST_OAUTH_CLIENT_ID
             path: oidc-client-id
-          - key: FERRY_WATCH_OAUTH_CLIENT_SECRET
+          - key: WAITLIST_OAUTH_CLIENT_SECRET
             path: oidc-client-secret
-          - key: FERRY_WATCH_CHECKOUT_KEY
+          - key: WAITLIST_CHECKOUT_KEY
             path: checkout-key
-          - key: FERRY_WATCH_VAPID_KEY
+          - key: WAITLIST_VAPID_KEY
             path: vapid-key
         advancedMounts:
-          ferry-web:
+          waitlist-web:
             app:
-              - path: /var/run/secrets/ferry-web
+              - path: /var/run/secrets/waitlist-web
                 readOnly: true
       tmp:
         type: emptyDir
         sizeLimit: 64Mi
         advancedMounts:
-          ferry-web:
+          waitlist-web:
             app:
               - path: /tmp
-          ferry-control:
+          waitlist-control:
+            app:
+              - path: /tmp
+          waitlist-fetcher:
             app:
               - path: /tmp
           vnc-edge:
@@ -490,19 +627,26 @@ spec:
               - path: /tmp
 
     service:
-      ferry-web:
-        forceRename: ferry-web
-        controller: ferry-web
+      waitlist-web:
+        forceRename: waitlist-web
+        controller: waitlist-web
         ports:
           http:
             port: *webPort
-      # The browser pods dial this (ferry.control.pod.hubUrl).
-      ferry-control:
-        forceRename: ferry-control
-        controller: ferry-control
+      # The browser pods dial this (waitlist.control.pod.hubUrl).
+      waitlist-control:
+        forceRename: waitlist-control
+        controller: waitlist-control
         ports:
           hub:
             port: *hubPort
+      # waitlist-control calls this (its config's fetcher.url, rendered from this port).
+      waitlist-fetcher:
+        forceRename: waitlist-fetcher
+        controller: waitlist-fetcher
+        ports:
+          http:
+            port: *fetcherPort
       vnc-edge:
         forceRename: vnc-edge
         controller: vnc-edge
@@ -511,16 +655,16 @@ spec:
             port: *edgePort
 
     route:
-      # No gateway auth: ferry-web signs people in itself (OIDC). Every cookie is dropped (the app sets none
+      # No gateway auth: waitlist-web signs people in itself (OIDC). Every cookie is dropped (the app sets none
       # and reads none); Authorization carries the app's own token, so it stays.
-      ferry-web:
-        forceRename: ferry-web
+      waitlist-web:
+        forceRename: waitlist-web
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Home
-          gethomepage.dev/name: Ferry Watch
-          gethomepage.dev/icon: mdi-ferry
-        hostnames: ["{{ .Values.ferry.hosts.dashboard }}"]
+          gethomepage.dev/name: Waitlist
+          gethomepage.dev/icon: mdi-bell-ring
+        hostnames: ["{{ .Values.waitlist.hosts.dashboard }}"]
         parentRefs: &externalGateway
           - name: envoy-external
             namespace: networking
@@ -531,7 +675,7 @@ spec:
                 requestHeaderModifier:
                   remove: [Cookie, Remote-User, Remote-Groups, Remote-Email, Remote-Name]
             backendRefs:
-              - identifier: ferry-web
+              - identifier: waitlist-web
                 port: *webPort
       # The checkout host: a one-time ticket in the URL is the only credential, so no cookie or Authorization
       # header reaches vnc-edge or a browser pod.
@@ -539,7 +683,7 @@ spec:
         forceRename: vnc-edge
         annotations:
           gatus.home-operations.com/enabled: "false"
-        hostnames: ["{{ .Values.ferry.hosts.checkout }}"]
+        hostnames: ["{{ .Values.waitlist.hosts.checkout }}"]
         parentRefs: *externalGateway
         rules:
           - filters:
@@ -554,17 +698,17 @@ spec:
     # CronJob runs here too.
     networkpolicies:
       default-deny:
-        forceRename: ferry-watch-default-deny
+        forceRename: waitlist-default-deny
         type: native
         podSelector:
           matchLabels:
             app.kubernetes.io/instance: *app
         policyTypes: [Ingress, Egress]
         rules: {}
-      ferry-web:
-        forceRename: ferry-web
+      waitlist-web:
+        forceRename: waitlist-web
         type: native
-        controller: ferry-web
+        controller: waitlist-web
         policyTypes: [Ingress, Egress]
         rules:
           ingress:
@@ -579,7 +723,7 @@ spec:
               ports:
                 - protocol: TCP
                   port: *webPort
-          # DNS is in the Cilium policy below, which limits the names ferry-web may look up.
+          # DNS is in the Cilium policy below, which limits the names waitlist-web may look up.
           egress:
             - to:
                 - &postgres
@@ -609,10 +753,10 @@ spec:
               ports:
                 - protocol: TCP
                   port: 10443
-      ferry-web-cilium:
-        forceRename: ferry-web-cilium
+      waitlist-web-cilium:
+        forceRename: waitlist-web-cilium
         type: cilium
-        controller: ferry-web
+        controller: waitlist-web
         # Cross-node gateway traffic is SNATed to a node, which Cilium sees as the kube-apiserver entity.
         ingress:
           - fromEntities: [kube-apiserver]
@@ -651,10 +795,10 @@ spec:
               - ports:
                   - port: "443"
                     protocol: TCP
-      ferry-control:
-        forceRename: ferry-control
+      waitlist-control:
+        forceRename: waitlist-control
         type: native
-        controller: ferry-control
+        controller: waitlist-control
         policyTypes: [Ingress, Egress]
         rules:
           ingress:
@@ -662,10 +806,10 @@ spec:
                 - &browserPods
                   namespaceSelector:
                     matchLabels:
-                      kubernetes.io/metadata.name: ferry-watch-browsers
+                      kubernetes.io/metadata.name: waitlist-browsers
                   podSelector:
                     matchLabels:
-                      app.kubernetes.io/name: ferry-browser
+                      app.kubernetes.io/name: waitlist-browser
               ports:
                 - protocol: TCP
                   port: *hubPort
@@ -675,6 +819,15 @@ spec:
               ports:
                 - protocol: TCP
                   port: 5432
+            # Its only way out to a provider: waitlist-fetcher (it has no internet egress of its own).
+            - to:
+                - podSelector:
+                    matchLabels:
+                      app.kubernetes.io/instance: *app
+                      app.kubernetes.io/controller: waitlist-fetcher
+              ports:
+                - protocol: TCP
+                  port: *fetcherPort
             - &dnsEgress
               to:
                 - namespaceSelector:
@@ -688,16 +841,68 @@ spec:
                   port: 53
                 - protocol: TCP
                   port: 53
-      ferry-control-cilium:
-        forceRename: ferry-control-cilium
+      waitlist-control-cilium:
+        forceRename: waitlist-control-cilium
         type: cilium
-        controller: ferry-control
+        controller: waitlist-control
         egress:
           - toEntities: [kube-apiserver]
             toPorts:
               - ports:
                   - port: "6443"
                     protocol: TCP
+      # In: waitlist-control alone. Out: kube-dns for the providers' names, and those hosts on 443 (the Cilium
+      # policy below). Browser pods and waitlist-web can't reach it.
+      waitlist-fetcher:
+        forceRename: waitlist-fetcher
+        type: native
+        controller: waitlist-fetcher
+        policyTypes: [Ingress, Egress]
+        rules:
+          ingress:
+            - from:
+                - podSelector:
+                    matchLabels:
+                      app.kubernetes.io/instance: *app
+                      app.kubernetes.io/controller: waitlist-control
+              ports:
+                - protocol: TCP
+                  port: *fetcherPort
+          egress: [] # DNS and HTTPS only by name: the Cilium policy below
+      # Every provider's hosts are listed here and in its client's HOSTS (src/waitlist/providers/<id>/meta.py).
+      waitlist-fetcher-cilium:
+        forceRename: waitlist-fetcher-cilium
+        type: cilium
+        controller: waitlist-fetcher
+        egress:
+          - toEndpoints:
+              - *kubeDns
+            toPorts:
+              - ports:
+                  - port: "53"
+                    protocol: ANY
+                rules:
+                  dns:
+                    - matchName: api.yodelpass.com
+          - toFQDNs:
+              - matchName: api.yodelpass.com
+            toPorts:
+              - ports:
+                  - port: "443"
+                    protocol: TCP
+        # Defence in depth beside the fetcher's PublicOnlyResolver: whatever api.yodelpass.com resolves to, never
+        # the LAN, CGNAT, link-local or loopback. (Cilium's CIDR rules don't select cluster endpoints, so DNS to
+        # kube-dns is unaffected; Phase S proves it.)
+        egressDeny:
+          - toCIDRSet:
+              - cidr: 10.0.0.0/8
+              - cidr: 172.16.0.0/12
+              - cidr: 192.168.0.0/16
+              - cidr: 100.64.0.0/10
+              - cidr: 169.254.0.0/16
+              - cidr: 127.0.0.0/8
+              - cidr: fc00::/7
+              - cidr: fe80::/10
       vnc-edge:
         forceRename: vnc-edge
         type: native
@@ -728,7 +933,7 @@ spec:
                   - port: "8080"
                     protocol: TCP
       db:
-        forceRename: ferry-watch-db
+        forceRename: waitlist-db
         type: native
         controller: db
         policyTypes: [Ingress, Egress]
@@ -742,18 +947,18 @@ spec:
             - *dnsEgress
 
     # ---- Everything else is a guard rail, not a workload: the browser pods' namespace and what fences it in,
-    # ferry-control's RBAC, and the admission policies. rawResources keep their namespace, so these land in
-    # ferry-watch-browsers (or are cluster-scoped). Nothing here holds a secret.
+    # waitlist-control's RBAC, and the admission policies. rawResources keep their namespace, so these land in
+    # waitlist-browsers (or are cluster-scoped). Nothing here holds a secret.
     rawResources:
       # Kept on uninstall: deleting it would take every running browser pod with it.
       browsers-namespace:
-        forceRename: ferry-watch-browsers
+        forceRename: waitlist-browsers
         manifest:
           apiVersion: v1
           kind: Namespace
           metadata:
             labels:
-              ferry-watch.io/browsers: "true"
+              waitlist.chestr.dev/browsers: "true"
               pod-security.kubernetes.io/enforce: restricted
               pod-security.kubernetes.io/audit: restricted
               pod-security.kubernetes.io/warn: restricted
@@ -761,56 +966,56 @@ spec:
               helm.sh/resource-policy: keep
           spec: {}
 
-      # The browser pods' identity: no bindings and no API token (only the hub token ferry-control checks).
+      # The browser pods' identity: no bindings and no API token (only the hub token waitlist-control checks).
       browser-serviceaccount:
-        forceRename: ferry-browser
+        forceRename: waitlist-browser
         manifest:
           apiVersion: v1
           kind: ServiceAccount
           metadata:
-            namespace: ferry-watch-browsers
+            namespace: waitlist-browsers
           automountServiceAccountToken: false
 
-      # Gives each pod a name vnc-edge can reach: fw-<trip>-g<gen>.browsers.ferry-watch-browsers.svc.cluster.local.
+      # Gives each pod a name vnc-edge can reach: wl-<trip>-g<gen>.browsers.waitlist-browsers.svc.cluster.local.
       browsers-service:
         forceRename: browsers
         manifest:
           apiVersion: v1
           kind: Service
           metadata:
-            namespace: ferry-watch-browsers
+            namespace: waitlist-browsers
           spec:
             clusterIP: None
             publishNotReadyAddresses: true
             selector:
-              app.kubernetes.io/name: ferry-browser
+              app.kubernetes.io/name: waitlist-browser
             ports:
               - name: vnc
                 port: 6080
                 targetPort: vnc
 
-      # The admission policies' parameters: the same values ferry-control builds its pods from.
+      # The admission policies' parameters: the same values waitlist-control builds its pods from.
       browser-policy:
-        forceRename: ferry-browser-policy
+        forceRename: waitlist-browser-policy
         manifest:
           apiVersion: v1
           kind: ConfigMap
           metadata:
-            namespace: ferry-watch-browsers
+            namespace: waitlist-browsers
           data:
-            allowedImages: "{{ printf \"%s:%s\" .Values.ferry.browserImage.repository .Values.ferry.browserImage.tag }}"
-            hubUrl: "{{ .Values.ferry.control.pod.hubUrl }}"
-            vncPubkeys: "{{ .Values.ferry.control.pod.vncPubkeys }}"
-            vncOrigin: "https://{{ .Values.ferry.hosts.checkout }}"
-            podMemory: "{{ .Values.ferry.control.pod.podMemory }}"
-            cpuRequest: "{{ .Values.ferry.control.pod.cpuRequest }}"
+            allowedImages: "{{ printf \"%s:%s\" .Values.waitlist.browserImage.repository .Values.waitlist.browserImage.tag }}"
+            hubUrl: "{{ .Values.waitlist.control.pod.hubUrl }}"
+            vncPubkeys: "{{ .Values.waitlist.control.pod.vncPubkeys }}"
+            vncOrigin: "https://{{ .Values.waitlist.hosts.checkout }}"
+            podMemory: "{{ .Values.waitlist.control.pod.podMemory }}"
+            cpuRequest: "{{ .Values.waitlist.control.pod.cpuRequest }}"
             maxDeadline: "93600"
-            requireUserNamespace: "{{ .Values.ferry.control.pod.requireUserNamespace }}"
-            sandbox: "{{ .Values.ferry.control.pod.sandbox }}"
-            seccompProfile: profiles/fw-chromium.json
+            requireUserNamespace: "{{ .Values.waitlist.control.pod.requireUserNamespace }}"
+            sandbox: "{{ .Values.waitlist.control.pod.sandbox }}"
+            seccompProfile: profiles/wl-chromium.json
             optionalEnv: ""
-            controlSA: system:serviceaccount:ferry-watch:ferry-control
-            breakGlassGroup: ferry-watch:break-glass
+            controlSA: system:serviceaccount:waitlist:waitlist-control
+            breakGlassGroup: waitlist:break-glass
 
       # One spare slot over fleet.maxBrowsersTotal, for a pod that's still terminating while its successor starts.
       browsers-quota:
@@ -819,20 +1024,20 @@ spec:
           apiVersion: v1
           kind: ResourceQuota
           metadata:
-            namespace: ferry-watch-browsers
+            namespace: waitlist-browsers
           spec:
             hard:
-              pods: "{{ add1 .Values.ferry.control.fleet.maxBrowsersTotal }}"
+              pods: "{{ add1 .Values.waitlist.control.fleet.maxBrowsersTotal }}"
               requests.memory: &quotaMemory >-
-                {{- mul (add1 .Values.ferry.control.fleet.maxBrowsersTotal) (trimSuffix "Mi" .Values.ferry.control.pod.podMemory | atoi) -}}Mi
+                {{- mul (add1 .Values.waitlist.control.fleet.maxBrowsersTotal) (trimSuffix "Mi" .Values.waitlist.control.pod.podMemory | atoi) -}}Mi
               limits.memory: *quotaMemory
               requests.cpu: >-
-                {{- mul (add1 .Values.ferry.control.fleet.maxBrowsersTotal) (trimSuffix "m" .Values.ferry.control.pod.cpuRequest | atoi) -}}m
+                {{- mul (add1 .Values.waitlist.control.fleet.maxBrowsersTotal) (trimSuffix "m" .Values.waitlist.control.pod.cpuRequest | atoi) -}}m
             scopeSelector:
               matchExpressions:
                 - scopeName: PriorityClass
                   operator: In
-                  values: [ferry-browser]
+                  values: [waitlist-browser]
       # Every pod must carry activeDeadlineSeconds.
       require-deadline-quota:
         forceRename: require-deadline
@@ -840,7 +1045,7 @@ spec:
           apiVersion: v1
           kind: ResourceQuota
           metadata:
-            namespace: ferry-watch-browsers
+            namespace: waitlist-browsers
           spec:
             hard:
               pods: "0"
@@ -851,7 +1056,7 @@ spec:
           apiVersion: v1
           kind: ResourceQuota
           metadata:
-            namespace: ferry-watch-browsers
+            namespace: waitlist-browsers
           spec:
             hard:
               services: "1" # the headless `browsers`
@@ -864,12 +1069,12 @@ spec:
           apiVersion: v1
           kind: LimitRange
           metadata:
-            namespace: ferry-watch-browsers
+            namespace: waitlist-browsers
           spec:
             limits:
               - type: Container
                 max:
-                  memory: "{{ .Values.ferry.control.pod.podMemory }}"
+                  memory: "{{ .Values.waitlist.control.pod.podMemory }}"
                   cpu: 1500m
                   ephemeral-storage: 256Mi
 
@@ -881,28 +1086,28 @@ spec:
           apiVersion: networking.k8s.io/v1
           kind: NetworkPolicy
           metadata:
-            namespace: ferry-watch-browsers
+            namespace: waitlist-browsers
             annotations:
               helm.sh/resource-policy: keep
           spec:
             podSelector: {}
             policyTypes: [Ingress, Egress]
-      # Always: BC Ferries and Queue-it on 443 by name, ferry-control's hub, vnc-edge in, the kubelet's probes in.
+      # Always: BC Ferries and Queue-it on 443 by name, waitlist-control's hub, vnc-edge in, the kubelet's probes in.
       browser-egress:
-        forceRename: fw-browser-egress
+        forceRename: wl-browser-egress
         manifest:
           apiVersion: cilium.io/v2
           kind: CiliumNetworkPolicy
           metadata:
-            namespace: ferry-watch-browsers
+            namespace: waitlist-browsers
           spec:
             endpointSelector:
               matchLabels:
-                app.kubernetes.io/name: ferry-browser
+                app.kubernetes.io/name: waitlist-browser
             ingress:
               - fromEndpoints:
                   - matchLabels:
-                      k8s:io.kubernetes.pod.namespace: ferry-watch
+                      k8s:io.kubernetes.pod.namespace: waitlist
                       app.kubernetes.io/instance: *app
                       app.kubernetes.io/controller: vnc-edge
                 toPorts:
@@ -927,7 +1132,7 @@ spec:
                         - matchPattern: "*.bcferries.com"
                         - matchName: queue-it.net
                         - matchPattern: "*.queue-it.net"
-                        - matchName: ferry-control.ferry-watch.svc.cluster.local
+                        - matchName: waitlist-control.waitlist.svc.cluster.local
               - toFQDNs:
                   - matchName: bcferries.com
                   - matchPattern: "*.bcferries.com"
@@ -939,27 +1144,27 @@ spec:
                         protocol: TCP
               - toEndpoints:
                   - matchLabels:
-                      k8s:io.kubernetes.pod.namespace: ferry-watch
+                      k8s:io.kubernetes.pod.namespace: waitlist
                       app.kubernetes.io/instance: *app
-                      app.kubernetes.io/controller: ferry-control
+                      app.kubernetes.io/controller: waitlist-control
                 toPorts:
                   - ports:
                       - port: "8766"
                         protocol: TCP
-      # While holding a cart (the egress label, which only ferry-control can flip): any public HTTPS host, for
+      # While holding a cart (the egress label, which only waitlist-control can flip): any public HTTPS host, for
       # the bank's 3-D Secure page. Private, CGNAT, link-local and cluster addresses stay denied in every state.
       browser-hold-egress:
-        forceRename: fw-browser-hold-egress
+        forceRename: wl-browser-hold-egress
         manifest:
           apiVersion: cilium.io/v2
           kind: CiliumNetworkPolicy
           metadata:
-            namespace: ferry-watch-browsers
+            namespace: waitlist-browsers
           spec:
             endpointSelector:
               matchLabels:
-                app.kubernetes.io/name: ferry-browser
-                ferry-watch.io/egress: hold
+                app.kubernetes.io/name: waitlist-browser
+                waitlist.chestr.dev/egress: hold
             egress:
               - toEndpoints:
                   - *kubeDns
@@ -988,37 +1193,37 @@ spec:
                       - port: "443"
                         protocol: TCP
 
-      # ferry-control's only namespaced verbs: pods in the browser namespace. `patch` exists for the egress label
-      # alone; fw-browser-pod-lock denies every other change.
+      # waitlist-control's only namespaced verbs: pods in the browser namespace. `patch` exists for the egress label
+      # alone; wl-browser-pod-lock denies every other change.
       control-role:
-        forceRename: ferry-watch-control
+        forceRename: waitlist-control
         manifest:
           apiVersion: rbac.authorization.k8s.io/v1
           kind: Role
           metadata:
-            namespace: ferry-watch-browsers
+            namespace: waitlist-browsers
           rules:
             - apiGroups: [""]
               resources: [pods]
               verbs: [create, delete, get, list, watch, patch]
       control-rolebinding:
-        forceRename: ferry-watch-control
+        forceRename: waitlist-control
         manifest:
           apiVersion: rbac.authorization.k8s.io/v1
           kind: RoleBinding
           metadata:
-            namespace: ferry-watch-browsers
+            namespace: waitlist-browsers
           roleRef:
             apiGroup: rbac.authorization.k8s.io
             kind: Role
-            name: ferry-watch-control
+            name: waitlist-control
           subjects:
             - kind: ServiceAccount
-              name: ferry-control
-              namespace: ferry-watch
+              name: waitlist-control
+              namespace: waitlist
       # And its only cluster-wide ones: TokenReview, to know which pod is calling the hub, and reading nodes.
       control-tokenreview-clusterrole:
-        forceRename: ferry-watch-control-tokenreview
+        forceRename: waitlist-control-tokenreview
         manifest:
           apiVersion: rbac.authorization.k8s.io/v1
           kind: ClusterRole
@@ -1027,20 +1232,20 @@ spec:
               resources: [tokenreviews]
               verbs: [create]
       control-tokenreview-clusterrolebinding:
-        forceRename: ferry-watch-control-tokenreview
+        forceRename: waitlist-control-tokenreview
         manifest:
           apiVersion: rbac.authorization.k8s.io/v1
           kind: ClusterRoleBinding
           roleRef:
             apiGroup: rbac.authorization.k8s.io
             kind: ClusterRole
-            name: ferry-watch-control-tokenreview
+            name: waitlist-control-tokenreview
           subjects:
             - kind: ServiceAccount
-              name: ferry-control
-              namespace: ferry-watch
+              name: waitlist-control
+              namespace: waitlist
       control-nodes-clusterrole:
-        forceRename: ferry-watch-control-nodes
+        forceRename: waitlist-control-nodes
         manifest:
           apiVersion: rbac.authorization.k8s.io/v1
           kind: ClusterRole
@@ -1049,35 +1254,35 @@ spec:
               resources: [nodes]
               verbs: [get, list, watch]
       control-nodes-clusterrolebinding:
-        forceRename: ferry-watch-control-nodes
+        forceRename: waitlist-control-nodes
         manifest:
           apiVersion: rbac.authorization.k8s.io/v1
           kind: ClusterRoleBinding
           roleRef:
             apiGroup: rbac.authorization.k8s.io
             kind: ClusterRole
-            name: ferry-watch-control-nodes
+            name: waitlist-control-nodes
           subjects:
             - kind: ServiceAccount
-              name: ferry-control
-              namespace: ferry-watch
+              name: waitlist-control
+              namespace: waitlist
 
       # Browsers never preempt anything, and default-priority pods can't preempt a holding browser.
       browser-priorityclass:
-        forceRename: ferry-browser
+        forceRename: waitlist-browser
         manifest:
           apiVersion: scheduling.k8s.io/v1
           kind: PriorityClass
           value: 0
           preemptionPolicy: Never
           globalDefault: false
-          description: Ferry Watch browser pods.
+          description: Waitlist browser pods.
 
-      # fw-browser-pod: the only pod the browser namespace admits is the one ferry-control builds
-      # (src/ferry_watch/control/pods.py), created by ferry-control or a break-glass person. Every field is fixed
-      # or equals a parameter from ferry-browser-policy.
+      # wl-browser-pod: the only pod the browser namespace admits is the one waitlist-control builds
+      # (src/waitlist/control/pods.py), created by waitlist-control or a break-glass person. Every field is fixed
+      # or equals a parameter from waitlist-browser-policy.
       browser-pod-policy:
-        forceRename: fw-browser-pod
+        forceRename: wl-browser-pod
         manifest:
           apiVersion: admissionregistration.k8s.io/v1
           kind: ValidatingAdmissionPolicy
@@ -1089,7 +1294,7 @@ spec:
             matchConstraints:
               namespaceSelector:
                 matchLabels:
-                  kubernetes.io/metadata.name: ferry-watch-browsers
+                  kubernetes.io/metadata.name: waitlist-browsers
               resourceRules:
                 - apiGroups: [""]
                   apiVersions: [v1]
@@ -1110,7 +1315,7 @@ spec:
                 expression: variables.c.env
               - name: optionalEnv
                 # A params change can admit one of these, never anything else.
-                expression: "variables.p.optionalEnv.split(',').filter(n, n in ['FW_CHECKOUT_MODE'])"
+                expression: "variables.p.optionalEnv.split(',').filter(n, n in ['WL_CHECKOUT_MODE'])"
               - name: sc
                 expression: variables.c.securityContext
             validations:
@@ -1118,20 +1323,20 @@ spec:
               - expression: >-
                   request.userInfo.username == variables.p.controlSA ||
                   variables.p.breakGlassGroup in request.userInfo.groups
-                message: Only ferry-control creates browser pods.
+                message: Only waitlist-control creates browser pods.
 
               # ---- metadata
-              - expression: "variables.name.matches('^fw-[a-f0-9]{16}-g[1-9][0-9]{0,5}$')"
-                message: The name must be fw-<trip>-g<gen>.
+              - expression: "variables.name.matches('^wl-[a-f0-9]{16}-g[1-9][0-9]{0,5}$')"
+                message: The name must be wl-<trip>-g<gen>.
               - expression: >-
                   has(object.metadata.labels) && variables.labels.size() == 7 &&
-                  variables.labels['app.kubernetes.io/name'] == 'ferry-browser' &&
-                  variables.labels['app.kubernetes.io/managed-by'] == 'ferry-watch-control' &&
-                  variables.labels['ferry-watch.io/trip'] == variables.name.substring(3, 19) &&
-                  variables.labels['ferry-watch.io/pod'] == variables.name &&
-                  variables.labels['ferry-watch.io/gen'] == variables.name.substring(21) &&
-                  variables.labels['ferry-watch.io/owner'].matches('^[a-z0-9]{20}$') &&
-                  variables.labels['ferry-watch.io/egress'] == 'allowlist'
+                  variables.labels['app.kubernetes.io/name'] == 'waitlist-browser' &&
+                  variables.labels['app.kubernetes.io/managed-by'] == 'waitlist-control' &&
+                  variables.labels['waitlist.chestr.dev/trip'] == variables.name.substring(3, 19) &&
+                  variables.labels['waitlist.chestr.dev/pod'] == variables.name &&
+                  variables.labels['waitlist.chestr.dev/gen'] == variables.name.substring(21) &&
+                  variables.labels['waitlist.chestr.dev/owner'].matches('^[a-z0-9]{20}$') &&
+                  variables.labels['waitlist.chestr.dev/egress'] == 'allowlist'
                 message: The labels must be exactly the seven derived from the pod's name and owner, with egress=allowlist.
               - expression: >-
                   !has(object.metadata.annotations) ||
@@ -1144,13 +1349,13 @@ spec:
 
               # ---- the pod
               - expression: >-
-                  variables.spec.serviceAccountName == 'ferry-browser' &&
+                  variables.spec.serviceAccountName == 'waitlist-browser' &&
                   has(variables.spec.automountServiceAccountToken) && !variables.spec.automountServiceAccountToken &&
                   has(variables.spec.enableServiceLinks) && !variables.spec.enableServiceLinks &&
                   variables.spec.restartPolicy == 'Never' &&
                   has(variables.spec.hostname) && variables.spec.hostname == variables.name &&
                   has(variables.spec.subdomain) && variables.spec.subdomain == 'browsers' &&
-                  variables.spec.priorityClassName == 'ferry-browser' &&
+                  variables.spec.priorityClassName == 'waitlist-browser' &&
                   variables.spec.dnsPolicy == 'ClusterFirst' &&
                   has(variables.spec.activeDeadlineSeconds) && variables.spec.activeDeadlineSeconds > 0 &&
                   variables.spec.activeDeadlineSeconds <= int(variables.p.maxDeadline) &&
@@ -1209,17 +1414,17 @@ spec:
               - expression: >-
                   has(variables.c.env) && variables.env.all(e, !has(e.valueFrom) && has(e.value)) &&
                   variables.env.all(e, variables.env.exists_one(f, f.name == e.name)) &&
-                  variables.env.all(e, e.name in ['FW_TRIP_ID', 'FW_OWNER', 'FW_POD_NAME', 'FW_DEADLINE_AT', 'FW_HUB_URL',
-                    'FW_VNC_PUBKEYS', 'FW_VNC_ORIGIN', 'FW_SANDBOX'] ||
+                  variables.env.all(e, e.name in ['WL_TRIP_ID', 'WL_OWNER', 'WL_POD_NAME', 'WL_DEADLINE_AT', 'WL_HUB_URL',
+                    'WL_VNC_PUBKEYS', 'WL_VNC_ORIGIN', 'WL_SANDBOX'] ||
                     (e.name in variables.optionalEnv && e.value.matches('^[a-z_]{1,16}$'))) &&
-                  variables.env.exists(e, e.name == 'FW_TRIP_ID' && e.value == variables.labels['ferry-watch.io/trip']) &&
-                  variables.env.exists(e, e.name == 'FW_OWNER' && e.value == variables.labels['ferry-watch.io/owner']) &&
-                  variables.env.exists(e, e.name == 'FW_POD_NAME' && e.value == variables.name) &&
-                  variables.env.exists(e, e.name == 'FW_DEADLINE_AT' && e.value.matches('^[0-9]{10}$')) &&
-                  variables.env.exists(e, e.name == 'FW_HUB_URL' && e.value == variables.p.hubUrl) &&
-                  variables.env.exists(e, e.name == 'FW_VNC_PUBKEYS' && e.value == variables.p.vncPubkeys) &&
-                  variables.env.exists(e, e.name == 'FW_VNC_ORIGIN' && e.value == variables.p.vncOrigin) &&
-                  variables.env.exists(e, e.name == 'FW_SANDBOX' && e.value == (variables.p.sandbox == 'true' ? '1' : '0'))
+                  variables.env.exists(e, e.name == 'WL_TRIP_ID' && e.value == variables.labels['waitlist.chestr.dev/trip']) &&
+                  variables.env.exists(e, e.name == 'WL_OWNER' && e.value == variables.labels['waitlist.chestr.dev/owner']) &&
+                  variables.env.exists(e, e.name == 'WL_POD_NAME' && e.value == variables.name) &&
+                  variables.env.exists(e, e.name == 'WL_DEADLINE_AT' && e.value.matches('^[0-9]{10}$')) &&
+                  variables.env.exists(e, e.name == 'WL_HUB_URL' && e.value == variables.p.hubUrl) &&
+                  variables.env.exists(e, e.name == 'WL_VNC_PUBKEYS' && e.value == variables.p.vncPubkeys) &&
+                  variables.env.exists(e, e.name == 'WL_VNC_ORIGIN' && e.value == variables.p.vncOrigin) &&
+                  variables.env.exists(e, e.name == 'WL_SANDBOX' && e.value == (variables.p.sandbox == 'true' ? '1' : '0'))
                 message: The environment must be exactly the eight literal values, matching the pod and the parameters.
               - expression: >-
                   has(variables.c.ports) && variables.c.ports.size() == 2 &&
@@ -1262,7 +1467,7 @@ spec:
                   variables.c.volumeMounts.all(m, !has(m.subPath) && !has(m.subPathExpr) && !has(m.mountPropagation)) &&
                   variables.c.volumeMounts.exists(m, m.name == 'tmp' && m.mountPath == '/tmp') &&
                   variables.c.volumeMounts.exists(m, m.name == 'shm' && m.mountPath == '/dev/shm') &&
-                  variables.c.volumeMounts.exists(m, m.name == 'hub-token' && m.mountPath == '/var/run/fw' &&
+                  variables.c.volumeMounts.exists(m, m.name == 'hub-token' && m.mountPath == '/var/run/wl' &&
                     has(m.readOnly) && m.readOnly)
                 message: The mounts must be /tmp, /dev/shm and the hub token, read-only, with no sub-paths.
               - expression: >-
@@ -1273,33 +1478,33 @@ spec:
                     quantity(v.emptyDir.sizeLimit).compareTo(quantity('256Mi')) == 0) &&
                   variables.spec.volumes.exists(v, v.name == 'hub-token' && has(v.projected) &&
                     v.projected.sources.size() == 1 && has(v.projected.sources[0].serviceAccountToken) &&
-                    v.projected.sources[0].serviceAccountToken.audience == 'ferry-watch-agent' &&
+                    v.projected.sources[0].serviceAccountToken.audience == 'waitlist-agent' &&
                     v.projected.sources[0].serviceAccountToken.expirationSeconds <= 600 &&
                     v.projected.sources[0].serviceAccountToken.path == 'token')
-                message: The volumes must be the two memory scratch dirs and the hub token (audience ferry-watch-agent, at most 10 minutes).
+                message: The volumes must be the two memory scratch dirs and the hub token (audience waitlist-agent, at most 10 minutes).
       browser-pod-policy-binding:
-        forceRename: fw-browser-pod
+        forceRename: wl-browser-pod
         manifest:
           apiVersion: admissionregistration.k8s.io/v1
           kind: ValidatingAdmissionPolicyBinding
           spec:
-            policyName: fw-browser-pod
+            policyName: wl-browser-pod
             validationActions: [Deny]
             paramRef: &policyParams
-              name: ferry-browser-policy
-              namespace: ferry-watch-browsers
+              name: waitlist-browser-policy
+              namespace: waitlist-browsers
               parameterNotFoundAction: Deny
             matchResources: &browsersNamespace
               namespaceSelector:
                 matchLabels:
-                  kubernetes.io/metadata.name: ferry-watch-browsers
+                  kubernetes.io/metadata.name: waitlist-browsers
 
-      # fw-browser-pod-lock: once a browser pod exists, nobody changes it or gets into it. ferry-control may move
+      # wl-browser-pod-lock: once a browser pod exists, nobody changes it or gets into it. waitlist-control may move
       # the egress label between allowlist and hold (and change nothing else), and the kubelet and three named
-      # kube-system controllers keep their usual updates. Break-glass people are not limited. ferry-control's
+      # kube-system controllers keep their usual updates. Break-glass people are not limited. waitlist-control's
       # pods `patch` verb is only safe with this policy in place.
       browser-pod-lock-policy:
-        forceRename: fw-browser-pod-lock
+        forceRename: wl-browser-pod-lock
         manifest:
           apiVersion: admissionregistration.k8s.io/v1
           kind: ValidatingAdmissionPolicy
@@ -1311,7 +1516,7 @@ spec:
             matchConstraints:
               namespaceSelector:
                 matchLabels:
-                  kubernetes.io/metadata.name: ferry-watch-browsers
+                  kubernetes.io/metadata.name: waitlist-browsers
               resourceRules:
                 - apiGroups: [""]
                   apiVersions: [v1]
@@ -1333,7 +1538,7 @@ spec:
                     'system:serviceaccount:kube-system:node-controller',
                     'system:serviceaccount:kube-system:pod-garbage-collector']
               - name: egressFlip
-                # The only change ferry-control may make: the egress label, between allowlist and hold. A ternary,
+                # The only change waitlist-control may make: the egress label, between allowlist and hold. A ternary,
                 # so nothing below is evaluated for any other request (an error in a variable fails the policy).
                 expression: >-
                   variables.user == params.data.controlSA && request.operation == 'UPDATE' &&
@@ -1341,10 +1546,10 @@ spec:
                   ? object.spec == oldObject.spec &&
                     has(object.metadata.labels) && has(oldObject.metadata.labels) &&
                     object.metadata.labels.size() == oldObject.metadata.labels.size() &&
-                    object.metadata.labels.all(k, k == 'ferry-watch.io/egress' ||
+                    object.metadata.labels.all(k, k == 'waitlist.chestr.dev/egress' ||
                       (k in oldObject.metadata.labels && oldObject.metadata.labels[k] == object.metadata.labels[k])) &&
-                    'ferry-watch.io/egress' in object.metadata.labels &&
-                    object.metadata.labels['ferry-watch.io/egress'] in ['allowlist', 'hold'] &&
+                    'waitlist.chestr.dev/egress' in object.metadata.labels &&
+                    object.metadata.labels['waitlist.chestr.dev/egress'] in ['allowlist', 'hold'] &&
                     has(object.metadata.annotations) == has(oldObject.metadata.annotations) &&
                     (!has(object.metadata.annotations) || object.metadata.annotations == oldObject.metadata.annotations) &&
                     has(object.metadata.ownerReferences) == has(oldObject.metadata.ownerReferences) &&
@@ -1354,22 +1559,22 @@ spec:
                   : false
             validations:
               - expression: variables.breakGlass || variables.system || variables.egressFlip
-                message: Browser pods can't be changed or entered; ferry-control may only move the egress label.
+                message: Browser pods can't be changed or entered; waitlist-control may only move the egress label.
       browser-pod-lock-policy-binding:
-        forceRename: fw-browser-pod-lock
+        forceRename: wl-browser-pod-lock
         manifest:
           apiVersion: admissionregistration.k8s.io/v1
           kind: ValidatingAdmissionPolicyBinding
           spec:
-            policyName: fw-browser-pod-lock
+            policyName: wl-browser-pod-lock
             validationActions: [Deny]
             paramRef: *policyParams
             matchResources: *browsersNamespace
 
-      # fw-ns-objects: defence in depth behind RBAC. No Ferry Watch service account may write any of these in
+      # wl-ns-objects: defence in depth behind RBAC. No Waitlist service account may write any of these in
       # either namespace, or create a pod in this one, whatever a RoleBinding someday says.
       ns-objects-policy:
-        forceRename: fw-ns-objects
+        forceRename: wl-ns-objects
         manifest:
           apiVersion: admissionregistration.k8s.io/v1
           kind: ValidatingAdmissionPolicy
@@ -1380,7 +1585,7 @@ spec:
                 matchExpressions:
                   - key: kubernetes.io/metadata.name
                     operator: In
-                    values: [ferry-watch, ferry-watch-browsers]
+                    values: [waitlist, waitlist-browsers]
               resourceRules:
                 - apiGroups: [""]
                   apiVersions: ["*"]
@@ -1432,15 +1637,15 @@ spec:
                   resources: [pods]
             validations:
               - expression: >-
-                  !(request.userInfo.username.startsWith('system:serviceaccount:ferry-watch:') ||
-                    request.userInfo.username.startsWith('system:serviceaccount:ferry-watch-browsers:')) ||
-                  (request.resource.resource == 'pods' && request.namespace == 'ferry-watch-browsers')
-                message: Ferry Watch's service accounts can't change objects in its namespaces.
+                  !(request.userInfo.username.startsWith('system:serviceaccount:waitlist:') ||
+                    request.userInfo.username.startsWith('system:serviceaccount:waitlist-browsers:')) ||
+                  (request.resource.resource == 'pods' && request.namespace == 'waitlist-browsers')
+                message: Waitlist's service accounts can't change objects in its namespaces.
       ns-objects-policy-binding:
-        forceRename: fw-ns-objects
+        forceRename: wl-ns-objects
         manifest:
           apiVersion: admissionregistration.k8s.io/v1
           kind: ValidatingAdmissionPolicyBinding
           spec:
-            policyName: fw-ns-objects
+            policyName: wl-ns-objects
             validationActions: [Deny]

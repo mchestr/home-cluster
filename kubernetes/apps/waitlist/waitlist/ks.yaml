@@ -2,8 +2,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app ferry-watch
-  namespace: &namespace ferry-watch
+  name: &app waitlist
+  namespace: &namespace waitlist
 spec:
   commonMetadata:
     labels:
@@ -16,12 +16,11 @@ spec:
     - name: cloudnative-pg-cluster
       namespace: database
   interval: 30m
-  path: ./kubernetes/apps/ferry-watch/ferry-watch/app
+  path: ./kubernetes/apps/waitlist/waitlist/app
   postBuild:
     substitute:
-      # components/cnpg: the database, its owner role and the Secrets are all "ferrywatch"
-      # (a Postgres name without a hyphen).
-      APP: ferrywatch
+      # components/cnpg: the database, its owner role and the Secrets are all "waitlist".
+      APP: waitlist
   prune: true
   retryInterval: 1m
   sourceRef:

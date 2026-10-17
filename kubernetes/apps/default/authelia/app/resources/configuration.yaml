@@ -119,15 +119,15 @@ identity_providers:
         id_token: ['groups', 'email', 'email_verified', 'alt_emails', 'preferred_username', 'name']
 
     authorization_policies:
-      # Ferry Watch is for invitees as well as admins: password only (no second factor to enrol), and only
+      # Waitlist is for invitees as well as admins: password only (no second factor to enrol), and only
       # for these groups. The other clients still want two_factor, but any lldap user can enrol a second factor,
-      # so restrict them to their own groups before inviting anyone (ferry-watch README, "Before inviting").
-      ferry-watch:
+      # so restrict them to their own groups before inviting anyone (waitlist README, "Before inviting").
+      waitlist:
         default_policy: deny
         rules:
           - policy: one_factor
             subject:
-              - group:ferry-watch
+              - group:waitlist
               - group:admin
 
     jwks:
@@ -219,16 +219,16 @@ identity_providers:
           - https://windmill.chestr.dev/user/login_callback/authelia
         userinfo_signed_response_alg: none
         claims_policy: default
-      {{- if env "FERRY_WATCH_OAUTH_CLIENT_ID" }}
+      {{- if env "WAITLIST_OAUTH_CLIENT_ID" }}
       # Only once the 1Password fields reach authelia-secret: a client without an id would stop Authelia starting.
       # The app takes the code from the URL fragment, so it never reaches an access log.
-      - client_name: Ferry Watch
-        client_id: '{{ env "FERRY_WATCH_OAUTH_CLIENT_ID" }}'
-        client_secret: '{{ env "FERRY_WATCH_OAUTH_CLIENT_SECRET" }}'
+      - client_name: Waitlist
+        client_id: '{{ env "WAITLIST_OAUTH_CLIENT_ID" }}'
+        client_secret: '{{ env "WAITLIST_OAUTH_CLIENT_SECRET" }}'
         public: false
         require_pkce: true
         pkce_challenge_method: S256
-        authorization_policy: ferry-watch
+        authorization_policy: waitlist
         consent_mode: pre-configured
         pre_configured_consent_duration: 1y
         scopes:
@@ -243,7 +243,7 @@ identity_providers:
         grant_types:
           - authorization_code
         redirect_uris:
-          - https://ferry.chestr.dev/auth/callback
+          - https://waitlist.chestr.dev/auth/callback
         userinfo_signed_response_alg: none
         claims_policy: default
       {{- end }}

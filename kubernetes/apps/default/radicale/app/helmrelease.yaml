@@ -95,7 +95,7 @@ spec:
                 - protocol: TCP
                   port: *port
       # Cross-node gateway traffic is SNATed to the node, which Cilium sees as the
-      # kube-apiserver entity on this all-control-plane cluster (see ferry-watch).
+      # kube-apiserver entity on this all-control-plane cluster (see waitlist).
       cilium:
         type: cilium
         controller: radicale

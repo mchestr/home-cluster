@@ -71,9 +71,9 @@ kubernetes/
 │       ├── crds/              # Gateway API and other CRDs
 │       └── repositories/      # Helm and OCI repository definitions
 ├── apps/<namespace>/          # actions-runner-system, ai, cert-manager, database, default,
-│   │                          # external-secrets, ferry-watch, flux-system, kube-system, media,
+│   │                          # external-secrets, flux-system, kube-system, media,
 │   │                          # networking, observability, openebs-system, rook-ceph,
-│   │                          # system-upgrade, volsync-system
+│   │                          # system-upgrade, volsync-system, waitlist
 │   ├── kustomization.yaml     # Lists each app's ks.yaml in this namespace
 │   └── <app>/
 │       ├── ks.yaml            # Flux Kustomization (dependsOn, components, postBuild vars)
@@ -122,7 +122,7 @@ Apps expose themselves via Gateway API `HTTPRoute` under `route` in the app-temp
 - Use `envoy-internal` unless the app must be reachable from outside the home network.
 - Only put an app on `envoy-external` if it has solid authentication of its own (e.g. OIDC through Authelia). Never expose admin UIs, shells or editors there.
 - Authelia access rules live in `kubernetes/apps/default/authelia/app/resources/configuration.yaml`. The default is two-factor for the `admin` group and deny for everyone else. Apps with their own login are listed under `bypass`.
-- Apps on `envoy-external` should carry a NetworkPolicy that only admits ingress from that gateway's Envoy pods (`gateway.envoyproxy.io/owning-gateway-name`) plus a CiliumNetworkPolicy admitting the `kube-apiserver` entity on the same port (cross-node gateway traffic is SNATed to a control-plane node). `default/home-assistant` and `ferry-watch` are the reference implementations; not every app has one yet.
+- Apps on `envoy-external` should carry a NetworkPolicy that only admits ingress from that gateway's Envoy pods (`gateway.envoyproxy.io/owning-gateway-name`) plus a CiliumNetworkPolicy admitting the `kube-apiserver` entity on the same port (cross-node gateway traffic is SNATed to a control-plane node). `default/home-assistant` and `waitlist` are the reference implementations; not every app has one yet.
 
 ### Secrets
 
