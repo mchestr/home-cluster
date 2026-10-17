@@ -87,8 +87,13 @@ one line per fetch (`result=ok`, or the error kind).
 - **Pause Buntzen** without a deploy: Admin → Providers → pause. Or stop offering it: `offer: "off"` here (one
   line, no release), which renders no Buntzen keys into any config.
 - **Open it to everyone** once a real capture has confirmed the parser: `offer: "everyone"`.
-- **If Yodel's answers stop resolving** (`fetcher_unavailable` while the site is up), check DNS first; if the
-  `egressDeny` block is what breaks DNS on this Cilium, drop that block (the resolver check remains).
+- **If checks fail with `network` or `timeout`** while Yodel is up (the fetcher logs `result=failed error=network`
+  or `error=timeout`; Admin → Providers shows Fetcher `OK` and Last error `network` or `timeout`; cards say
+  "Problem" after 3 failures), the fetcher's own egress is the suspect: DNS, or the `toFQDNs` rule. If the
+  `egressDeny` block is what breaks DNS on this Cilium, drop that block (the resolver check remains). The fetcher
+  still answers waitlist-control then, so this is never `fetcher_unavailable`.
+- **`fetcher_unavailable`** (cards say "Checks not running", Admin → Providers shows Fetcher `Down`) means
+  waitlist-control can't reach the fetcher: its Service, waitlist-control's egress policy, or the fetcher pod.
 - **A new provider** later: add its hosts to `waitlist-fetcher-cilium`'s DNS and `toFQDNs` rules, and a
   `waitlist.providers.<id>` entry; both copies of the HelmRelease.
 
@@ -140,13 +145,13 @@ use them (`default/authelia/app/resources/configuration.yaml`, like `waitlist`'s
 ## Runbook: replace Ferry Watch with Waitlist
 
 Nobody uses Ferry Watch, so there is no data to carry over: Waitlist starts with an empty database, and Ferry
-Watch is deleted by the same commit that adds Waitlist. Users sign in at `waitlist.chestr.dev` and turn alerts on
+Watch is deleted by the same change that adds Waitlist. Users sign in at `waitlist.chestr.dev` and turn alerts on
 again. Run the phases in order:
 
 | Phase | What happens | Can be undone by |
 |---|---|---|
 | 0 | GitHub, the 1.0.0 release, 1Password, lldap, the digests | nothing to undo in the cluster |
-| 1 | Merge: Flux deploys Waitlist and uninstalls Ferry Watch; Cloudflare | reverting the commit (Ferry Watch comes back as it was) |
+| 1 | Merge: Flux deploys Waitlist and uninstalls Ferry Watch; Cloudflare | reverting every commit the change put on main (Ferry Watch comes back as it was) |
 | S | Smoke test | nothing changes |
 | 2 | Delete what Flux leaves of Ferry Watch, its database and its 1Password fields | nothing: Ferry Watch could only come back empty |
 
@@ -165,12 +170,12 @@ pg() { kubectl cnpg psql -n database postgres17 -- "$@"; }
 2. **Release 1.0.0.** Merge the waitlist app PR to `main` (it sets `version = "1.0.0"`). Run the Release workflow
    (`gh workflow run release.yml -R mchestr/waitlist --ref main`); it tags `v1.0.0` and starts CI on the tag,
    which pushes `ghcr.io/mchestr/waitlist-{control,browser,vnc-edge}:1.0.0` once its tests pass, several minutes
-   later. Wait for that run (or watch Actions → CI, branch `v1.0.0`):
+   later. Wait for that run (or watch Actions → CI, branch `v1.0.0`); the first command waits until the Release
+   workflow has started it:
    ```sh
-   gh run watch -R mchestr/waitlist --exit-status \
-     "$(gh run list -R mchestr/waitlist --workflow ci.yml --branch v1.0.0 --limit 1 --json databaseId -q '.[0].databaseId')"
+   until id=$(gh run list -R mchestr/waitlist --workflow ci.yml --branch v1.0.0 --limit 1 --json databaseId -q '.[0].databaseId') && [ -n "$id" ]; do sleep 10; done
+   gh run watch -R mchestr/waitlist --exit-status "$id"
    ```
-   An empty id means the run hasn't been created yet: try again in a few seconds.
 
 3. **Make the three packages public.** New GHCR packages start private, and the cluster pulls with no
    `imagePullSecrets`. GitHub → Packages → each `waitlist-*` → Package settings → Change visibility → Public. Then
@@ -191,18 +196,23 @@ pg() { kubectl cnpg psql -n database postgres17 -- "$@"; }
    VAULT=kubernetes
    pw() { op item create --category password --generate-password=letters,digits,32 --dry-run --format json | jq -r '.fields[0].value'; }
 
-   # a. The item, with a fresh checkout key and VAPID key from the release. Nothing is written unless both came out.
-   KEYS="$(docker run --rm ghcr.io/mchestr/waitlist-control:1.0.0 waitlist-web keys)"
-   case "$KEYS" in
-     *'WAITLIST_CHECKOUT_KEY=k1:'?*'WAITLIST_VAPID_KEY='?*)
-       op item create --vault "$VAULT" --category password --title waitlist >/dev/null \
-         && op item edit waitlist --vault "$VAULT" \
-           "WAITLIST_CHECKOUT_KEY[password]=$(printf '%s\n' "$KEYS" | sed -n 's/^WAITLIST_CHECKOUT_KEY=//p')" \
-           "WAITLIST_VAPID_KEY[password]=$(printf '%s\n' "$KEYS" | sed -n 's/^WAITLIST_VAPID_KEY=//p')" >/dev/null \
-         && printf '%s\n' "$KEYS" | tail -n 1 ;;  # k1:<base64url>, the checkout key's public half (not a secret): keep it for step 6
-     *) echo "no keys: stop" ;;
-   esac
-   unset KEYS
+   # a. The item, with a fresh checkout key and VAPID key from the release. Nothing is written unless both came out,
+   #    and nothing at all once the item exists: a second item titled waitlist would stop its Secret syncing.
+   if op item get waitlist --vault "$VAULT" >/dev/null 2>&1; then
+     echo "item waitlist exists: keep its keys (Phase S step 4's want= line prints the public half), or delete it first"
+   else
+     KEYS="$(docker run --rm ghcr.io/mchestr/waitlist-control:1.0.0 waitlist-web keys)"
+     case "$KEYS" in
+       *'WAITLIST_CHECKOUT_KEY=k1:'?*'WAITLIST_VAPID_KEY='?*)
+         op item create --vault "$VAULT" --category password --title waitlist >/dev/null \
+           && op item edit waitlist --vault "$VAULT" \
+             "WAITLIST_CHECKOUT_KEY[password]=$(printf '%s\n' "$KEYS" | sed -n 's/^WAITLIST_CHECKOUT_KEY=//p')" \
+             "WAITLIST_VAPID_KEY[password]=$(printf '%s\n' "$KEYS" | sed -n 's/^WAITLIST_VAPID_KEY=//p')" >/dev/null \
+           && printf '%s\n' "$KEYS" | tail -n 1 ;;  # k1:<base64url>, the checkout key's public half (not a secret): keep it for step 6
+       *) echo "no keys: stop" ;;
+     esac
+     unset KEYS
+   fi
 
    # b. A new OIDC client, in item authelia, generated with the image the cluster runs (default/authelia).
    AUTHELIA=ghcr.io/authelia/authelia:4.39.28
@@ -265,9 +275,11 @@ public packages can stay or be removed.
 
 ### Phase 1: merge
 
-Merge this change, then at once:
+Merge this change (`<n>`: its PR) the repository's one way, a rebase: each of the branch's commits lands on main
+(Phase 0 step 6 added one), and a rollback reverts them all. Then at once:
 
 ```sh
+task github:pr:merge ID=<n>
 task terraform:cf:plan      # one in-place change: the Rocket Loader rule's hosts become the two waitlist hosts
 task terraform:cf:apply     # Rocket Loader and email obfuscation rewrite the HTML and break the CSP hashes
 flux reconcile kustomization cluster-apps -n flux-system --with-source
@@ -322,8 +334,13 @@ doesn't hold up `waitlist_web` and `waitlist_control`.
    - `site_changed` means Yodel's real answer differs from the parser's expectation. Capture it
      (`scripts/capture_yodel.py` in the waitlist repo), fix the parser and release 1.0.1, or set `offer: "off"`
      here (both copies) and carry on with BC Ferries only.
-   - `fetcher_unavailable` (the card says "Checks not running") points at the network policies. If DNS is the
-     cause, drop the `egressDeny` block (the resolver check remains) and repeat.
+   - `network` or `timeout` (the fetcher logs `result=failed error=network` or `error=timeout`; Admin →
+     Providers shows Fetcher `OK` and Last error `network` or `timeout`; the card says "Watching", then "Problem"
+     after 3 failures) points at the fetcher's egress: DNS, or the `toFQDNs` rule. If DNS is the cause, drop the
+     `egressDeny` block (the resolver check remains) and repeat.
+   - `fetcher_unavailable` (the card says "Checks not running", Admin → Providers shows Fetcher `Down`) means
+     waitlist-control can't reach the fetcher: its Service, waitlist-control's egress policy, or the fetcher pod
+     (step 6).
 6. **The fetcher:**
    ```sh
    kubectl -n waitlist get deployment waitlist-fetcher          # READY 1/1: its readiness probe is /readyz
@@ -398,7 +415,17 @@ NetworkPolicy); and nothing in git owns the database. The commands are safe to r
 
 ### Rollback
 
-- **Before Phase 2:** revert this commit and merge the revert, then `task terraform:cf:apply` and
+- **Before Phase 2:** revert every commit this change put on main, newest first, in one PR. Reverting only one
+  stops in conflicts, or just puts the placeholders back. `<n>` is this change's PR:
+  ```sh
+  M=$(gh api repos/mchestr/home-cluster/pulls/<n> --jq .merge_commit_sha)   # the last of its commits on main
+  K=$(gh api repos/mchestr/home-cluster/pulls/<n> --jq .commits)            # how many it put there
+  git fetch origin && git switch -c revert-waitlist origin/main
+  git log --oneline "$M~$K..$M"      # exactly this change's commits
+  git revert --no-edit "$M~$K..$M"   # one revert commit each, newest first
+  git push -u origin revert-waitlist && gh pr create -R mchestr/home-cluster --fill
+  ```
+  Merge that PR (`task github:pr:merge ID=<its number>`), then `task terraform:cf:apply` and
   `flux reconcile kustomization cluster-apps -n flux-system --with-source`. Ferry Watch comes back as it was: its
   namespaces, database, roles and 1Password fields are all still there, and its images still exist on GHCR under
   the old names (`ghcr.io/mchestr/ferry-watch-*`). The revert deletes the `waitlist` Kustomization, whose garbage
@@ -421,4 +448,5 @@ NetworkPolicy); and nothing in git owns the database. The commands are safe to r
     | grep -E '/(wl-|waitlist)'                                # prints nothing
   ```
 - **After Phase 2** the same revert brings Ferry Watch back empty, and only once its 1Password fields exist again:
-  re-create them first, as Ferry Watch's own README did (`git show <this commit>^:kubernetes/apps/ferry-watch/ferry-watch/README.md`).
+  re-create them first, as Ferry Watch's own README did
+  (`git show "$M~$K:kubernetes/apps/ferry-watch/ferry-watch/README.md"`, with `M` and `K` as above).
