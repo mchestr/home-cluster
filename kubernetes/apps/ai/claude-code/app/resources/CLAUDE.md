@@ -1,0 +1,1 @@
+- never include claude as an author in commit messages
