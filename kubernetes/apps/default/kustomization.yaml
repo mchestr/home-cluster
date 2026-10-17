@@ -19,7 +19,6 @@ resources:
   - ./paperless/ks.yaml
   - ./radicale/ks.yaml
   - ./saidcompany/ks.yaml
-  - ./searxng/ks.yaml
   - ./smtp-relay/ks.yaml
   - ./teslamate/ks.yaml
   - ./thelounge/ks.yaml
