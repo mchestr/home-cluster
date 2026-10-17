@@ -20,7 +20,7 @@ task talos:apply-node NODE=<node>
 
 | Option | Default | What it does |
 |--------|---------|--------------|
-| `MODE` | `auto` | Apply mode - `auto` (Talos decides), `no-reboot` (fail if a reboot is needed), `staged` (apply on next reboot), `try` (roll back after 1m unless confirmed), `reboot` (apply, then `talosctl reboot`; Talos 1.14 dropped the native mode) |
+| `MODE` | `auto` | Apply mode - `auto` (Talos decides), `no-reboot` (fail if a reboot is needed), `staged` (apply on next reboot), `try` (roll back after 1m unless confirmed) - `reboot` was removed in Talos 1.14; use `task talos:reboot-node` afterwards instead |
 
 Config files are in:
 
