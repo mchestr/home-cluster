@@ -166,6 +166,12 @@ spec:
                 fi
                 cd "$$REPO"
                 git pull --ff-only -q || true
+                # Remote Control redraws its status block about once a second
+                # with cursor escapes, which without a TTY lands in the log as a
+                # fresh copy every time. Strip the escapes and only print a line
+                # not seen in the last 10 minutes: changes show at once and the
+                # status repeats as a heartbeat. exec keeps claude as PID 1.
+                exec > >(perl -ne 'BEGIN { $$| = 1 } s/\e\[[0-9;?]*[A-Za-z]//g; s/\e\]8;;[^\a]*\a//g; next if /^\s*$$/; my $$t = time; next if exists $$seen{$$_} && $$t - $$seen{$$_} < 600; $$seen{$$_} = $$t; print') 2>&1
                 # default permission mode: every tool call outside the repo's
                 # allowlist is forwarded to claude.ai / the app for approval.
                 exec claude remote-control \
