@@ -163,23 +163,27 @@ pg() { kubectl cnpg psql -n database postgres17 -- "$@"; }
    name). GitHub redirects the old URLs; the old `ghcr.io/mchestr/ferry-watch-*` packages keep their names.
 
 2. **Release 1.0.0.** Merge the waitlist app PR to `main` (it sets `version = "1.0.0"`). Run the Release workflow
-   (`gh workflow run release.yml -R mchestr/waitlist --ref main`); it tags `v1.0.0` and pushes
-   `ghcr.io/mchestr/waitlist-{control,browser,vnc-edge}:1.0.0`. Record each digest:
+   (`gh workflow run release.yml -R mchestr/waitlist --ref main`); it tags `v1.0.0` and starts CI on the tag,
+   which pushes `ghcr.io/mchestr/waitlist-{control,browser,vnc-edge}:1.0.0` once its tests pass, several minutes
+   later. Wait for that run (or watch Actions → CI, branch `v1.0.0`):
    ```sh
-   for p in control browser vnc-edge; do
-     printf '%s 1.0.0@%s\n' "$p" "$(docker buildx imagetools inspect "ghcr.io/mchestr/waitlist-$p:1.0.0" | awk '/^Digest:/ {print $2}')"
-   done
+   gh run watch -R mchestr/waitlist --exit-status \
+     "$(gh run list -R mchestr/waitlist --workflow ci.yml --branch v1.0.0 --limit 1 --json databaseId -q '.[0].databaseId')"
    ```
+   An empty id means the run hasn't been created yet: try again in a few seconds.
 
 3. **Make the three packages public.** New GHCR packages start private, and the cluster pulls with no
    `imagePullSecrets`. GitHub → Packages → each `waitlist-*` → Package settings → Change visibility → Public. Then
-   check an anonymous pull:
+   check an anonymous pull, and record each digest (public now, so no `docker login` is needed):
    ```sh
    for p in control browser vnc-edge; do
      t=$(curl -fsS "https://ghcr.io/token?scope=repository:mchestr/waitlist-$p:pull" | jq -r .token)
      curl -fsSI -H "Authorization: Bearer $t" -H 'Accept: application/vnd.oci.image.index.v1+json' \
        "https://ghcr.io/v2/mchestr/waitlist-$p/manifests/1.0.0" | head -1    # HTTP/2 200, three times
    done
+   for p in control browser vnc-edge; do
+     printf '%s 1.0.0@%s\n' "$p" "$(docker buildx imagetools inspect "ghcr.io/mchestr/waitlist-$p:1.0.0" | awk '/^Digest:/ {print $2}')"
+   done   # three lines, each ending in sha256:<64 hex>
    ```
 
 4. **1Password.** Signed in to `op`, with Docker and `jq`:
@@ -187,13 +191,17 @@ pg() { kubectl cnpg psql -n database postgres17 -- "$@"; }
    VAULT=kubernetes
    pw() { op item create --category password --generate-password=letters,digits,32 --dry-run --format json | jq -r '.fields[0].value'; }
 
-   # a. The item, with a fresh checkout key and VAPID key from the release.
-   op item create --vault "$VAULT" --category password --title waitlist >/dev/null
+   # a. The item, with a fresh checkout key and VAPID key from the release. Nothing is written unless both came out.
    KEYS="$(docker run --rm ghcr.io/mchestr/waitlist-control:1.0.0 waitlist-web keys)"
-   op item edit waitlist --vault "$VAULT" \
-     "WAITLIST_CHECKOUT_KEY[password]=$(printf '%s\n' "$KEYS" | sed -n 's/^WAITLIST_CHECKOUT_KEY=//p')" \
-     "WAITLIST_VAPID_KEY[password]=$(printf '%s\n' "$KEYS" | sed -n 's/^WAITLIST_VAPID_KEY=//p')" >/dev/null
-   printf '%s\n' "$KEYS" | tail -n 1   # k1:<base64url>, the checkout key's public half (not a secret): keep it for step 6
+   case "$KEYS" in
+     *'WAITLIST_CHECKOUT_KEY=k1:'?*'WAITLIST_VAPID_KEY='?*)
+       op item create --vault "$VAULT" --category password --title waitlist >/dev/null \
+         && op item edit waitlist --vault "$VAULT" \
+           "WAITLIST_CHECKOUT_KEY[password]=$(printf '%s\n' "$KEYS" | sed -n 's/^WAITLIST_CHECKOUT_KEY=//p')" \
+           "WAITLIST_VAPID_KEY[password]=$(printf '%s\n' "$KEYS" | sed -n 's/^WAITLIST_VAPID_KEY=//p')" >/dev/null \
+         && printf '%s\n' "$KEYS" | tail -n 1 ;;  # k1:<base64url>, the checkout key's public half (not a secret): keep it for step 6
+     *) echo "no keys: stop" ;;
+   esac
    unset KEYS
 
    # b. A new OIDC client, in item authelia, generated with the image the cluster runs (default/authelia).
@@ -202,11 +210,14 @@ pg() { kubectl cnpg psql -n database postgres17 -- "$@"; }
    SECRET_OUT="$(docker run --rm "$AUTHELIA" authelia crypto hash generate argon2 --random --random.length 64 --random.charset alphanumeric)"
    CLIENT_SECRET="$(printf '%s\n' "$SECRET_OUT" | awk '/^Random Password:/ {print $3}')"
    CLIENT_SECRET_HASH="$(printf '%s\n' "$SECRET_OUT" | awk '/^Digest:/ {print $2}')"
-   case "$CLIENT_SECRET_HASH" in '$argon2id$'*) echo "client id ${#CLIENT_ID} chars, secret ${#CLIENT_SECRET} chars, hash ok" ;; *) echo "no hash: stop" ;; esac
-   op item edit authelia --vault "$VAULT" \
-     "WAITLIST_OAUTH_CLIENT_ID[password]=$CLIENT_ID" \
-     "WAITLIST_OAUTH_CLIENT_SECRET[password]=$CLIENT_SECRET" \
-     "WAITLIST_OAUTH_CLIENT_SECRET_HASH[password]=$CLIENT_SECRET_HASH" >/dev/null
+   case "${#CLIENT_ID}:${#CLIENT_SECRET}:$CLIENT_SECRET_HASH" in  # written only with all three, at their lengths
+     72:64:'$argon2id$'*)
+       op item edit authelia --vault "$VAULT" \
+         "WAITLIST_OAUTH_CLIENT_ID[password]=$CLIENT_ID" \
+         "WAITLIST_OAUTH_CLIENT_SECRET[password]=$CLIENT_SECRET" \
+         "WAITLIST_OAUTH_CLIENT_SECRET_HASH[password]=$CLIENT_SECRET_HASH" >/dev/null && echo "OIDC client stored" ;;
+     *) echo "no client id, secret or hash: stop" ;;
+   esac
    unset CLIENT_ID SECRET_OUT CLIENT_SECRET CLIENT_SECRET_HASH
 
    # c. The database owner (components/cnpg names it after APP, so it must be "waitlist") and the two login
@@ -229,7 +240,7 @@ pg() { kubectl cnpg psql -n database postgres17 -- "$@"; }
 6. **Fill in `app/helmrelease.yaml`** on this branch, replacing the three `tag: 1.0.0  # …` placeholder lines and
    the `vncPubkeys: ""  # …` line, comments and all:
    - `waitlist.browserImage.tag`: `1.0.0@sha256:<browser digest>`; waitlist-web's `&image` tag:
-     `1.0.0@sha256:<control digest>`; vnc-edge's tag: `1.0.0@sha256:<vnc-edge digest>` (step 2);
+     `1.0.0@sha256:<control digest>`; vnc-edge's tag: `1.0.0@sha256:<vnc-edge digest>` (step 3);
    - `waitlist.control.pod.vncPubkeys`: the `k1:<base64url>` line step 4a printed.
 
    Then check, from the repository root:
@@ -394,11 +405,20 @@ NetworkPolicy); and nothing in git owns the database. The commands are safe to r
   collection uninstalls Waitlist; delete what that leaves (the reverted `cluster17.yaml` no longer lists
   Waitlist's roles, so CNPG leaves them to you):
   ```sh
+  # The uninstall first: deleting the namespace under it would take Helm's release Secrets, and Helm would then
+  # leave the cluster-scoped objects behind.
+  kubectl -n waitlist wait --for=delete kustomization/waitlist helmrelease/waitlist --timeout=10m
   kubectl delete namespace waitlist waitlist-browsers --wait   # prune: disabled, and helm.sh/resource-policy: keep
   pg -v ON_ERROR_STOP=1 -c 'DROP DATABASE IF EXISTS waitlist WITH (FORCE)' -c 'DROP ROLE IF EXISTS waitlist' \
     -c 'DROP ROLE IF EXISTS waitlist_web' -c 'DROP ROLE IF EXISTS waitlist_control'
+  # The cluster-scoped objects the HelmRelease rendered: the uninstall normally removed them, so these find nothing.
+  kubectl delete validatingadmissionpolicybinding wl-browser-pod wl-browser-pod-lock wl-ns-objects --ignore-not-found
+  kubectl delete validatingadmissionpolicy wl-browser-pod wl-browser-pod-lock wl-ns-objects --ignore-not-found
+  kubectl delete clusterrolebinding waitlist-control-tokenreview waitlist-control-nodes --ignore-not-found
+  kubectl delete clusterrole waitlist-control-tokenreview waitlist-control-nodes --ignore-not-found
+  kubectl delete priorityclass waitlist-browser --ignore-not-found
   kubectl get validatingadmissionpolicies,validatingadmissionpolicybindings,clusterroles,clusterrolebindings,priorityclasses -o name \
-    | grep -E '/(wl-|waitlist)'                                # prints nothing (the Helm uninstall removed them)
+    | grep -E '/(wl-|waitlist)'                                # prints nothing
   ```
 - **After Phase 2** the same revert brings Ferry Watch back empty, and only once its 1Password fields exist again:
   re-create them first, as Ferry Watch's own README did (`git show <this commit>^:kubernetes/apps/ferry-watch/ferry-watch/README.md`).
