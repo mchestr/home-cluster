@@ -15,12 +15,14 @@ tasks:
 
   apply-node:
     desc: Apply Talos config to a node [NODE=required] [MODE=auto]
+    # Talos 1.14 removed `apply-config --mode=reboot`; emulate it with an apply followed by a reboot.
     cmd: |-
       minijinja-cli {{.TALOS_DIR}}/{{.MACHINE_TYPE}}.yaml | op inject \
         | talosctl --nodes {{.NODE}} apply-config {{if eq .INSECURE "true"}}--insecure{{end}} \
-          --mode {{.MODE}} \
+          --mode {{if eq .MODE "reboot"}}auto{{else}}{{.MODE}}{{end}} \
           --config-patch @{{.TALOS_DIR}}/{{.MACHINE_TYPE}}/{{.NODE}}.yaml \
-          --file /dev/stdin
+          --file /dev/stdin{{if eq .MODE "reboot"}} \
+        && talosctl --nodes {{.NODE}} reboot{{end}}
     vars:
       MODE: '{{.MODE | default "auto"}}'
       INSECURE:
