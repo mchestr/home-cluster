@@ -202,6 +202,8 @@ identity_providers:
           - https://paperless.chestr.dev/accounts/oidc/authelia/login/callback/
         userinfo_signed_response_alg: none
         claims_policy: default
+        # django-allauth sends the client secret in the POST body.
+        token_endpoint_auth_method: client_secret_post
       - client_name: Windmill
         client_id: '{{ env "WINDMILL_OAUTH_CLIENT_ID" }}'
         client_secret: '{{ env "WINDMILL_OAUTH_CLIENT_SECRET" }}'
