@@ -130,6 +130,36 @@ data:
             href: https://udm.chestr.dev
             icon: unifi.png
     - Media:
+        - Plex:
+            href: https://plex.chestr.dev/
+            weight: 0 # sort by name with the discovered services, as before
+            icon: plex.png
+            namespace: media
+            app: plex
+            widget:
+              type: plex
+              url: http://plex.media.svc.cluster.local:32400
+              key: {{HOMEPAGE_VAR_PLEX_API_KEY}}
+        - Requests:
+            href: https://requests.chestr.dev/
+            weight: 0
+            icon: overseerr.png
+            namespace: media
+            app: jellyseerr
+            widget:
+              type: overseerr
+              url: http://jellyseerr.media.svc.cluster.local:5055
+              key: {{HOMEPAGE_VAR_JELLYSEERR_API_KEY}}
+        - Tautulli:
+            href: https://tautulli.chestr.dev/
+            weight: 0
+            icon: tautulli.png
+            namespace: media
+            app: tautulli
+            widget:
+              type: tautulli
+              url: http://tautulli.media.svc.cluster.local:8181
+              key: {{HOMEPAGE_VAR_TAUTULLI_API_KEY}}
         - Jellyfin:
             href: https://jellyfin.chestr.dev
             icon: jellyfin.png
@@ -138,6 +168,118 @@ data:
               url: http://jellyfin.media.svc.cluster.local:8096
               key: {{HOMEPAGE_VAR_JELLYFIN_API_KEY}}
               version: 2 # Jellyfin 12 dropped the /emby/ API prefix
+    - Home:
+        - Frigate:
+            href: https://frigate.chestr.dev/
+            weight: 0
+            icon: frigate.png
+            namespace: default
+            app: frigate
+            widget:
+              type: frigate
+              url: http://frigate.default.svc.cluster.local:5000
+        - Paperless:
+            href: https://paperless.chestr.dev/
+            weight: 0
+            icon: paperless.png
+            namespace: default
+            app: paperless
+            widget:
+              type: paperlessngx
+              url: http://paperless.default.svc.cluster.local:8000
+              key: {{HOMEPAGE_VAR_PAPERLESS_API_TOKEN}}
+        - Photos:
+            href: https://photos.chestr.dev/
+            weight: 0
+            icon: immich.png
+            namespace: default
+            app: immich
+            widget:
+              type: immich
+              url: http://immich.default.svc.cluster.local:2283
+              key: {{HOMEPAGE_VAR_IMMICH_API_KEY}}
+              version: 2
+              fields: ["photos", "videos", "storage"]
+    - Downloads:
+        - Autobrr:
+            href: https://autobrr.chestr.dev/
+            weight: 0
+            icon: autobrr.png
+            namespace: media
+            app: autobrr
+            widget:
+              type: autobrr
+              url: http://autobrr.media.svc.cluster.local:7474
+              key: {{HOMEPAGE_VAR_AUTOBRR_API_KEY}}
+        - Bazarr:
+            href: https://bazarr.chestr.dev/
+            weight: 0
+            icon: bazarr.png
+            namespace: media
+            app: bazarr
+            widget:
+              type: bazarr
+              url: http://bazarr.media.svc.cluster.local:6767
+              key: {{HOMEPAGE_VAR_BAZARR_API_KEY}}
+        - Prowlarr:
+            href: https://prowlarr.chestr.dev/
+            weight: 0
+            icon: prowlarr.png
+            namespace: media
+            app: prowlarr
+            widget:
+              type: prowlarr
+              url: http://prowlarr.media.svc.cluster.local:9696
+              key: {{HOMEPAGE_VAR_PROWLARR_API_KEY}}
+        - qBittorrent:
+            href: https://qbittorrent.chestr.dev/
+            weight: 0
+            icon: qbittorrent.png
+            namespace: media
+            app: qbittorrent
+            widget:
+              type: qbittorrent
+              url: http://qbittorrent.media.svc.cluster.local:8080
+        - Radarr:
+            href: https://radarr.chestr.dev/
+            weight: 0
+            icon: radarr.png
+            namespace: media
+            app: radarr
+            widget:
+              type: radarr
+              url: http://radarr.media.svc.cluster.local:7878
+              key: {{HOMEPAGE_VAR_RADARR_API_KEY}}
+        - SABnzbd:
+            href: https://sabnzbd.chestr.dev/
+            weight: 0
+            icon: sabnzbd.png
+            namespace: media
+            app: sabnzbd
+            widget:
+              type: sabnzbd
+              url: http://sabnzbd.media.svc.cluster.local:8080
+              key: {{HOMEPAGE_VAR_SABNZBD_API_KEY}}
+        - Sonarr:
+            href: https://sonarr.chestr.dev/
+            weight: 0
+            icon: sonarr.png
+            namespace: media
+            app: sonarr
+            widget:
+              type: sonarr
+              url: http://sonarr.media.svc.cluster.local:8989
+              key: {{HOMEPAGE_VAR_SONARR_API_KEY}}
+    - Automation:
+        - ESPHome:
+            href: https://esphome.chestr.dev/
+            weight: 0
+            icon: esphome.png
+            namespace: default
+            app: esphome
+            widget:
+              type: esphome
+              url: http://esphome.default.svc.cluster.local:6052
     - Calendar:
         - Calendar:
             widget:

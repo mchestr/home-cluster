@@ -80,13 +80,6 @@ spec:
       app:
         hostnames: ["{{ .Release.Name }}.chestr.dev"]
         annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/icon: plex.png
-          gethomepage.dev/name: Plex
-          gethomepage.dev/group: Media
-          gethomepage.dev/widget.type: *app
-          gethomepage.dev/widget.url: http://plex.media.svc.cluster.local:32400
-          gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_PLEX_API_KEY}}" }}'
           gatus.home-operations.com/endpoint: |
             conditions:
               - "[STATUS] == 404"
