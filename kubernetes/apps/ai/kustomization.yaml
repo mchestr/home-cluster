@@ -10,3 +10,4 @@ resources:
   - ./text-embeddings/ks.yaml
   - ./memini/ks.yaml
   - ./openclaw/ks.yaml
+  - ./claude-code/ks.yaml
