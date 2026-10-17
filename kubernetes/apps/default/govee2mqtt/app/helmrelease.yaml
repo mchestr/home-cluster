@@ -66,7 +66,8 @@ spec:
           - govee.chestr.dev
         annotations:
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/icon: govee.png
+          # No Govee icon exists in dashboard-icons, selfh.st or simple-icons.
+          gethomepage.dev/icon: mdi-led-strip-variant
           gethomepage.dev/name: Govee2MQTT
           gethomepage.dev/group: Automation
         parentRefs:

@@ -126,12 +126,6 @@ data:
             href: https://pikvm.chestr.dev
             icon: pikvm.png
     - System:
-        - Mainsail:
-            href: https://mainsail.chestr.dev
-            icon: mdi-printer-3d-nozzle
-            widget:
-              type: moonraker
-              url: https://mainsail.chestr.dev:7130
         - Unifi:
             href: https://udm.chestr.dev
             icon: unifi.png
