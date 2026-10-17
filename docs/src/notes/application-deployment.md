@@ -11,9 +11,9 @@ kubernetes/
 │   └── meta/                  # CRDs and shared Helm/OCI repositories
 ├── components/                # Reusable Kustomize components (common, volsync, cnpg, dragonfly)
 └── apps/<namespace>/          # One directory per namespace: actions-runner-system, ai, cert-manager,
-    │                          # database, default, external-secrets, ferry-watch, flux-system,
+    │                          # database, default, external-secrets, flux-system,
     │                          # kube-system, media, networking, observability, openebs-system,
-    │                          # rook-ceph, system-upgrade, volsync-system
+    │                          # rook-ceph, system-upgrade, volsync-system, waitlist
     ├── kustomization.yaml     # Lists each app's ks.yaml in the namespace
     └── <app>/
         ├── ks.yaml            # Flux Kustomization: dependsOn, components, postBuild vars

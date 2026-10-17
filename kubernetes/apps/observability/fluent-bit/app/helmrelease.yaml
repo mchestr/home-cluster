@@ -31,9 +31,9 @@ spec:
           name tail
           alias kubernetes
           path /var/log/containers/*.log
-          # Ferry Watch's browser pods: checkout pages and tokens never reach the logs (their pods also carry
+          # Waitlist's browser pods: checkout pages and tokens never reach the logs (their pods also carry
           # fluentbit.io/exclude).
-          exclude_path /var/log/containers/*_ferry-watch-browsers_*.log
+          exclude_path /var/log/containers/*_waitlist-browsers_*.log
           parser containerd
           tag kubernetes.*
 

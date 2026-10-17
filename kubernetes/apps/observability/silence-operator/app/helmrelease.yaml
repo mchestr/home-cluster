@@ -80,17 +80,17 @@ spec:
             - name: alertname
               value: CephNodeNetworkPacketErrors
               isRegex: false
-      # Ferry Watch's browser pods come and go by design: ferry-control starts, reaps and replaces them, and a
-      # full quota just means the fleet is at its limit. Ferry Watch's admin page shows what needs attention.
+      # Waitlist's browser pods come and go by design: waitlist-control starts, reaps and replaces them, and a
+      # full quota just means the fleet is at its limit. Waitlist's admin page shows what needs attention.
       - apiVersion: monitoring.giantswarm.io/v1alpha1
         kind: Silence
         metadata:
-          name: ferry-watch-browsers
+          name: waitlist-browsers
           namespace: observability
         spec:
           matchers:
             - name: namespace
-              value: ferry-watch-browsers
+              value: waitlist-browsers
               isRegex: false
             - name: alertname
               value: OomKilled|KubePodNotReady|KubePodCrashLooping|KubeContainerWaiting|KubeQuota.*

@@ -115,15 +115,15 @@ spec:
               ports:
                 - protocol: TCP
                   port: *port
-            # Ferry Watch's invitations and alerts (ferry-web only).
+            # Waitlist's invitations and alerts (waitlist-web only).
             - from:
                 - podSelector:
                     matchLabels:
-                      app.kubernetes.io/controller: ferry-web
-                      app.kubernetes.io/instance: ferry-watch
+                      app.kubernetes.io/controller: waitlist-web
+                      app.kubernetes.io/instance: waitlist
                   namespaceSelector:
                     matchLabels:
-                      kubernetes.io/metadata.name: ferry-watch
+                      kubernetes.io/metadata.name: waitlist
               ports:
                 - protocol: TCP
                   port: *port
