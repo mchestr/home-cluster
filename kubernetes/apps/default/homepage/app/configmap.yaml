@@ -135,6 +135,15 @@ data:
         - Unifi:
             href: https://udm.chestr.dev
             icon: unifi.png
+    - Media:
+        - Jellyfin:
+            href: https://jellyfin.chestr.dev
+            icon: jellyfin.png
+            widget:
+              type: jellyfin
+              url: http://jellyfin.media.svc.cluster.local:8096
+              key: {{HOMEPAGE_VAR_JELLYFIN_API_KEY}}
+              version: 2 # Jellyfin 12 dropped the /emby/ API prefix
     - Calendar:
         - Calendar:
             widget:
