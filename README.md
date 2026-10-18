@@ -77,6 +77,7 @@ For observability and monitoring of the cluster the following software is used:
 
 Self-hosted AI services, backed by hosted models rather than local GPUs:
 
+- [anthropics/claude-code](https://github.com/anthropics/claude-code): In-cluster [Remote Control](https://code.claude.com/docs/en/remote-control.md) server, so I can fix the cluster from claude.ai/code or the Claude app. Tools outside the repo allowlist wait for my approval.
 - [BerriAI/litellm](https://github.com/BerriAI/litellm): OpenAI-compatible LLM proxy, managed by [home-operations/litellm-operator](https://github.com/home-operations/litellm-operator) and routing to [OpenRouter](https://openrouter.ai).
 - [eleboucher/memini](https://github.com/eleboucher/memini): Persistent memory for AI agents.
 - [huggingface/text-embeddings-inference](https://github.com/huggingface/text-embeddings-inference): In-cluster embedding model server.
