@@ -16,9 +16,6 @@ spec:
 
     controllers:
       zwave-js-ui:
-        annotations:
-          reloader.stakater.com/auto: "true"
-
         containers:
           app:
             image:
