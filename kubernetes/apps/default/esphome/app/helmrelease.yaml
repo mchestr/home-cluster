@@ -23,8 +23,6 @@ spec:
                 "namespace": "networking",
                 "ips": ["10.0.10.245/24"]
               }]
-        annotations:
-          reloader.stakater.com/auto: "true"
 
         containers:
           app:

@@ -23,8 +23,6 @@ spec:
               topologyKey: kubernetes.io/hostname
     controllers:
       whisper:
-        annotations:
-          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:

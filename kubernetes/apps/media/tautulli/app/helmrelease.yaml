@@ -13,9 +13,6 @@ spec:
   values:
     controllers:
       tautulli:
-        annotations:
-          reloader.stakater.com/auto: "true"
-
         containers:
           app:
             image:
