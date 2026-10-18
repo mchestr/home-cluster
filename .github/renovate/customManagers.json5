@@ -4,12 +4,11 @@
     {
       customType: "regex",
       description: "Process custom dependencies",
-      fileMatch: [
-        "(^|/).taskfiles/.+\\.ya?ml$",
-        "(^|/)ansible/.+\\.ya?ml(\\.j2)?$",
-        "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$",
-        "(^|/)kubernetes/.+\\.env$",
-        "(^|/)\\.github/workflows/.+\\.ya?ml$",
+      managerFilePatterns: [
+        "/(^|/).taskfiles/.+\\.ya?ml$/",
+        "/(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$/",
+        "/(^|/)kubernetes/.+\\.env$/",
+        "/(^|/)\\.github/workflows/.+\\.ya?ml$/",
       ],
       matchStrings: [
         // Example: `k3s_release_version: "v1.27.3+k3s1"`
@@ -34,10 +33,34 @@
     {
       customType: "regex",
       description: "Process CloudnativePG Postgresql version",
-      fileMatch: ["(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$"],
+      managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$/"],
       matchStrings: ["imageName: (?<depName>[^\\s:]+):(?<currentValue>[^\\s@]*-[^\\s@]*)(@(?<currentDigest>sha256:[a-f0-9]+))?"],
       datasourceTemplate: "docker",
       versioningTemplate: "redhat",
+    },
+
+    {
+      customType: "regex",
+      description: "Process GitHub raw URLs with versions in path",
+      managerFilePatterns: [
+        "/talos/.+\\.ya?ml$/",
+      ],
+      matchStrings: [
+        'datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\n\\s+https://github\\.com/[^/]+/[^/]+/(?:releases/download|raw/refs/tags)/(?<currentValue>v[\\d.]+)/[^\\s]+',
+      ],
+      datasourceTemplate: "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
+      versioningTemplate: "semver",
+    },
+
+    {
+      customType: "regex",
+      description: "Process git-sync commit pins: the branch to follow and the commit it is pinned to",
+      // Example: `# renovate: datasource=git-refs depName=https://github.com/KBlixt/subcleaner branch=master`
+      //          `GITSYNC_REF: f2022c522fc580edb7597ef53e17b1ba1801957a`
+      managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"],
+      matchStrings: [
+        "# renovate: datasource=(?<datasource>git-refs) depName=(?<depName>\\S+) branch=(?<currentValue>\\S+)\\n\\s+GITSYNC_REF: (?<currentDigest>[a-f0-9]{40})",
+      ],
     },
   ],
 }
