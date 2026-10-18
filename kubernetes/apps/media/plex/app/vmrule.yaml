@@ -12,6 +12,8 @@ spec:
       interval: 5m
       rules:
         - alert: *name
-          expr: '"retry busy DB" | filter app := "plex" | count() rows | filter rows :> 0'
+          expr: '"retry busy DB" | filter app := "plex" | stats by (app) count() rows | filter rows :> 0'
+          labels:
+            severity: warning
           annotations:
             description: '{{ $labels.app }} is experiencing database issues'

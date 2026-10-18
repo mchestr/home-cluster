@@ -12,6 +12,8 @@ spec:
       interval: 5m
       rules:
         - alert: *name
-          expr: '"write against a read only replica" | filter app := "immich" | count() rows | filter rows :> 0'
+          expr: '"write against a read only replica" | filter app := "immich" | stats by (app) count() rows | filter rows :> 0'
+          labels:
+            severity: warning
           annotations:
-            description: '{{ $labels.app }} is database is in read only mode'
+            description: '{{ $labels.app }} database is in read-only mode'
