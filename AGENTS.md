@@ -162,6 +162,10 @@ Talos and Kubernetes upgrades are driven by [tuppr](https://github.com/home-oper
 - Metrics: Prometheus from `kube-prometheus-stack` (ServiceMonitor/PodMonitor/PrometheusRule). Logs: Fluent Bit into VictoriaLogs. Log alerts are `VMRule` objects (`vmrule.yaml` beside the app) evaluated by a `VMAlert` in `observability/victoria-logs`; those kinds need the VictoriaMetrics operator CRDs.
 - Public status page: Gatus at `status.chestr.dev`, fed by `gatus-sidecar` from every HTTPRoute; set `gatus.home-operations.com/enabled: "false"` on a route that should not be listed.
 
+### Schema Headers
+
+A `# yaml-language-server: $schema=` header is optional: it only helps editors, and Flux ignores it. For a CRD (Flux kinds included), use `https://kubernetes-schemas.pages.dev/<group>/<kind>_<version>.json`, with the kind in lower case and the version from the `apiVersion` line below the header. For an app-template HelmRelease, use `https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json`, which also checks the chart values.
+
 ## Commit Conventions
 
 Renovate enforces semantic commits; follow the same pattern manually:
