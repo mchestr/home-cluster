@@ -23,6 +23,7 @@ spec:
       APP: *app
       VOLSYNC_SCHEDULE: "30 14 * * *"
       VOLSYNC_CAPACITY: 5Gi
+      VOLSYNC_CHECK_SCHEDULE: "0 3 14 * *"
   prune: true
   retryInterval: 2m
   sourceRef:

@@ -68,6 +68,14 @@ task volsync:state-suspend
 task volsync:state-resume
 ```
 
+### Verify Backups
+
+Once a month, each app's `<app>-volsync-check` CronJob runs `restic check --read-data-subset=10%` on its R2 repo. A failed check raises the `KubeJobFailed` alert. To run a check by hand:
+
+```bash
+kubectl create job --from=cronjob/<app>-volsync-check <app>-volsync-check-manual -n <ns>
+```
+
 ## Recovery Scenarios
 
 ### App Data Got Corrupted

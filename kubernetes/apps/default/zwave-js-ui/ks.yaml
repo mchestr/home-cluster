@@ -25,6 +25,7 @@ spec:
     substitute:
       APP: *app
       VOLSYNC_SCHEDULE: "30 13 * * *"
+      VOLSYNC_CHECK_SCHEDULE: "0 3 12 * *"
   prune: true
   retryInterval: 1m
   sourceRef:

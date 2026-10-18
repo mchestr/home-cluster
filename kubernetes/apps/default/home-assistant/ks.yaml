@@ -23,6 +23,7 @@ spec:
       VOLSYNC_SCHEDULE: "30 10 * * *"
       VOLSYNC_CACHE_CAPACITY: 20Gi
       VOLSYNC_CAPACITY: 50Gi
+      VOLSYNC_CHECK_SCHEDULE: "0 3 5 * *"
   prune: true
   retryInterval: 1m
   sourceRef:
