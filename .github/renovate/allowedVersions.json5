@@ -12,6 +12,14 @@
       "versioning": "semver",
       "ignoreUnstable": false,
       "allowedVersions": "/^\\d+\\.\\d+\\.\\d+(-beta\\d+)?$/"
+    },
+    {
+      // Paperless does not support Tika 4: Tika 4 removed the /form endpoints
+      // that Paperless calls. Remove this rule when Paperless supports Tika 4.
+      // https://github.com/paperless-ngx/paperless-ngx/issues/13755
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["docker.io/apache/tika", "apache/tika"],
+      "allowedVersions": "<4"
     }
   ]
 }
