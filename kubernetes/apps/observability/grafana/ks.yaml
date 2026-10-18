@@ -34,6 +34,8 @@ spec:
   components:
     - ../../../../components/cnpg
   dependsOn:
+    - name: cloudnative-pg-cluster
+      namespace: database
     - name: grafana
       namespace: *namespace
     - name: rook-ceph-cluster

@@ -12,6 +12,8 @@ spec:
     - ../../../../components/cnpg
     - ../../../../components/dragonfly
   dependsOn:
+    - name: cloudnative-pg-cluster
+      namespace: database
     - name: dragonfly
       namespace: database
     - name: onepassword-store
