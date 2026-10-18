@@ -47,6 +47,10 @@ hubble:
       - http
     serviceMonitor:
       enabled: true
+      metricRelabelings:
+        - action: drop
+          sourceLabels: [__name__]
+          regex: hubble_port_distribution_total
     dashboards:
       enabled: true
   relay:
