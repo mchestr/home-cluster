@@ -17,3 +17,13 @@ spec:
               The {{ $labels.name }} endpoint is down
           labels:
             severity: critical
+
+        - alert: GatusCertificateCheckFailed
+          expr: |
+            gatus_results_endpoint_success{group="certificates"} == 0
+          for: 5m
+          annotations:
+            summary: >-
+              The {{ $labels.name }} certificate check failed: no TLS connection, or the certificate expires in less than 14 days
+          labels:
+            severity: critical

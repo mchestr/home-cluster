@@ -46,8 +46,6 @@ endpoints:
     conditions:
       - "[CONNECTED] == true"
       - "[CERTIFICATE_EXPIRATION] > 336h"
-    alerts:
-      - type: pushover
 
   - name: "*.chestr.dev"
     group: certificates
@@ -56,5 +54,3 @@ endpoints:
     conditions:
       - "[CONNECTED] == true"
       - "[CERTIFICATE_EXPIRATION] > 336h"
-    alerts:
-      - type: pushover
