@@ -2,14 +2,13 @@
 # shellcheck disable=SC2154
 set -euo pipefail
 
-PUSHOVER_DEBUG="${PUSHOVER_DEBUG:-"true"}"
-# kubectl port-forward service/radarr -n default 7878:80
+PUSHOVER_DEBUG="${PUSHOVER_DEBUG:-"false"}"
+# kubectl port-forward service/radarr -n media 7878:80
 # export PUSHOVER_TOKEN="";
 # export PUSHOVER_USER_KEY="";
 # export radarr_eventtype=Download;
-# ./notify.sh
+# ./pushover-notify.sh
 
-CONFIG_FILE="/config/config.xml" && [[ "${PUSHOVER_DEBUG}" == "true" ]] && CONFIG_FILE="config.xml"
 ERRORS=()
 
 #
@@ -22,6 +21,11 @@ PUSHOVER_TOKEN="${PUSHOVER_TOKEN:-}" && [[ -z "${PUSHOVER_TOKEN}" ]] && ERRORS+=
 PUSHOVER_DEVICE="${PUSHOVER_DEVICE:-}"
 PUSHOVER_PRIORITY="${PUSHOVER_PRIORITY:-"-2"}"
 PUSHOVER_SOUND="${PUSHOVER_SOUND:-}"
+# Set per event below
+PUSHOVER_TITLE=""
+PUSHOVER_MESSAGE=""
+PUSHOVER_URL=""
+PUSHOVER_URL_TITLE=""
 
 #
 # Print defined variables
@@ -77,6 +81,11 @@ if [[ "${radarr_eventtype:-}" == "ManualInteractionRequired" ]]; then
         "${radarr_download_client}"
     printf -v PUSHOVER_URL "%s/activity/queue" "${radarr_applicationurl:-localhost}"
     printf -v PUSHOVER_URL_TITLE "View queue in %s" "${radarr_instancename:-Radarr}"
+fi
+
+if [[ -z "${PUSHOVER_TITLE}" ]]; then
+    printf "%s - No notification for event type %s\n" "$(date)" "${radarr_eventtype:-unknown}"
+    exit 0
 fi
 
 notification=$(jq -n \

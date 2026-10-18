@@ -2,14 +2,13 @@
 # shellcheck disable=SC2154
 set -euo pipefail
 
-PUSHOVER_DEBUG="${PUSHOVER_DEBUG:-"true"}"
-# kubectl port-forward service/sonarr -n default 8989:80
+PUSHOVER_DEBUG="${PUSHOVER_DEBUG:-"false"}"
+# kubectl port-forward service/sonarr -n media 8989:80
 # export PUSHOVER_TOKEN="";
 # export PUSHOVER_USER_KEY="";
 # export sonarr_eventtype=Download;
 # ./pushover-notify.sh
 
-CONFIG_FILE="/config/config.xml" && [[ "${PUSHOVER_DEBUG}" == "true" ]] && CONFIG_FILE="config.xml"
 ERRORS=()
 
 #
@@ -22,6 +21,11 @@ PUSHOVER_TOKEN="${PUSHOVER_TOKEN:-}" && [[ -z "${PUSHOVER_TOKEN}" ]] && ERRORS+=
 PUSHOVER_DEVICE="${PUSHOVER_DEVICE:-}"
 PUSHOVER_PRIORITY="${PUSHOVER_PRIORITY:-"-2"}"
 PUSHOVER_SOUND="${PUSHOVER_SOUND:-}"
+# Set per event below
+PUSHOVER_TITLE=""
+PUSHOVER_MESSAGE=""
+PUSHOVER_URL=""
+PUSHOVER_URL_TITLE=""
 
 #
 # Print defined variables
@@ -76,6 +80,11 @@ if [[ "${sonarr_eventtype:-}" == "ManualInteractionRequired" ]]; then
         "${sonarr_download_client}"
     printf -v PUSHOVER_URL "%s/activity/queue" "${sonarr_applicationurl:-localhost}"
     printf -v PUSHOVER_URL_TITLE "View queue in %s" "${sonarr_instancename:-Sonarr}"
+fi
+
+if [[ -z "${PUSHOVER_TITLE}" ]]; then
+    printf "%s - No notification for event type %s\n" "$(date)" "${sonarr_eventtype:-unknown}"
+    exit 0
 fi
 
 notification=$(jq -n \
