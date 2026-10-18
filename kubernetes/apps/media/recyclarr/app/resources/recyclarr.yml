@@ -7,13 +7,15 @@ sonarr:
     delete_old_custom_formats: true
     quality_definition:
       type: series
+    media_management:
+      propers_and_repacks: do_not_prefer
     quality_profiles:
       - trash_id: 72dae194fc92bf828f32cde7744e51a1  # WEB-1080p
         reset_unmatched_scores:
           enabled: true
     custom_formats:
+      # Optional picks only. The guide profile already syncs its own formats and default groups.
       - trash_ids:
-          - 32b367365729d530ca1c124a0b180c64 # Bad Dual Groups
           - 82d40da2bc6923f41e14394075dd4b03 # No-RlsGroup
           - e1a997ddb54e3ecbfe06341ad323c458 # Obfuscated
           - 06d66ab109d4d2eddb2794d21526d140 # Retags
@@ -32,6 +34,8 @@ radarr:
     delete_old_custom_formats: true
     quality_definition:
       type: sqp-streaming
+    media_management:
+      propers_and_repacks: do_not_prefer
     quality_profiles:
       - trash_id: 5128baeb2b081b72126bc8482b2a86a0  # [SQP] SQP-1 (2160p)
         reset_unmatched_scores:
@@ -42,10 +46,8 @@ radarr:
         assign_scores_to:
           - trash_id: 5128baeb2b081b72126bc8482b2a86a0  # [SQP] SQP-1 (2160p)
             score: 0
+      # Optional picks only. The guide profile already syncs its own formats and default groups.
       - trash_ids:
-          - 7a0d1ad358fee9f5b074af3ef3f9d9ef # hallowed
-          - b6832f586342ef70d9c128d40c07b872 # Bad Dual Groups
-          - ae9b7c9ebde1f3bd336a8cbd1ec4c5e5 # No-RlsGroup
           - 7357cf5161efbf8c4d5d0c30b4815ee2 # Obfuscated
           - 5c44f52a8714fdd79bb4d98e2673be1f # Retags
           - f537cf427b64c38c8e36298f657e4828 # Scene
