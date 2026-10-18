@@ -48,11 +48,11 @@ spec:
         repository: ghcr.io/mchestr/waitlist-browser
         tag: 1.0.0  # + @sha256:<digest> at Phase 0 step 6 (../README.md); the render refuses it until then
 
-      # The streamed checkout viewer (beta, 0.7.0): off, admins or everyone. waitlist-web shows its Settings switch
+      # The streamed checkout viewer (beta): off, admins or everyone. waitlist-web shows its Settings switch
       # and opens checkouts in it only for those it is offered to; waitlist-control lets only their pods serve it.
       # "off" is the kill switch: no stream links, and live streams fall back to the classic viewer within one
       # configure push. Keep it quoted: YAML reads a bare off as false. Rendered into both configs unless "off",
-      # which both default to: with "off" the configs are 0.6.4's, so its images can be rolled back to as they are.
+      # which both default to.
       checkout:
         streamViewer: "admins"
 

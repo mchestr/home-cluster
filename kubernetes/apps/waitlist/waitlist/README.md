@@ -266,7 +266,8 @@ pg() { kubectl cnpg psql -n database postgres17 -- "$@"; }
    `"off"`, check, and commit (`Fill in the deploy copy's 1.0.0 digests and checkout key`):
    ```sh
    cp <this repo>/kubernetes/apps/waitlist/waitlist/app/helmrelease.yaml deploy/helmrelease.yaml
-   sed -i -E 's/^( +(streamViewer|offer): )"(admins|everyone)"$/\1"off"/' deploy/helmrelease.yaml
+   sed -E -i.orig 's/^( +(streamViewer|offer): )"(admins|everyone)"$/\1"off"/' deploy/helmrelease.yaml \
+     && rm deploy/helmrelease.yaml.orig   # GNU and macOS sed alike
    WL_HOME_CLUSTER=<this repo, on this branch> uv run pytest tests/test_deploy.py -q   # all passed
    ```
 
@@ -447,6 +448,43 @@ NetworkPolicy); and nothing in git owns the database. The commands are safe to r
   kubectl get validatingadmissionpolicies,validatingadmissionpolicybindings,clusterroles,clusterrolebindings,priorityclasses -o name \
     | grep -E '/(wl-|waitlist)'                                # prints nothing
   ```
-- **After Phase 2** the same revert brings Ferry Watch back empty, and only once its 1Password fields exist again:
-  re-create them first, as Ferry Watch's own README did
-  (`git show "$M~$K:kubernetes/apps/ferry-watch/ferry-watch/README.md"`, with `M` and `K` as above).
+- **After Phase 2** the same revert brings Ferry Watch back empty, once what Phase 2 deleted exists again. Ferry
+  Watch's own README has the steps (`git show "$M~$K:kubernetes/apps/ferry-watch/ferry-watch/README.md"`, with `M`
+  and `K` as above), with three changes:
+  1. **1Password and lldap.** Phase 2 step 7 deleted the item `ferry-watch`, so that README's `op item edit
+     ferry-watch` would fail: create the item instead, with new keys from Ferry Watch's last image. Then add the
+     `authelia` and `cloudnative-pg` fields as its steps 1 and 2 do, and create the lldap group `ferry-watch`.
+     ```sh
+     if op item get ferry-watch --vault kubernetes >/dev/null 2>&1; then
+       echo "item ferry-watch exists: delete it first"
+     else
+       KEYS="$(docker run --rm ghcr.io/mchestr/ferry-watch-control:0.7.1 ferry-web keys)"
+       case "$KEYS" in
+         *'FERRY_WATCH_CHECKOUT_KEY=k1:'?*'FERRY_WATCH_VAPID_KEY='?*)
+           op item create --vault kubernetes --category password --title ferry-watch \
+             "FERRY_WATCH_CHECKOUT_KEY[password]=$(printf '%s\n' "$KEYS" | sed -n 's/^FERRY_WATCH_CHECKOUT_KEY=//p')" \
+             "FERRY_WATCH_VAPID_KEY[password]=$(printf '%s\n' "$KEYS" | sed -n 's/^FERRY_WATCH_VAPID_KEY=//p')" >/dev/null \
+             && printf '%s\n' "$KEYS" | tail -n 1 ;;  # k1:<base64url>, the checkout key's public half: keep it for 3.
+         *) echo "no keys: stop" ;;
+       esac
+       unset KEYS
+     fi
+     ```
+  2. **The revert.** If Phase 2 step 8's commit has landed, revert it first. It deleted the `ensure: absent`
+     lines that this change's own revert edits, so `git revert "$M~$K..$M"` alone stops in a conflict in
+     `cluster17.yaml`. In place of the `git revert` line above, and before its `git push`:
+     ```sh
+     S=$(git log --format=%H -1 -F --grep='drop the absent Ferry Watch roles' origin/main)   # empty if it hasn't
+     [ -z "$S" ] || git revert --no-edit "$S"
+     git revert --no-edit "$M~$K..$M"
+     ```
+  3. **The checkout key's public half.** The reverted `helmrelease.yaml` has the deleted key's, and browser pods
+     would refuse every checkout ticket. Before pushing, put in the `k1:` line that 1 printed, and commit it:
+     ```sh
+     PUB='k1:<the line 1 printed>'
+     f=kubernetes/apps/ferry-watch/ferry-watch/app/helmrelease.yaml
+     sed -E -i.orig "s/^( +vncPubkeys: )k1:[A-Za-z0-9_-]{43}\$/\\1$PUB/" "$f" && rm "$f.orig"
+     grep -E '^ +vncPubkeys: k1:' "$f"   # one line, with the new key
+     git commit -am 'fix(ferry-watch): the checkout key re-created after the rollback'
+     ```
+  Then push and open the PR, merge it and clean up, as in the bullet above.
