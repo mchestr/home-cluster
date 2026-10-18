@@ -1,0 +1,82 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app etcd-defrag
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 2
+  values:
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        seccompProfile: { type: RuntimeDefault }
+
+    controllers:
+      etcd-defrag:
+        type: cronjob
+        cronjob:
+          # Weekly, before the VolSync backups start at 08:00 UTC.
+          schedule: "30 6 * * 0"
+          backoffLimit: 0
+          concurrencyPolicy: Forbid
+          successfulJobsHistory: 1
+          failedJobsHistory: 1
+          ttlSecondsAfterFinished: 86400
+        defaultContainerOptions:
+          image:
+            repository: ghcr.io/siderolabs/talosctl
+            tag: v1.14.3@sha256:4d021d8951bc880667fa09e86c4c91ce69426d03f121d766c91736257d0edf38
+          env:
+            # talosctl needs a home folder to resolve its config paths, even with
+            # TALOSCONFIG set. It writes nothing there.
+            TALOS_HOME: /tmp/talos
+            TALOSCONFIG: /var/run/secrets/talos.dev/config
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: { drop: ["ALL"] }
+          resources:
+            requests:
+              cpu: 10m
+            limits:
+              memory: 128Mi
+        # One member at a time, because a defrag blocks its member until it ends. Each
+        # member first hands etcd leadership to another member (a no-op on a follower).
+        initContainers:
+          forfeit-m0:
+            args: ["--nodes", "10.0.40.10", "etcd", "forfeit-leadership"]
+          defrag-m0:
+            dependsOn: forfeit-m0
+            args: ["--nodes", "10.0.40.10", "etcd", "defrag"]
+          forfeit-m1:
+            dependsOn: defrag-m0
+            args: ["--nodes", "10.0.40.11", "etcd", "forfeit-leadership"]
+          defrag-m1:
+            dependsOn: forfeit-m1
+            args: ["--nodes", "10.0.40.11", "etcd", "defrag"]
+          forfeit-m2:
+            dependsOn: defrag-m1
+            args: ["--nodes", "10.0.40.12", "etcd", "forfeit-leadership"]
+          defrag-m2:
+            dependsOn: forfeit-m2
+            args: ["--nodes", "10.0.40.12", "etcd", "defrag"]
+        containers:
+          app:
+            args: ["--nodes", "10.0.40.10,10.0.40.11,10.0.40.12", "etcd", "status"]
+        pod:
+          restartPolicy: Never
+
+    persistence:
+      talos:
+        type: secret
+        name: etcd-defrag
+        globalMounts:
+          - path: /var/run/secrets/talos.dev
+            readOnly: true
