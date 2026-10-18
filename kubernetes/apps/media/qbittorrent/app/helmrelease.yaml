@@ -25,23 +25,13 @@ spec:
               tag: 5.2.4@sha256:9307627e03981d5473aa31175ea76ed56ea3752333ca49d601b6af45e281e7ba
             env:
               TZ: America/Vancouver
+              # The image ignores QBT_<Section>__<Key> vars: other settings live in
+              # qBittorrent.conf on the VolSync-backed config PVC. Its WebUI auth whitelist
+              # (10.244.0.0/16, 192.168.0.0/16, 10.0.40.0/24) admits Envoy (after Authelia),
+              # cross-seed, tqm and the homepage widget without a login, so any pod can use
+              # the API: keep the HTTP port off the LoadBalancer and off any other Service.
               QBT_WEBUI_PORT: &port 8080
               QBT_TORRENTING_PORT: &bittorrentPort 50413
-              QBT_Preferences__WebUI__AlternativeUIEnabled: false
-              # The pod CIDR is whitelisted so Envoy (after Authelia) and the in-cluster
-              # clients that carry no credentials (cross-seed, tqm, the homepage widget)
-              # reach the API without a second login. Any pod can therefore use the API:
-              # keep the HTTP port off the LoadBalancer and off any other Service.
-              QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
-              QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
-                10.244.0.0/16, 192.168.0.0/16, 10.0.40.0/24
-              QBT_Preferences__WebUI__LocalHostAuth: false
-              QBT_BitTorrent__Session__Interface: eth0
-              QBT_BitTorrent__Session__InterfaceAddress:
-                valueFrom:
-                  fieldRef:
-                    fieldPath: status.podIP
-              QBT_BitTorrent__Session__InterfaceName: eth0
               CROSS_SEED_ENABLED: true
               CROSS_SEED_HOST: cross-seed.media.svc.cluster.local
               CROSS_SEED_PORT: 2468
@@ -81,6 +71,8 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
           - 65539
+      # Time to write fast-resume data on SIGTERM; the 30s default can cut it short.
+      terminationGracePeriodSeconds: 300
 
     service:
       app:
