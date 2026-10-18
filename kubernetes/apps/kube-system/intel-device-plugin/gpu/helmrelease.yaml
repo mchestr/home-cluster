@@ -5,14 +5,9 @@ metadata:
   name: intel-device-plugin-gpu
 spec:
   interval: 30m
-  chart:
-    spec:
-      chart: intel-device-plugins-gpu
-      version: 0.37.1
-      sourceRef:
-        kind: HelmRepository
-        name: intel
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: intel-device-plugin-gpu
   maxHistory: 2
   values:
     name: i915

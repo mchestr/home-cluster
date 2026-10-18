@@ -9,3 +9,4 @@ configurations:
   - ./kustomizeconfig.yaml
 resources:
   - ./helmrelease.yaml
+  - ./ocirepository.yaml

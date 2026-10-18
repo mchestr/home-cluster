@@ -5,15 +5,9 @@ metadata:
   name: kubelet-csr-approver
 spec:
   interval: 30m
-  chart:
-    spec:
-      chart: kubelet-csr-approver
-      version: 1.2.15
-      sourceRef:
-        kind: HelmRepository
-        name: postfinance
-        namespace: flux-system
-      interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: kubelet-csr-approver
   maxHistory: 2
   valuesFrom:
     - kind: ConfigMap

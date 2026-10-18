@@ -5,14 +5,9 @@ metadata:
   name: windmill
 spec:
   interval: 30m
-  chart:
-    spec:
-      chart: windmill
-      version: 4.0.285
-      sourceRef:
-        kind: HelmRepository
-        name: windmill
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: windmill
   maxHistory: 2
   upgrade:
     # Runs DB migrations on upgrade; don't roll back onto a migrated schema
