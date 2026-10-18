@@ -38,10 +38,13 @@ spec:
             command:
               - /bin/sh
               - -c
+            # Each library run rebuilds the playlists from its own library only, so a
+            # last run rebuilds them from both libraries.
             args:
               - |
-                python3 kometa.py --run --read-only-config --run-libraries "Movies";
-                python3 kometa.py --run --read-only-config --run-libraries "TV Shows";
+                python3 kometa.py --run --read-only-config --run-libraries "Movies" &&
+                python3 kometa.py --run --read-only-config --run-libraries "TV Shows" &&
+                python3 kometa.py --run --read-only-config --playlists-only
             env:
               TZ: America/Vancouver
             envFrom:
