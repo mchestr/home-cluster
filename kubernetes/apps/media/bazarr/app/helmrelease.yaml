@@ -105,7 +105,9 @@ spec:
               tag: v4.7.1@sha256:c5e1976da735bf0b53979f079a07475d77174c51863cd084e928ff6074480717
             env:
               GITSYNC_REPO: https://github.com/KBlixt/subcleaner
-              GITSYNC_REF: master
+              # Upstream has no releases or tags, so pin a master commit.
+              # renovate: datasource=git-refs depName=https://github.com/KBlixt/subcleaner branch=master
+              GITSYNC_REF: f2022c522fc580edb7597ef53e17b1ba1801957a
               GITSYNC_PERIOD: 24h
               GITSYNC_ROOT: /subcleaner
             resources:
