@@ -1,0 +1,19 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
+metadata:
+  name: victoria-logs-alerts
+  labels:
+    vmalert-logs.io/enabled: "true"
+spec:
+  groups:
+    - name: &name LogPipelineWatchdog
+      type: vlogs
+      interval: 5m
+      rules:
+        - alert: *name
+          expr: '* | stats count() rows | filter rows :> 0'
+          labels:
+            severity: none
+          annotations:
+            description: 'This alert fires while logs arrive in VictoriaLogs. Alertmanager sends it to a heartbeat check that alerts when the pings stop.'

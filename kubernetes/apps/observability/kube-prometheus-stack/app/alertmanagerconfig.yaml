@@ -21,6 +21,14 @@ spec:
           - name: alertname
             value: Watchdog
             matchType: =
+      - receiver: log-heartbeat
+        groupWait: 0s
+        groupInterval: 5m
+        repeatInterval: 5m
+        matchers:
+          - name: alertname
+            value: LogPipelineWatchdog
+            matchType: =
     groupBy:
       - alertname
       - cluster
@@ -48,6 +56,12 @@ spec:
         - urlSecret:
             name: alertmanager-secret
             key: ALERTMANAGER_HEARTBEAT_URL
+    - name: log-heartbeat
+      webhookConfigs:
+        - urlSecret:
+            name: alertmanager-secret
+            key: LOGS_HEARTBEAT_URL
+          sendResolved: false
     - name: pushover
       pushoverConfigs:
         - html: true
