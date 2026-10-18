@@ -3,7 +3,7 @@ name: add-app
 description: Add a new app to the cluster. Create its Flux Kustomization and HelmRelease, and an ExternalSecret if necessary, build and validate them, then open a pull request. Use it when the owner asks you to add, deploy or install an app.
 ---
 
-`AGENTS.md` has the rules for each file in these sections: "Adding a New App", "HelmReleases", "Ingress / Routing", "Secrets", "Reusable Components" and "Storage". Obey those rules. This skill gives only the order of the work. `docs/src/notes/application-deployment.md` has a full example of each file.
+`AGENTS.md` has more rules for these files in these sections: "HelmReleases", "Ingress / Routing", "Secrets", "Reusable Components" and "Storage". Obey those rules and the rules in this skill. `docs/src/notes/application-deployment.md` has a full example of each file.
 
 ## Prepare
 
@@ -16,11 +16,20 @@ description: Add a new app to the cluster. Create its Flux Kustomization and Hel
 
 ## Create the files
 
-7. Create `kubernetes/apps/<namespace>/<app>/ks.yaml`.
-8. Create `kubernetes/apps/<namespace>/<app>/app/helmrelease.yaml`.
+7. Create `kubernetes/apps/<namespace>/<app>/ks.yaml`: a `Kustomization` in the namespace of the app, with these fields:
+   - `targetNamespace`, and `path` set to `./app`.
+   - `dependsOn`: `onepassword-store` for an ExternalSecret, `rook-ceph-cluster` for a PVC, `cloudnative-pg-cluster` for a database.
+   - `components`.
+   - `postBuild.substitute` variables. Always set `APP`.
+8. Create `kubernetes/apps/<namespace>/<app>/app/helmrelease.yaml`. The HelmRelease needs these values:
+   - Probes on a real health endpoint.
+   - A CPU request and a memory limit.
+   - `runAsNonRoot` at pod level. `drop: [ALL]` and `readOnlyRootFilesystem` on the container, unless the app needs a device.
+   - `reloader.stakater.com/auto: "true"` when the app reads a Secret or a ConfigMap without a name hash.
+   - `route` with `sectionName: https`.
 9. If the app needs a secret, create `kubernetes/apps/<namespace>/<app>/app/externalsecret.yaml`.
 10. Create `kubernetes/apps/<namespace>/<app>/app/kustomization.yaml`. List each manifest of the `app/` directory under `resources`.
-11. If the namespace is new, copy `kustomization.yaml` from another namespace directory. Set `namespace`, and remove the other apps from `resources`.
+11. If the namespace is new, copy `kustomization.yaml` from another namespace directory. Set `namespace`, and remove the other apps from `resources`. Flux finds new namespace directories automatically. There is no top-level `kubernetes/apps/kustomization.yaml`.
 12. Add `./<app>/ks.yaml` to `resources` in `kubernetes/apps/<namespace>/kustomization.yaml`.
 
 ## Build and validate
