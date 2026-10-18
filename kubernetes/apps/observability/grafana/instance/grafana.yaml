@@ -16,9 +16,9 @@ spec:
     auth:
       disable_login_form: "false"
       signout_redirect_url: "https://auth.chestr.dev/logout"
-      oauth_auto_login: "true"
     auth.generic_oauth:
       enabled: "true"
+      auto_login: "true"
       name: Authelia
       scopes: openid profile email groups
       empty_scopes: "false"
@@ -29,12 +29,11 @@ spec:
       groups_attribute_path: groups
       name_attribute_path: name
       use_pkce: "true"
-      # Users in neither mapped group are refused instead of becoming Viewers
-      role_attribute_strict: "true"
-    auth.generic_oauth.group_mapping:
+      # Grafana reads role_attribute_path only from this section
       role_attribute_path: |
         contains(groups[*], 'admin') && 'Admin' || contains(groups[*], 'people') && 'Viewer'
-      org_id: "1"
+      # Users in neither mapped group are refused instead of becoming Viewers
+      role_attribute_strict: "true"
     auth.anonymous:
       enabled: "false"
     log:
