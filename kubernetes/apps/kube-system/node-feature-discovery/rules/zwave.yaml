@@ -6,7 +6,7 @@ metadata:
 spec:
   rules:
     - # zWave Device
-      name: zwave
+      name: zwave-silabs
       labels:
         feature.node.kubernetes.io/zwave: "true"
       matchFeatures:
@@ -16,7 +16,7 @@ spec:
             vendor: { op: In, value: ["10c4"] }
             device: { op: In, value: ["8a2a"] }
     - # zWave Device Zooz 800
-      name: zwave
+      name: zwave-zooz-800
       labels:
         feature.node.kubernetes.io/zwave: "true"
       matchFeatures:
