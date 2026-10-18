@@ -91,7 +91,7 @@ talos/
 ├── controlplane.yaml          # Base Talos machine config (rendered with minijinja-cli + op inject)
 ├── controlplane/<m0|m1|m2>.yaml  # Per-node config patches
 └── schematic.yaml             # Talos image factory schematic
-terraform/cloudflare/          # DNS records, Cloudflare tunnels, access policies
+terraform/cloudflare/          # Cloudflare tunnel, rulesets, zone settings and the tunnel's 1Password item (DNS records come from external-dns)
 bootstrap/                     # helmfile + resources for initial cluster setup
 docs/                          # mdBook operations docs (published by the docs workflow)
 ```
@@ -101,7 +101,7 @@ docs/                          # mdBook operations docs (published by the docs w
 ### Adding a New App
 
 1. Create `kubernetes/apps/<namespace>/<app>/ks.yaml`: a `Kustomization` in the app's namespace with `targetNamespace`, pointing to `./app`, listing `dependsOn` (`onepassword-store` for anything with an ExternalSecret, `rook-ceph-cluster` for a PVC, `cloudnative-pg-cluster` for a database), `components`, and `postBuild.substitute` vars (always `APP`).
-2. Create `kubernetes/apps/<namespace>/<app>/app/` with `kustomization.yaml`, `helmrelease.yaml`, and optionally `externalsecret.yaml`. The HelmRelease needs probes on a real health endpoint, a CPU request and memory limit, `runAsNonRoot` at pod level and `drop: [ALL]`/`readOnlyRootFilesystem` on the container unless a device is needed, `reloader.stakater.com/auto: "true"` when it reads a Secret, and `route` with `sectionName: https`. `kubernetes/apps/default/govee2mqtt` is a compact reference.
+2. Create `kubernetes/apps/<namespace>/<app>/app/` with `kustomization.yaml`, `helmrelease.yaml`, and optionally `externalsecret.yaml`. The HelmRelease needs probes on a real health endpoint, a CPU request and memory limit, `runAsNonRoot` at pod level and `drop: [ALL]`/`readOnlyRootFilesystem` on the container unless a device is needed, `reloader.stakater.com/auto: "true"` when it reads a Secret, and `route` with `sectionName: https`. `kubernetes/apps/media/tautulli` is a compact reference.
 3. Add `./<app>/ks.yaml` to `kubernetes/apps/<namespace>/kustomization.yaml`. New namespace directories are discovered automatically; there is no top-level `kubernetes/apps/kustomization.yaml`.
 
 ### HelmReleases
@@ -122,7 +122,7 @@ Apps expose themselves via Gateway API `HTTPRoute` under `route` in the app-temp
 - Use `envoy-internal` unless the app must be reachable from outside the home network.
 - Only put an app on `envoy-external` if it has solid authentication of its own (e.g. OIDC through Authelia). Never expose admin UIs, shells or editors there.
 - Authelia access rules live in `kubernetes/apps/default/authelia/app/resources/configuration.yaml`. The default is two-factor for the `admin` group and deny for everyone else. Apps with their own login are listed under `bypass`.
-- Apps on `envoy-external` should carry a NetworkPolicy that only admits ingress from that gateway's Envoy pods (`gateway.envoyproxy.io/owning-gateway-name`) plus a CiliumNetworkPolicy admitting the `kube-apiserver` entity on the same port (cross-node gateway traffic is SNATed to a control-plane node). `default/home-assistant` and `waitlist` are the reference implementations; not every app has one yet.
+- Apps on `envoy-external` should carry a NetworkPolicy that only admits ingress from that gateway's Envoy pods (`gateway.envoyproxy.io/owning-gateway-name`) plus a CiliumNetworkPolicy admitting the `kube-apiserver` entity on the same port (cross-node gateway traffic is SNATed to a control-plane node). `default/radicale` and `waitlist` are the reference implementations; not every app has one yet.
 
 ### Secrets
 
@@ -138,7 +138,7 @@ Add components to a `ks.yaml` under `spec.components`:
 ### Storage
 
 - `ceph-block` (RWO): default for persistent app data backed by Rook-Ceph
-- `openebs-hostpath`: used for VolSync cache volumes (local, faster)
+- `openebs-hostpath`: used for VolSync cache volumes, CloudNative-PG clusters and ARC runner work volumes (local, faster)
 
 ### Talos Config
 
@@ -178,5 +178,5 @@ Major bumps use `!` suffix (e.g. `feat(container)!:`).
 
 ## Renovate & CI
 
-- Renovate automerges minor, patch and digest updates once they are 2 days old. Majors, `0.x` minor bumps, core infrastructure (CNI, storage, Flux, Talos/Kubernetes, app-template, cert-manager, external-secrets) and apps with DB migrations always get a PR. See `.github/renovate/autoMerge.json5`.
-- `flux-local` / `flux-diff` workflows validate manifests and post a diff of changed `HelmRelease` and `Kustomization` resources on PRs touching `kubernetes/**`.
+- Renovate automerges minor, patch and digest updates once they are 2 days old (3 days for GitHub Actions). Images and OCI charts outside Docker Hub get no minimum age and merge once the risk assessment passes. Majors, `0.x` minor bumps, core infrastructure (CNI, storage, Flux, Talos/Kubernetes, app-template, cert-manager, external-secrets) and apps with DB migrations always get a PR. See `.github/renovate/autoMerge.json5`.
+- `flux-local` validates manifests on PRs touching `kubernetes/**`, and `flux-diff` posts a diff of changed `HelmRelease` and `Kustomization` resources on PRs touching `kubernetes/apps/**` or `kubernetes/flux/**`.
