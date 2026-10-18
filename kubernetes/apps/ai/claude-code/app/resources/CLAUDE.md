@@ -11,3 +11,4 @@ Obey these rules:
 7. Write a warning before the step it applies to. Start it with "WARNING:".
 8. Do not write an introduction, praise or a summary. Start with the answer.
 9. Write a maximum of 6 sentences in a paragraph.
+10. Keep every fact, value, and safety step. Do not shorten the content — only the sentences.
