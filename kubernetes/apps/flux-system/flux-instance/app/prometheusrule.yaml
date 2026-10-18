@@ -27,3 +27,22 @@ spec:
               Reason: {{ $labels.reason }}
           labels:
             severity: critical
+        # Drop the ready, reason and revision labels: they change while an object retries and would reset the for timer
+        - alert: FluxResourceNotReady
+          expr: max by (exported_namespace, kind, name) (flux_resource_info{ready!="True", suspended="False"})
+          for: 15m
+          annotations:
+            summary: Flux {{ $labels.kind }} {{ $labels.name }} is not ready
+            description: |
+              The Flux {{ $labels.kind }} {{ $labels.exported_namespace }}/{{ $labels.name }} has not been ready for 15 minutes.
+          labels:
+            severity: warning
+        - alert: FluxResourceSuspended
+          expr: max by (exported_namespace, kind, name) (flux_resource_info{suspended="True"})
+          for: 24h
+          annotations:
+            summary: Flux {{ $labels.kind }} {{ $labels.name }} is suspended
+            description: |
+              The Flux {{ $labels.kind }} {{ $labels.exported_namespace }}/{{ $labels.name }} has been suspended for 24 hours.
+          labels:
+            severity: warning
