@@ -12,7 +12,6 @@
       "mcp__kubernetes__pods_list_in_namespace",
       "mcp__kubernetes__pods_log",
       "mcp__kubernetes__pods_top",
-      "mcp__kubernetes__resources_get",
       "mcp__kubernetes__resources_list",
       "mcp__flux-operator__get_flux_instance",
       "mcp__flux-operator__get_kubeconfig_contexts",
@@ -34,12 +33,20 @@
       "Bash(flux-local build *)",
       "Bash(flux-local diff *)",
       "Bash(helm show *)",
-      "Bash(dig *)",
-      "Bash(ping *)",
       "Bash(op whoami)",
       "mcp__github__pull_request_read",
       "mcp__claude-in-chrome__tabs_context_mcp",
       "mcp__claude-in-chrome__get_page_text"
+    ],
+    "ask": [
+      "mcp__kubernetes__resources_get",
+      "Bash(kubectl get secret*)",
+      "Bash(kubectl get Secret*)",
+      "Bash(kubectl get * secret*)",
+      "Bash(kubectl get * Secret*)",
+      "Bash(kubectl get *,secret*)",
+      "Bash(kubectl get *,Secret*)",
+      "Bash(kubectl get */secrets*)"
     ]
   }
 }
