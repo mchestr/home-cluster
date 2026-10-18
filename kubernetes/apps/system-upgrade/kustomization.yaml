@@ -5,4 +5,5 @@ namespace: system-upgrade
 components:
   - ../../components/common
 resources:
+  - ./etcd-defrag/ks.yaml
   - ./tuppr/ks.yaml
