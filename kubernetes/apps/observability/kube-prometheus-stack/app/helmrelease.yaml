@@ -26,6 +26,7 @@ spec:
           parentRefs:
             - name: envoy-internal
               namespace: networking
+              sectionName: https
       alertmanagerSpec:
         alertmanagerConfiguration:
           name: alertmanager
@@ -57,6 +58,7 @@ spec:
           parentRefs:
             - name: envoy-internal
               namespace: networking
+              sectionName: https
       prometheusSpec:
         externalUrl: https://prometheus.chestr.dev
         podMonitorSelectorNilUsesHelmValues: false

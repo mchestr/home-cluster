@@ -23,6 +23,8 @@ spec:
       helperPod:
         image:
           registry: quay.io/
+      analytics:
+        enabled: false
     openebs-crds:
       csi:
         volumeSnapshots:

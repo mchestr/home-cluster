@@ -85,7 +85,7 @@ spec:
             scrapeTimeout: 10s
 
     networkpolicies:
-      paperless:
+      smtp-relay:
         controller: *app
 
         policyTypes:

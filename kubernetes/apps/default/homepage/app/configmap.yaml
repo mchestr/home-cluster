@@ -92,12 +92,12 @@ data:
               href: https://uptimerobot.com/
         - HealthChecks:
             - icon: healthchecks.png
-              href: https://healthcheck.io/
+              href: https://healthchecks.io/
     - Git:
         - Kubesearch:
             - icon: kubernetes-dashboard.png
               description: Helm Chart Search
-              href: https://nanne.dev/k8s-at-home-search/
+              href: https://kubesearch.dev/
         - home-cluster:
             - icon: github.png
               description: Renovate Dashboard
