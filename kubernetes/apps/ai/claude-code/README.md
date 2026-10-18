@@ -14,6 +14,10 @@ The guard is the permission mode: anything outside the repo's
 - `GITHUB_TOKEN`: fine-grained PAT on `mchestr/home-cluster`, contents and pull
   requests read/write.
 - `TALOSCONFIG`: contents of the admin `~/.talos/config`.
+- `HASS_TOKEN`: long-lived access token of a non-admin Home Assistant user, for
+  the Home Assistant MCP server (`/api/mcp/assist`, which serves only the
+  entities exposed to Assist). Without this field the ExternalSecret does not
+  sync and the pod cannot start; an empty value skips the server.
 
 ## One-time bootstrap
 

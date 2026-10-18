@@ -178,3 +178,15 @@ spec:
               ports:
                 - protocol: TCP
                   port: *port
+            # The Home Assistant MCP server of claude-code (kubernetes/apps/ai/claude-code).
+            - from:
+                - podSelector:
+                    matchLabels:
+                      app.kubernetes.io/instance: claude-code
+                      app.kubernetes.io/name: claude-code
+                  namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: ai
+              ports:
+                - protocol: TCP
+                  port: *port

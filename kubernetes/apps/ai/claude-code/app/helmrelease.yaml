@@ -58,6 +58,12 @@ spec:
                   secretKeyRef:
                     name: claude-code-secret
                     key: GITHUB_TOKEN
+              # Empty skips the Home Assistant MCP server in entrypoint.sh.
+              HASS_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: claude-code-secret
+                    key: HASS_TOKEN
               # No trailing slash; the plugin appends /mcp.
               MEMINI_BASE_URL: http://memini.ai.svc.cluster.local:8080
               MEMINI_API_KEY:
