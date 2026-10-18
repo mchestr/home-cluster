@@ -46,7 +46,7 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
-  timeout: 3m
+  timeout: 10m
   wait: true
 ---
 # Passwords for the login roles that cluster17.yaml manages (spec.managed.roles). Its own Kustomization with no
