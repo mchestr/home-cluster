@@ -9,6 +9,7 @@ on:
       - .github/workflows/flux-local.yaml
       - .github/workflows/renovate-risk.yaml
       - .github/renovate-risk/**
+      - .claude/skills/renovate-review/**
       - bootstrap/**
       - kubernetes/**
       - talos/**

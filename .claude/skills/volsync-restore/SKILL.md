@@ -23,9 +23,7 @@ The `volsync` component backs up the PVC of an app to Cloudflare R2 with Restic 
 
 WARNING: Do not run `task volsync:snapshot` before the restore. A new snapshot changes the `PREVIOUS` count. The retention keeps one snapshot for each day, so it can remove a good snapshot from the same day.
 
-6. Run `task volsync:list APP=<app> NS=<namespace> ns=<namespace>`.
-
-   `volsync:list` reads the namespace from the lowercase `ns` variable. The other tasks read `NS`.
+6. Run `task volsync:list APP=<app> NS=<namespace>`.
 7. Find the snapshot to restore. The list shows the oldest snapshot first and the latest snapshot last.
 8. Count `PREVIOUS` back from the last line. `PREVIOUS=0` is the latest snapshot, and `PREVIOUS=1` is the snapshot before it.
 9. Tell the owner the time of the snapshot and the `PREVIOUS` value. Continue only when the owner agrees.

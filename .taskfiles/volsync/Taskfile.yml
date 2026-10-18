@@ -25,12 +25,11 @@ tasks:
       - which flux kubectl
 
   list:
-    desc: List all snapshots (task volsync:list app=zigbee2mqtt)
+    desc: List all snapshots (task volsync:list APP=zigbee2mqtt)
     summary: |
       Args:
-        cluster: Cluster to run command against (required)
-        ns: Namespace the PVC is in (default: default)
-        app: Application to list snapshots for (required)
+        NS: Namespace the PVC is in (default: default)
+        APP: Application to list snapshots for (required)
     cmds:
       - minijinja-cli {{.VOLSYNC_RESOURCES_DIR}}/list.yaml.j2 | kubectl apply --server-side --filename -
       - until kubectl --namespace {{.NS}} get job/{{.JOB}} &>/dev/null; do sleep 5; done
@@ -38,7 +37,7 @@ tasks:
       - kubectl --namespace {{.NS}} logs job/{{.JOB}} --container list
       - kubectl --namespace {{.NS}} delete job {{.JOB}}
     vars:
-      NS: '{{.ns | default "default"}}'
+      NS: '{{.NS | default "default"}}'
       JOB: '{{.APP}}-list-snapshots'
     env:
       APP: '{{.APP}}'
@@ -68,7 +67,7 @@ tasks:
       - which kubectl
 
   # To run restore jobs in parallel for all replicationdestinations:
-  #   - kubectl get replicationsources --all-namespaces --no-headers | awk '{print $2, $1}' | xargs -l bash -c 'task volsync:restore app=$0 ns=$1'
+  #   - kubectl get replicationsources --all-namespaces --no-headers | awk '{print $2, $1}' | xargs -l bash -c 'task volsync:restore APP=$0 NS=$1'
   restore:
     desc: Restore an app [NS=default] [APP=required] [PREVIOUS=required]
     cmds:

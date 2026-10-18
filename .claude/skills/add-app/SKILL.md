@@ -3,14 +3,14 @@ name: add-app
 description: Add a new app to the cluster. Create its Flux Kustomization and HelmRelease, and an ExternalSecret if necessary, build and validate them, then open a pull request. Use it when the owner asks you to add, deploy or install an app.
 ---
 
-`AGENTS.md` has more rules for these files in these sections: "HelmReleases", "Ingress / Routing", "Secrets", "Reusable Components" and "Storage". Obey those rules and the rules in this skill. `docs/src/notes/application-deployment.md` has a full example of each file.
+`AGENTS.md` has more rules for these files: HelmReleases, gateways, secrets, components and storage. Obey those rules and the rules in this skill. `docs/src/notes/application-deployment.md` has a full example of each file.
 
 ## Prepare
 
 1. Get the app name, the namespace and the container image from the owner.
 2. Read the files of the reference app in `kubernetes/apps/media/tautulli`.
-3. Select the gateway with the table in "Ingress / Routing".
-4. Select the components and their variables with "Reusable Components".
+3. Select the gateway with the gateway table in `AGENTS.md`.
+4. Select the components and their variables with the component list in `AGENTS.md`.
 5. If the app needs a secret, ask the owner to add the 1Password item (see `docs/src/notes/secrets-management.md`).
 6. Create a branch from the latest main: `git fetch origin main && git switch --create <branch> origin/main`.
 
