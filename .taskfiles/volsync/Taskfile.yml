@@ -4,8 +4,9 @@ version: "3"
 # This taskfile is used to manage certain VolSync tasks for a given application, limitations are described below.
 #   1. Fluxtomization, HelmRelease, PVC, ReplicationSource all have the same name (e.g. plex)
 #   2. ReplicationSource and ReplicationDestination are a Restic repository
-#   3. Applications are deployed as either a Kubernetes Deployment or StatefulSet
+#   3. Applications are deployed as a Kubernetes Deployment, StatefulSet or CronJob with the same name
 #   4. Each application only has one PVC that is being replicated
+# The tasks read NS, as the docs write it. Lower-case ns still works when NS is not set.
 
 vars:
   VOLSYNC_RESOURCES_DIR: "{{.ROOT_DIR}}/.taskfiles/volsync/templates"
@@ -37,7 +38,7 @@ tasks:
       - kubectl --namespace {{.NS}} logs job/{{.JOB}} --container list
       - kubectl --namespace {{.NS}} delete job {{.JOB}}
     vars:
-      NS: '{{.NS | default "default"}}'
+      NS: '{{.NS | default .ns | default "default"}}'
       JOB: '{{.APP}}-list-snapshots'
     env:
       APP: '{{.APP}}'
@@ -58,7 +59,7 @@ tasks:
       - until kubectl --namespace {{.NS}} get job/{{.JOB}} &>/dev/null; do sleep 5; done
       - kubectl --namespace {{.NS}} wait job/{{.JOB}} --for=condition=complete --timeout=120m
     vars:
-      NS: '{{.NS | default "default"}}'
+      NS: '{{.NS | default .ns | default "default"}}'
       JOB: volsync-src-{{.APP}}
     requires:
       vars: [APP]
@@ -71,25 +72,90 @@ tasks:
   restore:
     desc: Restore an app [NS=default] [APP=required] [PREVIOUS=required]
     cmds:
+      # On a failure, resume Flux only if no ReplicationDestination can write to the PVC
+      - silent: true
+        defer: |-
+          {{if .EXIT_CODE -}}
+          set +e
+          RD=$(kubectl --namespace {{.NS}} get replicationdestination {{.APP}}-manual --ignore-not-found --output=name) || RD=unknown
+          if [[ -z "$RD" ]]; then
+            echo "task: replicationdestination/{{.APP}}-manual does not exist, so no restore writes to the PVC. Resuming Flux for {{.APP}}." >&2
+            {{if eq .CONTROLLER "cronjob" -}}
+            kubectl --namespace {{.NS}} patch cronjob {{.APP}} --type merge --patch '{"spec":{"suspend":false}}'
+            {{end -}}
+            flux --namespace {{.NS}} resume kustomization {{.APP}}
+            flux --namespace {{.NS}} resume helmrelease {{.APP}}
+            flux --namespace {{.NS}} reconcile helmrelease {{.APP}} --force
+            exit 0
+          fi
+          cat >&2 <<'EOF'
+          task: replicationdestination/{{.APP}}-manual still exists (or kubectl cannot read it), so a restore can still write to the PVC.
+          task: Flux stays suspended for {{.APP}}. Check the restore:
+            kubectl --namespace {{.NS}} describe replicationdestination {{.APP}}-manual
+            kubectl --namespace {{.NS}} logs job/volsync-dst-{{.APP}}-manual
+          task: When no restore Job runs, delete the ReplicationDestination. Then run the restore again, or resume Flux:
+            kubectl --namespace {{.NS}} delete replicationdestination {{.APP}}-manual
+          {{- if eq .CONTROLLER "cronjob"}}
+            kubectl --namespace {{.NS}} patch cronjob {{.APP}} --type merge --patch '{"spec":{"suspend":false}}'
+          {{- end}}
+            flux --namespace {{.NS}} resume kustomization {{.APP}}
+            flux --namespace {{.NS}} resume helmrelease {{.APP}}
+            flux --namespace {{.NS}} reconcile helmrelease {{.APP}} --force
+          EOF
+          {{- end}}
       # Suspend
       - flux --namespace {{.NS}} suspend kustomization {{.APP}}
       - flux --namespace {{.NS}} suspend helmrelease {{.APP}}
-      - kubectl --namespace {{.NS}} scale {{.CONTROLLER}}/{{.APP}} --replicas 0
-      - kubectl --namespace {{.NS}} wait pod --for=delete --selector="app.kubernetes.io/name={{.APP}}" --timeout=5m
+      - |-
+        {{if eq .CONTROLLER "cronjob" -}}
+        kubectl --namespace {{.NS}} patch cronjob {{.APP}} --type merge --patch '{"spec":{"suspend":true}}'
+        {{- else -}}
+        kubectl --namespace {{.NS}} scale {{.CONTROLLER}}/{{.APP}} --replicas 0
+        {{- end}}
+      # A CronJob keeps the pods of finished Jobs, so wait only for its running pods
+      - |-
+        {{if eq .CONTROLLER "cronjob" -}}
+        for i in $(seq 60); do
+          PODS=$(kubectl --namespace {{.NS}} get pods --selector="{{.SELECTOR}}" --field-selector=status.phase!=Succeeded,status.phase!=Failed --output=name) || exit 1
+          [[ -z "$PODS" ]] && exit 0
+          sleep 5
+        done
+        echo "task: a {{.APP}} Job still runs after 5 minutes: $PODS" >&2
+        exit 1
+        {{- else -}}
+        kubectl --namespace {{.NS}} wait pod --for=delete --selector="{{.SELECTOR}}" --timeout=5m
+        {{- end}}
       # Restore
       - minijinja-cli {{.VOLSYNC_RESOURCES_DIR}}/replicationdestination.yaml.j2 | kubectl apply --server-side --filename -
       - until kubectl --namespace {{.NS}} get job/volsync-dst-{{.APP}}-manual &>/dev/null; do sleep 5; done
       - kubectl --namespace {{.NS}} wait job/volsync-dst-{{.APP}}-manual --for=condition=complete --timeout=120m
       - kubectl --namespace {{.NS}} delete replicationdestination {{.APP}}-manual
       # Resume
+      - |-
+        {{if eq .CONTROLLER "cronjob" -}}
+        kubectl --namespace {{.NS}} patch cronjob {{.APP}} --type merge --patch '{"spec":{"suspend":false}}'
+        {{- end}}
       - flux --namespace {{.NS}} resume kustomization {{.APP}}
       - flux --namespace {{.NS}} resume helmrelease {{.APP}}
       - flux --namespace {{.NS}} reconcile helmrelease {{.APP}} --force
-      - kubectl --namespace {{.NS}} wait pod --for=condition=ready --selector="app.kubernetes.io/name={{.APP}}" --timeout=5m
+      - |-
+        {{if ne .CONTROLLER "cronjob" -}}
+        kubectl --namespace {{.NS}} wait pod --for=condition=ready --selector="{{.SELECTOR}}" --timeout=5m
+        {{- end}}
     vars:
-      NS: '{{.NS | default "default"}}'
+      NS: '{{.NS | default .ns | default "default"}}'
       CONTROLLER:
-        sh: kubectl --namespace {{.NS}} get deployment {{.APP}} &>/dev/null && echo deployment || echo statefulset
+        sh: |-
+          for kind in deployment statefulset cronjob; do
+            if kubectl --namespace {{.NS}} get $kind {{.APP}} &>/dev/null; then echo $kind; break; fi
+          done
+      # The pod labels of the controller: its selector, or the Job template labels of a CronJob
+      SELECTOR:
+        sh: |-
+          {{if .CONTROLLER -}}
+          kubectl --namespace {{.NS}} get {{.CONTROLLER}} {{.APP}} --output=json \
+            | jq --raw-output '(.spec.selector.matchLabels // .spec.jobTemplate.spec.template.metadata.labels) | to_entries | map("\(.key)=\(.value)") | join(",")'
+          {{- end}}
     env:
       NS: '{{.NS}}'
       APP: '{{.APP}}'
@@ -108,7 +174,11 @@ tasks:
       vars: [APP, PREVIOUS]
     preconditions:
       - test -f {{.VOLSYNC_RESOURCES_DIR}}/replicationdestination.yaml.j2
-      - which flux kubectl minijinja-cli
+      - which flux jq kubectl minijinja-cli
+      - sh: '[[ -n "{{.CONTROLLER}}" && -n "{{.SELECTOR}}" ]]'
+        msg: 'No Deployment, StatefulSet or CronJob named {{.APP}} with pod labels in namespace {{.NS}}'
+      - sh: 'RD=$(kubectl --namespace {{.NS}} get replicationdestination {{.APP}}-manual --ignore-not-found --output=name) && [[ -z "$RD" ]]'
+        msg: 'replicationdestination/{{.APP}}-manual exists (or kubectl cannot read it), so an earlier restore did not finish'
 
   unlock:
     desc: Unlock all restic source repos

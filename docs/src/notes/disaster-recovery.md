@@ -45,11 +45,18 @@ task volsync:restore APP=plex NS=media PREVIOUS=2
 What happens under the hood:
 
 1. Suspends Flux kustomization and helmrelease
-2. Scales app to 0 replicas
-3. Waits for pods to terminate
+2. Scales the app's Deployment or StatefulSet to 0 replicas, or suspends its CronJob
+3. Waits for the app's pods to stop. It finds them with the selector of the controller. For a CronJob, it waits up to 5 minutes for a running Job
 4. Creates a ReplicationDestination and restores data
-5. Resumes Flux and reconciles
-6. Waits for pods to be ready again
+5. Resumes the CronJob, resumes Flux and reconciles the HelmRelease with `--force`, which sets the replicas back
+6. Waits for pods to be ready again (not for a CronJob)
+
+The task stops before it changes anything when:
+
+- No Deployment, StatefulSet or CronJob has the name of the app.
+- A `<app>-manual` ReplicationDestination from an earlier restore still exists.
+
+If a step fails before the task creates the ReplicationDestination, the task resumes Flux. If a step fails after that, Flux stays suspended. Thus the app does not start on data that is only partly restored. The task then prints the commands to check the restore and to resume Flux.
 
 ### Unlock Stuck Repos
 
