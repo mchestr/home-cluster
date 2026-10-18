@@ -26,6 +26,7 @@ spec:
       APP: *app
       VOLSYNC_SCHEDULE: "0 8 * * *"
       VOLSYNC_CAPACITY: 10Gi
+      VOLSYNC_CHECK_SCHEDULE: "0 3 1 * *"
       # memini container runs as uid/gid 65532 (nonroot); the restic mover must
       # write the restored data with the same ownership.
       APP_UID: "65532"
