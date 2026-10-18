@@ -13,9 +13,15 @@ spec:
     size: 20Gi
     storageClass: openebs-hostpath
   bootstrap:
+    # Note: CNPG accepts one bootstrap method only. To recover, comment out initdb
+    # and uncomment recovery (docs/src/notes/disaster-recovery.md, Database Recovery)
     initdb:
       postInitSQL:
         - CREATE EXTENSION IF NOT EXISTS vchord CASCADE;
+    # Note: previousCluster needs to be set to the name of the previous
+    # cluster when recovering from an existing cnpg cluster
+    # recovery:
+    #   source: &previousCluster immich-v1
   superuserSecret:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
@@ -57,11 +63,6 @@ spec:
           name: cloudnative-pg-secret
           key: aws-secret-access-key
 
-  # Note: previousCluster needs to be set to the name of the previous
-  # cluster when recovering from an existing cnpg cluster
-  # bootstrap:
-  #   recovery:
-  #     source: &previousCluster immich-v1
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
   # externalClusters:
   #   - name: *previousCluster

@@ -79,6 +79,7 @@ spec:
           name: cloudnative-pg-secret
           key: aws-secret-access-key
 
+  # Recovery steps: docs/src/notes/disaster-recovery.md, Database Recovery
   # Note: previousCluster needs to be set to the name of the previous
   # cluster when recovering from an existing cnpg cluster
   # bootstrap:
