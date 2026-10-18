@@ -20,6 +20,21 @@ spec:
       ports:
         - port: 9999
           protocol: TCP
+    # The operator manages each pod, and replicas sync from the master, on the
+    # admin port. Operator v1.7 no longer creates its own policy for this.
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: database
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: dragonfly-operator
+        - podSelector:
+            matchLabels:
+              app: ${APP}-dragonfly
+      ports:
+        - port: 9999
+          protocol: TCP
     - from:
         - podSelector: {}
       ports:
