@@ -4,14 +4,9 @@ metadata:
   name: intel-device-plugin-operator
 spec:
   interval: 30m
-  chart:
-    spec:
-      chart: intel-device-plugins-operator
-      version: 0.37.1
-      sourceRef:
-        kind: HelmRepository
-        name: intel
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: intel-device-plugin-operator
   maxHistory: 2
   values:
     manager:
