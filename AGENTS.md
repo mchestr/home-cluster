@@ -100,6 +100,8 @@ docs/                          # mdBook operations docs (published by the docs w
 
 ### Adding a New App
 
+The `add-app` skill (`.claude/skills/add-app/SKILL.md`) gives the step-by-step procedure for these rules.
+
 1. Create `kubernetes/apps/<namespace>/<app>/ks.yaml`: a `Kustomization` in the app's namespace with `targetNamespace`, pointing to `./app`, listing `dependsOn` (`onepassword-store` for anything with an ExternalSecret, `rook-ceph-cluster` for a PVC, `cloudnative-pg-cluster` for a database), `components`, and `postBuild.substitute` vars (always `APP`).
 2. Create `kubernetes/apps/<namespace>/<app>/app/` with `kustomization.yaml`, `helmrelease.yaml`, and optionally `externalsecret.yaml`. The HelmRelease needs probes on a real health endpoint, a CPU request and memory limit, `runAsNonRoot` at pod level and `drop: [ALL]`/`readOnlyRootFilesystem` on the container unless a device is needed, `reloader.stakater.com/auto: "true"` when it reads a Secret or a ConfigMap without a name hash, and `route` with `sectionName: https`. `kubernetes/apps/media/tautulli` is a compact reference.
 3. Add `./<app>/ks.yaml` to `kubernetes/apps/<namespace>/kustomization.yaml`. New namespace directories are discovered automatically; there is no top-level `kubernetes/apps/kustomization.yaml`.
