@@ -7,3 +7,4 @@ resources:
   - ./helmrelease.yaml
   - ./ocirepository.yaml
   - ./vmalert.yaml
+  - ./vmrule.yaml
