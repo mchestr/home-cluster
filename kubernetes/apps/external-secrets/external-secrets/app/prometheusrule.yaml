@@ -1,0 +1,30 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: external-secrets-rules
+spec:
+  groups:
+    - name: external-secrets.rules
+      rules:
+        # The controller is the scrape target, so the object's namespace is in exported_namespace
+        - alert: ExternalSecretNotReady
+          expr: |
+            max by (exported_namespace, name) (externalsecret_status_condition{condition="Ready", status="False"}) == 1
+          for: 30m
+          annotations:
+            summary: >-
+              The ExternalSecret {{ $labels.exported_namespace }}/{{ $labels.name }} has failed to sync for 30 minutes
+          labels:
+            severity: warning
+
+        - alert: ClusterSecretStoreNotReady
+          expr: |
+            max by (name) (clustersecretstore_status_condition{condition="Ready", status="False"}) == 1
+          for: 15m
+          annotations:
+            summary: >-
+              The ClusterSecretStore {{ $labels.name }} is not ready, so the ExternalSecrets that use it cannot sync
+          labels:
+            severity: warning
