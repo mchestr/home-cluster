@@ -3,7 +3,7 @@
   "packageRules": [
     {
       "matchDatasources": ["docker"],
-      "matchPackagePatterns": ["postgresql", "postgres-backup-local"],
+      "matchPackageNames": ["/postgresql/", "/postgres-backup-local/"],
       "allowedVersions": "<18"
     },
     {

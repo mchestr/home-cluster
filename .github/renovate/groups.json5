@@ -3,7 +3,7 @@
     {
       description: "1Password Group",
       groupName: "1Password",
-      matchPackagePatterns: ["1password"],
+      matchPackageNames: ["/1password/"],
       matchDatasources: ["docker"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
@@ -13,7 +13,7 @@
     {
       description: "Flux Group",
       groupName: "Flux",
-      matchPackagePatterns: ["flux"],
+      matchPackageNames: ["/flux/"],
       matchDatasources: ["docker", "github-tags"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
@@ -23,7 +23,7 @@
     {
       description: "Immich images",
       groupName: "Immich",
-      matchPackagePatterns: ["immich"],
+      matchPackageNames: ["/immich/"],
       matchDatasources: ["docker"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
@@ -42,18 +42,8 @@
     {
       description: "Rook-Ceph image and chart",
       groupName: "Rook-Ceph",
-      matchPackagePatterns: ["rook.ceph"],
+      matchPackageNames: ["/rook.ceph/"],
       matchDatasources: ["docker", "helm"],
-      group: {
-        commitMessageTopic: "{{{groupName}}} group",
-      },
-      separateMinorPatch: true,
-    },
-    {
-      description: "External Snapshotter charts",
-      groupName: "External Snapshotter",
-      matchDepNames: ["snapshot-controller", "snapshot-validation-webhook"],
-      matchDatasources: ["helm"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
@@ -62,9 +52,9 @@
     {
       description: "Kubernetes Upgrade Group",
       groupName: "Kubernetes",
-      matchPackagePatterns: [
-        "siderolabs/kubelet",
-        "registry.k8s.io/kubectl"
+      matchPackageNames: [
+        "/siderolabs/kubelet/",
+        "/registry.k8s.io/kubectl/"
       ],
       matchDatasources: ["docker", "github-releases"],
       group: {
@@ -75,9 +65,9 @@
     {
       description: "Talos Upgrade Group",
       groupName: "Talos",
-      matchPackagePatterns: [
-        "siderolabs/talos",
-        "ghcr.io/siderolabs/talosctl",
+      matchPackageNames: [
+        "/siderolabs/talos/",
+        "/ghcr.io/siderolabs/talosctl/",
       ],
       matchDatasources: ["docker", "github-releases", "container"],
       group: {
