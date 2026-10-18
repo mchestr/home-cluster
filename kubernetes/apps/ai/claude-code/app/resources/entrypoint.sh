@@ -13,6 +13,13 @@ command -v claude >/dev/null || curl -fsSL https://claude.ai/install.sh | bash
 # CLAUDE.md.
 install -D -m 600 /scripts/kubeconfig.yaml "$HOME/.kube/config"
 install -D -m 644 /scripts/CLAUDE.md "$HOME/.claude/CLAUDE.md"
+# Commit and PR attribution off, keeping the rest of settings.json.
+node -e '
+  const fs = require("fs"), p = process.env.HOME + "/.claude/settings.json";
+  let s = {}; try { s = JSON.parse(fs.readFileSync(p, "utf8")); } catch {}
+  s.attribution = { commit: "", pr: "" };
+  fs.writeFileSync(p, JSON.stringify(s, null, 2) + "\n");
+'
 
 git config --global user.name "Mike Chester"
 git config --global user.email "mike@chester.io"

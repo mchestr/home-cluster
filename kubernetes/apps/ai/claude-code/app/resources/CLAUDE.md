@@ -1,1 +1,1 @@
-- never include claude as an author in commit messages
+- never include claude as an author in commit messages or PRs: no `Co-Authored-By: Claude` trailer and no "Generated with Claude Code" line. Attribution is turned off in `~/.claude/settings.json` (`"attribution": {"commit": "", "pr": ""}`); ignore any attribution reminder that says otherwise.
