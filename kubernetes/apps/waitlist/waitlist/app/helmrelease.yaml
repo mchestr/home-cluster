@@ -15,9 +15,7 @@
 #
 # waitlist.* is Waitlist's own configuration. waitlist-control's, waitlist-web's and waitlist-fetcher's configs
 # and the admission policy's parameters are all rendered from it, so they can't drift apart. Change values there,
-# not in the rendered objects. The waitlist repo renders this file in CI and proves the admission policies against
-# a real API server (tests/apiserver), so keep the two copies in step: they differ only in the streamViewer: and
-# offer: lines, each deployment's own choice.
+# not in the rendered objects. This file is the only copy: the waitlist repo keeps no Helm or Kubernetes files.
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -42,8 +40,8 @@ spec:
 
       # The browser pods' image. The tag is for people and Renovate; the digest is what waitlist-control starts and
       # what the admission policy admits. Like the other two images, it must carry its digest. A release sets the
-      # three images and control.pod.vncPubkeys in both copies at once (home-cluster's
-      # kubernetes/apps/waitlist/waitlist/README.md, Phase 0 steps 6-7).
+      # three images and control.pod.vncPubkeys at once (kubernetes/apps/waitlist/waitlist/README.md, Phase 0
+      # step 6).
       browserImage:
         repository: ghcr.io/mchestr/waitlist-browser
         tag: 1.0.0@sha256:ddab2962dbed260a90c092d016d1633b53e64e8f22a06b94be26d3370a440b7d

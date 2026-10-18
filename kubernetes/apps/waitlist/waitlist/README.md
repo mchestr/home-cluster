@@ -15,10 +15,9 @@ it did in Ferry Watch; Buntzen Lake day passes are the second provider (alerts o
 
 The HelmRelease also carries the browser namespace's guard rails (quotas, network policies, RBAC) and three
 ValidatingAdmissionPolicies (`wl-browser-pod`, `wl-browser-pod-lock`, `wl-ns-objects`). Those policies admit only
-the exact pod waitlist-control builds, and nobody can change or `exec` into one afterwards. The waitlist repo's CI
-renders `app/helmrelease.yaml` and tests those policies against a real API server, so change the copy there too
-(`deploy/helmrelease.yaml`). The two copies differ only in the `streamViewer:` and `offer:` lines: the app repo
-keeps both `"off"`, and this one chooses (`tests/test_deploy.py`, `test_home_cluster_runs_this_copy`).
+the exact pod waitlist-control builds, and nobody can change or `exec` into one afterwards. `app/helmrelease.yaml`
+is the only copy: the waitlist repo keeps no Helm or Kubernetes files, and nothing tests those policies against a
+real API server.
 
 Outside this directory:
 - The OIDC client and its `waitlist` authorization policy in Authelia: `default/authelia/app/resources/configuration.yaml`.
@@ -63,8 +62,7 @@ The commands are in the runbook, Phase 0 step 4. Authelia only enables the clien
 
 The render fails until the digests and the public key are filled in (and for a bare `off`, or a bad rate), so
 flux-local catches a premature merge. Merging while it is red would also hold back every Renovate automerge, which
-waits on flux-local. Keep `streamViewer:` and `offer:` free of trailing comments: the app repo's test masks those
-lines whole.
+waits on flux-local.
 
 ## waitlist-fetcher
 
@@ -95,7 +93,7 @@ one line per fetch (`result=ok`, or the error kind).
 - **`fetcher_unavailable`** (cards say "Checks not running", Admin → Providers shows Fetcher `Down`) means
   waitlist-control can't reach the fetcher: its Service, waitlist-control's egress policy, or the fetcher pod.
 - **A new provider** later: add its hosts to `waitlist-fetcher-cilium`'s DNS and `toFQDNs` rules, and a
-  `waitlist.providers.<id>` entry; both copies of the HelmRelease.
+  `waitlist.providers.<id>` entry.
 
 ## Rotating the checkout key
 
@@ -113,7 +111,7 @@ the running release's image for `RELEASE`.
    printf '%s\n' "$KEYS" | tail -n 1   # k2:<base64url>, the public half (not a secret)
    unset KEYS
    ```
-   Add that public half as a second key (`k1:<old>,k2:<new>`) and deploy (both copies); waitlist-web keeps
+   Add that public half as a second key (`k1:<old>,k2:<new>`) and deploy; waitlist-web keeps
    signing with `k1`. `WAITLIST_CHECKOUT_KEY_NEXT` stays in 1Password: the ExternalSecret's template doesn't
    read it.
 2. Wait 26 hours, a browser pod's longest life, so that every running pod knows `k2`. Then move the new key into
@@ -261,16 +259,6 @@ pg() { kubectl cnpg psql -n database postgres17 -- "$@"; }
    ```
    The PR's flux-local check must be green before you merge (it fails while any placeholder is left).
 
-7. **Level the app repo's copy** (no release needed): in the waitlist repo, on `main`, copy this
-   `app/helmrelease.yaml` over `deploy/helmrelease.yaml`, set its `streamViewer:` and `offer:` lines back to
-   `"off"`, check, and commit (`Fill in the deploy copy's 1.0.0 digests and checkout key`):
-   ```sh
-   cp <this repo>/kubernetes/apps/waitlist/waitlist/app/helmrelease.yaml deploy/helmrelease.yaml
-   sed -E -i.orig 's/^( +(streamViewer|offer): )"(admins|everyone)"$/\1"off"/' deploy/helmrelease.yaml \
-     && rm deploy/helmrelease.yaml.orig   # GNU and macOS sed alike
-   WL_HOME_CLUSTER=<this repo, on this branch> uv run pytest tests/test_deploy.py -q   # all passed
-   ```
-
 **Rollback in Phase 0:** nothing in the cluster has changed. The 1Password fields, the lldap group and the
 public packages can stay or be removed.
 
@@ -334,7 +322,7 @@ doesn't hold up `waitlist_web` and `waitlist_control`.
    DNS, the egress policies (including `egressDeny`), the resolver and the parser's envelope.
    - `site_changed` means Yodel's real answer differs from the parser's expectation. Capture it
      (`scripts/capture_yodel.py` in the waitlist repo), fix the parser and release 1.0.1, or set `offer: "off"`
-     here (both copies) and carry on with BC Ferries only.
+     here and carry on with BC Ferries only.
    - `network` or `timeout` (the fetcher logs `result=failed error=network` or `error=timeout`; Admin →
      Providers shows Fetcher `OK` and Last error `network` or `timeout`; the card says "Watching", then "Problem"
      after 3 failures) points at the fetcher's egress: DNS, or the `toFQDNs` rule. If DNS is the cause, drop the
@@ -350,7 +338,7 @@ doesn't hold up `waitlist_web` and `waitlist_control`.
    curl -fsS localhost:8767/readyz; kill %1                     # ok
    ```
 
-If something fails here and can't be fixed forward (a values change in both copies, or a 1.0.x release), roll
+If something fails here and can't be fixed forward (a values change, or a 1.0.x release), roll
 back now, before Phase 2.
 
 ### Phase 2: delete Ferry Watch's leftovers
