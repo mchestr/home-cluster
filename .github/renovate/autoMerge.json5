@@ -45,6 +45,7 @@
         // Cluster-wide controllers
         "/cert-manager/",
         "/external-secrets/",
+        "/litellm-operator/",
         // Databases and apps with DB migrations
         "/cloudnative-pg/",
         "/postgres/",
