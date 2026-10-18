@@ -78,24 +78,71 @@ task volsync:state-resume
 
 ### Node Died
 
-If recoverable, just reboot it:
+With one node down, the cluster keeps working. etcd keeps quorum (2 of 3 members), Ceph keeps a copy of all data on each of the other 2 hosts, and CNPG promotes a replica if the primary was on that node.
 
-```bash
-task talos:reboot-node NODE=<node>
-```
+1. Find the node that is down: `kubectl get nodes`.
+2. Make sure that 2 etcd members are healthy:
 
-If it needs a full reinstall:
+   ```bash
+   talosctl --nodes m0,m1,m2 etcd status
+   ```
 
-```bash
-task talos:reset-node NODE=<node>
-task talos:apply-node NODE=<node>
-```
+   If 2 nodes are down, etcd has no quorum. Go to [Complete Cluster Loss](#complete-cluster-loss).
+3. Make sure that each CNPG cluster has a primary: `kubectl get cluster -n database`.
+4. If the node only hangs, reboot it: `task talos:reboot-node NODE=<node>`.
+5. If the Talos API does not answer, power-cycle the node.
 
-Ceph will rebalance automatically. Check health with:
+If the node stays down, pods with a `ceph-block` volume on it stay stuck, because the volume cannot attach to another node.
 
-```bash
-kubectl rook-ceph ceph status
-```
+> **WARNING:** Apply the out-of-service taint only when the node is powered off. If the node still runs, two nodes can write to the same volume and corrupt it.
+
+6. Let the stuck pods move to other nodes:
+
+   ```bash
+   kubectl taint nodes <node> node.kubernetes.io/out-of-service=nodeshutdown:NoExecute
+   ```
+
+   Kubernetes deletes the pods on the node and detaches their volumes. Pods with an `openebs-hostpath` volume (CNPG instances, VolSync caches) cannot move, because their data is on that node.
+
+#### Bring the Node Back
+
+1. If the node needs a full reinstall and its Talos API answers, reset it: `task talos:reset-node NODE=<node>`.
+2. If the Talos API does not answer, boot the node from the Talos ISO.
+3. Apply the config: `task talos:apply-node NODE=<node>`. For a node in maintenance mode, the task adds `--insecure`.
+
+   The node joins etcd again on its own. When a node with an empty etcd folder joins, Talos removes the old member with the same hostname.
+4. If you applied the out-of-service taint, remove it:
+
+   ```bash
+   kubectl taint nodes <node> node.kubernetes.io/out-of-service=nodeshutdown:NoExecute-
+   ```
+
+5. Wait until the OSD of the node shows `up`: `kubectl rook-ceph ceph osd tree`.
+6. Wait until Ceph shows `HEALTH_OK`: `kubectl rook-ceph ceph status`. While a node is down, Ceph has no other host for the third copy, so the data stays degraded until the recovery ends.
+7. If the OSD does not come up because its disk is dead, follow [Removing a Dead OSD](storage-operations.md#removing-a-dead-osd).
+8. Make sure that all 3 etcd members are healthy: `talosctl --nodes m0,m1,m2 etcd status`.
+
+#### After a Reset or a New Node
+
+A reset wipes the `EPHEMERAL` partition. It holds `/var/mnt/extra`, so all `openebs-hostpath` volumes on that node are gone, and their pods cannot start.
+
+1. List the local volumes of the node:
+
+   ```bash
+   kubectl get pvc -A -o custom-columns='NS:.metadata.namespace,NAME:.metadata.name,NODE:.metadata.annotations.volume\.kubernetes\.io/selected-node,CLASS:.spec.storageClassName' \
+     | awk '$3 == "<node>" && $4 == "openebs-hostpath"'
+   ```
+
+2. For each CNPG instance in the list, delete its PVC and pod: `kubectl delete -n database pvc/<instance> pod/<instance>`. CNPG then makes a new replica from the primary.
+3. For each VolSync cache in the list (`volsync-*-cache`), delete the PVC: `kubectl delete -n <ns> pvc/<name>`. VolSync makes a new cache at its next run.
+4. Leave the runner work volumes (`*-runner-*-work`). Each runner is temporary, and ARC makes a new one.
+
+If a node never comes back, remove its old etcd member.
+
+> **WARNING:** Do not remove the member of a node that can come back. Its etcd then cannot start until you reset the node.
+
+1. List the members on a healthy node: `talosctl --nodes <healthy-node> etcd members`.
+2. Remove the old member: `talosctl --nodes <healthy-node> etcd remove-member <member-id>`.
 
 ### Complete Cluster Loss
 
