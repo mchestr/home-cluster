@@ -125,4 +125,4 @@ Just force a Flux reconcile:
 task kubernetes:reconcile
 ```
 
-Flux will recreate whatever is missing from Git.
+Flux will recreate whatever is missing from Git. After Flux recreates a deleted PVC, run `task volsync:restore APP=<app> NS=<ns> PREVIOUS=0` to replace its old bootstrap data with the newest backup.
