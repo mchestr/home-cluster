@@ -12,6 +12,8 @@ spec:
       interval: 5m
       rules:
         - alert: *name
-          expr: '("MQTT disconnected" or "Unable to connect to MQTT server") | filter app := "frigate" | count() rows | filter rows :> 0'
+          expr: '("MQTT disconnected" or "Unable to connect to MQTT server") | filter app := "frigate" | stats by (app) count() rows | filter rows :> 0'
+          labels:
+            severity: warning
           annotations:
             description: '{{ $labels.app }} is unable to reach MQTT'

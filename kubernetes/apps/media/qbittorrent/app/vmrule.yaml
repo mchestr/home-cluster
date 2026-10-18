@@ -12,6 +12,8 @@ spec:
       interval: 5m
       rules:
         - alert: *name
-          expr: '"fast resume rejected" | filter app := "qbittorrent" | count() rows | filter rows :> 0'
+          expr: '"fast resume rejected" | filter app := "qbittorrent" | stats by (app) count() rows | filter rows :> 0'
+          labels:
+            severity: warning
           annotations:
             description: '{{ $labels.app }} has a torrent with fast resume rejected'

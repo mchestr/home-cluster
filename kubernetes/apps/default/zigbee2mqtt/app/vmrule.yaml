@@ -12,6 +12,8 @@ spec:
       interval: 5m
       rules:
         - alert: *name
-          expr: '"Not connected to MQTT server" | filter app := "zigbee2mqtt" | count() rows | filter rows :> 0'
+          expr: '"Not connected to MQTT server" | filter app := "zigbee2mqtt" | stats by (app) count() rows | filter rows :> 0'
+          labels:
+            severity: warning
           annotations:
             description: '{{ $labels.app }} is unable to reach MQTT'

@@ -12,14 +12,18 @@ spec:
       interval: 5m
       rules:
         - alert: *name
-          expr: '"network unhealthy" | filter app := "autobrr" | count() rows | filter rows :> 0'
+          expr: '"network unhealthy" | filter app := "autobrr" | stats by (app) count() rows | filter rows :> 0'
+          labels:
+            severity: warning
           annotations:
-            description: 'Service {{$labels.app}} generated {{$labels.rows}} error logs in the last 5 minutes'
+            description: 'Service {{$labels.app}} generated {{ $value }} error logs in the last 5 minutes'
     - name: &name PSQLError
       type: vlogs
       interval: 5m
       rules:
         - alert: *name
-          expr: '"transaction has already been committed or rolled back" | filter app := "autobrr" | count() rows | filter rows :> 0'
+          expr: '"transaction has already been committed or rolled back" | filter app := "autobrr" | stats by (app) count() rows | filter rows :> 0'
+          labels:
+            severity: warning
           annotations:
-            description: 'Service {{$labels.app}}  is having database issues'
+            description: 'Service {{$labels.app}} is having database issues'

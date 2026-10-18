@@ -12,7 +12,9 @@ spec:
       interval: 5m
       rules:
         - alert: *name
-          expr: '"database disk image is malformed" | filter app := "cross-seed" | count() rows | filter rows :> 0'
+          expr: '"database disk image is malformed" | filter app := "cross-seed" | stats by (app) count() rows | filter rows :> 0'
+          labels:
+            severity: warning
           annotations:
             description: '{{ $labels.app }} is experiencing database issues'
     - name: &name CrossSeedFailedToInject
@@ -20,7 +22,9 @@ spec:
       interval: 5m
       rules:
         - alert: *name
-          expr: '"failed to inject" | filter app := "cross-seed" | count() rows | filter rows :> 0'
+          expr: '"failed to inject" | filter app := "cross-seed" | stats by (app) count() rows | filter rows :> 0'
+          labels:
+            severity: warning
           annotations:
             description: '{{ $labels.app }} failed to inject a torrent'
     - name: &name CrossSeedUnauthorizedAccessMisconfiguration
@@ -28,6 +32,8 @@ spec:
       interval: 5m
       rules:
         - alert: *name
-          expr: '"Unauthorized API access attempt" | filter app := "cross-seed" | count() rows | filter rows :> 0'
+          expr: '"Unauthorized API access attempt" | filter app := "cross-seed" | stats by (app) count() rows | filter rows :> 0'
+          labels:
+            severity: warning
           annotations:
             description: '{{ $labels.app }} is experiencing unauthorized api access, something is misconfigured'

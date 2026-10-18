@@ -12,6 +12,8 @@ spec:
       interval: 5m
       rules:
         - alert: *name
-          expr: '"Mqtt client error" | filter app := "zwave-js-ui" | count() rows | filter rows :> 0'
+          expr: '"Mqtt client error" | filter app := "zwave-js-ui" | stats by (app) count() rows | filter rows :> 0'
+          labels:
+            severity: warning
           annotations:
             description: '{{ $labels.app }} is unable to reach MQTT'
