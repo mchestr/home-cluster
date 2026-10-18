@@ -1,7 +1,5 @@
 #!/bin/sh
-# Installs the same CLIs as on the Mac onto the PVC at ~/.local/bin. Runs as an
-# init container (busybox) and only re-downloads a tool when its version in
-# tools.env changes.
+# Installs CLIs to ~/.local/bin when their tools.env version changes.
 set -eu
 
 . /scripts/tools.env
@@ -10,7 +8,7 @@ BIN=/home/claude/.local/bin
 GH=https://github.com
 mkdir -p "$BIN"
 
-# install <name> <version> <url> [path of the binary inside the tarball]
+# install <name> <version> <url> [binary path in tarball]
 install() {
   [ "$(cat "$BIN/.$1ver" 2>/dev/null)" = "$2" ] && return 0
   echo "installing $1 $2"

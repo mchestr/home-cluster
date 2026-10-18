@@ -12,9 +12,9 @@ spec:
   maxHistory: 2
   values:
     defaultPodOptions:
-      # kubectl, flux and the MCP servers act as the claude-code ServiceAccount
-      # (rbac.yaml).
       automountServiceAccountToken: true
+      # Stable session names across rollouts.
+      hostname: claude-code
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -27,12 +27,11 @@ spec:
       claude-code:
         annotations:
           reloader.stakater.com/auto: "true"
-        # One Remote Control server per login; never run two side by side.
+        # One Remote Control server per login.
         strategy: Recreate
         serviceAccount:
           identifier: claude-code
         initContainers:
-          # The same CLIs as on the Mac; versions live in resources/tools.env.
           install-tools:
             image:
               repository: docker.io/library/busybox
@@ -44,9 +43,6 @@ spec:
               capabilities: { drop: ["ALL"] }
         containers:
           app:
-            # Debian with git, curl, ssh, perl, python and npx (for
-            # kubernetes-mcp-server). claude itself is the native binary,
-            # installed onto the PVC by resources/entrypoint.sh.
             image:
               repository: docker.io/library/node
               tag: 24-bookworm
@@ -56,27 +52,20 @@ spec:
               TZ: America/Vancouver
               PATH: /home/claude/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
               TALOSCONFIG: /etc/talos/config
-              # Remote Control refuses to start with ANTHROPIC_API_KEY,
-              # ANTHROPIC_AUTH_TOKEN, CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC or
-              # DISABLE_GROWTHBOOK set, so none of them belong here.
+              # No ANTHROPIC_* or DISABLE_* vars: Remote Control refuses them (README).
               GITHUB_TOKEN:
                 valueFrom:
                   secretKeyRef:
                     name: claude-code-secret
                     key: GITHUB_TOKEN
-              # memini plugin: the in-cluster service rather than
-              # memini.chestr.dev, so memory traffic never leaves the cluster.
               # No trailing slash; the plugin appends /mcp.
               MEMINI_BASE_URL: http://memini.ai.svc.cluster.local:8080
-              # memini's own Secret (same namespace) holds the shared token.
               MEMINI_API_KEY:
                 valueFrom:
                   secretKeyRef:
                     name: memini-secret
                     key: MEMINI_API_KEY
-            # No probes: Remote Control serves nothing in-cluster to check, and
-            # the process exits on its own (restarting the pod) when it loses
-            # Anthropic for ~10 minutes.
+            # Nothing to probe; claude exits on its own after ~10m offline.
             probes:
               liveness:
                 enabled: false

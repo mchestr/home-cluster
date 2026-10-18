@@ -11,7 +11,7 @@ configMapGenerator:
       - ./resources/tools.env
     name: claude-code-scripts
 generatorOptions:
-  # Plain shell: keep Flux postBuild from treating $VARS as substitutions.
+  # Shell scripts: no postBuild substitution.
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
   disableNameSuffixHash: true
