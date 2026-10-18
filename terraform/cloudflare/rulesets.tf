@@ -7,12 +7,6 @@ resource "cloudflare_ruleset" "firewall" {
   description = "${each.key} rulesets"
   zone_id     = each.value.zone_id
   rules = [
-    # {
-    #   expression  = "(cf.client.bot) or (cf.threat_score gt 14)"
-    #   action      = "block"
-    #   description = "Block known cloudflare bots"
-    #   enabled     = true
-    # },
     {
       expression  = "(not ip.geoip.country in {\"CA\" \"US\"})"
       action      = "block"

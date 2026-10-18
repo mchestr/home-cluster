@@ -104,7 +104,6 @@ spec:
       app:
         hostnames:
           - requests.chestr.dev
-          # - requests.mikeflix.lol
         parentRefs:
           - name: envoy-external
             namespace: networking

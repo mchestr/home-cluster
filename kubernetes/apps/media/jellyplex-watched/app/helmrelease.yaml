@@ -33,7 +33,6 @@ spec:
               RUN_ONLY_ONCE: "True"
               LOGFILE: log.log
               ## Map libraries between plex and jellyfin in the event that they are different, order does not matter
-              #LIBRARY_MAPPING: { "Shows": "TV Shows" }
               LIBRARY_MAPPING: '{ "Shows": "TV Shows" }'
               PLEX_BASEURL: https://plex.media.svc.cluster.local:32400
               SSL_BYPASS: "True"
