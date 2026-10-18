@@ -33,6 +33,18 @@ if ! grep -qxF "  Args: -y $kubernetes_mcp" <<<"$registered"; then
 fi
 claude mcp get flux-operator >/dev/null 2>&1 \
   || claude mcp add -s user flux-operator -- flux-operator-mcp serve || true
+# Home Assistant, only with HASS_TOKEN (a non-admin user's token, which
+# /api/mcp/assist admits). claude expands the header on connect, so the token
+# is not written to ~/.claude.json. A new URL replaces the registered entry.
+if [ -n "${HASS_TOKEN:-}" ]; then
+  hass_mcp_url=http://home-assistant.default.svc.cluster.local:8123/api/mcp/assist
+  registered=$(claude mcp get home-assistant 2>/dev/null || true)
+  if ! grep -qxF "  URL: $hass_mcp_url" <<<"$registered"; then
+    claude mcp remove -s user home-assistant >/dev/null 2>&1 || true
+    claude mcp add -s user --transport http home-assistant "$hass_mcp_url" \
+      --header "Authorization: Bearer \${HASS_TOKEN}" || true
+  fi
+fi
 for marketplace in eleboucher/memini anthropics/claude-code homeassistant-ai/skills; do
   claude plugin marketplace add "$marketplace" >/dev/null 2>&1 || true
 done
