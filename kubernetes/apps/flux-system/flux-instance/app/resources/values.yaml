@@ -30,7 +30,15 @@ instance:
             value: --requeue-dependency=5s
         target:
           kind: Deployment
-          name: (kustomize-controller|helm-controller|source-controller)
+          name: (helm-controller|source-controller)
+      - # Same requeue for kustomize-controller, which gets --concurrent=20 from the in-memory builds patch below
+        patch: |
+          - op: add
+            path: /spec/template/spec/containers/0/args/-
+            value: --requeue-dependency=5s
+        target:
+          kind: Deployment
+          name: kustomize-controller
       - # Increase the memory limits
         patch: |
           apiVersion: apps/v1
