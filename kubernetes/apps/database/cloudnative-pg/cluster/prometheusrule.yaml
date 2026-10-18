@@ -74,3 +74,44 @@ spec:
           for: 1m
           labels:
             severity: warning
+        - alert: CNPGBackupTooOld
+          annotations:
+            description: The last base backup of cluster {{ $labels.cluster }} is {{ $value | humanizeDuration }} old. The ScheduledBackup runs daily.
+            summary: The CNPG base backup is older than 30 hours.
+          expr: |-
+            time() - max by (namespace, cluster) (
+              label_replace(cnpg_collector_last_available_backup_timestamp > 0, "cluster", "$1", "pod", "(.+)-[0-9]+")
+            ) > 30 * 3600
+          for: 1h
+          labels:
+            severity: critical
+        - alert: CNPGBackupFailed
+          annotations:
+            description: The last base backup of cluster {{ $labels.cluster }} failed and no backup has completed since.
+            summary: The CNPG base backup failed.
+          expr: |-
+            max by (namespace, cluster) (
+              label_replace(cnpg_collector_last_failed_backup_timestamp, "cluster", "$1", "pod", "(.+)-[0-9]+")
+            ) > max by (namespace, cluster) (
+              label_replace(cnpg_collector_last_available_backup_timestamp, "cluster", "$1", "pod", "(.+)-[0-9]+")
+            )
+          for: 15m
+          labels:
+            severity: warning
+        - alert: PgDumpBackupStale
+          annotations:
+            description: CronJob {{ $labels.namespace }}/{{ $labels.cronjob }} has had no successful run for {{ $value | humanizeDuration }}. It runs every 4 hours.
+            summary: No successful pg_dump backup in 9 hours, or none since the CronJob was created.
+          expr: |-
+            (
+              time() - max by (namespace, cronjob) (kube_cronjob_status_last_successful_time{cronjob=~".+-pg-backups"})
+              > 9 * 3600
+            )
+            or
+            (
+              time() - max by (namespace, cronjob) (kube_cronjob_created{cronjob=~".+-pg-backups"}) > 9 * 3600
+              unless on (namespace, cronjob) kube_cronjob_status_last_successful_time{cronjob=~".+-pg-backups"}
+            )
+          for: 30m
+          labels:
+            severity: warning
