@@ -23,8 +23,14 @@ git config --global user.email "mike@chester.io"
 gh auth setup-git >/dev/null 2>&1 || true
 [ -d "$REPO/.git" ] || git clone https://github.com/mchestr/home-cluster.git "$REPO"
 
-claude mcp get kubernetes >/dev/null 2>&1 \
-  || claude mcp add -s user kubernetes -- npx -y kubernetes-mcp-server@latest || true
+# Version pinned in tools.env; a new pin replaces the registered entry.
+. /scripts/tools.env
+kubernetes_mcp="kubernetes-mcp-server@$KUBERNETES_MCP_SERVER_VERSION"
+registered=$(claude mcp get kubernetes 2>/dev/null || true)
+if ! grep -qxF "  Args: -y $kubernetes_mcp" <<<"$registered"; then
+  claude mcp remove -s user kubernetes >/dev/null 2>&1 || true
+  claude mcp add -s user kubernetes -- npx -y "$kubernetes_mcp" || true
+fi
 claude mcp get flux-operator >/dev/null 2>&1 \
   || claude mcp add -s user flux-operator -- flux-operator-mcp serve || true
 for marketplace in eleboucher/memini anthropics/claude-code homeassistant-ai/skills; do
