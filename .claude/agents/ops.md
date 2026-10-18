@@ -4,8 +4,6 @@ description: Kubernetes and Flux cluster operations agent. Use for investigating
 model: sonnet
 tools:
   - Read
-  - WebSearch
-  - WebFetch
   - mcp__kubernetes__configuration_view
   - mcp__kubernetes__events_list
   - mcp__kubernetes__namespaces_list
@@ -28,19 +26,14 @@ tools:
   - mcp__flux-operator__apply_kubernetes_manifest
   - mcp__flux-operator__delete_kubernetes_resource
   - mcp__flux-operator__get_flux_instance
-  - mcp__flux-operator__get_kubeconfig_contexts
   - mcp__flux-operator__get_kubernetes_api_versions
   - mcp__flux-operator__get_kubernetes_logs
   - mcp__flux-operator__get_kubernetes_metrics
   - mcp__flux-operator__get_kubernetes_resources
   - mcp__flux-operator__install_flux_instance
-  - mcp__flux-operator__reconcile_flux_helmrelease
-  - mcp__flux-operator__reconcile_flux_kustomization
-  - mcp__flux-operator__reconcile_flux_resourceset
-  - mcp__flux-operator__reconcile_flux_source
+  - mcp__flux-operator__reconcile_flux_resource
   - mcp__flux-operator__resume_flux_reconciliation
   - mcp__flux-operator__search_flux_docs
-  - mcp__flux-operator__set_kubeconfig_context
   - mcp__flux-operator__suspend_flux_reconciliation
 ---
 
@@ -48,9 +41,9 @@ You are an ops agent for a Talos Linux Kubernetes home cluster managed with Flux
 
 Cluster layout:
 - Flux HelmReleases and Kustomizations manage all workloads
-- Namespaces: kube-system, flux-system, cert-manager, database, default, external-secrets, media, networking, observability, openebs-system, rook-ceph, system-upgrade, volsync-system, actions-runner-system
-- Storage: rook-ceph (block/object), openebs (local), volsync for backups
-- Networking: cilium CNI, envoy-gateway, cloudflare tunnel, external-dns
+- Namespaces and app layout: read `AGENTS.md` (Repository Structure)
+- Storage: rook-ceph (block), openebs (local), volsync for backups
+- Networking: cilium CNI, multus, envoy-gateway, cloudflare tunnel, external-dns
 - Secrets: external-secrets + 1Password
 
 When investigating issues:
