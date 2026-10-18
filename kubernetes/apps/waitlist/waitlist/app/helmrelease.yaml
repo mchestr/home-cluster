@@ -46,7 +46,7 @@ spec:
       # kubernetes/apps/waitlist/waitlist/README.md, Phase 0 steps 6-7).
       browserImage:
         repository: ghcr.io/mchestr/waitlist-browser
-        tag: 1.0.0  # + @sha256:<digest> at Phase 0 step 6 (../README.md); the render refuses it until then
+        tag: 1.0.0@sha256:ddab2962dbed260a90c092d016d1633b53e64e8f22a06b94be26d3370a440b7d
 
       # The streamed checkout viewer (beta): off, admins or everyone. waitlist-web shows its Settings switch
       # and opens checkouts in it only for those it is offered to; waitlist-control lets only their pods serve it.
@@ -81,7 +81,7 @@ spec:
           hubUrl: ws://waitlist-control.waitlist.svc.cluster.local.:8766/agent/v1
           # The public half of WAITLIST_CHECKOUT_KEY, as <keyId>:<base64url> (two, comma-separated, while
           # the key rotates). See ../README.md.
-          vncPubkeys: ""  # WAITLIST_CHECKOUT_KEY's public half (k1:...) at Phase 0 step 6 (../README.md); refused until then
+          vncPubkeys: k1:7HOYqI5TnUlpGmm4X8n4y7bk8XLibYUwBw_6U9UnXtM
           sandbox: false
           # In millicores and Mi: the browser quota below is computed from them.
           cpuRequest: 200m
@@ -155,7 +155,7 @@ spec:
           app:
             image: &image
               repository: ghcr.io/mchestr/waitlist-control
-              tag: 1.0.0  # + @sha256:<digest> at Phase 0 step 6 (../README.md); the render refuses it until then
+              tag: 1.0.0@sha256:42c262ee983d32e1db0b49ff2639975b97dd3d4d1d1c78e7d5c4232353c1a159
             args: [waitlist-web, run]
             env:
               WL_WEB_CONFIG: /etc/waitlist-web/config.json
@@ -331,7 +331,7 @@ spec:
           app:
             image:
               repository: ghcr.io/mchestr/waitlist-vnc-edge
-              tag: 1.0.0  # + @sha256:<digest> at Phase 0 step 6 (../README.md); the render refuses it until then
+              tag: 1.0.0@sha256:863f75fd376bfc2d3524e1f1fac24c4b32096fb2d2b84ac3b91fe219aa3592f9
             ports:
               - name: http
                 containerPort: &edgePort 8080
