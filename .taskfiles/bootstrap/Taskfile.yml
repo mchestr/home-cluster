@@ -49,5 +49,5 @@ tasks:
       - talosctl config info
       - talosctl --nodes {{.RANDOM_CONTROLLER}} get machineconfig
       - test -f {{.BOOTSTRAP_DIR}}/helmfile.yaml
-      - test -f {{.BOOTSTRAP_DIR}}/resources.yaml.j2
+      - test -f {{.BOOTSTRAP_DIR}}/resources.yaml
       - which helmfile jq kubectl op talosctl minijinja-cli

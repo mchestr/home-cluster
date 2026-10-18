@@ -75,7 +75,7 @@ releases:
           - --namespace=external-secrets
           - --server-side
           - --field-manager=kustomize-controller
-          - --filename=../kubernetes/apps/external-secrets/external-secrets/onepassword/store/clustersecretstore.yaml
+          - --filename=../kubernetes/apps/external-secrets/onepassword/store/clustersecretstore.yaml
         showlogs: true
 
   - chart: postfinance/kubelet-csr-approver
