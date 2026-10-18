@@ -79,7 +79,7 @@ jobs:
         run: |
           flux_dir="${RUNNER_TEMP}/flux-local"
           mkdir -p "${flux_dir}"
-          prompt="$(cat .github/renovate-risk/prompt.md)
+          prompt="$(awk 'f >= 2; /^---$/ { f++ }' .claude/skills/renovate-review/SKILL.md)
 
           ## Flux Local results for this branch
 
