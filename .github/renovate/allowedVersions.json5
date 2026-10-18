@@ -7,6 +7,12 @@
       "allowedVersions": "<18"
     },
     {
+      // redhat versioning (customManagers.json5) cannot parse the -system-trixie suffix.
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/cloudnative-pg/postgresql"],
+      "versioning": "docker"
+    },
+    {
       "matchDatasources": ["docker"],
       "matchPackageNames": ["ghcr.io/blakeblackshear/frigate"],
       "versioning": "semver",
