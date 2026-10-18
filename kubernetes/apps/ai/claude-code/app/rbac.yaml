@@ -1,9 +1,5 @@
 ---
-# Same access as the admin kubeconfig used from the Mac, so remote sessions can
-# fix anything a local one can. The guard is the permission mode instead of
-# RBAC: Remote Control runs in default mode, so every tool call that is not
-# allowlisted in the repo's .claude/settings.json waits for approval on the
-# phone/claude.ai.
+# cluster-admin; the guard is the permission mode, not RBAC (README).
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:

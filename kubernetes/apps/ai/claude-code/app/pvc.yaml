@@ -1,8 +1,5 @@
 ---
-# Home directory: the claude binary, the claude.ai login (~/.claude), session
-# history and the repo checkout. Deliberately not backed up with VolSync so the
-# login credential never leaves the cluster; losing it only means logging in
-# again.
+# Not backed up, so the login never leaves the cluster.
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:

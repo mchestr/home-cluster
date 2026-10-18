@@ -1,8 +1,5 @@
 #!/usr/bin/perl
-# Remote Control redraws its status block about once a second with cursor
-# escapes; without a TTY each redraw lands in the pod log as a fresh copy.
-# Strip the escapes and print a line only if it was not printed in the last
-# 10 minutes, so changes show at once and the status repeats as a heartbeat.
+# Strips terminal escapes and drops lines repeated within 10 minutes.
 use strict;
 use warnings;
 
