@@ -255,4 +255,4 @@ flux resume hr -n <namespace> <app>
 
 ## Renovate
 
-Renovate automerges minor, patch and digest updates once the risk assessment passes; majors, `0.x` minors, core infrastructure and apps with database migrations get a pull request to review. See [upgrade procedures](upgrade-procedures.md).
+Renovate automerges minor, patch and digest updates once the risk assessment passes and, where the registry gives a release date, once they are 2 days old; majors, `0.x` minors, core infrastructure and apps with database migrations get a pull request to review. See [upgrade procedures](upgrade-procedures.md).

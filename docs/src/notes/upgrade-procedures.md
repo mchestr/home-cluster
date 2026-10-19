@@ -38,7 +38,7 @@ kubectl -n system-upgrade get jobs,pods
 
 ### Things to check first
 
-- **Version compatibility.** Each Talos minor version only supports a range of Kubernetes versions (e.g. Talos 1.13 supports Kubernetes 1.31–1.36; 1.37 needs Talos 1.14). Upgrade Talos first, then Kubernetes. The ranges are in Talos's [support matrix](https://docs.siderolabs.com/talos/latest/getting-started/support-matrix).
+- **Version compatibility.** Each Talos minor version only supports a range of Kubernetes versions (e.g. Talos 1.13 supports Kubernetes 1.31–1.36; 1.37 needs Talos 1.14). The cluster runs Talos 1.14 and Kubernetes 1.37 (see `tuppr/upgrades/talos.yaml` and `kubernetes.yaml`). Upgrade Talos first, then Kubernetes. The ranges are in Talos's [support matrix](https://docs.siderolabs.com/talos/latest/getting-started/support-matrix).
 - **Pending Talos config changes.** Changes to `talos/controlplane.yaml` (including Renovate bumps to the `extraManifests` URLs) are not applied automatically. Apply them before upgrading, because `upgrade-k8s` re-applies each node's own `extraManifests` and fails on stale ones:
 
   ```bash
@@ -59,13 +59,13 @@ kubectl annotate talosupgrade talos tuppr.home-operations.com/reset="$(date)"
 If tuppr isn't an option, the old manual tasks still work. Do one node at a time and wait for it to rejoin, and for Ceph to be healthy, before moving on:
 
 ```bash
-task talos:upgrade-node NODE=m0 VERSION=v1.13.10
+task talos:upgrade-node NODE=m0 VERSION=v1.14.3   # version from tuppr/upgrades/talos.yaml
 task talos:upgrade-k8s   # version comes from tuppr/upgrades/kubernetes.yaml
 ```
 
 ## Flux and Helm Charts
 
-Renovate automerges minor, patch and digest updates once they're 2 days old. Majors, `0.x` minor bumps, core infrastructure (CNI, storage, Flux, Talos/Kubernetes, app-template, cert-manager, external-secrets) and apps with database migrations still get a PR to review. The rules are in `.github/renovate/autoMerge.json5`.
+Renovate automerges minor, patch and digest updates once the risk assessment passes. Updates from Docker Hub, GitHub, Helm repos and npm must also be 2 days old (3 days for GitHub Actions). Images and OCI charts on other registries have no release dates, so they get no minimum age. Majors, `0.x` minor bumps, core infrastructure (CNI, storage, Flux, Talos/Kubernetes, app-template, cert-manager, external-secrets) and apps with database migrations still get a PR to review. The rules are in `.github/renovate/autoMerge.json5`.
 
 To force a reconcile after merging:
 
