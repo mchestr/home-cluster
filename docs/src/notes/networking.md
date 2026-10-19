@@ -206,7 +206,7 @@ Which gateway an app's `HTTPRoute` uses decides who can reach it and what protec
   - `bypass` for apps with their own login
   - deny for everything else
 - **External** apps have no Authelia in front, so only apps with solid authentication of their own go there (Plex, Immich, Home Assistant, Authelia itself, …). Several of them use Authelia as an OIDC provider for their login. Admin UIs, shells and editors should never be on the external gateway.
-- Apps on `envoy-external` should carry a NetworkPolicy that admits only that gateway's Envoy pods (plus a CiliumNetworkPolicy for the `kube-apiserver` entity, since cross-node gateway traffic is SNATed to a control-plane node). `home-assistant` and `waitlist` are the reference implementations; the rest are being brought in line.
+- Apps on `envoy-external` should carry a NetworkPolicy that admits only that gateway's Envoy pods (plus a CiliumNetworkPolicy for the `kube-apiserver` entity, since cross-node gateway traffic is SNATed to a control-plane node). `default/radicale` and `waitlist` are the reference implementations; the rest are being brought in line.
 - Home Assistant, Frigate, ESPHome, matter-server and govee2mqtt also get a second interface on the IoT VLAN through Multus (`networking/multus/config/iot.yaml`). On that leg there is no gateway and no NetworkPolicy, so IoT devices reach those pods directly on their `10.0.10.x` addresses; what they may reach is a UDM firewall rule, not something in this repo.
 
 **Split Horizon DNS:**

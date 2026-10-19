@@ -225,7 +225,7 @@ Which gateway the route uses is a security decision:
 | `envoy-internal` (default) | LAN / VPN only | Authelia (two-factor for `admin`, see `kubernetes/apps/default/authelia/app/resources/configuration.yaml`) |
 | `envoy-external` | The internet, through the Cloudflare tunnel | None: the app must have its own login |
 
-Only put an app on `envoy-external` if it authenticates users itself (OIDC through Authelia, or its own accounts), and give it a NetworkPolicy that admits only that gateway (copy the one in `kubernetes/apps/default/home-assistant/app/helmrelease.yaml`). Apps whose own login should replace the Authelia prompt on the internal gateway go in the `bypass` list in the Authelia configuration.
+Only put an app on `envoy-external` if it authenticates users itself (OIDC through Authelia, or its own accounts), and give it a NetworkPolicy that admits only that gateway and a CiliumNetworkPolicy that admits the `kube-apiserver` entity (copy both from `kubernetes/apps/default/radicale/app/helmrelease.yaml`). Apps whose own login should replace the Authelia prompt on the internal gateway go in the `bypass` list in the Authelia configuration.
 
 ## Managing Apps
 
