@@ -134,7 +134,7 @@ This Git repository contains the following directories.
 | TESmart HDMI KVM Switch 8 Ports                       | 1     | -             | -                    | -       | -                | KVM Switch        |
 | CyberPower CP1500PFCRM2U                              | 1     | -             | -                    |         | -                | UPS               |
 | USP-PDU-Pro                                           | 1     | -             | -                    | -       | UniFi             | PDU               |
-| Synology DS920+                                       | 1     | -             | 2x8TB & 2x16TB       | 20GB    | DSM              | NAS               |
+| UNAS Pro 8                                           | 1     | -             | 4x28TB               | -       | UniFi OS         | NAS               |
 | MS-01 i9-13900H                                       | 3     | 1TB           | 2TB                  | 96GB    | Talos            | Control Plane     |
 
 ---

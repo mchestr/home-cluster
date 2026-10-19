@@ -29,7 +29,7 @@ flowchart TB
     end
 
     subgraph Storage["Storage (10.0.40.0/24)"]
-        NAS["UNAS Pro 8<br/>4x 28TB (112TB raw)<br/>10.0.40.x"]
+        NAS["UNAS Pro 8<br/>4x 28TB (112TB raw)<br/>10.0.40.13"]
     end
 
     subgraph HomeLAN["Home Network (192.168.1.0/24)"]
