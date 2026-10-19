@@ -13,6 +13,11 @@ spec:
   storage:
     size: 20Gi
     storageClass: openebs-hostpath
+  affinity:
+    # openebs-hostpath pins each PVC to one node, so a preferred spread
+    # never moves an instance off a node that already holds one
+    podAntiAffinityType: required
+    topologyKey: kubernetes.io/hostname
   superuserSecret:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
