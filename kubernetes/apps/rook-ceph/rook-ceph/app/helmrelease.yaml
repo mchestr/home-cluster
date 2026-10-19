@@ -16,7 +16,7 @@ spec:
       enableLiveness: true
       serviceMonitor:
         enabled: true
-    enableDiscoveryDaemon: true
+    enableDiscoveryDaemon: false
     monitoring:
       enabled: true
     resources:
