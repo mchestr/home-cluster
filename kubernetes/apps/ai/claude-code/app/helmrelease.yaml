@@ -51,6 +51,8 @@ spec:
               HOME: /home/claude
               TZ: America/Vancouver
               PATH: /home/claude/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+              # task keeps these values instead of the Taskfile's local paths.
+              KUBECONFIG: /home/claude/.kube/config
               TALOSCONFIG: /etc/talos/config
               # No ANTHROPIC_* or DISABLE_* vars: Remote Control refuses them (README).
               GITHUB_TOKEN:
