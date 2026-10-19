@@ -7,11 +7,18 @@ metadata:
 spec:
   schedule: 0 * * * *
   image: ghcr.io/renovatebot/renovate:44.167.5
-  parallelism: 1
+  parallelism: 2
   provider:
     name: github
   discoveryFilters:
+    - mchestr/containers
+    - mchestr/containers-mirror
     - mchestr/home-cluster
+    - mchestr/kubestats
+    - mchestr/mchestr.github.io
+    - mchestr/plex-manager
+    - mchestr/resume
+    - mchestr/waitlist
   githubAppReference:
     secretName: renovate-github-app
     appIdSecretKey: APP_ID
