@@ -1,8 +1,8 @@
 [env]
 # File paths
-KUBECONFIG = "{{config_root}}/kubeconfig"
+KUBECONFIG = "{{config_root}}/kubernetes/kubeconfig"
 MINIJINJA_CONFIG_FILE = "{{config_root}}/.minijinja.toml"
-TALOSCONFIG = "{{config_root}}/talosconfig"
+TALOSCONFIG = "{{config_root}}/talos/talosconfig"
 # Directory paths
 ROOT_DIR = "{{config_root}}"
 BOOTSTRAP_DIR = "{{config_root}}/bootstrap"
