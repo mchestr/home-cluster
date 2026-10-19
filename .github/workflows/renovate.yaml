@@ -10,7 +10,7 @@ on:
       - .github/renovate.json5
       - .github/renovate/**.json5
   schedule:
-    - cron: 0 * * * *
+    - cron: "23 * * * *"
   workflow_dispatch:
     inputs:
       dryRun:
@@ -27,9 +27,9 @@ on:
           - info
         required: true
       version:
-        description: Renovate Version
-        default: latest
-        required: true
+        description: Renovate Version (empty uses the pinned version)
+        default: ""
+        required: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
@@ -44,6 +44,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       packages: read
+    env:
+      # Not RENOVATE_*: the action passes those variables to Renovate as config
+      # renovate: datasource=github-releases depName=renovatebot/renovate
+      RENOVATEBOT_VERSION: 44.167.5
     steps:
       - name: Generate Token
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
@@ -88,4 +92,4 @@ jobs:
             ]
         with:
           token: ${{ steps.app-token.outputs.token }}
-          renovate-version: ${{ inputs.version || 'latest' }}
+          renovate-version: ${{ inputs.version || env.RENOVATEBOT_VERSION }}

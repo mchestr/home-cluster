@@ -4,8 +4,8 @@ name: "Merge Digest"
 
 on:
   schedule:
-    # 08:00 America/Vancouver during daylight time (07:00 in winter)
-    - cron: "0 15 * * *"
+    # 08:37 America/Vancouver during daylight time (07:37 in winter)
+    - cron: "37 15 * * *"
   workflow_dispatch:
     inputs:
       hours:
