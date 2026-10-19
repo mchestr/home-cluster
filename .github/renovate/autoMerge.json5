@@ -61,6 +61,15 @@
       automerge: false,
     },
     {
+      description: "Auto merge Renovate majors too, so the pinned Renovate version never waits for a manual merge. The risk assessment still gates each update.",
+      matchDatasources: ["github-releases"],
+      matchPackageNames: ["renovatebot/renovate"],
+      matchUpdateTypes: ["major"],
+      automerge: true,
+      automergeType: "branch",
+      minimumReleaseAge: "2 days",
+    },
+    {
       description: "Auto merge Claude Code, which the risk assessment workflow installs from npm",
       matchDatasources: ["npm"],
       matchPackageNames: ["@anthropic-ai/claude-code"],
