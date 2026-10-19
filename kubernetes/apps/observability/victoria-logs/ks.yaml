@@ -9,6 +9,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
     - name: victoria-metrics-operator
       namespace: *namespace
   interval: 30m
