@@ -40,8 +40,7 @@ spec:
 
       # The browser pods' image. The tag is for people and Renovate; the digest is what waitlist-control starts and
       # what the admission policy admits. Like the other two images, it must carry its digest. A release sets the
-      # three images and control.pod.vncPubkeys at once (kubernetes/apps/waitlist/waitlist/README.md, Phase 0
-      # step 6).
+      # three images and control.pod.vncPubkeys at once.
       browserImage:
         repository: ghcr.io/mchestr/waitlist-browser
         tag: 1.0.0@sha256:ddab2962dbed260a90c092d016d1633b53e64e8f22a06b94be26d3370a440b7d

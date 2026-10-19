@@ -21,4 +21,4 @@ op item edit authelia --vault kubernetes \
 unset CLIENT_ID SECRET_OUT CLIENT_SECRET CLIENT_SECRET_HASH
 ```
 
-Then add the three keys to `externalsecret.yaml`, the client to `resources/configuration.yaml` (Authelia gets the `_HASH`, the app gets the plain secret), and an access rule or `authorization_policies` entry for the groups that may use it. `kubernetes/apps/waitlist/waitlist/README.md` is a complete worked example.
+Then add the three keys to `externalsecret.yaml`, the client to `resources/configuration.yaml` (Authelia gets the `_HASH`, the app gets the plain secret), and an access rule or `authorization_policies` entry for the groups that may use it. `kubernetes/apps/waitlist/waitlist/app/` is a complete worked example.
