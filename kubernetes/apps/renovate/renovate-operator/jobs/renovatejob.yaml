@@ -14,7 +14,6 @@ spec:
     - mchestr/containers
     - mchestr/containers-mirror
     - mchestr/home-cluster
-    - mchestr/kubestats
     - mchestr/mchestr.github.io
     - mchestr/plex-manager
     - mchestr/resume
