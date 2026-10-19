@@ -79,7 +79,10 @@ jobs:
         run: |
           flux_dir="${RUNNER_TEMP}/flux-local"
           mkdir -p "${flux_dir}"
-          prompt="$(awk 'f >= 2; /^---$/ { f++ }' .claude/skills/renovate-review/SKILL.md)
+          # Without this line, Claude can follow the skill's interactive step 0 and stop at the blocked gh pr commands
+          prompt="This is the CI run, not an interactive session. Skip step 0, and do not run gh pr commands: the change is checked out at HEAD, and its Flux Local results are at the end of this prompt.
+
+          $(awk 'f >= 2; /^---$/ { f++ }' .claude/skills/renovate-review/SKILL.md)
 
           ## Flux Local results for this branch
 
@@ -109,6 +112,12 @@ jobs:
           if ! jq -e '.structured_output.risk' "${RUNNER_TEMP}/claude.json" > /dev/null; then
             echo "::error::Claude did not return an assessment"
             jq -r '.result // .' "${RUNNER_TEMP}/claude.json" || cat "${RUNNER_TEMP}/claude.json"
+            exit 1
+          fi
+          # A renovate/ branch always updates something, so no updates means Claude reviewed nothing
+          if [[ "${BRANCH}" == renovate/* ]] && jq -e '.structured_output.updates | length == 0' "${RUNNER_TEMP}/claude.json" > /dev/null; then
+            echo "::error::Claude found no updates to assess"
+            jq '.structured_output' "${RUNNER_TEMP}/claude.json"
             exit 1
           fi
           jq '.structured_output' "${RUNNER_TEMP}/claude.json" > "${RUNNER_TEMP}/assessment.json"

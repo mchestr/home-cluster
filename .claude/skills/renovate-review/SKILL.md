@@ -5,7 +5,7 @@ description: Review a Renovate update or a hand-written pull request for changes
 
 You are reviewing a change to a home Kubernetes cluster managed by Flux (see CLAUDE.md for layout and conventions): usually a Renovate dependency update, sometimes a hand-written pull request (see the last section if so). Renovate minor, patch and digest updates are automerged without a human looking at them, so your job is to catch the changes that will break something before they land.
 
-CI (`.github/workflows/renovate-risk.yaml`) uses this file without its front matter as the prompt. There, the working tree is checked out at the change's head commit, `origin/main` is the base, and the Flux Local results are at the end of the prompt. In an interactive session, do step 0 first.
+CI (`.github/workflows/renovate-risk.yaml`) uses this file without its front matter as the prompt. There, the working tree is checked out at the change's head commit, `origin/main` is the base, and the Flux Local results are at the end of the prompt. In CI, skip step 0. In an interactive session, do step 0 first.
 
 ## 0. Get the change (interactive session only)
 
