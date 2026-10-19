@@ -1,0 +1,36 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: renovate-operator
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: renovate-operator
+  interval: 1h
+  maxHistory: 2
+  values:
+    fullnameOverride: renovate-operator
+    config:
+      # Keep the last runs' Jobs (and their logs) for a day instead of forever
+      jobTTLSecondsAfterFinished: 86400
+    resources:
+      requests:
+        cpu: 10m
+        memory: 64Mi
+      limits:
+        memory: 256Mi
+    # The UI has no login of its own: Authelia on envoy-internal is the only gate
+    route:
+      enabled: true
+      hostnames:
+        - renovate.chestr.dev
+      parentRefs:
+        - name: envoy-internal
+          namespace: networking
+          sectionName: https
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true

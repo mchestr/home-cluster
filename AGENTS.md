@@ -177,4 +177,5 @@ Major bumps use `!` suffix (e.g. `feat(container)!:`).
 ## Renovate & CI
 
 - Renovate automerges minor, patch and digest updates once they are 2 days old (3 days for GitHub Actions). Images and OCI charts outside Docker Hub get no minimum age and merge once the risk assessment passes. Majors, `0.x` minor bumps, core infrastructure (CNI, storage, Flux, Talos/Kubernetes, app-template, cert-manager, external-secrets) and apps with DB migrations always get a PR. Renovate itself (`renovatebot/renovate`) is the one exception: its majors also automerge. See `.github/renovate/autoMerge.json5`.
+- Renovate runs in the cluster: `renovate-operator` (`renovate` namespace) starts a Renovate Job for this repo every hour, authenticated as the `mchesterbot` GitHub App. Its UI at `renovate.chestr.dev` shows runs and logs and can start a run now.
 - `flux-local` validates manifests on PRs touching `kubernetes/**`, and `flux-diff` posts a diff of changed `HelmRelease` and `Kustomization` resources on PRs touching `kubernetes/**`.
