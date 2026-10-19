@@ -9,6 +9,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: onepassword-store
+      namespace: external-secrets
   interval: 1h
   path: ./kubernetes/apps/observability/grafana/app
   prune: true
@@ -38,6 +41,8 @@ spec:
       namespace: database
     - name: grafana
       namespace: *namespace
+    - name: onepassword-store
+      namespace: external-secrets
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
