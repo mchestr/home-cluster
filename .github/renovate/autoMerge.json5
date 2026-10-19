@@ -62,8 +62,7 @@
     },
     {
       description: "Auto merge Renovate majors too, so the pinned Renovate version never waits for a manual merge. The risk assessment still gates each update.",
-      matchDatasources: ["github-releases"],
-      matchPackageNames: ["renovatebot/renovate"],
+      matchPackageNames: ["renovatebot/renovate", "ghcr.io/renovatebot/renovate"],
       matchUpdateTypes: ["major"],
       automerge: true,
       automergeType: "branch",

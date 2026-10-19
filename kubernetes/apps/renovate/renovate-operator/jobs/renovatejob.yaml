@@ -1,0 +1,32 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/renovate-operator.mogenius.com/renovatejob_v1alpha1.json
+apiVersion: renovate-operator.mogenius.com/v1alpha1
+kind: RenovateJob
+metadata:
+  name: mchestr
+spec:
+  schedule: 0 * * * *
+  image: ghcr.io/renovatebot/renovate:44.167.5
+  parallelism: 1
+  provider:
+    name: github
+  discoveryFilters:
+    - mchestr/home-cluster
+  githubAppReference:
+    secretName: renovate-github-app
+    appIdSecretKey: APP_ID
+    installationIdSecretKey: INSTALL_ID
+    pemSecretKey: PEM
+  extraEnv:
+    - name: LOG_LEVEL
+      value: debug
+    - name: RENOVATE_INTERNAL_CHECKS_FILTER
+      value: strict
+    - name: RENOVATE_PLATFORM_COMMIT
+      value: enabled
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      memory: 2Gi

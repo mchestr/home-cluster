@@ -1,6 +1,21 @@
 {
   packageRules: [
     {
+      description: "Renovate image: look up the GitHub release like the config validator does, so the image and the validator stay on one version.",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/renovatebot/renovate"],
+      overrideDatasource: "github-releases",
+      overridePackageName: "renovatebot/renovate",
+    },
+    {
+      description: "Renovate",
+      groupName: "Renovate",
+      matchPackageNames: ["renovatebot/renovate", "ghcr.io/renovatebot/renovate"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
       description: "1Password Group",
       groupName: "1Password",
       matchPackageNames: ["/1password/"],
