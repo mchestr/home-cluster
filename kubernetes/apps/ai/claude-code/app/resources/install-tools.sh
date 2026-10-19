@@ -16,8 +16,11 @@ install() {
     wget -qO "$BIN/$1" "$3"
   else
     rm -rf /tmp/x && mkdir -p /tmp/x
-    wget -qO /tmp/x/a.tar.gz "$3"
-    tar -xzf /tmp/x/a.tar.gz -C /tmp/x
+    wget -qO /tmp/x/a.tar "$3"
+    case "$3" in
+      *.tar.xz) tar -xJf /tmp/x/a.tar -C /tmp/x ;;
+      *) tar -xzf /tmp/x/a.tar -C /tmp/x ;;
+    esac
     cp "/tmp/x/$4" "$BIN/$1"
     rm -rf /tmp/x
   fi
@@ -45,3 +48,6 @@ install yq "$YQ_VERSION" \
   "$GH/mikefarah/yq/releases/download/$YQ_VERSION/yq_linux_amd64"
 install jq "$JQ_VERSION" \
   "$GH/jqlang/jq/releases/download/jq-$JQ_VERSION/jq-linux-amd64"
+install minijinja-cli "$MINIJINJA_VERSION" \
+  "$GH/mitsuhiko/minijinja/releases/download/$MINIJINJA_VERSION/minijinja-cli-x86_64-unknown-linux-musl.tar.xz" \
+  minijinja-cli-x86_64-unknown-linux-musl/minijinja-cli
