@@ -41,10 +41,13 @@ spec:
           main:
             image:
               repository: ghcr.io/mchestr/plex-manager
-              tag: main@sha256:75daecfa92b505f4282f5be063b0bdd321805ad565eb2cdc2bde1d97fde89aea
+              tag: sha-373983a@sha256:5a9236e1910f118a14c0466e33fe96f680569c6291120c2d3bc8920e0b27e76d
             env:
+              NODE_ENV: production
               NEXT_PUBLIC_APP_URL: https://mikeflix.lol
               NEXTAUTH_URL: https://mikeflix.lol
+              # Cloudflare edge and envoy-external both append to X-Forwarded-For.
+              TRUSTED_PROXY_HOPS: "2"
               REDIS_URL: redis://subs-dragonfly.media.svc.cluster.local:6379
               DATABASE_URL:
                 valueFrom:
