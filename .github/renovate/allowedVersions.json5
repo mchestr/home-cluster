@@ -26,6 +26,23 @@
       "matchDatasources": ["docker"],
       "matchPackageNames": ["docker.io/apache/tika", "apache/tika"],
       "allowedVersions": "<4"
+    },
+    {
+      // kustomize and jq put a prefix on their release tags (kustomize/v5.8.3,
+      // jq-1.8.2), which semver versioning rejects. These rules are for the
+      // regex manager, which reads them from
+      // kubernetes/apps/ai/claude-code/app/resources/tools.env. The mise
+      // manager sets its own extractVersion.
+      "matchManagers": ["custom.regex"],
+      "matchDatasources": ["github-releases"],
+      "matchPackageNames": ["kubernetes-sigs/kustomize"],
+      "extractVersion": "^kustomize/(?<version>v.+)$"
+    },
+    {
+      "matchManagers": ["custom.regex"],
+      "matchDatasources": ["github-releases"],
+      "matchPackageNames": ["jqlang/jq"],
+      "extractVersion": "^jq-(?<version>.+)$"
     }
   ]
 }
