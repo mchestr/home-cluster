@@ -8,3 +8,16 @@ ROOT_DIR = "{{config_root}}"
 BOOTSTRAP_DIR = "{{config_root}}/bootstrap"
 KUBERNETES_DIR = "{{config_root}}/kubernetes"
 TALOS_DIR = "{{config_root}}/talos"
+
+[tools]
+# Keep in step with kubernetes/apps/ai/claude-code/app/resources/tools.env.
+kubectl = "1.37.1"
+flux2 = "2.9.6"
+flux-operator-mcp = "0.61.0"
+talosctl = "1.14.4"
+task = "3.54.0"
+gh = "2.102.0"
+helm = "4.3.1"
+kustomize = "5.8.3"
+yq = "4.54.1"
+jq = "1.8.2"
