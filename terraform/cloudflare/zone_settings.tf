@@ -22,6 +22,9 @@ locals {
     email_obfuscation        = "on"
     server_side_exclude      = "on"
     hotlink_protection       = "on"
+    # The LAN DNS overrides only A records, so an ECH config from the HTTPS record
+    # breaks TLS to envoy-external, which has no ECH key or cloudflare-ech.com cert
+    ech                      = "off"
   }
   zone_setting_pairs = {
     for pair in setproduct(var.zones, keys(local.zone_settings)) :
