@@ -9,7 +9,10 @@ on:
       - .github/workflows/docs.yaml
       - docs/**
       - README.md
-      - kubernetes/**
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
 
 permissions:
   actions: write
@@ -21,8 +24,6 @@ jobs:
   build:
     name: Build Docs
     runs-on: ubuntu-latest
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
     steps:
       - name: Generate Token
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3
