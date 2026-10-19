@@ -1,0 +1,89 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: renovate-operator-rules
+spec:
+  groups:
+    - name: renovate-operator.rules
+      rules:
+        - alert: RenovateOperatorDown
+          expr: |
+            absent(up{job="renovate-operator"} == 1)
+          for: 15m
+          annotations:
+            summary: >-
+              The renovate-operator is down or Prometheus cannot scrape it, so no Renovate runs start
+          labels:
+            severity: warning
+
+        - alert: RenovateScheduleMissing
+          expr: |
+            absent(renovate_operator_schedule_next_run_timestamp_seconds{renovate_job="mchestr"})
+          for: 30m
+          annotations:
+            summary: >-
+              The RenovateJob mchestr has no schedule: it is suspended, refused by the operator or deleted
+          labels:
+            severity: warning
+
+        - alert: RenovateScheduleMissed
+          expr: |
+            time() - max by (renovate_job) (renovate_operator_schedule_next_run_timestamp_seconds) > 3600
+          for: 10m
+          annotations:
+            summary: >-
+              The planned run of the RenovateJob {{ $labels.renovate_job }} is more than 1 hour late
+          labels:
+            severity: warning
+
+        # The gauge holds until the next hourly run, so 90m means two runs in a row failed
+        - alert: RenovateRunFailed
+          expr: |
+            max by (project) (renovate_operator_run_failed) == 1
+          for: 90m
+          annotations:
+            summary: >-
+              The last two Renovate runs for {{ $labels.project }} failed
+          labels:
+            severity: warning
+
+        - alert: RenovateRunErrors
+          expr: |
+            max by (project) (renovate_operator_log_issues{level="error"}) > 0
+          for: 90m
+          annotations:
+            summary: >-
+              The last two Renovate runs for {{ $labels.project }} logged errors; see renovate.chestr.dev or the Dependency Dashboard
+          labels:
+            severity: warning
+
+        # A run that starts but never completes (hung pod, lost token) trips none of the per-run alerts
+        - alert: RenovateNoCompletedRuns
+          expr: |
+            sum(increase(renovate_operator_project_executions_total{status="completed"}[6h])) == 0
+          for: 2h
+          annotations:
+            summary: >-
+              No Renovate run has completed in 6 hours
+          labels:
+            severity: warning
+
+        - alert: RenovateDiscoveryFailing
+          expr: |
+            sum(increase(renovate_operator_job_failures_total{kind="discovery"}[3h])) > 1
+          annotations:
+            summary: >-
+              Renovate discovery failed more than once in 3 hours, so no repos are scheduled
+          labels:
+            severity: warning
+
+        - alert: RenovateSecretErrors
+          expr: |
+            sum by (error_type) (increase(renovate_operator_secret_resolution_errors_total[1h])) > 0
+          annotations:
+            summary: >-
+              The renovate-operator cannot read a Secret ({{ $labels.error_type }}); check the renovate-github-app ExternalSecret
+          labels:
+            severity: warning
