@@ -21,10 +21,17 @@
       separateMinorPatch: true,
     },
     {
+      description: "Immich images: look up the GitHub release, which both images are tagged with. The machine-learning image has too many ghcr.io tags to page through without HTTP 429 errors.",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/immich-app/immich-server", "ghcr.io/immich-app/immich-machine-learning"],
+      overrideDatasource: "github-releases",
+      overridePackageName: "immich-app/immich",
+    },
+    {
       description: "Immich images",
       groupName: "Immich",
       matchPackageNames: ["/immich/"],
-      matchDatasources: ["docker"],
+      matchDatasources: ["docker", "github-releases"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
