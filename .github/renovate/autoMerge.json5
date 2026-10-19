@@ -1,4 +1,9 @@
 {
+  // Renovate asks GitHub to auto-merge the PRs it opens for automerge updates.
+  // GitHub auto-merge only waits for required status checks, and main has none,
+  // so it would skip the risk assessment. Renovate's own automerge waits for
+  // every check.
+  platformAutomerge: false,
   packageRules: [
     {
       description: "Auto merge minor, patch and digest updates once they have aged a bit",
