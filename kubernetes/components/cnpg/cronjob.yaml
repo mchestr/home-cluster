@@ -6,6 +6,10 @@ metadata:
 spec:
   schedule: 5 */4 * * *
   concurrencyPolicy: Forbid
+  # PgDumpBackupStale reads the CronJob status, so a finished Job is only
+  # kept when it failed, for its logs and the KubeJobFailed alert.
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
       ttlSecondsAfterFinished: 86400
