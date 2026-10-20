@@ -227,7 +227,7 @@ jobs:
           fi
 
       # Both a high-risk verdict and a failed assessment block automerge, so say
-      # so right away instead of waiting for the daily digest
+      # so right away
       - name: Notify Blocked
         if: ${{ failure() && github.event_name == 'push' }}
         env:
