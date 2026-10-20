@@ -1,0 +1,405 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: CI
+
+on:
+  pull_request:
+    branches: ["main"]
+    types: ["opened", "synchronize", "reopened", "ready_for_review"]
+  # Renovate automerges straight from its branches without opening a PR, so
+  # test every push to them; Renovate waits for these checks before merging.
+  push:
+    branches: ["renovate/**"]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  changes:
+    name: Changed Files
+    if: ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    outputs:
+      kubernetes: ${{ steps.changed-files.outputs.kubernetes_any_changed }}
+      cluster: ${{ steps.changed-files.outputs.cluster_any_changed }}
+      renovate: ${{ steps.changed-files.outputs.renovate_any_changed }}
+      workflows: ${{ steps.changed-files.outputs.workflows_any_changed }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Get Changed Files
+        id: changed-files
+        uses: tj-actions/changed-files@9426d40962ed5378910ee2e21d5f8c6fcbf2dd96 # v47.0.6
+        with:
+          files_yaml: |
+            kubernetes:
+              - kubernetes/**
+            cluster:
+              - .github/workflows/ci.yaml
+              - .github/workflows/renovate-risk.yaml
+              - .github/renovate-risk/**
+              - .claude/skills/renovate-review/**
+              - bootstrap/**
+              - kubernetes/**
+              - talos/**
+              - terraform/**
+            renovate:
+              - .renovaterc.json5
+              - .github/workflows/ci.yaml
+            workflows:
+              - .github/workflows/**
+
+  flux-local:
+    name: Flux Local Test
+    needs: ["changes"]
+    # A Renovate PR's commits are already tested by the push trigger
+    if: >-
+      ${{
+        !cancelled() &&
+        (
+          github.event_name == 'push' ||
+          (needs.changes.outputs.cluster == 'true' && !startsWith(github.head_ref, 'renovate/'))
+        )
+      }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Build Kustomizations and render HelmReleases
+        uses: docker://ghcr.io/allenporter/flux-local:v8.4.0@sha256:c0be852e30f299ce6a220cc992b0c21a2a0b0684cc17713b9d718e18d9c8beff
+        with:
+          # Keep the output for the Renovate risk assessment
+          entrypoint: sh
+          args: >-
+            -c "mkdir -p flux-local-out;
+            flux-local test
+            --enable-helm
+            --all-namespaces
+            --path kubernetes/flux/cluster
+            --sources flux-system
+            > flux-local-out/test.log 2>&1;
+            rc=$?; cat flux-local-out/test.log; exit $rc"
+
+      - name: Checkout Default Branch
+        if: ${{ !cancelled() }}
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: "${{ github.event.repository.default_branch }}"
+          path: default
+          persist-credentials: false
+
+      # Rendered manifests (charts templated) before and after the update, so
+      # the risk assessment sees exactly what would change in the cluster
+      - name: Diff Rendered Resources
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        uses: docker://ghcr.io/allenporter/flux-local:v8.4.0@sha256:c0be852e30f299ce6a220cc992b0c21a2a0b0684cc17713b9d718e18d9c8beff
+        with:
+          entrypoint: sh
+          args: >-
+            -c "for kind in helmrelease kustomization; do
+            flux-local diff $kind
+            --unified 6
+            --path /github/workspace/kubernetes/flux/cluster
+            --path-orig /github/workspace/default/kubernetes/flux/cluster
+            --strip-attrs helm.sh/chart,checksum/config,app.kubernetes.io/version,chart
+            --limit-bytes 0
+            --all-namespaces
+            --sources flux-system
+            --output-file flux-local-out/diff-$kind.patch
+            > flux-local-out/diff-$kind.log 2>&1 || cat flux-local-out/diff-$kind.log;
+            done"
+
+      - name: Upload Results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: flux-local
+          path: flux-local-out/
+
+  risk:
+    name: Risk Assessment
+    needs: ["flux-local"]
+    # Also runs when the test fails, so Claude can explain and fix the breakage.
+    # Skips fork PRs (no secrets) and drafts (reviewed once marked ready).
+    if: >-
+      ${{
+        !cancelled() && needs.flux-local.result != 'skipped' &&
+        (
+          (github.event_name == 'push' && !github.event.deleted) ||
+          (
+            github.event_name == 'pull_request' &&
+            github.event.pull_request.head.repo.full_name == github.repository &&
+            !github.event.pull_request.draft
+          )
+        )
+      }}
+    uses: ./.github/workflows/renovate-risk.yaml
+    permissions:
+      contents: read
+      actions: read
+    secrets: inherit
+    with:
+      flux-local-result: ${{ needs.flux-local.result }}
+
+  flux-diff:
+    name: Flux Diff
+    needs: ["changes"]
+    if: ${{ needs.changes.outputs.kubernetes == 'true' }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        resources: ["helmrelease", "kustomization"]
+      fail-fast: false
+    steps:
+      - name: Generate Token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        id: app-token
+        with:
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+
+      - name: Checkout Pull Request Branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: pull
+          persist-credentials: false
+
+      - name: Checkout Default Branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: "${{ github.event.repository.default_branch }}"
+          path: default
+          persist-credentials: false
+
+      - name: Diff Resources
+        uses: docker://ghcr.io/allenporter/flux-local:v8.4.0@sha256:c0be852e30f299ce6a220cc992b0c21a2a0b0684cc17713b9d718e18d9c8beff
+        with:
+          args: >-
+            diff ${{ matrix.resources }}
+            --unified 6
+            --path /github/workspace/pull/kubernetes/flux/cluster
+            --path-orig /github/workspace/default/kubernetes/flux/cluster
+            --strip-attrs "helm.sh/chart,checksum/config,app.kubernetes.io/version,chart"
+            --limit-bytes 10000
+            --all-namespaces
+            --sources "flux-system"
+            --output-file diff.patch
+
+      - name: Generate Diff
+        id: diff
+        run: |
+          cat diff.patch;
+          {
+              echo 'diff<<EOF'
+              cat diff.patch
+              echo EOF
+          } >> "$GITHUB_OUTPUT";
+          {
+              echo "### Diff"
+              echo '```diff'
+              cat diff.patch
+              echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Add Comment
+        if: ${{ steps.diff.outputs.diff != '' }}
+        uses: mshick/add-pr-comment@ec328af66588ab8f77cdeb2c264f14aba45bbf59 # v3
+        with:
+          repo-token: "${{ steps.app-token.outputs.token }}"
+          message-id: "${{ github.event.pull_request.number }}/kubernetes/${{ matrix.resources }}"
+          message-failure: Diff was not successful
+          message: |
+            ```diff
+            ${{ steps.diff.outputs.diff }}
+            ```
+
+  image-pull-extract:
+    name: Image Pull - Extract Images
+    needs: ["changes"]
+    if: ${{ needs.changes.outputs.kubernetes == 'true' }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        branches: ["default", "pull"]
+      fail-fast: false
+    outputs:
+      default: ${{ steps.images.outputs.default }}
+      pull: ${{ steps.images.outputs.pull }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: "${{ matrix.branches == 'default' && github.event.repository.default_branch || '' }}"
+          persist-credentials: false
+
+      - name: Gather Images
+        uses: docker://ghcr.io/allenporter/flux-local:v8.4.0@sha256:c0be852e30f299ce6a220cc992b0c21a2a0b0684cc17713b9d718e18d9c8beff
+        with:
+          args: >-
+            get cluster
+            --all-namespaces
+            --path /github/workspace/kubernetes/flux/cluster
+            --enable-images
+            --only-images
+            --output json
+            --output-file images.json
+
+      - name: Output Images
+        id: images
+        env:
+          BRANCH: ${{ matrix.branches }}
+        run: |
+          echo "${BRANCH}=$(jq --compact-output '.' images.json)" >> "$GITHUB_OUTPUT"
+          {
+              echo "## Branch ${BRANCH} images"
+              echo '```json'
+              jq '.' images.json
+              echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  image-pull-compare:
+    name: Image Pull - Compare Images
+    needs: ["image-pull-extract"]
+    if: ${{ needs.image-pull-extract.outputs.default != needs.image-pull-extract.outputs.pull }}
+    runs-on: ubuntu-latest
+    outputs:
+      images: ${{ steps.compare.outputs.images }}
+    steps:
+      - name: Compare Images
+        id: compare
+        env:
+          DEFAULT_IMAGES: ${{ needs.image-pull-extract.outputs.default }}
+          PULL_IMAGES: ${{ needs.image-pull-extract.outputs.pull }}
+        run: |
+          images=$(jq --compact-output --null-input \
+              --argjson f1 "${DEFAULT_IMAGES}" \
+              --argjson f2 "${PULL_IMAGES}" \
+              '$f2 - $f1')
+          echo "images=${images}" >> "$GITHUB_OUTPUT"
+          {
+              echo '## New images to Pull'
+              echo '```json'
+              jq '.' <<< "${images}"
+              echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  image-pull:
+    name: Image Pull - Pull Images
+    needs: ["image-pull-compare"]
+    # Self-hosted runner with node credentials: never for a fork's pull request
+    if: >-
+      ${{
+        needs.image-pull-compare.outputs.images != '[]' &&
+        github.event.pull_request.head.repo.full_name == github.repository
+      }}
+    runs-on: home-cluster-runner
+    strategy:
+      matrix:
+        images: ${{ fromJSON(needs.image-pull-compare.outputs.images) }}
+      max-parallel: 4
+      fail-fast: false
+    steps:
+      - name: Install talosctl
+        run: curl -fsSL https://talos.dev/install | sh
+
+      - name: Pull Image
+        env:
+          IMAGE: ${{ matrix.images }}
+        run: talosctl --nodes "$NODE" image pull "$IMAGE"
+
+  renovate-config:
+    name: Renovate Config
+    needs: ["changes"]
+    if: ${{ needs.changes.outputs.renovate == 'true' }}
+    runs-on: ubuntu-latest
+    env:
+      # renovate: datasource=github-releases depName=renovatebot/renovate
+      RENOVATEBOT_VERSION: 44.167.5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Run renovate-config-validator
+        # --no-global checks the file as repo config, which is how Renovate reads it
+        run: >-
+          docker run --rm -v "$PWD:/repo:ro" -w /repo
+          --entrypoint renovate-config-validator
+          "ghcr.io/renovatebot/renovate:${RENOVATEBOT_VERSION}"
+          --strict --no-global .renovaterc.json5
+
+  actionlint:
+    name: actionlint
+    needs: ["changes"]
+    if: ${{ needs.changes.outputs.workflows == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Run actionlint
+        # Report only until the existing findings are fixed
+        continue-on-error: true
+        uses: docker://rhysd/actionlint:1.7.12@sha256:b1934ee5f1c509618f2508e6eb47ee0d3520686341fec936f3b79331f9315667
+        with:
+          args: -color
+
+  zizmor:
+    name: zizmor
+    needs: ["changes"]
+    if: ${{ needs.changes.outputs.workflows == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Run zizmor
+        # Report only until the existing findings are fixed
+        continue-on-error: true
+        uses: zizmorcore/zizmor-action@85b2b9fb8e3325e7a23d7d0a9d7ba5ae0f999e3e # v0.7.1
+        with:
+          advanced-security: false
+          annotations: true
+
+  status:
+    name: CI Success
+    if: ${{ !cancelled() }}
+    needs:
+      - changes
+      - flux-local
+      - risk
+      - flux-diff
+      - image-pull-extract
+      - image-pull-compare
+      - image-pull
+      - renovate-config
+      - actionlint
+      - zizmor
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Any jobs failed?
+        if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+        run: exit 1
+
+      - name: All jobs passed or skipped?
+        if: ${{ !(contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')) }}
+        env:
+          RESULTS: ${{ toJSON(needs.*.result) }}
+        run: echo "All jobs passed or skipped" && echo "$RESULTS"

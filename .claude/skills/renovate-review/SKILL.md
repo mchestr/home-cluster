@@ -11,7 +11,7 @@ CI (`.github/workflows/renovate-risk.yaml`) uses this file without its front mat
 
 1. Get the pull request number from the owner, or find it with `gh pr list`.
 2. Run `gh pr view <number> --json author,title,body,headRefName,headRefOid`.
-3. Find the last completed Flux Local run of the head commit: `gh run list --workflow flux-local.yaml --event <event> --commit <headRefOid> --status completed --limit 1`. The event is `push` for a `renovate/` branch and `pull_request` for other branches.
+3. Find the last completed Flux Local run of the head commit: `gh run list --workflow ci.yaml --event <event> --commit <headRefOid> --status completed --limit 1`. The event is `push` for a `renovate/` branch and `pull_request` for other branches.
 4. Run `gh run view <run-id>`. The result of its `Flux Local Test` job is the `flux-local test` result.
 5. Download the results into a new empty directory outside the repository: `gh run download <run-id> --name flux-local --dir <dir>`.
 
