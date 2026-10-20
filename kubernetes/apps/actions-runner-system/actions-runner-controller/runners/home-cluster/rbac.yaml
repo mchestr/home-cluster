@@ -4,30 +4,6 @@ kind: ServiceAccount
 metadata:
   name: home-cluster-runner
 ---
-# `flux reconcile source helm` (helm-repo-sync workflow): read the repository, patch the
-# reconcile annotation, then watch its status. Nothing else in the cluster.
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: home-cluster-runner
-rules:
-  - apiGroups: [source.toolkit.fluxcd.io]
-    resources: [helmrepositories, ocirepositories]
-    verbs: [get, list, watch, patch]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: home-cluster-runner
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: home-cluster-runner
-subjects:
-  - kind: ServiceAccount
-    name: home-cluster-runner
-    namespace: actions-runner-system
----
 # What the runner's container hook needs in its own namespace to run `container:` jobs
 # and docker:// steps (the role the chart would create for its own ServiceAccount).
 apiVersion: rbac.authorization.k8s.io/v1
@@ -63,7 +39,7 @@ subjects:
   - kind: ServiceAccount
     name: home-cluster-runner
 ---
-# `talosctl image pull` (image-pull workflow).
+# `talosctl image pull` (the Image Pull jobs in ci.yaml).
 apiVersion: talos.dev/v1alpha1
 kind: ServiceAccount
 metadata:
