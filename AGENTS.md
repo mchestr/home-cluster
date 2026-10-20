@@ -166,16 +166,17 @@ Renovate enforces semantic commits; follow the same pattern manually:
 
 | Scope | Usage |
 |---|---|
-| `feat(container)` / `fix(container)` / `chore(container)` | Container image updates |
+| `feat(container)` / `fix(container)` | Container image updates (`feat` for minor, `fix` for patch and digest) |
 | `feat(helm)` / `fix(helm)` | Helm chart updates |
-| `feat(github-release)` / `fix(github-release)` | GitHub release updates |
+| `chore(github-release)` | GitHub release updates |
+| `ci(github-action)` | GitHub Actions updates |
 | `fix(<app>)` / `feat(<app>)` | Changes to a specific app |
 | `chore:` | General maintenance |
 
-Major bumps use `!` suffix (e.g. `feat(container)!:`).
+Major bumps and `0.x` minor bumps use the `!` suffix (e.g. `feat(container)!:`). The types and scopes come from the `home-operations/renovate-presets` preset.
 
 ## Renovate & CI
 
-- Renovate automerges minor, patch and digest updates once they are 2 days old (3 days for GitHub Actions). Images and OCI charts outside Docker Hub get no minimum age and merge once the risk assessment passes. Majors, `0.x` minor bumps, core infrastructure (CNI, storage, Flux, Talos/Kubernetes, app-template, cert-manager, external-secrets) and apps with DB migrations always get a PR. Renovate itself (`renovatebot/renovate`) is the one exception: its majors also automerge. See `.github/renovate/autoMerge.json5`.
+- Renovate automerges minor, patch and digest updates once they are 2 days old (3 days for GitHub Actions). Images and OCI charts outside Docker Hub get no minimum age and merge once the risk assessment passes. Majors, `0.x` minor bumps, core infrastructure (CNI, storage, Flux, Talos/Kubernetes, app-template, cert-manager, external-secrets) and apps with DB migrations always get a PR. Renovate itself (`renovatebot/renovate`) is the one exception: its majors also automerge. See `.github/renovate.json5`.
 - Renovate runs in the cluster: `renovate-operator` (`renovate` namespace) starts a Renovate Job every hour for each repo listed in `discoveryFilters` of `renovatejob.yaml`, authenticated as the `mchesterbot` GitHub App. Its UI at `renovate.chestr.dev` shows runs and logs and can start a run now.
 - `flux-local` validates manifests on PRs touching `kubernetes/**`, and `flux-diff` posts a diff of changed `HelmRelease` and `Kustomization` resources on PRs touching `kubernetes/**`.

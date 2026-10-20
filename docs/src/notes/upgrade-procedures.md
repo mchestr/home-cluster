@@ -65,7 +65,7 @@ task talos:upgrade-k8s   # version comes from tuppr/upgrades/kubernetes.yaml
 
 ## Flux and Helm Charts
 
-Renovate automerges minor, patch and digest updates once the risk assessment passes. Updates from Docker Hub, GitHub, Helm repos and npm must also be 2 days old (3 days for GitHub Actions). Images and OCI charts on other registries have no release dates, so they get no minimum age. Majors, `0.x` minor bumps, core infrastructure (CNI, storage, Flux, Talos/Kubernetes, app-template, cert-manager, external-secrets) and apps with database migrations still get a PR to review. The rules are in `.github/renovate/autoMerge.json5`.
+Renovate automerges minor, patch and digest updates once the risk assessment passes. Updates from Docker Hub, GitHub, Helm repos and npm must also be 2 days old (3 days for GitHub Actions). Images and OCI charts on other registries have no release dates, so they get no minimum age. Majors, `0.x` minor bumps, core infrastructure (CNI, storage, Flux, Talos/Kubernetes, app-template, cert-manager, external-secrets) and apps with database migrations still get a PR to review. The rules are in `.github/renovate.json5`.
 
 To force a reconcile after merging:
 
