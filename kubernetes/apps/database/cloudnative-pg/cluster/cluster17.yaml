@@ -40,12 +40,6 @@ spec:
   # Login roles beyond each app's owner role (components/cnpg). Passwords: ../roles/externalsecret.yaml.
   managed:
     roles:
-      # Ferry Watch's, deleted: CNPG ignores a role that isn't listed, so absent is what makes it drop them (once
-      # the ferrywatch database is gone). Remove these two entries afterwards (waitlist README, Phase 2 step 8).
-      - name: ferrywatch_web
-        ensure: absent
-      - name: ferrywatch_control
-        ensure: absent
       # Waitlist: one role per process. Its db Job grants each exactly its tables (waitlist repo,
       # src/waitlist/control/db.py).
       - name: waitlist_web
