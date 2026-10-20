@@ -1,49 +1,337 @@
 {
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  // The shared preset brings config:recommended, the manager file patterns, the
+  // `# renovate:` annotation and oci:// regex managers, and the semantic commit
+  // types and scopes. This file only holds what is specific to this cluster.
   extends: [
-    'config:recommended',
-    'docker:enableMajor',
-    'replacements:k8s-registry-move',
-    ':automergeBranch',
-    ':disableRateLimiting',
-    ':dependencyDashboard',
-    ':semanticCommits',
-    ':timezone(America/Vancouver)',
-    'helpers:pinGitHubActionDigests',
-    ':enablePreCommit',
-    'github>mchestr/home-cluster//.github/renovate/allowedVersions.json5',
-    'github>mchestr/home-cluster//.github/renovate/autoMerge.json5',
-    'github>mchestr/home-cluster//.github/renovate/customManagers.json5',
-    'github>mchestr/home-cluster//.github/renovate/groups.json5',
-    'github>mchestr/home-cluster//.github/renovate/labels.json5',
-    'github>mchestr/home-cluster//.github/renovate/semanticCommits.json5',
+    "github>home-operations/renovate-presets#9.0.0",
+    "github>home-operations/renovate-presets//apps/grafanaDashboards.json5#9.0.0",
+    "replacements:k8s-registry-move",
+    ":semanticCommits",
+    ":timezone(America/Vancouver)",
+    ":enablePreCommit",
   ],
-  ignorePaths: [
-    '**/.archive/**',
+  ignorePaths: ["**/.archive/**"],
+  dependencyDashboardTitle: "Renovate Dashboard",
+  suppressNotifications: ["prIgnoreNotification", "prEditedNotification"],
+  // Renovate asks GitHub to auto-merge the PRs it opens for automerge updates.
+  // GitHub auto-merge only waits for required status checks, and main has none,
+  // so it would skip the risk assessment. Renovate's own automerge waits for
+  // every check.
+  platformAutomerge: false,
+  customManagers: [
+    {
+      customType: "regex",
+      description: "Process annotated manifest URLs in kustomization resource lists",
+      // Example: `- https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.3/experimental-install.yaml`
+      managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"],
+      matchStrings: [
+        "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\n.*?-\\s(.*?)/(?<currentValue>(v|\\d)[^/]+)/\\S+\\n",
+      ],
+      versioningTemplate: "semver",
+    },
+    {
+      customType: "regex",
+      description: "Process CloudnativePG Postgresql version",
+      managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"],
+      matchStrings: ["imageName: (?<depName>[^\\s:]+):(?<currentValue>[^\\s@]*-[^\\s@]*)(@(?<currentDigest>sha256:[a-f0-9]+))?"],
+      datasourceTemplate: "docker",
+      versioningTemplate: "redhat",
+    },
+    {
+      customType: "regex",
+      description: "Process GitHub raw URLs with versions in path",
+      managerFilePatterns: ["/(^|/)talos/.+\\.ya?ml$/"],
+      matchStrings: [
+        "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\n\\s+https://github\\.com/[^/]+/[^/]+/(?:releases/download|raw/refs/tags)/(?<currentValue>v[\\d.]+)/[^\\s]+",
+      ],
+      datasourceTemplate: "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
+      versioningTemplate: "semver",
+    },
+    {
+      customType: "regex",
+      description: "Process git-sync commit pins: the branch to follow and the commit it is pinned to",
+      // Example: `# renovate: datasource=git-refs depName=https://github.com/KBlixt/subcleaner branch=master`
+      //          `GITSYNC_REF: f2022c522fc580edb7597ef53e17b1ba1801957a`
+      managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"],
+      matchStrings: [
+        "# renovate: datasource=(?<datasource>git-refs) depName=(?<depName>\\S+) branch=(?<currentValue>\\S+)\\n\\s+GITSYNC_REF: (?<currentDigest>[a-f0-9]{40})",
+      ],
+    },
   ],
-  dependencyDashboardTitle: 'Renovate Dashboard',
-  suppressNotifications: [
-    'prIgnoreNotification',
-    'prEditedNotification',
+  packageRules: [
+    // Version constraints
+    {
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/postgresql/", "/postgres-backup-local/"],
+      allowedVersions: "<18",
+    },
+    {
+      // redhat versioning (CloudnativePG custom manager) cannot parse the -system-trixie suffix.
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/cloudnative-pg/postgresql"],
+      versioning: "docker",
+    },
+    {
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/blakeblackshear/frigate"],
+      versioning: "semver",
+      ignoreUnstable: false,
+      allowedVersions: "/^\\d+\\.\\d+\\.\\d+(-beta\\d+)?$/",
+    },
+    {
+      // Paperless does not support Tika 4: Tika 4 removed the /form endpoints
+      // that Paperless calls. Remove this rule when Paperless supports Tika 4.
+      // https://github.com/paperless-ngx/paperless-ngx/issues/13755
+      matchDatasources: ["docker"],
+      matchPackageNames: ["docker.io/apache/tika", "apache/tika"],
+      allowedVersions: "<4",
+    },
+    {
+      // kustomize and jq put a prefix on their release tags (kustomize/v5.8.3,
+      // jq-1.8.2), which semver versioning rejects. These rules are for the
+      // regex manager, which reads them from
+      // kubernetes/apps/ai/claude-code/app/resources/tools.env. The mise
+      // manager sets its own extractVersion.
+      matchManagers: ["custom.regex"],
+      matchDatasources: ["github-releases"],
+      matchPackageNames: ["kubernetes-sigs/kustomize"],
+      extractVersion: "^kustomize/(?<version>v.+)$",
+    },
+    {
+      matchManagers: ["custom.regex"],
+      matchDatasources: ["github-releases"],
+      matchPackageNames: ["jqlang/jq"],
+      extractVersion: "^jq-(?<version>.+)$",
+    },
+    // Groups
+    {
+      description: "Renovate image: look up the GitHub release like the config validator does, so the image and the validator stay on one version.",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/renovatebot/renovate"],
+      overrideDatasource: "github-releases",
+      overridePackageName: "renovatebot/renovate",
+    },
+    {
+      description: "Renovate",
+      groupName: "Renovate",
+      matchPackageNames: ["renovatebot/renovate", "ghcr.io/renovatebot/renovate"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "1Password Group",
+      groupName: "1Password",
+      matchPackageNames: ["/1password/"],
+      matchDatasources: ["docker"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      separateMinorPatch: true,
+    },
+    {
+      description: "Flux Group",
+      groupName: "Flux",
+      matchPackageNames: ["/flux/"],
+      matchDatasources: ["docker", "github-tags"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      separateMinorPatch: true,
+    },
+    {
+      description: "Immich images: look up the GitHub release, which both images are tagged with. The machine-learning image has too many ghcr.io tags to page through without HTTP 429 errors.",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/immich-app/immich-server", "ghcr.io/immich-app/immich-machine-learning"],
+      overrideDatasource: "github-releases",
+      overridePackageName: "immich-app/immich",
+    },
+    {
+      description: "Immich images",
+      groupName: "Immich",
+      matchPackageNames: ["/immich/"],
+      matchDatasources: ["docker", "github-releases"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      separateMinorPatch: true,
+    },
+    {
+      description: "Waitlist images: the browser pods must run the release waitlist-control expects",
+      groupName: "Waitlist",
+      matchPackageNames: ["/^ghcr\\.io/mchestr/waitlist-(control|browser|vnc-edge)$/"],
+      matchDatasources: ["docker"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "Rook-Ceph image and chart",
+      groupName: "Rook-Ceph",
+      matchPackageNames: ["/rook.ceph/"],
+      matchDatasources: ["docker", "helm"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      separateMinorPatch: true,
+    },
+    {
+      description: "Kubernetes Upgrade Group",
+      groupName: "Kubernetes",
+      matchPackageNames: ["/siderolabs/kubelet/", "/registry.k8s.io/kubectl/"],
+      matchDatasources: ["docker", "github-releases"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      separateMinorPatch: true,
+    },
+    {
+      description: "Talos Upgrade Group",
+      groupName: "Talos",
+      matchPackageNames: ["/siderolabs/talos/", "/ghcr.io/siderolabs/talosctl/"],
+      matchDatasources: ["docker", "github-releases", "container"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      separateMinorPatch: true,
+    },
+    // Auto-merge
+    {
+      description: "Auto merge minor, patch and digest updates once they have aged a bit",
+      matchDatasources: ["docker", "github-releases", "github-tags", "helm", "terraform-provider"],
+      matchUpdateTypes: ["minor", "patch", "digest"],
+      automerge: true,
+      automergeType: "branch",
+      minimumReleaseAge: "2 days",
+      // Registries that do not publish release timestamps would otherwise hold updates forever
+      minimumReleaseAgeBehaviour: "timestamp-optional",
+    },
+    {
+      description: "0.x minor bumps are effectively breaking, keep them as PRs",
+      matchUpdateTypes: ["minor"],
+      matchCurrentVersion: "/^v?0\\./",
+      automerge: false,
+    },
+    {
+      description: "Core infrastructure and apps with risky DB migrations always get a PR",
+      matchPackageNames: [
+        // CNI, gateway, DNS, image mirror
+        "/cilium/",
+        "/envoy/",
+        "/coredns/",
+        "/spegel/",
+        // Storage and backups
+        "/rook/",
+        "/ceph/",
+        "/openebs/",
+        "/volsync/",
+        "/snapshot-controller/",
+        // GitOps, node and cluster upgrades
+        "/flux/",
+        "/siderolabs/",
+        "/tuppr/",
+        // Shared chart used by nearly every app
+        "/app-template/",
+        // Cluster-wide controllers
+        "/cert-manager/",
+        "/external-secrets/",
+        "/litellm-operator/",
+        // Databases and apps with DB migrations
+        "/cloudnative-pg/",
+        "/postgres/",
+        "/immich/",
+        "/windmill/",
+        "/waitlist/",
+      ],
+      automerge: false,
+    },
+    {
+      description: "Auto merge Renovate majors too, so the pinned Renovate version never waits for a manual merge. The risk assessment still gates each update.",
+      matchPackageNames: ["renovatebot/renovate", "ghcr.io/renovatebot/renovate"],
+      matchUpdateTypes: ["major"],
+      automerge: true,
+      automergeType: "branch",
+      minimumReleaseAge: "2 days",
+    },
+    {
+      description: "Auto merge Claude Code, which the risk assessment workflow installs from npm",
+      matchDatasources: ["npm"],
+      matchPackageNames: ["@anthropic-ai/claude-code"],
+      matchUpdateTypes: ["minor", "patch"],
+      automerge: true,
+      automergeType: "branch",
+      minimumReleaseAge: "2 days",
+    },
+    {
+      description: "Auto merge GitHub Actions",
+      matchManagers: ["github-actions"],
+      matchUpdateTypes: ["minor", "patch", "digest"],
+      automerge: true,
+      automergeType: "branch",
+      minimumReleaseAge: "3 days",
+    },
+    {
+      description: "Auto merge Grafana dashboards: every new grafana.com revision is a major update",
+      matchDatasources: ["custom.grafana-dashboards"],
+      matchUpdateTypes: ["major"],
+      automerge: true,
+      automergeType: "branch",
+    },
+    {
+      description: "Renovate only gets release dates from Docker Hub, so images and OCI charts on other registries (ghcr.io, quay.io, registry.k8s.io, ...) can't be aged and were already skipping minimumReleaseAge under timestamp-optional, with a warning every run. Don't ask for an age there; the risk assessment is their check before merging. Last so it also covers docker:// actions.",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/^[^/]+\\.[^/]+\\//", "!/^(index\\.)?docker\\.io\\//"],
+      minimumReleaseAge: null,
+    },
+    // Commit messages
+    {
+      description: "Keep the title format .github/renovate-risk/digest.sh parses: 'update <dep> ( <from> → <to> )'. The preset sets the type and scope.",
+      matchDatasources: ["!custom.grafana-dashboards"],
+      commitMessageTopic: "{{depName}}",
+      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
+    },
+    {
+      matchDatasources: ["!custom.grafana-dashboards"],
+      matchUpdateTypes: ["digest"],
+      commitMessageExtra: "( {{currentDigestShort}} → {{newDigestShort}} )",
+    },
+    // Labels
+    {
+      matchUpdateTypes: ["major"],
+      labels: ["type/major"],
+    },
+    {
+      matchUpdateTypes: ["minor"],
+      labels: ["type/minor"],
+    },
+    {
+      matchUpdateTypes: ["patch"],
+      labels: ["type/patch"],
+    },
+    {
+      matchUpdateTypes: ["digest"],
+      labels: ["type/digest"],
+    },
+    {
+      matchDatasources: ["docker"],
+      addLabels: ["renovate/container"],
+    },
+    {
+      matchDatasources: ["helm"],
+      addLabels: ["renovate/helm"],
+    },
+    {
+      matchDatasources: ["terraform-provider"],
+      addLabels: ["renovate/terraform"],
+    },
+    {
+      matchDatasources: ["github-releases", "github-tags"],
+      addLabels: ["renovate/github-release"],
+    },
+    {
+      matchManagers: ["github-actions"],
+      addLabels: ["renovate/github-action"],
+    },
   ],
-  flux: {
-    managerFilePatterns: [
-      '/kubernetes/.+\\.ya?ml$/',
-      '/talos/.+\\.ya?ml$/',
-      '/terraform/.+\\.tf$/',
-    ],
-  },
-  'helm-values': {
-    managerFilePatterns: [
-      '/kubernetes/.+\\.ya?ml$/',
-      '/talos/.+\\.ya?ml$/',
-      '/terraform/.+\\.tf$/',
-    ],
-  },
-  kubernetes: {
-    managerFilePatterns: [
-      '/kubernetes/.+\\.ya?ml$/',
-      '/talos/.+\\.ya?ml$/',
-      '/terraform/.+\\.tf$/',
-    ],
-  },
 }
