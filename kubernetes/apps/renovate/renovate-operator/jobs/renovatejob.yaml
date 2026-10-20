@@ -12,7 +12,6 @@ spec:
     name: github
   discoveryFilters:
     - mchestr/containers
-    - mchestr/containers-mirror
     - mchestr/home-cluster
     - mchestr/mchestr.github.io
     - mchestr/plex-manager
