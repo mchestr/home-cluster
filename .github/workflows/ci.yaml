@@ -49,8 +49,22 @@ jobs:
               - kubernetes/**
               - talos/**
               - terraform/**
+            renovate:
+              - .renovaterc.json5
             workflows:
               - .github/workflows/**
+
+      # --no-global checks the file as repo config, which is how Renovate reads it
+      - name: Validate Renovate Config
+        if: ${{ steps.changed-files.outputs.renovate_any_changed == 'true' }}
+        env:
+          # renovate: datasource=github-releases depName=renovatebot/renovate
+          RENOVATEBOT_VERSION: 44.167.5
+        run: >-
+          docker run --rm -v "$PWD:/repo:ro" -w /repo
+          --entrypoint renovate-config-validator
+          "ghcr.io/renovatebot/renovate:${RENOVATEBOT_VERSION}"
+          --strict --no-global .renovaterc.json5
 
   flux-local:
     name: Flux Local Test
