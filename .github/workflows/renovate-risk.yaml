@@ -3,7 +3,7 @@
 name: "Risk Assessment"
 
 on:
-  # Called by Flux Local after it tests a push to a renovate/** branch or a
+  # Called by CI after Flux Local tests a push to a renovate/** branch or a
   # PR, and renders the manifest diff. Renovate waits for this check before
   # automerging, and a high verdict holds the update in a PR (Hold for Review).
   workflow_call:
@@ -287,7 +287,7 @@ jobs:
         run: |
           # The push run for this commit may still be going; it comments itself
           # when it finishes if the PR exists by then.
-          run=$(gh run list --workflow flux-local.yaml --event push --commit "${SHA}" \
+          run=$(gh run list --workflow ci.yaml --event push --commit "${SHA}" \
             --status completed --limit 1 --json databaseId --jq '.[0].databaseId')
           if [[ -z "${run}" ]] || ! gh run download "${run}" --name renovate-risk; then
             echo "No completed assessment for ${SHA} yet"
