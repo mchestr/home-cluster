@@ -145,8 +145,6 @@ spec:
               - path: /config
             app:
               - path: /config
-              - path: /.vscode-server
-              - path: /.vscode
 
       soco-config:
         type: configMap
