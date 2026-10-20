@@ -51,7 +51,7 @@ description: Add a new app to the cluster. Create its Flux Kustomization and Hel
 
 18. Commit the files: `git add kubernetes/apps/<namespace> && git commit -m "feat(<app>): add <app>"`.
 19. Push the branch: `git push -u origin <branch>`.
-20. Write the pull request body with the headings of `.github/PULL_REQUEST_TEMPLATE.md`.
+20. Write a short pull request body: what the app is, how it is exposed, and what it stores.
 21. Open the pull request: `gh pr create --base main --title "feat(<app>): add <app>" --body-file <file>`.
 22. Run `gh pr checks <number>`. Fix each failed check, then push again.
 
