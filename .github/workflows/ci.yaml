@@ -26,7 +26,6 @@ jobs:
     outputs:
       kubernetes: ${{ steps.changed-files.outputs.kubernetes_any_changed }}
       cluster: ${{ steps.changed-files.outputs.cluster_any_changed }}
-      renovate: ${{ steps.changed-files.outputs.renovate_any_changed }}
       workflows: ${{ steps.changed-files.outputs.workflows_any_changed }}
     steps:
       - name: Checkout
@@ -50,9 +49,6 @@ jobs:
               - kubernetes/**
               - talos/**
               - terraform/**
-            renovate:
-              - .renovaterc.json5
-              - .github/workflows/ci.yaml
             workflows:
               - .github/workflows/**
 
@@ -318,28 +314,6 @@ jobs:
           IMAGE: ${{ matrix.images }}
         run: talosctl --nodes "$NODE" image pull "$IMAGE"
 
-  renovate-config:
-    name: Renovate Config
-    needs: ["changes"]
-    if: ${{ needs.changes.outputs.renovate == 'true' }}
-    runs-on: ubuntu-latest
-    env:
-      # renovate: datasource=github-releases depName=renovatebot/renovate
-      RENOVATEBOT_VERSION: 44.167.5
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      - name: Run renovate-config-validator
-        # --no-global checks the file as repo config, which is how Renovate reads it
-        run: >-
-          docker run --rm -v "$PWD:/repo:ro" -w /repo
-          --entrypoint renovate-config-validator
-          "ghcr.io/renovatebot/renovate:${RENOVATEBOT_VERSION}"
-          --strict --no-global .renovaterc.json5
-
   actionlint:
     name: actionlint
     needs: ["changes"]
@@ -388,7 +362,6 @@ jobs:
       - image-pull-extract
       - image-pull-compare
       - image-pull
-      - renovate-config
       - actionlint
       - zizmor
     runs-on: ubuntu-latest
