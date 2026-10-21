@@ -4,8 +4,8 @@
   // `# renovate:` annotation and oci:// regex managers, and the semantic commit
   // messages. This file only holds what is specific to this cluster.
   extends: [
-    "github>home-operations/renovate-presets#9.0.0",
-    "github>home-operations/renovate-presets//apps/grafanaDashboards.json5#9.0.0",
+    "github>home-operations/renovate-presets#10.0.0",
+    "github>home-operations/renovate-presets//apps/grafanaDashboards.json5#10.0.0",
     "replacements:k8s-registry-move",
     ":semanticCommits",
     ":timezone(America/Vancouver)",
