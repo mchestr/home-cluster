@@ -64,7 +64,8 @@ metrics:
       - { color: "50B93A", min: 0, max: 9999 }
 
   - name: cluster_alert_count
-    query: alertmanager_alerts{state="active"} - 1 # Ignore Watchdog
+    # Ignore severity="none" alerts: Watchdog, InfoInhibitor and the VictoriaLogs LogPipelineWatchdog
+    query: clamp_min(max(alertmanager_alerts{state="active"}) - count(ALERTS{alertstate="firing", severity="none"}) - 1, 0)
     colors:
       - { color: "50B93A", min: 0, max: 0 }
       - { color: "orange", min: 1, max: 3 }
