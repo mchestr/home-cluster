@@ -163,19 +163,36 @@ kubectl get certificaterequest -A
 
 A user signs in at `requests.chestr.dev` with Plex, and Seerr refuses them. Seerr checks the user against the Plex share list of the owner account. The user must be on that list with the same email as their Plex account.
 
+Use plex-manager (the `subs` app at `subs.chestr.dev`) to find the user's real email and Plex access. Do not copy user emails or names into Git, issues or chat logs.
+
+#### Check
+
 1. Find the failed attempt in the Seerr log:
 
    ```bash
    kubectl -n media logs deploy/jellyseerr | grep -i "sign-in\|user access"
    ```
 
-2. Read the `email`, `plexId` and `plexUsername` in the `Failed sign-in attempt by Plex user without access to the media server` line.
-3. In Plex, open Settings → Manage → Users & Sharing as the owner.
-4. Compare the user's email in the share with the email in the log.
-5. If the email is wrong or the user is missing, share the server again with the correct email.
-6. Tell the user to accept the invite and sign in again.
+2. Find the `Failed sign-in attempt by Plex user without access to the media server` line. Note its `plexUsername`, `plexId` and `email`.
+3. Look for `This user does not exist on the main Plex account's shared list` at the same time. This line shows that the user is not on the share list.
+4. Look for `[Plex Refresh Token]: Failed to ping token` with status 401. This line shows that the Seerr admin token is bad.
+5. In plex-manager, open Admin → Users and select "Import Plex Users" to refresh the list.
+6. Search for the user by name or Plex username.
+7. Open the user and compare the email with the `email` in the Seerr log.
+8. Check the Plex access status of the user in plex-manager.
 
-If Seerr also logs `[Plex Refresh Token]: Failed to ping token` with status 401, sign in to Plex again in Seerr Settings → Plex. Seerr cannot read the share list with a bad token.
+#### Fix
+
+| Result of the check | Fix |
+|---|---|
+| The emails are different | Share the Plex server again with the email of the user's Plex account |
+| The user has no Plex access | Share the Plex server with the user |
+| The Seerr log shows the 401 token error | Sign in to Plex again in Seerr Settings → Plex |
+
+1. Tell the user to accept the Plex invite.
+2. In Seerr, open Settings → Users and select "Import Plex Users".
+3. Tell the user to sign in again.
+4. Look at the Seerr log again for a new failed attempt.
 
 ## Debug Tools
 
