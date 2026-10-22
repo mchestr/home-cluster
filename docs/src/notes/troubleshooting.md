@@ -157,6 +157,26 @@ kubectl get certificaterequest -A
 | Rate limited | Wait and retry |
 | Invalid domain | Check certificate spec |
 
+## App Issues
+
+### Seerr: Plex User Cannot Sign In
+
+A user signs in at `requests.chestr.dev` with Plex, and Seerr refuses them. Seerr checks the user against the Plex share list of the owner account. The user must be on that list with the same email as their Plex account.
+
+1. Find the failed attempt in the Seerr log:
+
+   ```bash
+   kubectl -n media logs deploy/jellyseerr | grep -i "sign-in\|user access"
+   ```
+
+2. Read the `email`, `plexId` and `plexUsername` in the `Failed sign-in attempt by Plex user without access to the media server` line.
+3. In Plex, open Settings → Manage → Users & Sharing as the owner.
+4. Compare the user's email in the share with the email in the log.
+5. If the email is wrong or the user is missing, share the server again with the correct email.
+6. Tell the user to accept the invite and sign in again.
+
+If Seerr also logs `[Plex Refresh Token]: Failed to ping token` with status 401, sign in to Plex again in Seerr Settings → Plex. Seerr cannot read the share list with a bad token.
+
 ## Debug Tools
 
 ### Node Shell
