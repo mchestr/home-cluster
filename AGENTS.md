@@ -160,6 +160,15 @@ Talos and Kubernetes upgrades are driven by [tuppr](https://github.com/home-oper
 
 A `# yaml-language-server: $schema=` header is optional: it only helps editors, and Flux ignores it. For a CRD (Flux kinds included), use `https://kubernetes-schemas.pages.dev/<group>/<kind>_<version>.json`, with the kind in lower case and the version from the `apiVersion` line below the header. For an app-template HelmRelease, use `https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json`, which also checks the chart values.
 
+## Knowledge Base
+
+Common issues, SOPs and incident history live in [mchestr/knowledgebase](https://github.com/mchestr/knowledgebase), an LLM-maintained wiki. The in-cluster Claude Code has a clone at `~/knowledgebase`; elsewhere, clone it or read it on GitHub.
+
+1. Before you troubleshoot, read `wiki/index.md`. Then read the matching pages in `wiki/issues/` and `wiki/sops/`.
+2. Follow an SOP when one exists for the task.
+3. After you fix a new problem, offer to record it. Write `raw/YYYY-MM-DD-incident-<slug>.md` and ingest it with the `kb-ingest` skill in that repo.
+4. Do not write user names, emails, usernames, account IDs or IP addresses there. The repository is public.
+
 ## Commit Conventions
 
 Renovate enforces semantic commits; follow the same pattern manually:

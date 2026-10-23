@@ -12,3 +12,11 @@ Obey these rules:
 8. Do not write an introduction, praise or a summary. Start with the answer.
 9. Write a maximum of 6 sentences in a paragraph.
 10. Keep every fact, value, and safety step. Do not shorten the content — only the sentences.
+
+# Knowledge base
+
+My knowledge base is the wiki at `~/knowledgebase` (github.com/mchestr/knowledgebase).
+1. Read `~/knowledgebase/wiki/index.md` before you troubleshoot or answer a question about my systems.
+2. Use the pages in `wiki/issues/` and `wiki/sops/` before you investigate from the start.
+3. After you fix a new problem, offer to record it as an issue or SOP. Obey the rules in `~/knowledgebase/CLAUDE.md`.
+4. Do not record personal information of users. The repository is public.
