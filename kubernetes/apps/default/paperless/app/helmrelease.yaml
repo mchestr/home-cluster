@@ -147,7 +147,7 @@ spec:
           app:
             image:
               repository: docker.io/apache/tika
-              tag: 3.3.1.0-full@sha256:d8e6ed96260ad89307a93195a1b856102987a818ac648502f8efbaf313d32470
+              tag: 3.3.3.0-full@sha256:6ef30abd65df4b6c478907904099d0245bdb0e0686f94fb9bc7493558442bb74
             probes:
               liveness: &tikaProbes
                 enabled: true
