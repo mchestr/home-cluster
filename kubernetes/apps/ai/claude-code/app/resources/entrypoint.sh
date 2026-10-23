@@ -3,17 +3,22 @@
 set -euo pipefail
 
 REPO="$HOME/home-cluster"
+KB="$HOME/knowledgebase"
 
 # Self-updating after the first install.
 command -v claude >/dev/null || curl -fsSL https://claude.ai/install.sh | bash
 
 install -D -m 600 /scripts/kubeconfig.yaml "$HOME/.kube/config"
 install -D -m 644 /scripts/CLAUDE.md "$HOME/.claude/CLAUDE.md"
-# Attribution off, keeping the rest of settings.json.
+# Attribution off and the knowledge base readable from every session, keeping the rest of settings.json.
 node -e '
-  const fs = require("fs"), p = process.env.HOME + "/.claude/settings.json";
+  const fs = require("fs"), home = process.env.HOME, p = home + "/.claude/settings.json";
   let s = {}; try { s = JSON.parse(fs.readFileSync(p, "utf8")); } catch {}
   s.attribution = { commit: "", pr: "" };
+  s.permissions = s.permissions || {};
+  const dirs = new Set(s.permissions.additionalDirectories || []);
+  dirs.add(home + "/knowledgebase");
+  s.permissions.additionalDirectories = [...dirs];
   fs.writeFileSync(p, JSON.stringify(s, null, 2) + "\n");
 '
 
@@ -22,6 +27,7 @@ git config --global user.email "mike@chester.io"
 # git push via GITHUB_TOKEN.
 gh auth setup-git >/dev/null 2>&1 || true
 [ -d "$REPO/.git" ] || git clone https://github.com/mchestr/home-cluster.git "$REPO"
+[ -d "$KB/.git" ] || git clone https://github.com/mchestr/knowledgebase.git "$KB" || true
 
 # Version pinned in tools.env; a new pin replaces the registered entry.
 . /scripts/tools.env
@@ -60,6 +66,7 @@ if [ ! -f "$HOME/.remote-control-ready" ]; then
   exec sleep infinity
 fi
 
+git -C "$KB" pull --ff-only -q || true
 cd "$REPO"
 git pull --ff-only -q || true
 
