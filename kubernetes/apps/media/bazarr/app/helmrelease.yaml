@@ -110,6 +110,8 @@ spec:
               GITSYNC_REF: f2022c522fc580edb7597ef53e17b1ba1801957a
               GITSYNC_PERIOD: 24h
               GITSYNC_ROOT: /subcleaner
+              # git 2.47 in git-sync v4.8.0 rejects the root-owned emptyDir as dubious ownership.
+              GITSYNC_GIT_CONFIG: safe.directory:/subcleaner
             resources:
               requests:
                 cpu: 10m
