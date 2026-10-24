@@ -44,6 +44,8 @@ spec:
               tag: 0.3.0@sha256:9fde08862105b7f084f2c333e7666ba31f3c3b6da5cd83e4c47b975991d3836f
             env:
               NODE_ENV: production
+              # Serves pages only; the worker controller runs the queues, schedulers and Discord bot.
+              PROCESS_ROLE: web
               NEXT_PUBLIC_APP_URL: https://mikeflix.lol
               NEXTAUTH_URL: https://mikeflix.lol
               # Cloudflare edge and envoy-external both append to X-Forwarded-For.
@@ -57,6 +59,61 @@ spec:
             envFrom:
               - secretRef:
                   name: subs-secret
+            probes: &probes
+              # ?probe=live touches no dependency, so a Redis outage restarts nothing.
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/health?probe=live
+                    port: &port 3000
+                  periodSeconds: 15
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness: *probe
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/health?probe=live
+                    port: *port
+                  periodSeconds: 5
+                  failureThreshold: 60
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 2Gi
+
+      worker:
+        replicas: 1
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: ghcr.io/mchestr/plex-manager
+              tag: 0.3.0@sha256:9fde08862105b7f084f2c333e7666ba31f3c3b6da5cd83e4c47b975991d3836f
+            env:
+              NODE_ENV: production
+              # Runs the queues, schedulers and Discord bot; serves only /api/health and /api/metrics.
+              PROCESS_ROLE: worker
+              NEXT_PUBLIC_APP_URL: https://mikeflix.lol
+              NEXTAUTH_URL: https://mikeflix.lol
+              REDIS_URL: redis://subs-dragonfly.media.svc.cluster.local:6379
+              DATABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: subs-pguser-secret
+                    key: uri
+            envFrom:
+              - secretRef:
+                  name: subs-secret
+            probes: *probes
             resources:
               requests:
                 cpu: 10m
@@ -69,7 +126,7 @@ spec:
         controller: *app
         ports:
           http:
-            port: &port 3000
+            port: *port
 
     route:
       app:
@@ -118,6 +175,12 @@ spec:
               ports:
                 - protocol: TCP
                   port: *port
+      # Nothing calls the worker; the kubelet probes are always admitted.
+      worker:
+        controller: worker
+        policyTypes: [Ingress]
+        rules:
+          ingress: []
       # Cross-node gateway traffic is SNATed to the node, which Cilium sees as the
       # kube-apiserver entity on this all-control-plane cluster (see waitlist).
       cilium:
