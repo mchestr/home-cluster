@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: teslamate/teslamate
-              tag: 4.3.0
+              tag: 4.4.0
             resources:
               requests:
                 memory: 250Mi
