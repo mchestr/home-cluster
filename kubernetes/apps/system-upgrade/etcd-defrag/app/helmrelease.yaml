@@ -32,7 +32,7 @@ spec:
         defaultContainerOptions:
           image:
             repository: ghcr.io/siderolabs/talosctl
-            tag: v1.14.4@sha256:b3233234327350f20ed194f3fad83d90a64344c1940f839c7b0c0abef50c8c33
+            tag: v1.14.5@sha256:0b852e35c1f513ee5eacc22183d6193486012420569fde39fcd5260c51938443
           env:
             # talosctl needs a home folder to resolve its config paths, even with
             # TALOSCONFIG set. It writes nothing there.
