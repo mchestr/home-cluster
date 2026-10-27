@@ -157,6 +157,11 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /app/.next/cache
+      # /app/.next/server is root-owned in the image, so Next.js cannot create this itself.
+      route-cache:
+        type: emptyDir
+        globalMounts:
+          - path: /app/.next/server/route-cache
 
     networkpolicies:
       # Only the external gateway reaches this pod.
