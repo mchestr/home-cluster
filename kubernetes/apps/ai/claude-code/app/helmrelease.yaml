@@ -77,7 +77,6 @@ spec:
                   secretKeyRef:
                     name: claude-code-secret
                     key: OP_CONNECT_TOKEN
-              # Empty unless set in 1Password; entrypoint.sh unsets an empty value.
               TF_TOKEN_app_terraform_io:
                 valueFrom:
                   secretKeyRef:

@@ -18,8 +18,6 @@ The guard is the permission mode: anything outside the repo's
   the Home Assistant MCP server (`/api/mcp/assist`, which serves only the
   entities exposed to Assist). Without this field the ExternalSecret does not
   sync and the pod cannot start; an empty value skips the server.
-- `TF_TOKEN_app_terraform_io` (optional): a Terraform Cloud user or team token
-  for the `mchestr` organization, which holds the `cloudflare` workspace state.
 
 ## One-time bootstrap
 
@@ -49,7 +47,8 @@ sessions started from there each get their own git worktree.
   `ANTHROPIC_AUTH_TOKEN`, `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` or
   `DISABLE_GROWTHBOOK` is set.
 - `terraform` is installed. The ExternalSecret also copies
-  `CLOUDFLARE_TERRAFORM_TOKEN` (item `cloudflare`) and `OP_CONNECT_TOKEN` (item
-  `1password`) from the vault, so `task terraform:cf:*` needs no `op`. It still
-  needs `TF_TOKEN_app_terraform_io` for the Terraform Cloud state.
+  `CLOUDFLARE_TERRAFORM_TOKEN` (item `cloudflare`), `OP_CONNECT_TOKEN` (item
+  `1password`) and `TERRAFORM_TOKEN` (item `terraform`, as
+  `TF_TOKEN_app_terraform_io`) from the vault, so `task terraform:cf:*` needs
+  no `op`.
 - No `op` CLI, so `talos:apply-node` (`op inject`) still needs the Mac.

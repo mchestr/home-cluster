@@ -8,9 +8,6 @@ KB="$HOME/knowledgebase"
 # Self-updating after the first install.
 command -v claude >/dev/null || curl -fsSL https://claude.ai/install.sh | bash
 
-# An empty Terraform Cloud token would hide the one from terraform login.
-[ -n "${TF_TOKEN_app_terraform_io:-}" ] || unset TF_TOKEN_app_terraform_io
-
 install -D -m 600 /scripts/kubeconfig.yaml "$HOME/.kube/config"
 install -D -m 644 /scripts/CLAUDE.md "$HOME/.claude/CLAUDE.md"
 # Attribution off and the knowledge base readable from every session, keeping the rest of settings.json.
