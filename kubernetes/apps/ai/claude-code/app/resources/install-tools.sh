@@ -8,7 +8,7 @@ BIN=/home/claude/.local/bin
 GH=https://github.com
 mkdir -p "$BIN"
 
-# install <name> <version> <url> [binary path in tarball]
+# install <name> <version> <url> [binary path in archive]
 install() {
   [ "$(cat "$BIN/.$1ver" 2>/dev/null)" = "$2" ] && return 0
   echo "installing $1 $2"
@@ -18,6 +18,7 @@ install() {
     rm -rf /tmp/x && mkdir -p /tmp/x
     wget -qO /tmp/x/a.tar "$3"
     case "$3" in
+      *.zip) unzip -q /tmp/x/a.tar -d /tmp/x ;;
       *.tar.xz) tar -xJf /tmp/x/a.tar -C /tmp/x ;;
       *) tar -xzf /tmp/x/a.tar -C /tmp/x ;;
     esac
@@ -51,3 +52,8 @@ install jq "$JQ_VERSION" \
 install minijinja-cli "$MINIJINJA_VERSION" \
   "$GH/mitsuhiko/minijinja/releases/download/$MINIJINJA_VERSION/minijinja-cli-x86_64-unknown-linux-musl.tar.xz" \
   minijinja-cli-x86_64-unknown-linux-musl/minijinja-cli
+# For task terraform:*.
+install terraform "$TERRAFORM_VERSION" \
+  "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION#v}/terraform_${TERRAFORM_VERSION#v}_linux_amd64.zip" terraform
+install op "$OP_VERSION" \
+  "https://cache.agilebits.com/dist/1P/op2/pkg/v$OP_VERSION/op_linux_amd64_v$OP_VERSION.zip" op
