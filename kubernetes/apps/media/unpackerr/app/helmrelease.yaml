@@ -27,9 +27,14 @@ spec:
               UN_SONARR_0_PATHS_0: /complete/sonarr
               UN_RADARR_0_URL: http://radarr.media.svc.cluster.local:7878
               UN_RADARR_0_PATHS_0: /complete/radarr
+              UN_WEBSERVER_ROLES_metrics_PERMISSIONS_0: system:metrics:read
+              UN_WEBSERVER_API_KEYS_0_NAME: prometheus
+              UN_WEBSERVER_API_KEYS_0_ROLES_0: metrics
             envFrom:
               - secretRef:
                   name: unpackerr-secret
+              - secretRef:
+                  name: unpackerr-metrics-secret
 
     defaultPodOptions:
       securityContext:
@@ -63,5 +68,9 @@ spec:
           - port: http
             scheme: http
             path: /metrics
+            authorization:
+              credentials:
+                name: unpackerr-metrics-secret
+                key: UN_WEBSERVER_API_KEYS_0_KEY
             interval: 1m
             scrapeTimeout: 10s
