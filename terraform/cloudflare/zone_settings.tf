@@ -12,7 +12,9 @@ locals {
     privacy_pass             = "on"
     security_level           = "medium"
     brotli                   = "on"
-    rocket_loader            = "on"
+    # Rocket Loader injects its loader script without the page's CSP nonce, so
+    # apps with a strict nonce CSP (subs, waitlist) never run their JavaScript
+    rocket_loader            = "off"
     http3                    = "on"
     ipv6                     = "on"
     websockets               = "on"
