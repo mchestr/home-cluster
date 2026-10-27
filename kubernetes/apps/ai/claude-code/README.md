@@ -18,6 +18,10 @@ The guard is the permission mode: anything outside the repo's
   the Home Assistant MCP server (`/api/mcp/assist`, which serves only the
   entities exposed to Assist). Without this field the ExternalSecret does not
   sync and the pod cannot start; an empty value skips the server.
+- `OP_SERVICE_ACCOUNT_TOKEN` (optional): a 1Password service account with read
+  access to the `kubernetes` vault, so `op` works for `task terraform:*`.
+- `TF_TOKEN_app_terraform_io` (optional): a Terraform Cloud user or team token
+  for the `mchestr` organization, which holds the `cloudflare` workspace state.
 
 ## One-time bootstrap
 
@@ -46,5 +50,6 @@ sessions started from there each get their own git worktree.
 - Remote Control refuses to start if `ANTHROPIC_API_KEY`,
   `ANTHROPIC_AUTH_TOKEN`, `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` or
   `DISABLE_GROWTHBOOK` is set.
-- No `op` CLI, so 1Password-backed tasks (terraform, `talos:apply-node`) still
-  need the Mac.
+- `op` and `terraform` are installed. `task terraform:cf:*` works when the two
+  optional token fields are set. `talos:apply-node` is untested with a service
+  account and still needs the Mac.
