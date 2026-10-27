@@ -21,6 +21,5 @@ resources:
   - ./smtp-relay/ks.yaml
   - ./teslamate/ks.yaml
   - ./thelounge/ks.yaml
-  - ./windmill/ks.yaml
   - ./zigbee2mqtt/ks.yaml
   - ./zwave-js-ui/ks.yaml
