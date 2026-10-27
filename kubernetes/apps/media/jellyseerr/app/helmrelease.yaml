@@ -152,7 +152,6 @@ spec:
                 - podSelector:
                     matchLabels:
                       app.kubernetes.io/name: subs
-                      app.kubernetes.io/controller: subs
               ports:
                 - protocol: TCP
                   port: *port
