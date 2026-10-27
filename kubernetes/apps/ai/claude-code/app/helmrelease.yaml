@@ -66,12 +66,18 @@ spec:
                   secretKeyRef:
                     name: claude-code-secret
                     key: HASS_TOKEN
-              # Empty unless set in 1Password; entrypoint.sh unsets an empty value.
-              OP_SERVICE_ACCOUNT_TOKEN:
+              # For task terraform:*, which uses these instead of op.
+              CLOUDFLARE_TERRAFORM_TOKEN:
                 valueFrom:
                   secretKeyRef:
                     name: claude-code-secret
-                    key: OP_SERVICE_ACCOUNT_TOKEN
+                    key: CLOUDFLARE_TERRAFORM_TOKEN
+              OP_CONNECT_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: claude-code-secret
+                    key: OP_CONNECT_TOKEN
+              # Empty unless set in 1Password; entrypoint.sh unsets an empty value.
               TF_TOKEN_app_terraform_io:
                 valueFrom:
                   secretKeyRef:

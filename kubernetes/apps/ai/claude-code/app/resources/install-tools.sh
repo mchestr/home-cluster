@@ -55,5 +55,3 @@ install minijinja-cli "$MINIJINJA_VERSION" \
 # For task terraform:*.
 install terraform "$TERRAFORM_VERSION" \
   "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION#v}/terraform_${TERRAFORM_VERSION#v}_linux_amd64.zip" terraform
-install op "$OP_VERSION" \
-  "https://cache.agilebits.com/dist/1P/op2/pkg/v$OP_VERSION/op_linux_amd64_v$OP_VERSION.zip" op
