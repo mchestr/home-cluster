@@ -72,13 +72,11 @@ spec:
                   secretKeyRef:
                     name: claude-code-secret
                     key: OP_SERVICE_ACCOUNT_TOKEN
-                    optional: true
               TF_TOKEN_app_terraform_io:
                 valueFrom:
                   secretKeyRef:
                     name: claude-code-secret
                     key: TF_TOKEN_app_terraform_io
-                    optional: true
               # No trailing slash; the plugin appends /mcp.
               MEMINI_BASE_URL: http://memini.ai.svc.cluster.local:8080
               MEMINI_API_KEY:
