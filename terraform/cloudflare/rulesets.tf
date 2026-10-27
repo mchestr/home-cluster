@@ -29,11 +29,10 @@ resource "cloudflare_ruleset" "chestr-dev-config-settings" {
   zone_id     = data.cloudflare_zone.zone["chestr.dev"].zone_id
   rules = [
     {
-      # Waitlist pins its pages' scripts with CSP hashes; Rocket Loader and email obfuscation rewrite the HTML.
+      # Waitlist pins its pages' scripts with CSP hashes; email obfuscation rewrites the HTML.
       expression = "(http.host in {\"waitlist.chestr.dev\" \"waitlist-checkout.chestr.dev\"})"
       action     = "set_config"
       action_parameters = {
-        rocket_loader     = false
         email_obfuscation = false
       }
       description = "Waitlist: leave the HTML alone"
