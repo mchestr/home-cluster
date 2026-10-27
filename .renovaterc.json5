@@ -241,7 +241,6 @@
         "/cloudnative-pg/",
         "/postgres/",
         "/immich/",
-        "/windmill/",
         "/waitlist/",
       ],
       automerge: false,
