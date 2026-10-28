@@ -46,26 +46,26 @@ url = "https://github.com/fluxcd/flux2/releases/download/v2.9.6/flux_2.9.6_darwi
 url_api = "https://api.github.com/repos/fluxcd/flux2/releases/assets/602941249"
 
 [[tools.gh]]
-version = "2.103.2"
+version = "2.103.3"
 backend = "aqua:cli/cli"
-specifiers = ["2.103.2"]
+specifiers = ["2.103.3"]
 
 [tools.gh."platforms.linux-x64"]
-checksum = "sha256:62ccf747115ddc61237efffdde66a3c8f70ba249433dc64f70801089b59c59c8"
-url = "https://github.com/cli/cli/releases/download/v2.103.2/gh_2.103.2_linux_amd64.tar.gz"
-url_api = "https://api.github.com/repos/cli/cli/releases/assets/670305062"
+checksum = "sha256:4c806978ffce1cec70853302a56d70ac6da4f19bae7adca4e1a8ab00633dd91d"
+url = "https://github.com/cli/cli/releases/download/v2.103.3/gh_2.103.3_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/cli/cli/releases/assets/679195621"
 provenance = "github-attestations"
 
 [tools.gh."platforms.macos-arm64"]
-checksum = "sha256:5416000f5d17580a187339e0c4068a01ca5c87f7d4fe6ca64933696f967bc418"
-url = "https://github.com/cli/cli/releases/download/v2.103.2/gh_2.103.2_macOS_arm64.zip"
-url_api = "https://api.github.com/repos/cli/cli/releases/assets/670305145"
+checksum = "sha256:d700207eae9ae98fe2b89535c2c087c07823d4628c56364695a5a07ef311c062"
+url = "https://github.com/cli/cli/releases/download/v2.103.3/gh_2.103.3_macOS_arm64.zip"
+url_api = "https://api.github.com/repos/cli/cli/releases/assets/679195704"
 provenance = "github-attestations"
 
 [tools.gh."platforms.macos-x64"]
-checksum = "sha256:2dc7f1fc4761f96732995f6e4f4c6b4d705f2635da4126620c8b30eaa67b9c98"
-url = "https://github.com/cli/cli/releases/download/v2.103.2/gh_2.103.2_macOS_amd64.zip"
-url_api = "https://api.github.com/repos/cli/cli/releases/assets/670305131"
+checksum = "sha256:a2f86418f4350ae6e9ec60d5000bdf7665728436946a97fc27fe50e6ae752682"
+url = "https://github.com/cli/cli/releases/download/v2.103.3/gh_2.103.3_macOS_amd64.zip"
+url_api = "https://api.github.com/repos/cli/cli/releases/assets/679195693"
 provenance = "github-attestations"
 
 [[tools.helm]]
