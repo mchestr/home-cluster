@@ -45,7 +45,7 @@ spec:
           app:
             image:
               repository: docker.io/library/node
-              tag: 24-bookworm
+              tag: 26-bookworm
             command: ["bash", "/scripts/entrypoint.sh"]
             env:
               HOME: /home/claude
