@@ -192,15 +192,21 @@ jobs:
         with:
           base: ""
 
+      # On a render failure flate still writes the rest of the diff, with a
+      # "!" line for each HelmRelease or Kustomization it left out, so post
+      # the comment first and fail the job in the last step
       - name: Diff Resources
+        id: flate
         env:
           RESOURCES: ${{ matrix.resources }}
-        run: >-
-          flate diff "${RESOURCES}"
-          --path pull/kubernetes/flux/cluster
-          --path-orig default/kubernetes/flux/cluster
-          --output github
-          > diff.patch
+        run: |
+          rc=0
+          flate diff "${RESOURCES}" \
+            --path pull/kubernetes/flux/cluster \
+            --path-orig default/kubernetes/flux/cluster \
+            --output github \
+            > diff.patch || rc=$?
+          echo "rc=${rc}" >> "$GITHUB_OUTPUT"
 
       - name: Generate Diff
         id: diff
@@ -213,8 +219,14 @@ jobs:
           delimiter="EOF_$(openssl rand -hex 8)"
           {
               echo "diff<<${delimiter}"
-              head -c "${COMMENT_LIMIT}" diff.patch
-              echo
+              if [[ "$(wc -c < diff.patch)" -gt "${COMMENT_LIMIT}" ]]; then
+                  # Cut at a line end, not inside a character
+                  head -c "${COMMENT_LIMIT}" diff.patch | sed '$d'
+              else
+                  cat diff.patch
+                  # The delimiter must start a new line
+                  [[ -s diff.patch && -n "$(tail -c 1 diff.patch)" ]] && echo
+              fi
               echo "${delimiter}"
           } >> "$GITHUB_OUTPUT"
           if [[ "$(wc -c < diff.patch)" -gt "${COMMENT_LIMIT}" ]]; then
@@ -239,6 +251,12 @@ jobs:
             ${{ steps.diff.outputs.diff }}
             ```
             ${{ steps.diff.outputs.note }}
+
+      - name: Check Render
+        if: ${{ steps.flate.outputs.rc != '0' }}
+        run: |
+          echo "::error::flate could not render every resource; see the Diff Resources step"
+          exit 1
 
   image-pull-extract:
     name: Image Pull - Extract Images

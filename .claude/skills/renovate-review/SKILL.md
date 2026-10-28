@@ -47,7 +47,8 @@ The flate results (at the end of the CI prompt, or from step 0) show what actual
 - If `flate test` failed, find the cause in its log. A failure caused by this update is **high** risk; fix it in step 6 if you can.
 - Read the rendered HelmRelease diff for the affected apps (it can be large; `Grep` it for the release name first). Look for removed or renamed resources, changed selectors or labels on Deployments/StatefulSets (immutable fields that make the upgrade fail), changed container ports/probes/securityContext/volume mounts, CRD schema changes, new required values, and values we set that no longer appear in the rendered output (a sign the chart ignores a renamed key).
 - The diffs strip the `helm.sh/chart`, `chart` and `app.kubernetes.io/version` labels and the `checksum/*` annotations, so an empty file means the rendered manifests are identical apart from version labels and checksums. That confirms nothing we deploy changes; it isn't missing data. An image-only change shows up as just the tag/digest.
-- If a HelmRelease or Kustomization renders on one side but not on the other, flate leaves its objects out of the diff and prints a `!` line for it. The `.log` file next to the diff has the render error.
+- An empty diff file means no change only when the `.log` file next to it has no error. If a HelmRelease or Kustomization renders on one side but not on the other, flate leaves its objects out of the diff and prints a `!` line for it. The `.log` file has the render error.
+- Each diff section names the rendered object as `<Kind> <namespace>/<name>`, not the HelmRelease or Kustomization that made it. To find the owner, look for the `helm.toolkit.fluxcd.io/name` or `kustomize.toolkit.fluxcd.io/name` label.
 - `test.log` is absent only when the test step didn't run; the `flate test` result still applies.
 
 ## 5. Rate the risk
