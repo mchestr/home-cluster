@@ -49,6 +49,7 @@ The flate results (at the end of the CI prompt, or from step 0) show what actual
 - The diffs strip the `helm.sh/chart`, `chart` and `app.kubernetes.io/version` labels and the `checksum/*` annotations, so an empty file means the rendered manifests are identical apart from version labels and checksums. That confirms nothing we deploy changes; it isn't missing data. An image-only change shows up as just the tag/digest.
 - An empty diff file means no change only when the `.log` file next to it has no error. If a HelmRelease or Kustomization renders on one side but not on the other, flate leaves its objects out of the diff and prints a `!` line for it. The `.log` file has the render error.
 - Each diff section names the rendered object as `<Kind> <namespace>/<name>`, not the HelmRelease or Kustomization that made it. To find the owner, look for the `helm.toolkit.fluxcd.io/name` or `kustomize.toolkit.fluxcd.io/name` label.
+- Values from the `cluster-secrets` Secret render as `..PLACEHOLDER_<KEY>..` (e.g. `..PLACEHOLDER_CLOUDFLARE_ACCOUNT_ID..`), because CI can't read 1Password. This is expected; don't report it.
 - `test.log` is absent only when the test step didn't run; the `flate test` result still applies.
 
 ## 5. Rate the risk
