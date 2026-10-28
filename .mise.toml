@@ -12,7 +12,7 @@ TALOS_DIR = "{{config_root}}/talos"
 [tools]
 # Keep in step with kubernetes/apps/ai/claude-code/app/resources/tools.env.
 kubectl = "1.37.1"
-flux2 = "2.9.6"
+flux2 = "2.10.0"
 flux-operator-mcp = "0.61.0"
 talosctl = "1.14.4"
 task = "3.54.0"
