@@ -3,13 +3,13 @@
 name: "Risk Assessment"
 
 on:
-  # Called by CI after Flux Local tests a push to a renovate/** branch or a
-  # PR, and renders the manifest diff. Renovate waits for this check before
+  # Called by CI after flate tests a push to a renovate/** branch or a PR,
+  # and renders the manifest diff. Renovate waits for this check before
   # automerging, and a high verdict holds the update in a PR (Hold for Review).
   workflow_call:
     inputs:
-      flux-local-result:
-        description: Result of the Flux Local test job
+      flate-result:
+        description: Result of the Flate Test job
         type: string
         required: true
   # Once Renovate opens a PR (for a failed check or a non-automerge update),
@@ -27,7 +27,7 @@ env:
 jobs:
   assess:
     name: Assess
-    if: ${{ inputs.flux-local-result != '' }}
+    if: ${{ inputs.flate-result != '' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -55,12 +55,12 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Download Flux Local Results
+      - name: Download Flate Results
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         continue-on-error: true
         with:
-          name: flux-local
-          path: ${{ runner.temp }}/flux-local
+          name: flate
+          path: ${{ runner.temp }}/flate
 
       - name: Install Claude Code
         run: npm install --global "@anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}"
@@ -72,24 +72,24 @@ jobs:
           # Read-only token: release notes are untrusted input, so Claude gets
           # no credentials that can write anywhere.
           GH_TOKEN: ${{ github.token }}
-          FLUX_LOCAL_RESULT: ${{ inputs.flux-local-result }}
+          FLATE_RESULT: ${{ inputs.flate-result }}
           PR_AUTHOR: ${{ github.event.pull_request.user.login }}
           PR_TITLE: ${{ github.event.pull_request.title }}
           PR_BODY: ${{ github.event.pull_request.body }}
         run: |
-          flux_dir="${RUNNER_TEMP}/flux-local"
-          mkdir -p "${flux_dir}"
+          flate_dir="${RUNNER_TEMP}/flate"
+          mkdir -p "${flate_dir}"
           # Without this line, Claude can follow the skill's interactive step 0 and stop at the blocked gh pr commands
-          prompt="This is the CI run, not an interactive session. Skip step 0, and do not run gh pr commands: the change is checked out at HEAD, and its Flux Local results are at the end of this prompt.
+          prompt="This is the CI run, not an interactive session. Skip step 0, and do not run gh pr commands: the change is checked out at HEAD, and its flate results are at the end of this prompt.
 
           $(awk 'f >= 2; /^---$/ { f++ }' .claude/skills/renovate-review/SKILL.md)
 
-          ## Flux Local results for this branch
+          ## flate results for this branch
 
-          - \`flux-local test\` (builds every Kustomization and renders every HelmRelease): **${FLUX_LOCAL_RESULT}**. Output: \`${flux_dir}/test.log\`
-          - Rendered diff against main, Helm charts templated: \`${flux_dir}/diff-helmrelease.patch\`
-          - Kustomization diff against main: \`${flux_dir}/diff-kustomization.patch\`
-          - Files present: $(ls "${flux_dir}" | tr '\n' ' ')"
+          - \`flate test all\` (builds every Kustomization, renders every HelmRelease and checks every Flux source): **${FLATE_RESULT}**. Output: \`${flate_dir}/test.log\`
+          - Rendered diff against main, Helm charts templated: \`${flate_dir}/diff-helmrelease.patch\`
+          - Kustomization diff against main: \`${flate_dir}/diff-kustomization.patch\`
+          - Files present: $(ls "${flate_dir}" | tr '\n' ' ')"
           if [[ -n "${PR_NUMBER}" && "${BRANCH}" != renovate/* ]]; then
             prompt+="$(printf '\n\n%s\n\n## Pull request #%s by @%s: %s\n\n%s\n' \
               "$(cat .github/renovate-risk/pull-request.md)" "${PR_NUMBER}" "${PR_AUTHOR}" "${PR_TITLE}" "${PR_BODY}")"
@@ -97,7 +97,7 @@ jobs:
           [[ -n "${ANTHROPIC_KEY}" ]] && export ANTHROPIC_API_KEY="${ANTHROPIC_KEY}"
           [[ -n "${CLAUDE_OAUTH}" ]] && export CLAUDE_CODE_OAUTH_TOKEN="${CLAUDE_OAUTH}"
           claude --print "${prompt}" \
-            --add-dir "${flux_dir}" \
+            --add-dir "${flate_dir}" \
             --model "${CLAUDE_MODEL}" \
             --max-turns 60 \
             --output-format json \
@@ -155,7 +155,7 @@ jobs:
       - name: Write Report
         env:
           FIX_URL: ${{ steps.fix.outputs.url }}
-          FLUX_LOCAL_RESULT: ${{ inputs.flux-local-result }}
+          FLATE_RESULT: ${{ inputs.flate-result }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           jq -r --arg marker "${REPORT_MARKER}" \
@@ -263,7 +263,7 @@ jobs:
   comment:
     name: Renovate Risk Comment
     # Only on this workflow's own pull_request trigger, not when called
-    if: ${{ inputs.flux-local-result == '' && github.event_name == 'pull_request' && startsWith(github.head_ref, 'renovate/') }}
+    if: ${{ inputs.flate-result == '' && github.event_name == 'pull_request' && startsWith(github.head_ref, 'renovate/') }}
     runs-on: ubuntu-latest
     permissions:
       actions: read

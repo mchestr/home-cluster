@@ -49,6 +49,8 @@ install yq "$YQ_VERSION" \
   "$GH/mikefarah/yq/releases/download/$YQ_VERSION/yq_linux_amd64"
 install jq "$JQ_VERSION" \
   "$GH/jqlang/jq/releases/download/jq-$JQ_VERSION/jq-linux-amd64"
+install flate "$FLATE_VERSION" \
+  "$GH/home-operations/flate/releases/download/$FLATE_VERSION/flate_${FLATE_VERSION#v}_linux_amd64.tar.gz" flate
 install minijinja-cli "$MINIJINJA_VERSION" \
   "$GH/mitsuhiko/minijinja/releases/download/$MINIJINJA_VERSION/minijinja-cli-x86_64-unknown-linux-musl.tar.xz" \
   minijinja-cli-x86_64-unknown-linux-musl/minijinja-cli
