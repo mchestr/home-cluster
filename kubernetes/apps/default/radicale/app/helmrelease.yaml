@@ -22,7 +22,7 @@ spec:
           app:
             image:
               repository: tomsquest/docker-radicale
-              tag: 3.8.3.0
+              tag: 3.9.0.0
             resources:
               requests:
                 cpu: 15m
