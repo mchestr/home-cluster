@@ -214,7 +214,7 @@ git commit -m "feat(<app>): add <app>"
 git push
 ```
 
-Open a pull request: CI builds every Kustomization with flux-local, renders the Helm diff and posts a risk assessment. Flux picks the change up when it lands on `main` (`task kubernetes:reconcile` to hurry it along).
+Open a pull request: CI builds every Kustomization with flate, renders the Helm diff and posts a risk assessment. Flux picks the change up when it lands on `main` (`task kubernetes:reconcile` to hurry it along).
 
 ## Choosing a gateway
 

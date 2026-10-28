@@ -44,7 +44,7 @@ description: Add a new app to the cluster. Create its Flux Kustomization and Hel
 
 14. Make sure that the output has all the resources that you expect. In a dry run, the `cluster-secrets` variables stay as `${...}`.
 15. Run `kustomize build kubernetes/apps/<namespace>`. Make sure that the output has the new Kustomization.
-16. If `flux-local` is installed, run the CI test: `flux-local test --enable-helm --all-namespaces --path kubernetes/flux/cluster --sources flux-system`.
+16. If `flate` is installed, run the CI test: `flate test all --path kubernetes/flux/cluster`.
 17. Fix each error, then do steps 13 to 16 again.
 
 ## Open the pull request
@@ -55,4 +55,4 @@ description: Add a new app to the cluster. Create its Flux Kustomization and Hel
 21. Open the pull request: `gh pr create --base main --title "feat(<app>): add <app>" --body-file <file>`.
 22. Run `gh pr checks <number>`. Fix each failed check, then push again.
 
-CI runs Flux Local and Flux Diff on the pull request. The risk assessment runs only when the pull request is not a draft.
+CI runs Flate Test and Flux Diff on the pull request. The risk assessment runs only when the pull request is not a draft.

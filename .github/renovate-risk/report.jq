@@ -1,6 +1,6 @@
 # Renders the assessment JSON as a PR comment / job summary.
 # Blocking items stay visible; background detail is folded into <details>.
-# Env: FIX_URL, RUN_URL, FLUX_LOCAL_RESULT. Arg: $marker.
+# Env: FIX_URL, RUN_URL, FLATE_RESULT. Arg: $marker.
 
 def icon: {"low": "🟢", "medium": "🟡", "high": "🔴"}[.];
 def verdict: {
@@ -12,7 +12,7 @@ def bullets(title; items):
   if (items | length) > 0 then "**\(title)**\n" + (items | map("- \(.)") | join("\n")) + "\n" else empty end;
 # Label a source link by its last path segment (usually the release tag)
 def source_links: map("[\(rtrimstr("/") | split("/") | last)](\(.))") | join(" · ");
-def test_result: {"success": "✅ passed", "failure": "❌ failed"}[env.FLUX_LOCAL_RESULT] // env.FLUX_LOCAL_RESULT;
+def test_result: {"success": "✅ passed", "failure": "❌ failed"}[env.FLATE_RESULT] // env.FLATE_RESULT;
 
 [
   $marker,
@@ -37,7 +37,7 @@ def test_result: {"success": "✅ passed", "failure": "❌ failed"}[env.FLUX_LOC
   bullets("✨ New features worth adopting"; .new_features),
   "</details>\n",
 
-  "<sub>flux-local test \(test_result) · [assessment run](\(env.RUN_URL))</sub>"
+  "<sub>flate test \(test_result) · [assessment run](\(env.RUN_URL))</sub>"
 ]
 | join("\n")
 # Link upstream repos via redirect.github.com so their issues and PRs don't get backlinks

@@ -84,7 +84,7 @@ Self-hosted AI services, backed by hosted models rather than local GPUs:
 
 ### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f916/512.gif" alt="🤖" width="16" height="16"> Automation
 
-- [Github Actions](https://docs.github.com/en/actions): every pull request and Renovate branch is built with [flux-local](https://github.com/allenporter/flux-local), the rendered diff is risk-assessed before Renovate is allowed to automerge, and new images are pre-pulled onto the nodes
+- [Github Actions](https://docs.github.com/en/actions): every pull request and Renovate branch is built with [flate](https://github.com/home-operations/flate), the rendered diff is risk-assessed before Renovate is allowed to automerge, and new images are pre-pulled onto the nodes
 - [Renovate](https://github.com/renovatebot/renovate) keeps the application charts and container images up-to-date
 
 ### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f32a_fe0f/512.gif" alt="🌪" width="16" height="16"> Cloud Dependencies
