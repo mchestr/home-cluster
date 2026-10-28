@@ -84,12 +84,26 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           path: pull
+          # Full history, to find the commit the change starts from
+          fetch-depth: 0
           persist-credentials: false
 
-      - name: Checkout Default Branch
+      # Diff against the commit the change starts from, not the tip of main.
+      # A renovate/** branch can be behind main, and newer commits on main
+      # would then show as reverted. For a pull request this is the base of
+      # GitHub's merge commit.
+      - name: Find Base Commit
+        id: base
+        env:
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          sha=$(git -C pull merge-base "origin/${DEFAULT_BRANCH}" HEAD)
+          echo "sha=${sha}" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout Base Commit
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: "${{ github.event.repository.default_branch }}"
+          ref: ${{ steps.base.outputs.sha }}
           path: default
           persist-credentials: false
 
@@ -110,7 +124,8 @@ jobs:
           exit "${rc}"
 
       # Rendered manifests (charts templated) before and after the update, so
-      # the risk assessment sees exactly what would change in the cluster
+      # the risk assessment sees exactly what would change in the cluster.
+      # CRDs are included, so the reviewer can check schema changes.
       - name: Diff Rendered Resources
         if: ${{ !cancelled() }}
         continue-on-error: true
@@ -120,6 +135,7 @@ jobs:
             flate diff "${kind}" \
               --path pull/kubernetes/flux/cluster \
               --path-orig default/kubernetes/flux/cluster \
+              --skip-crds=false \
               --output diff \
               > "flate-out/diff-${kind}.patch" 2> "flate-out/diff-${kind}.log" \
               || cat "flate-out/diff-${kind}.log"

@@ -15,7 +15,7 @@ CI (`.github/workflows/renovate-risk.yaml`) uses this file without its front mat
 4. Run `gh run view <run-id>`. The result of its `Flate Test` job is the `flate test` result.
 5. Download the results into a new empty directory outside the repository: `gh run download <run-id> --name flate --dir <dir>`.
 
-The directory has `test.log` (the `flate test` output), `diff-helmrelease.patch` (the rendered diff against main, Helm charts templated) and `diff-kustomization.patch` (the Kustomization diff against main). The diffs cover only the Kustomizations and HelmReleases that the change touches. If no run is complete, wait for CI.
+The directory has `test.log` (the `flate test` output), `diff-helmrelease.patch` (the rendered diff against main, Helm charts templated) and `diff-kustomization.patch` (the Kustomization diff against main). The diffs compare with the commit on main that the change starts from, so newer commits on main don't show. They cover only the Kustomizations and HelmReleases that the change touches, and they include CRDs. If no run is complete, wait for CI.
 
 ## 1. Work out what is being updated
 
@@ -45,7 +45,7 @@ Find every place the package is configured (`Grep` for the image/chart name, the
 The flate results (at the end of the CI prompt, or from step 0) show what actually changes in the cluster. Use them to confirm or rule out what the release notes suggest:
 
 - If `flate test` failed, find the cause in its log. A failure caused by this update is **high** risk; fix it in step 6 if you can.
-- Read the rendered HelmRelease diff for the affected apps (it can be large; `Grep` it for the release name first). Look for removed or renamed resources, changed selectors or labels on Deployments/StatefulSets (immutable fields that make the upgrade fail), changed container ports/probes/securityContext/volume mounts, CRD schema changes, new required values, and values we set that no longer appear in the rendered output (a sign the chart ignores a renamed key).
+- Read the rendered HelmRelease diff for the affected apps (it can be large; `Grep` it for the release name first). CRD changes are in the same files; `Grep` for `CustomResourceDefinition` to find them. Look for removed or renamed resources, changed selectors or labels on Deployments/StatefulSets (immutable fields that make the upgrade fail), changed container ports/probes/securityContext/volume mounts, CRD schema changes, new required values, and values we set that no longer appear in the rendered output (a sign the chart ignores a renamed key).
 - The diffs strip the `helm.sh/chart`, `chart` and `app.kubernetes.io/version` labels and the `checksum/*` annotations, so an empty file means the rendered manifests are identical apart from version labels and checksums. That confirms nothing we deploy changes; it isn't missing data. An image-only change shows up as just the tag/digest.
 - An empty diff file means no change only when the `.log` file next to it has no error. If a HelmRelease or Kustomization renders on one side but not on the other, flate leaves its objects out of the diff and prints a `!` line for it. The `.log` file has the render error.
 - Each diff section names the rendered object as `<Kind> <namespace>/<name>`, not the HelmRelease or Kustomization that made it. To find the owner, look for the `helm.toolkit.fluxcd.io/name` or `kustomize.toolkit.fluxcd.io/name` label.

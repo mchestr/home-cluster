@@ -87,8 +87,8 @@ jobs:
           ## flate results for this branch
 
           - \`flate test all\` (builds every Kustomization, renders every HelmRelease and checks every Flux source): **${FLATE_RESULT}**. Output: \`${flate_dir}/test.log\`
-          - Rendered diff against main, Helm charts templated: \`${flate_dir}/diff-helmrelease.patch\`
-          - Kustomization diff against main: \`${flate_dir}/diff-kustomization.patch\`
+          - Rendered diff against main (the commit the change starts from), Helm charts templated, CRDs included: \`${flate_dir}/diff-helmrelease.patch\`
+          - Kustomization diff against the same commit, CRDs included: \`${flate_dir}/diff-kustomization.patch\`
           - Files present: $(ls "${flate_dir}" | tr '\n' ' ')"
           if [[ -n "${PR_NUMBER}" && "${BRANCH}" != renovate/* ]]; then
             prompt+="$(printf '\n\n%s\n\n## Pull request #%s by @%s: %s\n\n%s\n' \
