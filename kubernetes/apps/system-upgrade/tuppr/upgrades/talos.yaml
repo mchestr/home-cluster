@@ -7,7 +7,7 @@ spec:
   talos:
     # ghcr.io/siderolabs/installer is no longer published as of Talos 1.14, so track the release instead.
     # renovate: datasource=github-releases depName=siderolabs/talos
-    version: v1.14.4
+    version: v1.14.5
   policy:
     rebootMode: powercycle
   healthChecks:
