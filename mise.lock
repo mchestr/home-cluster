@@ -3,26 +3,26 @@
 lockfile_version = 3
 
 [[tools.flux-operator-mcp]]
-version = "0.62.0"
+version = "0.62.1"
 backend = "aqua:controlplaneio-fluxcd/flux-operator/flux-operator-mcp"
-specifiers = ["0.62.0"]
+specifiers = ["0.62.1"]
 
 [tools.flux-operator-mcp."platforms.linux-x64"]
-checksum = "sha256:f542726ab1727e01c0df790b9f5ba32065e8e4475e4a00be928c13e84cdec80a"
-url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.62.0/flux-operator-mcp_0.62.0_linux_amd64.tar.gz"
-url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/678905962"
+checksum = "sha256:13ec856169d8a2905e822bdfad761728290d7b9d72c3f68ab3f39b1508e80327"
+url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.62.1/flux-operator-mcp_0.62.1_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/682028437"
 provenance = "github-attestations"
 
 [tools.flux-operator-mcp."platforms.macos-arm64"]
-checksum = "sha256:c5ca16a815dff3f3d308c79b99ff7b12b66a54a89f52c1645db53c90abf80e6a"
-url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.62.0/flux-operator-mcp_0.62.0_darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/678905965"
+checksum = "sha256:138d3a45d442481df15504607b36342db334ca42d8c82021881c43c020614b1f"
+url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.62.1/flux-operator-mcp_0.62.1_darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/682028446"
 provenance = "github-attestations"
 
 [tools.flux-operator-mcp."platforms.macos-x64"]
-checksum = "sha256:0411609226c28a7b313b835ac52a41cf23261af73c617716d31b10a119adf272"
-url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.62.0/flux-operator-mcp_0.62.0_darwin_amd64.tar.gz"
-url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/678905963"
+checksum = "sha256:f4d454e226c0519c57e9758dc0481da400c85211de533be134af1f6133d6266f"
+url = "https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.62.1/flux-operator-mcp_0.62.1_darwin_amd64.tar.gz"
+url_api = "https://api.github.com/repos/controlplaneio-fluxcd/flux-operator/releases/assets/682028445"
 provenance = "github-attestations"
 
 [[tools.flux2]]
