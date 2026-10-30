@@ -41,7 +41,7 @@ spec:
           main:
             image:
               repository: ghcr.io/mchestr/plex-manager
-              tag: 0.7.0@sha256:37f4a4b5f1c3fbe7c34394c0e5949e9b62e451f2c6b27222b15507bc24f91deb
+              tag: 0.8.0@sha256:77a4c62bdca4c08e89843a1e76c71424c7af6ae8dc2bc25eb7f8e01e255983e1
             env:
               NODE_ENV: production
               # Serves pages only; the worker controller runs the queues, schedulers and Discord bot.
@@ -97,7 +97,7 @@ spec:
           main:
             image:
               repository: ghcr.io/mchestr/plex-manager
-              tag: 0.7.0@sha256:37f4a4b5f1c3fbe7c34394c0e5949e9b62e451f2c6b27222b15507bc24f91deb
+              tag: 0.8.0@sha256:77a4c62bdca4c08e89843a1e76c71424c7af6ae8dc2bc25eb7f8e01e255983e1
             env:
               NODE_ENV: production
               # Runs the queues, schedulers and Discord bot; serves only /api/health and /api/metrics.
