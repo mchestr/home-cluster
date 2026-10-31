@@ -6,7 +6,7 @@ metadata:
   name: mchestr
 spec:
   schedule: 0 * * * *
-  image: ghcr.io/renovatebot/renovate:44.192.2
+  image: ghcr.io/renovatebot/renovate:44.195.1
   parallelism: 2
   provider:
     name: github
