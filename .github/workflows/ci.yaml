@@ -59,7 +59,7 @@ jobs:
         if: ${{ steps.changed-files.outputs.renovate_any_changed == 'true' }}
         env:
           # renovate: datasource=github-releases depName=renovatebot/renovate
-          RENOVATEBOT_VERSION: 44.198.1
+          RENOVATEBOT_VERSION: 44.198.2
         run: >-
           docker run --rm -v "$PWD:/repo:ro" -w /repo
           --entrypoint renovate-config-validator
