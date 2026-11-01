@@ -21,7 +21,8 @@ spec:
               repository: ghcr.io/koenkk/zigbee2mqtt
               tag: 2.14.3
             env:
-              TZ: America/Vancouver
+              # Node 24 embeds tz 2025b, which still has DST for Vancouver. Whitehorse is UTC-7 all year.
+              TZ: America/Whitehorse
               ZIGBEE2MQTT_DATA: /data
               ZIGBEE2MQTT_CONFIG_ADVANCED_LAST_SEEN: ISO_8601
               ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_LEVEL: info
