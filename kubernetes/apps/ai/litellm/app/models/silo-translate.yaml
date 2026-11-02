@@ -1,6 +1,7 @@
 ---
 # Text model for Silo (Admin > Integrations > AI): subtitle and description translation.
 # Silo connects to litellm as an OpenAI-compatible provider and names this model.
+# Calls the Anthropic API directly: add ANTHROPIC_API_KEY to the "litellm" 1Password item first.
 apiVersion: litellm.home-operations.com/v1alpha1
 kind: LiteLLMModel
 metadata:
@@ -8,11 +9,10 @@ metadata:
 spec:
   modelName: silo-translate
   params:
-    model: openrouter/anthropic/claude-opus-5.5
-    apiBase: https://openrouter.ai/api/v1
+    model: anthropic/claude-opus-5-5
     apiKeyRef:
       name: litellm-secret
-      key: OPENROUTER_API_KEY
+      key: ANTHROPIC_API_KEY
 ---
 # Cheaper alternative for the same job (about 40x less per token). Type this name in Silo to switch.
 apiVersion: litellm.home-operations.com/v1alpha1
@@ -22,8 +22,7 @@ metadata:
 spec:
   modelName: silo-translate-fast
   params:
-    model: openrouter/anthropic/claude-haiku-5.5
-    apiBase: https://openrouter.ai/api/v1
+    model: anthropic/claude-haiku-5-5
     apiKeyRef:
       name: litellm-secret
-      key: OPENROUTER_API_KEY
+      key: ANTHROPIC_API_KEY
