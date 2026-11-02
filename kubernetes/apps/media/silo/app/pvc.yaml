@@ -3,9 +3,10 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: silo
+# Artwork for every poster size lives here (about 13 MiB per title), so the volume grows with the library.
 spec:
   accessModes: ["ReadWriteOnce"]
   resources:
     requests:
-      storage: 20Gi
+      storage: 100Gi
   storageClassName: ceph-block

@@ -1,0 +1,106 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+# From deploy/observability/silo.rules.yml upstream, without the OTLP export alert: Silo does not export traces here.
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: silo-rules
+spec:
+  groups:
+    - name: silo.rules
+      rules:
+        - record: silo:queue_items:max
+          expr: max by (queue, state) (silo_queue_items)
+        - record: silo:queue_oldest_requested_timestamp_seconds:min
+          expr: min by (queue, state) (silo_queue_oldest_requested_timestamp_seconds)
+
+        - alert: SiloTargetUnavailable
+          expr: |
+            up{job="silo"} == 0
+          for: 2m
+          annotations:
+            summary: >-
+              The Silo metrics target is unavailable
+          labels:
+            severity: warning
+
+        - alert: SiloResourceSampleStale
+          expr: |
+            silo_resource_sample_stale == 1
+          for: 1m
+          annotations:
+            summary: >-
+              Silo resource sampling stopped advancing
+          labels:
+            severity: warning
+
+        - alert: SiloQueueSamplingFailed
+          expr: |
+            silo_queue_sample_available == 0
+          for: 2m
+          annotations:
+            summary: >-
+              Silo cannot measure a shared queue; an absent queue value does not mean an empty queue
+          labels:
+            severity: warning
+
+        - alert: SiloQueueAgeHigh
+          expr: |
+            (time() - silo:queue_oldest_requested_timestamp_seconds:min{state="queued"}) > 1800
+          for: 10m
+          annotations:
+            summary: >-
+              The Silo {{ $labels.queue }} queue has had queued work for more than 30 minutes
+          labels:
+            severity: warning
+
+        - alert: SiloCgroupMemoryHigh
+          expr: |
+            silo_cgroup_memory_current_bytes / silo_cgroup_memory_limit_bytes > 0.9
+          for: 5m
+          annotations:
+            summary: >-
+              Silo is using more than 90% of its memory limit
+          labels:
+            severity: warning
+
+        - alert: SiloCgroupOOM
+          expr: |
+            increase(silo_cgroup_memory_oom_kills_total[5m]) > 0
+          annotations:
+            summary: >-
+              A process in the Silo container was OOM killed
+          labels:
+            severity: warning
+
+        - alert: SiloCPUThrottled
+          expr: |
+            rate(silo_cgroup_cpu_throttled_periods_total[5m])
+              / clamp_min(rate(silo_cgroup_cpu_periods_total[5m]), 0.001) > 0.2
+          for: 10m
+          annotations:
+            summary: >-
+              Silo CPU throttling has stayed above 20% for 10 minutes
+          labels:
+            severity: warning
+
+        - alert: SiloScrapeSlow
+          expr: |
+            scrape_duration_seconds{job="silo"} > 1
+          for: 5m
+          annotations:
+            summary: >-
+              Silo metrics scrapes take more than 1 second
+          labels:
+            severity: warning
+
+        - alert: SiloPostgresPoolSaturated
+          expr: |
+            sum without (state) (silo_postgres_pool_connections{state="acquired"})
+              / sum without (state) (silo_postgres_pool_connections{state="maximum"}) > 0.9
+          for: 2m
+          annotations:
+            summary: >-
+              A Silo PostgreSQL connection pool is above 90% of its limit
+          labels:
+            severity: warning

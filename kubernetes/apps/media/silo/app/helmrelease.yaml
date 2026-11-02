@@ -45,6 +45,8 @@ spec:
               # Silo must not run ALTER SYSTEM on a shared cluster.
               POSTGRES_TUNE: "off"
               REDIS_URL: redis://silo-dragonfly.media.svc.cluster.local:6379
+              # Prometheus metrics. The listener has no authentication, so it stays on the pod network.
+              SILO_METRICS_LISTEN: 0.0.0.0:9091
             envFrom:
               - secretRef:
                   name: silo-secret
@@ -105,6 +107,19 @@ spec:
         ports:
           http:
             port: *port
+          metrics:
+            port: 9091
+
+    # The upstream rules in prometheusrule.yaml expect the job label "silo", which is the Service name.
+    serviceMonitor:
+      app:
+        serviceName: *app
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
 
     route:
       app:
