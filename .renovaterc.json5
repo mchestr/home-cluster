@@ -104,6 +104,12 @@
       matchPackageNames: ["jqlang/jq"],
       extractVersion: "^jq-(?<version>.+)$",
     },
+    {
+      description: "Silo publishes only build-<number> tags, which docker versioning cannot parse. Patch keeps one rolling PR instead of a new major branch for every build.",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/silo-server/silo-server"],
+      versioning: "regex:^build-(?<patch>\\d+)$",
+    },
     // Groups
     {
       description: "Renovate image: look up the GitHub release like the config validator does, so the image and the validator stay on one version.",
@@ -242,6 +248,7 @@
         "/postgres/",
         "/immich/",
         "/waitlist/",
+        "/silo-server/",
       ],
       automerge: false,
     },
