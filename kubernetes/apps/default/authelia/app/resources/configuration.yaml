@@ -80,6 +80,7 @@ access_control:
         - thelounge.chestr.dev
         - rook.chestr.dev
         - sh.chestr.dev
+        - silo.chestr.dev
       policy: bypass
     - domain:
         - sonarr.chestr.dev
