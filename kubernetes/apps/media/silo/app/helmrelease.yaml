@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/silo-server/silo-server
-              tag: build-1919@sha256:b2e78645fca45846cdf344d022def67b5c7f802d4c413f10dc07e5256244cb12
+              tag: build-1932@sha256:30c4d66ccc5e2f194ced599c856a3d8859c559c2fe842c7cd507c4a6acc0f279
             env:
               PUID: "1000"
               PGID: "1000"
