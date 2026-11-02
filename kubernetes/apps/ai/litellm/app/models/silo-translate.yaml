@@ -1,0 +1,29 @@
+---
+# Text model for Silo (Admin > Integrations > AI): subtitle and description translation.
+# Silo connects to litellm as an OpenAI-compatible provider and names this model.
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: silo-translate
+spec:
+  modelName: silo-translate
+  params:
+    model: openrouter/anthropic/claude-opus-5.5
+    apiBase: https://openrouter.ai/api/v1
+    apiKeyRef:
+      name: litellm-secret
+      key: OPENROUTER_API_KEY
+---
+# Cheaper alternative for the same job (about 40x less per token). Type this name in Silo to switch.
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: silo-translate-fast
+spec:
+  modelName: silo-translate-fast
+  params:
+    model: openrouter/anthropic/claude-haiku-5.5
+    apiBase: https://openrouter.ai/api/v1
+    apiKeyRef:
+      name: litellm-secret
+      key: OPENROUTER_API_KEY
