@@ -19,6 +19,14 @@ spec:
         strategy: Recreate
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          01-init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: "18"
+            envFrom:
+              - secretRef:
+                  name: silo-initdb-secret
         containers:
           app:
             image:
@@ -29,7 +37,14 @@ spec:
               PGID: "1000"
               TZ: America/Vancouver
               PORT: &port 8080
-              ENABLE_REDIS: "true"
+              DATABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: silo-pguser-secret
+                    key: uri
+              # Silo must not run ALTER SYSTEM on a shared cluster.
+              POSTGRES_TUNE: "off"
+              REDIS_URL: redis://silo-dragonfly.media.svc.cluster.local:6379
             envFrom:
               - secretRef:
                   name: silo-secret
@@ -65,9 +80,8 @@ spec:
                   periodSeconds: 10
                   timeoutSeconds: 5
                   failureThreshold: 120
-            # The image starts s6 as root, which then runs Silo as PUID, and PostgreSQL
-            # and Redis as their own accounts. It writes to its root filesystem and
-            # needs the default capabilities to change between these accounts.
+            # The image starts s6 as root, which then runs Silo as PUID. It writes to
+            # its root filesystem and needs the default capabilities to change account.
             securityContext:
               allowPrivilegeEscalation: false
             resources:
@@ -80,10 +94,9 @@ spec:
                 memory: 8Gi
 
     defaultPodOptions:
-      # No fsGroup: PostgreSQL refuses a data directory that its group can write to.
       nodeSelector:
         intel.feature.node.kubernetes.io/gpu: "true"
-      # Silo finishes in-flight requests before PostgreSQL stops.
+      # Silo finishes in-flight requests before it stops.
       terminationGracePeriodSeconds: 120
 
     service:
@@ -110,6 +123,14 @@ spec:
     persistence:
       config:
         existingClaim: *app
+      initdb:
+        type: configMap
+        name: silo-initdb
+        advancedMounts:
+          silo:
+            01-init-db:
+              - path: /initdb
+                readOnly: true
       media:
         type: nfs
         server: nebula.chestr.dev
