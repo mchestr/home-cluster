@@ -29,8 +29,10 @@ spec:
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
       - --gateway-name=envoy-external
-      # The default is A, AAAA and CNAME, which drops the SPF, MX and DMARC entries of a DNSEndpoint.
-      - --managed-record-types=A,AAAA,CNAME,TXT,MX
+    # The default is A, AAAA and CNAME, which drops the SPF, MX and DMARC entries of a DNSEndpoint.
+    # The flag is repeatable, not comma-separated: a joined value is one unknown type and external-dns
+    # then manages nothing, so the chart renders one --managed-record-types flag per entry here.
+    managedRecordTypes: [A, AAAA, CNAME, TXT, MX]
     policy: sync
     sources:
       - crd
