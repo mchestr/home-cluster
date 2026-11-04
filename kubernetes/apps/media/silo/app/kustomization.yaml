@@ -10,7 +10,9 @@ generatorOptions:
     kustomize.toolkit.fluxcd.io/substitute: disabled
   disableNameSuffixHash: true
 resources:
+  - ./backendtrafficpolicy.yaml
   - ./externalsecret.yaml
   - ./helmrelease.yaml
+  - ./pdb.yaml
   - ./prometheusrule.yaml
   - ./pvc.yaml

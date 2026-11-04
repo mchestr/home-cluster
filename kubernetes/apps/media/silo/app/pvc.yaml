@@ -1,9 +1,21 @@
 ---
+# Shared by both replicas: artwork for every poster size (about 13 MiB per title) and the plugin cache.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: silo-config
+spec:
+  accessModes: ["ReadWriteMany"]
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: ceph-filesystem
+---
+# The previous single-replica volume. Remove it once its data is copied to silo-config.
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: silo
-# Artwork for every poster size lives here (about 13 MiB per title), so the volume grows with the library.
 spec:
   accessModes: ["ReadWriteOnce"]
   resources:
