@@ -46,8 +46,8 @@ spec:
               NODE_ENV: production
               # Serves pages only; the worker controller runs the queues, schedulers and Discord bot.
               PROCESS_ROLE: web
-              NEXT_PUBLIC_APP_URL: https://mikeflix.lol
-              NEXTAUTH_URL: https://mikeflix.lol
+              NEXT_PUBLIC_APP_URL: https://my.mikeflix.lol
+              NEXTAUTH_URL: https://my.mikeflix.lol
               # Cloudflare edge and envoy-external both append to X-Forwarded-For.
               TRUSTED_PROXY_HOPS: "2"
               REDIS_URL: redis://subs-dragonfly.media.svc.cluster.local:6379
@@ -102,8 +102,8 @@ spec:
               NODE_ENV: production
               # Runs the queues, schedulers and Discord bot; serves only /api/health and /api/metrics.
               PROCESS_ROLE: worker
-              NEXT_PUBLIC_APP_URL: https://mikeflix.lol
-              NEXTAUTH_URL: https://mikeflix.lol
+              NEXT_PUBLIC_APP_URL: https://my.mikeflix.lol
+              NEXTAUTH_URL: https://my.mikeflix.lol
               REDIS_URL: redis://subs-dragonfly.media.svc.cluster.local:6379
               DATABASE_URL:
                 valueFrom:
@@ -131,7 +131,7 @@ spec:
     route:
       app:
         hostnames:
-          - mikeflix.lol
+          - my.mikeflix.lol
           - wrapped.chestr.dev
           - "{{ .Release.Name }}.chestr.dev"
         annotations:
