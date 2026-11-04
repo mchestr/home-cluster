@@ -22,3 +22,15 @@ spec:
     requests:
       storage: 100Gi
   storageClassName: ceph-block
+---
+# The Meilisearch index. Rebuilt from the database on demand, so it has no VolSync backup.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: silo-meilisearch
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: ceph-block
