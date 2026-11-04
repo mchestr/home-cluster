@@ -29,6 +29,18 @@ spec:
           minAvailable: 1
         annotations:
           reloader.stakater.com/auto: "true"
+        pod:
+          # One API replica per node, so a node reboot takes down at most one. The rule sits on
+          # this controller only: on the Meilisearch pod it kept API pods off that node, so the
+          # third node had no room for the surge pod and the rolling update stalled.
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: silo
+                      app.kubernetes.io/controller: silo
+                  topologyKey: kubernetes.io/hostname
         initContainers:
           01-init-db:
             image:
@@ -185,16 +197,6 @@ spec:
     defaultPodOptions:
       nodeSelector:
         intel.feature.node.kubernetes.io/gpu: "true"
-      # One API replica per node, so a node reboot takes down at most one. The controller
-      # label keeps the Meilisearch pod out of the rule, or a drain could leave it unschedulable.
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchLabels:
-                  app.kubernetes.io/name: silo
-                  app.kubernetes.io/controller: silo
-              topologyKey: kubernetes.io/hostname
       # Silo finishes in-flight requests before it stops: SILO_SHUTDOWN_DELAY plus 90s at least.
       terminationGracePeriodSeconds: 120
 
