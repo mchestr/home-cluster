@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./memini-chat.yaml
   - ./silo-translate.yaml
+  - ./silo-embed.yaml
