@@ -10,15 +10,3 @@ spec:
     requests:
       storage: 100Gi
   storageClassName: ceph-filesystem
----
-# The previous single-replica volume. Remove it once its data is copied to silo-config.
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: silo
-spec:
-  accessModes: ["ReadWriteOnce"]
-  resources:
-    requests:
-      storage: 100Gi
-  storageClassName: ceph-block
