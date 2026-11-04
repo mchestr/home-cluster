@@ -148,7 +148,7 @@ spec:
             image:
               # Silo pins the same minor in its docker-compose.advanced.yml.
               repository: docker.io/getmeili/meilisearch
-              tag: v1.54.3@sha256:e68913ab7d6f5b159529e472cfd362ce3c741fafd3c127961b2142abbe41b3c9
+              tag: v1.56.1@sha256:b7ba431bf6f9b26cc86132798f3640964147a699cf23f026b74c6c05dbb1d60d
             env:
               MEILI_ENV: production
               MEILI_NO_ANALYTICS: "true"
