@@ -234,10 +234,6 @@ spec:
         hostnames: ["{{ .Release.Name }}.chestr.dev", mikeflix.lol]
         annotations:
           gatus.home-operations.com/enabled: "false"
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/icon: mdi-movie-open-play
-          gethomepage.dev/name: Silo
-          gethomepage.dev/group: Media
         parentRefs:
           - name: envoy-internal
             namespace: networking

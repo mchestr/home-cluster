@@ -137,7 +137,8 @@ spec:
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: si-plex
-          gethomepage.dev/name: Plex Subs
+          gethomepage.dev/name: My MikeFlix
+          gethomepage.dev/href: https://my.mikeflix.lol
           gethomepage.dev/group: Media
         parentRefs:
           - name: envoy-external
