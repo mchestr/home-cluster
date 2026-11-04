@@ -29,6 +29,8 @@ spec:
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
       - --gateway-name=envoy-external
+      # The default is A, AAAA and CNAME, which drops the SPF, MX and DMARC entries of a DNSEndpoint.
+      - --managed-record-types=A,AAAA,CNAME,TXT,MX
     policy: sync
     sources:
       - crd

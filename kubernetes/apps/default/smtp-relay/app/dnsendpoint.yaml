@@ -30,7 +30,8 @@ spec:
     - dnsName: mail.chestr.dev
       recordType: MX
       targets:
-        - feedback-smtp.us-west-2.amazonses.com
+        # external-dns needs the priority in front of the host.
+        - 10 feedback-smtp.us-west-2.amazonses.com
     - dnsName: mail.chestr.dev
       recordType: TXT
       targets:
@@ -38,4 +39,5 @@ spec:
     - dnsName: _dmarc.chestr.dev
       recordType: TXT
       targets:
-        - v=DMARC1; p=none;
+        # Matches the live record, which was created by hand in Cloudflare.
+        - v=DMARC1;p=reject;rua=mailto:51a40626d8e24b749701513ae0e68891@dmarc-reports.cloudflare.net,mailto:dmarc@chestr.dev
