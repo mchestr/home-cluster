@@ -39,29 +39,3 @@ spec:
       recordType: TXT
       targets:
         - v=DMARC1; p=none;
-    # mikeflix.lol: SES DKIM and DMARC. No custom MAIL FROM domain yet.
-    - dnsName: cwneivib4lt2ayacacl36nskexxvmlbw._domainkey.mikeflix.lol
-      recordType: CNAME
-      targets:
-        - cwneivib4lt2ayacacl36nskexxvmlbw.dkim.amazonses.com
-      providerSpecific:
-        - name: cloudflare/proxied
-          value: "false"
-    - dnsName: 4dqmwq77fj7kn4wxwkwgu26qsfkkv5mg._domainkey.mikeflix.lol
-      recordType: CNAME
-      targets:
-        - 4dqmwq77fj7kn4wxwkwgu26qsfkkv5mg.dkim.amazonses.com
-      providerSpecific:
-        - name: cloudflare/proxied
-          value: "false"
-    - dnsName: rpx7mosliwbdwdguqoc23pdlmchedhql._domainkey.mikeflix.lol
-      recordType: CNAME
-      targets:
-        - rpx7mosliwbdwdguqoc23pdlmchedhql.dkim.amazonses.com
-      providerSpecific:
-        - name: cloudflare/proxied
-          value: "false"
-    - dnsName: _dmarc.mikeflix.lol
-      recordType: TXT
-      targets:
-        - v=DMARC1; p=none;

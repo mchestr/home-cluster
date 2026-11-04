@@ -11,5 +11,6 @@ generatorOptions:
   disableNameSuffixHash: true
 resources:
   - ./dnsendpoint.yaml
+  - ./dnsendpoint-mikeflix-lol.yaml
   - ./externalsecret.yaml
   - ./helmrelease.yaml

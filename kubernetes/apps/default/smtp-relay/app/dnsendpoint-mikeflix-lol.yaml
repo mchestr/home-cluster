@@ -1,0 +1,33 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: amazon-ses-mikeflix-lol
+spec:
+  endpoints:
+    - dnsName: cwneivib4lt2ayacacl36nskexxvmlbw._domainkey.mikeflix.lol
+      recordType: CNAME
+      targets:
+        - cwneivib4lt2ayacacl36nskexxvmlbw.dkim.amazonses.com
+      providerSpecific:
+        - name: cloudflare/proxied
+          value: "false"
+    - dnsName: 4dqmwq77fj7kn4wxwkwgu26qsfkkv5mg._domainkey.mikeflix.lol
+      recordType: CNAME
+      targets:
+        - 4dqmwq77fj7kn4wxwkwgu26qsfkkv5mg.dkim.amazonses.com
+      providerSpecific:
+        - name: cloudflare/proxied
+          value: "false"
+    - dnsName: rpx7mosliwbdwdguqoc23pdlmchedhql._domainkey.mikeflix.lol
+      recordType: CNAME
+      targets:
+        - rpx7mosliwbdwdguqoc23pdlmchedhql.dkim.amazonses.com
+      providerSpecific:
+        - name: cloudflare/proxied
+          value: "false"
+    - dnsName: _dmarc.mikeflix.lol
+      recordType: TXT
+      targets:
+        - v=DMARC1; p=none;
