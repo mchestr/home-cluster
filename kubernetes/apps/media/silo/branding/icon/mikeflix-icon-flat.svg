@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+  <defs>
+  <linearGradient id="t-tile" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#1B1B21"/>
+    <stop offset="1" stop-color="#0D0D11"/>
+  </linearGradient>
+  <radialGradient id="t-glow" cx="0.5" cy="0.95" r="0.8">
+    <stop offset="0" stop-color="#E4202B" stop-opacity="0.28"/>
+    <stop offset="1" stop-color="#E4202B" stop-opacity="0"/>
+  </radialGradient></defs>
+  <rect width="1000" height="1000" rx="220" fill="url(#t-tile)"/>
+  <rect width="1000" height="1000" rx="220" fill="url(#t-glow)"/>
+  <path fill="#E4202B" fill-rule="nonzero" d="
+    M170,200 H330 L580,800 H420 Z
+    M670,200 H830 L580,800 H420 Z
+    M170,200 H330 V800 H170 Z
+    M670,200 H830 V800 H670 Z"/>
+</svg>
