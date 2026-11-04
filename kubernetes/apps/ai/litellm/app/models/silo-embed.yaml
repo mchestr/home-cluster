@@ -1,0 +1,19 @@
+---
+# Embedding model for Silo recommendations (Admin > Integrations > AI, embeddings capability).
+# Served by the in-cluster text-embeddings service (TEI, bge-small-en-v1.5, 384 dimensions),
+# so it costs nothing and sends no catalog text outside the cluster. TEI ignores the model
+# name and the API key, but the openai provider type in LiteLLM requires a key value.
+# Silo locks its embeddings to this model name: switching the model behind it needs the
+# embeddings reset in Silo first.
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: silo-embed
+spec:
+  modelName: silo-embed
+  info:
+    mode: embedding
+  params:
+    model: openai/BAAI/bge-small-en-v1.5
+    apiBase: http://text-embeddings.ai.svc.cluster.local:8080/v1
+    apiKey: none
