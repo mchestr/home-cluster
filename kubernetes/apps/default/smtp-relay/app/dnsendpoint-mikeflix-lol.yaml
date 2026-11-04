@@ -27,6 +27,16 @@ spec:
       providerSpecific:
         - name: cloudflare/proxied
           value: "false"
+    # SES custom MAIL FROM domain. SES must set mail.mikeflix.lol as the MAIL FROM domain of the identity.
+    - dnsName: mail.mikeflix.lol
+      recordType: MX
+      targets:
+        # external-dns needs the priority in front of the host.
+        - 10 feedback-smtp.us-west-2.amazonses.com
+    - dnsName: mail.mikeflix.lol
+      recordType: TXT
+      targets:
+        - v=spf1 include:amazonses.com ~all
     - dnsName: _dmarc.mikeflix.lol
       recordType: TXT
       targets:
