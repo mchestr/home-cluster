@@ -73,14 +73,13 @@ access_control:
         - grafana.chestr.dev
         - homepage.chestr.dev
         - irc.chestr.dev
-        - jellyfin.chestr.dev
-        - play.mikeflix.lol
         - lldap.chestr.dev
         - tautulli.chestr.dev
         - thelounge.chestr.dev
         - rook.chestr.dev
         - sh.chestr.dev
         - silo.chestr.dev
+        - play.mikeflix.lol
       policy: bypass
     - domain:
         - sonarr.chestr.dev
@@ -224,6 +223,8 @@ identity_providers:
         redirect_uris:
           - https://silo.chestr.dev/api/v2/auth/oauth/5/callback
           - https://silo.chestr.dev/api/v1/auth/oauth/5/callback
+          - https://play.mikeflix.lol/api/v2/auth/oauth/5/callback
+          - https://play.mikeflix.lol/api/v1/auth/oauth/5/callback
         userinfo_signed_response_alg: none
         claims_policy: default
         token_endpoint_auth_method: client_secret_basic
