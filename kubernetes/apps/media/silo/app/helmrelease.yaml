@@ -16,7 +16,14 @@ spec:
   values:
     controllers:
       silo:
-        strategy: Recreate
+        # Two API servers share the database, Dragonfly and the CephFS config volume.
+        # Streams survive the loss of one pod: Silo rebuilds a playback session from
+        # the client's stream token on whichever replica gets the next request.
+        replicas: 2
+        strategy: RollingUpdate
+        rollingUpdate:
+          surge: 1
+          unavailable: 0
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
@@ -45,6 +52,9 @@ spec:
               # Silo must not run ALTER SYSTEM on a shared cluster.
               POSTGRES_TUNE: "off"
               REDIS_URL: redis://silo-dragonfly.media.svc.cluster.local:6379
+              # On SIGTERM the pod fails readiness and keeps serving for this long, so the
+              # gateway moves new requests to the other replica before the listeners close.
+              SILO_SHUTDOWN_DELAY: 10s
               # Prometheus metrics. The listener has no authentication, so it stays on the pod network.
               SILO_METRICS_LISTEN: 0.0.0.0:9091
             envFrom:
@@ -98,7 +108,15 @@ spec:
     defaultPodOptions:
       nodeSelector:
         intel.feature.node.kubernetes.io/gpu: "true"
-      # Silo finishes in-flight requests before it stops.
+      # One replica per node, so a node reboot takes down at most one.
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: silo
+              topologyKey: kubernetes.io/hostname
+      # Silo finishes in-flight requests before it stops: SILO_SHUTDOWN_DELAY plus 90s at least.
       terminationGracePeriodSeconds: 120
 
     service:
@@ -137,7 +155,7 @@ spec:
 
     persistence:
       config:
-        existingClaim: *app
+        existingClaim: silo-config
       initdb:
         type: configMap
         name: silo-initdb

@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.envoyproxy.io/backendtrafficpolicy_v1alpha1.json
+# Silo transcodes inside the API pods and wants every request of one playback session on the
+# same replica (its docs call this load-balancer affinity). Hashing on the client address works
+# for native apps as well as browsers, which a cookie would not.
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: silo
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: silo
+  loadBalancer:
+    type: ConsistentHash
+    consistentHash:
+      type: SourceIP

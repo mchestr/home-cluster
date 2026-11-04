@@ -27,6 +27,8 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      # Playback sessions live in Dragonfly; three replicas survive a node reboot.
+      DRAGONFLY_REPLICAS: "3"
   prune: true
   retryInterval: 1m
   sourceRef:
