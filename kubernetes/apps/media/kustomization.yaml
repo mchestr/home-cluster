@@ -9,8 +9,6 @@ resources:
   - ./autobrr/ks.yaml
   - ./bazarr/ks.yaml
   - ./cross-seed/ks.yaml
-  - ./jellyfin/ks.yaml
-  - ./jellyplex-watched/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./kometa/ks.yaml
   - ./plex/ks.yaml

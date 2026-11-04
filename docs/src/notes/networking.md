@@ -49,7 +49,6 @@ flowchart TB
         Plex["Plex<br/>10.0.20.110"]
         QBT["qBittorrent<br/>10.0.20.80"]
         Frigate2["Frigate streams<br/>10.0.20.60"]
-        Jellyfin["Jellyfin<br/>10.0.20.70"]
         PG["PostgreSQL<br/>10.0.20.17"]
         Envoy["Envoy Gateway<br/>External: 10.0.20.200<br/>Internal: 10.0.20.100"]
     end
@@ -96,7 +95,7 @@ flowchart TB
     class NAS storage
     class CEPH tbring
     class HA,Frigate,ESPHome,Zigbee,ZWave iot
-    class MQTT,Plex,QBT,Frigate2,Jellyfin,PG,Envoy service
+    class MQTT,Plex,QBT,Frigate2,PG,Envoy service
     class Devices homelan
 ```
 

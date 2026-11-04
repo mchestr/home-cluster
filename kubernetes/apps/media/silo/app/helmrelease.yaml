@@ -231,7 +231,7 @@ spec:
 
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.chestr.dev"]
+        hostnames: ["{{ .Release.Name }}.chestr.dev", play.mikeflix.lol]
         annotations:
           gatus.home-operations.com/enabled: "false"
         parentRefs:
