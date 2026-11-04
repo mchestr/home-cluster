@@ -13,6 +13,5 @@ resources:
   - ./backendtrafficpolicy.yaml
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-  - ./pdb.yaml
   - ./prometheusrule.yaml
   - ./pvc.yaml

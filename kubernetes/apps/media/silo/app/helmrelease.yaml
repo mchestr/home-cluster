@@ -24,6 +24,9 @@ spec:
         rollingUpdate:
           surge: 1
           unavailable: 0
+        # A node drain keeps one pod up.
+        podDisruptionBudget:
+          minAvailable: 1
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
