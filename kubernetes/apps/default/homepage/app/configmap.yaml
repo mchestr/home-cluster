@@ -140,6 +140,34 @@ data:
               type: plex
               url: http://plex.media.svc.cluster.local:32400
               key: {{HOMEPAGE_VAR_PLEX_API_KEY}}
+        - MikeFlix:
+            href: https://mikeflix.lol
+            weight: 0
+            icon: mdi-movie-open-play
+            namespace: media
+            app: silo
+            # The app label also matches the Meilisearch and Dragonfly pods.
+            podSelector: app.kubernetes.io/controller=silo
+            widget:
+              # Homepage has no Silo widget. This reads the admin dashboard totals.
+              type: customapi
+              url: http://silo.media.svc.cluster.local:8080/api/v2/admin/stats?refresh=false
+              refreshInterval: 60000
+              headers:
+                Authorization: Bearer {{HOMEPAGE_VAR_SILO_API_KEY}}
+              mappings:
+                - field: active_streams
+                  label: Streams
+                  format: number
+                - field: total_movies
+                  label: Movies
+                  format: number
+                - field: total_shows
+                  label: Shows
+                  format: number
+                - field: total_storage_bytes
+                  label: Storage
+                  format: bytes
         - Requests:
             href: https://requests.chestr.dev/
             weight: 0
