@@ -40,30 +40,3 @@ resource "cloudflare_ruleset" "chestr-dev-config-settings" {
     }
   ]
 }
-
-# Only public traffic reaches Cloudflare: LAN clients resolve the apex through UniFi DNS to Silo
-# on envoy-internal. 308 keeps the method and body, but Stripe and Discord do not follow redirects.
-resource "cloudflare_ruleset" "mikeflix-lol-redirects" {
-  name        = "redirect rules"
-  kind        = "zone"
-  phase       = "http_request_dynamic_redirect"
-  description = "mikeflix.lol redirect rules"
-  zone_id     = data.cloudflare_zone.zone["mikeflix.lol"].zone_id
-  rules = [
-    {
-      expression = "(http.host eq \"mikeflix.lol\")"
-      action     = "redirect"
-      action_parameters = {
-        from_value = {
-          status_code = 308
-          target_url = {
-            expression = "concat(\"https://my.mikeflix.lol\", http.request.uri.path)"
-          }
-          preserve_query_string = true
-        }
-      }
-      description = "Public apex: send plex-manager links to my.mikeflix.lol"
-      enabled     = true
-    }
-  ]
-}
