@@ -34,6 +34,7 @@ spec:
             env:
               DEBUG: "false"
               SMTP_DOMAIN: chestr.dev
+              SMTP_SENDER_DOMAIN: mikeflix.lol
             envFrom:
               - secretRef:
                   name: smtp-relay-secret
