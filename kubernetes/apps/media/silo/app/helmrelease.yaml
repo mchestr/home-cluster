@@ -55,6 +55,16 @@ spec:
               # Silo must not run ALTER SYSTEM on a shared cluster.
               POSTGRES_TUNE: "off"
               REDIS_URL: redis://silo-dragonfly.media.svc.cluster.local:6379
+              # Typo-tolerant search. These three replace the search settings in the admin UI
+              # on every start, and both replicas get the same values. Meilisearch needs REDIS_URL
+              # for paged searches.
+              SILO_SEARCH_PROVIDER: meilisearch
+              SILO_MEILISEARCH_URL: http://silo-meilisearch.media.svc.cluster.local:7700
+              SILO_MEILISEARCH_API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: silo-meilisearch-secret
+                    key: MEILI_MASTER_KEY
               # On SIGTERM the pod fails readiness and keeps serving for this long, so the
               # gateway moves new requests to the other replica before the listeners close.
               SILO_SHUTDOWN_DELAY: 10s
@@ -108,28 +118,103 @@ spec:
                 gpu.intel.com/i915: 1
                 memory: 8Gi
 
+      meilisearch:
+        # One instance: Meilisearch does not cluster. The index is rebuilt from the database
+        # (Admin > Server > Search > Rebuild index), so it is not backed up.
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          # The image has no USER and would run as root. The PVC is group-writable through fsGroup.
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            runAsNonRoot: true
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+        containers:
+          app:
+            image:
+              # Silo pins the same minor in its docker-compose.advanced.yml.
+              repository: docker.io/getmeili/meilisearch
+              tag: v1.54.3@sha256:e68913ab7d6f5b159529e472cfd362ce3c741fafd3c127961b2142abbe41b3c9
+            env:
+              MEILI_ENV: production
+              MEILI_NO_ANALYTICS: "true"
+              # Meilisearch refuses an index written by another version. With this set it
+              # upgrades the index in place at start, so a Renovate bump needs no manual step.
+              # If that upgrade fails, empty the silo-meilisearch PVC and Silo rebuilds the index.
+              MEILI_UPGRADE_DB: "true"
+              # Default is two thirds of the node's RAM, which ignores the container limit.
+              MEILI_MAX_INDEXING_MEMORY: 1GiB
+            envFrom:
+              - secretRef:
+                  name: silo-meilisearch-secret
+            probes:
+              liveness: &meiliprobe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &meiliport 7700
+                  periodSeconds: 15
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness: *meiliprobe
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *meiliport
+                  periodSeconds: 5
+                  timeoutSeconds: 5
+                  failureThreshold: 60
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 2Gi
+
     defaultPodOptions:
       nodeSelector:
         intel.feature.node.kubernetes.io/gpu: "true"
-      # One replica per node, so a node reboot takes down at most one.
+      # One API replica per node, so a node reboot takes down at most one. The controller
+      # label keeps the Meilisearch pod out of the rule, or a drain could leave it unschedulable.
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
                 matchLabels:
                   app.kubernetes.io/name: silo
+                  app.kubernetes.io/controller: silo
               topologyKey: kubernetes.io/hostname
       # Silo finishes in-flight requests before it stops: SILO_SHUTDOWN_DELAY plus 90s at least.
       terminationGracePeriodSeconds: 120
 
     service:
       app:
+        # With two Services the chart would name this one silo-app. The route, the
+        # ServiceMonitor and the alert rules expect "silo".
+        forceRename: *app
         controller: *app
         ports:
           http:
             port: *port
           metrics:
             port: 9091
+      # Named silo-meilisearch. The master key is the only authentication, so it stays in-cluster.
+      meilisearch:
+        controller: meilisearch
+        ports:
+          http:
+            port: *meiliport
 
     # The upstream rules in prometheusrule.yaml expect the job label "silo", which is the Service name.
     serviceMonitor:
@@ -159,6 +244,22 @@ spec:
     persistence:
       config:
         existingClaim: silo-config
+        advancedMounts:
+          silo:
+            app:
+              - path: /config
+      meilisearch:
+        existingClaim: silo-meilisearch
+        advancedMounts:
+          meilisearch:
+            app:
+              - path: /meili_data
+      meilisearch-tmp:
+        type: emptyDir
+        advancedMounts:
+          meilisearch:
+            app:
+              - path: /tmp
       initdb:
         type: configMap
         name: silo-initdb
@@ -167,18 +268,25 @@ spec:
             01-init-db:
               - path: /initdb
                 readOnly: true
+      # advancedMounts on every volume: the Meilisearch pod mounts only its own index.
       media:
         type: nfs
         server: nebula.chestr.dev
         path: /var/nfs/shared/cluster/media
-        globalMounts:
-          - path: /mnt/media
-            readOnly: true
+        advancedMounts:
+          silo:
+            app:
+              - path: /mnt/media
+                readOnly: true
       transcode:
         type: emptyDir
-        globalMounts:
-          - path: /tmp/silo-transcode
+        advancedMounts:
+          silo:
+            app:
+              - path: /tmp/silo-transcode
       downloads:
         type: emptyDir
-        globalMounts:
-          - path: /tmp/silo-download-artifacts
+        advancedMounts:
+          silo:
+            app:
+              - path: /tmp/silo-download-artifacts
