@@ -10,7 +10,7 @@ generatorOptions:
     kustomize.toolkit.fluxcd.io/substitute: disabled
   disableNameSuffixHash: true
 resources:
-  - ./dnsendpoint.yaml
+  - ./dnsendpoint-chestr-dev.yaml
   - ./dnsendpoint-mikeflix-lol.yaml
   - ./externalsecret.yaml
   - ./helmrelease.yaml
