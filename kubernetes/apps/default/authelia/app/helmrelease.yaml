@@ -16,6 +16,14 @@ spec:
   values:
     defaultPodOptions:
       enableServiceLinks: false
+      # State lives in Postgres and Dragonfly, so Authelia writes nothing to disk. Port 80 still
+      # binds as non-root: containerd opens unprivileged ports, as gatus already relies on.
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
@@ -115,6 +123,11 @@ spec:
                   periodSeconds: 5
                   timeoutSeconds: 3
                   failureThreshold: 30
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
 
             resources:
               requests:
