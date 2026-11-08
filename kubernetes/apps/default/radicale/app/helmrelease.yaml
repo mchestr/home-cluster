@@ -13,6 +13,18 @@ spec:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   values:
+    defaultPodOptions:
+      # 2999 is the image's radicale user. As root, the entrypoint chowns /data to it and drops to
+      # it; as 2999 it skips both and starts radicale directly.
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 2999
+        runAsGroup: 2999
+        fsGroup: 2999
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+
     controllers:
       radicale:
         annotations:
@@ -23,6 +35,9 @@ spec:
             image:
               repository: tomsquest/docker-radicale
               tag: 3.9.0.0
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 15m
