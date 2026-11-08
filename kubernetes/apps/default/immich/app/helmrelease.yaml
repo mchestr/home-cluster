@@ -17,6 +17,11 @@ spec:
     defaultPodOptions:
       automountServiceAccountToken: false
       enableServiceLinks: false
+      # Still root: Immich has always written to its NAS folder as root. Moving to 1000 with the
+      # 65539 NAS group (like sonarr and plex) needs a one-time chown of apps/immich first.
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
 
     controllers:
       immich:
@@ -93,6 +98,9 @@ spec:
                   timeoutSeconds: 3
                   # Up to 30m so DB migrations on upgrade aren't killed mid-run
                   failureThreshold: 180
+            securityContext: &securityContext
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
             resources: &resources
               requests: &requests
                 cpu: 100m
@@ -110,6 +118,7 @@ spec:
               repository: ghcr.io/immich-app/immich-machine-learning
               tag: v3.3.6
             envFrom: *envFrom
+            securityContext: *securityContext
             probes:
               liveness: &mlProbes
                 enabled: true
