@@ -164,3 +164,47 @@ spec:
         globalMounts:
           - path: /config/configuration.yml
             subPath: configuration.yaml
+
+    networkpolicies:
+      # Both gateways reach Authelia: envoy-external serves the portal and OIDC (in-cluster
+      # OIDC clients also call auth.chestr.dev through it), and envoy-internal sends every
+      # internal request to ext-auth. Nothing else calls the authelia Service. Prometheus
+      # scrapes the metrics port.
+      app:
+        controller: authelia
+        policyTypes: [Ingress]
+        rules:
+          ingress:
+            - from:
+                - namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: networking
+                  podSelector:
+                    matchExpressions:
+                      - key: gateway.envoyproxy.io/owning-gateway-name
+                        operator: In
+                        values: [envoy-external, envoy-internal]
+              ports:
+                - protocol: TCP
+                  port: *port
+            - from:
+                - namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: observability
+                  podSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: prometheus
+              ports:
+                - protocol: TCP
+                  port: 8080
+      # Cross-node gateway traffic is SNATed to the node, which Cilium sees as the
+      # kube-apiserver entity on this all-control-plane cluster (see waitlist).
+      cilium:
+        type: cilium
+        controller: authelia
+        ingress:
+          - fromEntities: [kube-apiserver]
+            toPorts:
+              - ports:
+                  - port: "80"
+                    protocol: TCP
