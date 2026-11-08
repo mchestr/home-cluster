@@ -54,9 +54,15 @@ The flate results (at the end of the CI prompt, or from step 0) show what actual
 
 ## 5. Rate the risk
 
-- **high**: a breaking change that affects this repo's configuration and will likely break the app or cluster if merged as-is; a required manual migration step; an irreversible or known-problematic database/schema migration; removal of something we use. Also high if the update touches core infrastructure (CNI, storage, Flux, Talos, gateway, cert-manager, external-secrets) and has any breaking change at all.
+Rate what merging the change would do to this cluster, not how much changed upstream: a breaking change in something this repo doesn't use doesn't raise the rating.
+
+- **high**: a breaking change that affects this repo's configuration and will likely break the app or cluster if merged as-is; a required manual migration step; an irreversible or known-problematic database/schema migration; removal of something we use.
 - **medium**: notable behavior changes, deprecations of things we use, automatic data migrations, or release notes you could not find. Safe to merge but worth a human glance.
 - **low**: bug fixes, security fixes, and features that do not change anything we configure.
+
+Core infrastructure (CNI, storage, Flux, Talos, gateway, cert-manager, external-secrets) can take the whole cluster down, so read its release notes and rendered diff with extra care, then rate it by the same rules. Whether an update waits for a human merge is set in `.renovaterc.json5`, which already holds back core infrastructure, majors and `0.x` minor bumps, so don't raise the rating to get a human to look.
+
+A high verdict blocks the merge until someone deals with what you found, so name it: put each problem in `breaking_changes` or `required_actions`. If you can't name one, the verdict isn't high.
 
 Be concrete: cite the release, the change, and the file in this repo it affects. Don't rate something high on speculation; don't rate it low because you didn't look.
 
