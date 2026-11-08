@@ -41,6 +41,10 @@ spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
+  # Grafana ships no VictoriaLogs support; the operator installs this plugin on the instance.
+  plugins:
+    - name: victoriametrics-logs-datasource
+      version: 0.34.0
   datasource:
     type: victoriametrics-logs-datasource
     name: victoriametrics-logs
