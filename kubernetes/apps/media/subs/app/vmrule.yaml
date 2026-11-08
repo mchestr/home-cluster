@@ -1,0 +1,20 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/operator.victoriametrics.com/vmrule_v1beta1.json
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
+metadata:
+  name: subs-alerts
+  labels:
+    vmalert-logs.io/enabled: "true"
+spec:
+  groups:
+    - name: &name SubsWarningEmailFailed
+      type: vlogs
+      interval: 5m
+      rules:
+        - alert: *name
+          expr: '"inactivity_notice.failed" | filter app := "subs" | stats by (app) count() rows | filter rows :> 0'
+          labels:
+            severity: warning
+          annotations:
+            description: 'Inactivity warning emails failed, so the removals of those members wait. To stop all removals, turn removal off, not warnings off.'

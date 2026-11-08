@@ -51,6 +51,9 @@ spec:
               # Cloudflare edge and envoy-external both append to X-Forwarded-For.
               TRUSTED_PROXY_HOPS: "2"
               REDIS_URL: redis://subs-dragonfly.media.svc.cluster.local:6379
+              # Member email goes straight to Amazon SES, so the app sees SES's answer (the relay answers before SES).
+              SMTP_URL: smtp://email-smtp.us-west-2.amazonaws.com:587
+              EMAIL_FROM: noreply@mikeflix.lol
               DATABASE_URL:
                 valueFrom:
                   secretKeyRef:
@@ -105,6 +108,9 @@ spec:
               NEXT_PUBLIC_APP_URL: https://my.mikeflix.lol
               NEXTAUTH_URL: https://my.mikeflix.lol
               REDIS_URL: redis://subs-dragonfly.media.svc.cluster.local:6379
+              # Member email goes straight to Amazon SES, so the app sees SES's answer (the relay answers before SES).
+              SMTP_URL: smtp://email-smtp.us-west-2.amazonaws.com:587
+              EMAIL_FROM: noreply@mikeflix.lol
               DATABASE_URL:
                 valueFrom:
                   secretKeyRef:
