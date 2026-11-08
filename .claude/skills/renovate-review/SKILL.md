@@ -23,6 +23,8 @@ Run `git diff origin/main...HEAD` and `git log origin/main..HEAD` (in an interac
 
 Many dependencies wrap another component: a `ghcr.io/home-operations/*` image packages an upstream app, a chart packages an application image, a chart bump pulls in subchart bumps. Identify the inner component's version change too; its changelog is usually where the breaking changes are.
 
+An operator update can also move images that show up in neither the git diff nor the rendered diff: those of the workloads the operator runs itself (a database, a controller, an agent) when nothing in this repo pins them. For an operator, or a chart that installs one, read the default images at the old and the new version from the chart's values or the operator's source, and name each one that changes, with both versions, in the update's `notes`. Read that image's release notes as part of the update.
+
 If the diff contains anything other than version bumps, check it for changes that would break Flux reconciliation or take down a running workload.
 
 ## 2. Read what changed between the two versions
@@ -32,13 +34,15 @@ Read the release notes for **every** release between the old version (exclusive)
 - GitHub-hosted projects: `gh release view <tag> --repo <owner>/<repo>`, or `gh api repos/<owner>/<repo>/releases?per_page=50` to list them. Also check a CHANGELOG.md / UPGRADING.md / migration guide in the repo if the release notes are thin.
 - Container images: find the upstream source repository (image labels, the ghcr.io owner, Docker Hub page, or a web search) and read its releases.
 - Helm charts: read the chart's changelog / release notes, and compare default values with `helm show values <chart> --version <old>` vs `--version <new>` (OCI charts: `helm show values oci://... --version ...`). Look for renamed, removed or restructured values keys.
-- Digest-only updates of a pinned tag are usually a rebuild; check whether the tag is a floating one (e.g. `latest`, `main`, `rolling`) whose digest bump could hide a real version jump.
+- Digest-only updates of a pinned tag are usually a rebuild; check whether the tag is a floating one (e.g. `latest`, `main`, `rolling`) whose digest bump could hide a real version jump. A `ghcr.io/home-operations/*` image is built from `apps/<name>/` in the `home-operations/containers` repository, and that directory's commits (`gh api "repos/home-operations/containers/commits?path=apps/<name>"`) show what a rebuild picked up.
 
 Read the wrapper's and the inner component's changelogs separately. Use web search only as a last resort. If you cannot find release notes for a version, say so explicitly; never guess or fabricate what changed. Missing release notes alone make it at least `medium`.
 
 ## 3. Check how this repo uses it
 
-Find every place the package is configured (`Grep` for the image/chart name, then read that app's `helmrelease.yaml`, `ks.yaml`, config maps, config files, `externalsecret.yaml`). For each breaking change or deprecation, decide whether it actually affects what this repo uses. A breaking change in a feature that isn't used here isn't actionable; leave it out. Things to check: renamed values keys or env vars we set, removed CLI flags we pass, config file format changes, CRD API versions we use, changed default ports/paths/UIDs that probes, routes, NetworkPolicies or volume permissions depend on, new required settings, dropped architectures, database migrations.
+Find every place the package is configured (`Grep` for the image/chart name, then read that app's `helmrelease.yaml`, `ks.yaml`, config maps, config files, `externalsecret.yaml`). For each breaking change or deprecation, decide whether it actually affects what this repo uses. A breaking change in a feature that isn't used here isn't actionable: put it in `ruled_out` with the reason, not in `breaking_changes`. Things to check: renamed values keys or env vars we set, removed CLI flags we pass, config file format changes, CRD API versions we use, changed default ports/paths/UIDs that probes, routes, NetworkPolicies or volume permissions depend on, new required settings, dropped architectures, database migrations.
+
+Some apps keep the settings made in their own UI on their volume, not in git, so searching this repo proves nothing about them. A breaking change that could hit such a setting can't be ruled out from here: rate the update at least `medium` and say in `notes` what to check in the app after the merge.
 
 ## 4. Compare the rendered manifests
 
@@ -68,7 +72,7 @@ Be concrete: cite the release, the change, and the file in this repo it affects.
 
 ## 6. Fix it if you can
 
-If the risk is **high** and the breakage can be fixed by editing files in this repo (renaming a values key, updating an env var, adjusting a probe path, adding a required setting, bumping a CRD API version), make the edit with the `Edit` tool so the update becomes safe, following the repo's existing style. Only edit files under `kubernetes/`, `talos/`, `terraform/` or `bootstrap/`. Do not change the version being updated and do not revert the update. If a safe fix isn't clear-cut, don't guess; describe what a human needs to do in `required_actions` instead. Set `fix_applied` accordingly.
+If the risk is **high** and the breakage can be fixed by editing files in this repo (renaming a values key, updating an env var, adjusting a probe path, adding a required setting, bumping a CRD API version), make the edit with the `Edit` tool so the update becomes safe, following the repo's existing style. Only edit files under `kubernetes/`, `talos/`, `terraform/` or `bootstrap/`. Do not change the version being updated and do not revert the update. Before you edit, confirm the new key, value or path at the new version from the chart's templates or values, or from the upstream change itself (`gh api -H "Accept: application/vnd.github.raw+json" "repos/<owner>/<repo>/contents/<path>?ref=<tag>"`, or `helm show values` with the new version), not from a release note's wording alone. If a safe fix isn't clear-cut, don't guess; describe what a human needs to do in `required_actions` instead. Set `fix_applied` accordingly.
 
 In an interactive session, run `gh pr checkout <number>` before you edit. Do not commit or push the edit; show the diff to the owner.
 
@@ -85,6 +89,7 @@ Return the structured result (in an interactive session, write the fields of `.g
 - `summary`: at most three short sentences.
 - Every list item is one line, leads with what it's about (package, setting or file path in backticks), then the problem, then the fix. E.g. "`kubernetes/apps/media/bazarr/app/helmrelease.yaml`: `startupProbe` too short for the 1.6 migration; raise `failureThreshold` to 30".
 - `notes`: at most two sentences per package.
+- `ruled_out`: every breaking change and upgrade step the release notes list between the two versions that doesn't affect this repo, one line each: the package and the change, then why it doesn't apply here (what this repo uses instead, or what you searched for and didn't find). Together with `breaking_changes`, it accounts for every breaking change in the release notes. Don't repeat these in `summary` or `notes`.
 - `sources`: the URLs you actually read, release pages preferred.
 
 Report only problems you're confident in and have evidence for (a file you read, a release note, documentation, or the flate output). Don't assert how GitHub Actions, Kubernetes or an app will behave at runtime from assumptions; if something needs checking that you can't check, say what to verify instead of reporting it as a defect. Cite the file in this repo each one affects, and don't comment on style or praise the change. Leave `new_features` empty unless a feature would clearly benefit how this repo uses the component.

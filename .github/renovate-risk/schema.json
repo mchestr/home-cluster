@@ -89,6 +89,13 @@
       },
       "description": "Deprecations of things this repo uses, each citing the file it affects"
     },
+    "ruled_out": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Breaking changes and upgrade steps from the release notes that don't affect this repo, each with why it doesn't apply"
+    },
     "required_actions": {
       "type": "array",
       "items": {

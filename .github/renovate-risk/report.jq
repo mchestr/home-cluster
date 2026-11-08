@@ -33,6 +33,7 @@ def test_result: {"success": "✅ passed", "failure": "❌ failed"}[env.FLATE_RE
   "<details><summary>Details</summary>\n",
   .summary + "\n",
   (.updates[] | "**`\(.package)`** `\(.from)` → `\(.to)` \(.risk | icon)\n\(.notes)\n\(if (.sources | length) > 0 then "\nSources: \(.sources | source_links)\n" else "" end)"),
+  bullets("✅ Breaking changes that don't apply here"; .ruled_out // []),
   bullets("⚠️ Deprecations"; .deprecations),
   bullets("✨ New features worth adopting"; .new_features),
   "</details>\n",
