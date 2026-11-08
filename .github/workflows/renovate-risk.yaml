@@ -30,6 +30,9 @@ jobs:
     if: ${{ inputs.flate-result != '' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: read # read earlier runs' assessments, to reuse one after a rebase
     env:
       # renovate: datasource=npm depName=@anthropic-ai/claude-code
       CLAUDE_CODE_VERSION: 2.1.319
@@ -62,10 +65,58 @@ jobs:
           name: flate
           path: ${{ runner.temp }}/flate
 
+      # Renovate rebases its branches onto main whenever main moves. When a
+      # rebase leaves the change, the apps it touches, its rendered diff and
+      # the review instructions as they were, the branch's last assessment
+      # still holds, so reuse it instead of paying for the same review again.
+      # A high verdict is never reused, so removing the hold label still gets
+      # a fresh assessment, and a re-run of the job always assesses afresh.
+      - name: Reuse Assessment
+        id: reuse
+        # Any problem here only means a fresh assessment
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FLATE_RESULT: ${{ inputs.flate-result }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          fingerprint=$(.github/renovate-risk/fingerprint.sh "${RUNNER_TEMP}/flate" "${FLATE_RESULT}") || fingerprint=""
+          [[ -n "${fingerprint}" ]] || exit 0
+          echo "${fingerprint}" > "${RUNNER_TEMP}/fingerprint"
+          [[ "${GITHUB_EVENT_NAME}" == "push" && "${BRANCH}" == renovate/* ]] || exit 0
+          [[ "${FLATE_RESULT}" == "success" && "${RUN_ATTEMPT}" == "1" ]] || exit 0
+          run=""
+          for id in $(gh run list --workflow ci.yaml --event push --branch "${BRANCH}" \
+            --status completed --limit 10 --json databaseId --jq '.[].databaseId'); do
+            if gh run download "${id}" --name renovate-risk --dir "${RUNNER_TEMP}/previous/${id}" 2> /dev/null; then
+              run="${id}"
+              break
+            fi
+          done
+          previous="${RUNNER_TEMP}/previous/${run}"
+          if [[ -z "${run}" || ! -s "${previous}/fingerprint" ]]; then
+            echo "No earlier assessment of ${BRANCH} to reuse"
+            exit 0
+          fi
+          if [[ "$(cat "${previous}/fingerprint")" != "${fingerprint}" ]]; then
+            echo "Something the assessment depends on changed since run ${run}"
+            exit 0
+          fi
+          risk=$(jq -r '.risk' "${previous}/assessment.json")
+          if [[ "${risk}" != "low" && "${risk}" != "medium" ]]; then
+            echo "Run ${run} rated it ${risk}, so assess it again"
+            exit 0
+          fi
+          cp "${previous}/assessment.json" "${RUNNER_TEMP}/assessment.json"
+          echo "run-url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${run}" >> "${GITHUB_OUTPUT}"
+          echo "Reusing the ${risk} assessment from run ${run}: nothing it depends on has changed"
+
       - name: Install Claude Code
+        if: ${{ steps.reuse.outputs.run-url == '' }}
         run: npm install --global "@anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}"
 
       - name: Assess Update
+        if: ${{ steps.reuse.outputs.run-url == '' }}
         env:
           ANTHROPIC_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CLAUDE_OAUTH: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -157,11 +208,16 @@ jobs:
           FIX_URL: ${{ steps.fix.outputs.url }}
           FLATE_RESULT: ${{ inputs.flate-result }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          REUSED_FROM: ${{ steps.reuse.outputs.run-url }}
         run: |
           jq -r --arg marker "${REPORT_MARKER}" \
             --from-file <(git show HEAD:.github/renovate-risk/report.jq) \
             "${RUNNER_TEMP}/assessment.json" > "${RUNNER_TEMP}/report.md"
           cp "${RUNNER_TEMP}/assessment.json" "${RUNNER_TEMP}/report.md" .
+          # Kept with the assessment so a later run can tell whether it still holds
+          if [[ -f "${RUNNER_TEMP}/fingerprint" ]]; then
+            cp "${RUNNER_TEMP}/fingerprint" .
+          fi
           cat report.md >> "${GITHUB_STEP_SUMMARY}"
 
       - name: Upload Report
@@ -170,6 +226,7 @@ jobs:
           name: renovate-risk
           path: |
             assessment.json
+            fingerprint
             report.md
 
       # A failing check alone doesn't hold a Renovate update: Renovate rebases
