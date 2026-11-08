@@ -12,8 +12,8 @@ spec:
   maxHistory: 2
   values:
     fullnameOverride: victoria-logs
-    retentionPeriod: 14d
     server:
+      retentionPeriod: 14d
       persistentVolume:
         enabled: true
         storageClassName: ceph-block
