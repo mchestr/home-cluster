@@ -8,6 +8,18 @@ resource "cloudflare_ruleset" "firewall" {
   zone_id     = each.value.zone_id
   rules = [
     {
+      # Mail providers post the RFC 8058 one-click unsubscribe from their own servers,
+      # which can sit outside CA and US and fail the browser checks.
+      expression = "(http.host eq \"my.mikeflix.lol\" and http.request.uri.path in {\"/api/email/unsubscribe\" \"/email/unsubscribe\"})"
+      action     = "skip"
+      action_parameters = {
+        ruleset  = "current"
+        products = ["bic", "securityLevel"]
+      }
+      description = "subs: let mail providers and members reach the unsubscribe link"
+      enabled     = true
+    },
+    {
       expression  = "(not ip.geoip.country in {\"CA\" \"US\"})"
       action      = "block"
       description = "Block all countries except CA,US"
