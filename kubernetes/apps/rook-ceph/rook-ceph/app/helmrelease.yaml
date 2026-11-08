@@ -12,8 +12,6 @@ spec:
   maxHistory: 2
   values:
     csi:
-      cephFSKernelMountOptions: ms_mode=prefer-crc
-      enableLiveness: true
       serviceMonitor:
         enabled: true
     enableDiscoveryDaemon: false

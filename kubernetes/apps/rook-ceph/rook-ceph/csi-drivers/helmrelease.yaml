@@ -40,6 +40,10 @@ spec:
         enabled: true
         name: rook-ceph.cephfs.csi.ceph.com
         snapshotPolicy: volumeSnapshot
+        # The cluster sets requireMsgr2, so kernel CephFS mounts must use msgr2.
+        # The rook-ceph chart no longer reads csi.cephFSKernelMountOptions.
+        kernelMountOptions:
+          ms_mode: prefer-crc
       nfs:
         enabled: false
         name: rook-ceph.nfs.csi.ceph.com
