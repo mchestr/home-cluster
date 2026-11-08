@@ -1,6 +1,7 @@
 # Renders the assessment JSON as a PR comment / job summary.
 # Blocking items stay visible; background detail is folded into <details>.
-# Env: FIX_URL, RUN_URL, FLATE_RESULT. Arg: $marker.
+# Env: FIX_URL, RUN_URL, FLATE_RESULT, REUSED_FROM (an earlier run's URL when
+# its assessment was reused). Arg: $marker.
 
 def icon: {"low": "🟢", "medium": "🟡", "high": "🔴"}[.];
 def verdict: {
@@ -37,7 +38,11 @@ def test_result: {"success": "✅ passed", "failure": "❌ failed"}[env.FLATE_RE
   bullets("✨ New features worth adopting"; .new_features),
   "</details>\n",
 
-  "<sub>flate test \(test_result) · [assessment run](\(env.RUN_URL))</sub>"
+  (if (env.REUSED_FROM // "") != "" then
+    "<sub>flate test \(test_result) · ♻️ reused from the [assessment run](\(env.REUSED_FROM)) of the same change</sub>"
+  else
+    "<sub>flate test \(test_result) · [assessment run](\(env.RUN_URL))</sub>"
+  end)
 ]
 | join("\n")
 # Link upstream repos via redirect.github.com so their issues and PRs don't get backlinks
