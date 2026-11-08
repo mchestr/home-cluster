@@ -153,3 +153,39 @@ spec:
           - path: /config/config.yaml
             subPath: config.yaml
             readOnly: true
+
+    networkpolicies:
+      # Only the external gateway (status page) and Prometheus (/metrics) reach this pod.
+      # Egress stays open: gatus checks every route and talks to the apiserver.
+      app:
+        controller: gatus
+        policyTypes: [Ingress]
+        rules:
+          ingress:
+            - from:
+                - namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: networking
+                  podSelector:
+                    matchLabels:
+                      gateway.envoyproxy.io/owning-gateway-name: envoy-external
+                - namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: observability
+                  podSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: prometheus
+              ports:
+                - protocol: TCP
+                  port: *port
+      # Cross-node gateway traffic is SNATed to the node, which Cilium sees as the
+      # kube-apiserver entity on this all-control-plane cluster (see waitlist).
+      cilium:
+        type: cilium
+        controller: gatus
+        ingress:
+          - fromEntities: [kube-apiserver]
+            toPorts:
+              - ports:
+                  - port: "80"
+                    protocol: TCP
