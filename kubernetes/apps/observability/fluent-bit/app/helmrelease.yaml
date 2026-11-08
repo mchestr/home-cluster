@@ -25,6 +25,16 @@ spec:
           HTTP_Port {{ .Values.metricsPort }}
           Health_Check On
 
+      # The tail input uses this parser to split the CRI line prefix (time, stream, flag) from the
+      # message. Neither the image's parsers.conf nor the chart's default custom parsers define it.
+      customParsers: |
+        [PARSER]
+          name containerd
+          format regex
+          regex ^(?<time>[^ ]+) (?<stream>stdout|stderr) (?<logtag>[^ ]*) (?<log>.*)$
+          time_key time
+          time_format %Y-%m-%dT%H:%M:%S.%L%z
+
       ## https://docs.fluentbit.io/manual/pipeline/inputs
       inputs: |
         [INPUT]
