@@ -16,10 +16,14 @@ libraries:
       - default: resolution
       - default: streaming
     operations:
-      # No collections are made by hand in Plex, so remove any collection not
-      # defined in this config (stale renames, Plex's automatic TMDb ones).
+      # Remove Kometa's own collections that this config no longer defines
+      # (stale renames). Collections without the Kometa label stay, so the
+      # plex-manager "Movies leaving soon" collection is safe. Plex's automatic
+      # TMDb collections stay off through the library's "Minimum automatic
+      # collection size" setting (Disabled).
       delete_collections:
         configured: false
+        managed: true
       mass_genre_update: imdb
       mass_content_rating_update: omdb
       mass_audience_rating_update: mdb_tomatoesaudience
@@ -40,10 +44,13 @@ libraries:
       - default: streaming
       - default: status
     operations:
-      # No collections are made by hand in Plex, so remove any collection not
-      # defined in this config (stale renames, Plex's automatic TMDb ones).
+      # Remove Kometa's own collections that this config no longer defines
+      # (stale renames). Collections without the Kometa label stay, so the
+      # plex-manager "Shows leaving soon" and "Seasons leaving soon"
+      # collections are safe.
       delete_collections:
         configured: false
+        managed: true
       mass_genre_update: tmdb
       mass_content_rating_update: omdb
       mass_audience_rating_update: mdb_tomatoesaudience
