@@ -54,9 +54,11 @@ spec:
           labels:
             severity: warning
 
+        # Upstream divides silo_cgroup_memory_current_bytes, which includes page cache.
+        # Silo reads media files, so the cache fills the limit and the alert fires with no pressure.
         - alert: SiloCgroupMemoryHigh
           expr: |
-            silo_cgroup_memory_current_bytes / silo_cgroup_memory_limit_bytes > 0.9
+            silo_cgroup_memory_working_set_bytes / silo_cgroup_memory_limit_bytes > 0.9
           for: 5m
           annotations:
             summary: >-
