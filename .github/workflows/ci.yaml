@@ -108,7 +108,7 @@ jobs:
           persist-credentials: false
 
       - name: Install flate
-        uses: home-operations/flate/action@631b76b69c4e58c6f4d1cb01e23616fa61aebafa # v0.6.5
+        uses: home-operations/flate/action@f7e0888c400e73901f64e1f8ae05b0def363f697 # v0.7.0
         with:
           # The action otherwise exports FLATE_BASE=main, which makes `flate test`
           # check only the changed files and clashes with --path-orig
@@ -204,7 +204,7 @@ jobs:
           persist-credentials: false
 
       - name: Install flate
-        uses: home-operations/flate/action@631b76b69c4e58c6f4d1cb01e23616fa61aebafa # v0.6.5
+        uses: home-operations/flate/action@f7e0888c400e73901f64e1f8ae05b0def363f697 # v0.7.0
         with:
           base: ""
 
@@ -296,7 +296,7 @@ jobs:
           persist-credentials: false
 
       - name: Install flate
-        uses: home-operations/flate/action@631b76b69c4e58c6f4d1cb01e23616fa61aebafa # v0.6.5
+        uses: home-operations/flate/action@f7e0888c400e73901f64e1f8ae05b0def363f697 # v0.7.0
         with:
           base: ""
 
