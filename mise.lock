@@ -2,6 +2,29 @@
 
 lockfile_version = 3
 
+[[tools."aqua:home-operations/flate"]]
+version = "0.7.1"
+backend = "aqua:home-operations/flate"
+specifiers = ["0.7.1"]
+
+[tools."aqua:home-operations/flate"."platforms.linux-x64"]
+checksum = "sha256:d449308d7484a4f9c6f309249fab1021e3ffce757bc970e3cac55267a4ca7372"
+url = "https://github.com/home-operations/flate/releases/download/v0.7.1/flate_0.7.1_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/home-operations/flate/releases/assets/725659540"
+provenance = "cosign"
+
+[tools."aqua:home-operations/flate"."platforms.macos-arm64"]
+checksum = "sha256:e8c17b8b19f05f0cf749c65c7d8e7d7d56daa06e8e8af6353faa3cd98a166239"
+url = "https://github.com/home-operations/flate/releases/download/v0.7.1/flate_0.7.1_darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/home-operations/flate/releases/assets/725659538"
+provenance = "cosign"
+
+[tools."aqua:home-operations/flate"."platforms.macos-x64"]
+checksum = "sha256:79fccd59251078a37be52129cb77ec4713fa4aee672cde6364698e51df40f78a"
+url = "https://github.com/home-operations/flate/releases/download/v0.7.1/flate_0.7.1_darwin_amd64.tar.gz"
+url_api = "https://api.github.com/repos/home-operations/flate/releases/assets/725659541"
+provenance = "cosign"
+
 [[tools.flux-operator-mcp]]
 version = "0.62.1"
 backend = "aqua:controlplaneio-fluxcd/flux-operator/flux-operator-mcp"
