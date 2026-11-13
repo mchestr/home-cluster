@@ -41,7 +41,7 @@ spec:
           app:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v3.3.6
+              tag: v3.4.1
             env:
               DB_USERNAME:
                 valueFrom:
@@ -116,7 +116,7 @@ spec:
           app:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v3.3.6
+              tag: v3.4.1
             envFrom: *envFrom
             securityContext: *securityContext
             probes:
