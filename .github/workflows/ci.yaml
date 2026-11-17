@@ -108,7 +108,7 @@ jobs:
           persist-credentials: false
 
       - name: Install flate
-        uses: home-operations/flate/action@f7e0888c400e73901f64e1f8ae05b0def363f697 # v0.7.0
+        uses: home-operations/flate/action@bbb6ebc344da051752dbdb1b413860ceffcfb63d # v0.7.3
         with:
           # The action otherwise exports FLATE_BASE=main, which makes `flate test`
           # check only the changed files and clashes with --path-orig
@@ -135,7 +135,7 @@ jobs:
             flate diff "${kind}" \
               --path pull/kubernetes/flux/cluster \
               --path-orig default/kubernetes/flux/cluster \
-              --skip-crds=false \
+              --skip-kinds=Secret \
               --output diff \
               > "flate-out/diff-${kind}.patch" 2> "flate-out/diff-${kind}.log" \
               || cat "flate-out/diff-${kind}.log"
@@ -204,7 +204,7 @@ jobs:
           persist-credentials: false
 
       - name: Install flate
-        uses: home-operations/flate/action@f7e0888c400e73901f64e1f8ae05b0def363f697 # v0.7.0
+        uses: home-operations/flate/action@bbb6ebc344da051752dbdb1b413860ceffcfb63d # v0.7.3
         with:
           base: ""
 
@@ -296,7 +296,7 @@ jobs:
           persist-credentials: false
 
       - name: Install flate
-        uses: home-operations/flate/action@f7e0888c400e73901f64e1f8ae05b0def363f697 # v0.7.0
+        uses: home-operations/flate/action@bbb6ebc344da051752dbdb1b413860ceffcfb63d # v0.7.3
         with:
           base: ""
 
