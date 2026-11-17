@@ -12,7 +12,7 @@
     ":enablePreCommit",
   ],
   ignorePaths: ["**/.archive/**"],
-  dependencyDashboardTitle: "Renovate Dashboard",
+  dependencyDashboard: { title: "Renovate Dashboard" },
   suppressNotifications: ["prIgnoreNotification", "prEditedNotification"],
   // Renovate asks GitHub to auto-merge the PRs it opens for automerge updates.
   // GitHub auto-merge only waits for required status checks, and main has none,
