@@ -88,6 +88,15 @@
       allowedVersions: "<4",
     },
     {
+      // Paperless does not support Gotenberg 9. Gotenberg 9 removed the
+      // /forms/pdfengines/merge route and the pdfa form field, and
+      // gotenberg-client (used by Paperless) still sends both. Remove this
+      // rule when Paperless supports Gotenberg 9.
+      matchDatasources: ["docker"],
+      matchPackageNames: ["docker.io/gotenberg/gotenberg", "gotenberg/gotenberg"],
+      allowedVersions: "<9",
+    },
+    {
       // kustomize and jq put a prefix on their release tags (kustomize/v5.8.3,
       // jq-1.8.2), which semver versioning rejects. These rules are for the
       // regex manager, which reads them from
