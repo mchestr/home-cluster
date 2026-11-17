@@ -125,7 +125,6 @@ jobs:
 
       # Rendered manifests (charts templated) before and after the update, so
       # the risk assessment sees exactly what would change in the cluster.
-      # CRDs are included, so the reviewer can check schema changes.
       - name: Diff Rendered Resources
         if: ${{ !cancelled() }}
         continue-on-error: true
@@ -135,7 +134,6 @@ jobs:
             flate diff "${kind}" \
               --path pull/kubernetes/flux/cluster \
               --path-orig default/kubernetes/flux/cluster \
-              --skip-kinds=Secret \
               --output diff \
               > "flate-out/diff-${kind}.patch" 2> "flate-out/diff-${kind}.log" \
               || cat "flate-out/diff-${kind}.log"
