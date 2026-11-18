@@ -40,7 +40,7 @@ releases:
       - kube-system/cilium
     values:
       - ../kubernetes/apps/kube-system/coredns/app/resources/values.yaml
-    version: 1.50.7
+    version: 1.50.8
 
   - chart: jetstack/cert-manager
     name: cert-manager
