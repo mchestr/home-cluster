@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: tomsquest/docker-radicale
-              tag: 3.9.1.1
+              tag: 3.9.2.0
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
