@@ -7,7 +7,7 @@ metadata:
 spec:
   instances: 3
   # A -system- image, because only those ship the barman that spec.backup.barmanObjectStore runs.
-  imageName: ghcr.io/cloudnative-pg/postgresql:17.12-system-trixie@sha256:63a3c8ba02199ccd2fae4b75df5d197366905d41d792354a6eec3bec27eb05ce
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.12-system-trixie@sha256:4aabc4e49078b9ceae3cd37e307e7ac7c59ace827f6c17ae6bb8648c88e42ca0
   primaryUpdateStrategy: unsupervised
   primaryUpdateMethod: switchover
   storage:
