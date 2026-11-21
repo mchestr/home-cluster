@@ -45,7 +45,7 @@ spec:
           01-init-db:
             image:
               repository: ghcr.io/home-operations/postgres-init
-              tag: "18"
+              tag: "19"
             envFrom:
               - secretRef:
                   name: silo-initdb-secret
