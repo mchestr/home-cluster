@@ -147,9 +147,9 @@ Talos and Kubernetes upgrades are driven by [tuppr](https://github.com/home-oper
 
 ### AI Stack (`ai` namespace)
 
-- `litellm-operator` + `litellm`: an OpenAI-compatible LLM proxy. Models are declared as `LiteLLMModel` resources in `kubernetes/apps/ai/litellm/app/models/` and routed to hosted providers (OpenRouter), with no local GPU inference.
-- `text-embeddings`: HuggingFace TEI serving `bge-small-en-v1.5` embeddings in-cluster.
-- `memini`: persistent agent memory at `memini.chestr.dev`. It uses `text-embeddings` for vectors and `litellm` for chat. Its `/v1` and `/mcp` paths bypass Authelia because they are protected by memini's own API key.
+- `cliproxyapi`: an OpenAI-compatible LLM proxy with no route. Its models are aliases in the `config.yaml` that `kubernetes/apps/ai/cliproxyapi/app/externalsecret.yaml` renders. They go to OpenRouter, the Anthropic API and the ChatGPT subscription (Codex login), with no local GPU inference. A Cilium policy limits its ingress to memini and Silo and its egress to those providers.
+- `text-embeddings`: HuggingFace TEI serving `bge-small-en-v1.5` embeddings in-cluster. memini and Silo call it directly.
+- `memini`: persistent agent memory at `memini.chestr.dev`. It uses `text-embeddings` for vectors and `cliproxyapi` for chat. Its `/v1` and `/mcp` paths bypass Authelia because they are protected by memini's own API key.
 
 ### Observability
 

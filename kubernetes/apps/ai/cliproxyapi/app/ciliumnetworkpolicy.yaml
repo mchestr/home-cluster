@@ -1,0 +1,52 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumnetworkpolicy_v2.json
+# In: memini and Silo only, on 8317. Out: kube-dns for the provider names, and
+# those hosts on 443. Everything else, the LAN included, is denied.
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: cliproxyapi
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: cliproxyapi
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: ai
+            app.kubernetes.io/name: memini
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: media
+            app.kubernetes.io/name: silo
+            # Not silo-meilisearch, which has the same name label.
+            app.kubernetes.io/controller: silo
+      toPorts:
+        - ports:
+            - port: "8317"
+              protocol: TCP
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: ANY
+          rules:
+            dns:
+              - matchName: openrouter.ai
+              - matchName: api.anthropic.com
+              - matchName: chatgpt.com
+              - matchName: auth.openai.com
+    - toFQDNs:
+        # OpenRouter (memini-chat) and the Anthropic API (silo-translate*).
+        - matchName: openrouter.ai
+        - matchName: api.anthropic.com
+        # ChatGPT subscription: Codex requests and the OAuth token refresh.
+        - matchName: chatgpt.com
+        - matchName: auth.openai.com
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP

@@ -29,9 +29,9 @@ spec:
                     name: memini-secret
                     key: MEMINI_API_KEY
               # Opt-in LLM pipeline: dedup/consolidation, episodic->semantic
-              # promotion, /v1/answer, and rerank. Routed through litellm
-              # (ai namespace) to a hosted OpenAI-compatible provider.
-              MEMINI_LLM_BASE_URL: "http://litellm.ai.svc.cluster.local:4000/v1"
+              # promotion, /v1/answer, and rerank. Routed through cliproxyapi
+              # (ai namespace) to OpenRouter.
+              MEMINI_LLM_BASE_URL: "http://cliproxyapi.ai.svc.cluster.local:8317/v1"
               MEMINI_LLM_API: openai
               MEMINI_LLM_MODEL: memini-chat
               MEMINI_LLM_API_KEY:

@@ -5,8 +5,7 @@ namespace: ai
 components:
   - ../../components/common
 resources:
-  - ./litellm-operator/ks.yaml
-  - ./litellm/ks.yaml
+  - ./cliproxyapi/ks.yaml
   - ./text-embeddings/ks.yaml
   - ./memini/ks.yaml
   - ./claude-code/ks.yaml
