@@ -5,3 +5,4 @@ resources:
   - ./memini-chat.yaml
   - ./silo-translate.yaml
   - ./silo-embed.yaml
+  - ./codex-chat.yaml
