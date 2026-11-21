@@ -3,6 +3,8 @@
 # Silo transcodes inside the API pods and wants every request of one playback session on the
 # same replica (its docs call this load-balancer affinity). Hashing on the client address works
 # for native apps as well as browsers, which a cookie would not.
+# A route policy replaces the gateway policy in envoy.yaml, it does not merge with it. Without
+# the timeout below, Envoy uses its default of 15s and cuts every direct-play stream mid-file.
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: BackendTrafficPolicy
 metadata:
@@ -16,3 +18,6 @@ spec:
     type: ConsistentHash
     consistentHash:
       type: SourceIP
+  timeout:
+    http:
+      requestTimeout: 0s
