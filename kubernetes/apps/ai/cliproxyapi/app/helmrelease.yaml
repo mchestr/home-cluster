@@ -31,7 +31,8 @@ spec:
               repository: docker.io/eceasy/cli-proxy-api
               tag: v8.0.80@sha256:0695ae8721d623ed31179369fc7127d469f10a14a37a49c366e82a16383662f8
             command: ["/CLIProxyAPI/CLIProxyAPI"]
-            args: ["--config", "/config/config.yaml"]
+            # --local-model uses the embedded model catalogs: the egress policy blocks GitHub.
+            args: ["--config", "/config/config.yaml", "--local-model"]
             env:
               HOME: /data
               TZ: America/Vancouver
