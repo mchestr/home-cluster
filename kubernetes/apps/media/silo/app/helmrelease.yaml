@@ -119,8 +119,12 @@ spec:
                   failureThreshold: 120
             # The image starts s6 as root, which then runs Silo as PUID. It writes to
             # its root filesystem and needs the default capabilities to change account.
+            # The node gives /dev/dri the container's uid and gid (0:0 by default), and
+            # Silo's init-adduser skips gid 0. runAsGroup makes renderD128 0:1000 with
+            # mode 660, so the silo account (gid 1000) can open the GPU.
             securityContext:
               allowPrivilegeEscalation: false
+              runAsGroup: 1000
             resources:
               requests:
                 gpu.intel.com/i915: 1
