@@ -2,26 +2,19 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app litellm
+  name: &app cliproxyapi
   namespace: &namespace ai
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../components/dragonfly
   dependsOn:
-    - name: litellm-operator
-      namespace: *namespace
-    - name: dragonfly
-      namespace: database
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
     - name: onepassword-store
       namespace: external-secrets
   interval: 30m
-  path: ./kubernetes/apps/ai/litellm/app
-  postBuild:
-    substitute:
-      APP: *app
+  path: ./kubernetes/apps/ai/cliproxyapi/app
   prune: true
   retryInterval: 1m
   sourceRef:

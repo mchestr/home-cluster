@@ -1,0 +1,84 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app cliproxyapi
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 2
+  values:
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    controllers:
+      cliproxyapi:
+        # The auth-dir PVC is RWO.
+        strategy: Recreate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: docker.io/eceasy/cli-proxy-api
+              tag: v8.0.80@sha256:0695ae8721d623ed31179369fc7127d469f10a14a37a49c366e82a16383662f8
+            command: ["/CLIProxyAPI/CLIProxyAPI"]
+            # --local-model uses the embedded model catalogs: the egress policy blocks GitHub.
+            args: ["--config", "/config/config.yaml", "--local-model"]
+            env:
+              HOME: /data
+              TZ: America/Vancouver
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet: { path: /healthz, port: &port 8317 }
+                  periodSeconds: 30
+              readiness:
+                <<: *probe
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet: { path: /healthz, port: *port }
+                  failureThreshold: 30
+                  periodSeconds: 5
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 512Mi
+    persistence:
+      config:
+        type: secret
+        name: cliproxyapi-secret
+        globalMounts:
+          - path: /config
+            readOnly: true
+      data:
+        existingClaim: *app
+        globalMounts:
+          - path: /data
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
