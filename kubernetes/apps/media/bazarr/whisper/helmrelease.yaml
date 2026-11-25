@@ -27,7 +27,7 @@ spec:
           app:
             image:
               repository: onerahmet/openai-whisper-asr-webservice
-              tag: v1.11.0@sha256:ee1be3f75828d009517d1f27be2a6a52d0ca5e8e9f6a0d75ed65fd492fa25810
+              tag: v2.0.0@sha256:f68b19f7a3e1ef156dd1a8ca8b4029f4614cd6a7bb8f199362bdf6dd5db99b03
             env:
               TZ: America/Vancouver
               ASR_MODEL: small # tiny, base, small, medium, large, large-v1, large-v2, large-v3, and turbo
