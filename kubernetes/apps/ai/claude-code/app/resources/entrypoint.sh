@@ -51,10 +51,10 @@ if [ -n "${HASS_TOKEN:-}" ]; then
       --header "Authorization: Bearer \${HASS_TOKEN}" || true
   fi
 fi
-for marketplace in eleboucher/memini anthropics/claude-code homeassistant-ai/skills; do
+for marketplace in eleboucher/memini anthropics/claude-code homeassistant-ai/skills pbakaus/impeccable; do
   claude plugin marketplace add "$marketplace" >/dev/null 2>&1 || true
 done
-for plugin in memini@memini commit-commands@claude-code-plugins home-assistant-skills@home-assistant-skills; do
+for plugin in memini@memini commit-commands@claude-code-plugins home-assistant-skills@home-assistant-skills impeccable@impeccable; do
   claude plugin list 2>/dev/null | grep -q "$plugin" \
     || claude plugin install "$plugin" >/dev/null 2>&1 \
     || echo "WARN: plugin $plugin install failed"
